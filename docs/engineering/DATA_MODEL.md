@@ -19,7 +19,7 @@ Seed: every table marked **R1** has §5b rows in `packages/fixtures/canonical/*.
 
 **Column conventions:**
 - **Primary keys:** `id uuid primary key default gen_random_uuid()` unless stated.
-- **Timestamps:** `created_at timestamptz not null default now()`. All business-date logic uses `ops.now()`, which honours `plinth.fixed_now` only when `plinth.env` is `test` or `fixture`.
+- **Timestamps:** `created_at timestamptz not null default now()`. All business-date logic uses `ops.now()`, which is frozen (session `plinth.fixed_now`, default 18 Oct 2026 12:00 IST) only when `ops.env()` is `test` or `fixture`. `ops.env()` reads `ops.runtime_settings` (`env`) first and falls back to the `plinth.env` GUC only when that row is absent; Supabase's `postgres` cannot `ALTER DATABASE … SET` a custom parameter, so the table is the mechanism (migrations seed `prod`, CI sets `test`, the §5b seed sets `fixture`).
 - **Money:** `bigint` whole rupees, named `*_inr`. Percentages: `numeric(5,2)`, named `*_pct`. Areas: `numeric(8,1)` sq ft, named `*_sqft` with an explicit `basis` (carpet or super).
 - **Month-precision dates:** stored as `date` (the 1st of the month) plus a `<col>_precision core.date_precision` column (`day` or `month`). "Dec 2027" is `2027-12-01`, precision month. The columns are `rera_registrations.registered_on_precision` (default day), `original_completion_precision` and `current_completion_precision` (default month); `extensions.granted_on_precision` (default day), `from_completion_precision` and `to_completion_precision` (default month); `pre_rera_records.promised_precision` (default month).
 - **Enums:** `text` + `CHECK` domains (`core.band`, `core.lane`, `core.factor`, `app.verdict`, …), because they are easier to extend than Postgres enums. Values are lower-case snake case.
@@ -223,6 +223,7 @@ Every table has RLS enabled. `service_role` bypasses RLS, and its use is limited
 | `ops.audit_log` | R1·M0 | `id bigserial`, `at`, `actor_user_id`, `actor_role`, `request_id`, `action`, `entity`, `entity_id`, `before jsonb`, `after jsonb`, `reason` | idx(`entity`,`entity_id`); idx(`at`) | Insert-only (trigger); admin reads. ≥ 2 years |
 | `ops.ref_counters` | R1·M0 | `prefix`, `scope_date`, `last` | pk(`prefix`,`scope_date`) | `ops.next_ref()` only |
 | `ops.feature_flags` | R1·M0 | `key`, `enabled`, `rollout_pct`, `audience`, `surfaces text[]`, `note`, `updated_by` | pk(`key`) | Admin writes; `api.flags()` reads |
+| `ops.runtime_settings` | R1·M0 | `key` (`env` ∈ local, test, fixture, dev, staging, prod), `value`, `updated_at` | pk(`key`) | Owner-only writes, audited; read through `ops.env()` / `ops.is_frozen_env()`. No grants to anon, authenticated or `pipeline_writer` |
 | `ops.job_runs` | R1·M1 | `pipeline`, `source_code`, `started_at`, `finished_at`, `mode` (fixtures, live), `fetched`, `changed`, `parsed`, `yield_pct`, `errors jsonb` | idx(`source_code`,`started_at`) | Admin; `pipeline_writer` insert |
 | `ops.source_freshness` (view) | R1·M1 | Per source: last success, age ÷ cadence, yield delta | — | Admin |
 | `ops.review_tasks` | R1·M3 | `kind` (extraction_disagreement, low_confidence_claim, dispute, clerical, notice, legal, capture, entity_merge, demand_check), `entity`, `entity_id`, `priority` (impact × uncertainty), `status`, `assignee`, `due_at` | idx(`status`,`priority`) | Reviewer and admin |

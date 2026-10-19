@@ -28,10 +28,57 @@ comment on domain app.verdict is 'Claims-vs-records verdict, set by rules, never
 comment on domain core.date_precision is 'Precision of the date column it accompanies (<col>_precision): day, or month (the date is then the 1st of the month: Dec 2027 = 2027-12-01).';
 
 -- ---------------------------------------------------------------------------
+-- Runtime environment (lead decision, 19 Oct 2026): a settings table, not a
+-- database GUC, because Supabase's `postgres` is not a superuser and cannot
+-- ALTER DATABASE … SET plinth.env (hosted plinth-dev included).
+--   ops.runtime_settings('env') ∈ local, test, fixture, dev, staging, prod.
+--   Migrations seed 'prod'. CI sets 'test'; the §5b seed sets 'fixture'.
+-- ops.env() reads the table first and falls back to the plinth.env GUC only
+-- when the row is absent. Triggers (audit, updated_at) are added at the end of
+-- this file, once their functions exist.
+-- ---------------------------------------------------------------------------
+create table ops.runtime_settings (
+  key text primary key check (key ~ '^[a-z][a-z0-9_]*$'),
+  value text not null,
+  updated_at timestamptz not null default now(),
+  constraint runtime_settings_env_value check (
+    key <> 'env' or value in ('local', 'test', 'fixture', 'dev', 'staging', 'prod')
+  )
+);
+comment on table ops.runtime_settings is 'Database-wide runtime settings (env, …). Owner-only writes: no grants to anon, authenticated or pipeline_writer; audited. Replaces ALTER DATABASE SET plinth.env, which needs a superuser on Supabase.';
+
+create function ops.env()
+returns text
+language sql
+stable
+security definer
+parallel safe
+set search_path = ''
+as $$
+  select coalesce(
+    (select s.value from ops.runtime_settings s where s.key = 'env'),
+    nullif(pg_catalog.current_setting('plinth.env', true), ''),
+    'prod'
+  )
+$$;
+comment on function ops.env() is 'The runtime environment: ops.runtime_settings(env) first; the plinth.env GUC only when that row is absent; else prod.';
+
+create function ops.is_frozen_env()
+returns boolean
+language sql
+stable
+parallel safe
+set search_path = ''
+as $$
+  select ops.env() in ('test', 'fixture')
+$$;
+comment on function ops.is_frozen_env() is 'True in the fixture world (test, fixture): the frozen clock and other fixture-only behaviour. Use it for every fixture-only guard.';
+
+-- ---------------------------------------------------------------------------
 -- The clock (BUILD_PLAN §9). All business-date logic calls ops.now().
--- It honours plinth.fixed_now only when plinth.env is test or fixture; with
--- no fixed_now set it freezes at the design "today", 18 Oct 2026 12:00 IST.
--- In any other env (or none) it is pg_catalog.now().
+-- Frozen only when ops.is_frozen_env(): it then honours the session setting
+-- plinth.fixed_now (tests advance the clock with set_config) and otherwise
+-- returns the design "today", 18 Oct 2026 12:00 IST. Elsewhere it is now().
 -- ---------------------------------------------------------------------------
 create function ops.now()
 returns timestamptz
@@ -41,7 +88,7 @@ parallel safe
 set search_path = ''
 as $$
   select case
-    when coalesce(pg_catalog.current_setting('plinth.env', true), '') in ('test', 'fixture')
+    when ops.is_frozen_env()
       then coalesce(
         nullif(pg_catalog.current_setting('plinth.fixed_now', true), '')::timestamptz,
         timestamptz '2026-10-18 12:00:00+05:30'
@@ -49,7 +96,7 @@ as $$
     else pg_catalog.now()
   end
 $$;
-comment on function ops.now() is 'Business clock. Frozen (plinth.fixed_now, default 2026-10-18 12:00 IST) only when plinth.env ∈ {test, fixture}.';
+comment on function ops.now() is 'Business clock. Frozen (session plinth.fixed_now, default 2026-10-18 12:00 IST) only when ops.env() ∈ {test, fixture}.';
 
 create function ops.ist_date(p_at timestamptz)
 returns date
@@ -634,3 +681,16 @@ comment on function ops.touch_updated_at() is 'BEFORE UPDATE trigger: sets updat
 create trigger feature_flags_touch
   before update on ops.feature_flags
   for each row execute function ops.touch_updated_at();
+
+-- ---------------------------------------------------------------------------
+-- ops.runtime_settings: triggers and the default row (see the top of this file).
+-- ---------------------------------------------------------------------------
+create trigger runtime_settings_touch
+  before update on ops.runtime_settings
+  for each row execute function ops.touch_updated_at();
+create trigger runtime_settings_audit
+  after insert or update or delete on ops.runtime_settings
+  for each row execute function ops.audit_trigger();
+
+insert into ops.runtime_settings (key, value) values ('env', 'prod')
+on conflict (key) do nothing;

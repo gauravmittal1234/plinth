@@ -40,14 +40,14 @@ select is(
       'core.score_models', 'core.red_flag_rules', 'core.score_runs', 'core.score_reasons',
       'core.reason_templates', 'core.red_flags', 'core.band_history', 'core.band_notices',
       'core.calibration', 'core.methodology_changelog', 'core.events', 'core.share_cards',
-      'ops.ref_counters', 'ops.audit_log', 'ops.feature_flags'
+      'ops.ref_counters', 'ops.audit_log', 'ops.feature_flags', 'ops.runtime_settings'
     ])
       and a.attnum > 0
       and not a.attisdropped
       and coalesce(col_description(c.oid, a.attnum), '') !~ '^pii:C[0-3]'
   ),
   null::text[],
-  'every column of the 42 T04 tables carries a pii tag'
+  'every column of the 43 T04 tables carries a pii tag'
 );
 
 select * from finish();

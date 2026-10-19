@@ -96,15 +96,14 @@ jobs:
       - name: Reset (every migration + the §5b seed)
         run: supabase db reset
 
-      # Postgres 15+ lets only a superuser ALTER DATABASE … SET a custom placeholder
-      # parameter, and Supabase's `postgres` is not one. `supabase_admin` is the local
-      # superuser the CLI itself uses (same fixed local password). Every later session
-      # (pgTAP, contract tests, PostgREST) then sees plinth.env = test.
-      - name: Freeze the clock (plinth.env = test → ops.now() is 18 Oct 2026, 12:00 IST)
+      # The environment lives in ops.runtime_settings (lead decision): plain `postgres`
+      # can write it, no superuser needed. Every later session (pgTAP, contract tests,
+      # PostgREST) then gets the frozen clock.
+      - name: Freeze the clock (env = test → ops.now() is 18 Oct 2026, 12:00 IST)
         run: |
-          PGUSER=supabase_admin psql -v ON_ERROR_STOP=1 -c "alter database postgres set plinth.env = 'test'"
+          psql -v ON_ERROR_STOP=1 -c "update ops.runtime_settings set value = 'test' where key = 'env'"
           got=$(psql -tAc "select ops.now() = timestamptz '2026-10-18 12:00:00+05:30'")
-          echo "plinth.env=$(psql -tAc "select current_setting('plinth.env', true)") frozen=$got"
+          echo "env=$(psql -tAc "select ops.env()") frozen=$got"
           test "$got" = "t"
 
       - name: pgTAP (supabase test db)

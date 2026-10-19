@@ -1,32 +1,33 @@
 -- T04 · The clock and human refs (BUILD_PLAN §9; DATA_MODEL §0 refs; decision D-4/E-3).
--- ops.now() is frozen only when plinth.env ∈ {test, fixture}; ops.next_ref('C')
--- gives C-1018-01 under the fixed clock and widens past 99.
+-- ops.now() is frozen only when ops.env() ∈ {test, fixture} (ops.runtime_settings,
+-- see core/009); ops.next_ref('C') gives C-1018-01 under the fixed clock and widens past 99.
 begin;
 create extension if not exists pgtap with schema extensions;
 select plan(21);
 
 -- Clock -------------------------------------------------------------------------
-select set_config('plinth.env', '', true);
-select set_config('plinth.fixed_now', '2026-10-18 12:00:00+05:30', true);
-select is(ops.now(), now(), 'no plinth.env: ops.now() is the real clock, even with fixed_now set');
-
-select set_config('plinth.env', 'production', true);
-select is(ops.now(), now(), 'plinth.env = production: the real clock');
-
+update ops.runtime_settings set value = 'prod' where key = 'env';
 select set_config('plinth.env', 'test', true);
+select set_config('plinth.fixed_now', '2026-10-18 12:00:00+05:30', true);
+select is(ops.now(), now(), 'env = prod: the real clock, even with a plinth.env GUC and fixed_now set');
+
+update ops.runtime_settings set value = 'staging' where key = 'env';
+select is(ops.now(), now(), 'env = staging: the real clock');
+
+update ops.runtime_settings set value = 'test' where key = 'env';
 select set_config('plinth.fixed_now', '', true);
-select is(ops.now(), '2026-10-18 12:00:00+05:30'::timestamptz, 'plinth.env = test: frozen at 18 Oct 2026, 12:00 IST by default');
+select is(ops.now(), '2026-10-18 12:00:00+05:30'::timestamptz, 'env = test: frozen at 18 Oct 2026, 12:00 IST by default');
 select is(ops.today(), '2026-10-18'::date, 'ops.today() is 18 Oct 2026 under the frozen clock');
 
-select set_config('plinth.env', 'fixture', true);
+update ops.runtime_settings set value = 'fixture' where key = 'env';
 select set_config('plinth.fixed_now', '2026-10-25 09:00:00+05:30', true);
-select is(ops.now(), '2026-10-25 09:00:00+05:30'::timestamptz, 'plinth.env = fixture: honours plinth.fixed_now (advancing the clock)');
+select is(ops.now(), '2026-10-25 09:00:00+05:30'::timestamptz, 'env = fixture: honours plinth.fixed_now (advancing the clock)');
 
 select set_config('plinth.fixed_now', '2026-10-18 20:00:00+00', true);
 select is(ops.today(), '2026-10-19'::date, 'ops.today() is the IST date (20:00 UTC on 18 Oct is 19 Oct in India)');
 
 -- Refs (counters cleared inside this transaction, so seeded refs do not matter) -----
-select set_config('plinth.env', 'test', true);
+update ops.runtime_settings set value = 'test' where key = 'env';
 select set_config('plinth.fixed_now', '', true);
 delete from ops.ref_counters;
 

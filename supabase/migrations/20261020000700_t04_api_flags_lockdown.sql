@@ -84,6 +84,7 @@ comment on function api.flags() is 'plinth.flags/1: { schema, flags: { key: bool
 alter table ops.ref_counters enable row level security;
 alter table ops.audit_log enable row level security;
 alter table ops.feature_flags enable row level security;
+alter table ops.runtime_settings enable row level security;
 
 -- ---------------------------------------------------------------------------
 -- PII tags (DATA_MODEL §0; BUILD_PLAN §12.10): every column carries pii:C0–C3.

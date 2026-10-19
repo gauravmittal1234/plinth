@@ -172,10 +172,10 @@ select is(
   (
     select array_agg(r.role order by 1)
     from (values ('anon'), ('authenticated')) as r(role)
-    where (select count(*) from t04_probe p where p.role = r.role and p.outcome = 'denied') < 42
+    where (select count(*) from t04_probe p where p.role = r.role and p.outcome = 'denied') < 43
   ),
   null::text[],
-  'the probe really ran: at least the 42 T04 tables were denied to each role'
+  'the probe really ran: at least the 43 T04 tables were denied to each role'
 );
 
 set local role anon;

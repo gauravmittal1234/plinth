@@ -28,12 +28,12 @@ select is(
       'core.score_models', 'core.red_flag_rules', 'core.score_runs', 'core.score_reasons',
       'core.reason_templates', 'core.red_flags', 'core.band_history', 'core.band_notices',
       'core.calibration', 'core.methodology_changelog', 'core.events', 'core.share_cards',
-      'ops.ref_counters', 'ops.audit_log', 'ops.feature_flags'
+      'ops.ref_counters', 'ops.audit_log', 'ops.feature_flags', 'ops.runtime_settings'
     ]) as t(name)
     where to_regclass(t.name) is null
   ),
   null::text[],
-  'all 42 T04 tables exist (DATA_MODEL §1–§3 and the three M0 ops tables)'
+  'all 43 T04 tables exist (DATA_MODEL §1–§3, the three M0 ops tables and ops.runtime_settings)'
 );
 
 select is(
