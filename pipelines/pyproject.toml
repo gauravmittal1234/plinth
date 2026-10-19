@@ -1,0 +1,80 @@
+# Plinth pipelines: fetch -> snapshot -> parse -> facts -> score -> publish.
+# FROZEN after T00 (WORK_BREAKDOWN §1 rule 2): dependencies change only through
+# the lead's integrator PR, which also refreshes uv.lock (`uv lock`).
+#
+# Install (uv is not on the founder's Mac; CI uses astral-sh/setup-uv):
+#   npm run py:setup        # python3.14 venv in pipelines/.venv + editable installs
+#   uv sync --extra dev     # where uv exists
+# The shared contract models live in packages/contracts/python (plinth_contracts,
+# owned by T02). They are installed next to this package by `npm run py:setup`
+# and in CI, not declared here, so pip never looks for them on PyPI.
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "plinth-pipelines"
+version = "0.0.0"
+description = "Plinth data pipelines: HARERA sources on fixtures, extraction, entity resolution, scoring v1.2, publish."
+readme = "README.md"
+requires-python = ">=3.14"
+license = { text = "UNLICENSED" }
+dependencies = [
+  "httpx>=0.28.1,<0.29",
+  # lxml 5.x has no CPython 3.14 wheels; 6.x is the first line that installs cleanly on 3.14.
+  "lxml>=6.0,<7",
+  "pdfplumber>=0.11.7,<0.12",
+  "pydantic>=2.11,<3",
+  "psycopg[binary]>=3.2.10,<4",
+  "PyYAML>=6.0.2,<7",
+  "google-genai>=1.40,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4,<9",
+  "hypothesis>=6.140,<7",
+  "respx>=0.22",
+  "ruff>=0.14",
+  "mypy>=1.18,<2",
+  "types-PyYAML>=6.0.12",
+  # Contracts codegen (packages/contracts/python, T02): JSON Schema -> Pydantic v2.
+  "datamodel-code-generator>=0.35",
+]
+
+[project.scripts]
+plinth-pipe = "plinth.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["plinth"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+extend-exclude = ["tests/fixtures"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.14"
+packages = ["plinth"]
+warn_redundant_casts = true
+warn_unused_ignores = true
+check_untyped_defs = true
+disallow_untyped_defs = true
+
+# BUILD_PLAN §5.4: strict on scoring.
+[[tool.mypy.overrides]]
+module = ["plinth.scoring", "plinth.scoring.*"]
+strict = true
+
+[[tool.mypy.overrides]]
+module = ["pdfplumber.*", "lxml.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# importlib mode: test folders need no __init__.py, so parallel tasks never share one.
+addopts = "-ra --strict-markers --import-mode=importlib"
