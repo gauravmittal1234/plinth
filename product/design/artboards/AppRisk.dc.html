@@ -332,7 +332,7 @@ class Component extends DCLogic {
       {n: '1', anim: anim(0), group: 'Finances', fact: '72% of units sold, 41% built.', chips: [{label: E[0].chip, open: opener(0)}]},
       {n: '2', anim: anim(1), group: 'Timeline', fact: '77% of the promised time used. QPRs filed late in 3 of the last 8 quarters.', chips: [{label: E[1].chip, open: opener(1)}]},
       {n: '3', anim: anim(2), group: 'Legal', fact: '14 complaints decided against the promoter in 24 months · 2.8 per 100 units. Median count for similar projects: 3.', chips: [{label: E[2].chip, open: opener(2)}]},
-      {n: '4', anim: anim(3), group: 'Track record', fact: '2 of the group’s 6 finished RERA projects got OC more than 12 months late. No insolvency found.', chips: [{label: E[3].chip, open: opener(3)}, {label: E[4].chip, open: opener(4)}]}
+      {n: '4', anim: anim(3), group: 'Track record', fact: '2 of the group’s 6 finished RERA projects got OC more than 12 months late.', chips: [{label: E[3].chip, open: opener(3)}, {label: E[4].chip, open: opener(4)}]}
     ];
     var ev = E[s.ev] || E[0];
     var changeLine = b.i > 1 ? 'Two consecutive quarters with construction ahead of sales would move this to ' + names[b.i - 2] + '.' : 'Low is the lowest band. Late QPRs, an extension or more complaints decided against the promoter would move it up.';
