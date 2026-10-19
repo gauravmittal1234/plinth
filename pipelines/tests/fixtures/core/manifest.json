@@ -1,0 +1,29 @@
+{
+  "schema": "plinth.fetch_fixtures/1",
+  "note": "Synthetic files for plinth.core tests (T10). URLs use the reserved .test domain.",
+  "entries": [
+    {
+      "source": "harera_registration",
+      "url": "https://portal.example.test/projects",
+      "params": { "page": "1" },
+      "file": "pages/list.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T10:00:00+05:30"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://portal.example.test/qpr",
+      "method": "POST",
+      "data": { "quarter": "2026-Q2", "registration": "FIX/001/2022" },
+      "file": "pages/progress-2026-Q2.html"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://portal.example.test/qpr",
+      "method": "POST",
+      "data": { "quarter": "2026-Q3", "registration": "FIX/001/2022" },
+      "file": "pages/missing-on-purpose.html",
+      "status": 404
+    }
+  ]
+}

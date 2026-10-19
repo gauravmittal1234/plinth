@@ -1,0 +1,100 @@
+# ci-pipelines (owner: T10). BUILD_PLAN §8: setup-uv -> ruff -> mypy -> pytest.
+#   pipelines   uv env from pipelines/uv.lock + plinth_contracts; ruff + ruff format on all of
+#               pipelines/; mypy (pyproject config) and mypy --strict on plinth.core, the CLI and
+#               the core tests; pytest pipelines/tests except tests/scoring (ci-scoring, T11, runs
+#               those with the golden diff); then CLI checks: live fetching is refused in CI, and
+#               a fixture fetch stores one snapshot and is idempotent by hash.
+# LEGAL (BUILD_PLAN §1 rule 8): fixtures only. No step may fetch from HARERA or any government
+# site; HARERA_LIVE_FETCH_APPROVED is never set here and the tests block sockets. No secrets.
+name: ci-pipelines
+
+on:
+  pull_request:
+    paths:
+      - "pipelines/**"
+      - "packages/contracts/python/**"
+      - "packages/contracts/catalogues/flags.json"
+      - "supabase/migrations/**"
+      - "docs/engineering/DATA_MODEL.md"
+      - ".github/workflows/ci-pipelines.yml"
+  push:
+    branches: [main]
+    paths:
+      - "pipelines/**"
+      - "packages/contracts/python/**"
+      - "packages/contracts/catalogues/flags.json"
+      - "supabase/migrations/**"
+      - "docs/engineering/DATA_MODEL.md"
+      - ".github/workflows/ci-pipelines.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-pipelines-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pipelines:
+    name: pipelines (ruff, mypy, pytest, live gate)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PLINTH_FETCH_MODE: fixtures
+    steps:
+      - uses: actions/checkout@v7
+
+      # setup-uv publishes exact tags only (no floating major).
+      - uses: astral-sh/setup-uv@v10.3.0
+
+      - name: Python env from pipelines/uv.lock (+ plinth_contracts)
+        run: |
+          uv sync --project pipelines --frozen --extra dev
+          uv pip install --python pipelines/.venv/bin/python -e packages/contracts/python
+
+      - name: ruff
+        working-directory: pipelines
+        run: |
+          .venv/bin/ruff check .
+          .venv/bin/ruff format --check .
+
+      - name: mypy (pyproject config) and mypy --strict on core, CLI and core tests
+        working-directory: pipelines
+        run: |
+          .venv/bin/mypy
+          .venv/bin/mypy --strict plinth/core plinth/cli.py plinth/__init__.py
+          .venv/bin/mypy --strict tests/conftest.py tests/core
+
+      - name: pytest (everything except tests/scoring, which ci-scoring runs)
+        working-directory: pipelines
+        run: .venv/bin/python -m pytest -q --ignore=tests/scoring
+
+      - name: Live fetching is refused in CI
+        working-directory: pipelines
+        env:
+          PLINTH_FETCH_MODE: live
+        run: |
+          set +e
+          .venv/bin/plinth-pipe live-check
+          check=$?
+          .venv/bin/plinth-pipe fetch https://haryanarera.gov.in/ --source harera_registration \
+            --snapshot-dir "$RUNNER_TEMP/live"
+          fetch=$?
+          set -e
+          test "$check" -eq 3 || { echo "live-check must refuse in CI (exit 3), got $check"; exit 1; }
+          test "$fetch" -eq 3 || { echo "a live fetch must be refused (exit 3), got $fetch"; exit 1; }
+          echo "refused, as it must be"
+
+      - name: Fixture fetch stores one snapshot, idempotent by hash
+        working-directory: pipelines
+        run: |
+          dir="$RUNNER_TEMP/snapshots"
+          args=(fetch fixture://pages/list.html --source harera_registration
+                --fixtures-dir tests/fixtures/core --snapshot-dir "$dir")
+          a=$(.venv/bin/plinth-pipe "${args[@]}" | jq -r '.snapshot.id + " " + (.created|tostring)')
+          b=$(.venv/bin/plinth-pipe "${args[@]}" | jq -r '.snapshot.id + " " + (.created|tostring)')
+          echo "first: $a / second: $b"
+          test "${a% *}" = "${b% *}"
+          test "${a#* }" = "true" && test "${b#* }" = "false"
+          test "$(find "$dir/sha256" -type f | wc -l)" -eq 1
