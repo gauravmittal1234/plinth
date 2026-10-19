@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-qpr-2026-q2.json",
+  "why": "Error reports are E- references.",
+  "expect": "/report_error/ref_prefix",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/report_error/ref_prefix",
+      "value": "R"
+    }
+  ]
+}

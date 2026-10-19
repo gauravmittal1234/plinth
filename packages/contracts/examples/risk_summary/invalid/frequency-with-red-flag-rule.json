@@ -1,0 +1,20 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "A red-flag rule sets the band without a natural frequency.",
+  "expect": "/frequency",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/band/set_by",
+      "value": "red_flag_rule"
+    },
+    {
+      "op": "replace",
+      "path": "/band/rule",
+      "value": {
+        "code": "RF1_GROUP_CIRP",
+        "line": "Set by red-flag rule 1, not our model: a group company was admitted to insolvency (NCLT order, 12 Mar 2023)."
+      }
+    }
+  ]
+}

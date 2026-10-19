@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/compare.schema.json",
+  "title": "Compare",
+  "description": "plinth.compare/1, from api.compare(p_slugs) for 2–4 phases (API_CONTRACTS §4.5). rows[].cells line up with columns.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "columns", "rows", "notes"],
+  "properties": {
+    "schema": { "const": "plinth.compare/1" },
+    "columns": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": { "$ref": "#/$defs/CompareColumn" }
+    },
+    "rows": { "type": "array", "items": { "$ref": "#/$defs/CompareRow" } },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "CompareColumn": {
+      "title": "CompareColumn",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "name", "chip", "state"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "name": { "type": "string" },
+        "chip": { "$ref": "common.schema.json#/$defs/Chip" },
+        "state": { "$ref": "common.schema.json#/$defs/DisplayState" }
+      }
+    },
+    "CompareRow": {
+      "title": "CompareRow",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "cells"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "label": { "type": "string" },
+        "cells": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "CompareRequest": {
+      "title": "CompareRequest",
+      "description": "Arguments of api.compare.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p_slugs"],
+      "properties": {
+        "p_slugs": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/Slug" }
+        }
+      }
+    }
+  }
+}

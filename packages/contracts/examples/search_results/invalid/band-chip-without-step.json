@@ -1,0 +1,12 @@
+{
+  "base": "3bhk-dwarka-under-2-5-cr-low-risk.json",
+  "why": "A band chip carries its step.",
+  "expect": "/items/0/chip/step",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/items/0/chip/step",
+      "value": null
+    }
+  ]
+}

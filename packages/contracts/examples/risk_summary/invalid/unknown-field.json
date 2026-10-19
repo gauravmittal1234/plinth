@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "The server never adds fields outside the schema (clients would ignore them).",
+  "expect": "",
+  "patch": [
+    {
+      "op": "add",
+      "path": "/proposed_band",
+      "value": "high"
+    }
+  ]
+}

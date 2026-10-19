@@ -1,0 +1,12 @@
+{
+  "base": "rohan.json",
+  "why": "Cadence is instant, daily_8am, weekly_sun_9am or off.",
+  "expect": "/prefs/push/band_change",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/prefs/push/band_change",
+      "value": "hourly"
+    }
+  ]
+}

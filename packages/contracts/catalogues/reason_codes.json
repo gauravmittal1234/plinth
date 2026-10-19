@@ -1,0 +1,109 @@
+{
+  "catalogue": "reason_codes",
+  "version": 1,
+  "source": "DATA_MODEL §3 (core.score_reasons.code, core.reason_templates, core.red_flag_rules, score_models.config factor weights 30/30/20/15/5); API_CONTRACTS §2.1 reason texts.",
+  "notes": [
+    "Templates are filled by the scoring pipeline (T11) and stored as finished text in core.score_reasons.text. An LLM never adds facts to a reason.",
+    "{param} placeholders take the already-formatted value. A test renders the four Aurelia reasons from these templates and compares them with API_CONTRACTS §2.1.",
+    "status draft means the methodology owner still has to approve the wording before it is published."
+  ],
+  "factors": [
+    { "code": "finances", "label": "Finances", "weight_pct": 30 },
+    { "code": "track_record", "label": "Track record", "weight_pct": 30 },
+    { "code": "timeline", "label": "Timeline", "weight_pct": 20 },
+    { "code": "legal", "label": "Legal", "weight_pct": 15 },
+    { "code": "site", "label": "Site", "weight_pct": 5 }
+  ],
+  "reasons": [
+    {
+      "code": "FIN_SOLD_AHEAD_BUILT",
+      "factor": "finances",
+      "version": 1,
+      "status": "published",
+      "template_en": "{sold_pct}% of units sold, {built_pct}% built.",
+      "params": ["sold_pct", "built_pct"],
+      "example": { "sold_pct": "72", "built_pct": "41" }
+    },
+    {
+      "code": "TL_TIME_USED_LATE_QPRS",
+      "factor": "timeline",
+      "version": 1,
+      "status": "published",
+      "template_en": "{time_used_pct}% of the promised time used. QPRs filed late in {late_count} of the last {window_count} quarters.",
+      "params": ["time_used_pct", "late_count", "window_count"],
+      "example": { "time_used_pct": "77", "late_count": "3", "window_count": "8" }
+    },
+    {
+      "code": "LEGAL_COMPLAINTS_VS_MEDIAN",
+      "factor": "legal",
+      "version": 1,
+      "status": "published",
+      "template_en": "{count_24m} complaints decided against the promoter in 24 months · {per_100_units} per 100 units. Median count for similar projects: {median_count}.",
+      "params": ["count_24m", "per_100_units", "median_count"],
+      "example": { "count_24m": "14", "per_100_units": "2.8", "median_count": "3" }
+    },
+    {
+      "code": "TR_GROUP_LATE_OC",
+      "factor": "track_record",
+      "version": 1,
+      "status": "published",
+      "template_en": "{late_count} of the group's {finished_count} finished RERA projects got OC more than 12 months late.",
+      "params": ["late_count", "finished_count"],
+      "example": { "late_count": "2", "finished_count": "6" }
+    }
+  ],
+  "red_flag_rules": [
+    {
+      "code": "RF1_GROUP_CIRP",
+      "number": 1,
+      "title": "A group company was admitted to insolvency",
+      "sets_band": "severe",
+      "status": "published",
+      "line_template": "Set by red-flag rule 1, not our model: a group company was admitted to insolvency ({forum} order, {date}).",
+      "params": ["forum", "date"],
+      "example": { "forum": "NCLT", "date": "12 Mar 2023" }
+    },
+    {
+      "code": "RF2_REGISTRATION_REVOKED",
+      "number": 2,
+      "title": "The RERA registration was revoked",
+      "sets_band": null,
+      "status": "draft",
+      "line_template": null,
+      "params": [],
+      "example": null
+    },
+    {
+      "code": "RF3_STOP_SALE",
+      "number": 3,
+      "title": "A regulator or court stopped sales",
+      "sets_band": null,
+      "status": "draft",
+      "line_template": null,
+      "params": [],
+      "example": null
+    },
+    {
+      "code": "RF4_GROUP_DEFAULT",
+      "number": 4,
+      "title": "A group company defaulted",
+      "sets_band": null,
+      "status": "draft",
+      "line_template": null,
+      "params": [],
+      "example": null
+    }
+  ],
+  "pending_codes": [
+    {
+      "code": "qpr_missing",
+      "description": "A QPR that was due is not on the authority's portal. Marker line names the date the band may change.",
+      "example_line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026."
+    },
+    {
+      "code": "rescore_due",
+      "description": "A new filing is in and the re-score is due within 72 hours. No figures from the new filing are shown until then.",
+      "example_line": "The Jul–Sep 2026 QPR was filed 15 Oct and fetched 16 Oct, 7:40 pm. We update this by 19 Oct 2026, 7:40 pm."
+    }
+  ]
+}

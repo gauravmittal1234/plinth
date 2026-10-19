@@ -1,0 +1,402 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/project_page.schema.json",
+  "title": "ProjectPage",
+  "description": "plinth.project_page/1, from api.project_page(p_slug) (API_CONTRACTS §4.2). Embeds the RiskSummary unchanged. Sub-objects the contract abbreviates with \"…\" are open (additionalProperties true): later tasks may add fields, never rename them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "risk",
+    "hero",
+    "truth_panel",
+    "progress",
+    "homes",
+    "from_developer",
+    "cost",
+    "wait_defaults",
+    "afford_default",
+    "next_steps",
+    "before_booking",
+    "pre_rera",
+    "records",
+    "meta"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.project_page/1" },
+    "risk": { "$ref": "risk_summary.schema.json" },
+    "hero": { "$ref": "#/$defs/ProjectHero" },
+    "truth_panel": { "type": "array", "items": { "$ref": "#/$defs/TruthPanelRow" } },
+    "progress": { "$ref": "#/$defs/ProjectProgress" },
+    "homes": { "$ref": "#/$defs/Homes" },
+    "from_developer": { "$ref": "#/$defs/FromDeveloper" },
+    "cost": {
+      "description": "Null without a cost sheet.",
+      "anyOf": [{ "$ref": "cost_breakdown.schema.json" }, { "type": "null" }]
+    },
+    "wait_defaults": { "$ref": "#/$defs/WaitDefaults" },
+    "afford_default": {
+      "description": "AffordTheWait at wait_defaults. Static in M1, interactive from M3. Null without an all-in.",
+      "anyOf": [{ "$ref": "afford_the_wait.schema.json" }, { "type": "null" }]
+    },
+    "next_steps": { "$ref": "#/$defs/NextSteps" },
+    "before_booking": { "$ref": "#/$defs/BeforeBooking" },
+    "pre_rera": { "anyOf": [{ "$ref": "common.schema.json#/$defs/PreRera" }, { "type": "null" }] },
+    "records": { "type": "array", "items": { "$ref": "#/$defs/EvidenceSummary" } },
+    "meta": { "$ref": "common.schema.json#/$defs/RiskMeta" }
+  },
+  "$defs": {
+    "ProjectHero": {
+      "title": "ProjectHero",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["image_url", "image_caption", "summary_line", "rera_badge"],
+      "properties": {
+        "image_url": { "type": ["string", "null"] },
+        "image_caption": { "type": ["string", "null"] },
+        "summary_line": { "type": "string" },
+        "rera_badge": { "$ref": "#/$defs/ReraBadge" }
+      }
+    },
+    "ReraBadge": {
+      "title": "ReraBadge",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["number", "authority_url", "qr_url"],
+      "properties": {
+        "number": { "$ref": "common.schema.json#/$defs/ReraNumber" },
+        "authority_url": { "type": "string" },
+        "qr_url": { "type": ["string", "null"] }
+      }
+    },
+    "TruthPanelRow": {
+      "title": "TruthPanelRow",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "value_line", "lane", "sources"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "label": { "type": "string" },
+        "value_line": { "type": "string" },
+        "lane": { "$ref": "common.schema.json#/$defs/Lane" },
+        "sources": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/SourceRef" } }
+      }
+    },
+    "ProjectProgress": {
+      "title": "ProjectProgress",
+      "description": "The built-vs-time replay (records only). No band before it was set: band_then follows core.band_history.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["floors_per_tower", "towers", "quarters", "today", "late_filings_line"],
+      "properties": {
+        "floors_per_tower": { "type": ["integer", "null"], "minimum": 1 },
+        "towers": { "type": "array", "items": { "type": "string" } },
+        "quarters": { "type": "array", "items": { "$ref": "#/$defs/QuarterProgress" } },
+        "today": { "$ref": "#/$defs/ProgressToday" },
+        "late_filings_line": { "type": ["string", "null"] }
+      }
+    },
+    "QuarterProgress": {
+      "title": "QuarterProgress",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "quarter",
+        "label",
+        "sold_pct",
+        "built_pct",
+        "time_used_pct",
+        "band_then",
+        "towers",
+        "note_line"
+      ],
+      "properties": {
+        "quarter": { "$ref": "common.schema.json#/$defs/Quarter" },
+        "label": { "type": "string" },
+        "sold_pct": { "anyOf": [{ "$ref": "common.schema.json#/$defs/Pct" }, { "type": "null" }] },
+        "built_pct": { "anyOf": [{ "$ref": "common.schema.json#/$defs/Pct" }, { "type": "null" }] },
+        "time_used_pct": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Pct" }, { "type": "null" }]
+        },
+        "band_then": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/BandCode" }, { "type": "null" }]
+        },
+        "towers": {
+          "description": "Slab reached per tower code, or null when the QPR reports the phase as a whole.",
+          "anyOf": [
+            { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+            { "type": "null" }
+          ]
+        },
+        "filed_on": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        },
+        "note_line": { "type": ["string", "null"] }
+      }
+    },
+    "ProgressToday": {
+      "title": "ProgressToday",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["time_used_pct", "band", "band_since_line"],
+      "properties": {
+        "time_used_pct": { "$ref": "common.schema.json#/$defs/Pct" },
+        "band": { "anyOf": [{ "$ref": "common.schema.json#/$defs/BandCode" }, { "type": "null" }] },
+        "band_since_line": { "type": ["string", "null"] }
+      }
+    },
+    "Homes": {
+      "title": "Homes",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["configurations", "amenities", "getting_around", "waterlogging"],
+      "properties": {
+        "configurations": { "type": "array", "items": { "$ref": "#/$defs/HomeConfiguration" } },
+        "amenities": { "anyOf": [{ "$ref": "#/$defs/LaneList" }, { "type": "null" }] },
+        "getting_around": { "anyOf": [{ "$ref": "#/$defs/GettingAround" }, { "type": "null" }] },
+        "waterlogging": { "anyOf": [{ "$ref": "#/$defs/Waterlogging" }, { "type": "null" }] }
+      }
+    },
+    "HomeConfiguration": {
+      "title": "HomeConfiguration",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["label", "carpet_line", "price_line", "all_in_line"],
+      "properties": {
+        "label": { "type": "string", "examples": ["3 BHK"] },
+        "carpet_line": { "type": ["string", "null"] },
+        "carpet_lane": { "$ref": "common.schema.json#/$defs/Lane" },
+        "super_line": { "type": ["string", "null"] },
+        "super_lane": { "$ref": "common.schema.json#/$defs/Lane" },
+        "price_line": { "type": ["string", "null"] },
+        "all_in_line": { "type": ["string", "null"] },
+        "all_in_note": { "type": ["string", "null"] },
+        "rooms": { "type": "array", "items": { "$ref": "#/$defs/HomeRoom" } }
+      }
+    },
+    "HomeRoom": {
+      "title": "HomeRoom",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["label", "size_line"],
+      "properties": {
+        "label": { "type": "string" },
+        "size_line": { "type": ["string", "null"] }
+      }
+    },
+    "LaneList": {
+      "title": "LaneList",
+      "description": "A list of short lines that share one lane (amenities: from_developer).",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["lane", "items"],
+      "properties": {
+        "lane": { "$ref": "common.schema.json#/$defs/Lane" },
+        "items": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "GettingAround": {
+      "title": "GettingAround",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["lane", "items"],
+      "properties": {
+        "lane": { "$ref": "common.schema.json#/$defs/Lane" },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/GettingAroundItem" } },
+        "note_line": { "type": ["string", "null"] }
+      }
+    },
+    "GettingAroundItem": {
+      "title": "GettingAroundItem",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["place", "line"],
+      "properties": {
+        "place": { "type": "string" },
+        "line": { "type": "string" }
+      }
+    },
+    "Waterlogging": {
+      "title": "Waterlogging",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["lane", "reports", "note_line"],
+      "properties": {
+        "lane": { "$ref": "common.schema.json#/$defs/Lane" },
+        "reports": { "type": "array", "items": { "$ref": "#/$defs/ReportedIncident" } },
+        "note_line": { "type": ["string", "null"] }
+      }
+    },
+    "ReportedIncident": {
+      "title": "ReportedIncident",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["place_line", "reported_on", "source_label"],
+      "properties": {
+        "place_line": { "type": "string" },
+        "reported_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "source_label": { "type": "string" },
+        "url": { "type": ["string", "null"] }
+      }
+    },
+    "FromDeveloper": {
+      "title": "FromDeveloper",
+      "description": "From the developer · not verified by Plinth. Never feeds a band.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["label", "price_lists", "payment_plan", "transfer_policy"],
+      "properties": {
+        "label": { "type": "string" },
+        "price_lists": { "type": "array", "items": { "$ref": "#/$defs/PriceList" } },
+        "payment_plan": { "anyOf": [{ "$ref": "#/$defs/PaymentPlan" }, { "type": "null" }] },
+        "transfer_policy": { "type": ["string", "null"] }
+      }
+    },
+    "PriceList": {
+      "title": "PriceList",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["dated", "label", "items"],
+      "properties": {
+        "dated": { "$ref": "common.schema.json#/$defs/DateOrMonth" },
+        "label": { "type": "string" },
+        "current": { "type": "boolean" },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/PriceListItem" } }
+      }
+    },
+    "PriceListItem": {
+      "title": "PriceListItem",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["unit_label", "price_line"],
+      "properties": {
+        "unit_label": { "type": "string" },
+        "price_line": { "type": "string" },
+        "per_sqft_carpet_label": { "type": ["string", "null"] }
+      }
+    },
+    "PaymentPlan": {
+      "title": "PaymentPlan",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["stages"],
+      "properties": {
+        "kind": { "type": "string", "examples": ["construction_linked"] },
+        "name": { "type": ["string", "null"] },
+        "stages": { "type": "array", "items": { "$ref": "#/$defs/PaymentStage" } },
+        "due_by_registration_line": { "type": ["string", "null"] }
+      }
+    },
+    "PaymentStage": {
+      "title": "PaymentStage",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["seq", "label", "stage_kind", "slab_no", "pct"],
+      "properties": {
+        "seq": { "type": "integer", "minimum": 1 },
+        "label": { "type": "string" },
+        "stage_kind": { "$ref": "#/$defs/StageKind" },
+        "slab_no": { "type": ["integer", "null"], "minimum": 0 },
+        "pct": { "type": "number", "minimum": 0, "maximum": 100 },
+        "on_record": { "type": "boolean" }
+      }
+    },
+    "StageKind": {
+      "title": "StageKind",
+      "description": "ws.payment_plan_stages.stage_kind.",
+      "type": "string",
+      "enum": ["booking", "agreement", "foundation", "slab", "brickwork", "finishing", "possession"]
+    },
+    "WaitDefaults": {
+      "title": "WaitDefaults",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["take_home_inr", "rent_inr", "down_pct", "rate_pct", "tenure_years"],
+      "properties": {
+        "take_home_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "rent_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "down_pct": { "type": "number", "minimum": 0, "maximum": 100 },
+        "rate_pct": { "type": "number", "minimum": 0 },
+        "tenure_years": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "NextSteps": {
+      "title": "NextSteps",
+      "description": "We never say buy or don't buy.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["intro_line", "steps", "base_rate_line", "lower_band_nearby", "rule_line"],
+      "properties": {
+        "intro_line": { "type": "string" },
+        "steps": { "type": "array", "items": { "$ref": "#/$defs/NextStep" } },
+        "base_rate_line": { "type": ["string", "null"] },
+        "lower_band_nearby": { "type": "array", "items": { "$ref": "#/$defs/NearbyProject" } },
+        "rule_line": { "type": ["string", "null"] }
+      }
+    },
+    "NextStep": {
+      "title": "NextStep",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["title", "line"],
+      "properties": {
+        "title": { "type": "string" },
+        "line": { "type": "string" },
+        "href": { "type": ["string", "null"] }
+      }
+    },
+    "NearbyProject": {
+      "title": "NearbyProject",
+      "description": "Same corridor, lower band, all-in within 20%. Nobody pays to appear.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "chip", "price_line"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "name": { "type": "string" },
+        "chip": { "$ref": "common.schema.json#/$defs/Chip" },
+        "price_line": { "type": "string" }
+      }
+    },
+    "BeforeBooking": {
+      "title": "BeforeBooking",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["payment_plans", "loans", "nri", "selling_before_possession"],
+      "properties": {
+        "payment_plans": { "anyOf": [{ "$ref": "#/$defs/BookingTopic" }, { "type": "null" }] },
+        "loans": { "$ref": "#/$defs/BookingTopic" },
+        "nri": { "anyOf": [{ "$ref": "#/$defs/BookingTopic" }, { "type": "null" }] },
+        "selling_before_possession": {
+          "anyOf": [{ "$ref": "#/$defs/BookingTopic" }, { "type": "null" }]
+        }
+      }
+    },
+    "BookingTopic": {
+      "title": "BookingTopic",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["line"],
+      "properties": {
+        "line": { "type": "string" },
+        "points": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "EvidenceSummary": {
+      "title": "EvidenceSummary",
+      "description": "One row of the Records section; evidence_url opens the evidence drawer (api.evidence).",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["fact_id", "label", "lane", "line", "evidence_url"],
+      "properties": {
+        "fact_id": { "$ref": "common.schema.json#/$defs/FactId" },
+        "group": { "type": "string", "examples": ["QPR filings"] },
+        "label": { "type": "string" },
+        "lane": { "$ref": "common.schema.json#/$defs/Lane" },
+        "line": { "type": "string" },
+        "as_of": { "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }] },
+        "evidence_url": { "type": "string" }
+      }
+    }
+  }
+}

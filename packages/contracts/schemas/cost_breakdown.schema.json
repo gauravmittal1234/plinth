@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/cost_breakdown.schema.json",
+  "title": "CostBreakdown",
+  "description": "plinth.cost_breakdown/1, from api.cost_breakdown(p_slug, p_unit, p_buyer, p_waive) (API_CONTRACTS §4.13). Charges and all-in are totals, never lines.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "rules_version",
+    "basis_line",
+    "lines",
+    "charges_total_label",
+    "all_in_inr",
+    "all_in_label",
+    "per_sqft_carpet_label",
+    "vs_quoted_line",
+    "negotiable_line",
+    "move_in_line"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.cost_breakdown/1" },
+    "rules_version": { "type": "string", "pattern": "^\\d{4}\\.\\d{2}$", "examples": ["2026.10"] },
+    "basis_line": { "type": "string" },
+    "lines": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/CostLine" } },
+    "charges_total_label": { "type": "string" },
+    "all_in_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+    "all_in_label": { "type": "string" },
+    "per_sqft_carpet_label": { "type": ["string", "null"] },
+    "vs_quoted_line": { "type": ["string", "null"] },
+    "negotiable_line": { "type": ["string", "null"] },
+    "move_in_line": { "type": ["string", "null"] },
+    "waived": {
+      "description": "Line codes the caller asked to waive (p_waive), echoed back.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "waived_line": { "type": ["string", "null"], "examples": ["₹4.9 L less"] }
+  },
+  "$defs": {
+    "CostLine": {
+      "title": "CostLine",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "label", "amount_inr", "amount_label", "tag"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "examples": ["base", "plc", "club", "parking", "ifms", "gst", "stamp_registration"]
+        },
+        "label": { "type": "string" },
+        "amount_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "amount_label": { "type": "string" },
+        "tag": { "anyOf": [{ "$ref": "#/$defs/CostTag" }, { "type": "null" }] }
+      }
+    },
+    "CostTag": {
+      "title": "CostTag",
+      "type": "string",
+      "enum": ["often_negotiable", "set_by_law", "included_in_base", "refundable_deposit"]
+    },
+    "BuyerKind": {
+      "title": "BuyerKind",
+      "description": "Sets the Haryana stamp duty rate (core.cost_rule_sets).",
+      "type": "string",
+      "enum": ["male", "female", "joint"]
+    },
+    "CostBreakdownRequest": {
+      "title": "CostBreakdownRequest",
+      "description": "Arguments of api.cost_breakdown.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p_slug", "p_unit"],
+      "properties": {
+        "p_slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "p_unit": { "type": "string", "minLength": 1, "examples": ["3 BHK"] },
+        "p_buyer": { "$ref": "#/$defs/BuyerKind" },
+        "p_waive": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }
+        }
+      }
+    }
+  }
+}

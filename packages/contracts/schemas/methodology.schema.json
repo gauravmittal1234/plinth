@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/methodology.schema.json",
+  "title": "Methodology",
+  "description": "plinth.methodology/1, from api.methodology() (API_CONTRACTS §3.1): model versions, factor weights, red-flag rules, the calibration table and the changelog. Only published models and runs.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "current_version",
+    "models",
+    "factors",
+    "red_flag_rules",
+    "calibration",
+    "changelog",
+    "meta"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.methodology/1" },
+    "current_version": { "$ref": "common.schema.json#/$defs/ModelVersion" },
+    "models": { "type": "array", "items": { "$ref": "#/$defs/ScoreModel" } },
+    "factors": { "type": "array", "items": { "$ref": "#/$defs/FactorWeight" } },
+    "red_flag_rules": { "type": "array", "items": { "$ref": "#/$defs/RedFlagRule" } },
+    "calibration": { "$ref": "#/$defs/Calibration" },
+    "changelog": { "type": "array", "items": { "$ref": "#/$defs/ChangelogEntry" } },
+    "meta": { "$ref": "common.schema.json#/$defs/PageMeta" }
+  },
+  "$defs": {
+    "ScoreModel": {
+      "title": "ScoreModel",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["version", "released_on", "status"],
+      "properties": {
+        "version": { "$ref": "common.schema.json#/$defs/ModelVersion" },
+        "released_on": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        },
+        "status": { "type": "string", "examples": ["current", "retired"] },
+        "summary_line": { "type": ["string", "null"] }
+      }
+    },
+    "FactorWeight": {
+      "title": "FactorWeight",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["factor", "label", "weight_pct"],
+      "properties": {
+        "factor": { "$ref": "common.schema.json#/$defs/Factor" },
+        "label": { "type": "string" },
+        "weight_pct": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "RedFlagRule": {
+      "title": "RedFlagRule",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["code", "text", "published_on"],
+      "properties": {
+        "code": { "type": "string", "pattern": "^RF\\d+_[A-Z0-9_]+$" },
+        "text": { "type": "string" },
+        "published_on": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        }
+      }
+    },
+    "Calibration": {
+      "title": "Calibration",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["model_version", "illustrative", "base_rate_line", "rows"],
+      "properties": {
+        "model_version": { "$ref": "common.schema.json#/$defs/ModelVersion" },
+        "illustrative": { "type": "boolean" },
+        "base_rate_line": { "type": ["string", "null"] },
+        "rows": { "type": "array", "items": { "$ref": "#/$defs/CalibrationRow" } }
+      }
+    },
+    "CalibrationRow": {
+      "title": "CalibrationRow",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["band", "frequency_line", "range_low", "range_high", "n_projects", "n_late"],
+      "properties": {
+        "band": { "$ref": "common.schema.json#/$defs/BandCode" },
+        "frequency_line": { "type": ["string", "null"] },
+        "range_low": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+        "range_high": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+        "n_projects": { "type": ["integer", "null"], "minimum": 0 },
+        "n_late": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "ChangelogEntry": {
+      "title": "ChangelogEntry",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["version", "published_on", "summary"],
+      "properties": {
+        "version": { "$ref": "common.schema.json#/$defs/ModelVersion" },
+        "published_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "summary": { "type": "string" },
+        "minutes_url": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

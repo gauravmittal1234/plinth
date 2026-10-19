@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-watching.json",
+  "why": "follow_type is watching or booked.",
+  "expect": "/follow_type",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/follow_type",
+      "value": "bought"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "Months are YYYY-MM.",
+  "expect": "/late12/late_after",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/late12/late_after",
+      "value": "Apr 2029"
+    }
+  ]
+}

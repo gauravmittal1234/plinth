@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/who_has_my_number.schema.json",
+  "title": "WhoHasMyNumber",
+  "description": "plinth.who_has_my_number/1, from api.who_has_my_number() (API_CONTRACTS §4.10). Identical on web and app. A relay doesn't count toward the cap; family members are not parties.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "count_line", "rule_line", "parties", "relays", "ended", "family_line"],
+  "properties": {
+    "schema": { "const": "plinth.who_has_my_number/1" },
+    "count_line": { "type": "string" },
+    "rule_line": { "type": "string" },
+    "parties": {
+      "description": "Active parties holding the number. At most 3 in any rolling 30 days.",
+      "type": "array",
+      "maxItems": 3,
+      "items": { "$ref": "#/$defs/ContactParty" }
+    },
+    "relays": { "type": "array", "items": { "$ref": "#/$defs/RelayParty" } },
+    "ended": { "type": "array", "items": { "$ref": "#/$defs/EndedParty" } },
+    "family_line": { "type": "string" }
+  },
+  "$defs": {
+    "ContactParty": {
+      "title": "ContactParty",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ref",
+        "party",
+        "detail",
+        "shared_on",
+        "access_until",
+        "pays_line",
+        "number_shared",
+        "status"
+      ],
+      "properties": {
+        "ref": { "$ref": "common.schema.json#/$defs/ConsentRef" },
+        "party": { "type": "string" },
+        "detail": { "type": "string" },
+        "shared_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "access_until": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        },
+        "pays_line": { "type": "string" },
+        "number_shared": { "type": "boolean" },
+        "status": { "$ref": "#/$defs/ContactStatus" }
+      }
+    },
+    "ContactStatus": {
+      "title": "ContactStatus",
+      "type": "string",
+      "enum": ["active", "ended", "withdrawn"]
+    },
+    "RelayParty": {
+      "title": "RelayParty",
+      "description": "Gets a first name and a WhatsApp text relay, not the number.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "party", "line", "counts_toward_cap"],
+      "properties": {
+        "ref": { "$ref": "common.schema.json#/$defs/ConsentRef" },
+        "party": { "type": "string" },
+        "line": { "type": "string" },
+        "counts_toward_cap": { "type": "boolean" }
+      }
+    },
+    "EndedParty": {
+      "title": "EndedParty",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "party", "detail", "ended_on"],
+      "properties": {
+        "ref": { "$ref": "common.schema.json#/$defs/ConsentRef" },
+        "party": { "type": "string" },
+        "detail": { "type": "string" },
+        "ended_on": { "$ref": "common.schema.json#/$defs/IsoDate" }
+      }
+    },
+    "ConsentWithdrawal": {
+      "title": "ConsentWithdrawal",
+      "description": "Result of api.consent_withdraw(p_ref). An acknowledgement, so no schema envelope (as Ok).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "withdrawn_at", "effects"],
+      "properties": {
+        "ref": { "$ref": "common.schema.json#/$defs/ConsentRef" },
+        "withdrawn_at": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "effects": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

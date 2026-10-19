@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-defaults-12-months.json",
+  "why": "Series months are YYYY-MM.",
+  "expect": "/series/0/month",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/series/0/month",
+      "value": "Nov 2026"
+    }
+  ]
+}

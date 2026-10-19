@@ -1,0 +1,17 @@
+{
+  "schema": "plinth.search_results/1",
+  "parsed": {
+    "bhk": [4],
+    "corridors": ["dwarka-expressway"],
+    "bands": ["low"]
+  },
+  "notes": [],
+  "sort_line": "Sorted by lowest delivery risk. Order never follows money.",
+  "items": [],
+  "hidden_count": 1,
+  "next_cursor": null,
+  "zero_results": {
+    "line": "Aurelia is the only Dwarka Expressway project here with a 4 BHK",
+    "hints": []
+  }
+}

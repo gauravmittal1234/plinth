@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/follow.schema.json",
+  "title": "Follow",
+  "description": "plinth.follow/1, from api.follow and api.set_follow_type (API_CONTRACTS §4.7). follow_type is never visible to the family circle.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "slug", "follow_type", "followed_at", "alerts_line", "private_line"],
+  "properties": {
+    "schema": { "const": "plinth.follow/1" },
+    "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+    "follow_type": { "$ref": "common.schema.json#/$defs/FollowType" },
+    "followed_at": { "$ref": "common.schema.json#/$defs/Timestamp" },
+    "alerts_line": { "type": "string" },
+    "private_line": { "type": "string" },
+    "links": {
+      "description": "For booked: Pay-as-built and \"What a booked buyer can do\".",
+      "type": "array",
+      "items": { "$ref": "#/$defs/FollowLink" }
+    }
+  },
+  "$defs": {
+    "FollowLink": {
+      "title": "FollowLink",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "href"],
+      "properties": {
+        "label": { "type": "string" },
+        "href": { "type": "string" }
+      }
+    },
+    "FollowSource": {
+      "title": "FollowSource",
+      "description": "app.follows.source.",
+      "type": "string",
+      "enum": ["web", "app", "whatsapp", "family"]
+    },
+    "FollowRequest": {
+      "title": "FollowRequest",
+      "description": "Arguments of api.follow. Idempotent on p_client_id.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p_slug", "p_follow_type", "p_source", "p_client_id"],
+      "properties": {
+        "p_slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "p_follow_type": { "$ref": "common.schema.json#/$defs/FollowType" },
+        "p_source": { "$ref": "#/$defs/FollowSource" },
+        "p_client_id": { "$ref": "common.schema.json#/$defs/Uuid" }
+      }
+    }
+  }
+}

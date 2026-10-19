@@ -1,0 +1,17 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "withheld is set only in the facts-only state.",
+  "expect": "/withheld",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/withheld",
+      "value": {
+        "since": "2026-10-18",
+        "line": "Band withheld pending review, from 18 Oct 2026",
+        "explainer_line": "We're not showing a band for this project while a court considers an application about our bands for the Northfield Estates group.",
+        "explainer_url": "#facts-only"
+      }
+    }
+  ]
+}

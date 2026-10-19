@@ -1,0 +1,12 @@
+{
+  "base": "rohan.json",
+  "why": "Consent references are always C-MMDD-NN.",
+  "expect": "/parties/0/ref",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/parties/0/ref",
+      "value": "PLN-C-261017-0623"
+    }
+  ]
+}

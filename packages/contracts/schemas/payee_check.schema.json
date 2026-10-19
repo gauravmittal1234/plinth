@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/payee_check.schema.json",
+  "title": "PayeeCheck",
+  "description": "plinth.payee_check/1, from api.before_you_pay_check(...) (API_CONTRACTS §4.14, F-94). The account number is hashed and never stored. Plinth never takes, holds or moves money.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "payee", "cap", "method", "never_line"],
+  "properties": {
+    "schema": { "const": "plinth.payee_check/1" },
+    "payee": { "$ref": "#/$defs/PayeeResult" },
+    "cap": { "anyOf": [{ "$ref": "#/$defs/PaymentCap" }, { "type": "null" }] },
+    "method": { "$ref": "#/$defs/PaymentMethodCheck" },
+    "never_line": { "type": "string" }
+  },
+  "$defs": {
+    "PayeeResult": {
+      "title": "PayeeResult",
+      "description": "The entered payee against the RERA collection account on record.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["matched", "of", "verdict", "verdict_line", "rows", "advice"],
+      "properties": {
+        "matched": { "type": "integer", "minimum": 0 },
+        "of": { "type": "integer", "minimum": 1 },
+        "verdict": { "$ref": "common.schema.json#/$defs/Verdict" },
+        "verdict_line": { "type": "string" },
+        "rows": { "type": "array", "items": { "$ref": "#/$defs/PayeeRow" } },
+        "advice": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "PayeeRow": {
+      "title": "PayeeRow",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "entered_line", "registered_line", "result"],
+      "properties": {
+        "field": { "$ref": "#/$defs/PayeeField" },
+        "entered_line": { "type": "string" },
+        "registered_line": { "type": "string" },
+        "result": { "$ref": "common.schema.json#/$defs/Verdict" }
+      }
+    },
+    "PayeeField": {
+      "title": "PayeeField",
+      "type": "string",
+      "enum": ["payee_name", "account", "ifsc"]
+    },
+    "PaymentCap": {
+      "title": "PaymentCap",
+      "description": "RERA s.13: at most 10% of the cost before a registered agreement.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["limit_inr", "limit_label", "basis_line", "within", "line"],
+      "properties": {
+        "limit_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "limit_label": { "type": "string" },
+        "basis_line": { "type": "string" },
+        "within": { "type": "boolean" },
+        "line": { "type": "string" }
+      }
+    },
+    "PaymentMethodCheck": {
+      "title": "PaymentMethodCheck",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ok", "line"],
+      "properties": {
+        "ok": { "type": "boolean" },
+        "line": { "type": ["string", "null"] }
+      }
+    },
+    "AgreementStage": {
+      "title": "AgreementStage",
+      "type": "string",
+      "enum": ["before_agreement", "after_agreement"]
+    },
+    "PaymentMethod": {
+      "title": "PaymentMethod",
+      "type": "string",
+      "enum": ["transfer", "cheque", "cash"]
+    },
+    "PayeeCheckRequest": {
+      "title": "PayeeCheckRequest",
+      "description": "Arguments of api.before_you_pay_check (POST only; rate-limited).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "p_slug",
+        "p_payee_name",
+        "p_account_number",
+        "p_ifsc",
+        "p_amount_inr",
+        "p_stage",
+        "p_paid_so_far_inr",
+        "p_method"
+      ],
+      "properties": {
+        "p_slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "p_payee_name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "p_account_number": { "type": "string", "pattern": "^\\d{6,20}$" },
+        "p_ifsc": { "type": "string", "pattern": "^[A-Z]{4}0[A-Z0-9]{6}$" },
+        "p_amount_inr": { "type": "integer", "minimum": 0 },
+        "p_stage": { "$ref": "#/$defs/AgreementStage" },
+        "p_paid_so_far_inr": { "type": "integer", "minimum": 0 },
+        "p_method": { "$ref": "#/$defs/PaymentMethod" }
+      }
+    }
+  }
+}

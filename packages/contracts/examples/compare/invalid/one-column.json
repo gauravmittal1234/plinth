@@ -1,0 +1,15 @@
+{
+  "base": "aurelia-kestrel-sapphire.json",
+  "why": "Compare takes 2–4 phases.",
+  "expect": "/columns",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/columns/2"
+    },
+    {
+      "op": "remove",
+      "path": "/columns/1"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "p_prefs": {
+    "push": {
+      "band_change": "instant",
+      "filings": "instant"
+    },
+    "whatsapp": {
+      "band_change": "instant",
+      "digest": "weekly_sun_9am"
+    },
+    "quiet_hours": {
+      "from": "21:00",
+      "to": "08:00"
+    }
+  },
+  "p_client_id": "6f0e2c1a-0000-4000-8000-000000000002"
+}
