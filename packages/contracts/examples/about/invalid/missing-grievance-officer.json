@@ -5,7 +5,7 @@
   "patch": [
     {
       "op": "remove",
-      "path": "/grievance_officer"
+      "path": "/grievance"
     }
   ]
 }

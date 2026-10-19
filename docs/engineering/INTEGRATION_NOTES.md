@@ -35,3 +35,20 @@ Kept by the lead. Handoffs that cross task boundaries, collected from the wave-1
   - T16: swap the placeholder types for `@plinth/contracts` and implement `call()`. Production must refuse an unset `PLINTH_DATA`.
   - T14: needs a `@source` line for `web-ui` in `globals.css`.
 - **Compare route:** `/compare/[pair]`, not `[a]-vs-[b]`.
+
+## Done at the T07 gate (PR #10, 19 Oct 2026)
+Every item above under "From T05" is done, and `supabase/seed` is the real §5b seed. Status per item is in the PR body.
+
+**Contracts ↔ fixtures (T02 ↔ T03).** T02's schemas and T03's expected outputs met for the first time here: 37 of 39 payloads failed validation. The rule used: the schema stays the source of truth in code (API_CONTRACTS header), and it is widened only to describe what §5b and the artboards already put in the fixtures. Additions are optional, so older examples stay valid. T12 builds the RPCs to these shapes; T16, T17 and the page tasks read them.
+- **Fixtures changed (generator `packages/fixtures/src/author/expected.mjs`):** `flags` uses T04's envelope `{schema, flags}`; `PreReraItem` is `{name, line, sources[]}`; `how_buyers_find_you` is `{rules[]}`; methodology factors use `factor`, not `code`; about and methodology `meta` carry `data_as_of`.
+- **Schemas widened (optional fields):**
+  - search results: `query`, `legend_line`, `hidden[]` (HiddenProject), `meta`; ProjectCard `chip_note`, `progress_line`, `built_pct`, `time_used_pct`, `config_line`; SearchFilters `name`, `place`;
+  - compare: column `locality_line`, `developer_name`, `price_line`, `image_url`; row `source_line`, `developer_says[]`; `meta`;
+  - evidence: `fact_id`;
+  - developer page: `summary_line`, `facts_only` (FactsOnlyNotice), `claim_explainer_line`; ongoing `state`, `price_line`, `progress_line`;
+  - cost breakdown: `edc_idc_line`, `area_line`;
+  - afford the wait: `inputs`, `loan`, `delay_options[]`, series `paid_out_pct`;
+  - common: `BaseRate`.
+- **Schemas relaxed (nullable):** `phase.short_code` (only Aurelia has one), `latest_qpr.age_days` (filing date unknown), `group.linked_companies`, `track_record.finished/late/line` (no finished RERA project), `insolvency_line`, `progress.towers`, `from_developer`, configuration lanes. `what_would_change` is null only when bands are not public: limited-history and not-scored phases keep their §5b line.
+- **Schemas reshaped to the fixture (M1 pages, no live consumer yet):** `about` and `methodology` follow the WebAbout and WebMethodology payloads; project page `NextStep {heading, body}`, `BookingTopic {title, sub, paras[]}`, `EvidenceSummary.chip`, `PriceList.published_on`, `rooms[]` and `getting_around.items[]` as finished lines, `ReportedIncident {reported_on, line}`.
+- **Examples:** the about, methodology and project-page valid examples are now the fixture payloads; the §2.1 RiskSummary example is unchanged apart from the round-2 signatory.

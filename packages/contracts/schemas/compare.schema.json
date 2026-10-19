@@ -15,7 +15,8 @@
       "items": { "$ref": "#/$defs/CompareColumn" }
     },
     "rows": { "type": "array", "items": { "$ref": "#/$defs/CompareRow" } },
-    "notes": { "type": "array", "items": { "type": "string" } }
+    "notes": { "type": "array", "items": { "type": "string" } },
+    "meta": { "$ref": "common.schema.json#/$defs/PageMeta" }
   },
   "$defs": {
     "CompareColumn": {
@@ -27,7 +28,14 @@
         "slug": { "$ref": "common.schema.json#/$defs/Slug" },
         "name": { "type": "string" },
         "chip": { "$ref": "common.schema.json#/$defs/Chip" },
-        "state": { "$ref": "common.schema.json#/$defs/DisplayState" }
+        "state": { "$ref": "common.schema.json#/$defs/DisplayState" },
+        "locality_line": { "type": ["string", "null"] },
+        "developer_name": { "type": ["string", "null"] },
+        "price_line": {
+          "description": "All-in first, as on a ProjectCard.",
+          "type": ["string", "null"]
+        },
+        "image_url": { "type": ["string", "null"] }
       }
     },
     "CompareRow": {
@@ -38,7 +46,18 @@
       "properties": {
         "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
         "label": { "type": "string" },
+        "source_line": {
+          "description": "Where the row's facts come from (\"HARERA orders · to 14 Oct 2026\").",
+          "type": ["string", "null"]
+        },
         "cells": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": { "type": ["string", "null"] }
+        },
+        "developer_says": {
+          "description": "Per column, the developer's own line (its own lane), or null. Lines up with cells.",
           "type": "array",
           "minItems": 2,
           "maxItems": 4,

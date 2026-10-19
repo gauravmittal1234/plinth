@@ -23,13 +23,28 @@
     "track_record": { "$ref": "#/$defs/TrackRecord" },
     "ongoing": { "type": "array", "items": { "$ref": "#/$defs/OngoingPhase" } },
     "complaints": { "anyOf": [{ "$ref": "#/$defs/GroupComplaints" }, { "type": "null" }] },
-    "insolvency_line": { "type": "string" },
+    "insolvency_line": {
+      "description": "Null when the group has no insolvency event on record and §5b gives no checked line.",
+      "type": ["string", "null"]
+    },
     "pre_rera": { "anyOf": [{ "$ref": "common.schema.json#/$defs/PreRera" }, { "type": "null" }] },
     "reply": { "anyOf": [{ "$ref": "#/$defs/DeveloperPageReply" }, { "type": "null" }] },
     "how_buyers_find_you": {
       "anyOf": [{ "$ref": "#/$defs/HowBuyersFindYou" }, { "type": "null" }]
     },
-    "meta": { "$ref": "common.schema.json#/$defs/PageMeta" }
+    "meta": { "$ref": "common.schema.json#/$defs/PageMeta" },
+    "summary_line": {
+      "description": "The page's one-line summary under the group name, or null.",
+      "type": ["string", "null"]
+    },
+    "facts_only": {
+      "description": "The facts-only notice (mode = facts_only), else null.",
+      "anyOf": [{ "$ref": "#/$defs/FactsOnlyNotice" }, { "type": "null" }]
+    },
+    "claim_explainer_line": {
+      "description": "What claiming a page does (and never does).",
+      "type": ["string", "null"]
+    }
   },
   "$defs": {
     "DeveloperGroup": {
@@ -40,7 +55,11 @@
       "properties": {
         "slug": { "$ref": "common.schema.json#/$defs/Slug" },
         "name": { "type": "string" },
-        "linked_companies": { "type": "integer", "minimum": 0 },
+        "linked_companies": {
+          "description": "Companies linked to the group, or null when §5b gives no count.",
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
         "claim": { "$ref": "#/$defs/GroupClaim" },
         "mode": { "$ref": "#/$defs/DeveloperPageMode" },
         "facts_only_line": { "type": ["string", "null"] }
@@ -67,11 +86,12 @@
       "title": "TrackRecord",
       "type": "object",
       "additionalProperties": true,
+      "description": "Null counts and line when the group has no finished RERA project yet.",
       "required": ["finished", "late", "line", "projects"],
       "properties": {
-        "finished": { "type": "integer", "minimum": 0 },
-        "late": { "type": "integer", "minimum": 0 },
-        "line": { "type": "string" },
+        "finished": { "type": ["integer", "null"], "minimum": 0 },
+        "late": { "type": ["integer", "null"], "minimum": 0 },
+        "line": { "type": ["string", "null"] },
         "projects": { "type": "array", "items": { "$ref": "#/$defs/TrackRecordProject" } }
       }
     },
@@ -99,7 +119,23 @@
       "properties": {
         "slug": { "$ref": "common.schema.json#/$defs/Slug" },
         "name": { "type": "string" },
-        "chip": { "$ref": "common.schema.json#/$defs/Chip" }
+        "chip": { "$ref": "common.schema.json#/$defs/Chip" },
+        "state": { "$ref": "common.schema.json#/$defs/DisplayState" },
+        "price_line": { "type": ["string", "null"] },
+        "progress_line": { "type": ["string", "null"] }
+      }
+    },
+    "FactsOnlyNotice": {
+      "title": "FactsOnlyNotice",
+      "description": "Why a group's bands are withheld, from when, and what still shows.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["since", "line", "explainer_lines"],
+      "properties": {
+        "since": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "line": { "type": "string" },
+        "anchor": { "type": ["string", "null"], "examples": ["facts-only"] },
+        "explainer_lines": { "type": "array", "items": { "type": "string" } }
       }
     },
     "GroupComplaints": {

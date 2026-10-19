@@ -191,56 +191,165 @@ WhoHasMyNumber whoHasMyNumberFromJson(String str) => WhoHasMyNumber.fromJson(jso
 
 String whoHasMyNumberToJson(WhoHasMyNumber data) => json.encode(data.toJson());
 
-///plinth.about/1, from api.about() (API_CONTRACTS §3.1): coverage today and next, the
-///response-time board, the holdings register and the grievance officer. Placeholders until
-///the founder supplies real values.
+///plinth.about/1, from api.about() (API_CONTRACTS §3.1; the WebAbout page): who runs Plinth
+///(the company register), the illustrative calibration table, how we make money, the
+///response-time board, the grievance officer and coverage today and next. Founder details
+///are placeholders until supplied.
 class About {
-    final String? baseRateLine;
+    final AboutCalibration calibration;
     final Coverage coverage;
-    final GrievanceOfficer grievanceOfficer;
-    final List<HoldingsDeclaration> holdings;
-    final List<LaterFeature>? later;
+    final GrievanceOfficer grievance;
+    final AboutIdentity identity;
     final PageMeta meta;
+    final AboutMoney money;
     final List<ResponseTime> responseTimes;
     final String schema;
 
     About({
-        this.baseRateLine,
+        required this.calibration,
         required this.coverage,
-        required this.grievanceOfficer,
-        required this.holdings,
-        this.later,
+        required this.grievance,
+        required this.identity,
         required this.meta,
+        required this.money,
         required this.responseTimes,
         required this.schema,
     });
 
     factory About.fromJson(Map<String, dynamic> json) => About(
-        baseRateLine: json["base_rate_line"],
+        calibration: AboutCalibration.fromJson(json["calibration"]),
         coverage: Coverage.fromJson(json["coverage"]),
-        grievanceOfficer: GrievanceOfficer.fromJson(json["grievance_officer"]),
-        holdings: List<HoldingsDeclaration>.from(json["holdings"].map((x) => HoldingsDeclaration.fromJson(x))),
-        later: json["later"] == null ? null : List<LaterFeature>.from(json["later"]!.map((x) => LaterFeature.fromJson(x))),
+        grievance: GrievanceOfficer.fromJson(json["grievance"]),
+        identity: AboutIdentity.fromJson(json["identity"]),
         meta: PageMeta.fromJson(json["meta"]),
+        money: AboutMoney.fromJson(json["money"]),
         responseTimes: List<ResponseTime>.from(json["response_times"].map((x) => ResponseTime.fromJson(x))),
         schema: json["schema"],
     );
 
     Map<String, dynamic> toJson() => {
-        "base_rate_line": baseRateLine,
+        "calibration": calibration.toJson(),
         "coverage": coverage.toJson(),
-        "grievance_officer": grievanceOfficer.toJson(),
-        "holdings": List<dynamic>.from(holdings.map((x) => x.toJson())),
-        "later": later == null ? null : List<dynamic>.from(later!.map((x) => x.toJson())),
+        "grievance": grievance.toJson(),
+        "identity": identity.toJson(),
         "meta": meta.toJson(),
+        "money": money.toJson(),
         "response_times": List<dynamic>.from(responseTimes.map((x) => x.toJson())),
         "schema": schema,
     };
 }
 
+///What we said against what happened, per band (illustrative until the first backtest is
+///published).
+class AboutCalibration {
+    final BaseRate baseRate;
+    final String? brierLine;
+    final String? firstPublicBandsOn;
+    final String? pill;
+    final List<AboutCalibrationRow> rows;
+
+    AboutCalibration({
+        required this.baseRate,
+        required this.brierLine,
+        this.firstPublicBandsOn,
+        required this.pill,
+        required this.rows,
+    });
+
+    factory AboutCalibration.fromJson(Map<String, dynamic> json) => AboutCalibration(
+        baseRate: BaseRate.fromJson(json["base_rate"]),
+        brierLine: json["brier_line"],
+        firstPublicBandsOn: json["first_public_bands_on"],
+        pill: json["pill"],
+        rows: List<AboutCalibrationRow>.from(json["rows"].map((x) => AboutCalibrationRow.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "base_rate": baseRate.toJson(),
+        "brier_line": brierLine,
+        "first_public_bands_on": firstPublicBandsOn,
+        "pill": pill,
+        "rows": List<dynamic>.from(rows.map((x) => x.toJson())),
+    };
+}
+
+///How many past Gurugram projects got their OC more than 12 months late (the calibration
+///base rate).
+class BaseRate {
+    final String? line;
+    final int nLate;
+    final int nProjects;
+    final int per100;
+
+    BaseRate({
+        this.line,
+        required this.nLate,
+        required this.nProjects,
+        required this.per100,
+    });
+
+    factory BaseRate.fromJson(Map<String, dynamic> json) => BaseRate(
+        line: json["line"],
+        nLate: json["n_late"],
+        nProjects: json["n_projects"],
+        per100: json["per_100"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "line": line,
+        "n_late": nLate,
+        "n_projects": nProjects,
+        "per_100": per100,
+    };
+}
+
+class AboutCalibrationRow {
+    final String band;
+    final bool insideRange;
+    final String label;
+    final int nLate;
+    final int nProjects;
+    final int per100;
+    final int saidHigh;
+    final int saidLow;
+
+    AboutCalibrationRow({
+        required this.band,
+        required this.insideRange,
+        required this.label,
+        required this.nLate,
+        required this.nProjects,
+        required this.per100,
+        required this.saidHigh,
+        required this.saidLow,
+    });
+
+    factory AboutCalibrationRow.fromJson(Map<String, dynamic> json) => AboutCalibrationRow(
+        band: json["band"],
+        insideRange: json["inside_range"],
+        label: json["label"],
+        nLate: json["n_late"],
+        nProjects: json["n_projects"],
+        per100: json["per_100"],
+        saidHigh: json["said_high"],
+        saidLow: json["said_low"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "band": band,
+        "inside_range": insideRange,
+        "label": label,
+        "n_late": nLate,
+        "n_projects": nProjects,
+        "per_100": per100,
+        "said_high": saidHigh,
+        "said_low": saidLow,
+    };
+}
+
 class Coverage {
-    final List<CoverageArea> next;
-    final List<CoverageArea> today;
+    final List<CoverageNext> next;
+    final CoverageToday today;
 
     Coverage({
         required this.next,
@@ -248,105 +357,130 @@ class Coverage {
     });
 
     factory Coverage.fromJson(Map<String, dynamic> json) => Coverage(
-        next: List<CoverageArea>.from(json["next"].map((x) => CoverageArea.fromJson(x))),
-        today: List<CoverageArea>.from(json["today"].map((x) => CoverageArea.fromJson(x))),
+        next: List<CoverageNext>.from(json["next"].map((x) => CoverageNext.fromJson(x))),
+        today: CoverageToday.fromJson(json["today"]),
     );
 
     Map<String, dynamic> toJson() => {
         "next": List<dynamic>.from(next.map((x) => x.toJson())),
-        "today": List<dynamic>.from(today.map((x) => x.toJson())),
+        "today": today.toJson(),
     };
 }
 
-class CoverageArea {
-    final String line;
+class CoverageNext {
     final String name;
+    
+    ///True when a buyer can ask to hear when it arrives.
+    final bool notify;
+    final String whenLine;
 
-    CoverageArea({
-        required this.line,
+    CoverageNext({
         required this.name,
+        required this.notify,
+        required this.whenLine,
     });
 
-    factory CoverageArea.fromJson(Map<String, dynamic> json) => CoverageArea(
-        line: json["line"],
+    factory CoverageNext.fromJson(Map<String, dynamic> json) => CoverageNext(
         name: json["name"],
+        notify: json["notify"],
+        whenLine: json["when_line"],
     );
 
     Map<String, dynamic> toJson() => {
-        "line": line,
         "name": name,
+        "notify": notify,
+        "when_line": whenLine,
     };
 }
 
+class CoverageToday {
+    final List<String> items;
+    final String line;
+
+    CoverageToday({
+        required this.items,
+        required this.line,
+    });
+
+    factory CoverageToday.fromJson(Map<String, dynamic> json) => CoverageToday(
+        items: List<String>.from(json["items"].map((x) => x)),
+        line: json["line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "items": List<dynamic>.from(items.map((x) => x)),
+        "line": line,
+    };
+}
+
+///Always listed; placeholders until the founder supplies them.
 class GrievanceOfficer {
-    final String? contactLine;
-    final String? name;
-    final bool placeholder;
+    final String contact;
+    final String line;
+    final String officer;
 
     GrievanceOfficer({
-        required this.contactLine,
-        required this.name,
-        required this.placeholder,
+        required this.contact,
+        required this.line,
+        required this.officer,
     });
 
     factory GrievanceOfficer.fromJson(Map<String, dynamic> json) => GrievanceOfficer(
-        contactLine: json["contact_line"],
-        name: json["name"],
-        placeholder: json["placeholder"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "contact_line": contactLine,
-        "name": name,
-        "placeholder": placeholder,
-    };
-}
-
-class HoldingsDeclaration {
-    final String? declaredOn;
-    final String? holdingsLine;
-    final String personRole;
-    final bool placeholder;
-
-    HoldingsDeclaration({
-        required this.declaredOn,
-        required this.holdingsLine,
-        required this.personRole,
-        required this.placeholder,
-    });
-
-    factory HoldingsDeclaration.fromJson(Map<String, dynamic> json) => HoldingsDeclaration(
-        declaredOn: json["declared_on"],
-        holdingsLine: json["holdings_line"],
-        personRole: json["person_role"],
-        placeholder: json["placeholder"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "declared_on": declaredOn,
-        "holdings_line": holdingsLine,
-        "person_role": personRole,
-        "placeholder": placeholder,
-    };
-}
-
-class LaterFeature {
-    final String line;
-    final String name;
-
-    LaterFeature({
-        required this.line,
-        required this.name,
-    });
-
-    factory LaterFeature.fromJson(Map<String, dynamic> json) => LaterFeature(
+        contact: json["contact"],
         line: json["line"],
-        name: json["name"],
+        officer: json["officer"],
     );
 
     Map<String, dynamic> toJson() => {
+        "contact": contact,
         "line": line,
-        "name": name,
+        "officer": officer,
+    };
+}
+
+///The company register, including who funds us (the holdings line). Placeholders until the
+///founder supplies them.
+class AboutIdentity {
+    final String? photoLine;
+    final String? placeholderNote;
+    final List<RegisterRow> register;
+
+    AboutIdentity({
+        this.photoLine,
+        required this.placeholderNote,
+        required this.register,
+    });
+
+    factory AboutIdentity.fromJson(Map<String, dynamic> json) => AboutIdentity(
+        photoLine: json["photo_line"],
+        placeholderNote: json["placeholder_note"],
+        register: List<RegisterRow>.from(json["register"].map((x) => RegisterRow.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "photo_line": photoLine,
+        "placeholder_note": placeholderNote,
+        "register": List<dynamic>.from(register.map((x) => x.toJson())),
+    };
+}
+
+class RegisterRow {
+    final String label;
+    final String value;
+
+    RegisterRow({
+        required this.label,
+        required this.value,
+    });
+
+    factory RegisterRow.fromJson(Map<String, dynamic> json) => RegisterRow(
+        label: json["label"],
+        value: json["value"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "label": label,
+        "value": value,
     };
 }
 
@@ -392,31 +526,56 @@ class PageMeta {
     };
 }
 
+class AboutMoney {
+    final List<String> lines;
+    final String neverLine;
+
+    AboutMoney({
+        required this.lines,
+        required this.neverLine,
+    });
+
+    factory AboutMoney.fromJson(Map<String, dynamic> json) => AboutMoney(
+        lines: List<String>.from(json["lines"].map((x) => x)),
+        neverLine: json["never_line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "lines": List<dynamic>.from(lines.map((x) => x)),
+        "never_line": neverLine,
+    };
+}
+
+///One row of the response-time board.
 class ResponseTime {
+    
+    ///How we actually did, once there is a track record.
     final String? actualLine;
-    final String key;
-    final String label;
-    final String slaLine;
+    final String promiseLine;
+    
+    ///The reference prefix this kind of request gets (E-, CL-, G-), or null.
+    final String? refPrefix;
+    final String what;
 
     ResponseTime({
-        required this.actualLine,
-        required this.key,
-        required this.label,
-        required this.slaLine,
+        this.actualLine,
+        required this.promiseLine,
+        required this.refPrefix,
+        required this.what,
     });
 
     factory ResponseTime.fromJson(Map<String, dynamic> json) => ResponseTime(
         actualLine: json["actual_line"],
-        key: json["key"],
-        label: json["label"],
-        slaLine: json["sla_line"],
+        promiseLine: json["promise_line"],
+        refPrefix: json["ref_prefix"],
+        what: json["what"],
     );
 
     Map<String, dynamic> toJson() => {
         "actual_line": actualLine,
-        "key": key,
-        "label": label,
-        "sla_line": slaLine,
+        "promise_line": promiseLine,
+        "ref_prefix": refPrefix,
+        "what": what,
     };
 }
 
@@ -428,8 +587,13 @@ class AffordTheWait {
     final List<String> assumptions;
     final CompletionShare byCompletion;
     final DelayCost delay;
+    
+    ///The delay cost for each delay the page offers (12 and 24 months).
+    final List<DelayCost>? delayOptions;
     final String framingLine;
     final String? frequencyLine;
+    final AffordInputs? inputs;
+    final AffordLoan? loan;
     final MonthlyShare now;
     final String schema;
     final List<AffordPoint> series;
@@ -440,8 +604,11 @@ class AffordTheWait {
         required this.assumptions,
         required this.byCompletion,
         required this.delay,
+        this.delayOptions,
         required this.framingLine,
         required this.frequencyLine,
+        this.inputs,
+        this.loan,
         required this.now,
         required this.schema,
         required this.series,
@@ -453,8 +620,11 @@ class AffordTheWait {
         assumptions: List<String>.from(json["assumptions"].map((x) => x)),
         byCompletion: CompletionShare.fromJson(json["by_completion"]),
         delay: DelayCost.fromJson(json["delay"]),
+        delayOptions: json["delay_options"] == null ? null : List<DelayCost>.from(json["delay_options"]!.map((x) => DelayCost.fromJson(x))),
         framingLine: json["framing_line"],
         frequencyLine: json["frequency_line"],
+        inputs: json["inputs"] == null ? null : AffordInputs.fromJson(json["inputs"]),
+        loan: json["loan"] == null ? null : AffordLoan.fromJson(json["loan"]),
         now: MonthlyShare.fromJson(json["now"]),
         schema: json["schema"],
         series: List<AffordPoint>.from(json["series"].map((x) => AffordPoint.fromJson(x))),
@@ -466,8 +636,11 @@ class AffordTheWait {
         "assumptions": List<dynamic>.from(assumptions.map((x) => x)),
         "by_completion": byCompletion.toJson(),
         "delay": delay.toJson(),
+        "delay_options": delayOptions == null ? null : List<dynamic>.from(delayOptions!.map((x) => x.toJson())),
         "framing_line": framingLine,
         "frequency_line": frequencyLine,
+        "inputs": inputs?.toJson(),
+        "loan": loan?.toJson(),
         "now": now.toJson(),
         "schema": schema,
         "series": List<dynamic>.from(series.map((x) => x.toJson())),
@@ -538,6 +711,73 @@ class DelayCost {
     };
 }
 
+///The inputs this answer used (echoed, so a page can show and edit them).
+class AffordInputs {
+    final int delayMonths;
+    final double downPct;
+    final double ratePct;
+    final int rentInr;
+    final int takeHomeInr;
+    final int tenureYears;
+    final String? tower;
+
+    AffordInputs({
+        required this.delayMonths,
+        required this.downPct,
+        required this.ratePct,
+        required this.rentInr,
+        required this.takeHomeInr,
+        required this.tenureYears,
+        this.tower,
+    });
+
+    factory AffordInputs.fromJson(Map<String, dynamic> json) => AffordInputs(
+        delayMonths: json["delay_months"],
+        downPct: json["down_pct"]?.toDouble(),
+        ratePct: json["rate_pct"]?.toDouble(),
+        rentInr: json["rent_inr"],
+        takeHomeInr: json["take_home_inr"],
+        tenureYears: json["tenure_years"],
+        tower: json["tower"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "delay_months": delayMonths,
+        "down_pct": downPct,
+        "rate_pct": ratePct,
+        "rent_inr": rentInr,
+        "take_home_inr": takeHomeInr,
+        "tenure_years": tenureYears,
+        "tower": tower,
+    };
+}
+
+///The loan arithmetic: the all-in rounded to the nearest ₹1 lakh, the down payment and the
+///loan.
+class AffordLoan {
+    final int allInRoundedInr;
+    final int downPaymentInr;
+    final int loanInr;
+
+    AffordLoan({
+        required this.allInRoundedInr,
+        required this.downPaymentInr,
+        required this.loanInr,
+    });
+
+    factory AffordLoan.fromJson(Map<String, dynamic> json) => AffordLoan(
+        allInRoundedInr: json["all_in_rounded_inr"],
+        downPaymentInr: json["down_payment_inr"],
+        loanInr: json["loan_inr"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "all_in_rounded_inr": allInRoundedInr,
+        "down_payment_inr": downPaymentInr,
+        "loan_inr": loanInr,
+    };
+}
+
 class MonthlyShare {
     final int monthlyInr;
     final double sharePct;
@@ -561,12 +801,16 @@ class MonthlyShare {
 class AffordPoint {
     final bool delay;
     final String month;
+    
+    ///Share of the loan the bank has paid out that month.
+    final double? paidOutPct;
     final int preEmiInr;
     final int rentInr;
 
     AffordPoint({
         required this.delay,
         required this.month,
+        this.paidOutPct,
         required this.preEmiInr,
         required this.rentInr,
     });
@@ -574,6 +818,7 @@ class AffordPoint {
     factory AffordPoint.fromJson(Map<String, dynamic> json) => AffordPoint(
         delay: json["delay"],
         month: json["month"],
+        paidOutPct: json["paid_out_pct"]?.toDouble(),
         preEmiInr: json["pre_emi_inr"],
         rentInr: json["rent_inr"],
     );
@@ -581,6 +826,7 @@ class AffordPoint {
     Map<String, dynamic> toJson() => {
         "delay": delay,
         "month": month,
+        "paid_out_pct": paidOutPct,
         "pre_emi_inr": preEmiInr,
         "rent_inr": rentInr,
     };
@@ -905,61 +1151,83 @@ class AskAction {
 ///the all-in alone.
 class ProjectCard {
     final String? builtLine;
+    final double? builtPct;
     final List<double>? centroid;
     final Chip chip;
+    
+    ///The line under the chip ("Delivery risk · as of 14 Oct 2026").
+    final String? chipNote;
     final String? completionLine;
+    final String? configLine;
     final String developerName;
     final String? imageUrl;
     final String localityLine;
     final String name;
     final String? pinLabel;
     final String priceLine;
+    final String? progressLine;
     final String slug;
     final String state;
+    final double? timeUsedPct;
 
     ProjectCard({
         required this.builtLine,
+        this.builtPct,
         required this.centroid,
         required this.chip,
+        this.chipNote,
         required this.completionLine,
+        this.configLine,
         required this.developerName,
         required this.imageUrl,
         required this.localityLine,
         required this.name,
         required this.pinLabel,
         required this.priceLine,
+        this.progressLine,
         required this.slug,
         required this.state,
+        this.timeUsedPct,
     });
 
     factory ProjectCard.fromJson(Map<String, dynamic> json) => ProjectCard(
         builtLine: json["built_line"],
+        builtPct: json["built_pct"]?.toDouble(),
         centroid: json["centroid"] == null ? null : List<double>.from(json["centroid"]!.map((x) => x?.toDouble())),
         chip: Chip.fromJson(json["chip"]),
+        chipNote: json["chip_note"],
         completionLine: json["completion_line"],
+        configLine: json["config_line"],
         developerName: json["developer_name"],
         imageUrl: json["image_url"],
         localityLine: json["locality_line"],
         name: json["name"],
         pinLabel: json["pin_label"],
         priceLine: json["price_line"],
+        progressLine: json["progress_line"],
         slug: json["slug"],
         state: json["state"],
+        timeUsedPct: json["time_used_pct"]?.toDouble(),
     );
 
     Map<String, dynamic> toJson() => {
         "built_line": builtLine,
+        "built_pct": builtPct,
         "centroid": centroid == null ? null : List<dynamic>.from(centroid!.map((x) => x)),
         "chip": chip.toJson(),
+        "chip_note": chipNote,
         "completion_line": completionLine,
+        "config_line": configLine,
         "developer_name": developerName,
         "image_url": imageUrl,
         "locality_line": localityLine,
         "name": name,
         "pin_label": pinLabel,
         "price_line": priceLine,
+        "progress_line": progressLine,
         "slug": slug,
         "state": state,
+        "time_used_pct": timeUsedPct,
     };
 }
 
@@ -1112,12 +1380,14 @@ class AskVoice {
 ///rows[].cells line up with columns.
 class Compare {
     final List<CompareColumn> columns;
+    final PageMeta? meta;
     final List<String> notes;
     final List<CompareRow> rows;
     final String schema;
 
     Compare({
         required this.columns,
+        this.meta,
         required this.notes,
         required this.rows,
         required this.schema,
@@ -1125,6 +1395,7 @@ class Compare {
 
     factory Compare.fromJson(Map<String, dynamic> json) => Compare(
         columns: List<CompareColumn>.from(json["columns"].map((x) => CompareColumn.fromJson(x))),
+        meta: json["meta"] == null ? null : PageMeta.fromJson(json["meta"]),
         notes: List<String>.from(json["notes"].map((x) => x)),
         rows: List<CompareRow>.from(json["rows"].map((x) => CompareRow.fromJson(x))),
         schema: json["schema"],
@@ -1132,6 +1403,7 @@ class Compare {
 
     Map<String, dynamic> toJson() => {
         "columns": List<dynamic>.from(columns.map((x) => x.toJson())),
+        "meta": meta?.toJson(),
         "notes": List<dynamic>.from(notes.map((x) => x)),
         "rows": List<dynamic>.from(rows.map((x) => x.toJson())),
         "schema": schema,
@@ -1140,27 +1412,45 @@ class Compare {
 
 class CompareColumn {
     final Chip chip;
+    final String? developerName;
+    final String? imageUrl;
+    final String? localityLine;
     final String name;
+    
+    ///All-in first, as on a ProjectCard.
+    final String? priceLine;
     final String slug;
     final String state;
 
     CompareColumn({
         required this.chip,
+        this.developerName,
+        this.imageUrl,
+        this.localityLine,
         required this.name,
+        this.priceLine,
         required this.slug,
         required this.state,
     });
 
     factory CompareColumn.fromJson(Map<String, dynamic> json) => CompareColumn(
         chip: Chip.fromJson(json["chip"]),
+        developerName: json["developer_name"],
+        imageUrl: json["image_url"],
+        localityLine: json["locality_line"],
         name: json["name"],
+        priceLine: json["price_line"],
         slug: json["slug"],
         state: json["state"],
     );
 
     Map<String, dynamic> toJson() => {
         "chip": chip.toJson(),
+        "developer_name": developerName,
+        "image_url": imageUrl,
+        "locality_line": localityLine,
         "name": name,
+        "price_line": priceLine,
         "slug": slug,
         "state": state,
     };
@@ -1168,25 +1458,37 @@ class CompareColumn {
 
 class CompareRow {
     final List<String?> cells;
+    
+    ///Per column, the developer's own line (its own lane), or null. Lines up with cells.
+    final List<String?>? developerSays;
     final String key;
     final String label;
+    
+    ///Where the row's facts come from ("HARERA orders · to 14 Oct 2026").
+    final String? sourceLine;
 
     CompareRow({
         required this.cells,
+        this.developerSays,
         required this.key,
         required this.label,
+        this.sourceLine,
     });
 
     factory CompareRow.fromJson(Map<String, dynamic> json) => CompareRow(
         cells: List<String?>.from(json["cells"].map((x) => x)),
+        developerSays: json["developer_says"] == null ? null : List<String?>.from(json["developer_says"]!.map((x) => x)),
         key: json["key"],
         label: json["label"],
+        sourceLine: json["source_line"],
     );
 
     Map<String, dynamic> toJson() => {
         "cells": List<dynamic>.from(cells.map((x) => x)),
+        "developer_says": developerSays == null ? null : List<dynamic>.from(developerSays!.map((x) => x)),
         "key": key,
         "label": label,
+        "source_line": sourceLine,
     };
 }
 
@@ -1237,8 +1539,14 @@ class ConsentWithdrawal {
 class CostBreakdown {
     final int allInInr;
     final String allInLabel;
+    
+    ///Super area paid for against carpet area usable.
+    final String? areaLine;
     final String basisLine;
     final String chargesTotalLabel;
+    
+    ///Where EDC and IDC sit ("EDC and IDC: included in the base.").
+    final String? edcIdcLine;
     final List<CostLine> lines;
     final String? moveInLine;
     final String? negotiableLine;
@@ -1254,8 +1562,10 @@ class CostBreakdown {
     CostBreakdown({
         required this.allInInr,
         required this.allInLabel,
+        this.areaLine,
         required this.basisLine,
         required this.chargesTotalLabel,
+        this.edcIdcLine,
         required this.lines,
         required this.moveInLine,
         required this.negotiableLine,
@@ -1270,8 +1580,10 @@ class CostBreakdown {
     factory CostBreakdown.fromJson(Map<String, dynamic> json) => CostBreakdown(
         allInInr: json["all_in_inr"],
         allInLabel: json["all_in_label"],
+        areaLine: json["area_line"],
         basisLine: json["basis_line"],
         chargesTotalLabel: json["charges_total_label"],
+        edcIdcLine: json["edc_idc_line"],
         lines: List<CostLine>.from(json["lines"].map((x) => CostLine.fromJson(x))),
         moveInLine: json["move_in_line"],
         negotiableLine: json["negotiable_line"],
@@ -1286,8 +1598,10 @@ class CostBreakdown {
     Map<String, dynamic> toJson() => {
         "all_in_inr": allInInr,
         "all_in_label": allInLabel,
+        "area_line": areaLine,
         "basis_line": basisLine,
         "charges_total_label": chargesTotalLabel,
+        "edc_idc_line": edcIdcLine,
         "lines": List<dynamic>.from(lines.map((x) => x.toJson())),
         "move_in_line": moveInLine,
         "negotiable_line": negotiableLine,
@@ -1364,19 +1678,32 @@ class CostBreakdownRequest {
 ///plinth.developer_page/1, from api.developer_page(p_slug) (API_CONTRACTS §4.4). One page
 ///per developer group.
 class DeveloperPage {
+    
+    ///What claiming a page does (and never does).
+    final String? claimExplainerLine;
     final GroupComplaints? complaints;
+    
+    ///The facts-only notice (mode = facts_only), else null.
+    final FactsOnlyNotice? factsOnly;
     final DeveloperGroup group;
     final HowBuyersFindYou? howBuyersFindYou;
-    final String insolvencyLine;
+    
+    ///Null when the group has no insolvency event on record and §5b gives no checked line.
+    final String? insolvencyLine;
     final PageMeta meta;
     final List<OngoingPhase> ongoing;
     final PreRera? preRera;
     final DeveloperPageReply? reply;
     final String schema;
+    
+    ///The page's one-line summary under the group name, or null.
+    final String? summaryLine;
     final TrackRecord trackRecord;
 
     DeveloperPage({
+        this.claimExplainerLine,
         required this.complaints,
+        this.factsOnly,
         required this.group,
         required this.howBuyersFindYou,
         required this.insolvencyLine,
@@ -1385,11 +1712,14 @@ class DeveloperPage {
         required this.preRera,
         required this.reply,
         required this.schema,
+        this.summaryLine,
         required this.trackRecord,
     });
 
     factory DeveloperPage.fromJson(Map<String, dynamic> json) => DeveloperPage(
+        claimExplainerLine: json["claim_explainer_line"],
         complaints: json["complaints"] == null ? null : GroupComplaints.fromJson(json["complaints"]),
+        factsOnly: json["facts_only"] == null ? null : FactsOnlyNotice.fromJson(json["facts_only"]),
         group: DeveloperGroup.fromJson(json["group"]),
         howBuyersFindYou: json["how_buyers_find_you"] == null ? null : HowBuyersFindYou.fromJson(json["how_buyers_find_you"]),
         insolvencyLine: json["insolvency_line"],
@@ -1398,11 +1728,14 @@ class DeveloperPage {
         preRera: json["pre_rera"] == null ? null : PreRera.fromJson(json["pre_rera"]),
         reply: json["reply"] == null ? null : DeveloperPageReply.fromJson(json["reply"]),
         schema: json["schema"],
+        summaryLine: json["summary_line"],
         trackRecord: TrackRecord.fromJson(json["track_record"]),
     );
 
     Map<String, dynamic> toJson() => {
+        "claim_explainer_line": claimExplainerLine,
         "complaints": complaints?.toJson(),
+        "facts_only": factsOnly?.toJson(),
         "group": group.toJson(),
         "how_buyers_find_you": howBuyersFindYou?.toJson(),
         "insolvency_line": insolvencyLine,
@@ -1411,6 +1744,7 @@ class DeveloperPage {
         "pre_rera": preRera?.toJson(),
         "reply": reply?.toJson(),
         "schema": schema,
+        "summary_line": summaryLine,
         "track_record": trackRecord.toJson(),
     };
 }
@@ -1468,10 +1802,41 @@ class HalfYearComplaints {
     };
 }
 
+///Why a group's bands are withheld, from when, and what still shows.
+class FactsOnlyNotice {
+    final String? anchor;
+    final List<String> explainerLines;
+    final String line;
+    final String since;
+
+    FactsOnlyNotice({
+        this.anchor,
+        required this.explainerLines,
+        required this.line,
+        required this.since,
+    });
+
+    factory FactsOnlyNotice.fromJson(Map<String, dynamic> json) => FactsOnlyNotice(
+        anchor: json["anchor"],
+        explainerLines: List<String>.from(json["explainer_lines"].map((x) => x)),
+        line: json["line"],
+        since: json["since"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "anchor": anchor,
+        "explainer_lines": List<dynamic>.from(explainerLines.map((x) => x)),
+        "line": line,
+        "since": since,
+    };
+}
+
 class DeveloperGroup {
     final GroupClaim claim;
     final String? factsOnlyLine;
-    final int linkedCompanies;
+    
+    ///Companies linked to the group, or null when §5b gives no count.
+    final int? linkedCompanies;
     final String mode;
     final String name;
     final String slug;
@@ -1552,24 +1917,36 @@ class HowBuyersFindYou {
 class OngoingPhase {
     final Chip chip;
     final String? name;
+    final String? priceLine;
+    final String? progressLine;
     final String slug;
+    final String? state;
 
     OngoingPhase({
         required this.chip,
         this.name,
+        this.priceLine,
+        this.progressLine,
         required this.slug,
+        this.state,
     });
 
     factory OngoingPhase.fromJson(Map<String, dynamic> json) => OngoingPhase(
         chip: Chip.fromJson(json["chip"]),
         name: json["name"],
+        priceLine: json["price_line"],
+        progressLine: json["progress_line"],
         slug: json["slug"],
+        state: json["state"],
     );
 
     Map<String, dynamic> toJson() => {
         "chip": chip.toJson(),
         "name": name,
+        "price_line": priceLine,
+        "progress_line": progressLine,
         "slug": slug,
+        "state": state,
     };
 }
 
@@ -1643,10 +2020,11 @@ class DeveloperPageReply {
     };
 }
 
+///Null counts and line when the group has no finished RERA project yet.
 class TrackRecord {
-    final int finished;
-    final int late;
-    final String line;
+    final int? finished;
+    final int? late;
+    final String? line;
     final List<TrackRecordProject> projects;
 
     TrackRecord({
@@ -1803,8 +2181,14 @@ class DocCheckActions {
 class CostBreakdownClass {
     final int allInInr;
     final String allInLabel;
+    
+    ///Super area paid for against carpet area usable.
+    final String? areaLine;
     final String basisLine;
     final String chargesTotalLabel;
+    
+    ///Where EDC and IDC sit ("EDC and IDC: included in the base.").
+    final String? edcIdcLine;
     final List<CostLine> lines;
     final String? moveInLine;
     final String? negotiableLine;
@@ -1820,8 +2204,10 @@ class CostBreakdownClass {
     CostBreakdownClass({
         required this.allInInr,
         required this.allInLabel,
+        this.areaLine,
         required this.basisLine,
         required this.chargesTotalLabel,
+        this.edcIdcLine,
         required this.lines,
         required this.moveInLine,
         required this.negotiableLine,
@@ -1836,8 +2222,10 @@ class CostBreakdownClass {
     factory CostBreakdownClass.fromJson(Map<String, dynamic> json) => CostBreakdownClass(
         allInInr: json["all_in_inr"],
         allInLabel: json["all_in_label"],
+        areaLine: json["area_line"],
         basisLine: json["basis_line"],
         chargesTotalLabel: json["charges_total_label"],
+        edcIdcLine: json["edc_idc_line"],
         lines: List<CostLine>.from(json["lines"].map((x) => CostLine.fromJson(x))),
         moveInLine: json["move_in_line"],
         negotiableLine: json["negotiable_line"],
@@ -1852,8 +2240,10 @@ class CostBreakdownClass {
     Map<String, dynamic> toJson() => {
         "all_in_inr": allInInr,
         "all_in_label": allInLabel,
+        "area_line": areaLine,
         "basis_line": basisLine,
         "charges_total_label": chargesTotalLabel,
+        "edc_idc_line": edcIdcLine,
         "lines": List<dynamic>.from(lines.map((x) => x.toJson())),
         "move_in_line": moveInLine,
         "negotiable_line": negotiableLine,
@@ -2144,6 +2534,9 @@ class Evidence {
     final DeveloperSays? developerSays;
     final String document;
     final String? extract;
+    
+    ///The fact this drawer shows (the p_fact_id it was opened with).
+    final String? factId;
     final String lane;
     final String? officialUrl;
     final String? page;
@@ -2161,6 +2554,7 @@ class Evidence {
         required this.developerSays,
         required this.document,
         required this.extract,
+        this.factId,
         required this.lane,
         required this.officialUrl,
         required this.page,
@@ -2179,6 +2573,7 @@ class Evidence {
         developerSays: json["developer_says"] == null ? null : DeveloperSays.fromJson(json["developer_says"]),
         document: json["document"],
         extract: json["extract"],
+        factId: json["fact_id"],
         lane: json["lane"],
         officialUrl: json["official_url"],
         page: json["page"],
@@ -2197,6 +2592,7 @@ class Evidence {
         "developer_says": developerSays?.toJson(),
         "document": document,
         "extract": extract,
+        "fact_id": factId,
         "lane": lane,
         "official_url": officialUrl,
         "page": page,
@@ -2790,75 +3186,175 @@ class ReplayMark {
     };
 }
 
-///plinth.methodology/1, from api.methodology() (API_CONTRACTS §3.1): model versions, factor
-///weights, red-flag rules, the calibration table and the changelog. Only published models
-///and runs.
+///plinth.methodology/1, from api.methodology() (API_CONTRACTS §3.1; the WebMethodology
+///page): the bands and their ranges, factor weights, red-flag rules, confidence, the
+///calibration table and the model versions with their changelog. Only published models and
+///runs.
 class Methodology {
+    final List<BandRange> bands;
+    final String? bandsNoteLine;
     final Calibration calibration;
-    final List<ChangelogEntry> changelog;
+    final List<ConfidenceLevelLine>? confidence;
     final String currentVersion;
+    final DataRules? dataRules;
     final List<FactorWeight> factors;
+    final String? factorsNoteLine;
+    final String? howLine;
+    
+    ///Plain-language arithmetic notes per calculator, e.g. afford_the_wait.
+    final Map<String, List<String>>? howWeWorkedThisOut;
+    final Late12Explainer? late12;
     final PageMeta meta;
-    final List<ScoreModel> models;
+    final String? neverLine;
+    final String? publishedOn;
+    final String? questionLine;
+    final String? redFlagExampleLine;
     final List<RedFlagRule> redFlagRules;
     final String schema;
+    final String? similarLine;
+    final List<MethodologyVersion> versions;
 
     Methodology({
+        required this.bands,
+        this.bandsNoteLine,
         required this.calibration,
-        required this.changelog,
+        this.confidence,
         required this.currentVersion,
+        this.dataRules,
         required this.factors,
+        this.factorsNoteLine,
+        this.howLine,
+        this.howWeWorkedThisOut,
+        this.late12,
         required this.meta,
-        required this.models,
+        this.neverLine,
+        this.publishedOn,
+        this.questionLine,
+        this.redFlagExampleLine,
         required this.redFlagRules,
         required this.schema,
+        this.similarLine,
+        required this.versions,
     });
 
     factory Methodology.fromJson(Map<String, dynamic> json) => Methodology(
+        bands: List<BandRange>.from(json["bands"].map((x) => BandRange.fromJson(x))),
+        bandsNoteLine: json["bands_note_line"],
         calibration: Calibration.fromJson(json["calibration"]),
-        changelog: List<ChangelogEntry>.from(json["changelog"].map((x) => ChangelogEntry.fromJson(x))),
+        confidence: json["confidence"] == null ? null : List<ConfidenceLevelLine>.from(json["confidence"]!.map((x) => ConfidenceLevelLine.fromJson(x))),
         currentVersion: json["current_version"],
+        dataRules: json["data_rules"] == null ? null : DataRules.fromJson(json["data_rules"]),
         factors: List<FactorWeight>.from(json["factors"].map((x) => FactorWeight.fromJson(x))),
+        factorsNoteLine: json["factors_note_line"],
+        howLine: json["how_line"],
+        howWeWorkedThisOut: json["how_we_worked_this_out"] == null ? null : Map.from(json["how_we_worked_this_out"]!).map((k, v) => MapEntry<String, List<String>>(k, List<String>.from(v.map((x) => x)))),
+        late12: json["late12"] == null ? null : Late12Explainer.fromJson(json["late12"]),
         meta: PageMeta.fromJson(json["meta"]),
-        models: List<ScoreModel>.from(json["models"].map((x) => ScoreModel.fromJson(x))),
+        neverLine: json["never_line"],
+        publishedOn: json["published_on"],
+        questionLine: json["question_line"],
+        redFlagExampleLine: json["red_flag_example_line"],
         redFlagRules: List<RedFlagRule>.from(json["red_flag_rules"].map((x) => RedFlagRule.fromJson(x))),
         schema: json["schema"],
+        similarLine: json["similar_line"],
+        versions: List<MethodologyVersion>.from(json["versions"].map((x) => MethodologyVersion.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
+        "bands": List<dynamic>.from(bands.map((x) => x.toJson())),
+        "bands_note_line": bandsNoteLine,
         "calibration": calibration.toJson(),
-        "changelog": List<dynamic>.from(changelog.map((x) => x.toJson())),
+        "confidence": confidence == null ? null : List<dynamic>.from(confidence!.map((x) => x.toJson())),
         "current_version": currentVersion,
+        "data_rules": dataRules?.toJson(),
         "factors": List<dynamic>.from(factors.map((x) => x.toJson())),
+        "factors_note_line": factorsNoteLine,
+        "how_line": howLine,
+        "how_we_worked_this_out": howWeWorkedThisOut == null ? null : Map.from(howWeWorkedThisOut!).map((k, v) => MapEntry<String, dynamic>(k, List<dynamic>.from(v.map((x) => x)))),
+        "late12": late12?.toJson(),
         "meta": meta.toJson(),
-        "models": List<dynamic>.from(models.map((x) => x.toJson())),
+        "never_line": neverLine,
+        "published_on": publishedOn,
+        "question_line": questionLine,
+        "red_flag_example_line": redFlagExampleLine,
         "red_flag_rules": List<dynamic>.from(redFlagRules.map((x) => x.toJson())),
         "schema": schema,
+        "similar_line": similarLine,
+        "versions": List<dynamic>.from(versions.map((x) => x.toJson())),
+    };
+}
+
+///A band, its range of 100 and its natural-frequency sentence.
+class BandRange {
+    final String code;
+    final String? exampleSlug;
+    final int high;
+    final String label;
+    final int low;
+    final String sentence;
+    final int step;
+
+    BandRange({
+        required this.code,
+        this.exampleSlug,
+        required this.high,
+        required this.label,
+        required this.low,
+        required this.sentence,
+        required this.step,
+    });
+
+    factory BandRange.fromJson(Map<String, dynamic> json) => BandRange(
+        code: json["code"],
+        exampleSlug: json["example_slug"],
+        high: json["high"],
+        label: json["label"],
+        low: json["low"],
+        sentence: json["sentence"],
+        step: json["step"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "code": code,
+        "example_slug": exampleSlug,
+        "high": high,
+        "label": label,
+        "low": low,
+        "sentence": sentence,
+        "step": step,
     };
 }
 
 class Calibration {
-    final String? baseRateLine;
+    final BaseRate baseRate;
+    final double? brier;
+    final double? brierBaseline;
     final bool illustrative;
-    final String modelVersion;
+    final String? modelVersion;
     final List<CalibrationRow> rows;
 
     Calibration({
-        required this.baseRateLine,
+        required this.baseRate,
+        this.brier,
+        this.brierBaseline,
         required this.illustrative,
-        required this.modelVersion,
+        this.modelVersion,
         required this.rows,
     });
 
     factory Calibration.fromJson(Map<String, dynamic> json) => Calibration(
-        baseRateLine: json["base_rate_line"],
+        baseRate: BaseRate.fromJson(json["base_rate"]),
+        brier: json["brier"]?.toDouble(),
+        brierBaseline: json["brier_baseline"]?.toDouble(),
         illustrative: json["illustrative"],
         modelVersion: json["model_version"],
         rows: List<CalibrationRow>.from(json["rows"].map((x) => CalibrationRow.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "base_rate_line": baseRateLine,
+        "base_rate": baseRate.toJson(),
+        "brier": brier,
+        "brier_baseline": brierBaseline,
         "illustrative": illustrative,
         "model_version": modelVersion,
         "rows": List<dynamic>.from(rows.map((x) => x.toJson())),
@@ -2867,65 +3363,90 @@ class Calibration {
 
 class CalibrationRow {
     final String band;
-    final String? frequencyLine;
+    final String label;
     final int? nLate;
     final int? nProjects;
+    final int? per100;
     final int? rangeHigh;
     final int? rangeLow;
 
     CalibrationRow({
         required this.band,
-        required this.frequencyLine,
+        required this.label,
         required this.nLate,
         required this.nProjects,
+        required this.per100,
         required this.rangeHigh,
         required this.rangeLow,
     });
 
     factory CalibrationRow.fromJson(Map<String, dynamic> json) => CalibrationRow(
         band: json["band"],
-        frequencyLine: json["frequency_line"],
+        label: json["label"],
         nLate: json["n_late"],
         nProjects: json["n_projects"],
+        per100: json["per_100"],
         rangeHigh: json["range_high"],
         rangeLow: json["range_low"],
     );
 
     Map<String, dynamic> toJson() => {
         "band": band,
-        "frequency_line": frequencyLine,
+        "label": label,
         "n_late": nLate,
         "n_projects": nProjects,
+        "per_100": per100,
         "range_high": rangeHigh,
         "range_low": rangeLow,
     };
 }
 
-class ChangelogEntry {
-    final String? minutesUrl;
-    final String publishedOn;
-    final String summary;
-    final String version;
+///What each confidence level (and the two unscored states) means, with its dots.
+class ConfidenceLevelLine {
+    final int dots;
+    final String level;
+    final String line;
 
-    ChangelogEntry({
-        this.minutesUrl,
-        required this.publishedOn,
-        required this.summary,
-        required this.version,
+    ConfidenceLevelLine({
+        required this.dots,
+        required this.level,
+        required this.line,
     });
 
-    factory ChangelogEntry.fromJson(Map<String, dynamic> json) => ChangelogEntry(
-        minutesUrl: json["minutes_url"],
-        publishedOn: json["published_on"],
-        summary: json["summary"],
-        version: json["version"],
+    factory ConfidenceLevelLine.fromJson(Map<String, dynamic> json) => ConfidenceLevelLine(
+        dots: json["dots"],
+        level: json["level"],
+        line: json["line"],
     );
 
     Map<String, dynamic> toJson() => {
-        "minutes_url": minutesUrl,
-        "published_on": publishedOn,
-        "summary": summary,
-        "version": version,
+        "dots": dots,
+        "level": level,
+        "line": line,
+    };
+}
+
+class DataRules {
+    final String line;
+    final int rescoreHours;
+    final int staleDays;
+
+    DataRules({
+        required this.line,
+        required this.rescoreHours,
+        required this.staleDays,
+    });
+
+    factory DataRules.fromJson(Map<String, dynamic> json) => DataRules(
+        line: json["line"],
+        rescoreHours: json["rescore_hours"],
+        staleDays: json["stale_days"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "line": line,
+        "rescore_hours": rescoreHours,
+        "stale_days": staleDays,
     };
 }
 
@@ -2953,55 +3474,98 @@ class FactorWeight {
     };
 }
 
-class ScoreModel {
-    final String? releasedOn;
-    final String status;
-    final String? summaryLine;
-    final String version;
+class Late12Explainer {
+    
+    ///A worked example: a phase's slug plus its RiskSummary.late12.
+    final Map<String, dynamic>? example;
+    final String? extensionsLine;
+    final String line;
 
-    ScoreModel({
-        required this.releasedOn,
-        required this.status,
-        this.summaryLine,
-        required this.version,
+    Late12Explainer({
+        this.example,
+        this.extensionsLine,
+        required this.line,
     });
 
-    factory ScoreModel.fromJson(Map<String, dynamic> json) => ScoreModel(
-        releasedOn: json["released_on"],
-        status: json["status"],
-        summaryLine: json["summary_line"],
-        version: json["version"],
+    factory Late12Explainer.fromJson(Map<String, dynamic> json) => Late12Explainer(
+        example: json["example"] == null ? null : Map.from(json["example"]!).map((k, v) => MapEntry<String, dynamic>(k, v)),
+        extensionsLine: json["extensions_line"],
+        line: json["line"],
     );
 
     Map<String, dynamic> toJson() => {
-        "released_on": releasedOn,
-        "status": status,
-        "summary_line": summaryLine,
-        "version": version,
+        "example": example == null ? null : Map.from(example!).map((k, v) => MapEntry<String, dynamic>(k, v)),
+        "extensions_line": extensionsLine,
+        "line": line,
     };
 }
 
 class RedFlagRule {
     final String code;
+    final String line;
+    final int? n;
     final String? publishedOn;
-    final String text;
+    final String title;
 
     RedFlagRule({
         required this.code,
-        required this.publishedOn,
-        required this.text,
+        required this.line,
+        this.n,
+        this.publishedOn,
+        required this.title,
     });
 
     factory RedFlagRule.fromJson(Map<String, dynamic> json) => RedFlagRule(
         code: json["code"],
+        line: json["line"],
+        n: json["n"],
         publishedOn: json["published_on"],
-        text: json["text"],
+        title: json["title"],
     );
 
     Map<String, dynamic> toJson() => {
         "code": code,
+        "line": line,
+        "n": n,
         "published_on": publishedOn,
-        "text": text,
+        "title": title,
+    };
+}
+
+///A published model version and its changelog (newest first).
+class MethodologyVersion {
+    final bool current;
+    final List<String> items;
+    final String? note;
+    final String releasedOn;
+    final String title;
+    final String version;
+
+    MethodologyVersion({
+        required this.current,
+        required this.items,
+        this.note,
+        required this.releasedOn,
+        required this.title,
+        required this.version,
+    });
+
+    factory MethodologyVersion.fromJson(Map<String, dynamic> json) => MethodologyVersion(
+        current: json["current"],
+        items: List<String>.from(json["items"].map((x) => x)),
+        note: json["note"],
+        releasedOn: json["released_on"],
+        title: json["title"],
+        version: json["version"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "current": current,
+        "items": List<dynamic>.from(items.map((x) => x)),
+        "note": note,
+        "released_on": releasedOn,
+        "title": title,
+        "version": version,
     };
 }
 
@@ -3166,7 +3730,9 @@ class ProjectPage {
     
     ///Null without a cost sheet.
     final CostBreakdownClass? cost;
-    final FromDeveloper fromDeveloper;
+    
+    ///Null when the developer has published nothing (no claimed workspace content).
+    final FromDeveloper? fromDeveloper;
     final ProjectHero hero;
     final Homes homes;
     final RiskMeta meta;
@@ -3201,7 +3767,7 @@ class ProjectPage {
         affordDefault: json["afford_default"] == null ? null : AffordTheWaitClass.fromJson(json["afford_default"]),
         beforeBooking: BeforeBooking.fromJson(json["before_booking"]),
         cost: json["cost"] == null ? null : CostBreakdownClass.fromJson(json["cost"]),
-        fromDeveloper: FromDeveloper.fromJson(json["from_developer"]),
+        fromDeveloper: json["from_developer"] == null ? null : FromDeveloper.fromJson(json["from_developer"]),
         hero: ProjectHero.fromJson(json["hero"]),
         homes: Homes.fromJson(json["homes"]),
         meta: RiskMeta.fromJson(json["meta"]),
@@ -3219,7 +3785,7 @@ class ProjectPage {
         "afford_default": affordDefault?.toJson(),
         "before_booking": beforeBooking.toJson(),
         "cost": cost?.toJson(),
-        "from_developer": fromDeveloper.toJson(),
+        "from_developer": fromDeveloper?.toJson(),
         "hero": hero.toJson(),
         "homes": homes.toJson(),
         "meta": meta.toJson(),
@@ -3242,8 +3808,13 @@ class AffordTheWaitClass {
     final List<String> assumptions;
     final CompletionShare byCompletion;
     final DelayCost delay;
+    
+    ///The delay cost for each delay the page offers (12 and 24 months).
+    final List<DelayCost>? delayOptions;
     final String framingLine;
     final String? frequencyLine;
+    final AffordInputs? inputs;
+    final AffordLoan? loan;
     final MonthlyShare now;
     final String schema;
     final List<AffordPoint> series;
@@ -3254,8 +3825,11 @@ class AffordTheWaitClass {
         required this.assumptions,
         required this.byCompletion,
         required this.delay,
+        this.delayOptions,
         required this.framingLine,
         required this.frequencyLine,
+        this.inputs,
+        this.loan,
         required this.now,
         required this.schema,
         required this.series,
@@ -3267,8 +3841,11 @@ class AffordTheWaitClass {
         assumptions: List<String>.from(json["assumptions"].map((x) => x)),
         byCompletion: CompletionShare.fromJson(json["by_completion"]),
         delay: DelayCost.fromJson(json["delay"]),
+        delayOptions: json["delay_options"] == null ? null : List<DelayCost>.from(json["delay_options"]!.map((x) => DelayCost.fromJson(x))),
         framingLine: json["framing_line"],
         frequencyLine: json["frequency_line"],
+        inputs: json["inputs"] == null ? null : AffordInputs.fromJson(json["inputs"]),
+        loan: json["loan"] == null ? null : AffordLoan.fromJson(json["loan"]),
         now: MonthlyShare.fromJson(json["now"]),
         schema: json["schema"],
         series: List<AffordPoint>.from(json["series"].map((x) => AffordPoint.fromJson(x))),
@@ -3280,8 +3857,11 @@ class AffordTheWaitClass {
         "assumptions": List<dynamic>.from(assumptions.map((x) => x)),
         "by_completion": byCompletion.toJson(),
         "delay": delay.toJson(),
+        "delay_options": delayOptions == null ? null : List<dynamic>.from(delayOptions!.map((x) => x.toJson())),
         "framing_line": framingLine,
         "frequency_line": frequencyLine,
+        "inputs": inputs?.toJson(),
+        "loan": loan?.toJson(),
         "now": now.toJson(),
         "schema": schema,
         "series": List<dynamic>.from(series.map((x) => x.toJson())),
@@ -3316,23 +3896,63 @@ class BeforeBooking {
     };
 }
 
+///One "before booking" topic: a title, a sub line and short paragraphs, each in a tone
+///(general information, not advice).
 class BookingTopic {
-    final String line;
+    
+    ///A one-line status for the topic, when it has one ("Loan checks arrive in 2027").
+    final String? line;
+    final List<BookingPara> paras;
     final List<String>? points;
+    final String? sub;
+    final String title;
 
     BookingTopic({
-        required this.line,
+        this.line,
+        required this.paras,
         this.points,
+        this.sub,
+        required this.title,
     });
 
     factory BookingTopic.fromJson(Map<String, dynamic> json) => BookingTopic(
         line: json["line"],
+        paras: List<BookingPara>.from(json["paras"].map((x) => BookingPara.fromJson(x))),
         points: json["points"] == null ? null : List<String>.from(json["points"]!.map((x) => x)),
+        sub: json["sub"],
+        title: json["title"],
     );
 
     Map<String, dynamic> toJson() => {
         "line": line,
+        "paras": List<dynamic>.from(paras.map((x) => x.toJson())),
         "points": points == null ? null : List<dynamic>.from(points!.map((x) => x)),
+        "sub": sub,
+        "title": title,
+    };
+}
+
+class BookingPara {
+    final String? lead;
+    final String text;
+    final String tone;
+
+    BookingPara({
+        required this.lead,
+        required this.text,
+        required this.tone,
+    });
+
+    factory BookingPara.fromJson(Map<String, dynamic> json) => BookingPara(
+        lead: json["lead"],
+        text: json["text"],
+        tone: json["tone"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "lead": lead,
+        "text": text,
+        "tone": tone,
     };
 }
 
@@ -3431,51 +4051,57 @@ class PaymentStage {
 
 class PriceList {
     final bool? current;
-    final String dated;
     final List<PriceListItem> items;
     final String label;
+    
+    ///ws.price_lists.published_on.
+    final String publishedOn;
 
     PriceList({
         this.current,
-        required this.dated,
         required this.items,
         required this.label,
+        required this.publishedOn,
     });
 
     factory PriceList.fromJson(Map<String, dynamic> json) => PriceList(
         current: json["current"],
-        dated: json["dated"],
         items: List<PriceListItem>.from(json["items"].map((x) => PriceListItem.fromJson(x))),
         label: json["label"],
+        publishedOn: json["published_on"],
     );
 
     Map<String, dynamic> toJson() => {
         "current": current,
-        "dated": dated,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
         "label": label,
+        "published_on": publishedOn,
     };
 }
 
 class PriceListItem {
-    final String? perSqftCarpetLabel;
+    final int? basePriceInr;
+    final String? perSqftLine;
     final String priceLine;
     final String unitLabel;
 
     PriceListItem({
-        this.perSqftCarpetLabel,
+        this.basePriceInr,
+        this.perSqftLine,
         required this.priceLine,
         required this.unitLabel,
     });
 
     factory PriceListItem.fromJson(Map<String, dynamic> json) => PriceListItem(
-        perSqftCarpetLabel: json["per_sqft_carpet_label"],
+        basePriceInr: json["base_price_inr"],
+        perSqftLine: json["per_sqft_line"],
         priceLine: json["price_line"],
         unitLabel: json["unit_label"],
     );
 
     Map<String, dynamic> toJson() => {
-        "per_sqft_carpet_label": perSqftCarpetLabel,
+        "base_price_inr": basePriceInr,
+        "per_sqft_line": perSqftLine,
         "price_line": priceLine,
         "unit_label": unitLabel,
     };
@@ -3565,20 +4191,24 @@ class Homes {
 class LaneList {
     final List<String> items;
     final String lane;
+    final String? sourceLine;
 
     LaneList({
         required this.items,
         required this.lane,
+        this.sourceLine,
     });
 
     factory LaneList.fromJson(Map<String, dynamic> json) => LaneList(
         items: List<String>.from(json["items"].map((x) => x)),
         lane: json["lane"],
+        sourceLine: json["source_line"],
     );
 
     Map<String, dynamic> toJson() => {
         "items": List<dynamic>.from(items.map((x) => x)),
         "lane": lane,
+        "source_line": sourceLine,
     };
 }
 
@@ -3588,8 +4218,12 @@ class HomeConfiguration {
     final String? carpetLane;
     final String? carpetLine;
     final String label;
+    final String? loadingLine;
+    final String? priceLane;
     final String? priceLine;
-    final List<HomeRoom>? rooms;
+    
+    ///Room sizes as finished lines ("Kitchen 10′ × 11′").
+    final List<String>? rooms;
     final String? superLane;
     final String? superLine;
 
@@ -3599,6 +4233,8 @@ class HomeConfiguration {
         this.carpetLane,
         required this.carpetLine,
         required this.label,
+        this.loadingLine,
+        this.priceLane,
         required this.priceLine,
         this.rooms,
         this.superLane,
@@ -3611,8 +4247,10 @@ class HomeConfiguration {
         carpetLane: json["carpet_lane"],
         carpetLine: json["carpet_line"],
         label: json["label"],
+        loadingLine: json["loading_line"],
+        priceLane: json["price_lane"],
         priceLine: json["price_line"],
-        rooms: json["rooms"] == null ? null : List<HomeRoom>.from(json["rooms"]!.map((x) => HomeRoom.fromJson(x))),
+        rooms: json["rooms"] == null ? null : List<String>.from(json["rooms"]!.map((x) => x)),
         superLane: json["super_lane"],
         superLine: json["super_line"],
     );
@@ -3623,74 +4261,41 @@ class HomeConfiguration {
         "carpet_lane": carpetLane,
         "carpet_line": carpetLine,
         "label": label,
+        "loading_line": loadingLine,
+        "price_lane": priceLane,
         "price_line": priceLine,
-        "rooms": rooms == null ? null : List<dynamic>.from(rooms!.map((x) => x.toJson())),
+        "rooms": rooms == null ? null : List<dynamic>.from(rooms!.map((x) => x)),
         "super_lane": superLane,
         "super_line": superLine,
     };
 }
 
-class HomeRoom {
-    final String label;
-    final String? sizeLine;
-
-    HomeRoom({
-        required this.label,
-        required this.sizeLine,
-    });
-
-    factory HomeRoom.fromJson(Map<String, dynamic> json) => HomeRoom(
-        label: json["label"],
-        sizeLine: json["size_line"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "label": label,
-        "size_line": sizeLine,
-    };
-}
-
+///Distances and commute times (our estimate), one finished line per place.
 class GettingAround {
-    final List<GettingAroundItem> items;
+    final List<String> items;
     final String lane;
     final String? noteLine;
+    final String? sourceLine;
 
     GettingAround({
         required this.items,
         required this.lane,
         this.noteLine,
+        this.sourceLine,
     });
 
     factory GettingAround.fromJson(Map<String, dynamic> json) => GettingAround(
-        items: List<GettingAroundItem>.from(json["items"].map((x) => GettingAroundItem.fromJson(x))),
+        items: List<String>.from(json["items"].map((x) => x)),
         lane: json["lane"],
         noteLine: json["note_line"],
+        sourceLine: json["source_line"],
     );
 
     Map<String, dynamic> toJson() => {
-        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "items": List<dynamic>.from(items.map((x) => x)),
         "lane": lane,
         "note_line": noteLine,
-    };
-}
-
-class GettingAroundItem {
-    final String line;
-    final String place;
-
-    GettingAroundItem({
-        required this.line,
-        required this.place,
-    });
-
-    factory GettingAroundItem.fromJson(Map<String, dynamic> json) => GettingAroundItem(
-        line: json["line"],
-        place: json["place"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "line": line,
-        "place": place,
+        "source_line": sourceLine,
     };
 }
 
@@ -3718,30 +4323,27 @@ class Waterlogging {
     };
 }
 
+///A reported incident: where and from what source, as one line (reported, not verified).
 class ReportedIncident {
-    final String placeLine;
+    final String line;
     final String reportedOn;
-    final String sourceLabel;
     final String? url;
 
     ReportedIncident({
-        required this.placeLine,
+        required this.line,
         required this.reportedOn,
-        required this.sourceLabel,
         this.url,
     });
 
     factory ReportedIncident.fromJson(Map<String, dynamic> json) => ReportedIncident(
-        placeLine: json["place_line"],
+        line: json["line"],
         reportedOn: json["reported_on"],
-        sourceLabel: json["source_label"],
         url: json["url"],
     );
 
     Map<String, dynamic> toJson() => {
-        "place_line": placeLine,
+        "line": line,
         "reported_on": reportedOn,
-        "source_label": sourceLabel,
         "url": url,
     };
 }
@@ -3858,26 +4460,30 @@ class NearbyProject {
 }
 
 class NextStep {
+    final String body;
+    final String heading;
     final String? href;
-    final String line;
-    final String title;
+    final String? sourceLabel;
 
     NextStep({
+        required this.body,
+        required this.heading,
         this.href,
-        required this.line,
-        required this.title,
+        this.sourceLabel,
     });
 
     factory NextStep.fromJson(Map<String, dynamic> json) => NextStep(
+        body: json["body"],
+        heading: json["heading"],
         href: json["href"],
-        line: json["line"],
-        title: json["title"],
+        sourceLabel: json["source_label"],
     );
 
     Map<String, dynamic> toJson() => {
+        "body": body,
+        "heading": heading,
         "href": href,
-        "line": line,
-        "title": title,
+        "source_label": sourceLabel,
     };
 }
 
@@ -3888,7 +4494,9 @@ class ProjectProgress {
     final String? lateFilingsLine;
     final List<QuarterProgress> quarters;
     final ProgressToday today;
-    final List<String> towers;
+    
+    ///Tower codes, or null when the records report the phase as a whole.
+    final List<String>? towers;
 
     ProjectProgress({
         required this.floorsPerTower,
@@ -3903,7 +4511,7 @@ class ProjectProgress {
         lateFilingsLine: json["late_filings_line"],
         quarters: List<QuarterProgress>.from(json["quarters"].map((x) => QuarterProgress.fromJson(x))),
         today: ProgressToday.fromJson(json["today"]),
-        towers: List<String>.from(json["towers"].map((x) => x)),
+        towers: json["towers"] == null ? null : List<String>.from(json["towers"]!.map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
@@ -3911,7 +4519,7 @@ class ProjectProgress {
         "late_filings_line": lateFilingsLine,
         "quarters": List<dynamic>.from(quarters.map((x) => x.toJson())),
         "today": today.toJson(),
-        "towers": List<dynamic>.from(towers.map((x) => x)),
+        "towers": towers == null ? null : List<dynamic>.from(towers!.map((x) => x)),
     };
 }
 
@@ -3992,39 +4600,41 @@ class ProgressToday {
 ///One row of the Records section; evidence_url opens the evidence drawer (api.evidence).
 class EvidenceSummary {
     final String? asOf;
+    
+    ///The source chip label, as on the evidence drawer ("HARERA registration · 2022").
+    final String chip;
     final String evidenceUrl;
     final String factId;
     final String? group;
-    final String label;
     final String lane;
     final String line;
 
     EvidenceSummary({
         this.asOf,
+        required this.chip,
         required this.evidenceUrl,
         required this.factId,
         this.group,
-        required this.label,
         required this.lane,
         required this.line,
     });
 
     factory EvidenceSummary.fromJson(Map<String, dynamic> json) => EvidenceSummary(
         asOf: json["as_of"],
+        chip: json["chip"],
         evidenceUrl: json["evidence_url"],
         factId: json["fact_id"],
         group: json["group"],
-        label: json["label"],
         lane: json["lane"],
         line: json["line"],
     );
 
     Map<String, dynamic> toJson() => {
         "as_of": asOf,
+        "chip": chip,
         "evidence_url": evidenceUrl,
         "fact_id": factId,
         "group": group,
-        "label": label,
         "lane": lane,
         "line": line,
     };
@@ -4438,7 +5048,10 @@ class PhaseSummary {
     final String localityLine;
     final String name;
     final String reraNumber;
-    final String shortCode;
+    
+    ///The phase's short code for WhatsApp and invite codes; null until one is assigned (only
+    ///Aurelia has one in §5b).
+    final String? shortCode;
     final String slug;
     final int? units;
 
@@ -4620,7 +5233,9 @@ class Progress {
 }
 
 class LatestQpr {
-    final int ageDays;
+    
+    ///Days since filed_on; null when the filing date is not on record (Cedar Walk Ph 2).
+    final int? ageDays;
     final String? filedOn;
     final String label;
     final String quarter;
@@ -4982,6 +5597,12 @@ class SearchFilters {
     final List<String>? bands;
     final List<int>? bhk;
     final List<String>? corridors;
+    
+    ///A project name the query names ("Indigo Terraces"), when it matches no phase.
+    final String? name;
+    
+    ///A place the query names outside coverage ("noida").
+    final String? place;
     final String? possessionBy;
 
     SearchFilters({
@@ -4989,6 +5610,8 @@ class SearchFilters {
         this.bands,
         this.bhk,
         this.corridors,
+        this.name,
+        this.place,
         this.possessionBy,
     });
 
@@ -4997,6 +5620,8 @@ class SearchFilters {
         bands: json["bands"] == null ? null : List<String>.from(json["bands"]!.map((x) => x)),
         bhk: json["bhk"] == null ? null : List<int>.from(json["bhk"]!.map((x) => x)),
         corridors: json["corridors"] == null ? null : List<String>.from(json["corridors"]!.map((x) => x)),
+        name: json["name"],
+        place: json["place"],
         possessionBy: json["possession_by"],
     );
 
@@ -5005,6 +5630,8 @@ class SearchFilters {
         "bands": bands == null ? null : List<dynamic>.from(bands!.map((x) => x)),
         "bhk": bhk == null ? null : List<dynamic>.from(bhk!.map((x) => x)),
         "corridors": corridors == null ? null : List<dynamic>.from(corridors!.map((x) => x)),
+        "name": name,
+        "place": place,
         "possession_by": possessionBy,
     };
 }
@@ -5013,46 +5640,93 @@ class SearchFilters {
 ///phases stay in risk-filtered results, listed with Not scored ones, never hidden. Order
 ///never follows money.
 class SearchResults {
+    
+    ///The projects the filters hid, each with why (hidden_count of them).
+    final List<HiddenProject>? hidden;
     final int hiddenCount;
     final List<ProjectCard> items;
+    
+    ///The map legend ("Pins show all-in prices").
+    final String? legendLine;
+    final PageMeta? meta;
     final String? nextCursor;
     final List<String> notes;
     final SearchFilters parsed;
+    
+    ///The query as the buyer typed it (echoed for the search box).
+    final String? query;
     final String schema;
     final String sortLine;
     final ZeroResults? zeroResults;
 
     SearchResults({
+        this.hidden,
         required this.hiddenCount,
         required this.items,
+        this.legendLine,
+        this.meta,
         required this.nextCursor,
         required this.notes,
         required this.parsed,
+        this.query,
         required this.schema,
         required this.sortLine,
         required this.zeroResults,
     });
 
     factory SearchResults.fromJson(Map<String, dynamic> json) => SearchResults(
+        hidden: json["hidden"] == null ? null : List<HiddenProject>.from(json["hidden"]!.map((x) => HiddenProject.fromJson(x))),
         hiddenCount: json["hidden_count"],
         items: List<ProjectCard>.from(json["items"].map((x) => ProjectCard.fromJson(x))),
+        legendLine: json["legend_line"],
+        meta: json["meta"] == null ? null : PageMeta.fromJson(json["meta"]),
         nextCursor: json["next_cursor"],
         notes: List<String>.from(json["notes"].map((x) => x)),
         parsed: SearchFilters.fromJson(json["parsed"]),
+        query: json["query"],
         schema: json["schema"],
         sortLine: json["sort_line"],
         zeroResults: json["zero_results"] == null ? null : ZeroResults.fromJson(json["zero_results"]),
     );
 
     Map<String, dynamic> toJson() => {
+        "hidden": hidden == null ? null : List<dynamic>.from(hidden!.map((x) => x.toJson())),
         "hidden_count": hiddenCount,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "legend_line": legendLine,
+        "meta": meta?.toJson(),
         "next_cursor": nextCursor,
         "notes": List<dynamic>.from(notes.map((x) => x)),
         "parsed": parsed.toJson(),
+        "query": query,
         "schema": schema,
         "sort_line": sortLine,
         "zero_results": zeroResults?.toJson(),
+    };
+}
+
+///A project the buyer's filters hid, and why.
+class HiddenProject {
+    final String name;
+    final String slug;
+    final String whyLine;
+
+    HiddenProject({
+        required this.name,
+        required this.slug,
+        required this.whyLine,
+    });
+
+    factory HiddenProject.fromJson(Map<String, dynamic> json) => HiddenProject(
+        name: json["name"],
+        slug: json["slug"],
+        whyLine: json["why_line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "name": name,
+        "slug": slug,
+        "why_line": whyLine,
     };
 }
 

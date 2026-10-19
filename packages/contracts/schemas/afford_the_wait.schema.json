@@ -27,9 +27,51 @@
     "series": { "type": "array", "items": { "$ref": "#/$defs/AffordPoint" } },
     "frequency_line": { "type": ["string", "null"] },
     "assumptions": { "type": "array", "items": { "type": "string" } },
-    "framing_line": { "type": "string" }
+    "framing_line": { "type": "string" },
+    "inputs": { "$ref": "#/$defs/AffordInputs" },
+    "loan": { "$ref": "#/$defs/AffordLoan" },
+    "delay_options": {
+      "description": "The delay cost for each delay the page offers (12 and 24 months).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/DelayCost" }
+    }
   },
   "$defs": {
+    "AffordInputs": {
+      "title": "AffordInputs",
+      "description": "The inputs this answer used (echoed, so a page can show and edit them).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "take_home_inr",
+        "rent_inr",
+        "down_pct",
+        "rate_pct",
+        "tenure_years",
+        "delay_months"
+      ],
+      "properties": {
+        "tower": { "type": ["string", "null"] },
+        "take_home_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "rent_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "down_pct": { "type": "number", "minimum": 0, "maximum": 100 },
+        "rate_pct": { "type": "number", "minimum": 0 },
+        "tenure_years": { "type": "integer", "minimum": 1 },
+        "delay_months": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "AffordLoan": {
+      "title": "AffordLoan",
+      "description": "The loan arithmetic: the all-in rounded to the nearest ₹1 lakh, the down payment and the loan.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["all_in_rounded_inr", "down_payment_inr", "loan_inr"],
+      "properties": {
+        "all_in_rounded_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "down_payment_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "loan_inr": { "$ref": "common.schema.json#/$defs/Inr" }
+      }
+    },
     "MonthlyShare": {
       "title": "MonthlyShare",
       "type": "object",
@@ -78,6 +120,10 @@
       "required": ["month", "pre_emi_inr", "rent_inr", "delay"],
       "properties": {
         "month": { "$ref": "common.schema.json#/$defs/YearMonth" },
+        "paid_out_pct": {
+          "description": "Share of the loan the bank has paid out that month.",
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Pct" }, { "type": "null" }]
+        },
         "pre_emi_inr": { "$ref": "common.schema.json#/$defs/Inr" },
         "rent_inr": { "$ref": "common.schema.json#/$defs/Inr" },
         "delay": { "type": "boolean" }

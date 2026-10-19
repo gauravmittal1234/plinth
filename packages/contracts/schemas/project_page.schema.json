@@ -29,7 +29,10 @@
     "truth_panel": { "type": "array", "items": { "$ref": "#/$defs/TruthPanelRow" } },
     "progress": { "$ref": "#/$defs/ProjectProgress" },
     "homes": { "$ref": "#/$defs/Homes" },
-    "from_developer": { "$ref": "#/$defs/FromDeveloper" },
+    "from_developer": {
+      "description": "Null when the developer has published nothing (no claimed workspace content).",
+      "anyOf": [{ "$ref": "#/$defs/FromDeveloper" }, { "type": "null" }]
+    },
     "cost": {
       "description": "Null without a cost sheet.",
       "anyOf": [{ "$ref": "cost_breakdown.schema.json" }, { "type": "null" }]
@@ -90,7 +93,11 @@
       "required": ["floors_per_tower", "towers", "quarters", "today", "late_filings_line"],
       "properties": {
         "floors_per_tower": { "type": ["integer", "null"], "minimum": 1 },
-        "towers": { "type": "array", "items": { "type": "string" } },
+        "towers": {
+          "description": "Tower codes, or null when the records report the phase as a whole.",
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
         "quarters": { "type": "array", "items": { "$ref": "#/$defs/QuarterProgress" } },
         "today": { "$ref": "#/$defs/ProgressToday" },
         "late_filings_line": { "type": ["string", "null"] }
@@ -165,23 +172,25 @@
       "properties": {
         "label": { "type": "string", "examples": ["3 BHK"] },
         "carpet_line": { "type": ["string", "null"] },
-        "carpet_lane": { "$ref": "common.schema.json#/$defs/Lane" },
+        "carpet_lane": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Lane" }, { "type": "null" }]
+        },
         "super_line": { "type": ["string", "null"] },
-        "super_lane": { "$ref": "common.schema.json#/$defs/Lane" },
+        "super_lane": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Lane" }, { "type": "null" }]
+        },
+        "loading_line": { "type": ["string", "null"], "examples": ["38% loading"] },
         "price_line": { "type": ["string", "null"] },
+        "price_lane": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Lane" }, { "type": "null" }]
+        },
         "all_in_line": { "type": ["string", "null"] },
         "all_in_note": { "type": ["string", "null"] },
-        "rooms": { "type": "array", "items": { "$ref": "#/$defs/HomeRoom" } }
-      }
-    },
-    "HomeRoom": {
-      "title": "HomeRoom",
-      "type": "object",
-      "additionalProperties": true,
-      "required": ["label", "size_line"],
-      "properties": {
-        "label": { "type": "string" },
-        "size_line": { "type": ["string", "null"] }
+        "rooms": {
+          "description": "Room sizes as finished lines (\"Kitchen 10′ × 11′\").",
+          "type": "array",
+          "items": { "type": "string" }
+        }
       }
     },
     "LaneList": {
@@ -192,28 +201,25 @@
       "required": ["lane", "items"],
       "properties": {
         "lane": { "$ref": "common.schema.json#/$defs/Lane" },
+        "source_line": { "type": ["string", "null"] },
         "items": { "type": "array", "items": { "type": "string" } }
       }
     },
     "GettingAround": {
       "title": "GettingAround",
+      "description": "Distances and commute times (our estimate), one finished line per place.",
       "type": "object",
       "additionalProperties": true,
       "required": ["lane", "items"],
       "properties": {
         "lane": { "$ref": "common.schema.json#/$defs/Lane" },
-        "items": { "type": "array", "items": { "$ref": "#/$defs/GettingAroundItem" } },
+        "source_line": { "type": ["string", "null"] },
+        "items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "examples": [["Cyber City: 18 km, 35–55 min at 9 am"]]
+        },
         "note_line": { "type": ["string", "null"] }
-      }
-    },
-    "GettingAroundItem": {
-      "title": "GettingAroundItem",
-      "type": "object",
-      "additionalProperties": true,
-      "required": ["place", "line"],
-      "properties": {
-        "place": { "type": "string" },
-        "line": { "type": "string" }
       }
     },
     "Waterlogging": {
@@ -231,11 +237,11 @@
       "title": "ReportedIncident",
       "type": "object",
       "additionalProperties": true,
-      "required": ["place_line", "reported_on", "source_label"],
+      "description": "A reported incident: where and from what source, as one line (reported, not verified).",
+      "required": ["reported_on", "line"],
       "properties": {
-        "place_line": { "type": "string" },
         "reported_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
-        "source_label": { "type": "string" },
+        "line": { "type": "string" },
         "url": { "type": ["string", "null"] }
       }
     },
@@ -256,9 +262,12 @@
       "title": "PriceList",
       "type": "object",
       "additionalProperties": true,
-      "required": ["dated", "label", "items"],
+      "required": ["published_on", "label", "items"],
       "properties": {
-        "dated": { "$ref": "common.schema.json#/$defs/DateOrMonth" },
+        "published_on": {
+          "description": "ws.price_lists.published_on.",
+          "$ref": "common.schema.json#/$defs/IsoDate"
+        },
         "label": { "type": "string" },
         "current": { "type": "boolean" },
         "items": { "type": "array", "items": { "$ref": "#/$defs/PriceListItem" } }
@@ -271,8 +280,11 @@
       "required": ["unit_label", "price_line"],
       "properties": {
         "unit_label": { "type": "string" },
+        "base_price_inr": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Inr" }, { "type": "null" }]
+        },
         "price_line": { "type": "string" },
-        "per_sqft_carpet_label": { "type": ["string", "null"] }
+        "per_sqft_line": { "type": ["string", "null"], "examples": ["₹16,207 per sq ft carpet"] }
       }
     },
     "PaymentPlan": {
@@ -338,10 +350,11 @@
       "title": "NextStep",
       "type": "object",
       "additionalProperties": true,
-      "required": ["title", "line"],
+      "required": ["heading", "body"],
       "properties": {
-        "title": { "type": "string" },
-        "line": { "type": "string" },
+        "heading": { "type": "string", "examples": ["Ask for it in writing."] },
+        "body": { "type": "string" },
+        "source_label": { "type": ["string", "null"] },
         "href": { "type": ["string", "null"] }
       }
     },
@@ -374,24 +387,51 @@
     },
     "BookingTopic": {
       "title": "BookingTopic",
+      "description": "One \"before booking\" topic: a title, a sub line and short paragraphs, each in a tone (general information, not advice).",
       "type": "object",
       "additionalProperties": true,
-      "required": ["line"],
+      "required": ["title", "paras"],
       "properties": {
-        "line": { "type": "string" },
+        "title": { "type": "string", "examples": ["Which payment plan?"] },
+        "sub": { "type": ["string", "null"] },
+        "line": {
+          "description": "A one-line status for the topic, when it has one (\"Loan checks arrive in 2027\").",
+          "type": ["string", "null"]
+        },
+        "paras": { "type": "array", "items": { "$ref": "#/$defs/BookingPara" } },
         "points": { "type": "array", "items": { "type": "string" } }
       }
+    },
+    "BookingPara": {
+      "title": "BookingPara",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lead", "text", "tone"],
+      "properties": {
+        "lead": { "type": ["string", "null"] },
+        "text": { "type": "string" },
+        "tone": { "$ref": "#/$defs/BookingParaTone" }
+      }
+    },
+    "BookingParaTone": {
+      "title": "BookingParaTone",
+      "description": "How a paragraph is set: plain body, a key point, or the developer's own words in its lane.",
+      "type": "string",
+      "enum": ["body", "key", "developer_says", "from_developer"]
     },
     "EvidenceSummary": {
       "title": "EvidenceSummary",
       "description": "One row of the Records section; evidence_url opens the evidence drawer (api.evidence).",
       "type": "object",
       "additionalProperties": true,
-      "required": ["fact_id", "label", "lane", "line", "evidence_url"],
+      "required": ["fact_id", "chip", "lane", "line", "evidence_url"],
       "properties": {
         "fact_id": { "$ref": "common.schema.json#/$defs/FactId" },
         "group": { "type": "string", "examples": ["QPR filings"] },
-        "label": { "type": "string" },
+        "chip": {
+          "description": "The source chip label, as on the evidence drawer (\"HARERA registration · 2022\").",
+          "type": "string"
+        },
         "lane": { "$ref": "common.schema.json#/$defs/Lane" },
         "line": { "type": "string" },
         "as_of": { "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }] },

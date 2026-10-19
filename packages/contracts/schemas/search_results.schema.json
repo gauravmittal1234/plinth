@@ -23,7 +23,21 @@
     "items": { "type": "array", "maxItems": 50, "items": { "$ref": "#/$defs/ProjectCard" } },
     "hidden_count": { "type": "integer", "minimum": 0 },
     "next_cursor": { "type": ["string", "null"] },
-    "zero_results": { "anyOf": [{ "$ref": "#/$defs/ZeroResults" }, { "type": "null" }] }
+    "zero_results": { "anyOf": [{ "$ref": "#/$defs/ZeroResults" }, { "type": "null" }] },
+    "query": {
+      "description": "The query as the buyer typed it (echoed for the search box).",
+      "type": ["string", "null"]
+    },
+    "legend_line": {
+      "description": "The map legend (\"Pins show all-in prices\").",
+      "type": ["string", "null"]
+    },
+    "hidden": {
+      "description": "The projects the filters hid, each with why (hidden_count of them).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/HiddenProject" }
+    },
+    "meta": { "$ref": "common.schema.json#/$defs/PageMeta" }
   },
   "$defs": {
     "SearchFilters": {
@@ -49,6 +63,14 @@
         },
         "possession_by": {
           "anyOf": [{ "$ref": "common.schema.json#/$defs/YearMonth" }, { "type": "null" }]
+        },
+        "name": {
+          "description": "A project name the query names (\"Indigo Terraces\"), when it matches no phase.",
+          "type": ["string", "null"]
+        },
+        "place": {
+          "description": "A place the query names outside coverage (\"noida\").",
+          "type": ["string", "null"]
         }
       }
     },
@@ -112,7 +134,32 @@
         "image_url": { "type": ["string", "null"] },
         "centroid": {
           "anyOf": [{ "$ref": "common.schema.json#/$defs/Centroid" }, { "type": "null" }]
-        }
+        },
+        "chip_note": {
+          "description": "The line under the chip (\"Delivery risk · as of 14 Oct 2026\").",
+          "type": ["string", "null"]
+        },
+        "progress_line": {
+          "type": ["string", "null"],
+          "examples": ["63% built · 58% of time used"]
+        },
+        "built_pct": { "anyOf": [{ "$ref": "common.schema.json#/$defs/Pct" }, { "type": "null" }] },
+        "time_used_pct": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Pct" }, { "type": "null" }]
+        },
+        "config_line": { "type": ["string", "null"], "examples": ["3 BHK, 1,400 sq ft carpet"] }
+      }
+    },
+    "HiddenProject": {
+      "title": "HiddenProject",
+      "description": "A project the buyer's filters hid, and why.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "name", "why_line"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "name": { "type": "string" },
+        "why_line": { "type": "string" }
       }
     },
     "ZeroResults": {

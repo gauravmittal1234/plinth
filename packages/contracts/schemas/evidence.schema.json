@@ -24,6 +24,10 @@
   ],
   "properties": {
     "schema": { "const": "plinth.evidence/1" },
+    "fact_id": {
+      "description": "The fact this drawer shows (the p_fact_id it was opened with).",
+      "$ref": "common.schema.json#/$defs/FactId"
+    },
     "chip": {
       "type": "string",
       "description": "The source chip label, e.g. \"HARERA QPR · Apr–Jun 2026\"."

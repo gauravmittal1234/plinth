@@ -1215,10 +1215,11 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
       "The track record counts RERA-era projects only, registered 2017 or later. Northfield built before that too.",
     coverage_line:
       "Before May 2017 there was no public register of promised dates, so this list may be incomplete.",
+    // PreReraItem (contracts common.schema.json): the fact as one line, its sources as a list.
     items: cat.pre_rera_records.map((r) => ({
       name: `${r.project_name}, ${r.sector}${r.year_line ? ` (${r.year_line})` : ""}`,
-      fact_line: r.fact_line,
-      source_line: r.sources.length ? r.sources.join(" · ") : null,
+      line: r.fact_line,
+      sources: r.sources,
     })),
   });
   const recordsOf = (slug) => {
@@ -1537,7 +1538,7 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
       claim_explainer_line:
         "Claiming lets a developer correct facts, reply next to the records and hear from buyers who ask. It never changes a band. A developer that hasn't claimed is shown as “Invited” with the date, and we never call anyone uncooperative.",
       how_buyers_find_you: {
-        lines: [
+        rules: [
           "Order never follows money. The default sort is lowest delivery risk first. No developer pays us, and no fee we earn ever touches ranking. Nobody can buy a place, above or below anyone.",
           "Only verified facts count. Bands, dates and costs come from records we have matched to HARERA, DTCP or MCA. A price list or photo a developer adds is shown and labelled as theirs, but never used to rank. Claiming a page doesn't move it either.",
           "Bands show in Compare. Buyers see each band side by side with the all-in cost and progress. A buyer who asks for low delivery risk gets two tiles, Low and Moderate, and can remove either. Buyers always see how many projects their filters hid.",
@@ -1894,11 +1895,11 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
       example: { slug: AH2, ...late12Of(AH2) },
     },
     factors: [
-      { code: "finances", label: "Finances", weight_pct: 30 },
-      { code: "track_record", label: "Track record", weight_pct: 30 },
-      { code: "timeline", label: "Timeline", weight_pct: 20 },
-      { code: "legal", label: "Legal", weight_pct: 15 },
-      { code: "site", label: "Site", weight_pct: 5 },
+      { factor: "finances", label: "Finances", weight_pct: 30 },
+      { factor: "track_record", label: "Track record", weight_pct: 30 },
+      { factor: "timeline", label: "Timeline", weight_pct: 20 },
+      { factor: "legal", label: "Legal", weight_pct: 15 },
+      { factor: "site", label: "Site", weight_pct: 5 },
     ],
     factors_note_line:
       "These are starting weights. We refit them after each backtest and publish the change.",
@@ -1977,7 +1978,13 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
     },
     never_line:
       "No developer pays us. Ever. And no one can pay to change, hide, delay or preview a score.",
-    meta: { generated_at: NOW, disclaimer_line: DISCLAIMER, promise_line: PROMISE },
+    meta: {
+      data_as_of: "2026-10-14",
+      model_version: "v1.2",
+      generated_at: NOW,
+      disclaimer_line: DISCLAIMER,
+      promise_line: PROMISE,
+    },
   });
   const about = () => ({
     schema: "plinth.about/1",
@@ -2082,32 +2089,40 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
         },
       ],
     },
-    meta: { generated_at: NOW, promise_line: PROMISE, disclaimer_line: DISCLAIMER },
+    meta: {
+      data_as_of: "2026-10-14",
+      generated_at: NOW,
+      promise_line: PROMISE,
+      disclaimer_line: DISCLAIMER,
+    },
   });
   // api.flags() for an anonymous caller in the fixture world: T04's seeded defaults
   // (20261020000700), with bands_public turned on and the AI kill switches turned off
   // until M5 by 30_scoring.sql (§5b round 2, C-29). Internal- and user-audience flags read
-  // false for anon.
+  // false for anon. The envelope is T04's api.flags(): { schema, flags: { key: boolean } }.
   const flags = () => ({
-    bands_public: true,
-    harera_live_fetch: false,
-    ai_ask: false,
-    ai_doc_check: false,
-    ai_staging: false,
-    wa_outbound: false,
-    wa_inbound: false,
-    push_outbound: false,
-    email_outbound: false,
-    since_replay_slider: false,
-    family_circle: false,
-    dev_workspace: false,
-    visit_booking: false,
-    broker_layer: false,
-    buyer_signals: false,
-    pro_paywall: false,
-    map_tiles: false,
-    facts_only_global: false,
-    maintenance_mode: false,
+    schema: "plinth.flags/1",
+    flags: {
+      bands_public: true,
+      harera_live_fetch: false,
+      ai_ask: false,
+      ai_doc_check: false,
+      ai_staging: false,
+      wa_outbound: false,
+      wa_inbound: false,
+      push_outbound: false,
+      email_outbound: false,
+      since_replay_slider: false,
+      family_circle: false,
+      dev_workspace: false,
+      visit_booking: false,
+      broker_layer: false,
+      buyer_signals: false,
+      pro_paywall: false,
+      map_tiles: false,
+      facts_only_global: false,
+      maintenance_mode: false,
+    },
   });
 
   return {

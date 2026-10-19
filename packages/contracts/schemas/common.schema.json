@@ -418,6 +418,31 @@
         }
       }
     },
+    "BaseRate": {
+      "title": "BaseRate",
+      "description": "How many past Gurugram projects got their OC more than 12 months late (the calibration base rate).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n_projects", "n_late", "per_100"],
+      "properties": {
+        "n_projects": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_late": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "per_100": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "line": {
+          "type": ["string", "null"]
+        }
+      }
+    },
     "PreRera": {
       "title": "PreRera",
       "description": "Before-RERA history from court orders and news. Never counted in a band.",

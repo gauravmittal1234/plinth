@@ -146,7 +146,7 @@
   },
   "allOf": [
     {
-      "$comment": "No band, frequency, reasons or what-would-change unless the phase is scored and bands are public.",
+      "$comment": "No band, frequency or reasons unless the phase is scored and bands are public. Limited-history and not-scored phases keep their what-would-change line (DESIGN §5b); S1 nulls it (next rule).",
       "if": {
         "type": "object",
         "required": ["display"],
@@ -189,9 +189,6 @@
           "reasons": {
             "type": "array",
             "maxItems": 0
-          },
-          "what_would_change": {
-            "type": "null"
           }
         }
       },
@@ -200,6 +197,32 @@
         "properties": {
           "band": {
             "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "$comment": "With bands not public (S1) there is no what-would-change line either (API_CONTRACTS §2.2).",
+      "if": {
+        "type": "object",
+        "required": ["display"],
+        "properties": {
+          "display": {
+            "type": "object",
+            "required": ["bands_public"],
+            "properties": {
+              "bands_public": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "what_would_change": {
+            "type": "null"
           }
         }
       }
@@ -391,7 +414,8 @@
           "minLength": 1
         },
         "short_code": {
-          "type": "string",
+          "description": "The phase's short code for WhatsApp and invite codes; null until one is assigned (only Aurelia has one in §5b).",
+          "type": ["string", "null"],
           "pattern": "^[A-Z0-9]{2,6}$",
           "examples": ["AH2"]
         },
@@ -989,7 +1013,8 @@
           ]
         },
         "age_days": {
-          "type": "integer",
+          "description": "Days since filed_on; null when the filing date is not on record (Cedar Walk Ph 2).",
+          "type": ["integer", "null"],
           "minimum": 0
         }
       }

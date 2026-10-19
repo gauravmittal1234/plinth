@@ -44,6 +44,15 @@ abstract final class BandSetBy {
   static const List<String> values = ['model', 'red_flag_rule'];
 }
 
+/// How a paragraph is set: plain body, a key point, or the developer's own words in its lane.
+abstract final class BookingParaTone {
+  static const String body = 'body';
+  static const String key = 'key';
+  static const String developerSays = 'developer_says';
+  static const String fromDeveloper = 'from_developer';
+  static const List<String> values = ['body', 'key', 'developer_says', 'from_developer'];
+}
+
 /// Sets the Haryana stamp duty rate (core.cost_rule_sets).
 abstract final class BuyerKind {
   static const String male = 'male';

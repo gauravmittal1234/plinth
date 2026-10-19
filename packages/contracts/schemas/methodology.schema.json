@@ -2,42 +2,78 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://plinth.in/schemas/methodology.schema.json",
   "title": "Methodology",
-  "description": "plinth.methodology/1, from api.methodology() (API_CONTRACTS §3.1): model versions, factor weights, red-flag rules, the calibration table and the changelog. Only published models and runs.",
+  "description": "plinth.methodology/1, from api.methodology() (API_CONTRACTS §3.1; the WebMethodology page): the bands and their ranges, factor weights, red-flag rules, confidence, the calibration table and the model versions with their changelog. Only published models and runs.",
   "type": "object",
   "additionalProperties": true,
   "required": [
     "schema",
     "current_version",
-    "models",
+    "bands",
     "factors",
     "red_flag_rules",
     "calibration",
-    "changelog",
+    "versions",
     "meta"
   ],
   "properties": {
     "schema": { "const": "plinth.methodology/1" },
     "current_version": { "$ref": "common.schema.json#/$defs/ModelVersion" },
-    "models": { "type": "array", "items": { "$ref": "#/$defs/ScoreModel" } },
+    "published_on": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+    },
+    "question_line": { "type": ["string", "null"] },
+    "bands": { "type": "array", "items": { "$ref": "#/$defs/BandRange" } },
+    "bands_note_line": { "type": ["string", "null"] },
+    "similar_line": { "type": ["string", "null"] },
+    "late12": { "$ref": "#/$defs/Late12Explainer" },
     "factors": { "type": "array", "items": { "$ref": "#/$defs/FactorWeight" } },
+    "factors_note_line": { "type": ["string", "null"] },
+    "how_line": { "type": ["string", "null"] },
     "red_flag_rules": { "type": "array", "items": { "$ref": "#/$defs/RedFlagRule" } },
+    "red_flag_example_line": { "type": ["string", "null"] },
+    "confidence": { "type": "array", "items": { "$ref": "#/$defs/ConfidenceLevelLine" } },
+    "data_rules": { "$ref": "#/$defs/DataRules" },
     "calibration": { "$ref": "#/$defs/Calibration" },
-    "changelog": { "type": "array", "items": { "$ref": "#/$defs/ChangelogEntry" } },
+    "versions": { "type": "array", "items": { "$ref": "#/$defs/MethodologyVersion" } },
+    "how_we_worked_this_out": {
+      "description": "Plain-language arithmetic notes per calculator, e.g. afford_the_wait.",
+      "type": "object",
+      "additionalProperties": { "type": "array", "items": { "type": "string" } }
+    },
+    "never_line": { "type": ["string", "null"] },
     "meta": { "$ref": "common.schema.json#/$defs/PageMeta" }
   },
   "$defs": {
-    "ScoreModel": {
-      "title": "ScoreModel",
+    "BandRange": {
+      "title": "BandRange",
+      "description": "A band, its range of 100 and its natural-frequency sentence.",
       "type": "object",
       "additionalProperties": true,
-      "required": ["version", "released_on", "status"],
+      "required": ["code", "label", "step", "low", "high", "sentence"],
       "properties": {
-        "version": { "$ref": "common.schema.json#/$defs/ModelVersion" },
-        "released_on": {
-          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
-        },
-        "status": { "type": "string", "examples": ["current", "retired"] },
-        "summary_line": { "type": ["string", "null"] }
+        "code": { "$ref": "common.schema.json#/$defs/BandCode" },
+        "label": { "type": "string" },
+        "step": { "$ref": "common.schema.json#/$defs/BandStep" },
+        "low": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "high": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "sentence": { "type": "string" },
+        "example_slug": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Slug" }, { "type": "null" }]
+        }
+      }
+    },
+    "Late12Explainer": {
+      "title": "Late12Explainer",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["line"],
+      "properties": {
+        "line": { "type": "string" },
+        "extensions_line": { "type": ["string", "null"] },
+        "example": {
+          "description": "A worked example: a phase's slug plus its RiskSummary.late12.",
+          "type": "object"
+        }
       }
     },
     "FactorWeight": {
@@ -55,51 +91,82 @@
       "title": "RedFlagRule",
       "type": "object",
       "additionalProperties": true,
-      "required": ["code", "text", "published_on"],
+      "required": ["code", "title", "line"],
       "properties": {
         "code": { "type": "string", "pattern": "^RF\\d+_[A-Z0-9_]+$" },
-        "text": { "type": "string" },
+        "n": { "type": "integer", "minimum": 1 },
+        "title": { "type": "string" },
+        "line": { "type": "string" },
         "published_on": {
           "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
         }
+      }
+    },
+    "ConfidenceLevelLine": {
+      "title": "ConfidenceLevelLine",
+      "description": "What each confidence level (and the two unscored states) means, with its dots.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["level", "dots", "line"],
+      "properties": {
+        "level": { "type": "string", "examples": ["high", "low", "limited_history", "not_scored"] },
+        "dots": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "line": { "type": "string" }
+      }
+    },
+    "DataRules": {
+      "title": "DataRules",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["rescore_hours", "stale_days", "line"],
+      "properties": {
+        "rescore_hours": { "type": "integer", "minimum": 1 },
+        "stale_days": { "type": "integer", "minimum": 1 },
+        "line": { "type": "string" }
       }
     },
     "Calibration": {
       "title": "Calibration",
       "type": "object",
       "additionalProperties": true,
-      "required": ["model_version", "illustrative", "base_rate_line", "rows"],
+      "required": ["illustrative", "rows", "base_rate"],
       "properties": {
         "model_version": { "$ref": "common.schema.json#/$defs/ModelVersion" },
         "illustrative": { "type": "boolean" },
-        "base_rate_line": { "type": ["string", "null"] },
-        "rows": { "type": "array", "items": { "$ref": "#/$defs/CalibrationRow" } }
+        "rows": { "type": "array", "items": { "$ref": "#/$defs/CalibrationRow" } },
+        "base_rate": { "$ref": "common.schema.json#/$defs/BaseRate" },
+        "brier": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "brier_baseline": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
       }
     },
     "CalibrationRow": {
       "title": "CalibrationRow",
       "type": "object",
       "additionalProperties": true,
-      "required": ["band", "frequency_line", "range_low", "range_high", "n_projects", "n_late"],
+      "required": ["band", "label", "range_low", "range_high", "n_projects", "n_late", "per_100"],
       "properties": {
         "band": { "$ref": "common.schema.json#/$defs/BandCode" },
-        "frequency_line": { "type": ["string", "null"] },
+        "label": { "type": "string" },
         "range_low": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
         "range_high": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
         "n_projects": { "type": ["integer", "null"], "minimum": 0 },
-        "n_late": { "type": ["integer", "null"], "minimum": 0 }
+        "n_late": { "type": ["integer", "null"], "minimum": 0 },
+        "per_100": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 }
       }
     },
-    "ChangelogEntry": {
-      "title": "ChangelogEntry",
+    "MethodologyVersion": {
+      "title": "MethodologyVersion",
+      "description": "A published model version and its changelog (newest first).",
       "type": "object",
       "additionalProperties": true,
-      "required": ["version", "published_on", "summary"],
+      "required": ["version", "released_on", "title", "items", "current"],
       "properties": {
         "version": { "$ref": "common.schema.json#/$defs/ModelVersion" },
-        "published_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
-        "summary": { "type": "string" },
-        "minutes_url": { "type": ["string", "null"] }
+        "released_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "title": { "type": "string" },
+        "items": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": ["string", "null"] },
+        "current": { "type": "boolean" }
       }
     }
   }

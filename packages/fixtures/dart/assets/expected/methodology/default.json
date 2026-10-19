@@ -66,27 +66,27 @@
   },
   "factors": [
     {
-      "code": "finances",
+      "factor": "finances",
       "label": "Finances",
       "weight_pct": 30
     },
     {
-      "code": "track_record",
+      "factor": "track_record",
       "label": "Track record",
       "weight_pct": 30
     },
     {
-      "code": "timeline",
+      "factor": "timeline",
       "label": "Timeline",
       "weight_pct": 20
     },
     {
-      "code": "legal",
+      "factor": "legal",
       "label": "Legal",
       "weight_pct": 15
     },
     {
-      "code": "site",
+      "factor": "site",
       "label": "Site",
       "weight_pct": 5
     }
@@ -251,6 +251,8 @@
   },
   "never_line": "No developer pays us. Ever. And no one can pay to change, hide, delay or preview a score.",
   "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
     "generated_at": "2026-10-18T12:00:00+05:30",
     "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
     "promise_line": "No developer pays us. Ever."

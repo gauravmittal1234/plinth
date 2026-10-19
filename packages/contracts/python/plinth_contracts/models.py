@@ -3,11 +3,19 @@
 
 from datetime import date as date_aliased
 from enum import IntEnum, StrEnum
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, RootModel
 from typing_extensions import TypeAliasType
+
+
+class AboutMoney(BaseModel):
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    never_line: str
+    lines: list[str]
 
 
 class AgreementStage(StrEnum):
@@ -114,6 +122,20 @@ class BandStep(RootModel[int]):
     root: Annotated[int, Field(ge=1, le=5, title="BandStep")]
 
 
+class BaseRate(BaseModel):
+    """
+    How many past Gurugram projects got their OC more than 12 months late (the calibration base rate).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    n_projects: Annotated[int, Field(ge=0)]
+    n_late: Annotated[int, Field(ge=0)]
+    per_100: Annotated[int, Field(ge=0, le=100)]
+    line: str | None = None
+
+
 class Bbox(RootModel[list[float]]):
     """
     [min longitude, min latitude, max longitude, max latitude], WGS 84.
@@ -125,12 +147,15 @@ class Bbox(RootModel[list[float]]):
     """
 
 
-class BookingTopic(BaseModel):
-    model_config = ConfigDict(
-        extra="allow",
-    )
-    line: str
-    points: list[str] | None = None
+class BookingParaTone(StrEnum):
+    """
+    How a paragraph is set: plain body, a key point, or the developer's own words in its lane.
+    """
+
+    body = "body"
+    key = "key"
+    developer_says = "developer_says"
+    from_developer = "from_developer"
 
 
 class BuyerKind(StrEnum):
@@ -159,11 +184,12 @@ class CalibrationRow(BaseModel):
         extra="allow",
     )
     band: BandCode
-    frequency_line: str | None
+    label: str
     range_low: Annotated[int | None, Field(ge=0, le=100)]
     range_high: Annotated[int | None, Field(ge=0, le=100)]
     n_projects: Annotated[int | None, Field(ge=0)]
     n_late: Annotated[int | None, Field(ge=0)]
+    per_100: Annotated[int | None, Field(ge=0, le=100)]
 
 
 class Centroid(RootModel[list[float]]):
@@ -223,7 +249,17 @@ class CompareRow(BaseModel):
     )
     key: Annotated[str, Field(pattern="^[a-z][a-z0-9_]*$")]
     label: str
+    source_line: str | None = None
+    """
+    Where the row's facts come from ("HARERA orders · to 14 Oct 2026").
+    """
     cells: Annotated[list[str | None], Field(max_length=4, min_length=2)]
+    developer_says: Annotated[
+        list[str | None] | None, Field(max_length=4, min_length=2)
+    ] = None
+    """
+    Per column, the developer's own line (its own lane), or null. Lines up with cells.
+    """
 
 
 class Complaints(BaseModel):
@@ -247,6 +283,19 @@ class ConfidenceLevel(StrEnum):
     low = "low"
 
 
+class ConfidenceLevelLine(BaseModel):
+    """
+    What each confidence level (and the two unscored states) means, with its dots.
+    """
+
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    level: str
+    dots: Annotated[int, Field(ge=0, le=2)]
+    line: str
+
+
 class ContactStatus(StrEnum):
     active = "active"
     ended = "ended"
@@ -264,11 +313,32 @@ class CostTag(StrEnum):
     refundable_deposit = "refundable_deposit"
 
 
-class CoverageArea(BaseModel):
+class CoverageNext(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )
     name: str
+    when_line: str
+    notify: bool
+    """
+    True when a buyer can ask to hear when it arrives.
+    """
+
+
+class CoverageToday(BaseModel):
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    line: str
+    items: list[str]
+
+
+class DataRules(BaseModel):
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    rescore_hours: Annotated[int, Field(ge=1)]
+    stale_days: Annotated[int, Field(ge=1)]
     line: str
 
 
@@ -487,21 +557,17 @@ class FrequencyKind(StrEnum):
     range = "range"
 
 
-class GettingAroundItem(BaseModel):
-    model_config = ConfigDict(
-        extra="allow",
-    )
-    place: str
-    line: str
-
-
 class GrievanceOfficer(BaseModel):
+    """
+    Always listed; placeholders until the founder supplies them.
+    """
+
     model_config = ConfigDict(
         extra="allow",
     )
-    name: str | None
-    contact_line: str | None
-    placeholder: bool
+    officer: str
+    contact: str
+    line: str
 
 
 class HalfYearComplaints(BaseModel):
@@ -512,14 +578,6 @@ class HalfYearComplaints(BaseModel):
     count: Annotated[int, Field(ge=0)]
     per_100_units: Annotated[float, Field(ge=0.0)]
     units_base: Annotated[int, Field(ge=1)]
-
-
-class HomeRoom(BaseModel):
-    model_config = ConfigDict(
-        extra="allow",
-    )
-    label: str
-    size_line: str | None
 
 
 class HowBuyersFindYou(BaseModel):
@@ -580,15 +638,20 @@ class LaneList(BaseModel):
         extra="allow",
     )
     lane: Lane
+    source_line: str | None = None
     items: list[str]
 
 
-class LaterFeature(BaseModel):
+class Late12Explainer(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )
-    name: str
     line: str
+    extensions_line: str | None = None
+    example: dict[str, Any] | None = None
+    """
+    A worked example: a phase's slug plus its RiskSummary.late12.
+    """
 
 
 class MatchMethod(StrEnum):
@@ -608,8 +671,9 @@ class NextStep(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )
-    title: str
-    line: str
+    heading: str
+    body: str
+    source_label: str | None = None
     href: str | None = None
 
 
@@ -706,8 +770,9 @@ class PriceListItem(BaseModel):
         extra="allow",
     )
     unit_label: str
+    base_price_inr: int | None = None
     price_line: str
-    per_sqft_carpet_label: str | None = None
+    per_sqft_line: str | None = None
 
 
 class ProgressToday(BaseModel):
@@ -765,8 +830,10 @@ class RedFlagRule(BaseModel):
         extra="allow",
     )
     code: Annotated[str, Field(pattern="^RF\\d+_[A-Z0-9_]+$")]
-    text: str
-    published_on: date_aliased | None
+    n: Annotated[int | None, Field(ge=1)] = None
+    title: str
+    line: str
+    published_on: date_aliased | None = None
 
 
 class RefusalCode(StrEnum):
@@ -785,6 +852,14 @@ class RefusalCode(StrEnum):
     unknown_project = "unknown_project"
     loans_r2 = "loans_r2"
     off_topic = "off_topic"
+
+
+class RegisterRow(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    label: str
+    value: str
 
 
 class RelayParty(BaseModel):
@@ -835,15 +910,18 @@ class ReportError(BaseModel):
 
 
 class ReportedIncident(BaseModel):
+    """
+    A reported incident: where and from what source, as one line (reported, not verified).
+    """
+
     model_config = ConfigDict(
         extra="allow",
     )
-    place_line: str
     reported_on: Annotated[date_aliased, Field(title="IsoDate")]
     """
     A calendar date, YYYY-MM-DD (IST business date).
     """
-    source_label: str
+    line: str
     url: str | None = None
 
 
@@ -855,13 +933,23 @@ class ReraNumber(RootModel[str]):
 
 
 class ResponseTime(BaseModel):
+    """
+    One row of the response-time board.
+    """
+
     model_config = ConfigDict(
         extra="allow",
     )
-    key: Annotated[str, Field(pattern="^[a-z][a-z0-9_]*$")]
-    label: str
-    sla_line: str
-    actual_line: str | None
+    what: str
+    promise_line: str
+    ref_prefix: Annotated[str | None, Field(pattern="^[A-Z]{1,3}$")]
+    """
+    The reference prefix this kind of request gets (E-, CL-, G-), or null.
+    """
+    actual_line: str | None = None
+    """
+    How we actually did, once there is a track record.
+    """
 
 
 class RiskShare(BaseModel):
@@ -891,19 +979,6 @@ class RpcError(BaseModel):
     message: ApiErrorCode
     details: str | None
     hint: str | None
-
-
-class ScoreModel(BaseModel):
-    model_config = ConfigDict(
-        extra="allow",
-    )
-    version: Annotated[str, Field(pattern="^v\\d+\\.\\d+$", title="ModelVersion")]
-    """
-    Scoring model version, e.g. v1.2.
-    """
-    released_on: date_aliased | None
-    status: str
-    summary_line: str | None = None
 
 
 class ScoreState(StrEnum):
@@ -1079,6 +1154,78 @@ class ZeroResults(BaseModel):
     hints: list[str] | None = None
 
 
+class AboutCalibrationRow(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    band: BandCode
+    label: str
+    said_low: Annotated[int, Field(ge=0, le=100)]
+    said_high: Annotated[int, Field(ge=0, le=100)]
+    n_projects: Annotated[int, Field(ge=0)]
+    n_late: Annotated[int, Field(ge=0)]
+    per_100: Annotated[int, Field(ge=0, le=100)]
+    inside_range: bool
+
+
+class AboutIdentity(BaseModel):
+    """
+    The company register, including who funds us (the holdings line). Placeholders until the founder supplies them.
+    """
+
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    placeholder_note: str | None
+    photo_line: str | None = None
+    register_: Annotated[list[RegisterRow], Field(alias="register")]
+
+
+class AffordInputs(BaseModel):
+    """
+    The inputs this answer used (echoed, so a page can show and edit them).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    tower: str | None = None
+    take_home_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+    rent_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+    down_pct: Annotated[float, Field(ge=0.0, le=100.0)]
+    rate_pct: Annotated[float, Field(ge=0.0)]
+    tenure_years: Annotated[int, Field(ge=1)]
+    delay_months: Annotated[int, Field(ge=0)]
+
+
+class AffordLoan(BaseModel):
+    """
+    The loan arithmetic: the all-in rounded to the nearest ₹1 lakh, the down payment and the loan.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    all_in_rounded_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+    down_payment_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+    loan_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+
+
 class AffordPoint(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -1086,6 +1233,10 @@ class AffordPoint(BaseModel):
     month: Annotated[str, Field(pattern="^\\d{4}-(0[1-9]|1[0-2])$", title="YearMonth")]
     """
     Month precision, YYYY-MM. "Dec 2027" is 2027-12.
+    """
+    paid_out_pct: Pct | None = None
+    """
+    Share of the loan the bank has paid out that month.
     """
     pre_emi_inr: Annotated[int, Field(title="Inr")]
     """
@@ -1208,27 +1359,65 @@ class Band(BaseModel):
     rule: BandRule | None
 
 
-class BeforeBooking(BaseModel):
+class BandRange(BaseModel):
+    """
+    A band, its range of 100 and its natural-frequency sentence.
+    """
+
     model_config = ConfigDict(
         extra="allow",
     )
-    payment_plans: BookingTopic | None
-    loans: BookingTopic
-    nri: BookingTopic | None
-    selling_before_possession: BookingTopic | None
+    code: BandCode
+    label: str
+    step: Annotated[int, Field(ge=1, le=5, title="BandStep")]
+    low: Annotated[int, Field(ge=0, le=100)]
+    high: Annotated[int, Field(ge=0, le=100)]
+    sentence: str
+    example_slug: Slug | None = None
+
+
+class BookingPara(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    lead: str | None
+    text: str
+    tone: BookingParaTone
+
+
+class BookingTopic(BaseModel):
+    """
+    One "before booking" topic: a title, a sub line and short paragraphs, each in a tone (general information, not advice).
+    """
+
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    title: str
+    sub: str | None = None
+    line: str | None = None
+    """
+    A one-line status for the topic, when it has one ("Loan checks arrive in 2027").
+    """
+    paras: list[BookingPara]
+    points: list[str] | None = None
 
 
 class Calibration(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )
-    model_version: Annotated[str, Field(pattern="^v\\d+\\.\\d+$", title="ModelVersion")]
+    model_version: Annotated[
+        str | None, Field(pattern="^v\\d+\\.\\d+$", title="ModelVersion")
+    ] = None
     """
     Scoring model version, e.g. v1.2.
     """
     illustrative: bool
-    base_rate_line: str | None
     rows: list[CalibrationRow]
+    base_rate: BaseRate
+    brier: Annotated[float | None, Field(ge=0.0, le=1.0)] = None
+    brier_baseline: Annotated[float | None, Field(ge=0.0, le=1.0)] = None
 
 
 class ChangeItem(BaseModel):
@@ -1250,22 +1439,6 @@ class ChangeItem(BaseModel):
     after_pill: str | None = None
     developer_says: DeveloperSaysLine | None = None
     sources: list[SourceRef]
-
-
-class ChangelogEntry(BaseModel):
-    model_config = ConfigDict(
-        extra="allow",
-    )
-    version: Annotated[str, Field(pattern="^v\\d+\\.\\d+$", title="ModelVersion")]
-    """
-    Scoring model version, e.g. v1.2.
-    """
-    published_on: Annotated[date_aliased, Field(title="IsoDate")]
-    """
-    A calendar date, YYYY-MM-DD (IST business date).
-    """
-    summary: str
-    minutes_url: str | None = None
 
 
 class Chip(BaseModel):
@@ -1293,6 +1466,13 @@ class CompareColumn(BaseModel):
     name: str
     chip: Chip
     state: DisplayState
+    locality_line: str | None = None
+    developer_name: str | None = None
+    price_line: str | None = None
+    """
+    All-in first, as on a ProjectCard.
+    """
+    image_url: str | None = None
 
 
 class CompareRequest(BaseModel):
@@ -1416,8 +1596,8 @@ class Coverage(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )
-    today: list[CoverageArea]
-    next: list[CoverageArea]
+    today: CoverageToday
+    next: list[CoverageNext]
 
 
 class DelayCost(BaseModel):
@@ -1610,11 +1790,31 @@ class EvidenceSummary(BaseModel):
     Opaque id of a core.facts row (a uuid in the database). Clients never parse it.
     """
     group: str | None = None
-    label: str
+    chip: str
+    """
+    The source chip label, as on the evidence drawer ("HARERA registration · 2022").
+    """
     lane: Lane
     line: str
     as_of: date_aliased | None = None
     evidence_url: str
+
+
+class FactsOnlyNotice(BaseModel):
+    """
+    Why a group's bands are withheld, from when, and what still shows.
+    """
+
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    since: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    line: str
+    anchor: str | None = None
+    explainer_lines: list[str]
 
 
 class FamilyInvite(BaseModel):
@@ -1751,11 +1951,16 @@ class Frequency(BaseModel):
 
 
 class GettingAround(BaseModel):
+    """
+    Distances and commute times (our estimate), one finished line per place.
+    """
+
     model_config = ConfigDict(
         extra="allow",
     )
     lane: Lane
-    items: list[GettingAroundItem]
+    source_line: str | None = None
+    items: list[str]
     note_line: str | None = None
 
 
@@ -1781,14 +1986,20 @@ class GroupComplaints(BaseModel):
     fairness_line: str | None
 
 
-class HoldingsDeclaration(BaseModel):
+class HiddenProject(BaseModel):
+    """
+    A project the buyer's filters hid, and why.
+    """
+
     model_config = ConfigDict(
-        extra="allow",
+        extra="forbid",
     )
-    person_role: str
-    declared_on: date_aliased | None
-    holdings_line: str | None
-    placeholder: bool
+    slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    name: str
+    why_line: str
 
 
 class HomeConfiguration(BaseModel):
@@ -1800,10 +2011,15 @@ class HomeConfiguration(BaseModel):
     carpet_lane: Lane | None = None
     super_line: str | None = None
     super_lane: Lane | None = None
+    loading_line: str | None = None
     price_line: str | None
+    price_lane: Lane | None = None
     all_in_line: str | None
     all_in_note: str | None = None
-    rooms: list[HomeRoom] | None = None
+    rooms: list[str] | None = None
+    """
+    Room sizes as finished lines ("Kitchen 10′ × 11′").
+    """
 
 
 class Homes(BaseModel):
@@ -1851,7 +2067,32 @@ class LatestQpr(BaseModel):
     """
     label: str
     filed_on: date_aliased | None
-    age_days: Annotated[int, Field(ge=0)]
+    age_days: Annotated[int | None, Field(ge=0)]
+    """
+    Days since filed_on; null when the filing date is not on record (Cedar Walk Ph 2).
+    """
+
+
+class MethodologyVersion(BaseModel):
+    """
+    A published model version and its changelog (newest first).
+    """
+
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    version: Annotated[str, Field(pattern="^v\\d+\\.\\d+$", title="ModelVersion")]
+    """
+    Scoring model version, e.g. v1.2.
+    """
+    released_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    title: str
+    items: list[str]
+    note: str | None = None
+    current: bool
 
 
 class MonthlyShare(BaseModel):
@@ -1910,6 +2151,9 @@ class OngoingPhase(BaseModel):
     """
     name: str | None = None
     chip: Chip
+    state: DisplayState | None = None
+    price_line: str | None = None
+    progress_line: str | None = None
 
 
 class PageMeta(BaseModel):
@@ -2007,7 +2251,10 @@ class PhaseSummary(BaseModel):
     Lower-case page key, e.g. aurelia-heights-phase-2.
     """
     name: Annotated[str, Field(min_length=1)]
-    short_code: Annotated[str, Field(pattern="^[A-Z0-9]{2,6}$")]
+    short_code: Annotated[str | None, Field(pattern="^[A-Z0-9]{2,6}$")]
+    """
+    The phase's short code for WhatsApp and invite codes; null until one is assigned (only Aurelia has one in §5b).
+    """
     rera_number: Annotated[str, Field(min_length=1, title="ReraNumber")]
     """
     RERA registration number as the authority prints it, e.g. GGM/673/405/2022/117.
@@ -2034,15 +2281,9 @@ class PriceList(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )
-    dated: Annotated[
-        str,
-        Field(
-            pattern="^\\d{4}-(0[1-9]|1[0-2])(-(0[1-9]|[12]\\d|3[01]))?$",
-            title="DateOrMonth",
-        ),
-    ]
+    published_on: Annotated[date_aliased, Field(title="IsoDate")]
     """
-    YYYY-MM-DD or, for month precision, YYYY-MM.
+    ws.price_lists.published_on.
     """
     label: str
     current: bool | None = None
@@ -2086,6 +2327,14 @@ class ProjectCard(BaseModel):
     completion_line: str | None
     image_url: str | None
     centroid: Centroid | None
+    chip_note: str | None = None
+    """
+    The line under the chip ("Delivery risk · as of 14 Oct 2026").
+    """
+    progress_line: str | None = None
+    built_pct: Pct | None = None
+    time_used_pct: Pct | None = None
+    config_line: str | None = None
 
 
 class ProjectMatch(BaseModel):
@@ -2107,7 +2356,10 @@ class ProjectProgress(BaseModel):
         extra="allow",
     )
     floors_per_tower: Annotated[int | None, Field(ge=1)]
-    towers: list[str]
+    towers: list[str] | None
+    """
+    Tower codes, or null when the records report the phase as a whole.
+    """
     quarters: list[QuarterProgress]
     today: ProgressToday
     late_filings_line: str | None
@@ -2257,6 +2509,14 @@ class SearchFilters(BaseModel):
     corridors: list[Slug] | None = None
     bands: list[BandCode] | None = None
     possession_by: YearMonth | None = None
+    name: str | None = None
+    """
+    A project name the query names ("Indigo Terraces"), when it matches no phase.
+    """
+    place: str | None = None
+    """
+    A place the query names outside coverage ("noida").
+    """
 
 
 class SearchRequest(BaseModel):
@@ -2294,6 +2554,19 @@ class SearchResults(BaseModel):
     hidden_count: Annotated[int, Field(ge=0)]
     next_cursor: str | None
     zero_results: ZeroResults | None
+    query: str | None = None
+    """
+    The query as the buyer typed it (echoed for the search box).
+    """
+    legend_line: str | None = None
+    """
+    The map legend ("Pins show all-in prices").
+    """
+    hidden: list[HiddenProject] | None = None
+    """
+    The projects the filters hid, each with why (hidden_count of them).
+    """
+    meta: PageMeta | None = None
 
 
 class ShareCardPhase(BaseModel):
@@ -2338,12 +2611,16 @@ class Suggestion(BaseModel):
 
 
 class TrackRecord(BaseModel):
+    """
+    Null counts and line when the group has no finished RERA project yet.
+    """
+
     model_config = ConfigDict(
         extra="allow",
     )
-    finished: Annotated[int, Field(ge=0)]
-    late: Annotated[int, Field(ge=0)]
-    line: str
+    finished: Annotated[int | None, Field(ge=0)]
+    late: Annotated[int | None, Field(ge=0)]
+    line: str | None
     projects: list[TrackRecordProject]
 
 
@@ -2367,22 +2644,19 @@ class WhoHasMyNumber(BaseModel):
     family_line: str
 
 
-class About(BaseModel):
+class AboutCalibration(BaseModel):
     """
-    plinth.about/1, from api.about() (API_CONTRACTS §3.1): coverage today and next, the response-time board, the holdings register and the grievance officer. Placeholders until the founder supplies real values.
+    What we said against what happened, per band (illustrative until the first backtest is published).
     """
 
     model_config = ConfigDict(
         extra="allow",
     )
-    schema_: Annotated[Literal["plinth.about/1"], Field(alias="schema")]
-    coverage: Coverage
-    response_times: list[ResponseTime]
-    holdings: list[HoldingsDeclaration]
-    grievance_officer: GrievanceOfficer
-    base_rate_line: str | None = None
-    later: list[LaterFeature] | None = None
-    meta: PageMeta
+    pill: str | None
+    rows: list[AboutCalibrationRow]
+    base_rate: BaseRate
+    brier_line: str | None
+    first_public_bands_on: date_aliased | None = None
 
 
 class AffordTheWait(BaseModel):
@@ -2403,6 +2677,12 @@ class AffordTheWait(BaseModel):
     frequency_line: str | None
     assumptions: list[str]
     framing_line: str
+    inputs: AffordInputs | None = None
+    loan: AffordLoan | None = None
+    delay_options: list[DelayCost] | None = None
+    """
+    The delay cost for each delay the page offers (12 and 24 months).
+    """
 
 
 class AlertPrefs(BaseModel):
@@ -2452,6 +2732,16 @@ class AskAnswer(BaseModel):
     as_of_line: str | None
 
 
+class BeforeBooking(BaseModel):
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    payment_plans: BookingTopic | None
+    loans: BookingTopic
+    nri: BookingTopic | None
+    selling_before_possession: BookingTopic | None
+
+
 class Compare(BaseModel):
     """
     plinth.compare/1, from api.compare(p_slugs) for 2–4 phases (API_CONTRACTS §4.5). rows[].cells line up with columns.
@@ -2464,6 +2754,7 @@ class Compare(BaseModel):
     columns: Annotated[list[CompareColumn], Field(max_length=4, min_length=2)]
     rows: list[CompareRow]
     notes: list[str]
+    meta: PageMeta | None = None
 
 
 class CostBreakdown(BaseModel):
@@ -2493,6 +2784,14 @@ class CostBreakdown(BaseModel):
     Line codes the caller asked to waive (p_waive), echoed back.
     """
     waived_line: str | None = None
+    edc_idc_line: str | None = None
+    """
+    Where EDC and IDC sit ("EDC and IDC: included in the base.").
+    """
+    area_line: str | None = None
+    """
+    Super area paid for against carpet area usable.
+    """
 
 
 class DeveloperGroup(BaseModel):
@@ -2504,7 +2803,10 @@ class DeveloperGroup(BaseModel):
     Lower-case page key, e.g. aurelia-heights-phase-2.
     """
     name: str
-    linked_companies: Annotated[int, Field(ge=0)]
+    linked_companies: Annotated[int | None, Field(ge=0)]
+    """
+    Companies linked to the group, or null when §5b gives no count.
+    """
     claim: GroupClaim
     mode: DeveloperPageMode
     facts_only_line: str | None = None
@@ -2523,11 +2825,26 @@ class DeveloperPage(BaseModel):
     track_record: TrackRecord
     ongoing: list[OngoingPhase]
     complaints: GroupComplaints | None
-    insolvency_line: str
+    insolvency_line: str | None
+    """
+    Null when the group has no insolvency event on record and §5b gives no checked line.
+    """
     pre_rera: PreRera | None
     reply: DeveloperPageReply | None
     how_buyers_find_you: HowBuyersFindYou | None
     meta: PageMeta
+    summary_line: str | None = None
+    """
+    The page's one-line summary under the group name, or null.
+    """
+    facts_only: FactsOnlyNotice | None = None
+    """
+    The facts-only notice (mode = facts_only), else null.
+    """
+    claim_explainer_line: str | None = None
+    """
+    What claiming a page does (and never does).
+    """
 
 
 class Evidence(BaseModel):
@@ -2539,6 +2856,10 @@ class Evidence(BaseModel):
         extra="forbid",
     )
     schema_: Annotated[Literal["plinth.evidence/1"], Field(alias="schema")]
+    fact_id: Annotated[str | None, Field(min_length=1, title="FactId")] = None
+    """
+    The fact this drawer shows (the p_fact_id it was opened with).
+    """
     chip: str
     """
     The source chip label, e.g. "HARERA QPR · Apr–Jun 2026".
@@ -2596,7 +2917,7 @@ class FollowingFeed(BaseModel):
 
 class Methodology(BaseModel):
     """
-    plinth.methodology/1, from api.methodology() (API_CONTRACTS §3.1): model versions, factor weights, red-flag rules, the calibration table and the changelog. Only published models and runs.
+    plinth.methodology/1, from api.methodology() (API_CONTRACTS §3.1; the WebMethodology page): the bands and their ranges, factor weights, red-flag rules, confidence, the calibration table and the model versions with their changelog. Only published models and runs.
     """
 
     model_config = ConfigDict(
@@ -2609,11 +2930,26 @@ class Methodology(BaseModel):
     """
     Scoring model version, e.g. v1.2.
     """
-    models: list[ScoreModel]
+    published_on: date_aliased | None = None
+    question_line: str | None = None
+    bands: list[BandRange]
+    bands_note_line: str | None = None
+    similar_line: str | None = None
+    late12: Late12Explainer | None = None
     factors: list[FactorWeight]
+    factors_note_line: str | None = None
+    how_line: str | None = None
     red_flag_rules: list[RedFlagRule]
+    red_flag_example_line: str | None = None
+    confidence: list[ConfidenceLevelLine] | None = None
+    data_rules: DataRules | None = None
     calibration: Calibration
-    changelog: list[ChangelogEntry]
+    versions: list[MethodologyVersion]
+    how_we_worked_this_out: dict[str, list[str]] | None = None
+    """
+    Plain-language arithmetic notes per calculator, e.g. afford_the_wait.
+    """
+    never_line: str | None = None
     meta: PageMeta
 
 
@@ -2683,6 +3019,24 @@ class SuggestResults(BaseModel):
     schema_: Annotated[Literal["plinth.suggest/1"], Field(alias="schema")]
     q: str
     items: Annotated[list[Suggestion], Field(max_length=8)]
+
+
+class About(BaseModel):
+    """
+    plinth.about/1, from api.about() (API_CONTRACTS §3.1; the WebAbout page): who runs Plinth (the company register), the illustrative calibration table, how we make money, the response-time board, the grievance officer and coverage today and next. Founder details are placeholders until supplied.
+    """
+
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    schema_: Annotated[Literal["plinth.about/1"], Field(alias="schema")]
+    identity: AboutIdentity
+    calibration: AboutCalibration
+    money: AboutMoney
+    response_times: list[ResponseTime]
+    grievance: GrievanceOfficer
+    coverage: Coverage
+    meta: PageMeta
 
 
 class DocCheck(BaseModel):
@@ -2758,7 +3112,10 @@ class ProjectPage(BaseModel):
     truth_panel: list[TruthPanelRow]
     progress: ProjectProgress
     homes: Homes
-    from_developer: FromDeveloper
+    from_developer: FromDeveloper | None
+    """
+    Null when the developer has published nothing (no claimed workspace content).
+    """
     cost: CostBreakdown | None
     """
     Null without a cost sheet.

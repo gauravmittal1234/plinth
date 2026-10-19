@@ -1169,18 +1169,21 @@
     "items": [
       {
         "name": "Northfield Greens, Sector 52",
-        "fact_line": "Promised Dec 2011. OC Mar 2014, about 27 months late.",
-        "source_line": "Haryana State Consumer Commission order, Aug 2015 (delay compensation for 38 buyers) · news report, Feb 2013"
+        "line": "Promised Dec 2011. OC Mar 2014, about 27 months late.",
+        "sources": [
+          "Haryana State Consumer Commission order, Aug 2015 (delay compensation for 38 buyers)",
+          "news report, Feb 2013"
+        ]
       },
       {
         "name": "Alder Court, Sector 49",
-        "fact_line": "Promised Jun 2013. OC Sep 2013.",
-        "source_line": "DTCP OC record · news report, Oct 2013"
+        "line": "Promised Jun 2013. OC Sep 2013.",
+        "sources": ["DTCP OC record", "news report, Oct 2013"]
       },
       {
         "name": "Larch Enclave, Sector 21 (2004)",
-        "fact_line": "No court order or news found. Absence is not proof.",
-        "source_line": null
+        "line": "No court order or news found. Absence is not proof.",
+        "sources": []
       }
     ]
   },

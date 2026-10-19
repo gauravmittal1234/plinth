@@ -167,7 +167,11 @@ export function structuralProblems(fn, body) {
   if (!type)
     return [`unknown fixture function "${fn}" (add it to FN_TYPE in scripts/validate.mjs)`];
   if (type === "flags") {
-    for (const [k, v] of Object.entries(body))
+    // T04's api.flags(): { schema: "plinth.flags/1", flags: { key: boolean } }.
+    if (body.schema !== "plinth.flags/1")
+      problems.push(`schema is ${JSON.stringify(body.schema)}, expected "plinth.flags/1"`);
+    if (!body.flags || typeof body.flags !== "object") problems.push("missing flags");
+    for (const [k, v] of Object.entries(body.flags ?? {}))
       if (typeof v !== "boolean") problems.push(`flag ${k} is not a boolean`);
     return problems;
   }

@@ -2867,6 +2867,18 @@ components:
   schemas:
     About:
       $ref: ../schemas/about.schema.json
+    AboutCalibration:
+      $ref: ../schemas/about.schema.json#/$defs/AboutCalibration
+    AboutCalibrationRow:
+      $ref: ../schemas/about.schema.json#/$defs/AboutCalibrationRow
+    AboutIdentity:
+      $ref: ../schemas/about.schema.json#/$defs/AboutIdentity
+    AboutMoney:
+      $ref: ../schemas/about.schema.json#/$defs/AboutMoney
+    AffordInputs:
+      $ref: ../schemas/afford_the_wait.schema.json#/$defs/AffordInputs
+    AffordLoan:
+      $ref: ../schemas/afford_the_wait.schema.json#/$defs/AffordLoan
     AffordPoint:
       $ref: ../schemas/afford_the_wait.schema.json#/$defs/AffordPoint
     AffordTheWait:
@@ -2911,16 +2923,24 @@ components:
       $ref: ../schemas/risk_summary.schema.json#/$defs/Band
     BandCode:
       $ref: ../schemas/common.schema.json#/$defs/BandCode
+    BandRange:
+      $ref: ../schemas/methodology.schema.json#/$defs/BandRange
     BandRule:
       $ref: ../schemas/risk_summary.schema.json#/$defs/BandRule
     BandSetBy:
       $ref: ../schemas/risk_summary.schema.json#/$defs/BandSetBy
     BandStep:
       $ref: ../schemas/common.schema.json#/$defs/BandStep
+    BaseRate:
+      $ref: ../schemas/common.schema.json#/$defs/BaseRate
     Bbox:
       $ref: ../schemas/search_results.schema.json#/$defs/Bbox
     BeforeBooking:
       $ref: ../schemas/project_page.schema.json#/$defs/BeforeBooking
+    BookingPara:
+      $ref: ../schemas/project_page.schema.json#/$defs/BookingPara
+    BookingParaTone:
+      $ref: ../schemas/project_page.schema.json#/$defs/BookingParaTone
     BookingTopic:
       $ref: ../schemas/project_page.schema.json#/$defs/BookingTopic
     BuyerKind:
@@ -2935,8 +2955,6 @@ components:
       $ref: ../schemas/common.schema.json#/$defs/Centroid
     ChangeItem:
       $ref: ../schemas/following_feed.schema.json#/$defs/ChangeItem
-    ChangelogEntry:
-      $ref: ../schemas/methodology.schema.json#/$defs/ChangelogEntry
     Channel:
       $ref: ../schemas/common.schema.json#/$defs/Channel
     ChannelPrefs:
@@ -2963,6 +2981,8 @@ components:
       $ref: ../schemas/risk_summary.schema.json#/$defs/Confidence
     ConfidenceLevel:
       $ref: ../schemas/risk_summary.schema.json#/$defs/ConfidenceLevel
+    ConfidenceLevelLine:
+      $ref: ../schemas/methodology.schema.json#/$defs/ConfidenceLevelLine
     ConsentRef:
       $ref: ../schemas/common.schema.json#/$defs/ConsentRef
     ConsentWithdrawal:
@@ -2981,8 +3001,12 @@ components:
       $ref: ../schemas/cost_breakdown.schema.json#/$defs/CostTag
     Coverage:
       $ref: ../schemas/about.schema.json#/$defs/Coverage
-    CoverageArea:
-      $ref: ../schemas/about.schema.json#/$defs/CoverageArea
+    CoverageNext:
+      $ref: ../schemas/about.schema.json#/$defs/CoverageNext
+    CoverageToday:
+      $ref: ../schemas/about.schema.json#/$defs/CoverageToday
+    DataRules:
+      $ref: ../schemas/methodology.schema.json#/$defs/DataRules
     DateOrMonth:
       $ref: ../schemas/common.schema.json#/$defs/DateOrMonth
     DelayCost:
@@ -3041,6 +3065,8 @@ components:
       $ref: ../schemas/common.schema.json#/$defs/Factor
     FactorWeight:
       $ref: ../schemas/methodology.schema.json#/$defs/FactorWeight
+    FactsOnlyNotice:
+      $ref: ../schemas/developer_page.schema.json#/$defs/FactsOnlyNotice
     FamilyInvite:
       $ref: ../schemas/family_invite.schema.json
     FamilyInviteCreateRequest:
@@ -3075,8 +3101,6 @@ components:
       $ref: ../schemas/project_page.schema.json#/$defs/FromDeveloper
     GettingAround:
       $ref: ../schemas/project_page.schema.json#/$defs/GettingAround
-    GettingAroundItem:
-      $ref: ../schemas/project_page.schema.json#/$defs/GettingAroundItem
     GrievanceOfficer:
       $ref: ../schemas/about.schema.json#/$defs/GrievanceOfficer
     GroupClaim:
@@ -3085,12 +3109,10 @@ components:
       $ref: ../schemas/developer_page.schema.json#/$defs/GroupComplaints
     HalfYearComplaints:
       $ref: ../schemas/developer_page.schema.json#/$defs/HalfYearComplaints
-    HoldingsDeclaration:
-      $ref: ../schemas/about.schema.json#/$defs/HoldingsDeclaration
+    HiddenProject:
+      $ref: ../schemas/search_results.schema.json#/$defs/HiddenProject
     HomeConfiguration:
       $ref: ../schemas/project_page.schema.json#/$defs/HomeConfiguration
-    HomeRoom:
-      $ref: ../schemas/project_page.schema.json#/$defs/HomeRoom
     Homes:
       $ref: ../schemas/project_page.schema.json#/$defs/Homes
     HowBuyersFindYou:
@@ -3111,14 +3133,16 @@ components:
       $ref: ../schemas/project_page.schema.json#/$defs/LaneList
     Late12:
       $ref: ../schemas/risk_summary.schema.json#/$defs/Late12
-    LaterFeature:
-      $ref: ../schemas/about.schema.json#/$defs/LaterFeature
+    Late12Explainer:
+      $ref: ../schemas/methodology.schema.json#/$defs/Late12Explainer
     LatestQpr:
       $ref: ../schemas/risk_summary.schema.json#/$defs/LatestQpr
     MatchMethod:
       $ref: ../schemas/doc_check.schema.json#/$defs/MatchMethod
     Methodology:
       $ref: ../schemas/methodology.schema.json
+    MethodologyVersion:
+      $ref: ../schemas/methodology.schema.json#/$defs/MethodologyVersion
     ModelVersion:
       $ref: ../schemas/common.schema.json#/$defs/ModelVersion
     MonthlyShare:
@@ -3201,6 +3225,8 @@ components:
       $ref: ../schemas/methodology.schema.json#/$defs/RedFlagRule
     RefusalCode:
       $ref: ../schemas/ask_answer.schema.json#/$defs/RefusalCode
+    RegisterRow:
+      $ref: ../schemas/about.schema.json#/$defs/RegisterRow
     RelayParty:
       $ref: ../schemas/who_has_my_number.schema.json#/$defs/RelayParty
     Replay:
@@ -3225,8 +3251,6 @@ components:
       $ref: ../schemas/risk_summary.schema.json
     RpcError:
       $ref: ../schemas/error.schema.json#/$defs/RpcError
-    ScoreModel:
-      $ref: ../schemas/methodology.schema.json#/$defs/ScoreModel
     ScoreState:
       $ref: ../schemas/common.schema.json#/$defs/ScoreState
     SearchFilters:

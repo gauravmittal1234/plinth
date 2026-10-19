@@ -35,7 +35,15 @@
       "type": "array",
       "items": { "type": "string" }
     },
-    "waived_line": { "type": ["string", "null"], "examples": ["₹4.9 L less"] }
+    "waived_line": { "type": ["string", "null"], "examples": ["₹4.9 L less"] },
+    "edc_idc_line": {
+      "description": "Where EDC and IDC sit (\"EDC and IDC: included in the base.\").",
+      "type": ["string", "null"]
+    },
+    "area_line": {
+      "description": "Super area paid for against carpet area usable.",
+      "type": ["string", "null"]
+    }
   },
   "$defs": {
     "CostLine": {
