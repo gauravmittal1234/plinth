@@ -1,0 +1,19 @@
+{
+  "name": "@plinth/calc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "TS slider-preview ports (EMI, Afford the wait), tested against packages/fixtures/vectors.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "@plinth/config": "*",
+    "@plinth/fixtures": "*"
+  }
+}

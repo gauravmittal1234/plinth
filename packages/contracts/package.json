@@ -1,0 +1,27 @@
+{
+  "name": "@plinth/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "API contracts: JSON Schema 2020-12, OpenAPI, catalogues -> TS types + ajv validators, Dart (plinth_contracts), Python (plinth_contracts).",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "echo '@plinth/contracts: the codegen build arrives with T02'",
+    "gen": "echo '@plinth/contracts: schema codegen arrives with T02'",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "@plinth/config": "*",
+    "json-schema-to-typescript": "^15.0.4",
+    "quicktype": "^23.3.25",
+    "yaml": "^2.9.1"
+  }
+}

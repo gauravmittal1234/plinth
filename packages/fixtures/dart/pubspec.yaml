@@ -1,0 +1,21 @@
+name: plinth_fixtures
+description: "Plinth fixture JSON (packages/fixtures/expected) bundled as Flutter assets for FIXTURES mode. Synced by T03."
+version: 0.0.1
+publish_to: 'none'
+
+environment:
+  sdk: ^3.13.4
+  flutter: ">=3.47.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+# T03's sync-dart script copies packages/fixtures/expected/** into assets/ and
+# lists the folders here.
+flutter:

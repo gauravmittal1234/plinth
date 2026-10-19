@@ -1,0 +1,17 @@
+name: plinth_tokens
+description: "Plinth design tokens for Flutter (PlinthTokens ThemeExtension). Generated from packages/tokens/tokens.json by T01."
+version: 0.0.1
+publish_to: 'none'
+
+environment:
+  sdk: ^3.13.4
+  flutter: ">=3.47.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0

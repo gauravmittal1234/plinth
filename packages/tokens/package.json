@@ -1,0 +1,23 @@
+{
+  "name": "@plinth/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Design tokens: tokens.json -> dist/tokens.css, dist/theme.css (Tailwind v4 @theme), dist/tokens.ts, dart/ (plinth_tokens).",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./css": "./dist/tokens.css",
+    "./theme.css": "./dist/theme.css"
+  },
+  "scripts": {
+    "build": "echo '@plinth/tokens: the Style Dictionary build arrives with T01'",
+    "gen": "echo '@plinth/tokens: token generation arrives with T01'",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "@plinth/config": "*",
+    "style-dictionary": "^4.4.0"
+  }
+}

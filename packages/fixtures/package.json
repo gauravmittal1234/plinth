@@ -1,0 +1,23 @@
+{
+  "name": "@plinth/fixtures",
+  "version": "0.0.0",
+  "private": true,
+  "description": "DESIGN.md §5b as data: canonical JSON, expected API outputs, golden vectors, recorded payloads, seed maps -> supabase/seed.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./expected/*": "./expected/*",
+    "./vectors/*": "./vectors/*"
+  },
+  "scripts": {
+    "gen": "echo '@plinth/fixtures: seed generation arrives with T03'",
+    "validate": "echo '@plinth/fixtures: schema validation arrives with T03'",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "@plinth/config": "*",
+    "@plinth/contracts": "*"
+  }
+}
