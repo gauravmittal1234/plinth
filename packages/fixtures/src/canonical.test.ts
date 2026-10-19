@@ -377,12 +377,9 @@ describe("API_CONTRACTS §2.1 example", () => {
   const example = JSON.parse(block) as unknown;
   const fixture = loadExpected("risk_summary", "aurelia-heights-phase-2");
   const isPlaceholder = (v: unknown) => typeof v === "string" && (v === "…" || v.includes("…"));
-  // Values superseded by DESIGN §5b "Fixture decisions, round 2" whose doc update (PR #8) may not
-  // be on this base yet: path → the stale doc value still accepted. Once PR #8 is in, the doc
-  // value equals the fixture and these entries are no longer hit.
-  const superseded: Record<string, unknown> = {
-    "$.developer_response.signatory_title": "Head of Customer Relations",
-  };
+  // Values superseded by a DESIGN §5b decision whose doc update has not landed yet: path → the
+  // stale doc value still accepted. Empty since the T07 gate merged PR #8 (round 2).
+  const superseded: Record<string, unknown> = {};
   const compare = (a: unknown, b: unknown, path: string, out: string[]) => {
     if (isPlaceholder(a)) return;
     if (path in superseded && a === superseded[path]) return;
