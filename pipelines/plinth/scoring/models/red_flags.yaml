@@ -1,0 +1,32 @@
+# Red-flag overrides (PRD §6.2; DATA_MODEL §3 core.red_flag_rules). Published rules that
+# force Severe with a sourced reason and no frequency. Evaluated before the scorecard.
+#   RF1  an insolvency (CIRP) admission against a group company, not closed or set aside
+#   RF2  the phase's RERA registration revoked, de-registered or lapsed without an extension
+#   RF3  a stop-sale or abeyance order (no source in R1 yet: never fires on fixtures)
+#   RF4  the group rated D or in default (no source in R1 yet: never fires on fixtures)
+source: "WebMethodology/WebProjectStates artboards; codes DATA_MODEL §3"
+rules:
+  - code: RF1_GROUP_CIRP
+    n: 1
+    title: "Insolvency (CIRP) admitted against the promoter or a group company"
+    text: "The band is Severe while the case stands."
+    reason_code: LEG_GROUP_CIRP
+    what_would_change: "The rule applies while the insolvency case stands. If it is closed or set aside, the model sets the band again, and we log the change."
+  - code: RF2_REGISTRATION_REVOKED
+    n: 2
+    title: "RERA registration revoked, de-registered or lapsed without an extension"
+    text: "Applies from the day HARERA records the revocation, or the day a registration lapses with no extension."
+    reason_code: null
+    what_would_change: null
+  - code: RF3_STOP_SALE
+    n: 3
+    title: "A stop-sale or abeyance order from the regulator"
+    text: "Applies while the order stands. When it is lifted, the model's band returns and the change is logged."
+    reason_code: null
+    what_would_change: null
+  - code: RF4_GROUP_DEFAULT
+    n: 4
+    title: "The promoter group is rated D or is in default"
+    text: "We quote the rating agency's own symbol and date, exactly as published."
+    reason_code: null
+    what_would_change: null
