@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agent profile and briefs</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+@keyframes plTick { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  .tick { animation: plTick 420ms cubic-bezier(.22,1,.36,1) both; }
+  .swap { animation: plRise 420ms cubic-bezier(.22,1,.36,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: {{rootMinH}}; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
+        <a href="#how-scores-work" class="lk" style="color: {{t.ink}}; text-decoration: none">How scores work</a>
+        <a href="#broker-check" class="lk" style="color: {{t.ink}}; text-decoration: none">Check a broker</a>
+        <a href="#for-agents" class="lk" style="color: {{t.ink}}; text-decoration: none">For agents</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <a href="{{headerActionHref}}" class="press" style="height: 44px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font-size: 17px; font-weight: 600; text-decoration: none; white-space: nowrap">{{headerAction}}</a>
+      </div>
+    </div>
+  </header>
+
+  <div style="background: {{t.track}}">
+    <div style="max-width: 1264px; margin: 0 auto; padding: 10px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px">
+      <span style="font-size: 15px">Signed in as <strong>Larkspur Realty</strong>. Buyers see only the public profile.</span>
+      <div role="tablist" aria-label="Which view" style="display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.panelSolid}}">
+        <sc-for list="{{tabs}}" as="tb" hint-placeholder-count="2">
+          <button type="button" class="press" role="tab" aria-selected="{{tb.on}}" onClick="{{tb.pick}}" style="{{tb.style}}">{{tb.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{isPublic}}" hint-placeholder-val="{{true}}">
+  <main>
+    <section id="top" aria-labelledby="hero-h" style="background: {{t.bg}}; padding: 48px 0 128px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch; gap: 48px 64px">
+        <div style="flex: 1 1 600px; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 22px">
+          <h1 id="hero-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 100px); line-height: 0.94; letter-spacing: -0.045em">Larkspur Realty</h1>
+          <p class="rise rise1" style="margin: 0; max-width: 40ch; font-size: 22px; line-height: 1.45">Priya Khanna’s firm. New launches along Dwarka Expressway, and resale in two societies there.</p>
+          <span class="rise rise1" style="{{u.pill}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Verified agent since 6 Apr 2026 · verified, never endorsed</span>
+          <dl class="rise rise2" aria-label="Who pays this agent" style="margin: 0; padding: 22px 24px; border-radius: 8px; background: {{t.track}}; display: grid; grid-template-columns: auto 1fr; gap: 10px 24px; font-size: 17px; line-height: 1.5">
+            <dt style="font-weight: 700">Registration</dt><dd style="margin: 0">HARERA RC/REA/HARERA/GGM/2023/487 · valid until 21 Jun 2028 · checked 1 Oct 2026</dd>
+            <dt style="font-weight: 700">Paid by</dt><dd style="margin: 0">On a new launch, the developer, if you book. On a resale, the seller; and you, if you hire them.</dd>
+            <dt style="font-weight: 700">Pays Plinth</dt><dd style="margin: 0">Nothing to appear here. On resale deals through our desk, Larkspur shares our fee for the field work.</dd>
+          </dl>
+          <div class="rise rise3" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px">
+            <a href="#connect" class="press" style="height: 56px; display: inline-flex; align-items: center; padding: 0 28px; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font-size: 18px; font-weight: 600; text-decoration: none; white-space: nowrap">Ask Larkspur to help</a>
+            <a href="#broker-check" class="lk" style="font-size: 18px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Check this registration</a>
+          </div>
+        </div>
+        <figure class="rise rise2" style="flex: 1 1 380px; min-width: 0; margin: 0; position: relative; min-height: 640px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="agentLarkspurOffice" src="/_blob/f520df8540ae2b7d6b3f064ad47c5505" alt="Illustrative image: a small, tidy agent's office in a Gurugram commercial block, a desk by the window and two chairs" class="drift" style="position: absolute; inset: 0; background: #E7E3DA; border-radius: 0; object-fit: cover; display: block">
+          <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · office in Sector 102</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section aria-labelledby="cov-h" style="background: {{t.track}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <figure class="rv" style="margin: 0; position: relative; height: 420px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="corridorAerial" src="/_blob/4ccf6477a2c2bc3db2be04d5a579e1e0" alt="Illustrative image: residential towers along Dwarka Expressway at golden hour" style="position: absolute; inset: 0; width: 100%; height: 100%; background: {{t.photo}}; border-radius: 0; object-fit: cover; object-position: 50% 55%; display: block">
+          <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · Dwarka Expressway</figcaption>
+        </figure>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 80px; align-items: flex-start">
+          <div style="flex: 1 1 380px; max-width: 540px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+            <h2 id="cov-h" class="rv" style="{{u.h2}}">Where does Larkspur work?</h2>
+            <p class="rv rv1" style="{{u.lead}}">Dwarka Expressway: new launches along the corridor, and resale in two ready societies.</p>
+            <p class="rv rv1" style="margin: 0; font-size: 17px">Office in Sector 102, Gurugram. Speaks English, Hindi and Punjabi. Coverage is what the agent told us; we check it against where their verified visits happen.</p>
+          </div>
+          <dl class="rv rv1" style="flex: 1 1 520px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 28px">
+            <div>
+              <dt style="font-weight: 700">Resale societies</dt>
+              <dd style="margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 8px"><span style="{{u.tone}}">Cobalt Square, Sector 104</span><span style="{{u.tone}}">Larchwood Residency, Sector 109</span></dd>
+            </div>
+            <div>
+              <dt style="font-weight: 700">New launches where buyers named Larkspur as agent of record</dt>
+              <dd style="margin: 12px 0 0; display: flex; flex-direction: column; gap: 10px">
+                <sc-for list="{{ucRows}}" as="uc" hint-placeholder-count="2">
+                  <div style="display: flex; align-items: center; gap: 16px">
+                    <span style="position: relative; flex: none; width: 72px; height: 54px; overflow: hidden; background: #E7E3DA">
+                      <sc-if value="{{uc.kestrel}}" hint-placeholder-val="{{true}}"><img data-slot="heroKestrel" src="/_blob/29ddb4eb8af81bf41e28a3b11bdfd13e" alt="" style="position: absolute; inset: 0; width: 72px; height: 54px; object-fit: cover; display: block; background: #E7E3DA"></sc-if>
+                      <sc-if value="{{uc.aurelia}}" hint-placeholder-val="{{false}}"><img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="" style="position: absolute; inset: 0; width: 72px; height: 54px; object-fit: cover; display: block; background: #E7E3DA"></sc-if>
+                    </span>
+                    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35">
+                      <strong>{{uc.name}}</strong>
+                      <span style="font-size: 15px">{{uc.sub}}</span>
+                    </span>
+                    <span style="{{uc.chip}}"><span aria-hidden="true" style="display: inline-flex; gap: 2px"><sc-for list="{{uc.meter}}" as="um" hint-placeholder-count="5"><span style="{{um.style}}"></span></sc-for></span>{{uc.band}}</span>
+                  </div>
+                </sc-for>
+              </dd>
+            </div>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Bands are the same for every agent who sells a project, and for none of them. Agents get no previews.</p>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="badge" aria-labelledby="badge-h" style="background: {{t.bg}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="badge-h" class="rv" style="{{u.h2}}; max-width: 14ch">How has Larkspur done?</h2>
+          <p class="rv rv1" style="{{u.lead}}; flex: 0 1 540px; min-width: 0">Three measures from the relay and the ledger, recomputed on the 1st of every month. Nobody can buy them, and paid tools never touch them.</p>
+        </div>
+        <div class="rv rv1" style="display: flex; flex-wrap: wrap; gap: 40px 72px; align-items: center">
+          <div aria-live="polite" style="flex: 1 1 340px; max-width: 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+            <span style="font-size: 15px; font-weight: 600">{{bv.when}}</span>
+            <div style="display: flex; align-items: center; gap: 18px">
+              <span class="tick" style="{{bv.markStyle}}"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="{{bv.markPath}}" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(44px, 4.6vw, 64px); line-height: 1; letter-spacing: -0.04em">{{bv.title}}</span>
+            </div>
+            <p style="margin: 0; font-size: 17px">{{bv.reason}}</p>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Next recompute 1 Nov 2026. Larkspur can appeal any number; we publish the outcome.</p>
+          </div>
+          <div style="flex: 1 1 560px; min-width: 0; overflow-x: auto">
+            <table style="width: 100%; min-width: 560px; border-collapse: collapse; font-size: 17px; line-height: 1.4">
+              <caption class="sr">Badge measures by month. Pick a month to see that month's verdict.</caption>
+              <thead>
+                <tr>
+                  <th scope="col" style="padding: 0 12px 12px 0; text-align: left; font-size: 15px; font-weight: 600; color: {{t.ink2}}">Computed on</th>
+                  <sc-for list="{{months}}" as="mo" hint-placeholder-count="6">
+                    <th scope="col" style="{{mo.thStyle}}"><button type="button" class="press" aria-pressed="{{mo.on}}" onClick="{{mo.pick}}" style="{{mo.btn}}">{{mo.label}}</button></th>
+                  </sc-for>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{measures}}" as="me" hint-placeholder-count="4">
+                  <tr style="border-top: 1px solid {{t.line}}">
+                    <th scope="row" style="padding: 14px 12px 14px 0; text-align: left; font-weight: 600; vertical-align: top">{{me.name}}<span style="display: block; font-size: 14px; font-weight: 400; color: {{t.ink2}}">{{me.bar}}</span></th>
+                    <sc-for list="{{me.cells}}" as="ce" hint-placeholder-count="6">
+                      <td style="{{ce.style}}">{{ce.v}}</td>
+                    </sc-for>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <button type="button" class="press" onClick="{{togHow}}" aria-expanded="{{xHow}}" aria-controls="how-list" style="{{u.disclose}}">How each measure works<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="{{chevHow}}"><path d="M5 7l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+        <sc-if value="{{xHow}}" hint-placeholder-val="{{false}}">
+          <dl id="how-list" style="margin: -24px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 24px 56px; font-size: 17px">
+            <div><dt style="font-weight: 700">Reply time</dt><dd style="margin: 4px 0 0">Median time to the first reply through the relay, counted only inside each buyer’s allowed hours, over the last 90 days.</dd></div>
+            <div><dt style="font-weight: 700">Listing accuracy</dt><dd style="margin: 4px 0 0">Share of verified visits where the flat, price and availability matched the listing, over the last 90 days.</dd></div>
+            <div><dt style="font-weight: 700">Verified closings</dt><dd style="margin: 4px 0 0">Registrations in the last 12 months that the buyer confirmed and we checked against the registered deed.</dd></div>
+          </dl>
+        </sc-if>
+      </div>
+    </section>
+
+    <section aria-labelledby="rev-h" style="background: {{t.track}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 80px; align-items: flex-start">
+        <div style="flex: 1 1 360px; max-width: 440px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+          <h2 id="rev-h" class="rv" style="{{u.h2}}">What do buyers say?</h2>
+          <p class="rv rv1" style="{{u.lead}}">Only buyers with a verified visit can review. Larkspur can reply once, in public, and can’t remove a review.</p>
+          <ul class="rv rv1" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 17px">
+            <li><strong>17 reviews</strong> from verified visits</li>
+            <li><strong>17 of 17</strong> say Larkspur showed them the band before the visit</li>
+            <li><strong>17 of 17</strong> say Larkspur told them who pays the agent</li>
+          </ul>
+        </div>
+        <ol class="rv rv1" aria-label="Most recent reviews" style="flex: 1 1 560px; min-width: 0; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 40px">
+          <sc-for list="{{reviews}}" as="rv" hint-placeholder-count="3">
+            <li style="display: flex; flex-direction: column; gap: 10px">
+              <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 15px"><strong style="font-size: 17px">{{rv.who}}</strong><span style="{{u.tone}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5l2.5 2.5L11.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{rv.tag}}</span></span>
+              <p style="margin: 0; font-size: 21px; line-height: 1.5">{{rv.text}}</p>
+              <sc-if value="{{rv.hasReply}}" hint-placeholder-val="{{false}}">
+                <p style="margin: 0; padding: 14px 18px; border-radius: 8px; background: {{t.panelSolid}}; font-size: 16px"><strong>Larkspur replied:</strong> {{rv.reply}}</p>
+              </sc-if>
+            </li>
+          </sc-for>
+        </ol>
+      </div>
+    </section>
+
+    <section id="connect" aria-labelledby="con-h" style="background: {{t.bg}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 80px; align-items: flex-start">
+        <div style="flex: 1 1 380px; max-width: 540px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+          <h2 id="con-h" class="rv" style="{{u.h2}}">Want Larkspur’s help?</h2>
+          <p class="rv rv1" style="{{u.lead}}">Choose exactly what Larkspur sees. Nothing is shared until you tap Connect, and you can edit or end it anytime.</p>
+          <p class="rv rv1" style="margin: 0; font-size: 17px">Larkspur would take one of your 3 contact slots, and that one slot covers every listing they show you. They reach you through a relay number; your own number is never shared without your tap.</p>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 560px; min-width: 0; padding: 32px; border-radius: 8px; background: {{t.track}}">
+          <sc-if value="{{notConnected}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 18px">
+              <p id="brief-l" style="margin: 0; font-size: 17px; font-weight: 600">Tick what Larkspur may see</p>
+              <div role="group" aria-labelledby="brief-l" style="display: flex; flex-direction: column; gap: 6px">
+                <sc-for list="{{briefOpts}}" as="bo" hint-placeholder-count="4">
+                  <button type="button" class="press" role="checkbox" aria-checked="{{bo.on}}" onClick="{{bo.pick}}" style="{{bo.row}}">
+                    <span aria-hidden="true" style="{{bo.box}}"><sc-if value="{{bo.ticked}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="{{t.bg}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></span>
+                    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35"><span style="font-weight: 600">{{bo.label}}</span><span style="font-size: 16px">{{bo.value}}</span></span>
+                  </button>
+                </sc-for>
+              </div>
+              <label for="bq" style="font-size: 17px; font-weight: 600">Your question for Larkspur <span style="font-weight: 400; color: {{t.ink2}}">(optional)</span></label>
+              <textarea id="bq" rows="2" value="{{briefQ}}" onChange="{{onBriefQ}}" placeholder="For example, which towers at Kestrel Park still have 3 BHKs?" style="padding: 14px 18px; border-radius: 16px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; resize: vertical"></textarea>
+              <div aria-live="polite" style="padding: 18px 20px; border-radius: 8px; background: {{t.panelSolid}}; display: flex; flex-direction: column; gap: 6px; font-size: 17px">
+                <span style="font-size: 15px; font-weight: 600">Larkspur will see</span>
+                <span>{{briefPreview}}</span>
+              </div>
+              <button type="button" class="press" onClick="{{connect}}" style="align-self: flex-start; height: 56px; padding: 0 28px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer">Connect through the relay</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{connected}}" hint-placeholder-val="{{false}}">
+            <div role="status" style="display: flex; flex-direction: column; gap: 14px">
+              <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 34px; line-height: 1.1; letter-spacing: -0.03em">Connected.</p>
+              <p style="margin: 0">Larkspur sees only this: {{briefPreview}}</p>
+              <p style="margin: 0; font-size: 17px">They can message you through the relay, within your quiet hours. Edit, or end it, in Who has my number.</p>
+              <button type="button" class="press" onClick="{{undoConnect}}" style="align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">Undo</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{isAgent}}" hint-placeholder-val="{{false}}">
+  <main>
+    <section aria-labelledby="ws-h" style="background: {{t.bg}}; padding: 48px 0 56px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <h1 id="ws-h" class="rise" style="margin: 0; max-width: 12ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(52px, 6vw, 84px); line-height: 0.96; letter-spacing: -0.045em">Your buyers’ briefs</h1>
+        <div class="rise rise1" style="flex: 0 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+          <p style="margin: 0; font-size: 22px; line-height: 1.45">Only what each buyer chose to share with you. We never sell, broadcast or pass on an enquiry.</p>
+          <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">4 introductions · 3 active · ledger times are when each event was logged</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Briefs" style="background: {{t.track}}; padding: 56px 0 120px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+        <div role="listbox" aria-label="Buyers" style="flex: 1 1 300px; max-width: 360px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+          <sc-for list="{{briefList}}" as="bl" hint-placeholder-count="4">
+            <button type="button" class="press" role="option" aria-selected="{{bl.on}}" onClick="{{bl.pick}}" style="{{bl.style}}">
+              <span style="display: flex; justify-content: space-between; gap: 8px"><strong style="font-size: 18px">{{bl.name}}</strong><span style="font-size: 14px; color: {{t.ink2}}">{{bl.when}}</span></span>
+              <span style="font-size: 16px">{{bl.project}}</span>
+              <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px"><span aria-hidden="true" style="{{bl.dot}}"></span>{{bl.relay}}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <article class="swap" aria-labelledby="bd-h" style="flex: 1 1 620px; min-width: 0; padding: 36px; border-radius: 8px; background: {{t.panelSolid}}; display: flex; flex-direction: column; gap: 32px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <h2 id="bd-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 44px; line-height: 1; letter-spacing: -0.035em">{{bd.name}}</h2>
+            <p style="margin: 0; font-size: 19px">{{bd.project}}</p>
+            <p style="margin: 0; font-size: 16px; color: {{t.ink2}}">{{bd.role}}</p>
+          </div>
+
+          <sc-if value="{{bd.hasBrief}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <h3 style="{{u.h3}}">What {{bd.name}} chose to share</h3>
+              <dl style="margin: 0; display: grid; grid-template-columns: minmax(140px, auto) 1fr; gap: 10px 24px; font-size: 17px">
+                <sc-for list="{{bd.brief}}" as="bf" hint-placeholder-count="4">
+                  <dt style="color: {{t.ink2}}">{{bf.k}}</dt><dd style="{{bf.style}}">{{bf.v}}</dd>
+                </sc-for>
+              </dl>
+              <sc-if value="{{bd.hasQs}}" hint-placeholder-val="{{true}}">
+                <span style="margin-top: 6px; font-size: 15px; font-weight: 600">Questions, in {{bd.name}}’s words</span>
+                <ul style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 6px; font-size: 17px">
+                  <sc-for list="{{bd.questions}}" as="q" hint-placeholder-count="2"><li>{{q}}</li></sc-for>
+                </ul>
+              </sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{bd.noBrief}}" hint-placeholder-val="{{false}}">
+            <p style="margin: 0; padding: 18px 20px; border-radius: 8px; background: {{t.track}}; font-size: 17px">{{bd.goneNote}}</p>
+          </sc-if>
+
+          <div style="padding: 22px 24px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 10px">
+            <span style="display: inline-flex; align-items: center; gap: 10px; font-weight: 700"><span aria-hidden="true" style="{{bd.relayDot}}"></span>{{bd.relayTitle}}</span>
+            <p style="margin: 0; font-size: 17px">{{bd.relayText}}</p>
+            <sc-if value="{{bd.hasActions}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px">
+                <sc-for list="{{bd.actions}}" as="ac" hint-placeholder-count="3">
+                  <button type="button" class="press" onClick="{{ac.pick}}" aria-disabled="{{ac.offAria}}" style="{{ac.style}}">{{ac.label}}</button>
+                </sc-for>
+              </div>
+              <sc-if value="{{actionMsgShow}}" hint-placeholder-val="{{false}}">
+                <p role="status" style="margin: 0; font-size: 16px">{{actionMsg}}</p>
+              </sc-if>
+            </sc-if>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 14px">
+            <h3 style="{{u.h3}}">Introduction ledger</h3>
+            <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0">
+              <sc-for list="{{bd.ledger}}" as="lg" hint-placeholder-count="3">
+                <li style="display: flex; gap: 16px">
+                  <span aria-hidden="true" style="flex: none; width: 14px; display: flex; flex-direction: column; align-items: center"><span style="{{lg.dot}}"></span><span style="{{lg.stem}}"></span></span>
+                  <span style="flex: 1; min-width: 0; padding-bottom: 18px; display: flex; flex-direction: column; gap: 2px">
+                    <span style="font-size: 15px; color: {{t.ink2}}">{{lg.when}}</span>
+                    <span style="font-size: 17px">{{lg.what}}</span>
+                    <sc-if value="{{lg.hasRef}}" hint-placeholder-val="{{false}}"><span style="{{u.chip}}">{{lg.ref}}</span></sc-if>
+                  </span>
+                </li>
+              </sc-for>
+            </ol>
+            <sc-if value="{{bd.hasWindow}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 17px"><strong>{{bd.windowTitle}}</strong><span>{{bd.windowLeft}}</span></div>
+                <div role="img" aria-label="{{bd.windowAria}}" style="position: relative; height: 12px; border-radius: 999px; overflow: hidden; background: {{t.track}}">
+                  <span style="{{bd.windowBar}}"></span>
+                </div>
+                <span style="font-size: 15px; color: {{t.ink2}}">{{bd.windowNote}}</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{bd.hasUcNote}}" hint-placeholder-val="{{true}}">
+              <p style="margin: 0; padding: 16px 20px; border-radius: 8px; background: {{t.claimBg}}; font-size: 17px">{{bd.ucNote}}</p>
+            </sc-if>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center">
+              <button type="button" class="press" onClick="{{exportLedger}}" style="height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{exportLabel}}</button>
+              <a href="#dispute" class="lk" style="font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Raise a dispute · decided in 7 days</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="pay-h" style="background: {{t.bg}}; padding: 120px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="pay-h" class="rv" style="{{u.h2}}; max-width: 14ch">Payments and standing</h2>
+          <p class="rv rv1" style="{{u.lead}}; flex: 0 1 520px; min-width: 0">Desk shares are paid within 7 days of registration. Strikes: none in the last 12 months.</p>
+        </div>
+        <div class="rv rv1" style="overflow-x: auto">
+          <table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 17px; line-height: 1.45">
+            <caption class="sr">Deals and payments</caption>
+            <thead>
+              <tr style="text-align: left; font-size: 15px; color: {{t.ink2}}">
+                <th scope="col" style="padding: 0 20px 12px 0; font-weight: 600">Deal</th>
+                <th scope="col" style="padding: 0 20px 12px 0; font-weight: 600">Registered</th>
+                <th scope="col" style="padding: 0 20px 12px 0; font-weight: 600">Money</th>
+                <th scope="col" style="padding: 0 0 12px; font-weight: 600">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-top: 1px solid {{t.line}}; vertical-align: top">
+                <th scope="row" style="padding: 16px 20px 16px 0; text-align: left; font-weight: 600">Larchwood Residency · 3 BHK<span style="display: block; font-size: 15px; font-weight: 400">Plinth desk; you did the field work</span></th>
+                <td style="padding: 16px 20px 16px 0">28 Aug 2026</td>
+                <td style="padding: 16px 20px 16px 0">Your share ₹1,68,000 (75% of ₹2,24,000) · TDS ₹3,360 · paid ₹1,64,640</td>
+                <td style="padding: 16px 0">Paid 3 Sep 2026 · <a href="#invoice-1" class="lk" style="color: {{t.ink}}">notice and invoice</a></td>
+              </tr>
+              <tr style="border-top: 1px solid {{t.line}}; vertical-align: top">
+                <th scope="row" style="padding: 16px 20px 16px 0; text-align: left; font-weight: 600">Cobalt Square · 2 BHK<span style="display: block; font-size: 15px; font-weight: 400">Buyer found you on Plinth</span></th>
+                <td style="padding: 16px 20px 16px 0">14 Jul 2026</td>
+                <td style="padding: 16px 20px 16px 0">You invoiced your client. Plinth’s 20% of your fee: ₹31,000, invoiced to you after registration</td>
+                <td style="padding: 16px 0">Settled 20 Jul 2026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="rv" style="margin: 0; max-width: 70ch; font-size: 17px">New-launch commissions never appear here. They are between you and the developer, and Plinth takes no part of them.</p>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">This profile stands on the HARERA agent register, read 14 Oct 2026, and on Plinth’s own relay and introduction ledger. Badges and reviews can’t be bought, and paid tools never affect them.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report this profile</a>
+          <a href="#for-agents" class="lk" style="color: {{t.onSlab}}">Partner rules v1</a>
+          <a href="#broker-check" class="lk" style="color: {{t.onSlab}}">Is this broker registered?</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.onSlab2}}"></span>Badge recomputed 1 Oct 2026 · next 1 Nov 2026</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"view":{"editor":"enum","options":["Public profile","Briefs and ledger"],"default":"Public profile"},"$preview":{"width":1280,"height":5600}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {themePick: null, view: '', month: 5, xHow: false, brief: {}, briefQ: '', connected: false, sel: 'ishita', action: '', exported: false};
+  }
+  componentWillUnmount() {
+    clearTimeout(this._x);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var BG = "'Bricolage Grotesque', system-ui, sans-serif";
+    var T = night ? {
+      bg: '#0B1411', photo: '#1B2A24', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', accent: '#6EE7B7', onAccent: '#052E1F', panelSolid: '#16221D', claimBg: '#1D2621',
+      segEmpty: 'transparent', emptyBorder: '#7D828A', dotOff: '#7D828A',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', photo: '#E7E3DA', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', accent: '#1D5A44', onAccent: '#FFFFFF', panelSolid: '#FFFFFF', claimBg: '#F1ECE2',
+      segEmpty: '#FFFFFF', emptyBorder: '#8C9199', dotOff: '#8C9199',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var U = {
+      h2: 'margin:0;font-family:' + BG + ';font-weight:800;font-size:clamp(44px, 5vw, 64px);line-height:1;letter-spacing:-0.035em',
+      h3: 'margin:0;font-size:19px;line-height:1.4;font-weight:700',
+      lead: 'margin:0;font-size:22px;line-height:1.45',
+      disclose: 'align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-size:17px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:5px',
+      pill: 'align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:2px 14px;border-radius:999px;box-sizing:border-box;background:' + T.track + ';font-size:15px;font-weight:600;color:' + T.ink,
+      tone: 'display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:2px 14px;border-radius:999px;box-sizing:border-box;background:' + T.panelSolid + ';font-size:16px;color:' + T.ink,
+      chip: 'align-self:flex-start;display:inline-flex;align-items:center;min-height:28px;padding:2px 12px;border-radius:999px;box-sizing:border-box;background:' + T.track + ';font-size:14px;color:' + T.ink
+    };
+    function chev(open) { return 'flex:none;transition:transform .2s ease;transform:rotate(' + (open ? 180 : 0) + 'deg)'; }
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', fillN: '#15323A'},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillN: '#3A2210'}
+    };
+    function meter(n) {
+      return [1, 2, 3, 4, 5].map(function (j) {
+        return {style: 'display:block;width:5px;height:9px;border-radius:2px;box-sizing:border-box;' + (j <= B[n].i ? 'background:' + (night ? B[n].dark : B[n].light) + ';' : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder + ';')};
+      });
+    }
+    function chip(n) {
+      return 'flex:none;display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:15px;font-weight:600;background:' + (night ? B[n].fillN : B[n].fill) + ';color:' + T.ink;
+    }
+
+    var propView = this.props.view === 'Briefs and ledger' ? 'agent' : 'public';
+    var view = s.view || propView;
+    var tabs = [['public', 'Public profile'], ['agent', 'Briefs and ledger']].map(function (x) {
+      var on = view === x[0];
+      return {label: x[1], on: on ? 'true' : 'false', pick: function () { self.setState({view: x[0], action: ''}); },
+        style: 'min-height:40px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (on ? T.ink : 'transparent') + ';color:' + (on ? T.bg : T.ink)};
+    });
+
+    var ucRows = [
+      {name: 'Kestrel Park', sub: 'Orbis Land · Sector 113', band: 'Low', kestrel: true, aurelia: false},
+      {name: 'Aurelia Heights, Phase 2', sub: 'Northfield Estates · Sector 37D', band: 'Elevated', kestrel: false, aurelia: true}
+    ].map(function (r) { r.chip = chip(r.band); r.meter = meter(r.band); return r; });
+
+    // Signature (public view): the badge, month by month. Computed on the 1st over the previous 90 days (closings: 12 months).
+    var M = [
+      {label: '1 May', reply: 58, acc: 94, close: 0},
+      {label: '1 Jun', reply: 52, acc: 96, close: 0},
+      {label: '1 Jul', reply: 47, acc: 96, close: 0},
+      {label: '1 Aug', reply: 44, acc: 97, close: 1},
+      {label: '1 Sep', reply: 39, acc: 98, close: 2},
+      {label: '1 Oct', reply: 41, acc: 97, close: 2}
+    ];
+    function held(m) { return m.reply <= 120 && m.acc >= 95 && m.close >= 2; }
+    var mi = Math.max(0, Math.min(5, Number(s.month)));
+    if (isNaN(mi)) mi = 5;
+    var cur = M[mi];
+    var months = M.map(function (m, i) {
+      var on = i === mi;
+      return {
+        label: m.label, on: on ? 'true' : 'false', pick: function () { self.setState({month: i}); },
+        thStyle: 'padding:0 0 8px;text-align:center;background:' + (on ? T.track : 'transparent') + ';border-radius:8px 8px 0 0',
+        btn: 'min-height:40px;min-width:64px;padding:0 10px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (on ? T.ink : 'transparent') + ';color:' + (on ? T.bg : T.ink)
+      };
+    });
+    function cellStyle(i, ok) {
+      return 'padding:14px 8px;text-align:center;vertical-align:top;font-weight:' + (i === mi ? 700 : 400) + ';background:' + (i === mi ? T.track : 'transparent') + ';color:' + T.ink + (ok ? '' : ';text-decoration:underline;text-decoration-style:dotted;text-underline-offset:4px');
+    }
+    var measures = [
+      {name: 'Reply time', bar: 'Median; the bar is 2 hours', cells: M.map(function (m, i) { return {v: m.reply + ' min', style: cellStyle(i, m.reply <= 120)}; })},
+      {name: 'Listing accuracy', bar: 'The bar is 95%', cells: M.map(function (m, i) { return {v: m.acc + '%', style: cellStyle(i, m.acc >= 95)}; })},
+      {name: 'Verified closings', bar: 'The bar is 2 in 12 months', cells: M.map(function (m, i) { return {v: String(m.close), style: cellStyle(i, m.close >= 2)}; })},
+      {name: 'Badge', bar: 'All three bars met', cells: M.map(function (m, i) { return {v: held(m) ? 'Held' : 'Not held', style: cellStyle(i, true)}; })}
+    ];
+    var isHeld = held(cur);
+    var misses = [];
+    if (cur.reply > 120) misses.push('reply time was ' + cur.reply + ' min');
+    if (cur.acc < 95) misses.push('listing accuracy was ' + cur.acc + '%, under 95%');
+    if (cur.close < 2) misses.push(cur.close + (cur.close === 1 ? ' verified closing' : ' verified closings') + ' in 12 months, under 2');
+    var bv = {
+      when: 'Computed ' + cur.label + ' 2026',
+      title: isHeld ? 'Badge held' : 'Not held',
+      reason: isHeld ? 'Median reply ' + cur.reply + ' min, ' + cur.acc + '% of visits matched the listing, ' + cur.close + ' verified closings in 12 months.' : 'Not held because ' + misses.join(', and ') + '. Underlined numbers missed their bar.',
+      markPath: isHeld ? 'M9 21l7 7 15-16' : 'M11 20h18',
+      markStyle: 'flex:none;width:64px;height:64px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:' + (isHeld ? T.ink : T.track) + ';color:' + (isHeld ? T.bg : T.ink)
+    };
+
+    var reviews = [
+      {who: 'Rohan', tag: 'Verified visit · Kestrel Park · 12 Oct 2026', text: 'Priya’s team sent me the Plinth card before the visit and didn’t push. They said up front that Orbis pays them if I book.', hasReply: false, reply: ''},
+      {who: 'Meera', tag: 'Verified visit · Cobalt Square · 9 Oct 2026', text: 'Answered every message within the hour, even on a Sunday. The flat matched the listing, down to the parking.', hasReply: false, reply: ''},
+      {who: 'Arjun', tag: 'Verified closing · Larchwood Residency · 28 Aug 2026', text: 'They flagged the society’s transfer NOC early, which saved us two weeks at registration.', hasReply: true, reply: 'Thank you, Arjun. Enjoy the new home. Priya'}
+    ];
+
+    // Consent pattern for a buyer brief (BG-10). Every box starts unticked.
+    var BO = [
+      ['project', 'Project', 'Kestrel Park, 3 BHK'],
+      ['budget', 'Budget, all-in', '₹2.3–2.6 Cr'],
+      ['timing', 'Timing', 'Buying in 3–6 months'],
+      ['loan', 'Home loan', 'Eligibility checked; lender not shared']
+    ];
+    var picked = s.brief || {};
+    var briefOpts = BO.map(function (b) {
+      var on = !!picked[b[0]];
+      return {
+        label: b[1], value: b[2], on: on ? 'true' : 'false', ticked: on,
+        pick: function () { var n = Object.assign({}, self.state.brief || {}); n[b[0]] = !n[b[0]]; self.setState({brief: n}); },
+        row: 'display:flex;gap:14px;align-items:flex-start;width:100%;padding:12px 14px;border:0;border-radius:8px;box-sizing:border-box;text-align:left;font:inherit;font-size:17px;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.panelSolid : 'transparent'),
+        box: 'flex:none;width:22px;height:22px;margin-top:1px;border-radius:6px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;' + (on ? 'background:' + T.ink + ';border:2px solid ' + T.ink : 'border:2px solid ' + T.ink2)
+      };
+    });
+    var shown = BO.filter(function (b) { return picked[b[0]]; }).map(function (b) { return b[1] + ': ' + b[2]; });
+    var q = (s.briefQ || '').trim();
+    if (q) shown.push('Your question: “' + q + '”');
+    var briefPreview = shown.length ? 'your first name; ' + shown.join('; ') + '.' : 'your first name only. Tick a box to share more.';
+
+    // Agent view: consented briefs, relay status (D13) and the introduction ledger.
+    function dotStyle(c, hollow) { return 'flex:none;width:10px;height:10px;border-radius:50%;box-sizing:border-box;' + (hollow ? 'border:2px solid ' + c : 'background:' + c); }
+    var BRIEFS = {
+      rohan: {name: 'Rohan', when: '12 Oct', project: 'Kestrel Park · Orbis Land · new launch', role: 'Agent of record, named by Rohan for his Kestrel Park visit', relayShort: 'Number shared by Rohan', live: true,
+        brief: [['Project', 'Kestrel Park, 3 BHK', true], ['Budget, all-in', '₹2.5–2.8 Cr', true], ['Timing', 'Buying in 6–12 months', true], ['Home loan', 'Not shared', false]],
+        questions: ['Is car parking included in the ₹2.10 Cr?', 'Which tower is likely to get its OC first?'],
+        relayTitle: 'Rohan shared his own number', relayText: 'Rohan tapped “Share my number” after his visit on 12 Oct 2026. A shared number can’t be recalled, so use it only for this purchase: no broadcast groups without his opt-in, and delete it if he asks.',
+        actions: [['Call Rohan', 'Calling from your own phone. Plinth isn’t in this call.']],
+        ledger: [['12 Oct 2026', 'Visit to Kestrel Park, Orbis Land’s site office, with you named as agent of record', 'Consent C-1012-04'], ['12 Oct 2026', 'Orbis Land’s site office received “Agent of record: Larkspur Realty”', ''], ['12 Oct 2026', 'Rohan tapped to share his number with you', 'Consent C-1012-05']],
+        uc: 'New launch: any commission is between you and Orbis Land. Plinth takes no part of it and never rules on tagging. If Rohan wants, he can share a dated first-contact receipt with Orbis.'},
+      ishita: {name: 'Ishita', when: '17 Oct', project: 'Aurelia Heights, Phase 2 · Northfield Estates · new launch', role: 'Agent of record, named by Ishita in her price-list request', relayShort: 'Relay active', live: true,
+        brief: [['Project', 'Aurelia Heights, Phase 2, 3 BHK', true], ['Budget, all-in', '₹2.6–2.9 Cr', true], ['Timing', 'Buying in 3–6 months', true], ['Home loan', 'Eligibility checked; lender not shared', true]],
+        questions: ['Is the price list dated after 2 Oct 2026?', 'Is PLC negotiable for park-facing units?', 'When will Tower A reach slab 12?'],
+        relayTitle: 'Relay active · her number stays hidden', relayText: 'You reach Ishita through Plinth’s relay number, 8 am to 9 pm, her choice. It stays on while a deal is active. If there’s no visit by 11 Nov, day 25, we ask her whether to keep you connected.',
+        actions: [['Message Ishita', 'Sent through the relay. Ishita sees it in her Plinth chat on WhatsApp.'], ['Call through the relay', 'Calling Ishita through the relay. Neither of you sees the other’s number.'], ['Offer 3 visit slots', 'Pick 3 slots and we send them to Ishita to choose from. (Arrives with resale listings.)']],
+        ledger: [['17 Oct 2026, 19:42', 'Ishita asked Northfield Estates for the official price list and named you agent of record', 'Consent C-1017-06'], ['17 Oct 2026, 19:43', 'Ishita shared this brief with you', 'Consent C-1017-09'], ['Not yet', 'No verified visit. The introduction window starts at the first one.', '']],
+        uc: 'New launch: the site office has your name with her request. Commission, if any, is between you and Northfield Estates. Plinth takes no part of it.'},
+      meera: {name: 'Meera', when: '9 Oct', project: 'Cobalt Square, Tower B · 3 BHK resale · owner’s listing', role: 'Buyer-side agent; Meera found you on Plinth', relayShort: 'Relay: messages only', live: true,
+        brief: [['Flat', 'Cobalt Square, Tower B, flat 1203', true], ['Budget, all-in', '₹1.9–2.1 Cr', true], ['Timing', 'Within 3 months', true], ['Home loan', 'Will need a loan', true]],
+        questions: ['Has the society issued its transfer NOC before?'],
+        relayTitle: 'Relay active · messages only', relayText: 'Meera turned off calls on 10 Oct. Messages through the relay, 9 am to 9 pm. A deal is active, so the relay stays on until registration or until she ends it.',
+        actions: [['Message Meera', 'Sent through the relay.'], ['Call through the relay', ''], ['Offer 3 visit slots', 'Pick 3 slots and we send them to Meera to choose from.']],
+        ledger: [['7 Oct 2026', 'Meera found you on Plinth and tapped Connect', 'Consent C-1007-04'], ['9 Oct 2026, 16:20', 'Verified visit: Meera’s OTP at the flat, with a location check', ''], ['10 Oct 2026', 'Meera switched calls off; messages only', '']],
+        window: {start: 9, end: 60}},
+      tanvi: {name: 'Tanvi', when: '14 Oct', project: 'Sapphire Grove, Phase 1 · Meridian Habitat · new launch', role: 'Introduction ended by the buyer', relayShort: 'Ended by Tanvi', live: false,
+        brief: [], questions: [],
+        relayTitle: 'Ended', relayText: 'Tanvi stopped the relay on 14 Oct 2026. You can’t contact her through Plinth, and please don’t from any other number you may have.',
+        actions: [],
+        ledger: [['2 Oct 2026', 'Tanvi tapped Connect for Sapphire Grove, Phase 1', 'Consent C-1002-02'], ['14 Oct 2026', 'Tanvi ended the relay. Her brief was removed.', '']],
+        gone: 'Tanvi’s brief was removed when she ended the relay. The ledger keeps only dates and consent references, until 14 Oct 2027, as evidence for you both.'}
+    };
+    var order = ['ishita', 'rohan', 'meera', 'tanvi'];
+    var selKey = BRIEFS[s.sel] ? s.sel : 'ishita';
+    var briefList = order.map(function (k) {
+      var b = BRIEFS[k], on = k === selKey;
+      return {
+        name: b.name, when: b.when, project: b.project.split(' · ')[0], relay: b.relayShort, on: on ? 'true' : 'false',
+        dot: dotStyle(b.live ? T.ink : T.dotOff, !b.live),
+        pick: function () { self.setState({sel: k, action: '', exported: false}); },
+        style: 'display:flex;flex-direction:column;gap:4px;width:100%;padding:16px 18px;border:0;border-radius:8px;box-sizing:border-box;text-align:left;font:inherit;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.panelSolid : 'transparent') + ';transition:background-color 200ms ease'
+      };
+    });
+    var b = BRIEFS[selKey];
+    var ledger = b.ledger.map(function (l, i) {
+      var last = i === b.ledger.length - 1;
+      var pending = l[0] === 'Not yet';
+      return {
+        when: l[0], what: l[1], ref: l[2], hasRef: !!l[2],
+        dot: dotStyle(pending ? T.dotOff : T.ink, pending) + ';margin-top:7px;width:12px;height:12px',
+        stem: last ? 'display:none' : 'flex:1;width:2px;margin-top:4px;background:' + T.line
+      };
+    });
+    var actionDefs = b.actions || [];
+    var actions = actionDefs.map(function (a) {
+      var off = !a[1];
+      return {
+        label: off ? a[0] + ' (off)' : a[0], offAria: off ? 'true' : 'false',
+        pick: function () { if (!off) self.setState({action: a[1]}); },
+        style: 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:' + (off ? 'default' : 'pointer') + ';background:' + (off ? 'transparent' : T.panelSolid) + ';color:' + (off ? T.ink2 : T.ink) + (off ? ';text-decoration:line-through' : '')
+      };
+    });
+    var bd = {
+      name: b.name, project: b.project, role: b.role,
+      hasBrief: b.brief.length > 0, noBrief: b.brief.length === 0, goneNote: b.gone || '',
+      brief: b.brief.map(function (x) { return {k: x[0], v: x[1], style: 'margin:0;' + (x[2] ? '' : 'font-style:italic;color:' + T.ink2)}; }),
+      hasQs: b.questions.length > 0, questions: b.questions,
+      relayTitle: b.relayTitle, relayText: b.relayText, relayDot: dotStyle(b.live ? T.ink : T.dotOff, !b.live),
+      hasActions: actions.length > 0, actions: actions,
+      ledger: ledger,
+      hasWindow: !!b.window, hasUcNote: !!b.uc, ucNote: b.uc || '',
+      windowTitle: 'Yours until 8 Dec 2026', windowLeft: '51 days left',
+      windowAria: 'Introduction window: 9 of 60 days used, 51 days left, until 8 Dec 2026.',
+      windowBar: 'position:absolute;left:0;top:0;bottom:0;width:100%;transform-origin:left center;transform:scaleX(' + (9 / 60).toFixed(3) + ');background:' + T.ink + ';transition:transform 600ms cubic-bezier(.22,1,.36,1)',
+      windowNote: '60 days after her last verified visit. Another visit restarts it, but never past 7 Jan 2027, 90 days after the first.'
+    };
+
+    return {
+      t: T, u: U,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      rootMinH: view === 'agent' ? '3500px' : '5600px',
+      tabs: tabs, isPublic: view === 'public', isAgent: view === 'agent',
+      headerAction: view === 'agent' ? 'Export my ledger' : 'Ask Larkspur to help',
+      headerActionHref: view === 'agent' ? '#export' : '#connect',
+      ucRows: ucRows,
+      months: months, measures: measures, bv: bv,
+      xHow: !!s.xHow, chevHow: chev(!!s.xHow), togHow: function () { self.setState({xHow: !self.state.xHow}); },
+      reviews: reviews,
+      briefOpts: briefOpts, briefQ: s.briefQ || '', onBriefQ: function (e) { self.setState({briefQ: e.target.value}); },
+      briefPreview: briefPreview,
+      notConnected: !s.connected, connected: !!s.connected,
+      connect: function () { self.setState({connected: true}); },
+      undoConnect: function () { self.setState({connected: false}); },
+      briefList: briefList, bd: bd,
+      actionMsgShow: !!s.action, actionMsg: s.action || '',
+      exportLabel: s.exported ? 'Ledger saved as PDF' : 'Download this ledger (PDF)',
+      exportLedger: function () {
+        clearTimeout(self._x);
+        self.setState({exported: true});
+        self._x = setTimeout(function () { self.setState({exported: false}); }, 2000);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

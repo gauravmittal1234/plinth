@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Before you pay: Aurelia Heights, Phase 2</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input::placeholder{color:#6F6A60}
+button,a{transition:transform 140ms cubic-bezier(.22,1,.36,1),filter 180ms ease,background-color 180ms ease,text-decoration-thickness 180ms ease}
+button:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){button:hover{filter:brightness(.93)}.pl-night button:hover{filter:brightness(1.15)}}
+.pl-line{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+.pl-l{display:block}
+@keyframes plRise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes plLine{from{transform:translateY(106%)}to{transform:none}}
+@keyframes plDrift{from{transform:scale(1)}to{transform:scale(1.04)}}
+@keyframes plRow{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:no-preference){
+html{scroll-behavior:smooth}
+.pl-l{animation:plLine 950ms cubic-bezier(.22,1,.36,1) 120ms both}
+.pl-in{animation:plRise 800ms cubic-bezier(.22,1,.36,1) 200ms both}
+.pl-drift{animation:plDrift 26s cubic-bezier(.33,1,.68,1) infinite alternate}
+.pl-d1{animation-delay:200ms}.pl-d2{animation-delay:290ms}.pl-d3{animation-delay:380ms}.pl-d4{animation-delay:470ms}
+.pl-chk{animation:plRow 640ms cubic-bezier(.22,1,.36,1) both}
+.pl-c1{animation-delay:120ms}.pl-c2{animation-delay:210ms}.pl-c3{animation-delay:300ms}.pl-c4{animation-delay:390ms}
+@supports (animation-timeline:view()){
+.pl-rv{animation:plRise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+.pl-rv.pl-d1{animation-delay:0s;animation-range:entry 8% entry 63%}.pl-rv.pl-d2{animation-delay:0s;animation-range:entry 16% entry 71%}.pl-rv.pl-d3{animation-delay:0s;animation-range:entry 24% entry 79%}
+}
+}
+</style>
+</helmet>
+<div id="top" class="{{rootClass}}" style="position: relative; min-height: 6520px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 30; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <a href="#project" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-right: auto; color: {{t.ink}}; text-decoration: none; font-size: 17px; font-weight: 600"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>Aurelia Heights, Phase 2</a>
+      <nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 2px">
+        <a href="#search" style="{{navLink}}">Projects</a>
+        <a href="#following" style="{{navLink}}">Following</a>
+        <a href="#ask" style="{{navLink}}">Ask Plinth</a>
+      </nav>
+      <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer; display: inline-flex; align-items: center; justify-content: center">
+        <sc-if value="{{night}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.5" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M10 1.8v2.2M10 16v2.2M1.8 10H4M16 10h2.2M4.2 4.2l1.6 1.6M14.2 14.2l1.6 1.6M4.2 15.8l1.6-1.6M14.2 5.8l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+        <sc-if value="{{day}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.6A6.5 6.5 0 0 1 7.4 4a6.5 6.5 0 1 0 8.6 8.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="intro" aria-labelledby="intro-h" style="background: {{t.bg}}; padding: 72px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch; gap: 56px 72px">
+        <div style="flex: 1 1 560px; max-width: 660px; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 24px">
+          <h1 id="intro-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 112px); line-height: 0.92; letter-spacing: -0.045em">
+            <span class="pl-line"><span class="pl-l">Before you</span></span>
+            <span class="pl-line"><span class="pl-l pl-d1">pay anything</span></span>
+          </h1>
+          <p class="pl-in pl-d1" style="margin: 0; font-size: 16px; line-height: 1.5; color: {{t.ink2}}">Aurelia Heights, Phase 2 · Northfield Estates · RERA GGM/673/405/2022/117 · records as of 14 Oct 2026</p>
+          <p class="pl-in pl-d2" style="margin: 0; font-size: 22px; line-height: 1.5; max-width: 560px">Four checks before an EOI, a booking amount or any demand letter. They take about five minutes.</p>
+          <p class="pl-in pl-d3" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.12; letter-spacing: -0.025em; max-width: 560px">Plinth never takes, holds or moves your money. We check; you pay, from your own account.</p>
+          <ol class="pl-in pl-d4" aria-label="The four checks" style="margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px">
+            <sc-for list="{{steps}}" as="st" hint-placeholder-count="4">
+              <li><a href="{{st.href}}" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; padding: 0 20px; border-radius: 999px; background: {{st.bg}}; color: {{t.ink}}; text-decoration: none; font-size: 18px; font-weight: 600"><span>{{st.label}}</span><span style="display: inline-flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 500; color: {{t.ink2}}">{{st.state}}<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></a></li>
+            </sc-for>
+          </ol>
+        </div>
+        <figure class="pl-in pl-d2" style="flex: 1 1 420px; min-width: 0; min-height: 640px; margin: 0; position: relative; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="salesGallery" class="pl-drift" src="/_blob/5fb6202e7c5c795906c6ae2cb14ac821" alt="Illustrative image: an empty sales gallery with a desk and a model of two towers" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 60%">
+          <figcaption style="position: absolute; left: 16px; bottom: 16px; right: 16px; display: flex; flex-wrap: wrap; gap: 8px">
+            <span style="font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 3px 10px; border-radius: 999px">Illustrative image</span>
+            <span style="font-size: 15px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 4px 12px; border-radius: 999px">Most money changes hands at a desk like this one</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="payee" aria-labelledby="payee-h" data-signature="payee-check" style="scroll-margin-top: 72px; background: {{t.track}}; padding: 136px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 56px 80px">
+        <div style="flex: 1 1 400px; max-width: 480px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+          <h2 id="payee-h" class="pl-rv" style="{{h2}}">Who are you paying?</h2>
+          <p class="pl-rv pl-d1" style="margin: 0; font-size: 21px; line-height: 1.5">Type the payee exactly as your booking form, demand letter or message gives it. We check it against the collection account Northfield registered with HARERA for Phase 2.</p>
+          <div class="pl-rv pl-d2" style="display: flex; flex-direction: column; gap: 18px">
+            <sc-for list="{{fields}}" as="fd" hint-placeholder-count="3">
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="{{fd.id}}" style="font-size: 16px">{{fd.label}}</label>
+                <input id="{{fd.id}}" type="text" inputmode="{{fd.mode}}" autocomplete="off" spellcheck="false" value="{{fd.value}}" onChange="{{fd.onChange}}" placeholder="{{fd.ph}}" style="height: 56px; padding: 0 22px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 19px; font-weight: 600; letter-spacing: {{fd.track}}">
+              </div>
+            </sc-for>
+          </div>
+          <p style="margin: 0; font-size: 16px; line-height: 1.5; color: {{t.ink2}}">We compare every character and show only the last 4 digits of the registered account. Nothing you type is stored.</p>
+        </div>
+
+        <div class="pl-rv pl-d1" style="flex: 1 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 22px; padding: 36px 36px 32px; box-sizing: border-box; border-radius: 8px; background: {{t.bgSolid}}">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px">
+            <h3 style="{{h3}}">Registered with HARERA</h3>
+            <button type="button" onClick="{{openSrc}}" aria-label="Source: HARERA registration, bank accounts, checked 14 Oct 2026" style="{{chipStyle}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>HARERA registration · bank accounts · 14 Oct 2026</button>
+          </div>
+          <p style="margin: -8px 0 0; font-size: 17px; line-height: 1.5">Aurelia Heights Ph 2 RERA Collection Account · Northfield Estates Pvt Ltd · Peepal Bank, Golf Course Road, Gurugram</p>
+          <ul aria-label="Your payee compared with the registered account" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+            <sc-for list="{{rows}}" as="rw" hint-placeholder-count="3">
+              <li class="{{rw.cls}}" style="display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 4px 16px; align-items: center; padding: 14px 18px; border-radius: 8px; background: {{t.track}}">
+                <span style="font-size: 16px; color: {{t.ink2}}">{{rw.label}}</span>
+                <span style="display: flex; flex-direction: column; min-width: 0; line-height: 1.4"><strong style="font-size: 18px; overflow-wrap: anywhere">{{rw.entered}}</strong><span style="font-size: 15px; color: {{t.ink2}}; overflow-wrap: anywhere">Registered: {{rw.reg}}</span></span>
+                <span style="{{rw.pill}}"><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="{{rw.icon}}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{rw.status}}</span>
+              </li>
+            </sc-for>
+          </ul>
+          <div class="pl-chk pl-c4" style="display: flex; align-items: center; gap: 14px">
+            <span aria-hidden="true" style="flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px">
+              <sc-for list="{{meter}}" as="mt" hint-placeholder-count="3"><span style="display: block; height: 8px; border-radius: 2px; background: {{t.chipFill}}; overflow: hidden"><span style="{{mt.fill}}"></span></span></sc-for>
+            </span>
+            <span aria-live="polite" style="font-size: 16px; font-weight: 600; white-space: nowrap">{{matchText}}</span>
+          </div>
+          <div role="status" style="{{verdict.style}}">
+            <span style="display: flex; align-items: flex-start; gap: 12px">
+              <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="{{verdict.icon}}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <span style="display: flex; flex-direction: column; gap: 6px">
+                <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.12; letter-spacing: -0.02em">{{verdict.title}}</strong>
+                <span style="font-size: 17px; line-height: 1.55">{{verdict.body}}</span>
+                <sc-if value="{{verdict.bad}}" hint-placeholder-val="{{false}}"><a href="#report" style="font-size: 16px; font-weight: 600; color: inherit; text-decoration: underline">Tell us about this account</a></sc-if>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="amount" aria-labelledby="amount-h" style="scroll-margin-top: 72px; background: {{t.bg}}; padding: 144px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <h2 id="amount-h" class="pl-rv" style="{{h2}}">How much can they ask for now?</h2>
+        <div class="pl-rv pl-d1" style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 36px">
+          <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(64px, 7.5vw, 112px); line-height: 0.92; letter-spacing: -0.045em; white-space: nowrap">₹24.4 L</p>
+          <p style="margin: 0; flex: 1 1 380px; max-width: 620px; font-size: 21px; line-height: 1.5">is the most Northfield can take before your agreement for sale is registered. That is 10% of ₹2.44 Cr: the base ₹2.35 Cr plus ₹9.2 L in charges, from the cost sheet of 2 Oct 2026.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: stretch; gap: 48px 72px">
+          <figure class="pl-rv" style="flex: 1 1 360px; max-width: 460px; min-width: 0; min-height: 560px; margin: 0; position: relative; overflow: hidden; background: {{t.photo}}">
+            <img data-slot="costSheetDesk" src="/_blob/0df253c9bcc49614197e2e73dc9444e4" alt="Illustrative image: a printed cost sheet on a wooden table beside a phone, a pen and a cup of tea" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+            <figcaption style="position: absolute; left: 14px; bottom: 14px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 3px 10px; border-radius: 999px">Illustrative image</figcaption>
+          </figure>
+          <div class="pl-rv pl-d1" style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <span id="stage-l" style="font-size: 16px">Where are you?</span>
+              <div role="group" aria-labelledby="stage-l" style="display: inline-flex; flex-wrap: wrap; align-self: flex-start; padding: 4px; border-radius: 999px; background: {{t.track}}">
+                <sc-for list="{{stages}}" as="sg" hint-placeholder-count="2"><button type="button" onClick="{{sg.pick}}" aria-pressed="{{sg.on}}" style="{{sg.style}}">{{sg.label}}</button></sc-for>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 18px 24px">
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="a-now" style="font-size: 16px">About to pay</label>
+                <span style="display: flex; align-items: center; height: 56px; padding: 0 22px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}"><span aria-hidden="true" style="font-weight: 600; margin-right: 6px">₹</span><input id="a-now" type="text" inputmode="numeric" autocomplete="off" value="{{nowStr}}" onChange="{{onNow}}" style="flex: 1; min-width: 0; height: 52px; border: 0; padding: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 19px; font-weight: 600"></span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="a-paid" style="font-size: 16px">Paid already, for this home</label>
+                <span style="display: flex; align-items: center; height: 56px; padding: 0 22px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}"><span aria-hidden="true" style="font-weight: 600; margin-right: 6px">₹</span><input id="a-paid" type="text" inputmode="numeric" autocomplete="off" value="{{paidStr}}" onChange="{{onPaid}}" style="flex: 1; min-width: 0; height: 52px; border: 0; padding: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 19px; font-weight: 600"></span>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <div role="img" aria-label="{{capLabel}}" style="position: relative; height: 40px; border-radius: 4px; background: {{t.track}}; overflow: hidden">
+                <span style="{{capFill}}"></span>
+                <span style="{{capOver}}"></span>
+                <span aria-hidden="true" style="{{capMark}}"></span>
+              </div>
+              <div aria-hidden="true" style="position: relative; height: 22px; font-size: 14px; color: {{t.ink2}}">
+                <span style="position: absolute; left: 0">₹0</span>
+                <span style="{{capTick}}">10% limit · ₹24.4 L</span>
+              </div>
+            </div>
+            <p aria-live="polite" style="margin: 0; font-size: 21px; line-height: 1.5"><strong>{{capHead}}</strong> {{capBody}}</p>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <span id="method-l" style="font-size: 16px">How are you paying?</span>
+              <div role="group" aria-labelledby="method-l" style="display: inline-flex; flex-wrap: wrap; align-self: flex-start; padding: 4px; border-radius: 999px; background: {{t.track}}">
+                <sc-for list="{{methods}}" as="me" hint-placeholder-count="3"><button type="button" onClick="{{me.pick}}" aria-pressed="{{me.on}}" style="{{me.style}}">{{me.label}}</button></sc-for>
+              </div>
+              <p style="margin: 0; font-size: 17px; line-height: 1.55">{{methodNote}}</p>
+            </div>
+            <span style="display: flex; flex-wrap: wrap; gap: 8px"><button type="button" onClick="{{openSrc}}" aria-label="Source: RERA Act 2016, section 13" style="{{chipStyle}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>RERA Act 2016 · s.13</button><button type="button" onClick="{{openSrc}}" aria-label="Source: developer cost sheet dated 2 Oct 2026" style="{{chipStyle}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>Developer cost sheet · 2 Oct 2026</button></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="eoi" aria-labelledby="eoi-h" style="scroll-margin-top: 72px; background: {{t.track}}; padding: 136px 0 136px">
+      <div style="max-width: 820px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px">
+        <h2 id="eoi-h" class="pl-rv" style="{{h2}}">Will the EOI come back?</h2>
+        <p class="pl-rv pl-d1" style="margin: 0; font-size: 21px; line-height: 1.5">An expression of interest is money paid to hold a place before booking. Before you pay one, check that its terms are written down. Mark what your EOI form says.</p>
+        <ul class="pl-rv pl-d2" aria-label="EOI terms" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+          <li style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding: 18px 22px; border-radius: 8px; background: {{t.bgSolid}}">
+            <span style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; line-height: 1.45"><span style="font-weight: 600">The project is registered with HARERA</span><span style="font-size: 16px; color: {{t.ink2}}">Records show GGM/673/405/2022/117. An EOI for an unregistered project breaks RERA s.3.</span></span>
+            <span style="{{pillMatch}}"><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l3.5 3.5L16 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Records show</span>
+          </li>
+          <sc-for list="{{terms}}" as="tm" hint-placeholder-count="5">
+            <li style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding: 18px 22px; border-radius: 8px; background: {{t.bgSolid}}">
+              <span id="{{tm.id}}" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; line-height: 1.45"><span style="font-weight: 600">{{tm.text}}</span><span style="font-size: 16px; color: {{t.ink2}}">{{tm.why}}</span></span>
+              <span role="group" aria-labelledby="{{tm.id}}" style="display: inline-flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+                <sc-for list="{{tm.opts}}" as="op" hint-placeholder-count="3"><button type="button" onClick="{{op.pick}}" aria-pressed="{{op.on}}" style="{{op.style}}">{{op.label}}</button></sc-for>
+              </span>
+            </li>
+          </sc-for>
+        </ul>
+        <p aria-live="polite" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.15; letter-spacing: -0.025em">{{eoiSummary}}</p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.55">{{eoiNext}}</p>
+        <span style="display: flex; flex-wrap: wrap; gap: 8px"><button type="button" onClick="{{openSrc}}" aria-label="Source: HARERA Gurugram regulations on forfeiture of earnest money, 2018" style="{{chipStyleOnTrack}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>HARERA Gurugram · earnest money regulations, 2018</button><button type="button" onClick="{{openSrc}}" aria-label="Source: RERA Act 2016, section 3" style="{{chipStyleOnTrack}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>RERA Act 2016 · s.3</button></span>
+      </div>
+    </section>
+
+    <section id="receipt" aria-labelledby="receipt-h" style="scroll-margin-top: 72px; background: {{t.bg}}; padding: 144px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch; gap: 56px 80px">
+        <div class="pl-rv" style="flex: 1 1 380px; max-width: 480px; min-width: 0; min-height: 600px; position: relative">
+          <img data-slot="receiptDesk" src="/_blob/8b723d7d89b2fb71afade8463f2f0e2e" alt="Illustrative image: a stamped payment receipt and a cheque counterfoil on a desk beside a phone" style="position: absolute; inset: 0; background: #E7E3DA; object-fit: cover; display: block">
+          <span style="position: absolute; left: 14px; bottom: 14px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 3px 10px; border-radius: 999px">Illustrative image</span>
+        </div>
+        <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 24px">
+          <h2 id="receipt-h" class="pl-rv" style="{{h2}}">Keep the receipt</h2>
+          <p class="pl-rv pl-d1" style="margin: 0; font-size: 21px; line-height: 1.5">After you pay, add a photo or PDF of the receipt. We check it against what you checked here, and keep it in your account until you delete it.</p>
+          <sc-if value="{{noReceipt}}" hint-placeholder-val="{{true}}">
+            <div class="pl-rv pl-d2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px">
+              <button type="button" onClick="{{addReceipt}}" style="display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 26px; box-sizing: border-box; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V3.5M6 7.5l4-4 4 4M4 12.5V16h12v-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>Add the receipt</button>
+              <span style="font-size: 16px; color: {{t.ink2}}">Photo or PDF · only you can see it</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{hasReceipt}}" hint-placeholder-val="{{false}}">
+            <div class="pl-chk" style="display: flex; flex-direction: column; gap: 18px; padding: 28px 30px; border-radius: 8px; background: {{t.track}}">
+              <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px">
+                <strong style="font-size: 20px">Receipt from Northfield Estates Pvt Ltd</strong>
+                <span style="font-size: 16px; color: {{t.ink2}}">Added 18 Oct 2026 · receipt-1184.pdf</span>
+              </div>
+              <dl style="margin: 0; display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 8px 16px; font-size: 17px; line-height: 1.45">
+                <dt style="color: {{t.ink2}}">Amount</dt><dd style="margin: 0; font-weight: 600">₹11,00,000, EOI</dd>
+                <dt style="color: {{t.ink2}}">Paid to</dt><dd style="margin: 0">Aurelia Heights Ph 2 RERA Collection Account, ending 4417</dd>
+                <dt style="color: {{t.ink2}}">Paid by</dt><dd style="margin: 0">Bank transfer, 18 Oct 2026, UTR ending 7731</dd>
+              </dl>
+              <ul aria-label="What we checked on the receipt" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 17px; line-height: 1.45">
+                <sc-for list="{{rcChecks}}" as="rk" hint-placeholder-count="3"><li style="display: flex; align-items: flex-start; gap: 10px"><span style="{{rk.dot}}"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="{{rk.icon}}" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span>{{rk.text}}</span></li></sc-for>
+              </ul>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                <button type="button" onClick="{{addReceipt}}" style="{{btn2OnTrack}}">Replace</button>
+                <button type="button" onClick="{{removeReceipt}}" style="{{btn2OnTrack}}">Delete it</button>
+              </div>
+            </div>
+          </sc-if>
+          <p style="margin: 0; font-size: 17px; line-height: 1.55">Keep the originals too. You will need them for the agreement, for the loan and, if it ever comes to it, for a HARERA complaint.</p>
+        </div>
+      </div>
+    </section>
+
+    <div style="position: sticky; bottom: 24px; height: 0; z-index: 40">
+      <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+        <p role="status" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 48px); margin: 0; padding: 12px 20px; box-sizing: border-box; border-radius: 8px; background: {{t.ink}}; color: {{t.bg}}; font-size: 16px; line-height: 1.4">{{toast}}</p>
+      </sc-if>
+    </div>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; background: {{t.track}}; padding-top: 128px">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 40px 64px">
+      <figure class="pl-rv" style="flex: 0 1 300px; min-width: 0; height: 360px; margin: 0; position: relative; overflow: hidden; background: {{t.photo}}">
+        <img data-slot="deedKeys" src="/_blob/6ca2bc5de9dc542dc12c4d95e30a6af3" alt="Illustrative image: new apartment keys resting on a signed sale deed" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+        <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 3px 10px; border-radius: 999px">Illustrative image</figcaption>
+      </figure>
+      <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+        <p class="pl-rv" style="margin: 0; max-width: 680px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.1; letter-spacing: -0.025em">Pay only the registered account. Keep every receipt until the keys are yours.</p>
+        <p style="margin: 0; font-size: 18px; line-height: 1.55">Plinth never takes, holds or moves money, and we don’t book units or negotiate. No developer pays us. Ever.</p>
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 17px">
+          <a href="#money" style="color: {{t.ink}}; text-decoration: none">How we make money</a>
+          <a href="#report" style="color: {{t.ink}}; text-decoration: none">Report an error</a>
+          <a href="#my-number" style="color: {{t.ink}}; text-decoration: none">Who has my number</a>
+          <a href="#privacy" style="color: {{t.ink}}; text-decoration: none">Privacy</a>
+        </nav>
+      </div>
+    </div>
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; margin-top: 72px; overflow: hidden">
+      <p class="pl-rv pl-d1" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 16px; box-sizing: border-box; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(110px, 35vw, 470px); line-height: 0.8; letter-spacing: -0.06em; white-space: nowrap; color: {{t.ink}}">Plinth</p>
+      <div style="background: {{t.ink}}; color: {{t.bg}}">
+        <p style="max-width: 1264px; margin: 0 auto; padding: 28px 32px 32px; box-sizing: border-box; font-size: 16px; line-height: 1.5">Information from public records and your own documents. Not legal or financial advice. HARERA data as of 14 Oct 2026. <a href="#report" style="color: {{t.bg}}; text-decoration: underline">Report an error</a> · <a href="#money" style="color: {{t.bg}}; text-decoration: underline">How we make money</a></p>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"payee":{"editor":"enum","options":["From a WhatsApp message","From the booking form"],"default":"From a WhatsApp message"},"$preview":{"width":1280,"height":6520}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      edits: null, editsFrom: null,
+      stage: 'before', now: 1100000, paid: 0, method: 'bank',
+      terms: {refund: 'yes', when: 'unstated', adjust: 'yes', letter: 'yes', cancel: 'unstated'},
+      receipt: false, toast: '',
+      themeOv: null, themeFrom: null
+    };
+  }
+  componentWillUnmount() { clearTimeout(this._toastT); }
+  flash(msg) {
+    var self = this;
+    clearTimeout(this._toastT);
+    this.setState({toast: msg});
+    this._toastT = setTimeout(function () { self.setState({toast: ''}); }, 3200);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var P = this.props || {};
+    var tw = P.theme === 'Night' ? 'Night' : 'Day';
+    var theme = (s.themeOv && s.themeFrom === tw) ? s.themeOv : tw;
+    var night = theme === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#121F1A', photo: '#1B2A24', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      claimBg: '#1D2621', chipFill: 'rgba(255,255,255,0.10)', chipFillOnTrack: 'rgba(255,255,255,0.12)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', photo: '#E7E3DA', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      claimBg: '#F1ECE2', chipFill: '#ECE8DF', chipFillOnTrack: '#E6E1D6'
+    };
+    var D = "'Bricolage Grotesque', system-ui, sans-serif";
+    var reduced = false;
+    try { reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+
+    // The registered collection account, as HARERA lists it for Phase 2 (DESIGN.md §5b).
+    var REG = {holder: 'Northfield Estates Pvt Ltd', acct: '50200071824417', ifsc: 'PEPL0000418', bank: 'Peepal Bank, Golf Course Road'};
+    var PRESET = {
+      'From the booking form': {name: 'Northfield Estates Pvt Ltd', acct: '5020 0071 8244 17', ifsc: 'PEPL0000418'},
+      'From a WhatsApp message': {name: 'Northfield Realty Services LLP', acct: '9190 2004 5118 082', ifsc: 'MRGL0000912'}
+    };
+    var preKey = PRESET[P.payee] ? P.payee : 'From a WhatsApp message';
+    var vals = (s.edits && s.editsFrom === preKey) ? s.edits : PRESET[preKey];
+    function edit(k, v) { var nx = {name: vals.name, acct: vals.acct, ifsc: vals.ifsc}; nx[k] = v; self.setState({edits: nx, editsFrom: preKey}); }
+
+    var ALLOWED = {northfield: 1, estates: 1, aurelia: 1, heights: 1, ph: 1, phase: 1, '2': 1, rera: 1, collection: 1, account: 1, a: 1, c: 1, ac: 1};
+    var STOP = {pvt: 1, ltd: 1, private: 1, limited: 1, the: 1, ms: 1, m: 1, s: 1};
+    function nameCheck(v) {
+      var toks = String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(function (x) { return x && !STOP[x]; });
+      if (!toks.length) return 'empty';
+      var allIn = toks.every(function (x) { return ALLOWED[x]; });
+      if (allIn && toks.indexOf('northfield') >= 0 && toks.indexOf('estates') >= 0) return 'match';
+      if (allIn && toks.indexOf('northfield') >= 0) return 'partial';
+      return 'differs';
+    }
+    function acctCheck(v) {
+      var d = String(v || '').replace(/[^0-9]/g, '');
+      if (!d) return 'empty';
+      if (d === REG.acct) return 'match';
+      if (d.length >= 4 && d.length < REG.acct.length && REG.acct.slice(-d.length) === d) return 'partial';
+      return 'differs';
+    }
+    function ifscCheck(v) {
+      var d = String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+      if (!d) return 'empty';
+      return d === REG.ifsc ? 'match' : 'differs';
+    }
+    var BANKS = {PEPL: 'Peepal Bank', MRGL: 'Marigold Bank'};
+    var ifscIn = String(vals.ifsc || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    var chk = {name: nameCheck(vals.name), acct: acctCheck(vals.acct), ifsc: ifscCheck(vals.ifsc)};
+    var ICON = {match: 'M4 10.5l3.5 3.5L16 6', differs: 'M5.5 5.5l9 9M14.5 5.5l-9 9', partial: 'M10 5v6M10 14.5v.5', empty: 'M5 10h10'};
+    var pillBase = 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 14px;box-sizing:border-box;border-radius:999px;font-size:15px;font-weight:700;white-space:nowrap;' + (reduced ? '' : 'transition:background-color .3s ease,color .3s ease;');
+    function pill(st) {
+      if (st === 'match') return pillBase + 'background:' + T.accentSoft + ';color:' + T.onAccentSoft;
+      if (st === 'differs') return pillBase + 'background:' + T.ink + ';color:' + T.bg;
+      if (st === 'partial') return pillBase + 'background:' + T.claimBg + ';color:' + T.ink;
+      return pillBase + 'background:' + T.chipFill + ';color:' + T.ink2;
+    }
+    var STATUS = {match: 'Matches', differs: 'Differs', partial: 'Check', empty: 'Not entered'};
+    var rows = [
+      {k: 'name', label: 'Payee name', entered: vals.name || 'Not entered', reg: REG.holder},
+      {k: 'acct', label: 'Account', entered: vals.acct || 'Not entered', reg: 'ending ' + REG.acct.slice(-4)},
+      {k: 'ifsc', label: 'IFSC', entered: vals.ifsc ? vals.ifsc + (BANKS[ifscIn.slice(0, 4)] ? ' · ' + BANKS[ifscIn.slice(0, 4)] : '') : 'Not entered', reg: REG.ifsc + ' · ' + REG.bank}
+    ].map(function (r, i) {
+      var st = chk[r.k];
+      return {label: r.label, entered: r.entered, reg: r.reg, status: STATUS[st], pill: pill(st), icon: ICON[st], cls: 'pl-chk pl-c' + (i + 1)};
+    });
+    var nMatch = ['name', 'acct', 'ifsc'].filter(function (k) { return chk[k] === 'match'; }).length;
+    var anyDiff = ['name', 'acct', 'ifsc'].some(function (k) { return chk[k] === 'differs'; });
+    var meter = [0, 1, 2].map(function (i) {
+      return {fill: 'display:block;height:100%;transform-origin:left center;transform:scaleX(' + (i < nMatch ? 1 : 0) + ');background:' + T.ink + ';' + (reduced ? '' : 'transition:transform .45s cubic-bezier(.22,1,.36,1) ' + (i * 90) + 'ms')};
+    });
+    var vBase = 'padding:22px 24px;border-radius:8px;' + (reduced ? '' : 'transition:background-color .35s ease,color .35s ease;');
+    var verdict;
+    if (anyDiff) {
+      verdict = {bad: true, style: vBase + 'background:' + T.ink + ';color:' + T.bg, icon: 'M12 3.5L21.5 20h-19zM12 10v4.5M12 17.2v.3',
+        title: 'Doesn’t match the account registered with HARERA',
+        body: 'Pause before you pay. Ask Northfield, in writing, to confirm the account on its letterhead with the RERA number. Call the sales office on the number listed on HARERA, not one from a message.'};
+    } else if (nMatch === 3) {
+      verdict = {bad: false, style: vBase + 'background:' + T.accentSoft + ';color:' + T.onAccentSoft, icon: 'M5 12.5l4.5 4.5L19 7.5',
+        title: 'Matches the account registered with HARERA',
+        body: 'Pay by bank transfer or by a cheque in this account’s name, from your own account. Then keep the receipt.'};
+    } else {
+      verdict = {bad: false, style: vBase + 'background:' + T.track + ';color:' + T.ink, icon: 'M12 7v6M12 16.5v.5M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z',
+        title: chk.acct === 'partial' ? 'The last digits match' : 'Fill in all three to check',
+        body: chk.acct === 'partial' ? 'Enter the full account number to be sure. Look-alike accounts often share the last few digits.' : 'We need the payee name, the account number and the IFSC from your form or letter.'};
+    }
+    var FIELDS = [
+      {k: 'name', id: 'p-name', label: 'Payee name', mode: 'text', ph: 'As written on the form', track: 'normal'},
+      {k: 'acct', id: 'p-acct', label: 'Account number', mode: 'numeric', ph: 'All the digits', track: '0.02em'},
+      {k: 'ifsc', id: 'p-ifsc', label: 'IFSC', mode: 'text', ph: '11 characters', track: '0.04em'}
+    ];
+    var fields = FIELDS.map(function (f) {
+      return {id: f.id, label: f.label, mode: f.mode, ph: f.ph, track: f.track, value: vals[f.k] || '',
+        onChange: function (e) { var v = String(e.target.value || ''); if (f.k === 'ifsc') v = v.toUpperCase().slice(0, 11); edit(f.k, v.slice(0, 40)); }};
+    });
+
+    // The 10% cap before a registered agreement for sale (RERA s.13).
+    var PRICE = 24420000, CAP = 2442000;
+    var nowV = Math.max(0, Number(s.now) || 0), paidV = Math.max(0, Number(s.paid) || 0), tot = nowV + paidV;
+    var before = s.stage !== 'after';
+    function inr(v) { return '₹' + Math.round(v).toLocaleString('en-IN'); }
+    function lakh(v) { return v >= 1e7 ? '₹' + (v / 1e7).toFixed(2) + ' Cr' : '₹' + (v / 1e5).toFixed(1) + ' L'; }
+    var scaleMax = Math.max(CAP * 1.25, tot * 1.05);
+    var within = Math.min(tot, CAP), over = Math.max(0, tot - CAP);
+    var capPct = CAP / scaleMax * 100;
+    var tr = reduced ? '' : 'transition:width .4s cubic-bezier(.22,1,.36,1),left .4s cubic-bezier(.22,1,.36,1);';
+    var capHead, capBody;
+    if (!before) {
+      capHead = 'The 10% limit applied until registration.';
+      capBody = 'From here, each demand should match a stage on record. Tower A’s latest QPR shows slab 9, so check any slab 12 demand with Pay-as-built first.';
+    } else if (over > 0) {
+      capHead = lakh(over) + ' over the 10% limit.';
+      capBody = 'Before the agreement for sale is registered, Northfield can’t take more than ' + lakh(CAP) + '. Ask for the registered agreement first, then pay the rest.';
+    } else {
+      capHead = lakh(CAP - tot) + ' left under the 10% limit.';
+      capBody = 'With this payment you would have paid ' + inr(tot) + ' in all, before a registered agreement.';
+    }
+    var METHODS = [['bank', 'Bank transfer'], ['cheque', 'Cheque'], ['cash', 'Cash']];
+    var method = s.method || 'bank';
+    var NOTE = {
+      bank: 'Good: a transfer from your own account leaves a record in your name. Use the account checked above.',
+      cheque: 'Write it to the account holder’s full name, cross it “account payee only”, and note the cheque number.',
+      cash: 'Pay by bank transfer or cheque instead. Cash leaves no record in your name, and a HARERA complaint or a refund depends on records.'
+    };
+    function seg(on) { return 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;color:' + (on ? T.bg : T.ink) + ';background:' + (on ? T.ink : 'transparent'); }
+    var stages = [['before', 'Before the agreement is registered'], ['after', 'After it is registered']].map(function (x) {
+      return {label: x[1], on: x[0] === 'before' ? before : !before, style: seg(x[0] === 'before' ? before : !before), pick: function () { self.setState({stage: x[0]}); }};
+    });
+    var methods = METHODS.map(function (x) { return {label: x[1], on: method === x[0], style: seg(method === x[0]), pick: function () { self.setState({method: x[0]}); }}; });
+
+    // EOI terms.
+    var TERMS = [
+      {k: 'refund', text: 'Refundable in full if you don’t book', why: 'The whole amount comes back, with no deduction.'},
+      {k: 'when', text: 'Says by when, and back to your own account', why: 'A date, and the same account you paid from.'},
+      {k: 'adjust', text: 'Adjusted against the booking amount', why: 'If you book, it counts towards the first 10%.'},
+      {k: 'letter', text: 'On Northfield’s letterhead, with the RERA number', why: 'Signed, dated, with the amount in words.'},
+      {k: 'cancel', text: 'States the charge if you cancel after booking', why: 'HARERA Gurugram caps earnest money kept at 10% of the price.'}
+    ];
+    var TS = s.terms || {};
+    var OPTS = [['yes', 'Yes'], ['no', 'No'], ['unstated', 'Not stated']];
+    function segS(on) { return 'min-height:40px;padding:0 14px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;color:' + (on ? T.bg : T.ink) + ';background:' + (on ? T.ink : 'transparent'); }
+    var terms = TERMS.map(function (x, i) {
+      var cur = TS[x.k] || 'unstated';
+      return {id: 'eoi-t' + i, text: x.text, why: x.why, opts: OPTS.map(function (o) {
+        return {label: o[1], on: cur === o[0], style: segS(cur === o[0]), pick: function () { var nt = {}; for (var kk in TS) nt[kk] = TS[kk]; nt[x.k] = o[0]; self.setState({terms: nt}); }};
+      })};
+    });
+    var nYes = TERMS.filter(function (x) { return TS[x.k] === 'yes'; }).length;
+    var nNo = TERMS.filter(function (x) { return TS[x.k] === 'no'; }).length;
+    var eoiSummary = nNo ? (nNo === 1 ? '1 term works against you.' : nNo + ' terms work against you.') : (nYes === 5 ? 'All 5 terms are in writing.' : nYes + ' of 5 terms are in writing.');
+    var eoiNext = nNo ? 'Ask Northfield to change it in writing before you pay. If it stays, you know what you could lose.' : (nYes === 5 ? 'Keep the EOI letter with your receipt. If you book, the EOI should show on the booking receipt.' : 'Ask for the missing ' + (5 - nYes === 1 ? 'term' : (5 - nYes) + ' terms') + ' in writing before you pay.');
+
+    var hasReceipt = !!s.receipt;
+    var rcDot = function (ok) { return 'flex:none;width:22px;height:22px;margin-top:2px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:' + (ok ? T.accentSoft : T.claimBg) + ';color:' + (ok ? T.onAccentSoft : T.ink); };
+    var rcChecks = [
+      {ok: true, text: 'Paid into the collection account registered with HARERA.'},
+      {ok: true, text: 'Within the 10% limit before a registered agreement.'},
+      {ok: false, text: 'No unit number on it yet. Ask for a receipt that names the unit.'}
+    ].map(function (x) { return {text: x.text, dot: rcDot(x.ok), icon: x.ok ? 'M4 10.5l3.5 3.5L16 6' : 'M10 5v6M10 14.5v.5'}; });
+
+    var steps = [
+      {href: '#payee', label: 'Who you’re paying', state: anyDiff ? 'Doesn’t match' : (nMatch === 3 ? 'Matches' : 'To check')},
+      {href: '#amount', label: 'How much they can ask for', state: before ? (over > 0 ? 'Over the limit' : 'Within the limit') : 'Agreement registered'},
+      {href: '#eoi', label: 'Whether the EOI comes back', state: nYes + ' of 5 in writing'},
+      {href: '#receipt', label: 'Keeping the receipt', state: hasReceipt ? 'Kept' : 'After you pay'}
+    ].map(function (x) { x.bg = T.track; return x; });
+
+    var chipBase = 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 12px;box-sizing:border-box;border-radius:999px;border:0;font:inherit;font-size:14px;line-height:1.25;color:' + T.ink + ';cursor:pointer;text-align:left;';
+    return {
+      t: T, night: night, day: !night, rootClass: night ? 'pl-night' : 'pl-day',
+      themeLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themeOv: night ? 'Day' : 'Night', themeFrom: tw}); },
+      h2: 'margin:0;font-family:' + D + ';font-weight:800;font-size:clamp(40px, 4.7vw, 60px);line-height:1.0;letter-spacing:-0.035em;text-wrap:balance',
+      h3: 'margin:0;font-family:' + D + ';font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-0.02em',
+      navLink: 'display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;text-decoration:none;font-size:16px;font-weight:600;color:' + T.ink2,
+      chipStyle: chipBase + 'background:' + T.chipFill, chipStyleOnTrack: chipBase + 'background:' + T.chipFillOnTrack,
+      btn2OnTrack: 'display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;box-sizing:border-box;border-radius:999px;border:0;background:' + T.chipFillOnTrack + ';color:' + T.ink + ';font:inherit;font-size:17px;font-weight:600;cursor:pointer',
+      pillMatch: pill('match'),
+      openSrc: function () { self.flash('Opens the source with our saved copy and its date.'); },
+      steps: steps,
+      fields: fields, rows: rows, meter: meter, matchText: nMatch + ' of 3 match', verdict: verdict,
+      stages: stages, nowStr: nowV ? nowV.toLocaleString('en-IN') : '', paidStr: paidV ? paidV.toLocaleString('en-IN') : '',
+      onNow: function (e) { var d = String(e.target.value || '').replace(/[^0-9]/g, '').slice(0, 9); self.setState({now: d ? Number(d) : 0}); },
+      onPaid: function (e) { var d = String(e.target.value || '').replace(/[^0-9]/g, '').slice(0, 9); self.setState({paid: d ? Number(d) : 0}); },
+      capFill: 'position:absolute;left:0;top:0;bottom:0;width:' + (within / scaleMax * 100).toFixed(2) + '%;background:' + T.ink + ';' + tr,
+      capOver: over > 0 ? 'position:absolute;top:0;bottom:0;left:' + capPct.toFixed(2) + '%;width:' + (over / scaleMax * 100).toFixed(2) + '%;background:repeating-linear-gradient(45deg,' + T.ink + ' 0 3px,' + T.claimBg + ' 3px 7px);' + tr : 'display:none',
+      capMark: 'position:absolute;top:0;bottom:0;left:calc(' + capPct.toFixed(2) + '% - 3px);width:6px;box-sizing:border-box;background:' + T.bg + ';border-left:2px solid ' + T.ink + ';border-right:2px solid ' + T.ink,
+      capTick: 'position:absolute;left:' + capPct.toFixed(2) + '%;transform:translateX(-50%);white-space:nowrap;font-weight:600;color:' + T.ink,
+      capLabel: 'Paid and about to pay: ' + inr(tot) + '. The 10% limit before a registered agreement is ' + inr(CAP) + '.',
+      capHead: capHead, capBody: capBody,
+      methods: methods, methodNote: NOTE[method],
+      terms: terms, eoiSummary: eoiSummary, eoiNext: eoiNext,
+      noReceipt: !hasReceipt, hasReceipt: hasReceipt, rcChecks: rcChecks,
+      addReceipt: function () { self.setState({receipt: true}); self.flash('Receipt added. Only you can see it.'); },
+      removeReceipt: function () { self.setState({receipt: false}); self.flash('Receipt deleted from your account.'); },
+      hasToast: !!s.toast, toast: s.toast || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

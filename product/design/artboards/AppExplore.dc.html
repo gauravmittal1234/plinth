@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Explore: home (phone)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hs{scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:pointer}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pl-drift{from{transform:scale(1)}to{transform:scale(1.04)}}
+@keyframes pl-sheet{from{opacity:.4;transform:translateY(56px)}to{opacity:1;transform:none}}
+@keyframes pl-out{from{opacity:1}to{opacity:0}}
+@keyframes pl-wipe{from{transform:scaleX(0)}to{transform:none}}
+@keyframes pl-popA{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes pl-popB{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.pl-rise{animation:pl-rise .72s cubic-bezier(.22,1,.36,1) both}
+.pl-drift{transform-origin:50% 70%;animation:pl-drift 16s cubic-bezier(.33,1,.68,1) both}
+.pl-sheet{animation:pl-sheet .4s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+<main class="hs" style="position: absolute; left: 0; top: 0; width: 390px; bottom: 64px; overflow-x: hidden; overflow-y: auto; background: {{t.bg}}">
+
+  <section aria-labelledby="ex-h" style="position: relative; height: 468px; overflow: hidden; background: #1B2A24">
+    <img class="pl-drift" data-slot="corridorAerial" src="/_blob/4ccf6477a2c2bc3db2be04d5a579e1e0" alt="Dwarka Expressway skyline: residential towers along the expressway at golden hour" style="position: absolute; left: 0; top: 0; width: 390px; height: 468px; background: #E7E3DA; object-fit: cover; display: block">
+    <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 468px; background: linear-gradient(180deg, rgba(11,20,17,0.55) 0%, rgba(11,20,17,0) 24%, rgba(11,20,17,0) 36%, rgba(11,20,17,0.62) 60%, rgba(11,20,17,0.92) 100%)"></div>
+    <div style="position: absolute; left: 16px; right: 4px; top: 40px; height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #FFFFFF">
+      <span style="display: inline-flex; align-items: center; gap: 10px">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" style="display: block"><rect x="2" y="2" width="24" height="24" rx="8" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 24px; line-height: 1">Plinth</span>
+      </span>
+      <span style="display: flex; align-items: center; gap: 2px">
+        <span style="font-size: 13px; line-height: 1; color: #FFFFFF">Illustrative image</span>
+        
+      </span>
+    </div>
+    <div style="position: absolute; left: 16px; right: 16px; bottom: 30px; color: #FFFFFF">
+      <h1 id="ex-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.04em; font-size: 44px; line-height: 0.98; animation-delay: 120ms">Which home are you buying?</h1>
+      <p class="pl-rise" style="margin: 14px 0 0; max-width: 340px; font-size: 17px; line-height: 1.5; color: #FFFFFF; animation-delay: 200ms">Check any Gurugram project against its public records. No developer pays us. Ever.</p>
+    </div>
+  </section>
+
+  <div class="pl-rise" data-signature="voice-ask" style="position: relative; padding: 20px 16px 0; animation-delay: 280ms">
+    <button type="button" class="pl-press" onClick="{{askTyped}}" style="width: 100%; min-height: 60px; display: flex; align-items: center; gap: 12px; padding: 4px 20px 4px 18px; border: 0; border-radius: 999px; background: {{t.track}}; font: inherit; text-align: left; cursor: pointer; color: {{t.ink2}}; box-sizing: border-box">
+      <span style="color: {{t.ink}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.1 5.4L19.5 10l-5.4 2.1L12 17.5l-2.1-5.4L4.5 10l5.4-2.1z"></path><path d="M18.5 16l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"></path></g></svg></span>
+      <span style="flex: 1; min-width: 0; font-size: 17px; line-height: 1.35">Ask about any project, in English or Hinglish</span>
+    </button>
+    <div style="display: flex; gap: 10px; margin-top: 10px">
+      <button type="button" class="pl-press" onClick="{{startVoice}}" style="flex: 1 1 0; height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"></path></g></svg><span>Ask out loud</span></button>
+      <button type="button" class="pl-press" onClick="{{openScan}}" style="flex: 1 1 0; height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16M7 12h10"></path></g></svg><span>Scan RERA QR</span></button>
+    </div>
+  </div>
+  <p style="margin: 14px 16px 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">HARERA synced 2 hours ago · 17,938 orders read · next QPR due 15 Jan 2027</p>
+
+  <section aria-labelledby="fw-h" style="margin-top: 56px; padding: 48px 0 48px; background: {{t.track}}">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 0 16px">
+      <h2 id="fw-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 30px; line-height: 1.04; animation-delay: 340ms">What changed in projects you follow?</h2>
+      <a href="#following" class="pl-press" style="flex: none; min-height: 48px; display: inline-flex; align-items: center; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">See all 4</a>
+    </div>
+    <p style="margin: 8px 16px 0; font-size: 14px; line-height: 1.45; color: {{t.muted}}">2 changes this month · images are illustrative</p>
+    <div class="hs" style="display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 16px; padding: 20px 16px 4px">
+        <a href="#project" class="pl-press" style="flex: none; width: 300px; scroll-snap-align: start; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: {{t.ink}}">
+          <span style="position: relative; display: block; width: 300px; height: 200px">
+            <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2 residential towers" style="position: absolute; left: 0; top: 0; width: 300px; height: 200px; background: #E7E3DA; object-fit: cover; display: block">
+          </span>
+          <span style="display: flex; flex-direction: column; gap: 8px; padding: 0 2px">
+            <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; font-size: 20px; line-height: 1.2">Aurelia Heights, Phase 2</span>
+            <span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="font-size: 14px; color: {{t.muted}}">Delivery risk</span><span style="{{c.aurelia.wrap}}"><span class="sr">{{c.aurelia.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.aurelia.meter}}" as="m1" hint-placeholder-count="5"><span style="{{m1.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.aurelia.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.aurelia.text}}">{{c.aurelia.name}}</span><span aria-hidden="true" style="{{c.aurelia.dots}}"><span style="{{c.aurelia.d1}}"></span><span style="{{c.aurelia.d2}}"></span></span></span></span>
+            <span style="display: flex; align-items: flex-start; gap: 8px; font-size: 17px; line-height: 1.45; color: {{t.ink}}"><span style="color: {{t.ink}}; padding-top: 3px"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-6"></path><path d="M15 8h5v5"></path></g></svg></span><span>Elevated since 2 Oct 2026 · was Moderate</span></span>
+          </span>
+        </a>
+        <a href="#project" class="pl-press" style="flex: none; width: 300px; scroll-snap-align: start; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: {{t.ink}}">
+          <span style="position: relative; display: block; width: 300px; height: 200px">
+            <img data-slot="heroCoral" src="/_blob/76b15081db77011ae5930ad87bcd7272" alt="Coral Towers residential towers" style="position: absolute; left: 0; top: 0; width: 300px; height: 200px; background: #E7E3DA; object-fit: cover; display: block">
+          </span>
+          <span style="display: flex; flex-direction: column; gap: 8px; padding: 0 2px">
+            <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; font-size: 20px; line-height: 1.2">Coral Towers</span>
+            <span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="font-size: 14px; color: {{t.muted}}">Delivery risk</span><span style="{{c.coral.wrap}}"><span class="sr">{{c.coral.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.coral.meter}}" as="m2" hint-placeholder-count="5"><span style="{{m2.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.coral.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.coral.text}}">{{c.coral.name}}</span><span aria-hidden="true" style="{{c.coral.dots}}"><span style="{{c.coral.d1}}"></span><span style="{{c.coral.d2}}"></span></span></span></span>
+            <span style="display: flex; align-items: flex-start; gap: 8px; font-size: 17px; line-height: 1.45; color: {{t.ink}}"><span style="color: {{t.ink}}; padding-top: 3px"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></g></svg></span><span>Completion date extended again · 14 Oct 2026</span></span>
+          </span>
+        </a>
+        <a href="#project" class="pl-press" style="flex: none; width: 300px; scroll-snap-align: start; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: {{t.ink}}">
+          <span style="position: relative; display: block; width: 300px; height: 200px">
+            <img data-slot="heroSapphire" src="/_blob/834d8de534be36df0eb45c9468dabeb2" alt="Sapphire Grove, Phase 1 residential towers" style="position: absolute; left: 0; top: 0; width: 300px; height: 200px; background: #E7E3DA; object-fit: cover; display: block">
+          </span>
+          <span style="display: flex; flex-direction: column; gap: 8px; padding: 0 2px">
+            <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; font-size: 20px; line-height: 1.2">Sapphire Grove, Phase 1</span>
+            <span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="font-size: 14px; color: {{t.muted}}">Delivery risk</span><span style="{{c.sapphire.wrap}}"><span class="sr">{{c.sapphire.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.sapphire.meter}}" as="m3" hint-placeholder-count="5"><span style="{{m3.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.sapphire.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.sapphire.text}}">{{c.sapphire.name}}</span><span aria-hidden="true" style="{{c.sapphire.dots}}"><span style="{{c.sapphire.d1}}"></span><span style="{{c.sapphire.d2}}"></span></span></span></span>
+            <span style="display: flex; align-items: flex-start; gap: 8px; font-size: 17px; line-height: 1.45; color: {{t.ink}}"><span style="color: {{t.ink}}; padding-top: 3px"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5V12l3 2"></path></g></svg></span><span>QPR filed 12 days late · 27 Jul 2026</span></span>
+          </span>
+        </a>
+        <a href="#project" class="pl-press" style="flex: none; width: 300px; scroll-snap-align: start; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: {{t.ink}}">
+          <span style="position: relative; display: block; width: 300px; height: 200px">
+            <img data-slot="heroKestrel" src="/_blob/29ddb4eb8af81bf41e28a3b11bdfd13e" alt="Kestrel Park residential towers" style="position: absolute; left: 0; top: 0; width: 300px; height: 200px; background: #E7E3DA; object-fit: cover; display: block">
+          </span>
+          <span style="display: flex; flex-direction: column; gap: 8px; padding: 0 2px">
+            <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; font-size: 20px; line-height: 1.2">Kestrel Park</span>
+            <span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="font-size: 14px; color: {{t.muted}}">Delivery risk</span><span style="{{c.kestrel.wrap}}"><span class="sr">{{c.kestrel.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.kestrel.meter}}" as="m4" hint-placeholder-count="5"><span style="{{m4.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.kestrel.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.kestrel.text}}">{{c.kestrel.name}}</span><span aria-hidden="true" style="{{c.kestrel.dots}}"><span style="{{c.kestrel.d1}}"></span><span style="{{c.kestrel.d2}}"></span></span></span></span>
+            <span style="display: flex; align-items: flex-start; gap: 8px; font-size: 17px; line-height: 1.45; color: {{t.ink}}"><span style="color: {{t.ink}}; padding-top: 3px"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></g></svg></span><span>No change since you followed</span></span>
+          </span>
+        </a>
+    </div>
+  </section>
+
+  <section aria-labelledby="nr-h" style="padding: 56px 16px 56px">
+    <h2 id="nr-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 30px; line-height: 1.04; animation-delay: 400ms">{{nearTitle}}</h2>
+    <p style="margin: 8px 0 0; font-size: 14px; color: {{t.muted}}">{{nearSub}}</p>
+    <div role="group" aria-label="Corridor" class="hs" style="display: flex; gap: 8px; overflow-x: auto; margin: 16px -16px 0; padding: 0 16px">
+      <sc-for list="{{corridors}}" as="cr" hint-placeholder-count="4"><button type="button" class="pl-press" onClick="{{cr.pick}}" aria-pressed="{{cr.on}}" style="flex: none; height: 48px; padding: 0; border: 0; background: transparent; font: inherit; cursor: pointer"><span style="{{cr.style}}">{{cr.name}}</span></button></sc-for>
+    </div>
+    <p style="margin: 12px 0 8px; font-size: 14px; line-height: 1.45; color: {{t.muted}}">Each project shows its delivery risk, its all-in price for a 3 BHK, and how much is built against time used: one slab is 5% of the building, the tick is time used. Images are illustrative.</p>
+    <div style="display: flex; flex-direction: column; gap: 6px">
+        <a href="#project" style="{{nr.aurelia}}">
+          <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2 residential towers" style="flex: none; width: 88px; height: 88px; background: #E7E3DA; object-fit: cover; display: block">
+          <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+            <span style="font-weight: 700; font-size: 17px; line-height: 1.3">Aurelia Heights, Phase 2</span>
+            <span style="font-size: 14px; line-height: 1.4; color: {{t.muted}}">Northfield Estates · Sector 37D</span>
+            <span style="font-size: 15px; line-height: 1.35; color: {{t.ink}}"><strong style="font-weight: 700">₹2.74 Cr all-in</strong> <span style="color: {{t.muted}}">· quoted ₹2.35 Cr</span></span>
+            <span style="display: flex"><span style="{{c.aurelia.wrap}}"><span class="sr">{{c.aurelia.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.aurelia.meter}}" as="m5" hint-placeholder-count="5"><span style="{{m5.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.aurelia.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.aurelia.text}}">{{c.aurelia.name}}</span><span aria-hidden="true" style="{{c.aurelia.dots}}"><span style="{{c.aurelia.d1}}"></span><span style="{{c.aurelia.d2}}"></span></span></span></span>
+            <span style="display: flex; flex-direction: column; gap: 6px"><span aria-hidden="true" style="position: relative; display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 2px; height: 12px; max-width: 220px"><sc-for list="{{sl.aurelia.slabs}}" as="sb1" hint-placeholder-count="20"><span style="{{sb1.style}}"></span></sc-for><span style="{{sl.aurelia.mark}}"></span></span><span style="font-size: 14px; line-height: 1.3; color: {{t.ink}}">41% built · 77% of time used</span></span>
+          </span>
+        </a>
+        <a href="#project" style="{{nr.juniper}}">
+          <img data-slot="heroJuniper" src="/_blob/dca5839367b61f6d11fb4a0306ea108a" alt="Juniper Enclave residential towers" style="flex: none; width: 88px; height: 88px; background: #E7E3DA; object-fit: cover; display: block">
+          <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+            <span style="font-weight: 700; font-size: 17px; line-height: 1.3">Juniper Enclave</span>
+            <span style="font-size: 14px; line-height: 1.4; color: {{t.muted}}">Halcyon Homes · Sector 102</span>
+            <span style="font-size: 15px; line-height: 1.35; color: {{t.ink}}"><strong style="font-weight: 700">Quoted ₹2.25 Cr</strong> <span style="color: {{t.muted}}">· all-in not known yet</span></span>
+            <span style="display: flex"><span style="{{c.juniper.wrap}}"><span class="sr">{{c.juniper.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.juniper.meter}}" as="m6" hint-placeholder-count="5"><span style="{{m6.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.juniper.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.juniper.text}}">{{c.juniper.name}}</span><span aria-hidden="true" style="{{c.juniper.dots}}"><span style="{{c.juniper.d1}}"></span><span style="{{c.juniper.d2}}"></span></span></span></span>
+            <span style="font-size: 14px; line-height: 1.45; color: {{t.ink2}}">Registered May 2025 · new developer. Not enough history to score; no penalty.</span>
+          </span>
+        </a>
+        <a href="#project" style="{{nr.sapphire}}">
+          <img data-slot="heroSapphire" src="/_blob/834d8de534be36df0eb45c9468dabeb2" alt="Sapphire Grove, Phase 1 residential towers" style="flex: none; width: 88px; height: 88px; background: #E7E3DA; object-fit: cover; display: block">
+          <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+            <span style="font-weight: 700; font-size: 17px; line-height: 1.3">Sapphire Grove, Phase 1</span>
+            <span style="font-size: 14px; line-height: 1.4; color: {{t.muted}}">Meridian Habitat · Sector 106</span>
+            <span style="font-size: 15px; line-height: 1.35; color: {{t.ink}}"><strong style="font-weight: 700">₹2.27 Cr all-in</strong> <span style="color: {{t.muted}}">· quoted ₹1.95 Cr</span></span>
+            <span style="display: flex"><span style="{{c.sapphire.wrap}}"><span class="sr">{{c.sapphire.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.sapphire.meter}}" as="m7" hint-placeholder-count="5"><span style="{{m7.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.sapphire.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.sapphire.text}}">{{c.sapphire.name}}</span><span aria-hidden="true" style="{{c.sapphire.dots}}"><span style="{{c.sapphire.d1}}"></span><span style="{{c.sapphire.d2}}"></span></span></span></span>
+            <span style="display: flex; flex-direction: column; gap: 6px"><span aria-hidden="true" style="position: relative; display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 2px; height: 12px; max-width: 220px"><sc-for list="{{sl.sapphire.slabs}}" as="sb2" hint-placeholder-count="20"><span style="{{sb2.style}}"></span></sc-for><span style="{{sl.sapphire.mark}}"></span></span><span style="font-size: 14px; line-height: 1.3; color: {{t.ink}}">48% built · 55% of time used</span></span>
+          </span>
+        </a>
+        <a href="#project" style="{{nr.kestrel}}">
+          <img data-slot="heroKestrel" src="/_blob/29ddb4eb8af81bf41e28a3b11bdfd13e" alt="Kestrel Park residential towers" style="flex: none; width: 88px; height: 88px; background: #E7E3DA; object-fit: cover; display: block">
+          <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+            <span style="font-weight: 700; font-size: 17px; line-height: 1.3">Kestrel Park</span>
+            <span style="font-size: 14px; line-height: 1.4; color: {{t.muted}}">Orbis Land · Sector 113</span>
+            <span style="font-size: 15px; line-height: 1.35; color: {{t.ink}}"><strong style="font-weight: 700">₹2.44 Cr all-in</strong> <span style="color: {{t.muted}}">· quoted ₹2.10 Cr</span></span>
+            <span style="display: flex"><span style="{{c.kestrel.wrap}}"><span class="sr">{{c.kestrel.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.kestrel.meter}}" as="m8" hint-placeholder-count="5"><span style="{{m8.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.kestrel.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.kestrel.text}}">{{c.kestrel.name}}</span><span aria-hidden="true" style="{{c.kestrel.dots}}"><span style="{{c.kestrel.d1}}"></span><span style="{{c.kestrel.d2}}"></span></span></span></span>
+            <span style="display: flex; flex-direction: column; gap: 6px"><span aria-hidden="true" style="position: relative; display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 2px; height: 12px; max-width: 220px"><sc-for list="{{sl.kestrel.slabs}}" as="sb3" hint-placeholder-count="20"><span style="{{sb3.style}}"></span></sc-for><span style="{{sl.kestrel.mark}}"></span></span><span style="font-size: 14px; line-height: 1.3; color: {{t.ink}}">63% built · 58% of time used</span></span>
+          </span>
+        </a>
+        <a href="#project" style="{{nr.coral}}">
+          <img data-slot="heroCoral" src="/_blob/76b15081db77011ae5930ad87bcd7272" alt="Coral Towers residential towers" style="flex: none; width: 88px; height: 88px; background: #E7E3DA; object-fit: cover; display: block">
+          <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+            <span style="font-weight: 700; font-size: 17px; line-height: 1.3">Coral Towers</span>
+            <span style="font-size: 14px; line-height: 1.4; color: {{t.muted}}">Vantage Buildcon · Sector 89</span>
+            <span style="font-size: 15px; line-height: 1.35; color: {{t.ink}}"><strong style="font-weight: 700">₹1.90 Cr all-in</strong> <span style="color: {{t.muted}}">· quoted ₹1.62 Cr</span></span>
+            <span style="display: flex"><span style="{{c.coral.wrap}}"><span class="sr">{{c.coral.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.coral.meter}}" as="m9" hint-placeholder-count="5"><span style="{{m9.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.coral.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.coral.text}}">{{c.coral.name}}</span><span aria-hidden="true" style="{{c.coral.dots}}"><span style="{{c.coral.d1}}"></span><span style="{{c.coral.d2}}"></span></span></span></span>
+            <span style="display: flex; flex-direction: column; gap: 6px"><span aria-hidden="true" style="position: relative; display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 2px; height: 12px; max-width: 220px"><sc-for list="{{sl.coral.slabs}}" as="sb4" hint-placeholder-count="20"><span style="{{sb4.style}}"></span></sc-for><span style="{{sl.coral.mark}}"></span></span><span style="font-size: 14px; line-height: 1.3; color: {{t.ink}}">22% built · 70% of time used</span></span>
+          </span>
+        </a>
+        <a href="#project" style="{{nr.laurel}}">
+          <img data-slot="heroLaurel" src="/_blob/d710ca2aa38a585d11eca42df567bbf9" alt="Laurel Residency residential towers" style="flex: none; width: 88px; height: 88px; background: #E7E3DA; object-fit: cover; display: block">
+          <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+            <span style="font-weight: 700; font-size: 17px; line-height: 1.3">Laurel Residency</span>
+            <span style="font-size: 14px; line-height: 1.4; color: {{t.muted}}">Elmstone Developers · Sector 92</span>
+            <span style="font-size: 15px; line-height: 1.35; color: {{t.ink}}"><strong style="font-weight: 700">Quoted ₹1.48 Cr</strong> <span style="color: {{t.muted}}">· all-in not known yet</span></span>
+            <span style="display: flex"><span style="{{c.laurel.wrap}}"><span class="sr">{{c.laurel.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.laurel.meter}}" as="m10" hint-placeholder-count="5"><span style="{{m10.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.laurel.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.laurel.text}}">{{c.laurel.name}}</span><span aria-hidden="true" style="{{c.laurel.dots}}"><span style="{{c.laurel.d1}}"></span><span style="{{c.laurel.d2}}"></span></span></span></span>
+            <span style="font-size: 14px; line-height: 1.45; color: {{t.ink2}}">Red-flag rule: group company admitted to insolvency, NCLT order 12 Mar 2023</span>
+          </span>
+        </a>
+      <sc-if value="{{golfEmpty}}" hint-placeholder-val="{{false}}">
+        <div style="margin-top: 8px; padding: 22px 20px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 8px">
+          <span style="font-weight: 700">Golf Course Ext Rd is planned for Dec 2026</span>
+          <span style="font-size: 15px; line-height: 1.5; color: {{t.ink2}}">We cover Dwarka Expressway and New Gurugram first. Want a project there sooner? Request it and we'll add it within 14 days, or tell you why not.</span>
+          <span style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px">
+            <button type="button" class="pl-press" onClick="{{toggleGolf}}" aria-pressed="{{golfAria}}" style="{{golfBtn}}">{{golfLabel}}</button>
+            <button type="button" class="pl-press" onClick="{{openRequest}}" style="height: 48px; padding: 0 18px; border: 0; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Request a project</button>
+          </span>
+        </div>
+      </sc-if>
+      <sc-if value="{{noidaEmpty}}" hint-placeholder-val="{{false}}">
+        <div style="margin-top: 8px; padding: 22px 20px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 8px">
+          <span style="font-weight: 700">Noida and Greater Noida West: planned for Jul–Sep 2027</span>
+          <span style="font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Plinth covers Gurugram today. We won't guess about projects we can't check yet.</span>
+          <button type="button" class="pl-press" onClick="{{openWaitlist}}" style="align-self: flex-start; margin-top: 4px; height: 48px; padding: 0 18px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">{{waitBtnLabel}}</button>
+        </div>
+      </sc-if>
+    </div>
+    <div style="margin-top: 28px; display: flex; flex-direction: column; gap: 4px">
+      <button type="button" class="pl-press" onClick="{{openRequest}}" style="min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; border: 0; border-radius: 8px; background: {{t.track}}; color: {{t.ink}}; font: inherit; text-align: left; cursor: pointer">
+        <span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 17px; font-weight: 700">Can't find a project?</strong><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">Request it. We add Gurugram projects within 14 days, or tell you why not.</span></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+      <button type="button" class="pl-press" onClick="{{openWaitlist}}" style="min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; border: 0; border-radius: 8px; background: transparent; color: {{t.ink}}; font: inherit; text-align: left; cursor: pointer">
+        <span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 17px; font-weight: 700">Looking in Noida?</strong><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{noidaRowSub}}</span></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+    </div>
+  </section>
+</main>
+
+<nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; z-index: 30; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: {{t.nav}}">
+<a href="#explore" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none"><span style="position: relative; display: flex; align-items: center; justify-content: center; width: 56px; height: 32px; border-radius: 999px; background: {{t.navInd}}; color: {{t.onAccentSoft}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5l-2 5-5 2 2-5z"></path></g></svg></span><span style="font-size: 13px; line-height: 16px; font-weight: 700; color: {{t.ink}}">Explore</span></a>
+<a href="#following" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none"><span style="position: relative; display: flex; align-items: center; justify-content: center; width: 56px; height: 32px; border-radius: 999px; background: transparent; color: {{t.ink2}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v16.5l-5-3.6-5 3.6z"></path></g></svg></span><span style="font-size: 13px; line-height: 16px; font-weight: 500; color: {{t.ink2}}">Following</span></a>
+<a href="#ask" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none"><span style="position: relative; display: flex; align-items: center; justify-content: center; width: 56px; height: 32px; border-radius: 999px; background: transparent; color: {{t.ink2}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.1 5.4L19.5 10l-5.4 2.1L12 17.5l-2.1-5.4L4.5 10l5.4-2.1z"></path><path d="M18.5 16l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"></path></g></svg></span><span style="font-size: 13px; line-height: 16px; font-weight: 500; color: {{t.ink2}}">Ask Plinth</span></a>
+<a href="#you" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none"><span style="position: relative; display: flex; align-items: center; justify-content: center; width: 56px; height: 32px; border-radius: 999px; background: transparent; color: {{t.ink2}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 20c1.3-3.5 4-5.3 7-5.3s5.7 1.8 7 5.3"></path></g></svg></span><span style="font-size: 13px; line-height: 16px; font-weight: 500; color: {{t.ink2}}">You</span></a>
+</nav>
+
+<sc-if value="{{voiceOpen}}" hint-placeholder-val="{{false}}">
+  <div aria-hidden="true" onClick="{{closeVoice}}" style="position: absolute; inset: 0; z-index: 40; background: {{t.scrim}}"></div>
+  <section class="pl-sheet" role="dialog" aria-modal="true" aria-labelledby="v-h" style="position: absolute; left: 0; right: 0; bottom: 0; height: 712px; z-index: 41; background: {{t.sheet}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; display: flex; flex-direction: column">
+    <div aria-hidden="true" style="display: flex; justify-content: center; padding-top: 10px"><span style="width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span></div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 6px 8px 0 20px">
+      <span style="color: {{t.ink}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.1 5.4L19.5 10l-5.4 2.1L12 17.5l-2.1-5.4L4.5 10l5.4-2.1z"></path><path d="M18.5 16l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"></path></g></svg></span>
+      <div style="flex: 1; min-width: 0">
+        <h2 id="v-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 26px; line-height: 1.1">Ask Plinth</h2>
+        <p style="margin: 0; font-size: 14px; color: {{t.muted}}">An AI · answers cite public records</p>
+      </div>
+      <button type="button" class="pl-press" onClick="{{closeVoice}}" aria-label="Close" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></g></svg></button>
+    </div>
+    <div class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 14px 20px 16px; display: flex; flex-direction: column; gap: 14px">
+      <p style="margin: 0; padding: 12px 14px; border-radius: 8px; background: {{t.track}}; font-size: 14px; line-height: 1.5; color: {{t.ink2}}">Ask Plinth is an AI. It answers from public records like HARERA and shows its sources. It can make mistakes, so check them. It doesn't give legal, tax or investment advice.</p>
+      <sc-if value="{{listening}}" hint-placeholder-val="{{true}}">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding-top: 24px">
+          <p style="margin: 0; min-height: 96px; font-size: 24px; line-height: 1.35; font-weight: 600; text-align: center; color: {{vPartialInk}}">{{vPartial}}</p>
+          <div aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 4px; height: 60px">
+            <sc-for list="{{wave}}" as="w" hint-placeholder-count="28"><span style="{{w.style}}"></span></sc-for>
+          </div>
+          <p style="margin: 0; font-size: 15px; color: {{t.muted}}">Listening · English or Hinglish</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{heard}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px">
+          <p style="margin: 0; max-width: 86%; padding: 10px 14px; border-radius: 20px 20px 6px 20px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; font-size: 17px; line-height: 1.45">{{vQuery}}</p>
+          <span style="font-size: 13px; color: {{t.muted}}">Understood as: which Dwarka Expressway projects are on schedule?</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{thinking}}" hint-placeholder-val="{{false}}">
+        <div role="status" style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: {{t.ink2}}">
+          <span aria-hidden="true" style="display: inline-flex; gap: 4px"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{t.accent}}"></span><span style="width: 8px; height: 8px; border-radius: 50%; background: {{t.accent}}; opacity: 0.6"></span><span style="width: 8px; height: 8px; border-radius: 50%; background: {{t.accent}}; opacity: 0.3"></span></span>
+          Checking HARERA filings for Dwarka Expressway…
+        </div>
+      </sc-if>
+      <sc-if value="{{answering}}" hint-placeholder-val="{{false}}">
+        <div aria-live="polite" style="display: flex; flex-direction: column; gap: 10px">
+          <span style="font-size: 13px; color: {{t.muted}}">Ask Plinth · AI answer, checked against our records before showing</span>
+          <sc-if value="{{speaking}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: {{t.ink2}}">
+              <span style="color: {{t.ink}}"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"></path><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"></path></g></svg></span><span style="flex: 1">Reading aloud</span>
+              <button type="button" class="pl-press" onClick="{{stopReading}}" style="height: 48px; padding: 0 16px; border-radius: 999px; border: 0; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Stop reading</button>
+            </div>
+          </sc-if>
+          <p style="margin: 0; font-size: 17px; line-height: 1.6">{{answerText}}</p>
+          <sc-if value="{{answerDone}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <a href="#source" style="display: inline-flex; align-items: center; min-height: 48px; text-decoration: none"><span style="display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 999px; background: {{t.track}}; font-size: 14px; color: {{t.ink}}">[1] HARERA QPR · Kestrel Park</span></a>
+              <a href="#source" style="display: inline-flex; align-items: center; min-height: 48px; text-decoration: none"><span style="display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 999px; background: {{t.track}}; font-size: 14px; color: {{t.ink}}">[2] HARERA QPR · Sapphire Grove Ph 1</span></a>
+              <a href="#source" style="display: inline-flex; align-items: center; min-height: 48px; text-decoration: none"><span style="display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 999px; background: {{t.track}}; font-size: 14px; color: {{t.ink}}">[3] HARERA QPR · Aurelia Ph 2</span></a>
+            </div>
+            <p style="margin: 4px 0 0; font-size: 14px; color: {{t.muted}}">Delivery risk and progress, from HARERA records</p>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+            <a href="#project" class="pl-press" style="display: flex; flex-direction: column; gap: 8px; padding: 10px 0; text-decoration: none; color: {{t.ink}}">
+              <span style="display: flex; align-items: center; justify-content: space-between; gap: 10px"><span style="font-weight: 700; font-size: 16px; line-height: 1.3">Kestrel Park</span><span style="{{c.kestrel.wrap}}"><span class="sr">{{c.kestrel.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.kestrel.meter}}" as="m11" hint-placeholder-count="5"><span style="{{m11.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.kestrel.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.kestrel.text}}">{{c.kestrel.name}}</span><span aria-hidden="true" style="{{c.kestrel.dots}}"><span style="{{c.kestrel.d1}}"></span><span style="{{c.kestrel.d2}}"></span></span></span></span>
+              <span style="display: flex; flex-direction: column; gap: 6px"><span aria-hidden="true" style="position: relative; display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 2px; height: 12px; max-width: 220px"><sc-for list="{{sl.kestrel.slabs}}" as="sb5" hint-placeholder-count="20"><span style="{{sb5.style}}"></span></sc-for><span style="{{sl.kestrel.mark}}"></span></span><span style="font-size: 14px; line-height: 1.3; color: {{t.ink}}">63% built · 58% of time used</span></span>
+            </a>
+            <a href="#project" class="pl-press" style="display: flex; flex-direction: column; gap: 8px; padding: 10px 0; text-decoration: none; color: {{t.ink}}">
+              <span style="display: flex; align-items: center; justify-content: space-between; gap: 10px"><span style="font-weight: 700; font-size: 16px; line-height: 1.3">Sapphire Grove, Phase 1</span><span style="{{c.sapphire.wrap}}"><span class="sr">{{c.sapphire.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.sapphire.meter}}" as="m12" hint-placeholder-count="5"><span style="{{m12.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.sapphire.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.sapphire.text}}">{{c.sapphire.name}}</span><span aria-hidden="true" style="{{c.sapphire.dots}}"><span style="{{c.sapphire.d1}}"></span><span style="{{c.sapphire.d2}}"></span></span></span></span>
+              <span style="display: flex; flex-direction: column; gap: 6px"><span aria-hidden="true" style="position: relative; display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 2px; height: 12px; max-width: 220px"><sc-for list="{{sl.sapphire.slabs}}" as="sb6" hint-placeholder-count="20"><span style="{{sb6.style}}"></span></sc-for><span style="{{sl.sapphire.mark}}"></span></span><span style="font-size: 14px; line-height: 1.3; color: {{t.ink}}">48% built · 55% of time used</span></span>
+            </a>
+            <a href="#project" class="pl-press" style="display: flex; flex-direction: column; gap: 8px; padding: 10px 0; text-decoration: none; color: {{t.ink}}">
+              <span style="display: flex; align-items: center; justify-content: space-between; gap: 10px"><span style="font-weight: 700; font-size: 16px; line-height: 1.3">Aurelia Heights, Phase 2</span><span style="{{c.aurelia.wrap}}"><span class="sr">{{c.aurelia.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.aurelia.meter}}" as="m13" hint-placeholder-count="5"><span style="{{m13.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.aurelia.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.aurelia.text}}">{{c.aurelia.name}}</span><span aria-hidden="true" style="{{c.aurelia.dots}}"><span style="{{c.aurelia.d1}}"></span><span style="{{c.aurelia.d2}}"></span></span></span></span>
+              <span style="display: flex; flex-direction: column; gap: 6px"><span aria-hidden="true" style="position: relative; display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 2px; height: 12px; max-width: 220px"><sc-for list="{{sl.aurelia.slabs}}" as="sb7" hint-placeholder-count="20"><span style="{{sb7.style}}"></span></sc-for><span style="{{sl.aurelia.mark}}"></span></span><span style="font-size: 14px; line-height: 1.3; color: {{t.ink}}">41% built · 77% of time used</span></span>
+            </a>
+            </div>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Want a person to explain the records? <a href="#adviser" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Talk to a Plinth adviser · paid by you, never by developers</a>. Free to ask, Mon–Sat, 10 am–7 pm. Advisers explain records; they don't sell, book or negotiate.</p>
+          </sc-if>
+        </div>
+      </sc-if>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 20px 22px; background: {{t.track}}">
+      <button type="button" class="pl-press" onClick="{{micTap}}" aria-label="{{micLabel}}" style="width: 72px; height: 72px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><span style="{{micIcon}}"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"></path></g></svg></span><span style="{{stopIcon}}"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="2"></rect></g></svg></span></button>
+      <span style="font-size: 14px; color: {{t.muted}}">{{micCaption}}</span>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{scanOpen}}" hint-placeholder-val="{{false}}">
+  <section role="dialog" aria-modal="true" aria-labelledby="sc-h" style="position: absolute; inset: 0; z-index: 50; background: #0E1412; color: #FFFFFF">
+    <img data-slot="cameraSite" src="/_blob/08f92d41639fba4056e16a3b4b3e0107" alt="Camera view of a construction site hoarding with a RERA QR code" style="position: absolute; left: 0; top: 0; width: 390px; height: 844px; background: #E7E3DA; object-fit: cover; display: block">
+    <div aria-hidden="true" style="position: absolute; inset: 0; background: rgba(11,20,17,0.5)"></div>
+    <div style="position: absolute; left: 12px; right: 12px; top: 40px; height: 48px; display: flex; align-items: center; gap: 8px">
+      <button type="button" class="pl-press" onClick="{{closeScan}}" aria-label="Close camera" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: rgba(11,20,17,0.62); color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></g></svg></button>
+      <h2 id="sc-h" style="flex: 1; margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; font-size: 22px">Scan</h2>
+      <span style="font-size: 13px; line-height: 1; color: #FFFFFF">Illustrative image</span>
+    </div>
+    <div role="group" aria-label="Scan mode" style="position: absolute; left: 24px; right: 24px; top: 100px; display: flex; padding: 4px; border-radius: 999px; background: rgba(11,20,17,0.78)">
+      <button type="button" class="pl-press" onClick="{{modeQr}}" aria-pressed="{{qrOn}}" style="{{qrBtn}}">Scan RERA QR</button>
+      <button type="button" class="pl-press" onClick="{{modeGps}}" aria-pressed="{{gpsOn}}" style="{{gpsBtn}}">Where am I?</button>
+    </div>
+    <sc-if value="{{qrLooking}}" hint-placeholder-val="{{true}}">
+      <svg width="240" height="240" viewBox="0 0 240 240" aria-hidden="true" style="position: absolute; left: 75px; top: 220px; display: block"><path d="M4 56V20A16 16 0 0 1 20 4h36M184 4h36a16 16 0 0 1 16 16v36M236 184v36a16 16 0 0 1-16 16h-36M56 236H20A16 16 0 0 1 4 220v-36" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"></path></svg>
+      <p style="position: absolute; left: 32px; right: 32px; top: 482px; margin: 0; text-align: center; font-size: 17px; line-height: 1.45; font-weight: 600">Point at the RERA QR code on a hoarding or brochure</p>
+      <p style="position: absolute; left: 32px; right: 32px; top: 540px; margin: 0; text-align: center; font-size: 14px; color: rgba(255,255,255,0.88)">Camera is on only while this screen is open.</p>
+    </sc-if>
+    <sc-if value="{{gpsLooking}}" hint-placeholder-val="{{false}}">
+      <div style="position: absolute; left: 32px; right: 32px; top: 250px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center">
+        <span aria-hidden="true" style="width: 96px; height: 96px; border-radius: 999px; background: rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center"><svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"></path><circle cx="12" cy="10" r="2.5"></circle></g></svg></span>
+        <p style="margin: 0; font-size: 17px; line-height: 1.45; font-weight: 600">Checking if you're inside a project's site boundary</p>
+        <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.88)">Uses your location once. We don't keep it.</p>
+      </div>
+    </sc-if>
+    <sc-if value="{{scanLooking}}" hint-placeholder-val="{{true}}">
+      <button type="button" class="pl-press" style="position: absolute; left: 50%; bottom: 44px; transform: translateX(-50%); height: 52px; padding: 0 22px; display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; background: rgba(11,20,17,0.78); color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"></rect><circle cx="9" cy="10" r="1.5"></circle><path d="M20 16l-5-5-8 8"></path></g></svg>Upload a photo instead</button>
+    </sc-if>
+    <sc-if value="{{found}}" hint-placeholder-val="{{false}}">
+      <div class="pl-sheet" role="status" style="position: absolute; left: 0; right: 0; bottom: 0; background: {{t.sheet}}; color: {{t.ink}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; padding: 10px 20px 24px; display: flex; flex-direction: column; gap: 10px">
+        <div aria-hidden="true" style="display: flex; justify-content: center"><span style="width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span></div>
+        <p style="margin: 4px 0 0; display: flex; align-items: center; gap: 8px; font-size: 14px; color: {{t.ink2}}"><span style="color: {{t.ink}}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></g></svg></span>{{matchLine}}</p>
+        <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 30px; line-height: 1.04">Aurelia Heights, Phase 2</h3>
+        <p style="margin: 0; font-size: 15px; color: {{t.muted}}">Northfield Estates · Sector 37D, Dwarka Expressway</p>
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px"><span aria-hidden="true" style="font-size: 14px; color: {{t.muted}}">Delivery risk</span><span style="{{c.aurelia.wrap}}"><span class="sr">{{c.aurelia.sr}}</span><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.aurelia.meter}}" as="m14" hint-placeholder-count="5"><span style="{{m14.style}}"></span></sc-for></span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="{{c.aurelia.flag}}"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="{{c.aurelia.text}}">{{c.aurelia.name}}</span><span aria-hidden="true" style="{{c.aurelia.dots}}"><span style="{{c.aurelia.d1}}"></span><span style="{{c.aurelia.d2}}"></span></span></span><span style="font-size: 14px; color: {{t.ink2}}">since 2 Oct 2026</span></div>
+        <p style="margin: 2px 0 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px"><strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 26px; line-height: 1.05">₹2.74 Cr all-in</strong><span style="font-size: 15px; color: {{t.ink2}}">quoted ₹2.35 Cr · 3 BHK</span></p>
+        <ul style="margin: 4px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 16px; line-height: 1.45">
+          <li>41% built, with 77% of the promised time used</li>
+          <li>14 complaints decided against the promoter in 24 months · 2.8 per 100 units (median 3)</li>
+          <li>Jul–Sep 2026 QPR not on HARERA yet; it was due 15 Oct</li>
+          <li>Original completion Dec 2027 · RERA GGM/673/405/2022/117</li>
+        </ul>
+        <p style="margin: 0; font-size: 13px; color: {{t.muted}}">HARERA records · data as of 14 Oct 2026</p>
+        <div style="display: flex; gap: 10px; margin-top: 4px">
+          <button type="button" class="pl-press" onClick="{{toggleScanFollow}}" aria-pressed="{{scanFollow}}" style="{{scanFollowBtn}}">{{scanFollowLabel}}</button>
+          <a href="#project" class="pl-press" style="flex: 1 1 0; height: 52px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; text-decoration: none; font-weight: 600">Open project</a>
+        </div>
+        <p style="margin: 0; display: flex; justify-content: space-between; gap: 12px; font-size: 15px"><a href="#search" style="display: inline-flex; align-items: center; min-height: 48px; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 3px">Not this project? Search by name</a><button type="button" class="pl-press" onClick="{{rescan}}" style="min-height: 48px; border: 0; background: transparent; padding: 0; font: inherit; font-size: 15px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Scan again</button></p>
+      </div>
+    </sc-if>
+  </section>
+</sc-if>
+
+<sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+  <div aria-hidden="true" onClick="{{closeSheet}}" style="position: absolute; inset: 0; z-index: 60; background: {{t.scrim}}"></div>
+  <sc-if value="{{reqSheet}}" hint-placeholder-val="{{true}}">
+    <section class="pl-sheet" role="dialog" aria-modal="true" aria-labelledby="rq-h" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 61; background: {{t.sheet}}; color: {{t.ink}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; padding: 10px 20px 28px; display: flex; flex-direction: column; gap: 14px">
+      <div aria-hidden="true" style="display: flex; justify-content: center"><span style="width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span></div>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px">
+        <h2 id="rq-h" style="margin: 4px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 30px; line-height: 1.04">{{reqTitle}}</h2>
+        <button type="button" class="pl-press" onClick="{{closeSheet}}" aria-label="Close" style="width: 48px; height: 48px; margin-right: -12px; flex: none; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button>
+      </div>
+      <sc-if value="{{reqForm}}" hint-placeholder-val="{{true}}">
+        <p style="margin: 0; font-size: 17px; line-height: 1.5">Plinth adds any Gurugram project with a RERA number within 14 days, or tells you why not.</p>
+        <label for="rq-in" style="font-size: 15px; font-weight: 600">Project name or RERA number</label>
+        <input id="rq-in" type="text" value="{{reqName}}" onChange="{{onReqName}}" placeholder="e.g. Indigo Terraces, Sector 79" autocomplete="off" style="height: 52px; padding: 0 18px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px">
+        <label style="display: flex; align-items: flex-start; gap: 12px; min-height: 48px; font-size: 16px; line-height: 1.45; cursor: pointer"><input type="checkbox" checked="{{waUpdates}}" onChange="{{toggleWa}}" style="width: 22px; height: 22px; margin: 2px 0 0; flex: none; accent-color: {{t.accent}}"><span>Also tell me on WhatsApp. One message with the answer; nothing else.</span></label>
+        <p style="margin: 0; font-size: 14px; line-height: 1.45; color: {{t.muted}}">{{reqHint}}</p>
+        <button type="button" class="pl-press" onClick="{{requestIt}}" aria-disabled="{{reqDisabled}}" style="{{reqBtn}}">Request it</button>
+      </sc-if>
+      <sc-if value="{{reqDone}}" hint-placeholder-val="{{false}}">
+        <p role="status" style="margin: 0; font-size: 17px; line-height: 1.5">We'll add <strong style="font-weight: 700">{{reqShown}}</strong> by <strong style="font-weight: 700">1 Nov 2026</strong>, or tell you why not. {{reqWhere}}</p>
+        <p style="margin: 0; padding: 14px 16px; border-radius: 8px; background: {{t.track}}; font-size: 15px; line-height: 1.5">Reasons we might not: it has no RERA registration, it is outside Gurugram, or its registration has lapsed. We'll say which.</p>
+        <button type="button" class="pl-press" onClick="{{closeSheet}}" style="height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Done</button>
+      </sc-if>
+    </section>
+  </sc-if>
+  <sc-if value="{{waitSheet}}" hint-placeholder-val="{{false}}">
+    <section class="pl-sheet" role="dialog" aria-modal="true" aria-labelledby="wl-h" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 61; background: {{t.sheet}}; color: {{t.ink}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; padding: 10px 20px 28px; display: flex; flex-direction: column; gap: 14px">
+      <div aria-hidden="true" style="display: flex; justify-content: center"><span style="width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span></div>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px">
+        <h2 id="wl-h" style="margin: 4px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 30px; line-height: 1.04">Noida isn't covered yet</h2>
+        <button type="button" class="pl-press" onClick="{{closeSheet}}" aria-label="Close" style="width: 48px; height: 48px; margin-right: -12px; flex: none; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button>
+      </div>
+      <p style="margin: 0; font-size: 17px; line-height: 1.5">Plinth covers Gurugram today. Noida and Greater Noida West are planned for Jul–Sep 2027. We won't guess about projects we can't check.</p>
+      <sc-if value="{{waitOpen}}" hint-placeholder-val="{{true}}">
+        <button type="button" class="pl-press" onClick="{{joinWait}}" style="height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Join the Noida waitlist</button>
+        <p style="margin: 0; font-size: 14px; line-height: 1.45; color: {{t.muted}}">One WhatsApp message to the number you signed in with, when it opens. Nothing else.</p>
+      </sc-if>
+      <sc-if value="{{waitDone}}" hint-placeholder-val="{{false}}">
+        <p role="status" style="margin: 0; padding: 14px 16px; border-radius: 8px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; font-size: 17px; line-height: 1.45"><strong style="font-weight: 700">You're on the list.</strong> One WhatsApp message when Noida opens. Nothing else.</p>
+        <div style="display: flex; gap: 10px">
+          <button type="button" class="pl-press" onClick="{{joinWait}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Leave the list</button>
+          <button type="button" class="pl-press" onClick="{{closeSheet}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Done</button>
+        </div>
+      </sc-if>
+    </section>
+  </sc-if>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"screen":{"editor":"enum","options":["Home","Request a project","Requested","Noida waitlist"],"default":"Home"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this._q = 'Dwarka Expressway pe kaunse projects time pe hain?';
+    this._a = 'Kestrel Park is the only one where building is ahead of time used. It is 63% built with 58% of its time gone [1]. Sapphire Grove Phase 1 is 48% built with 55% used [2]. Aurelia Heights Phase 2 is 41% built with 77% used [3]. Juniper Enclave has a new developer, so there is not enough history to score it.';
+    this.state = {corridor: 'near', voice: 'off', vt: 0, tick: 0, shown: 0, speaking: false, scan: false, scanMode: 'qr', found: false, scanFollow: false, scrFrom: null, sheet: '', reqName: '', requested: '', waUpdates: false, waitlisted: false, golfNotify: false};
+  }
+  componentDidMount() {
+    try { this._rm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { this._rm = false; }
+  }
+  componentWillUnmount() {
+    clearInterval(this._iv); clearTimeout(this._to); clearTimeout(this._st);
+  }
+  stopVoiceTimers() { clearInterval(this._iv); clearTimeout(this._to); }
+  startVoice() {
+    var self = this;
+    var n = this._q.split(' ').length;
+    this.stopVoiceTimers();
+    if (this._rm) { this.setState({voice: 'listen', vt: n, tick: 0}); this._to = setTimeout(function () { self.think(); }, 1600); return; }
+    this.setState({voice: 'listen', vt: 0, tick: 0, shown: 0, speaking: false});
+    this._iv = setInterval(function () {
+      var t = (self.state.tick || 0) + 1;
+      self.setState({tick: t, vt: Math.min(n, Math.floor(t / 3))});
+      if (t > n * 3 + 8) self.think();
+    }, 110);
+  }
+  think() {
+    var self = this;
+    this.stopVoiceTimers();
+    this.setState({voice: 'think', vt: 99});
+    this._to = setTimeout(function () { self.answer(); }, 1100);
+  }
+  answer() {
+    var self = this;
+    var n = this._a.split(' ').length;
+    this.stopVoiceTimers();
+    if (this._rm) { this.setState({voice: 'answer', shown: n, speaking: false}); return; }
+    this.setState({voice: 'answer', shown: 0, speaking: true});
+    this._iv = setInterval(function () {
+      var k = (self.state.shown || 0) + 1;
+      self.setState({shown: k, speaking: k < n});
+      if (k >= n) clearInterval(self._iv);
+    }, 45);
+  }
+  // The `screen` tweak opens a sheet on the canvas; your taps win until the tweak changes.
+  eff() {
+    var s = this.state || {};
+    var scr = this.props.screen || 'Home';
+    if (s.scrFrom === scr) return s;
+    var P = {
+      'Home': {sheet: ''},
+      'Request a project': {sheet: 'request', reqName: 'Indigo Terraces, Sector 79', requested: ''},
+      'Requested': {sheet: 'request', reqName: 'Indigo Terraces, Sector 79', requested: 'Indigo Terraces, Sector 79', waUpdates: true},
+      'Noida waitlist': {sheet: 'waitlist', corridor: 'noida', waitlisted: false}
+    }[scr] || {};
+    return Object.assign({}, s, P);
+  }
+  go(patch) { this.setState(Object.assign({}, this.eff(), patch, {scrFrom: this.props.screen || 'Home'})); }
+  scanFor(mode) {
+    var self = this;
+    clearTimeout(this._st);
+    this.setState({scan: true, scanMode: mode, found: false});
+    this._st = setTimeout(function () { self.setState({found: true}); }, 2200);
+  }
+  renderVals() {
+
+    var self = this;
+    var s = this.eff();
+    var night = (this.props.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', headerBg: 'rgba(11,20,17,0.78)',
+      panel: 'rgba(255,255,255,0.045)', overlay: 'rgba(11,20,17,0.62)', chipBg: 'rgba(11,20,17,0.55)', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claim: '#7E8C86', wire: 'rgba(238,243,240,0.30)',
+      emptyCell: 'rgba(255,255,255,0.06)', emptyBorder: '#7D828A', segOff: 'transparent', slabOff: 'rgba(255,255,255,0.12)',
+      nav: '#121D19', navInd: 'rgba(110,231,183,0.16)', sheet: '#111D19', scrim: 'rgba(0,0,0,0.58)', shadow: '0 8px 24px rgba(0,0,0,0.45)',
+      glass: '#111D19', glassInk: '#EEF3F0', solid: '#111D19', inverse: '#EEF3F0', onInverse: '#0B1411', segOn: 'rgba(255,255,255,0.14)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', headerBg: 'rgba(251,250,247,0.85)',
+      panel: '#FFFFFF', overlay: 'rgba(255,255,255,0.80)', chipBg: 'rgba(255,255,255,0.85)', photo: '#E7E3DA',
+      line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claim: '#9A958B', wire: 'rgba(27,26,23,0.30)',
+      emptyCell: '#EEEBE4', emptyBorder: '#8C9199', segOff: '#FFFFFF', slabOff: '#E2DED4',
+      nav: '#EFECE5', navInd: '#E9F1EC', sheet: '#FFFFFF', scrim: 'rgba(27,26,23,0.42)', shadow: '0 8px 24px rgba(27,26,23,.12)',
+      glass: '#FFFFFF', glassInk: '#1B1A17', solid: '#FFFFFF', inverse: '#1B1A17', onInverse: '#FFFFFF', segOn: '#FFFFFF'
+    };
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', fillD: '#15323A', lo: 5, hi: 15},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', fillD: '#332B0C', lo: 15, hi: 30},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillD: '#3A2210', lo: 30, hi: 45},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', fillD: '#3D1A19', lo: 45, hi: 65},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', fillD: '#341A33', lo: 65, hi: 80},
+      Limited: {i: 0, light: '#6B7079', dark: '#A3A8B0', fill: '#FFFFFF', fillD: '#1C1F24', lo: 0, hi: 0}
+    };
+    var names = ['Low', 'Moderate', 'Elevated', 'High', 'Severe'];
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function bfill(n) { return night ? B[n].fillD : B[n].fill; }
+    function textInk(n) { return night ? B[n].dark : (B[n].i <= 2 ? T.ink : B[n].light); }
+    function chip(n, conf, flag) {
+      var lim = n === 'Limited';
+      var x = B[n];
+      var segInk = ink(n);
+      var meter = [1, 2, 3, 4, 5].map(function (j) {
+        var on = !lim && j <= x.i;
+        return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (on ? 'background:' + segInk + ';' : 'background:' + T.segOff + ';border:1px ' + (lim ? 'dashed ' + segInk : 'solid ' + T.emptyBorder) + ';')};
+      });
+      var dot = 'display:block;width:7px;height:7px;border-radius:50%;box-sizing:border-box;';
+      return {
+        wrap: 'display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;flex:none;color:' + T.ink + ';background:' + (lim ? T.track : bfill(n)) + ';',
+        meter: meter,
+        name: lim ? 'Limited history' : n,
+        text: 'font-size:14px;font-weight:600;line-height:1;color:' + (lim ? T.ink2 : T.ink),
+        dots: conf ? 'display:inline-flex;gap:3px;align-items:center' : 'display:none',
+        d1: dot + 'background:' + T.ink2 + ';',
+        d2: dot + (conf === 'high' ? 'background:' + T.ink2 + ';' : 'border:1.5px solid ' + T.ink2 + ';'),
+        flag: flag ? 'display:block;flex:none;color:' + T.ink : 'display:none',
+        sr: 'Delivery risk: ' + (lim ? 'limited history, not enough history to score' : n + ', step ' + x.i + ' of 5') + (conf === 'low' ? ', we are less certain' : '') + (flag ? ', set by a red-flag rule' : '')
+      };
+    }
+    function seg(on) {
+      return 'height:48px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;flex:1 1 0;color:' + T.ink + ';background:' + (on ? T.segOn : 'transparent') + ';';
+    }
+    function pill(on, alt) {
+      return 'display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 18px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:15px;font-weight:600;color:' + (on ? T.onInverse : T.ink) + ';background:' + (on ? T.inverse : (alt ? T.bgSolid : T.track)) + ';';
+    }
+
+    var c = {
+      aurelia: chip('Elevated', 'low'), kestrel: chip('Low', 'high'), sapphire: chip('Moderate', 'high'),
+      coral: chip('High', 'low'), laurel: chip('Severe', '', true), juniper: chip('Limited', '')
+    };
+    var orders = {
+      near: ['aurelia', 'juniper', 'sapphire', 'kestrel'],
+      dwarka: ['kestrel', 'sapphire', 'aurelia', 'juniper'],
+      newg: ['coral', 'laurel'],
+      golf: [],
+      noida: []
+    };
+    var CORR = [
+      {k: 'near', name: 'Near you', title: 'What is being built near you?', sub: 'Around Sector 37D, Dwarka Expressway · 4 projects'},
+      {k: 'dwarka', name: 'Dwarka Expressway', title: 'What is being built on Dwarka Expressway?', sub: '4 projects · sorted by sector'},
+      {k: 'newg', name: 'New Gurugram', title: 'What is being built in New Gurugram?', sub: '2 projects'},
+      {k: 'golf', name: 'Golf Course Ext Rd', title: 'What is being built on Golf Course Ext Rd?', sub: 'Not covered yet · planned for Dec 2026'},
+      {k: 'noida', name: 'Noida · from 2027', title: 'What is being built in Noida?', sub: 'Not covered yet · planned for Jul–Sep 2027'}
+    ];
+    var cor = orders[s.corridor] ? s.corridor : 'near';
+    var curC = CORR.filter(function (x) { return x.k === cor; })[0];
+    var nr = {};
+    ['aurelia', 'kestrel', 'sapphire', 'coral', 'laurel', 'juniper'].forEach(function (k) {
+      var i = orders[cor].indexOf(k);
+      nr[k] = i < 0 ? 'display:none' : 'display:flex;gap:16px;align-items:flex-start;padding:12px 0;text-decoration:none;color:' + T.ink + ';order:' + i;
+    });
+    // slab bars: the project's tower laid flat. 20 slabs = 100% built; tick = share of promised time used
+    function slabs(built, time) {
+      var on = Math.round(built / 5);
+      var list = [];
+      for (var j = 0; j < 20; j++) list.push({style: 'display:block;border-radius:1px;background:' + (j < on ? T.accent : T.slabOff)});
+      return {slabs: list, mark: 'position:absolute;left:calc(' + time + '% - 1px);top:-4px;width:2px;height:20px;border-radius:1px;background:' + T.ink};
+    }
+    var sl = {aurelia: slabs(41, 77), sapphire: slabs(48, 55), kestrel: slabs(63, 58), coral: slabs(22, 70)};
+    var corridors = CORR.map(function (x) {
+      return {name: x.name, on: x.k === cor, style: pill(x.k === cor), pick: function () { self.go({corridor: x.k}); }};
+    });
+
+    var qWords = this._q.split(' ');
+    var vt = Math.min(qWords.length, s.vt || 0);
+    var wave = [];
+    for (var w = 0; w < 28; w++) {
+      var h = 8;
+      if (s.voice === 'listen' && !this._rm) {
+        var tk = s.tick || 0;
+        h = 8 + Math.round(Math.abs(Math.sin(tk * 0.55 + w * 0.62)) * Math.abs(Math.cos(w * 0.31 + tk * 0.17)) * 44);
+      }
+      wave.push({style: 'display:block;width:4px;height:' + h + 'px;border-radius:2px;background:' + T.accent + ';transition:height .11s linear'});
+    }
+    var aWords = this._a.split(' ');
+    var shown = Math.min(aWords.length, s.shown || 0);
+    var listening = s.voice === 'listen';
+    var qrOn = s.scanMode !== 'gps';
+    function scanSeg(on) { return 'flex:1 1 0;height:48px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;color:' + (on ? '#1B1A17' : '#FFFFFF') + ';background:' + (on ? '#FFFFFF' : 'transparent'); }
+
+    return {
+      t: T,
+      sl: sl,
+      c: c, nr: nr, corridors: corridors,
+      nearTitle: curC.title, nearSub: curC.sub,
+      golfEmpty: cor === 'golf', noidaEmpty: cor === 'noida',
+      golfLabel: s.golfNotify ? 'We\'ll tell you in Dec' : 'Notify me',
+      golfAria: s.golfNotify ? 'true' : 'false',
+      golfBtn: 'height:48px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;' + (s.golfNotify ? 'background:' + T.accentSoft + ';color:' + T.onAccentSoft + ';' : 'background:' + T.ink + ';color:' + T.bg + ';'),
+      toggleGolf: function () { self.go({golfNotify: !s.golfNotify}); },
+      noidaRowSub: s.waitlisted ? 'You\'re on the waitlist · planned for Jul–Sep 2027' : 'Join the waitlist · planned for Jul–Sep 2027',
+      waitBtnLabel: s.waitlisted ? 'You\'re on the waitlist' : 'Join the Noida waitlist',
+      sheetOpen: s.sheet === 'request' || s.sheet === 'waitlist',
+      reqSheet: s.sheet === 'request', waitSheet: s.sheet === 'waitlist',
+      closeSheet: function () { self.go({sheet: ''}); },
+      openRequest: function () { self.go({sheet: 'request', requested: ''}); },
+      openWaitlist: function () { self.go({sheet: 'waitlist'}); },
+      reqTitle: s.requested ? 'Requested · R-1018-07' : 'Request a project',
+      reqForm: !s.requested, reqDone: !!s.requested,
+      reqName: s.reqName || '',
+      reqShown: s.requested || '',
+      onReqName: function (e) { self.go({reqName: e.target.value}); },
+      reqHint: String(s.reqName || '').trim().length < 3 ? 'Type at least 3 letters of the name, or the RERA number.' : 'Sector or developer helps us find it faster.',
+      reqDisabled: String(s.reqName || '').trim().length < 3 ? 'true' : 'false',
+      reqBtn: 'height:52px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;' + (String(s.reqName || '').trim().length < 3 ? 'background:' + T.track + ';color:' + T.muted + ';' : 'background:' + T.accent + ';color:' + T.onAccent + ';'),
+      requestIt: function () { var nm = String(s.reqName || '').trim(); if (nm.length < 3) return; self.go({requested: nm}); },
+      waUpdates: !!s.waUpdates,
+      toggleWa: function () { self.go({waUpdates: !s.waUpdates}); },
+      reqWhere: s.waUpdates ? 'We\'ll tell you here and in one WhatsApp message.' : 'We\'ll tell you here, in Following.',
+      waitOpen: !s.waitlisted, waitDone: !!s.waitlisted,
+      joinWait: function () { self.go({waitlisted: !s.waitlisted}); },
+      askTyped: function () { self.think(); },
+      startVoice: function () { self.startVoice(); },
+      openScan: function () { self.scanFor(s.scanMode || 'qr'); },
+      voiceOpen: s.voice !== 'off',
+      closeVoice: function () { self.stopVoiceTimers(); self.setState({voice: 'off', speaking: false}); },
+      listening: listening,
+      heard: s.voice === 'think' || s.voice === 'answer',
+      thinking: s.voice === 'think',
+      answering: s.voice === 'answer',
+      vPartial: vt === 0 ? 'Go ahead, I am listening' : qWords.slice(0, vt).join(' ') + (vt < qWords.length ? ' …' : ''),
+      vPartialInk: vt === 0 ? T.muted : T.ink,
+      vQuery: this._q,
+      wave: wave,
+      speaking: !!s.speaking,
+      stopReading: function () { clearInterval(self._iv); self.setState({shown: 999, speaking: false}); },
+      answerText: aWords.slice(0, shown).join(' ') + (shown < aWords.length ? ' …' : ''),
+      answerDone: shown >= aWords.length,
+      micTap: function () { if (s.voice === 'listen') { self.think(); } else { self.startVoice(); } },
+      micLabel: listening ? 'Stop listening' : 'Ask again by voice',
+      micIcon: listening ? 'display:none' : 'display:block',
+      stopIcon: listening ? 'display:block' : 'display:none',
+      micCaption: listening ? 'Recording only while the mic is on · tap to stop' : 'Tap the mic to ask again',
+      scanOpen: !!s.scan,
+      closeScan: function () { clearTimeout(self._st); self.setState({scan: false, found: false}); },
+      modeQr: function () { self.scanFor('qr'); },
+      modeGps: function () { self.scanFor('gps'); },
+      rescan: function () { self.scanFor(s.scanMode || 'qr'); },
+      qrOn: qrOn, gpsOn: !qrOn, qrBtn: scanSeg(qrOn), gpsBtn: scanSeg(!qrOn),
+      qrLooking: qrOn && !s.found, gpsLooking: !qrOn && !s.found, scanLooking: !s.found,
+      found: !!s.found,
+      matchLine: qrOn ? 'Matched by RERA QR · GGM/673/405/2022/117' : 'Matched by your location · inside the site boundary',
+      scanFollow: !!s.scanFollow,
+      scanFollowLabel: s.scanFollow ? 'Following' : 'Follow',
+      toggleScanFollow: function () { self.setState({scanFollow: !s.scanFollow}); },
+      scanFollowBtn: 'flex:1 1 0;height:52px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;' + (s.scanFollow ? 'background:' + T.accentSoft + ';color:' + T.onAccentSoft + ';' : 'background:' + T.accent + ';color:' + T.onAccent + ';')
+    };
+  }
+}
+</script>
+</body>
+</html>

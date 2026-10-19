@@ -1,0 +1,1401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Northfield Estates · Workspace</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input::placeholder,textarea::placeholder{color:currentColor;opacity:.62}
+@keyframes plRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.98); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.98); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 620ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 24%; }
+    .rv1 { animation-range: entry 8% cover 30%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 11400px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px">
+      <a href="#overview" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <span style="font-size: 17px; font-weight: 600">Northfield Estates <span style="font-weight: 400; color: {{t.ink2}}">· Workspace</span></span>
+      <nav aria-label="Account" style="margin-left: auto; display: flex; align-items: center; gap: 8px 20px; flex-wrap: wrap">
+        <a href="#help" class="lk" style="font-size: 17px; font-weight: 500; color: {{t.ink}}; text-decoration: none">Help</a>
+        <span style="display: inline-flex; align-items: center; gap: 10px; padding: 4px 16px 4px 4px; border-radius: 999px; background: {{t.track}}">
+          <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: {{t.panelSolid}}; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700">AR</span>
+          <span style="display: flex; flex-direction: column; line-height: 1.25"><span style="font-size: 15px; font-weight: 600">Ananya Rao</span><span style="font-size: 14px; color: {{t.ink2}}">Admin · authorised signatory</span></span>
+        </span>
+        <button type="button" class="press" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 500; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">Sign out</button>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <a href="#evidence" class="press" style="height: 44px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font-size: 17px; font-weight: 600; text-decoration: none; white-space: nowrap">Correct a fact</a>
+      </div>
+    </div>
+  </header>
+
+  <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 144px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
+
+    <nav aria-label="Workspace" style="flex: 0 0 220px; position: sticky; top: 104px; display: flex; flex-direction: column; gap: 4px">
+      <sc-for list="{{nav}}" as="nv" hint-placeholder-count="6">
+        <a href="{{nv.href}}" aria-current="{{nv.current}}" class="press" style="{{nv.style}}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="flex: none"><path d="{{nv.icon}}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg><span style="flex: 1">{{nv.label}}</span><sc-if value="{{nv.hasBadge}}" hint-placeholder-val="{{false}}"><span style="{{nv.badgeStyle}}">{{nv.badge}}<span class="sr">{{nv.badgeSr}}</span></span></sc-if></a>
+      </sc-for>
+      <div style="margin-top: 32px; padding: 0 14px; display: flex; flex-direction: column; gap: 10px; font-size: 15px">
+        <p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 600">Free, forever. Payments never affect scores.</p>
+        <a href="#charter" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Developer Charter</a>
+        <a href="#methodology" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Methodology v1.2</a>
+        <a href="#money" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">How we make money</a>
+      </div>
+    </nav>
+
+    <main style="flex: 1 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 104px">
+
+      <section id="overview" aria-labelledby="ov-h" style="display: flex; flex-direction: column; gap: 22px; scroll-margin-top: 96px">
+        <h1 id="ov-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(38px, 4vw, 52px); line-height: 1; letter-spacing: -0.04em">What do buyers see, and what’s waiting for you?</h1>
+        <div class="rise rise1" style="display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 17px">
+          <span style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 14px; border-radius: 999px; background: {{t.track}}; font-weight: 600"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>Claimed · verified signatory</span>
+          <span>9 linked companies (MCA) · 3 projects being built, 6 finished · data as of 14 Oct 2026, model v1.2</span>
+        </div>
+        <div role="note" class="rise rise2" style="display: flex; gap: 20px; align-items: flex-start; padding: 32px 36px; border-radius: 8px; background: {{t.slab}}; color: {{t.onSlab}}">
+          <svg width="30" height="30" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M8 1.5l5 2v4c0 3.2-2.1 5.6-5 7-2.9-1.4-5-3.8-5-7v-4z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path><path d="M5.6 8l1.7 1.7L10.6 6.4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <p style="margin: 0; max-width: 26ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em">This workspace is free, forever. Payments never affect scores.</p>
+            <p style="margin: 0; max-width: 62ch; font-size: 17px; color: {{t.onSlab2}}">No developer pays us. Ever. Nothing here can be bought: not a score, a delay, an early look or a better place in search. Every developer gets the same tools.</p>
+            <a href="#charter" class="lk" style="font-size: 17px; font-weight: 600; color: {{t.onSlab}}; text-decoration: underline; text-underline-offset: 5px">Read the Developer Charter</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" aria-labelledby="pr-h" style="display: flex; flex-direction: column; gap: 20px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="pr-h" class="rv" style="{{u.h2}}">Which band does each project show?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">Buyers see the same band on the web, the app and WhatsApp. Every in-scope RERA phase is scored, with no opt-out and no fee.</p>
+        </div>
+        <div role="table" aria-label="Your projects as buyers see them" class="rv rv1" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden">
+          <div role="row" style="{{u.prRow}}; padding-top: 12px; padding-bottom: 12px; font-size: 15px; color: {{t.ink2}}; background: {{t.track}}">
+            <span role="columnheader">Project</span><span role="columnheader">What buyers see</span><span role="columnheader">Coming up</span><span role="columnheader">Buyers this week</span>
+          </div>
+          <div role="row" style="{{u.prRow}}">
+            <span role="cell" style="display: flex; flex-direction: column; min-width: 0"><a href="#project" class="lk" style="font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Aurelia Heights, Phase 2</a><span style="font-size: 15px; color: {{t.ink2}}">Sector 37D · GGM/673/405/2022/117</span></span>
+            <span role="cell" style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start">
+              <span style="{{elevChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{elevMeter}}" as="em" hint-placeholder-count="5"><span style="{{em.style}}"></span></sc-for></span>Elevated</span>
+              <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 14px; color: {{t.ink2}}"><span aria-hidden="true" style="{{dotFull}}"></span><span aria-hidden="true" style="{{dotHollow}}"></span>Low confidence · since 2 Oct 2026</span>
+              <span style="{{u.pubPill}}">Public now · Jul–Sep 2026 QPR not on HARERA</span>
+            </span>
+            <span role="cell" style="font-size: 15px; line-height: 1.45">{{auPending}}</span>
+            <span role="cell" style="display: flex; flex-direction: column; font-size: 15px; line-height: 1.45"><span>2 enquiries · 3 visits</span><a href="#enquiries" class="lk" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 4px">Open</a></span>
+          </div>
+          <div role="row" style="{{u.prRow}}; border-top: 1px solid {{t.line}}">
+            <span role="cell" style="display: flex; flex-direction: column; min-width: 0"><a href="#project-cw2" class="lk" style="font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Cedar Walk, Phase 2</a><span style="font-size: 15px; color: {{t.ink2}}">Being built</span></span>
+            <span role="cell" style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start">
+              <span style="{{modChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{modMeter}}" as="mm" hint-placeholder-count="5"><span style="{{mm.style}}"></span></sc-for></span>Moderate</span>
+              <span style="font-size: 14px; color: {{t.ink2}}">Since first scored</span>
+            </span>
+            <span role="cell" style="font-size: 15px; color: {{t.ink2}}">No band change pending</span>
+            <span role="cell" style="font-size: 15px">1 enquiry · 1 visit</span>
+          </div>
+          <div role="row" style="{{u.prRow}}; border-top: 1px solid {{t.line}}">
+            <span role="cell" style="display: flex; flex-direction: column; min-width: 0"><a href="#project-hp2" class="lk" style="font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Heron Point, Phase 2</a><span style="font-size: 15px; color: {{t.ink2}}">Being built</span></span>
+            <span role="cell" style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start">
+              <span style="{{notChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{notMeter}}" as="nm" hint-placeholder-count="5"><span style="{{nm.style}}"></span></sc-for></span>Not scored</span>
+              <span style="font-size: 14px; color: {{t.ink2}}">Facts shown, no band yet</span>
+            </span>
+            <span role="cell" style="font-size: 15px; color: {{t.ink2}}">None</span>
+            <span role="cell" style="font-size: 15px; color: {{t.ink2}}">None yet</span>
+          </div>
+          <div role="row" style="{{u.prRow}}; border-top: 1px solid {{t.line}}">
+            <span role="cell" style="display: flex; flex-direction: column; min-width: 0"><span style="font-weight: 600">6 finished RERA projects</span><a href="#finished" class="lk" style="font-size: 15px; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">See the list</a></span>
+            <span role="cell" style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start">
+              <span style="{{notChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{notMeter}}" as="nm2" hint-placeholder-count="5"><span style="{{nm2.style}}"></span></sc-for></span>Not scored</span>
+              <span style="font-size: 14px; color: {{t.ink2}}">Finished · counted in track record</span>
+            </span>
+            <span role="cell" style="font-size: 15px; color: {{t.ink2}}">None</span>
+            <span role="cell" style="font-size: 15px; color: {{t.ink2}}">None</span>
+          </div>
+        </div>
+        <p style="margin: 0; max-width: 70ch; font-size: 17px">Group track record: 2 of 6 finished RERA projects got OC more than 12 months late. Complaints decided against the group: 24 in the 24 months to 14 Oct 2026, or 0.7 per 100 units across its 3,400 registered units. Aurelia Heights, Phase 2 accounts for 14 of them: 2.8 per 100 units on 500 units. No insolvency found in 9 linked companies, checked 14 Oct 2026. <a href="#developer-page" class="lk" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 4px">See your developer page as buyers do</a></p>
+      </section>
+
+      <section id="notice" aria-labelledby="no-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="no-h" class="rv" style="{{u.h2}}">Which band changes are coming?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 64ch; font-size: 19px">You hear about every band change before buyers do. Moves into High or Severe get 7 days’ notice. Other moves get a private heads-up inside our 72-hour recompute window. Red-flag rules publish at once, with notice at the same time.</p>
+        </div>
+        <div class="rv rv1" style="border-radius: 8px; background: {{t.track}}; padding: 36px 40px; display: flex; flex-direction: column; gap: 20px">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px 32px; flex-wrap: wrap">
+            <div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+              <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em">Aurelia Heights, Phase 2 may move from Elevated to High</h3>
+              <p style="margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: {{t.ink2}}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4.5 12.5V8a4.5 4.5 0 019 0v4.5l1.5 1.5H3zM7.5 16h3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Notice of a proposed downgrade · sent to you privately on 18 Oct 2026</p>
+            </div>
+            <p style="margin: 0; display: flex; align-items: baseline; gap: 10px"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 72px; line-height: 0.85; letter-spacing: -0.05em">7</span><span style="max-width: 12ch; font-size: 17px; line-height: 1.35; font-weight: 600">days’ notice. Would take effect 25 Oct 2026</span></p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+            <span style="{{elevChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{elevMeter}}" as="em2" hint-placeholder-count="5"><span style="{{em2.style}}"></span></sc-for></span>Elevated now</span>
+            <svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span class="sr">to</span>
+            <span style="{{highChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{highMeter}}" as="hm" hint-placeholder-count="5"><span style="{{hm.style}}"></span></sc-for></span>High proposed</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px">
+            <p style="margin: 0; max-width: 62ch; font-size: 19px"><strong>Why:</strong> the QPR for Jul–Sep 2026 was due on 15 Oct 2026 and is not on HARERA as of 18 Oct 2026. With it, QPRs would be late in 4 of the last 9 quarters.</p>
+            <a href="#source" class="press" style="{{u.chipSolid}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>HARERA QPR register · checked 18 Oct 2026</a>
+          </div>
+          <p style="margin: 0; max-width: 64ch; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; font-size: 17px"><span style="{{u.pubPill}}">Public now</span><span style="flex: 1 1 360px; min-width: 0">Buyers see the missing QPR today: on the project page, in the app and in follower alerts. Only the band waits for this notice. If the QPR is on record before 25 Oct 2026, the band stays Elevated.</span></p>
+          <div style="border-radius: 8px; background: {{t.claimBg}}; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+            <p style="margin: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 15px; font-weight: 600"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Developer says · not yet verified · 15 Oct 2026 · we check it by 5 Nov 2026</p>
+            <p style="margin: 0; font-size: 17px">“The QPR for Jul–Sep 2026 was filed on 12 October.”</p>
+          </div>
+          <p style="margin: 0; font-size: 17px">If you have the HARERA receipt, the clerical lane decides in 2 working days, well before 25 Oct. Facts change scores; arguments don’t. Every developer gets the same notice.</p>
+          <sc-if value="{{noticeOpen}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; gap: 12px 24px; align-items: center; flex-wrap: wrap; padding-top: 4px">
+              <a href="#evidence" class="press" onClick="{{startClerical}}" style="display: inline-flex; align-items: center; height: 56px; padding: 0 28px; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; text-decoration: none; font-size: 18px; font-weight: 600; box-sizing: border-box">Send the HARERA receipt</a>
+              <a href="#evidence" class="lk" onClick="{{startNoticeDispute}}" style="font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Dispute the fact instead</a>
+              <a href="#methodology" class="lk" style="font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">How notices work</a>
+            </div>
+          </sc-if>
+          <sc-if value="{{noticeHeld}}" hint-placeholder-val="{{false}}">
+            <div role="status" class="rise" style="display: flex; gap: 12px; align-items: center; min-height: 56px; padding: 10px 20px; border-radius: 8px; background: {{t.panelSolid}}; font-size: 17px; box-sizing: border-box"><svg width="18" height="18" viewBox="0 0 14 14" aria-hidden="true" style="flex: none"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>{{heldText}}</span></div>
+          </sc-if>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">Earlier band changes</h3>
+          <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px">
+            <li style="display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: flex-start">
+              <span style="flex: 0 0 120px; font-weight: 700">2 Oct 2026</span>
+              <span style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+                <span style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+                  <span style="font-weight: 600">Aurelia Heights, Phase 2</span>
+                  <span style="{{modChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{modMeter}}" as="mm2" hint-placeholder-count="5"><span style="{{mm2.style}}"></span></sc-for></span>Moderate</span>
+                  <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span class="sr">to</span>
+                  <span style="{{elevChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{elevMeter}}" as="em5" hint-placeholder-count="5"><span style="{{em5.style}}"></span></sc-for></span>Elevated</span>
+                </span>
+                <span style="font-size: 17px; line-height: 1.5">Why: the Apr–Jun 2026 QPR (72% sold, 41% built) together with new complaint orders decided against the promoter.</span>
+                <span style="font-size: 15px; color: {{t.ink2}}">Heads-up sent to you 30 Sep 2026, 48 hours before buyers saw it.</span>
+              </span>
+            </li>
+            <li style="display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: flex-start">
+              <span style="flex: 0 0 120px; font-weight: 700">Other projects</span>
+              <span style="flex: 1 1 420px; min-width: 0; font-size: 17px">Cedar Walk, Phase 2 has stayed Moderate since it was first scored. Heron Point, Phase 2 is not scored yet.</span>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+
+      <section id="path-back" aria-labelledby="pb-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="pb-h" class="rv" style="{{u.h2}}">What would improve this band?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 64ch; font-size: 19px">The engine that sets the band, method v1.2, run forward on your own records. Every step is a public record anyone can check, so you know exactly what would move the band, and when.</p>
+        </div>
+        <div role="group" aria-label="Project" style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{pbProjects}}" as="pp" hint-placeholder-count="2"><button type="button" class="press" aria-pressed="{{pp.on}}" onClick="{{pp.pick}}" style="{{pp.style}}">{{pp.label}}</button></sc-for>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: flex-start">
+          <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <p style="margin: 0; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; font-size: 17px"><span style="{{pb.chipStyle}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{pb.meter}}" as="pm" hint-placeholder-count="5"><span style="{{pm.style}}"></span></sc-for></span>{{pb.band}}</span><span>{{pb.now}}</span></p>
+            <p style="margin: 0; padding: 18px 22px; border-radius: 8px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; font-size: 17px; line-height: 1.5"><strong>What buyers read under the band:</strong> {{pb.publicLine}}</p>
+            <ol aria-label="Steps that would move the band" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+              <sc-for list="{{pb.steps}}" as="ps" hint-placeholder-count="3">
+                <li style="{{ps.style}}">
+                  <span aria-hidden="true" style="{{ps.mark}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+                    <span style="font-size: 17px; font-weight: 700; line-height: 1.4">{{ps.title}}</span>
+                    <span style="font-size: 15px; line-height: 1.45">{{ps.check}}</span>
+                    <span style="display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; padding-top: 2px"><span style="{{ps.statusStyle}}">{{ps.status}}</span><span style="font-size: 14px; color: {{t.ink2}}">{{ps.source}}</span></span>
+                  </span>
+                </li>
+              </sc-for>
+            </ol>
+            <p aria-live="polite" style="margin: 0; font-size: 17px; line-height: 1.5; font-weight: 600">{{pb.result}}</p>
+          </div>
+          <div class="rv rv1" style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+            <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">How has this band moved?</h3>
+            <ol aria-label="Band history" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+              <sc-for list="{{pb.history}}" as="ph" hint-placeholder-count="3">
+                <li style="display: flex; gap: 12px">
+                  <span aria-hidden="true" style="flex: none; width: 18px; display: flex; flex-direction: column; align-items: center"><span style="{{ph.dot}}"></span><span style="{{ph.rail}}"></span></span>
+                  <span style="display: flex; flex-direction: column; padding-bottom: 14px; min-width: 0"><span style="font-size: 15px; font-weight: 700">{{ph.date}}</span><span style="font-size: 15px; line-height: 1.45">{{ph.text}}</span></span>
+                </li>
+              </sc-for>
+            </ol>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5">{{pb.turnaround}}</p>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Evidence you add, such as an escrow certificate or a construction-finance letter, shows next to the band. Only the QPR that follows can move it. Recency weighting for track record is on the agenda for method v1.3.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="waiting" aria-labelledby="wa-h" style="display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="wa-h" class="rv" style="{{u.h2}}">What’s waiting for you this week?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">Buyers who asked to hear from you, and facts that go stale if nobody updates them.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: flex-start">
+          <div class="rv rv1" style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+            <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">New enquiries and visits</h3>
+            <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px">
+              <sc-for list="{{waitBuyers}}" as="wb" hint-placeholder-count="4">
+                <li style="display: flex; flex-direction: column; gap: 2px">
+                  <span style="font-size: 17px; font-weight: 600; line-height: 1.4">{{wb.title}}</span>
+                  <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{wb.sub}}</span>
+                </li>
+              </sc-for>
+            </ul>
+            <a href="#enquiries" class="lk" style="font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Open enquiries and visits</a>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Every record was shared by the buyer’s tap. No fee per enquiry, and no brokerage.</p>
+          </div>
+          <div class="rv rv1" style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+            <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">Facts needing an update</h3>
+            <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px">
+              <li style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start">
+                <span style="font-size: 17px; font-weight: 600; line-height: 1.4">QPR for Jul–Sep 2026, Aurelia Heights, Phase 2</span>
+                <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{qprWait}}</span>
+                <sc-if value="{{noticeOpen}}" hint-placeholder-val="{{true}}"><a href="#evidence" class="lk" onClick="{{startClerical}}" style="font-size: 15px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Send the receipt</a></sc-if>
+              </li>
+              <li style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start">
+                <span style="font-size: 17px; font-weight: 600; line-height: 1.4">Price list, Cedar Walk, Phase 2</span>
+                <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Dated 12 Jun 2026, 128 days old. Buyers see “over 120 days old”.</span>
+                <a href="#facts" class="lk" style="font-size: 15px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Update the price list</a>
+              </li>
+              <li style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start">
+                <span style="font-size: 17px; font-weight: 600; line-height: 1.4">4 BHK floor plan, Aurelia Heights, Phase 2</span>
+                <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Not added. Buyers see the 3 BHK plan only.</span>
+                <a href="#facts" class="lk" style="font-size: 15px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Add the floor plan</a>
+              </li>
+              <li style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start">
+                <span style="font-size: 17px; font-weight: 600; line-height: 1.4">Site photos, Aurelia Heights, Phase 2</span>
+                <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Last posted 16 Oct 2026. Your next update to followers can go out from 16 Nov 2026.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+
+      <section id="signals" aria-labelledby="bs-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 24px; flex-wrap: wrap">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <h2 id="bs-h" class="rv" style="{{u.h2}}">What did buyers look at last month?</h2>
+            <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">Counts only, never people. Every number covers at least 20 buyers; smaller groups show as “fewer than 20”. The same panel for every developer, free, and never sold.</p>
+          </div>
+          <a href="#signals-csv" class="lk" style="font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Download the counts (CSV)</a>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center">
+          <div role="group" aria-label="Project" style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{sigProjects}}" as="sj" hint-placeholder-count="3"><button type="button" class="press" aria-pressed="{{sj.on}}" onClick="{{sj.pick}}" style="{{sj.style}}">{{sj.label}}</button></sc-for>
+          </div>
+          <div role="group" aria-label="Month" style="display: flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+            <sc-for list="{{sigMonths}}" as="sm" hint-placeholder-count="2"><button type="button" class="press" aria-pressed="{{sm.on}}" onClick="{{sm.pick}}" style="{{sm.style}}">{{sm.label}}</button></sc-for>
+          </div>
+        </div>
+        <div aria-live="polite" class="rv rv1" style="border-radius: 8px; background: {{t.track}}; padding: 32px 36px; display: flex; flex-direction: column; gap: 32px">
+          <dl style="margin: 0; display: flex; flex-wrap: wrap; gap: 24px 48px">
+            <sc-for list="{{sig.tiles}}" as="st" hint-placeholder-count="3">
+              <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <dt style="font-size: 15px; color: {{t.ink2}}">{{st.label}}</dt>
+                <dd style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 40px; line-height: 1.05; letter-spacing: -0.03em">{{st.value}}</dd>
+                <dd style="margin: 0; font-size: 15px; line-height: 1.4">{{st.sub}}</dd>
+              </div>
+            </sc-for>
+          </dl>
+          <div style="display: flex; flex-wrap: wrap; gap: 32px 48px; align-items: flex-start">
+            <div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+              <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">What buyers asked most</h3>
+              <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+                <sc-for list="{{sig.questions}}" as="sq" hint-placeholder-count="5">
+                  <li style="display: flex; flex-direction: column; gap: 4px"><span style="display: flex; justify-content: space-between; gap: 12px; font-size: 16px; line-height: 1.4"><span>{{sq.label}}</span><strong style="white-space: nowrap">{{sq.n}}</strong></span><span aria-hidden="true" style="{{sq.bar}}"></span></li>
+                </sc-for>
+              </ol>
+              <p style="margin: 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{sig.qNote}}</p>
+            </div>
+            <div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+              <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">Which facts they opened</h3>
+              <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+                <sc-for list="{{sig.facts}}" as="sf" hint-placeholder-count="5">
+                  <li style="display: flex; flex-direction: column; gap: 4px"><span style="display: flex; justify-content: space-between; gap: 12px; font-size: 16px; line-height: 1.4"><span>{{sf.label}}</span><strong style="white-space: nowrap">{{sf.n}}</strong></span><span aria-hidden="true" style="{{sf.bar}}"></span></li>
+                </sc-for>
+              </ol>
+              <p style="margin: 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{sig.fNote}}</p>
+            </div>
+          </div>
+        </div>
+        <p style="margin: 0; max-width: 72ch; font-size: 15px; line-height: 1.5">Questions are grouped by our AI from what buyers typed or said; we never show anyone’s words or who asked. “Saw the band” counts visitors whose screen showed it. Signals never feed a score, search order or an AI answer.</p>
+      </section>
+
+      <section id="evidence" aria-labelledby="di-h" style="display: flex; flex-direction: column; gap: 32px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="di-h" class="rv" style="{{u.h2}}">What should we check again?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">Three lanes on Aurelia Heights, Phase 2. Only facts we can verify can move a score. Your opinion of the band is welcome in your public reply.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+
+          <div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 36px">
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <span id="lane-l" style="font-size: 19px; font-weight: 700; line-height: 1.3">Choose a lane</span>
+              <div role="radiogroup" aria-labelledby="lane-l" style="display: flex; flex-direction: column; gap: 4px">
+                <sc-for list="{{lanes}}" as="ln" hint-placeholder-count="3">
+                  <button type="button" role="radio" class="press" aria-checked="{{ln.on}}" onClick="{{ln.pick}}" style="{{ln.style}}">
+                    <span aria-hidden="true" style="{{ln.radio}}"></span>
+                    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                      <span style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap"><span style="font-size: 17px; font-weight: 700; line-height: 1.4">{{ln.name}}</span><span style="font-size: 15px; font-weight: 600">{{ln.time}}</span></span>
+                      <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{ln.sub}}</span>
+                    </span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <h3 style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 700; line-height: 1.3"><span aria-hidden="true" style="{{step1Mark}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>{{step1Title}}</h3>
+              <div role="radiogroup" aria-label="{{step1Title}}" style="display: flex; flex-direction: column; gap: 4px">
+                <sc-for list="{{facts}}" as="fa" hint-placeholder-count="8">
+                  <button type="button" role="radio" class="press" aria-checked="{{fa.on}}" onClick="{{fa.pick}}" style="{{fa.style}}">
+                    <span aria-hidden="true" style="{{fa.radio}}"></span>
+                    <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+                      <span style="font-size: 17px; line-height: 1.4; font-weight: 600">{{fa.text}}</span>
+                      <span style="font-size: 15px; line-height: 1.35; color: {{t.ink2}}">{{fa.group}}</span>
+                      <sc-if value="{{fa.hasNote}}" hint-placeholder-val="{{false}}"><span style="font-size: 15px; line-height: 1.35">{{fa.note}}</span></sc-if>
+                    </span>
+                  </button>
+                </sc-for>
+              </div>
+              <sc-if value="{{showKinds}}" hint-placeholder-val="{{true}}">
+                <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 6px">
+                  <span id="kind-l" style="font-size: 17px; font-weight: 600">What is wrong with it?</span>
+                  <div role="radiogroup" aria-labelledby="kind-l" style="display: flex; flex-wrap: wrap; gap: 8px">
+                    <sc-for list="{{kinds}}" as="kd" hint-placeholder-count="3">
+                      <button type="button" role="radio" class="press" aria-checked="{{kd.on}}" onClick="{{kd.pick}}" style="{{kd.style}}">{{kd.name}}</button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <h3 style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 700; line-height: 1.3"><span aria-hidden="true" style="{{step2Mark}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>{{step2Title}}</h3>
+              <sc-if value="{{showRegSays}}" hint-placeholder-val="{{false}}">
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <label for="reg-in" style="font-size: 17px; font-weight: 600">What does the register show?</label>
+                  <input id="reg-in" type="text" value="{{regSays}}" onChange="{{onRegSays}}" placeholder="e.g. QPR for Jul–Sep 2026 filed on 12 Oct 2026" style="height: 48px; padding: 0 18px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; box-sizing: border-box; width: 100%">
+                </div>
+              </sc-if>
+              <sc-if value="{{showEvidence}}" hint-placeholder-val="{{true}}">
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <sc-for list="{{evidence}}" as="ev" hint-placeholder-count="4">
+                    <button type="button" class="press" aria-pressed="{{ev.on}}" aria-label="{{ev.aria}}" onClick="{{ev.toggle}}" style="{{ev.style}}">
+                      <span aria-hidden="true" style="{{ev.icon}}">
+                        <sc-if value="{{ev.isPhoto}}" hint-placeholder-val="{{false}}"><img data-slot="towerBSite" src="/_blob/63563bddef8fb0534f0a376b2c1501d1" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                        <sc-if value="{{ev.notPhoto}}" hint-placeholder-val="{{true}}"><svg width="18" height="18" viewBox="0 0 18 18"><path d="{{ev.path}}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                      </span>
+                      <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+                        <span style="font-size: 17px; line-height: 1.4; font-weight: 600">{{ev.name}}</span>
+                        <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}; overflow-wrap: anywhere">{{ev.sub}}</span>
+                      </span>
+                      <span style="{{ev.tagStyle}}">{{ev.tag}}</span>
+                    </button>
+                  </sc-for>
+                  <span style="font-size: 15px; color: {{t.ink2}}">PDF or JPG, up to 25 MB each. Photos need their location and time.</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{showRef}}" hint-placeholder-val="{{true}}">
+                <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 4px">
+                  <label for="ref-in" style="font-size: 17px; font-weight: 600">{{refLabel}}</label>
+                  <input id="ref-in" type="text" value="{{ref}}" onChange="{{onRef}}" placeholder="e.g. HARERA QPR acknowledgement no." style="height: 48px; padding: 0 18px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; box-sizing: border-box; width: 100%">
+                  <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{refHelp}}</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{showWhere}}" hint-placeholder-val="{{false}}">
+                <p style="margin: 0; font-size: 17px; line-height: 1.5">Buyers find your files in the evidence drawer and under “From the developer”, labelled “From the developer · not verified” until we match them to a public record. Evidence never moves a score on its own.</p>
+              </sc-if>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <h3 style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 700; line-height: 1.3"><span aria-hidden="true" style="{{step3Mark}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>Submit</h3>
+              <sc-if value="{{showSubmit}}" hint-placeholder-val="{{true}}">
+                <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
+                  <span aria-live="polite" style="font-size: 17px; line-height: 1.45">{{submitHelp}}</span>
+                  <button type="button" class="press" onClick="{{submit}}" aria-disabled="{{notReady}}" style="{{submitStyle}}">{{submitLabel}}</button>
+                  <span style="font-size: 15px; color: {{t.ink2}}">{{slaLine}}</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{showStatus}}" hint-placeholder-val="{{false}}">
+                <div role="status" class="rise" style="display: flex; flex-direction: column; gap: 12px">
+                  <span style="font-size: 19px; font-weight: 700">{{curRef}} · {{curState}}</span>
+                  <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+                    <sc-for list="{{timeline}}" as="tl" hint-placeholder-count="4">
+                      <li style="display: flex; gap: 12px">
+                        <span aria-hidden="true" style="flex: none; width: 18px; display: flex; flex-direction: column; align-items: center">
+                          <span style="{{tl.dot}}"></span>
+                          <span style="{{tl.rail}}"></span>
+                        </span>
+                        <span style="display: flex; flex-direction: column; padding-bottom: 12px; min-width: 0">
+                          <span style="font-size: 17px; line-height: 1.35; font-weight: 600">{{tl.title}}</span>
+                          <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{tl.sub}}</span>
+                        </span>
+                      </li>
+                    </sc-for>
+                  </ol>
+                  <p style="margin: 0; font-size: 17px; line-height: 1.45">{{curNote}}</p>
+                  <div style="display: flex; gap: 8px 22px; flex-wrap: wrap; align-items: center">
+                    <sc-if value="{{canWithdraw}}" hint-placeholder-val="{{true}}">
+                      <button type="button" class="press" onClick="{{withdraw}}" style="{{u.linkBtn}}">Withdraw</button>
+                    </sc-if>
+                    <button type="button" class="press" onClick="{{startAnother}}" style="{{u.linkBtn}}">Start another</button>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+
+          <div class="rv rv1" style="flex: 1 1 380px; min-width: 0; position: sticky; top: 104px; border-radius: 8px; background: {{t.track}}; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+            <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8 12.1 12.5 8 12.5 1.5 8 1.5 8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path><circle cx="8" cy="8" r="2" fill="currentColor"></circle></svg>How buyers will see it</p>
+            <div data-ui="buyer-risk-card" style="border-radius: 8px; background: {{t.panelSolid}}; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 15px; color: {{t.ink2}}">Delivery risk · Aurelia Heights, Phase 2</span>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+                  <span style="{{elevChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{elevMeter}}" as="em3" hint-placeholder-count="5"><span style="{{em3.style}}"></span></sc-for></span>Elevated</span>
+                  <span style="font-size: 14px; color: {{t.ink2}}">Low confidence · 14 Oct 2026 · v1.2</span>
+                </div>
+              </div>
+              <sc-if value="{{pvNotice}}" hint-placeholder-val="{{false}}">
+                <div class="rise" style="border-radius: 8px; background: {{t.claimBg}}; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+                  <span style="font-size: 15px; line-height: 1.45">{{pvNoticeText}}</span>
+                </div>
+              </sc-if>
+              <ul aria-label="Facts on the buyer’s card and page" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px">
+                <sc-for list="{{cardItems}}" as="ci" hint-placeholder-count="8">
+                  <li style="display: flex; flex-direction: column; gap: 4px">
+                    <sc-if value="{{ci.hasHead}}" hint-placeholder-val="{{false}}"><span style="padding-top: 6px; font-size: 14px; font-weight: 700; color: {{t.ink2}}">{{ci.head}}</span></sc-if>
+                    <span style="{{ci.style}}">
+                      <span style="{{ci.textStyle}}">{{ci.text}}</span>
+                      <sc-if value="{{ci.disputed}}" hint-placeholder-val="{{false}}">
+                        <span class="rise" style="{{ci.markerStyle}}"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style="flex: none"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"></circle><path d="M8 1.5a6.5 6.5 0 010 13z" fill="currentColor"></path></svg>{{ci.marker}}</span>
+                      </sc-if>
+                      <sc-if value="{{ci.hasProv}}" hint-placeholder-val="{{false}}">
+                        <span style="display: flex; flex-wrap: wrap; gap: 6px">
+                          <sc-for list="{{ci.prov}}" as="cp" hint-placeholder-count="1"><span class="rise" style="{{cp.style}}"><svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true" style="flex: none"><path d="{{cp.icon}}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{cp.text}}</span></sc-for>
+                        </span>
+                      </sc-if>
+                    </span>
+                  </li>
+                </sc-for>
+              </ul>
+              <sc-if value="{{hasDevBlock}}" hint-placeholder-val="{{false}}">
+                <div class="rise" style="border-radius: 8px; background: {{t.claimBg}}; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+                  <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>{{devBlockHead}}</span>
+                  <span style="display: flex; flex-wrap: wrap; gap: 6px">
+                    <sc-for list="{{devBlock}}" as="db" hint-placeholder-count="1"><span class="rise" style="{{db.style}}"><svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true" style="flex: none"><path d="{{db.icon}}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{db.text}}</span></sc-for>
+                  </span>
+                </div>
+              </sc-if>
+              <span style="font-size: 14px; color: {{t.ink2}}">{{pvFooter}}</span>
+            </div>
+            <p aria-live="polite" style="margin: 0; font-size: 17px; line-height: 1.45; font-weight: 600">{{pvCaption}}</p>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5">Files stay “From the developer · not verified” until we check them. A register reference shows as “Public record”, because we open the original ourselves. Photos support a fact but never move a score alone.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="reply" aria-labelledby="re-h" style="display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="re-h" class="rv" style="{{u.h2}}">What should buyers read from you?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 60ch; font-size: 19px">Your public reply sits next to the score on the buyer’s card. We publish it as written, except under our published moderation rules.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+          <div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="reply-in" style="font-size: 17px; font-weight: 600">Reply text</label>
+              <textarea id="reply-in" rows="6" maxlength="3000" value="{{reply}}" onChange="{{onReply}}" style="width: 100%; min-height: 180px; padding: 16px 18px; border-radius: 8px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; line-height: 1.55; resize: vertical; box-sizing: border-box"></textarea>
+              <span aria-live="polite" style="font-size: 15px; color: {{t.ink2}}">{{replyCount}}</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span id="role-l" style="font-size: 17px; font-weight: 600">Signed as</span>
+              <div role="radiogroup" aria-labelledby="role-l" style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{roles}}" as="rl" hint-placeholder-count="3">
+                  <button type="button" role="radio" class="press" aria-checked="{{rl.on}}" onClick="{{rl.pick}}" style="{{rl.style}}">{{rl.name}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 17px; font-weight: 600">Attach your evidence as sources</span>
+              <sc-if value="{{noAttach}}" hint-placeholder-val="{{true}}">
+                <span style="font-size: 15px; color: {{t.ink2}}">No files yet. Add evidence in a lane above to attach it here.</span>
+              </sc-if>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{attachOpts}}" as="ao" hint-placeholder-count="2">
+                  <button type="button" class="press" aria-pressed="{{ao.on}}" onClick="{{ao.toggle}}" style="{{ao.style}}">{{ao.name}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px 16px; align-items: center; flex-wrap: wrap">
+              <button type="button" class="press" onClick="{{publish}}" aria-disabled="{{pubDisabled}}" style="{{pubStyle}}">{{pubLabel}}</button>
+              <span aria-live="polite" style="font-size: 15px; color: {{t.ink2}}">{{pubStatus}}</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 17px; font-weight: 600">Where buyers will read it</span>
+              <ul style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 4px; font-size: 17px; line-height: 1.5">
+                <li>Next to the band, on the project card and page.</li>
+                <li>Under every band-change alert to followers, on WhatsApp, the app and email, word for word.</li>
+                <li>On the live record your QR opens.</li>
+              </ul>
+              <span style="font-size: 15px; color: {{t.ink2}}">You can’t message buyers through Plinth, and nobody can send them marketing. Your reply travels with the news instead.</span>
+            </div>
+          </div>
+
+          <div class="rv rv1" style="flex: 1 1 380px; min-width: 0; border-radius: 8px; background: {{t.track}}; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+            <p style="margin: 0; font-size: 17px; font-weight: 600">Live preview: your reply under the buyer’s card</p>
+            <div data-ui="buyer-reply" style="border-radius: 8px; background: {{t.panelSolid}}; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+                <span style="{{elevChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{elevMeter}}" as="em4" hint-placeholder-count="5"><span style="{{em4.style}}"></span></sc-for></span>Elevated</span>
+                <span style="font-size: 14px; color: {{t.ink2}}">Aurelia Heights, Phase 2 · {{reasonsDisputed}}</span>
+              </div>
+              <div style="border-radius: 8px; background: {{t.claimBg}}; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+                  <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+                  <span style="font-size: 16px; font-weight: 700">Developer says</span>
+                  <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; padding: 1px 10px; border-radius: 999px; background: {{t.panelSolid}}"><svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>Verified developer account</span>
+                </div>
+                <span style="font-size: 14px; color: {{t.ink2}}">{{previewByline}}</span>
+                <sc-if value="{{hasReply}}" hint-placeholder-val="{{true}}">
+                  <p style="margin: 0; font-size: 17px; line-height: 1.5; overflow-wrap: anywhere">“{{previewText}}”</p>
+                </sc-if>
+                <sc-if value="{{noReply}}" hint-placeholder-val="{{false}}">
+                  <p style="margin: 0; font-size: 17px; line-height: 1.5; color: {{t.ink2}}">We invited Northfield Estates to respond on 3 Oct 2026. No response yet.</p>
+                </sc-if>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px">
+                  <sc-for list="{{previewAttach}}" as="pa" hint-placeholder-count="1">
+                    <span class="rise" style="display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 2px 12px; border-radius: 999px; background: {{t.panelSolid}}; font-size: 14px; box-sizing: border-box"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>{{pa}} · not verified</span>
+                  </sc-for>
+                </div>
+              </div>
+              <span style="font-size: 14px; line-height: 1.45; color: {{t.ink2}}">{{previewStatus}}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="log" aria-labelledby="lg-h" style="display: flex; flex-direction: column; gap: 20px; scroll-margin-top: 96px">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 8px 24px; flex-wrap: wrap">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <h2 id="lg-h" class="rv" style="{{u.h2}}">What have you raised so far?</h2>
+            <p class="rv rv1" style="margin: 0; max-width: 60ch; font-size: 19px">Buyers see the topic, dates and outcome of disputes on your developer page. Your documents stay private.</p>
+          </div>
+          <span aria-live="polite" style="max-width: 32ch; font-size: 17px; line-height: 1.4; font-weight: 600">{{quotaLine}}</span>
+        </div>
+        <div role="table" aria-label="Your corrections, disputes and evidence" class="rv rv1" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden">
+          <div role="row" style="{{u.logRow}}; padding-top: 12px; padding-bottom: 12px; font-size: 15px; color: {{t.ink2}}; background: {{t.track}}">
+            <span role="columnheader">Ref.</span><span role="columnheader">Filed</span><span role="columnheader">What</span><span role="columnheader">Status</span><span role="columnheader">Decision</span>
+          </div>
+          <sc-for list="{{logRows}}" as="lr" hint-placeholder-count="5">
+            <div role="row" style="{{lr.rowStyle}}">
+              <span role="cell" style="font-weight: 700">{{lr.ref}}</span>
+              <span role="cell">{{lr.filed}}</span>
+              <span role="cell" style="display: flex; flex-direction: column; min-width: 0"><span>{{lr.fact}}</span><span style="font-size: 14px; color: {{t.ink2}}">{{lr.note}}</span></span>
+              <span role="cell"><span style="{{lr.pill}}">{{lr.status}}</span></span>
+              <span role="cell" style="color: {{t.ink2}}">{{lr.decided}}</span>
+            </div>
+          </sc-for>
+        </div>
+        <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Showing the latest 5 of {{logTotal}} since Jan 2026. Evidence sent without a dispute is not in the public dispute log; buyers find it in the evidence drawer. <a href="#log-all" class="lk" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 4px">See all</a></p>
+      </section>
+
+
+      <section id="legal" aria-labelledby="ln-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="ln-h" class="rv" style="{{u.h2}}">Need to send a formal notice?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">Legal notices, grievances and court orders go straight to our counsel, not to the people who score. We read each one the day it arrives and answer on a clock you can see.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+          <div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+            <sc-if value="{{lnOpen}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-direction: column; gap: 20px">
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <span id="ln-type-l" style="font-size: 17px; font-weight: 600">What are you sending?</span>
+                  <div role="radiogroup" aria-labelledby="ln-type-l" style="display: flex; flex-direction: column; gap: 4px">
+                    <sc-for list="{{lnTypes}}" as="lt" hint-placeholder-count="3">
+                      <button type="button" role="radio" class="press" aria-checked="{{lt.on}}" onClick="{{lt.pick}}" style="{{lt.style}}"><span aria-hidden="true" style="{{lt.radio}}"></span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 17px; font-weight: 700; line-height: 1.4">{{lt.name}}</span><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{lt.sub}}</span></span></button>
+                    </sc-for>
+                  </div>
+                </div>
+                <button type="button" class="press" aria-pressed="{{lnFileOn}}" onClick="{{toggleLnFile}}" style="{{lnFileStyle}}"><span aria-hidden="true" style="flex: none; width: 44px; height: 44px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; background: {{t.panelSolid}}"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M5 2h6l3 3v11H5zM8 9h4M8 12h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 17px; font-weight: 600">{{lnFileName}}</span><span style="font-size: 15px; color: {{t.ink2}}">{{lnFileSub}}</span></span><span style="{{lnFileTag}}">{{lnFileTagText}}</span></button>
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <label for="ln-ref" style="font-size: 17px; font-weight: 600">Your counsel or reference (optional)</label>
+                  <input id="ln-ref" type="text" value="{{lnRef}}" onChange="{{onLnRef}}" placeholder="e.g. law firm and file number" style="height: 48px; padding: 0 18px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; box-sizing: border-box; width: 100%">
+                </div>
+                <p style="margin: 0; font-size: 15px; line-height: 1.45">Sent as Ananya Rao, Admin · authorised signatory. Only Admins can send formal notices, and each one is logged.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center">
+                  <button type="button" class="press" onClick="{{sendNotice}}" aria-disabled="{{lnNotReady}}" style="{{lnBtn}}">Send to Plinth’s counsel</button>
+                  <span aria-live="polite" style="flex: 1 1 220px; font-size: 15px; line-height: 1.45">{{lnHelp}}</span>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{lnSent}}" hint-placeholder-val="{{false}}">
+              <div role="status" class="rise" style="display: flex; flex-direction: column; gap: 12px">
+                <span style="font-size: 19px; font-weight: 700">{{lnRefLine}}</span>
+                <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+                  <sc-for list="{{lnTimeline}}" as="lnt" hint-placeholder-count="4">
+                    <li style="display: flex; gap: 12px">
+                      <span aria-hidden="true" style="flex: none; width: 18px; display: flex; flex-direction: column; align-items: center"><span style="{{lnt.dot}}"></span><span style="{{lnt.rail}}"></span></span>
+                      <span style="display: flex; flex-direction: column; padding-bottom: 12px; min-width: 0"><span style="font-size: 17px; line-height: 1.35; font-weight: 600">{{lnt.title}}</span><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{lnt.sub}}</span></span>
+                    </li>
+                  </sc-for>
+                </ol>
+                <p style="margin: 0; font-size: 17px; line-height: 1.45">Nothing on your pages changes because a notice arrived. If a court orders it, we switch to facts-only and tell you first.</p>
+                <button type="button" class="press" onClick="{{lnReset}}" style="{{u.linkBtn}}; align-self: flex-start">Send another</button>
+              </div>
+            </sc-if>
+          </div>
+          <div class="rv rv1" style="flex: 1 1 340px; min-width: 0; border-radius: 8px; background: {{t.track}}; padding: 28px 30px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+            <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">What a notice does, and doesn’t</h3>
+            <ul style="margin: 0; padding: 0 0 0 20px; display: flex; flex-direction: column; gap: 8px; font-size: 17px; line-height: 1.5">
+              <li>We acknowledge it within 48 hours, with a case reference.</li>
+              <li>Within 5 working days you get our standard evidence pack: every source behind your pages, its snapshot date and hash, the method version, and your dispute history.</li>
+              <li>Our counsel replies in writing within 15 working days.</li>
+              <li>A notice doesn’t pause or change a band. Facts do, through the lanes above.</li>
+              <li>If a court orders it, the page switches to facts-only: the band is hidden, every sourced fact stays, and the page says why.</li>
+            </ul>
+            <dl style="margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.5">
+              <div><dt style="font-weight: 700">By registered post</dt><dd style="margin: 0"><span style="{{u.ph}}">[REGISTERED OFFICE ADDRESS]</span>, Gurugram, Haryana</dd></div>
+              <div><dt style="font-weight: 700">Grievance Officer</dt><dd style="margin: 0"><span style="{{u.ph}}">[NAME]</span> · in English or Hindi</dd></div>
+              <div><dt style="font-weight: 700">Counsel</dt><dd style="margin: 0"><span style="{{u.ph}}">[LAW FIRM]</span></dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <section id="team" aria-labelledby="tm-h" style="display: flex; flex-direction: column; gap: 20px; scroll-margin-top: 96px">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 24px; flex-wrap: wrap">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <h2 id="tm-h" class="rv" style="{{u.h2}}">Who can act for Northfield?</h2>
+            <p class="rv rv1" style="margin: 0; max-width: 60ch; font-size: 19px">Five roles. Every action is logged with the person who took it. Each person chooses which utility alerts reach their WhatsApp.</p>
+          </div>
+          <button type="button" class="press" style="height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Invite a teammate</button>
+        </div>
+        <div role="table" aria-label="Team and roles" class="rv rv1" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden">
+          <div role="row" style="{{u.teamRow}}; padding-top: 12px; padding-bottom: 12px; font-size: 15px; color: {{t.ink2}}; background: {{t.track}}">
+            <span role="columnheader">Person</span><span role="columnheader">Role</span><span role="columnheader">Can do</span><span role="columnheader">WhatsApp alerts</span>
+          </div>
+          <sc-for list="{{team}}" as="tm" hint-placeholder-count="5">
+            <div role="row" style="{{tm.rowStyle}}">
+              <span role="cell" style="font-weight: 600">{{tm.name}}</span>
+              <span role="cell">{{tm.role}}</span>
+              <span role="cell" style="color: {{t.ink2}}">{{tm.can}}</span>
+              <span role="cell" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start"><button type="button" class="press" aria-pressed="{{tm.waOn}}" aria-label="{{tm.waAria}}" onClick="{{tm.waToggle}}" style="{{tm.waStyle}}">{{tm.waLabel}}</button><span style="font-size: 14px; line-height: 1.35; color: {{t.ink2}}">{{tm.waWhat}}</span></span>
+            </div>
+          </sc-for>
+        </div>
+        <p style="margin: 0; max-width: 72ch; font-size: 17px; line-height: 1.5">On a phone, the whole workspace works at 390 px. Notices, the three lanes, enquiries and visit check-in are built phone-first, and your site team takes progress photos from a one-time capture link.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 112px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">Everything in this workspace is free and the same for every developer. Your corrections, evidence and replies are checked against HARERA, DTCP and MCA records, the same records every score stands on. Our opinion, based on public records. Not a credit rating. Not issued by any RERA.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#charter" class="lk" style="color: {{t.onSlab}}">Developer Charter</a>
+          <a href="#methodology" class="lk" style="color: {{t.onSlab}}">Methodology v1.2</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#legal" class="lk" style="color: {{t.onSlab}}">Legal notices and grievances</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span>Plinth Developer workspace · free, forever</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"$preview":{"width":1280,"height":11400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var R0 = 'Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.';
+    this.state = {
+      themePick: null,
+      lane: 'dispute', fact: -1, kind: 0, evCa: false, evOc: false, evFn: false, evPh: false, ref: '', regSays: '',
+      submitted: false, filed: [],
+      reply: R0, role: 0, atCa: false, atOc: false, atFn: false, atPh: false,
+      published: true, pubText: R0, pubRole: 0, pubDate: '15 Oct 2026', pubCheck: '5 Nov 2026',
+      pbProj: 'au', sigProj: 'au', sigMonth: 'sep',
+      lnType: 'notice', lnFile: false, lnRef: '', lnSent: false,
+      wa: {ar: true, vs: true, nk: true, am: false, py: true}
+    };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', panelSolid: '#16221D', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claimBg: '#1D2621',
+      emptyBorder: '#7D828A', segEmpty: 'transparent', notScored: '#7D828A', disabledBg: 'rgba(255,255,255,0.10)', disabledFg: '#B9C6C0',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', panelSolid: '#FFFFFF', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claimBg: '#F1ECE2',
+      emptyBorder: '#8C9199', segEmpty: '#FFFFFF', notScored: '#8C9199', disabledBg: '#EEEBE4', disabledFg: '#3F3C36',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var grid = function (cols) { return 'display:grid;grid-template-columns:' + cols + ';gap:16px;padding:16px 22px;align-items:start'; };
+    var U = {
+      h2: "margin:0;font-family:'Bricolage Grotesque', system-ui, sans-serif;font-weight:800;font-size:clamp(34px, 3.6vw, 44px);line-height:1.04;letter-spacing:-0.03em",
+      chipSolid: 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 14px;border-radius:999px;box-sizing:border-box;background:' + T.panelSolid + ';font-size:14px;color:' + T.ink + ';text-decoration:none',
+      linkBtn: 'min-height:44px;padding:0;border:0;background:transparent;color:' + T.ink + ';font:inherit;font-size:17px;font-weight:600;text-decoration:underline;text-underline-offset:5px;cursor:pointer',
+      prRow: grid('minmax(0, 2fr) minmax(0, 1.6fr) minmax(0, 1.5fr) minmax(0, 1.1fr)'),
+      logRow: grid('minmax(0, 0.7fr) minmax(0, 0.9fr) minmax(0, 2.4fr) minmax(0, 1.2fr) minmax(0, 1.1fr)'),
+      teamRow: grid('minmax(0, 1.2fr) minmax(0, 1.2fr) minmax(0, 1.9fr) minmax(0, 1.4fr)'),
+      // Filled ink pill: a public-record fact buyers can see now.
+      pubPill: 'display:inline-flex;align-items:center;min-height:28px;padding:2px 12px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:700;line-height:1.3;background:' + T.ink + ';color:' + T.bg,
+      // Founder-to-fill placeholder, same treatment as WebAbout.
+      ph: 'display:inline;padding:1px 8px;border-radius:4px;font-weight:600;-webkit-box-decoration-break:clone;box-decoration-break:clone;background:' + (night ? 'rgba(110,231,183,0.16)' : '#FFFFFF') + ';color:' + T.ink
+    };
+    var B = {
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', fillN: '#332B0C'},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillN: '#3A2210'},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', fillN: '#3D1A19'}
+    };
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function fill(n) { return night ? B[n].fillN : B[n].fill; }
+    function meter(n) {
+      return [1, 2, 3, 4, 5].map(function (j) {
+        return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= B[n].i ? 'background:' + ink(n) + ';' : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder + ';')};
+      });
+    }
+    // Borderless risk chip (DESIGN §0): band fill, mini meter, name. No outline.
+    function chip(n) {
+      return 'display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:15px;font-weight:600;border:0;background:' + fill(n) + ';color:' + T.ink;
+    }
+    function pillBtn(on) {
+      return 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;box-sizing:border-box;transition:background-color 180ms ease, color 180ms ease;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.bg : T.ink);
+    }
+    function radioRow(on, locked) {
+      return 'width:100%;display:flex;align-items:flex-start;gap:14px;padding:12px 14px;border:0;border-radius:8px;box-sizing:border-box;cursor:' + (locked ? 'default' : 'pointer') + ';font:inherit;text-align:left;color:' + T.ink + ';transition:background-color 200ms ease;background:' + (on ? T.track : 'transparent');
+    }
+    function radioDot(on) {
+      return 'flex:none;width:20px;height:20px;margin-top:3px;border-radius:50%;box-sizing:border-box;' + (on ? 'border:6px solid ' + T.ink : 'border:2px solid ' + T.ink2);
+    }
+    // Step marks: a tick when done, a ring when it's your turn, a tone dot when not yet. No numbers.
+    function mark(done, active) {
+      return 'flex:none;width:24px;height:24px;border-radius:50%;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;transition:background-color 200ms ease;' + (done ? 'background:' + T.ink + ';color:' + T.bg + ';' : (active ? 'border:2px solid ' + T.ink + ';color:transparent;' : 'background:' + T.track + ';color:transparent;'));
+    }
+    var dotBase = 'display:inline-block;width:7px;height:7px;border-radius:50%;box-sizing:border-box;';
+    var docIcon = 'M4 1.5h5l3 3v10H4z';
+    var linkIcon = 'M6.5 9.5l3-3M5 7.5L3.8 8.7a2.5 2.5 0 003.5 3.5L8.5 11M11 8.5l1.2-1.2a2.5 2.5 0 00-3.5-3.5L7.5 5';
+    var regIcon = 'M2.5 3.5h11v9h-11zM5 6.5h6M5 9.5h4';
+
+    // Workspace navigation, identical on every workspace page.
+    var NAV = [
+      {key: 'overview', label: 'Overview', href: '#overview', icon: 'M3 8l6-5 6 5v7H3z'},
+      {key: 'inbox', label: 'Enquiries & visits', href: '#enquiries', icon: 'M2.5 10.5L4.5 4h9l2 6.5V15h-13zM2.5 10.5h4l1 2h3l1-2h4', badge: '3', badgeSr: ' need a reply'},
+      {key: 'facts', label: 'Projects & facts', href: '#facts', icon: 'M4 16V3h7v13M11 7h3v9M2 16h14'},
+      {key: 'live', label: 'Live Record', href: '#live-record', icon: 'M3 3h4v4H3zM11 3h4v4h-4zM3 11h4v4H3zM11 11h1.5M14.5 11v1.5M11 14.5h4'},
+      {key: 'evidence', label: 'Evidence & disputes', href: '#evidence', icon: 'M5 2h6l3 3v11H5zM8 9h4M8 12h4', badge: '1', badgeSr: ' notice'},
+      {key: 'team', label: 'Team', href: '#team', icon: 'M6.5 8.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM2 15c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4M12 4a2.2 2.2 0 010 4.3M13.5 11c1.6.4 2.5 1.8 2.5 4'}
+    ];
+    var nav = NAV.map(function (x) {
+      var on = x.key === 'overview';
+      return {label: x.label, href: x.href, icon: x.icon, current: on ? 'page' : 'false', hasBadge: !!x.badge, badge: x.badge || '', badgeSr: x.badgeSr || '',
+        badgeStyle: 'min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:' + T.ink + ';color:' + T.bg + ';font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box',
+        style: 'display:flex;align-items:center;gap:12px;min-height:44px;padding:0 14px;border-radius:8px;color:' + T.ink + ';text-decoration:none;font-weight:' + (on ? '600' : '500') + ';background:' + (on ? T.track : 'transparent')};
+    });
+
+    var LANES = [
+      {key: 'clerical', name: 'Clerical error', time: '2 working days', sub: 'The register shows one thing and we show another. No quota used if the error was ours.'},
+      {key: 'dispute', name: 'Dispute a fact', time: '15 working days', sub: 'You think a published fact is wrong or out of date. Uses 1 of this quarter’s 12.'},
+      {key: 'evidence', name: 'Add evidence, no dispute', time: 'No quota', sub: 'Escrow certificates, approvals, funding letters, site photos. Shown as yours until we match them.'}
+    ];
+    var lane = s.lane === 'clerical' || s.lane === 'evidence' ? s.lane : 'dispute';
+    var locked = !!s.submitted;
+    var lanes = LANES.map(function (x) {
+      var on = x.key === lane;
+      return {name: x.name, time: x.time, sub: x.sub, on: on ? 'true' : 'false', radio: radioDot(on), style: radioRow(on, locked),
+        pick: function () { if (!self.state.submitted) self.setState({lane: x.key}); }};
+    });
+
+    var FACTS = [
+      {group: 'Public now, and the reason for the notice', text: 'QPR for Jul–Sep 2026 not on HARERA', note: ''},
+      {group: 'Finances, on the risk card', text: '72% of units sold, 41% built', note: ''},
+      {group: 'Timeline, on the risk card', text: 'QPRs late in 3 of the last 8 quarters', note: ''},
+      {group: 'Legal, on the risk card', text: '14 complaints decided against the promoter in 24 months, 2.8 per 100 units', note: 'D-127 on this fact is already under review'},
+      {group: 'Track record, on the risk card', text: '2 of 6 finished projects got OC 12+ months late', note: ''},
+      {group: 'Cost inputs, on the cost sheet', text: 'Charges of ₹9.2 L on the 2 Oct 2026 cost sheet', note: ''},
+      {group: 'Dates, on the truth panel', text: 'Registered Dec 2022, original completion Dec 2027', note: ''},
+      {group: 'Group map, on your developer page', text: '9 linked companies (MCA)', note: ''}
+    ];
+    var ITEMS = [
+      {head: 'Public now · new on record', text: 'The QPR for Jul–Sep 2026 is not on HARERA as of 18 Oct 2026. It was due on 15 Oct 2026.'},
+      {head: 'Reasons, strongest first', text: 'Finances: 72% of units sold, 41% built.'},
+      {head: '', text: 'Timeline: 77% of time used. QPRs late in 3 of the last 8 quarters.'},
+      {head: '', text: 'Legal: 14 complaints decided against the promoter in 24 months, or 2.8 per 100 units on 500 units. Median for similar projects: 3.'},
+      {head: '', text: 'Track record: 2 of the group’s 6 finished projects got OC 12+ months late.'},
+      {head: 'Also on the project page', text: 'Cost sheet, 2 Oct 2026: charges ₹9.2 L (PLC, club, parking, IFMS).'},
+      {head: '', text: 'Dates: registered Dec 2022. Original completion Dec 2027. No extensions.'},
+      {head: '', text: 'Group: Northfield Estates and 9 linked companies (MCA).'}
+    ];
+    var KINDS = ['Out of date', 'Misread from source', 'Wrong project'];
+    var EV = [
+      {key: 'Ca', name: 'CA escrow certificate', hint: 'PDF signed by your chartered accountant', file: 'CA-escrow-certificate-Q2-FY27.pdf · 1.2 MB', path: 'M5 2h6l3 3v11H5zM8 9h4M8 12h4'},
+      {key: 'Oc', name: 'OC application', hint: 'DTCP acknowledgement, PDF', file: 'OC-application-DTCP.pdf · 0.8 MB', path: 'M3 16V7l6-4 6 4v9zM7 16v-5h4v5'},
+      {key: 'Fn', name: 'Construction-finance letter', hint: 'Sanction letter from your lender, PDF', file: 'Construction-finance-sanction.pdf · 0.6 MB', path: 'M2.5 6.5L9 3l6.5 3.5M4 7.5v6M8 7.5v6M12 7.5v6M2.5 15.5h13'},
+      {key: 'Ph', name: 'Geo-tagged site photos', hint: 'JPG with location and time', file: '6 photos · Towers A and B · 16 Oct 2026', path: 'M2 6h3l1.5-2h5L13 6h3v9H2zM9 13a2.5 2.5 0 100-5 2.5 2.5 0 000 5z'}
+    ];
+    var filed = s.filed || [];
+    var cur = filed.length ? filed[filed.length - 1] : null;
+    var refTrim = String(s.ref || '').trim();
+    var regTrim = String(s.regSays || '').trim();
+    var anyEv = !!(s.evCa || s.evOc || s.evFn || s.evPh);
+    var QUOTA = 12;
+    var disputesUsed = 1 + filed.filter(function (x) { return x.lane === 'dispute'; }).length;
+    var ready = lane === 'clerical' ? (s.fact >= 0 && !!regTrim && !!refTrim) : (lane === 'dispute' ? (s.fact >= 0 && (anyEv || !!refTrim) && disputesUsed < QUOTA) : anyEv);
+
+    var facts = FACTS.map(function (x, i) {
+      var on = i === s.fact;
+      return {group: x.group, text: x.text, note: x.note, hasNote: !!x.note, on: on ? 'true' : 'false',
+        pick: function () {
+          if (self.state.submitted) return;
+          var optional = (self.state.lane === 'evidence');
+          self.setState({fact: (optional && self.state.fact === i) ? -1 : i});
+        },
+        style: radioRow(on, locked), radio: radioDot(on)};
+    });
+    var kinds = KINDS.map(function (x, i) {
+      var on = i === s.kind;
+      return {name: x, on: on ? 'true' : 'false', pick: function () { if (!self.state.submitted) self.setState({kind: i}); }, style: pillBtn(on)};
+    });
+    // Evidence the developer adds takes the "Developer says" tone: it is their claim until we check it.
+    var evidence = EV.map(function (x) {
+      var k = 'ev' + x.key, on = !!s[k];
+      var photo = x.key === 'Ph' && on;
+      return {name: x.name, sub: on ? x.file : x.hint, on: on ? 'true' : 'false', path: x.path, tag: on ? 'Added' : 'Add',
+        isPhoto: photo, notPhoto: !photo,
+        aria: (on ? 'Remove ' : 'Add ') + x.name,
+        toggle: function () { if (self.state.submitted) return; var o = {}; o[k] = !self.state[k]; if (self.state[k]) o['at' + x.key] = false; self.setState(o); },
+        style: 'width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px;border:0;border-radius:8px;box-sizing:border-box;cursor:pointer;font:inherit;text-align:left;color:' + T.ink + ';transition:background-color 200ms ease;background:' + (on ? T.claimBg : T.track),
+        icon: 'flex:none;width:44px;height:44px;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;background:' + T.panelSolid + ';color:' + T.ink + ';border-radius:' + (photo ? '0' : '999px'),
+        tagStyle: 'flex:none;display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:700;box-sizing:border-box;' + (on ? 'background:' + T.ink + ';color:' + T.bg + ';' : 'background:' + T.panelSolid + ';color:' + T.ink + ';')};
+    });
+    // Provenance labels exactly as buyers will see them in the evidence drawer.
+    function provChip(pub) {
+      return 'display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:3px 12px;border-radius:999px;box-sizing:border-box;font-size:14px;line-height:1.3;overflow-wrap:anywhere;' + (pub ? 'background:' + T.ink + ';color:' + T.bg + ';' : 'background:' + T.panelSolid + ';color:' + T.ink + ';');
+    }
+    function evChips(names) {
+      return names.map(function (n) { return {text: n + ' · From the developer, not verified', icon: docIcon, style: provChip(false)}; });
+    }
+    var draftEvNames = [];
+    EV.forEach(function (x) { if (s['ev' + x.key]) draftEvNames.push(x.name); });
+    var provList = [];
+    if (lane === 'clerical' && regTrim) provList.push({text: 'Register says: ' + regTrim, icon: regIcon, style: provChip(false)});
+    if (lane !== 'clerical') provList = provList.concat(evChips(draftEvNames));
+    if (lane !== 'evidence' && refTrim) provList.push({text: 'Register reference ' + refTrim + ' · Public record, linked', icon: linkIcon, style: provChip(true)});
+
+    var missing = [];
+    if (lane !== 'evidence' && s.fact < 0) missing.push('pick a fact');
+    if (lane === 'clerical' && !regTrim) missing.push('say what the register shows');
+    if (lane === 'clerical' && !refTrim) missing.push('add the register reference');
+    if (lane === 'dispute' && !anyEv && !refTrim) missing.push('add a file or a register reference');
+    if (lane === 'evidence' && !anyEv) missing.push('add at least one file');
+    var submitHelp;
+    if (lane === 'dispute' && disputesUsed >= QUOTA) submitHelp = 'You have used this quarter’s 12 disputes. The limit resets on 1 Jan 2027. Clerical fixes and evidence are still open.';
+    else submitHelp = missing.length ? 'To submit, ' + missing.join(', ') + '.' : 'Ready. You’ll get a reference number at once.';
+    var SUBMIT = {clerical: 'Request the clerical fix', dispute: 'Submit dispute', evidence: 'Submit evidence'};
+    var SLA = {
+      clerical: 'We check the register automatically, then decide within 2 working days: by 20 Oct 2026. No quota used if the error was ours.',
+      dispute: 'We acknowledge within 48 hours and decide within 15 working days. Uses 1 of this quarter’s 12 disputes.',
+      evidence: 'No dispute and no quota. We try to match each file to a public record within 15 working days.'
+    };
+    var STEP2 = {clerical: 'Show us the register', dispute: 'Add evidence', evidence: 'Add your files'};
+
+    var curFact = cur && cur.fact >= 0 ? FACTS[cur.fact] : null;
+    var timeline = [];
+    if (cur) {
+      var W = cur.withdrawn;
+      var T4;
+      if (cur.lane === 'clerical') {
+        T4 = [
+          {title: 'Received', sub: '18 Oct 2026, 11:20', st: 'done'},
+          {title: W ? 'Withdrawn' : 'Automatic register check', sub: W ? '18 Oct 2026 · logged as withdrawn' : 'Running now on HARERA', st: W ? 'done' : 'next'},
+          {title: 'Decision', sub: 'Within 2 working days · by 20 Oct 2026, 11:20', st: W ? 'off' : 'todo'},
+          {title: 'If the error was ours', sub: 'Corrected, logged as our error, no quota used', st: W ? 'off' : 'todo'}
+        ];
+      } else if (cur.lane === 'evidence') {
+        T4 = [
+          {title: 'Received', sub: '18 Oct 2026, 11:20', st: 'done'},
+          {title: W ? 'Withdrawn' : 'Shown to buyers', sub: W ? '18 Oct 2026 · removed from the drawer' : 'Labelled “From the developer · not verified”, from now', st: 'done'},
+          {title: 'Matched to public records', sub: 'Within 15 working days · by 6 Nov 2026', st: W ? 'off' : 'next'},
+          {title: 'Result', sub: 'Matched files show as Public record; the rest stay labelled as yours', st: W ? 'off' : 'todo'}
+        ];
+      } else {
+        T4 = [
+          {title: 'Received', sub: '18 Oct 2026, 11:20', st: 'done'},
+          {title: W ? 'Withdrawn' : 'Acknowledged', sub: W ? '18 Oct 2026 · logged as withdrawn' : 'Within 48 hours · by 20 Oct 2026, 11:20', st: W ? 'done' : 'next'},
+          {title: 'Under review', sub: 'Our methodology team checks the source', st: W ? 'off' : 'todo'},
+          {title: 'Decision', sub: 'Within 15 working days · by 6 Nov 2026', st: W ? 'off' : 'todo'}
+        ];
+      }
+      timeline = T4.map(function (x, i) {
+        var dot = 'display:block;width:14px;height:14px;border-radius:50%;box-sizing:border-box;margin-top:4px;';
+        if (x.st === 'done') dot += 'background:' + T.ink + ';';
+        else if (x.st === 'next') dot += 'background:' + T.bg + ';border:3px solid ' + T.ink + ';';
+        else dot += 'background:' + T.track + ';';
+        return {title: x.title, sub: x.sub, dot: dot, rail: i < 3 ? 'display:block;flex:1;width:2px;min-height:10px;background:' + T.lineStrong : 'display:none'};
+      });
+    }
+    var curNote = '';
+    if (cur) {
+      if (cur.withdrawn) curNote = cur.lane === 'evidence' ? 'Withdrawn. Buyers no longer see these files.' : 'Withdrawn items stay in your log, marked as withdrawn.';
+      else if (cur.lane === 'clerical') curNote = cur.fact === 0 ? 'The proposed change to High is on hold and stays private. Buyers see the missing QPR marked “Correction requested · checking the register”.' : 'Buyers see this fact marked “Correction requested · checking the register”. It is fixed or confirmed by 20 Oct 2026.';
+      else if (cur.lane === 'evidence') curNote = 'Buyers now find your files in the evidence drawer, labelled as yours. Nothing is disputed and your quota is untouched.';
+      else curNote = cur.fact === 0 ? 'The proposed change to High is on hold while we check. Buyers see the missing QPR marked as disputed; if the change is published, your dispute is shown with it.' : 'Buyers now see this fact marked “Disputed by developer · under review since 18 Oct 2026”. The fact stays until we decide.';
+    }
+
+    var activeFiled = filed.filter(function (x) { return !x.withdrawn; });
+    var heldItem = null;
+    activeFiled.forEach(function (x) { if (x.fact === 0 && x.lane !== 'evidence') heldItem = x; });
+    var underReview = 1 + activeFiled.filter(function (x) { return x.lane === 'dispute'; }).length;
+    var heldText = !heldItem ? '' : (heldItem.lane === 'clerical' ? 'Receipt received · ' + heldItem.ref + '. We check the HARERA register by 20 Oct 2026, before the change could take effect. Buyers still see the missing QPR, now marked “Correction requested”.' : 'Correction received · ' + heldItem.ref + '. We check it before the change can take effect. Buyers still see the missing QPR, now marked as disputed.');
+
+    // Signature: the buyer's card, live. Picking a fact highlights it; markers and provenance labels appear as you build the request.
+    var kindTxt = KINDS[Number(s.kind) || 0].toLowerCase();
+    var disputedCount = 0;
+    var cardItems = ITEMS.map(function (x, i) {
+      var markers = [];
+      var prov = [];
+      if (i === 3) markers.push({t: 'Disputed by developer · under review since 10 Oct 2026', live: true});
+      activeFiled.forEach(function (d) {
+        if (d.fact !== i) return;
+        if (d.lane === 'clerical') markers.push({t: 'Correction requested · checking the register since 18 Oct 2026', live: true});
+        else if (d.lane === 'dispute') markers.push({t: 'Disputed by developer · ' + KINDS[d.kind].toLowerCase() + ' · under review since 18 Oct 2026', live: true});
+        else prov = prov.concat(evChips(d.ev || []));
+      });
+      var isDraft = !locked && s.fact === i;
+      if (isDraft) {
+        if (lane === 'clerical') markers.push({t: 'After you submit: Correction requested · checking the register', live: false});
+        else if (lane === 'dispute') markers.push({t: 'After you submit: Disputed by developer · ' + kindTxt + ' · under review', live: false});
+        else if (!draftEvNames.length) markers.push({t: 'After you submit: your files show here, labelled as yours', live: false});
+        prov = prov.concat(provList);
+      }
+      var m = markers.length ? markers[markers.length - 1] : null;
+      var liveM = markers.some(function (z) { return z.live; });
+      if (liveM && i >= 1 && i <= 4) disputedCount++;
+      var lit = isDraft || (locked && cur && !cur.withdrawn && cur.fact === i);
+      var small = i >= 5;
+      return {
+        head: x.head, hasHead: !!x.head, text: x.text, disputed: !!m, marker: m ? m.t : '',
+        textStyle: 'font-size:' + (small ? '15px' : '16px') + ';line-height:1.45;' + (i === 0 ? 'font-weight:600;' : ''),
+        markerStyle: 'display:inline-flex;align-items:flex-start;gap:6px;font-size:14px;font-weight:600;line-height:1.35;color:' + (m && !m.live ? T.ink2 : T.ink),
+        hasProv: prov.length > 0, prov: prov,
+        style: 'display:flex;flex-direction:column;gap:6px;padding:8px 12px;margin:0 -12px;border-radius:8px;transition:background-color 260ms ease;background:' + (lit ? T.claimBg : 'transparent')
+      };
+    });
+    // Evidence with no fact attached sits in a "From the developer" block at the foot of the card.
+    var devBlock = [];
+    activeFiled.forEach(function (d) { if (d.lane === 'evidence' && d.fact < 0) devBlock = devBlock.concat(evChips(d.ev || [])); });
+    var devDraft = !locked && lane === 'evidence' && s.fact < 0 && draftEvNames.length > 0;
+    if (devDraft) devBlock = devBlock.concat(evChips(draftEvNames));
+    var devBlockHead = devDraft ? 'After you submit: From the developer' : 'From the developer';
+
+    var noticeDraft = !locked && s.fact === 0 && lane !== 'evidence';
+    var pvNotice = noticeDraft || !!heldItem;
+    var pvNoticeText = heldItem ? 'Only you see this: the proposed change to High is on hold while we check ' + heldItem.ref + '. The missing QPR below stays public.' : 'Only you see this: a proposed change to High, from 25 Oct 2026. The missing QPR below is already public. If the change is published, your request is shown with it.';
+    var pvCaption;
+    if (locked && cur) {
+      if (cur.withdrawn) pvCaption = 'Withdrawn. The marker is gone; your log keeps it as withdrawn.';
+      else if (cur.lane === 'evidence') pvCaption = 'Live: buyers see your files, labelled “From the developer · not verified”.';
+      else if (cur.fact === 0) pvCaption = 'Live: the missing QPR carries your marker. The proposed change stays private and on hold while we check ' + cur.ref + '.';
+      else if (cur.lane === 'clerical') pvCaption = 'Live: buyers see “Correction requested · checking the register”.';
+      else pvCaption = 'Live: buyers see this fact marked as disputed since 18 Oct 2026, 11:20.';
+    } else if (lane === 'evidence') {
+      pvCaption = anyEv ? 'Draft. Your files appear once you submit, labelled as yours.' : 'Add a file to see where buyers will find it.';
+    } else {
+      pvCaption = s.fact < 0 ? 'Pick a fact to see your request on the card.' : 'Draft. Nothing changes for buyers until you submit.';
+    }
+
+    var ROLES = ['Head of Customer Relations', 'Authorised signatory', 'Compliance team'];
+    var reply = String(s.reply || '');
+    var replyTrim = reply.trim();
+    var roles = ROLES.map(function (x, i) {
+      var on = i === s.role;
+      return {name: x, on: on ? 'true' : 'false', pick: function () { self.setState({role: i}); }, style: pillBtn(on)};
+    });
+    var attachOpts = [];
+    var previewAttach = [];
+    EV.forEach(function (x) {
+      if (s['ev' + x.key]) {
+        var k = 'at' + x.key, on = !!s[k];
+        attachOpts.push({name: (on ? 'Attached: ' : 'Attach ') + x.name, on: on ? 'true' : 'false', toggle: function () { var o = {}; o[k] = !self.state[k]; self.setState(o); }, style: pillBtn(on)});
+        if (on) previewAttach.push(x.name);
+      }
+    });
+    var changed = s.published && (reply !== s.pubText || s.role !== s.pubRole);
+    var pubDisabled = !replyTrim || (s.published && !changed);
+    var pubLabel = !s.published ? 'Publish reply' : (changed ? 'Publish update' : 'Published');
+    var pubStatus = !replyTrim ? 'Write a reply to publish it.' : (!s.published ? 'Draft · not public yet' : (changed ? 'Unpublished changes. Earlier versions stay in the log.' : 'Live on the buyer card since ' + s.pubDate));
+    var shown = reply.length > 600 ? reply.slice(0, 600) + '… Read more' : reply;
+
+    var BASE = [
+      {ref: 'D-127', filed: '10 Oct 2026', fact: 'Dispute: complaint count', note: '2 orders listed twice, says developer', status: 'Under review', decided: 'Due by 30 Oct 2026'},
+      {ref: 'CL-201', filed: '6 Oct 2026', fact: 'Clerical: Tower A shown with 21 floors', note: 'Registration shows 20 floors', status: 'Fixed, our error', decided: '7 Oct 2026'},
+      {ref: 'D-118', filed: '14 Aug 2026', fact: 'Dispute: Apr–Jun 2026 QPR marked late', note: 'Filed 15 Jul 2026, on time', status: 'Upheld', decided: '3 Sep 2026'},
+      {ref: 'D-104', filed: '26 Feb 2026', fact: 'Dispute: Oct–Dec 2025 QPR marked late', note: 'HARERA timestamp shows 38 days late', status: 'Not upheld', decided: '13 Mar 2026'},
+      {ref: 'D-097', filed: '12 Jan 2026', fact: 'Dispute: registration month shown as Jan 2023', note: 'Corrected to Dec 2022', status: 'Upheld', decided: '28 Jan 2026'}
+    ];
+    var LANE_WORD = {clerical: 'Clerical', dispute: 'Dispute', evidence: 'Evidence'};
+    var mine = filed.slice().reverse().map(function (x) {
+      var what = x.fact >= 0 ? FACTS[x.fact].text : 'Files for the project page';
+      var st, due, note;
+      if (x.lane === 'clerical') { st = x.withdrawn ? 'Withdrawn' : 'Checking'; due = x.withdrawn ? '18 Oct 2026' : 'Due by 20 Oct 2026'; note = 'Register says: ' + (x.reg || ''); }
+      else if (x.lane === 'evidence') { st = x.withdrawn ? 'Withdrawn' : 'Shown, not verified'; due = x.withdrawn ? '18 Oct 2026' : 'Match by 6 Nov 2026'; note = (x.ev || []).join(', '); }
+      else { st = x.withdrawn ? 'Withdrawn' : 'Received'; due = x.withdrawn ? '18 Oct 2026' : 'Due by 6 Nov 2026'; note = KINDS[x.kind] + ', says developer'; }
+      return {ref: x.ref, filed: '18 Oct 2026', fact: LANE_WORD[x.lane] + ': ' + what, note: note, status: st, decided: due};
+    });
+    // Filled status pills; the word carries the meaning, never the colour alone.
+    function pill(st) {
+      var b = 'display:inline-flex;align-items:center;min-height:28px;padding:2px 12px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:700;line-height:1.3;';
+      if (st === 'Upheld' || st === 'Fixed, our error') return b + 'background:' + T.ink + ';color:' + T.bg + ';';
+      if (st === 'Under review') return b + 'background:' + T.track + ';color:' + T.ink + ';';
+      if (st === 'Received' || st === 'Checking' || st === 'Shown, not verified') return b + 'background:' + T.claimBg + ';color:' + T.ink + ';';
+      if (st === 'Withdrawn') return b + 'background:transparent;color:' + T.ink2 + ';padding:0;';
+      return b + 'background:' + T.track + ';color:' + T.ink2 + ';';
+    }
+    var logRows = mine.concat(BASE).slice(0, 5).map(function (x, i) {
+      return {ref: x.ref, filed: x.filed, fact: x.fact, note: x.note, status: x.status, decided: x.decided, pill: pill(x.status),
+        rowStyle: U.logRow + ';font-size:15px;line-height:1.45;' + (i > 0 ? 'border-top:1px solid ' + T.line + ';' : '')};
+    });
+
+    var TEAM = [
+      {key: 'ar', name: 'Ananya Rao', role: 'Admin · authorised signatory', can: 'Everything, including public replies, disputes and team changes', wa: 'Notices and heads-ups, dispute decisions'},
+      {key: 'vs', name: 'Vikram Sethi', role: 'Sales', can: 'Enquiries, visits and the CRM hand-off', wa: 'New enquiries, visits booked or moved'},
+      {key: 'nk', name: 'Neha Kapoor', role: 'Compliance', can: 'Notices, clerical fixes, disputes and evidence', wa: 'Notices and heads-ups, dispute status'},
+      {key: 'am', name: 'Arjun Mehta', role: 'Marketing', can: 'Price lists, plans and the Live Record kit', wa: 'Price list over 120 days old'},
+      {key: 'py', name: 'Pradeep Yadav', role: 'Site · Sector 37D sales gallery', can: 'Visit check-in and site photos only', wa: 'Today’s visits, capture links'}
+    ];
+    var waState = s.wa || {};
+    var team = TEAM.map(function (x, i) {
+      var on = !!waState[x.key];
+      return {name: x.name, role: x.role, can: x.can, waWhat: x.wa, waOn: on ? 'true' : 'false', waLabel: on ? 'On' : 'Off',
+        waAria: 'WhatsApp alerts for ' + x.name + ': ' + (on ? 'on' : 'off'),
+        waToggle: function () { var w = {}; var cur = self.state.wa || {}; for (var k in cur) w[k] = cur[k]; w[x.key] = !w[x.key]; self.setState({wa: w}); },
+        waStyle: 'min-height:44px;min-width:72px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;box-sizing:border-box;transition:background-color 180ms ease, color 180ms ease;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.bg : T.ink),
+        rowStyle: U.teamRow + ';font-size:15px;line-height:1.45;' + (i > 0 ? 'border-top:1px solid ' + T.line + ';' : '')};
+    });
+
+    // Path back (G15): the engine run forward, per project. Steps are public records anyone can check.
+    var pbKey = s.pbProj === 'cw' ? 'cw' : 'au';
+    var pbProjects = [{key: 'au', label: 'Aurelia Heights, Phase 2'}, {key: 'cw', label: 'Cedar Walk, Phase 2'}].map(function (x) {
+      var on = x.key === pbKey;
+      return {label: x.label, on: on ? 'true' : 'false', pick: function () { self.setState({pbProj: x.key}); }, style: pillBtn(on)};
+    });
+    function stepStyle(st) {
+      var b = 'display:inline-flex;align-items:center;min-height:28px;padding:2px 12px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:700;line-height:1.3;';
+      if (st === 'met') return b + 'background:' + T.ink + ';color:' + T.bg + ';';
+      if (st === 'urgent') return b + 'background:' + T.claimBg + ';color:' + T.ink + ';';
+      return b + 'background:' + T.panelSolid + ';color:' + T.ink + ';';
+    }
+    function pbSteps(list) {
+      return list.map(function (x) {
+        return {title: x.title, check: x.check, status: x.status, source: x.source, statusStyle: stepStyle(x.st),
+          mark: mark(x.st === 'met', x.st === 'urgent'),
+          style: 'display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:8px;background:' + (x.st === 'urgent' ? T.claimBg : T.track)};
+      });
+    }
+    function pbHist(list) {
+      return list.map(function (x, i) {
+        var dot = 'display:block;width:14px;height:14px;border-radius:50%;box-sizing:border-box;margin-top:4px;' + (x.pending ? 'background:' + T.bg + ';border:3px solid ' + T.ink + ';' : 'background:' + T.ink + ';');
+        return {date: x.date, text: x.text, dot: dot, rail: i < list.length - 1 ? 'display:block;flex:1;width:2px;min-height:10px;background:' + T.lineStrong : 'display:none'};
+      });
+    }
+    var PB = {
+      au: {
+        band: 'Elevated', chipStyle: chip('Elevated'), meter: meter('Elevated'),
+        now: 'Low confidence · since 2 Oct 2026 · a proposed move to High is pending',
+        publicLine: 'Two consecutive quarters with construction ahead of sales would move this to Moderate.',
+        steps: [
+          heldItem ? {title: 'Get the Jul–Sep 2026 QPR on record before 25 Oct 2026', check: 'Keeps the band at Elevated instead of High.', status: 'Receipt sent · ' + heldItem.ref + ' · checking by 20 Oct', source: 'HARERA QPR register', st: 'urgent'}
+            : {title: 'Get the Jul–Sep 2026 QPR on record before 25 Oct 2026', check: 'Keeps the band at Elevated instead of High.', status: 'Not on HARERA as of 18 Oct 2026', source: 'HARERA QPR register', st: 'urgent'},
+          {title: 'Let construction gain on sales for two QPRs in a row', check: 'The gap between sold and built is 31 points (72% sold, 41% built). The engine needs it at 21 points or less by the Oct–Dec 2026 QPR, narrowing in both quarters.', status: '0 of 2 quarters', source: 'HARERA QPR, Apr–Jun 2026', st: 'open'},
+          {title: 'File both of those QPRs on time', check: 'Late filings are 3 of the last 8. With both on time, the oldest late one ages out and it falls to 2 of 8.', status: 'Next due 15 Jan 2027', source: 'HARERA QPR register', st: 'open'}
+        ],
+        result: heldItem ? 'If all three hold, the engine moves Aurelia to Moderate when the Oct–Dec 2026 QPR is on record. You get a heads-up before buyers see it.' : 'If all three hold, the engine moves Aurelia to Moderate when the Oct–Dec 2026 QPR is on record, due 15 Jan 2027. Nothing else can move it: not evidence alone, not a reply, not money.',
+        history: pbHist([
+          {date: '15 Jul 2026', text: 'First scored: Moderate (method v1.0).'},
+          {date: '2 Oct 2026', text: 'Moderate to Elevated: the Apr–Jun 2026 QPR and new complaint orders. Your heads-up came 30 Sep 2026.'},
+          {date: '25 Oct 2026', text: heldItem ? 'Proposed move to High, on hold while we check ' + heldItem.ref + '.' : 'Proposed move to High if the Jul–Sep 2026 QPR is still missing.', pending: true}
+        ]),
+        turnaround: 'No Northfield project has moved down a band yet. Bands first went public on 15 Jul 2026, so there are few quarters to compare.'
+      },
+      cw: {
+        band: 'Moderate', chipStyle: chip('Moderate'), meter: meter('Moderate'),
+        now: 'Since first scored on 15 Jul 2026 · no change pending',
+        publicLine: 'Two consecutive quarters with construction ahead of sales would move this to Low.',
+        steps: [
+          {title: 'Let building gain on time for two QPRs in a row', check: '70% built with 92% of the promised time used (original date Mar 2027). Each QPR needs the built share to rise faster than time used.', status: '0 of 2 quarters', source: 'HARERA QPR, Apr–Jun 2026', st: 'open'},
+          {title: 'Keep filing QPRs on time', check: 'A late filing in this window would hold the band at Moderate.', status: 'Jul–Sep 2026 filed on time', source: 'HARERA QPR register', st: 'met'},
+          {title: 'Apply for the OC on time', check: 'An OC within 12 months of Mar 2027 plus the 4-month blanket extension counts as on time in the track record.', status: 'Not due yet', source: 'DTCP OC orders', st: 'open'}
+        ],
+        result: 'If the first two hold, the engine moves Cedar Walk, Phase 2 to Low after the Oct–Dec 2026 QPR. You get a heads-up before buyers see it.',
+        history: pbHist([
+          {date: '15 Jul 2026', text: 'First scored: Moderate (method v1.0).'},
+          {date: '14 Oct 2026', text: 'Recalculated on method v1.2 with the blanket extension: still Moderate.'}
+        ]),
+        turnaround: 'No Northfield project has moved down a band yet. Bands first went public on 15 Jul 2026.'
+      }
+    };
+    var pb = PB[pbKey];
+    pb.steps = pbSteps(pb.steps);
+
+    // Buyer signals (G13): monthly, aggregate, k ≥ 20. Fewer than 20 is never shown as a number.
+    var K = 20;
+    function cnt(n) { return n >= K ? n.toLocaleString('en-IN') : 'Fewer than 20'; }
+    function cntIn(n) { return n >= K ? n.toLocaleString('en-IN') : 'fewer than 20'; }
+    var SIG = {
+      au: {
+        sep: {visitors: 4860, prev: 3920, prevL: 'Aug', saw: [4520, 4860], band: 'Moderate all month', follows: 312, fprev: 245,
+          q: [['When will it really be ready?', 186], ['What will a 3 BHK cost all-in?', 152], ['Is construction keeping up with sales?', 97], ['Are progress reports filed on time?', 58], ['Is there a 4 BHK floor plan?', 31]], qMore: 6,
+          f: [['QPR, Apr–Jun 2026', 1240], ['HARERA complaint orders, 24 months', 610], ['Price list, 1 Apr 2026', 540], ['Original completion date and extensions', 402], ['Group track record', 288]], fMore: 4},
+        aug: {visitors: 3920, prev: 3410, prevL: 'Jul', saw: [3606, 3920], band: 'Moderate all month', follows: 245, fprev: 198,
+          q: [['When will it really be ready?', 141], ['What will a 3 BHK cost all-in?', 133], ['Is construction keeping up with sales?', 72], ['Are progress reports filed on time?', 40], ['Is there a 4 BHK floor plan?', 22]], qMore: 4,
+          f: [['QPR, Apr–Jun 2026', 1010], ['Price list, 1 Apr 2026', 498], ['HARERA complaint orders, 24 months', 455], ['Original completion date and extensions', 350], ['Group track record', 210]], fMore: 3}
+      },
+      cw: {
+        sep: {visitors: 1480, prev: 1210, prevL: 'Aug', saw: [1347, 1480], band: 'Moderate all month', follows: 64, fprev: 51,
+          q: [['When will it be ready?', 44], ['What is the payment plan?', 29], ['Is the price list current?', 21]], qMore: 5,
+          f: [['QPR, Apr–Jun 2026', 380], ['Price list, 12 Jun 2026', 260], ['HARERA complaint orders, 24 months', 90], ['Original completion date', 74]], fMore: 2},
+        aug: {visitors: 1210, prev: 1120, prevL: 'Jul', saw: [1089, 1210], band: 'Moderate all month', follows: 51, fprev: 47,
+          q: [['When will it be ready?', 38], ['What is the payment plan?', 25]], qMore: 6,
+          f: [['QPR, Apr–Jun 2026', 330], ['Price list, 12 Jun 2026', 240], ['HARERA complaint orders, 24 months', 66], ['Original completion date', 58]], fMore: 2}
+      },
+      hp: {
+        sep: {visitors: 310, prev: 180, prevL: 'Aug', saw: null, band: '', follows: 12, fprev: 7,
+          q: [], qMore: 0,
+          f: [['HARERA registration, Apr 2026', 140], ['Original completion date, Apr 2031', 62]], fMore: 3},
+        aug: {visitors: 180, prev: 150, prevL: 'Jul', saw: null, band: '', follows: 7, fprev: 5,
+          q: [], qMore: 0,
+          f: [['HARERA registration, Apr 2026', 96], ['Original completion date, Apr 2031', 41]], fMore: 2}
+      }
+    };
+    var sigKey = s.sigProj === 'cw' || s.sigProj === 'hp' ? s.sigProj : 'au';
+    var monKey = s.sigMonth === 'aug' ? 'aug' : 'sep';
+    var sd = SIG[sigKey][monKey];
+    var monthName = monKey === 'aug' ? 'August' : 'September';
+    var sigProjects = [{key: 'au', label: 'Aurelia Heights, Phase 2'}, {key: 'cw', label: 'Cedar Walk, Phase 2'}, {key: 'hp', label: 'Heron Point, Phase 2'}].map(function (x) {
+      var on = x.key === sigKey;
+      return {label: x.label, on: on ? 'true' : 'false', pick: function () { self.setState({sigProj: x.key}); }, style: pillBtn(on)};
+    });
+    var sigMonths = [{key: 'aug', label: 'Aug 2026'}, {key: 'sep', label: 'Sep 2026'}].map(function (x) {
+      var on = x.key === monKey;
+      return {label: x.label, on: on ? 'true' : 'false', pick: function () { self.setState({sigMonth: x.key}); },
+        style: 'height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (on ? T.panelSolid : 'transparent') + ';color:' + T.ink};
+    });
+    function bars(list) {
+      var max = 1;
+      list.forEach(function (r) { if (r[1] > max) max = r[1]; });
+      return list.filter(function (r) { return r[1] >= K; }).map(function (r, i) {
+        return {label: r[0], n: cnt(r[1]),
+          bar: 'display:block;height:8px;border-radius:2px;transform-origin:left center;transition:width 420ms cubic-bezier(.22,1,.36,1);width:' + Math.max(4, Math.round(r[1] / max * 100)) + '%;background:' + (i === 0 ? T.ink : T.lineStrong)};
+      });
+    }
+    var sawTile = sd.saw ? {label: 'Saw the band', value: Math.round(sd.saw[0] / sd.saw[1] * 100) + '%', sub: sd.band + ' · ' + cntIn(sd.saw[0]) + ' of ' + cntIn(sd.saw[1]) + ' visitors had it on screen'}
+      : {label: 'Saw the band', value: 'No band', sub: 'Not scored yet, so there is no band to see.'};
+    var sigQ = bars(sd.q);
+    var sig = {
+      tiles: [
+        {label: 'Project-page visitors, ' + monthName, value: cnt(sd.visitors), sub: sd.prevL + ': ' + cntIn(sd.prev)},
+        sawTile,
+        {label: 'New followers', value: cnt(sd.follows), sub: sd.prevL + ': ' + cntIn(sd.fprev)}
+      ],
+      questions: sigQ,
+      qNote: sigQ.length ? (sd.qMore ? sd.qMore + ' more questions were each asked by fewer than 20 people. They are not shown.' : 'Every question asked by 20 or more people is shown.') : 'Fewer than 20 people asked any one question, so none are shown.',
+      facts: bars(sd.f),
+      fNote: sd.fMore ? sd.fMore + ' more facts were each opened by fewer than 20 people.' : 'Every fact opened by 20 or more people is shown.'
+    };
+
+    // Formal notice intake (G08): routes to counsel, acknowledged within 48 hours.
+    var LNT = [
+      {key: 'notice', name: 'Legal notice', sub: 'From you or your counsel, about something we published.'},
+      {key: 'grievance', name: 'Grievance', sub: 'A complaint about how we handled you, our process or our data.'},
+      {key: 'court', name: 'Court or regulator order', sub: 'An order that names Plinth or a page we publish.'}
+    ];
+    var lnType = s.lnType === 'grievance' || s.lnType === 'court' ? s.lnType : 'notice';
+    var lnTypes = LNT.map(function (x) {
+      var on = x.key === lnType;
+      return {name: x.name, sub: x.sub, on: on ? 'true' : 'false', radio: radioDot(on), style: radioRow(on, false), pick: function () { self.setState({lnType: x.key}); }};
+    });
+    var LNFILE = {notice: 'Legal-notice-Northfield-18-Oct-2026.pdf', grievance: 'Grievance-Northfield-18-Oct-2026.pdf', court: 'Order-copy-18-Oct-2026.pdf'};
+    var lnReady = !!s.lnFile;
+    var lnWord = LNT.filter(function (x) { return x.key === lnType; })[0].name.toLowerCase();
+    var lnTimeline = [
+      {title: 'Received by counsel', sub: '18 Oct 2026, 11:30 · not shared with the scoring team', st: 'done'},
+      {title: 'Acknowledged, with this reference', sub: 'Within 48 hours · by 20 Oct 2026, 11:30', st: 'next'},
+      {title: 'Standard evidence pack sent to you', sub: 'Within 5 working days · by 23 Oct 2026', st: 'todo'},
+      {title: 'Written reply from counsel', sub: 'Within 15 working days · by 6 Nov 2026', st: 'todo'}
+    ].map(function (x, i) {
+      var dot = 'display:block;width:14px;height:14px;border-radius:50%;box-sizing:border-box;margin-top:4px;';
+      if (x.st === 'done') dot += 'background:' + T.ink + ';';
+      else if (x.st === 'next') dot += 'background:' + T.bg + ';border:3px solid ' + T.ink + ';';
+      else dot += 'background:' + T.track + ';';
+      return {title: x.title, sub: x.sub, dot: dot, rail: i < 3 ? 'display:block;flex:1;width:2px;min-height:10px;background:' + T.lineStrong : 'display:none'};
+    });
+
+    var WAIT = [
+      {title: 'Rohan booked a visit', sub: 'Aurelia Heights, Phase 2 · Sat 24 Oct 2026, 11 am · 2 visitors · code 4821'},
+      {title: 'Ishita asked for the official price list', sub: 'Aurelia Heights, Phase 2 · 3 BHK · ₹2.6–2.9 Cr all-in · agent of record: Larkspur Realty'},
+      {title: 'Kabir shared his number after his visit', sub: 'Aurelia Heights, Phase 2 · visited 16 Oct 2026 · 4 BHK'},
+      {title: 'Farah is waiting for a reply', sub: 'Cedar Walk, Phase 2 · payment plan questions · asked 16 Oct 2026'}
+    ];
+
+    var primary = 'height:56px;padding:0 28px;border:0;border-radius:999px;font:inherit;font-size:18px;font-weight:600;box-sizing:border-box;';
+    function resetDraft(extra) {
+      var o = {submitted: false, fact: -1, kind: 0, evCa: false, evOc: false, evFn: false, evPh: false, ref: '', regSays: ''};
+      for (var k in extra) o[k] = extra[k];
+      self.setState(o);
+    }
+    return {
+      t: T, u: U, nav: nav,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      elevChip: chip('Elevated'), elevMeter: meter('Elevated'),
+      highChip: chip('High'), highMeter: meter('High'),
+      modChip: chip('Moderate'), modMeter: meter('Moderate'),
+      notChip: 'display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:15px;font-weight:600;border:0;background:' + T.track + ';color:' + T.ink2,
+      notMeter: [1, 2, 3, 4, 5].map(function () { return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;border:1px solid ' + T.notScored + ';'}; }),
+      dotFull: dotBase + 'background:' + T.ink2 + ';', dotHollow: dotBase + 'border:1.5px solid ' + T.ink2 + ';',
+      auPending: heldItem ? 'Notice on hold while we check ' + heldItem.ref : 'Notice: may move to High on 25 Oct 2026 if the Jul–Sep QPR is still missing',
+      noticeOpen: !heldItem, noticeHeld: !!heldItem, heldText: heldText,
+      qprWait: heldItem ? 'Receipt sent · ' + heldItem.ref + '. We check the register by 20 Oct 2026. Buyers still see it as missing until then.' : 'Public now: due 15 Oct 2026 and not on HARERA as of 18 Oct 2026. Buyers see it as missing.',
+      waitBuyers: WAIT,
+      startClerical: function () { resetDraft({lane: 'clerical', fact: 0, regSays: 'QPR for Jul–Sep 2026 filed on 12 Oct 2026'}); },
+      startNoticeDispute: function () { resetDraft({lane: 'dispute', fact: 0}); },
+      lanes: lanes,
+      step1Title: lane === 'evidence' ? 'Which fact does it support? (optional)' : 'Pick the fact',
+      step2Title: STEP2[lane],
+      step1Mark: mark(s.fact >= 0 || (lane === 'evidence' && anyEv), s.fact < 0 && lane !== 'evidence'),
+      step2Mark: mark(lane === 'clerical' ? (!!regTrim && !!refTrim) : (lane === 'dispute' ? (anyEv || !!refTrim) : anyEv), !locked && !ready),
+      step3Mark: mark(locked, ready && !locked),
+      facts: facts, kinds: kinds, evidence: evidence,
+      showKinds: lane === 'dispute', showRegSays: lane === 'clerical', showEvidence: lane !== 'clerical', showRef: lane !== 'evidence', showWhere: lane === 'evidence',
+      regSays: s.regSays, onRegSays: function (e) { if (!self.state.submitted) self.setState({regSays: e.target.value}); },
+      refLabel: lane === 'clerical' ? 'Register link or reference' : 'Register reference (optional)',
+      refHelp: lane === 'clerical' ? 'We open the register ourselves and run an automatic check first. Files are optional in this lane.' : 'We open the original on HARERA or DTCP ourselves.',
+      ref: s.ref, onRef: function (e) { if (!self.state.submitted) self.setState({ref: e.target.value}); },
+      showSubmit: !locked, showStatus: locked && !!cur,
+      submitHelp: submitHelp, notReady: !ready, submitLabel: SUBMIT[lane], slaLine: SLA[lane],
+      submitStyle: primary + (ready ? 'cursor:pointer;background:' + T.accent + ';color:' + T.onAccent + ';' : 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';'),
+      submit: function () {
+        var st = self.state;
+        var ln = st.lane === 'clerical' || st.lane === 'evidence' ? st.lane : 'dispute';
+        var rt = String(st.ref || '').trim(), rg = String(st.regSays || '').trim();
+        var ev = !!(st.evCa || st.evOc || st.evFn || st.evPh);
+        var list = (st.filed || []).slice();
+        var used = 1 + list.filter(function (x) { return x.lane === 'dispute'; }).length;
+        if (ln === 'clerical' && !(st.fact >= 0 && rg && rt)) return;
+        if (ln === 'dispute' && !(st.fact >= 0 && (ev || rt) && used < 12)) return;
+        if (ln === 'evidence' && !ev) return;
+        var n = list.filter(function (x) { return x.lane === ln; }).length;
+        var ref = ln === 'clerical' ? 'CL-' + (202 + n) : (ln === 'evidence' ? 'EV-0' + (58 + n) : 'D-' + (131 + n));
+        var names = [];
+        EV.forEach(function (x) { if (st['ev' + x.key]) names.push(x.name); });
+        list.push({ref: ref, lane: ln, fact: st.fact, kind: st.kind, reg: rg, ev: ln === 'evidence' ? names : [], withdrawn: false});
+        self.setState({submitted: true, filed: list});
+      },
+      curRef: cur ? cur.ref : '', curState: cur ? (cur.withdrawn ? 'withdrawn' : (curFact ? curFact.text : 'files for the project page')) : '',
+      timeline: timeline, curNote: curNote, canWithdraw: !!cur && !cur.withdrawn,
+      withdraw: function () {
+        var list = (self.state.filed || []).slice();
+        if (!list.length) return;
+        var last = list[list.length - 1];
+        list[list.length - 1] = {ref: last.ref, lane: last.lane, fact: last.fact, kind: last.kind, reg: last.reg, ev: last.ev, withdrawn: true};
+        self.setState({filed: list});
+      },
+      startAnother: function () { resetDraft({}); },
+      cardItems: cardItems, pvNotice: pvNotice, pvNoticeText: pvNoticeText,
+      hasDevBlock: devBlock.length > 0, devBlock: devBlock, devBlockHead: devBlockHead,
+      pvCaption: pvCaption,
+      pvFooter: 'Disputes this quarter: ' + disputesUsed + ' of 12 · ' + underReview + ' under review · clerical fixes and evidence don’t count',
+      reasonsDisputed: '4 reasons · ' + disputedCount + ' disputed',
+      reply: reply, onReply: function (e) { self.setState({reply: e.target.value}); },
+      replyCount: reply.length.toLocaleString('en-IN') + ' / 3,000 characters · buyers see the first 600, then “Read more”',
+      roles: roles, attachOpts: attachOpts, noAttach: attachOpts.length === 0,
+      publish: function () {
+        var st = self.state;
+        var r = String(st.reply || '');
+        if (!r.trim()) return;
+        self.setState({published: true, pubText: r, pubRole: st.role, pubDate: '18 Oct 2026, 11:24', pubCheck: '6 Nov 2026'});
+      },
+      pubDisabled: pubDisabled, pubLabel: pubLabel, pubStatus: pubStatus,
+      pubStyle: 'height:52px;padding:0 24px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;box-sizing:border-box;' + (pubDisabled ? 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';' : 'cursor:pointer;background:' + T.ink + ';color:' + T.bg + ';'),
+      previewByline: ROLES[s.role] + ', Northfield Estates · ' + (s.published && !changed ? 'not yet verified · ' + s.pubDate + ' · we check it by ' + s.pubCheck : 'Draft update · not public yet'),
+      hasReply: replyTrim.length > 0, noReply: replyTrim.length === 0, previewText: shown,
+      previewAttach: previewAttach,
+      previewStatus: 'Our status: ' + underReview + (underReview === 1 ? ' dispute' : ' disputes') + ' under review, next decision due by 30 Oct 2026. Disputes this quarter: ' + disputesUsed + ' of 12.',
+      quotaLine: 'Oct–Dec 2026: ' + disputesUsed + ' of 12 disputes used (6 per scored phase). Clerical fixes and evidence don’t count.',
+      logRows: logRows, logTotal: 5 + filed.length,
+      team: team,
+      pbProjects: pbProjects, pb: pb,
+      sigProjects: sigProjects, sigMonths: sigMonths, sig: sig,
+      lnTypes: lnTypes, lnOpen: !s.lnSent, lnSent: !!s.lnSent,
+      lnFileOn: s.lnFile ? 'true' : 'false',
+      toggleLnFile: function () { self.setState({lnFile: !self.state.lnFile}); },
+      lnFileName: s.lnFile ? LNFILE[lnType] : 'Attach the ' + lnWord + ' (PDF)',
+      lnFileSub: s.lnFile ? '1.1 MB · goes only to counsel' : 'Up to 25 MB. Scans are fine.',
+      lnFileTagText: s.lnFile ? 'Added' : 'Add',
+      lnFileTag: 'flex:none;display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:700;box-sizing:border-box;' + (s.lnFile ? 'background:' + T.ink + ';color:' + T.bg + ';' : 'background:' + T.panelSolid + ';color:' + T.ink + ';'),
+      lnFileStyle: 'width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px;border:0;border-radius:8px;box-sizing:border-box;cursor:pointer;font:inherit;text-align:left;color:' + T.ink + ';transition:background-color 200ms ease;background:' + (s.lnFile ? T.claimBg : T.track),
+      lnRef: s.lnRef, onLnRef: function (e) { self.setState({lnRef: e.target.value}); },
+      lnNotReady: lnReady ? 'false' : 'true',
+      lnBtn: 'height:52px;padding:0 24px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;box-sizing:border-box;' + (lnReady ? 'cursor:pointer;background:' + T.ink + ';color:' + T.bg + ';' : 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';'),
+      lnHelp: lnReady ? 'Ready. You get a case reference at once; we acknowledge within 48 hours.' : 'To send, attach the ' + lnWord + '.',
+      sendNotice: function () { if (self.state.lnFile) self.setState({lnSent: true}); },
+      lnRefLine: 'LN-031 · ' + LNT.filter(function (x) { return x.key === lnType; })[0].name + ' received' + (String(s.lnRef || '').trim() ? ' · your ref. ' + String(s.lnRef).trim() : ''),
+      lnTimeline: lnTimeline,
+      lnReset: function () { self.setState({lnSent: false, lnFile: false, lnRef: ''}); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Who is Plinth</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+@keyframes plSlide { from { transform: translateX(0); } to { transform: translateX(var(--x)); } }
+@keyframes plFillA { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
+@keyframes plFillB { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease, background-color 200ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+    .slide { animation: plSlide linear both; animation-timeline: view(); animation-range: entry 20% cover 45%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 10000px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#home" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
+        <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
+        <a href="#method" class="lk" style="color: {{t.ink}}; text-decoration: none">How scores work</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; white-space: nowrap">{{followShort}}</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="top" aria-labelledby="hero-h" style="background: {{t.bg}}; padding: 48px 0 144px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch; gap: 48px 64px">
+        <div style="flex: 1 1 600px; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; padding-bottom: 8px">
+          <h1 id="hero-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 104px); line-height: 0.94; letter-spacing: -0.045em">Who is Plinth?</h1>
+          <p class="rise rise1" style="margin: 0; max-width: 40ch; font-size: 22px; line-height: 1.45">A small Gurugram company that reads public records for home buyers. Here is who answers for it, how it earns, and whether its bands held up.</p>
+          <div class="rise rise2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding-top: 4px">
+            <a href="#right" class="press" style="height: 56px; display: inline-flex; align-items: center; padding: 0 28px; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font-size: 18px; font-weight: 600; text-decoration: none; white-space: nowrap">See if we were right</a>
+            <a href="#money" class="lk" style="font-size: 18px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">How we make money</a>
+          </div>
+          <p class="rise rise3" style="margin: 0; max-width: 60ch; font-size: 15px; line-height: 1.6; color: {{t.ink2}}"><span style="{{u.ph}}">[COMPANY NAME]</span> Private Limited · Gurugram, Haryana · page updated 18 Oct 2026. No developer pays us. Ever.</p>
+        </div>
+        <figure class="rise rise2" style="flex: 1 1 380px; min-width: 0; margin: 0; position: relative; min-height: 620px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="aboutTable" src="/_blob/a2d748270b67cd2ec8c97ed291775c22" alt="Illustrative image: printed project filings and regulator orders laid out on a work table, a hand checking one row with a pencil" class="drift" style="position: absolute; inset: 0; background: #E7E3DA; border-radius: 0; transform-origin: 40% 60%; object-fit: cover; display: block">
+          <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · where the records get read</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="who" aria-labelledby="who-h" style="background: {{t.track}}; padding: 136px 0 144px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 56px 88px">
+        <figure class="rv rv1" style="flex: 0 1 420px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 20px">
+          <div role="img" aria-label="Placeholder for a real photo of the founder" style="aspect-ratio: 4 / 5; background: {{t.panelSolid}}; display: flex; align-items: flex-end; padding: 24px; box-sizing: border-box">
+            <span style="font-size: 17px; line-height: 1.5"><span style="{{u.ph}}">[FOUNDER PHOTO]</span><br>A real photo, supplied by the founder. Never AI-generated.</span>
+          </div>
+          <blockquote style="margin: 0; font-size: 22px; line-height: 1.45">“<span style="{{u.phOnTrack}}">[In the founder’s own words, 40 words at most: why Plinth exists, and who it answers to.]</span>”</blockquote>
+          <figcaption style="font-size: 17px"><span style="{{u.phOnTrack}}">[FOUNDER NAME]</span>, founder · <a href="#profile" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Public profile</a></figcaption>
+        </figure>
+        <div style="flex: 1 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="who-h" class="rv" style="{{u.h2}}">Who runs Plinth?</h2>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 40ch">One company, one founder, one city. Each line below is a register or a person you can check.</p>
+          <dl class="rv rv2" style="margin: 24px 0 0; display: grid; grid-template-columns: minmax(140px, 220px) minmax(0, 1fr); gap: 20px 32px; font-size: 19px; line-height: 1.5">
+            <dt style="color: {{t.ink2}}; font-size: 17px; padding-top: 2px">Company</dt>
+            <dd style="margin: 0"><span style="{{u.phOnTrack}}">[COMPANY NAME]</span> Private Limited</dd>
+            <dt style="color: {{t.ink2}}; font-size: 17px; padding-top: 2px">Company number</dt>
+            <dd style="margin: 0">CIN <span style="{{u.phOnTrack}}">[CIN]</span> · <a href="#mca" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Check it on the MCA register</a></dd>
+            <dt style="color: {{t.ink2}}; font-size: 17px; padding-top: 2px">Registered office</dt>
+            <dd style="margin: 0"><span style="{{u.phOnTrack}}">[REGISTERED ADDRESS]</span>, Gurugram, Haryana <span style="{{u.phOnTrack}}">[PIN]</span></dd>
+            <dt style="color: {{t.ink2}}; font-size: 17px; padding-top: 2px">GST</dt>
+            <dd style="margin: 0">GSTIN <span style="{{u.phOnTrack}}">[GSTIN]</span></dd>
+            <dt style="color: {{t.ink2}}; font-size: 17px; padding-top: 2px">Founder and director</dt>
+            <dd style="margin: 0"><span style="{{u.phOnTrack}}">[FOUNDER NAME]</span></dd>
+            <dt style="color: {{t.ink2}}; font-size: 17px; padding-top: 2px">Team</dt>
+            <dd style="margin: 0"><span style="{{u.phOnTrack}}">[TEAM SIZE]</span> people, working from Gurugram</dd>
+            <dt style="color: {{t.ink2}}; font-size: 17px; padding-top: 2px">Who funds us</dt>
+            <dd style="margin: 0"><span style="{{u.phOnTrack}}">[FUNDING: the founder, or investor names]</span>. No developer owns any part of Plinth, and none ever will.</dd>
+            <dt style="color: {{t.ink2}}; font-size: 17px; padding-top: 2px">Who signs off a method change</dt>
+            <dd style="margin: 0">A committee of three: <span style="{{u.phOnTrack}}">[FOUNDER NAME]</span>, <span style="{{u.phOnTrack}}">[METHODOLOGY LEAD]</span> and one external member, <span style="{{u.phOnTrack}}">[EXTERNAL MEMBER]</span></dd>
+            <dt style="color: {{t.ink2}}; font-size: 17px; padding-top: 2px">HARERA agent number</dt>
+            <dd style="margin: 0">None yet. We don’t broker any sale. We register before our resale desk opens in R2.</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="right" aria-labelledby="right-h" style="background: {{t.bg}}; padding: 152px 0 160px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="right-h" class="rv" style="{{u.h2}}; max-width: 12ch">Were we right?</h2>
+          <div class="rv rv1" style="flex: 0 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+            <p style="{{u.lead}}">We scored 212 past Gurugram projects as they looked two years before their RERA date. Then we checked when each one really got its OC.</p>
+            <span style="align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 4px 14px; border-radius: 999px; box-sizing: border-box; background: {{t.claimBg}}; font-size: 15px; font-weight: 600; line-height: 1.35"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"></circle><path d="M8 7.2v4M8 4.8v.01" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Illustrative numbers. They show the method; the published table replaces them.</span>
+          </div>
+        </div>
+
+        <div class="rv rv1" style="overflow-x: auto">
+          <table style="width: 100%; min-width: 980px; border-collapse: collapse; font-size: 17px; line-height: 1.4">
+            <caption class="sr">Backtest of 212 past Gurugram projects: for each band, the range we said and how many projects got their OC more than 12 months late. Illustrative numbers.</caption>
+            <thead>
+              <tr style="text-align: left; color: {{t.ink2}}; font-size: 15px">
+                <th scope="col" style="padding: 0 16px 14px 0; font-weight: 600; width: 168px">Band</th>
+                <th scope="col" style="padding: 0 24px 14px 0; font-weight: 600">
+                  <span style="display: block">What we said, and what happened</span>
+                  <span aria-hidden="true" style="display: flex; justify-content: space-between; font-weight: 500; font-size: 13px; padding-top: 2px"><span>0</span><span>50</span><span>100 of 100</span></span>
+                </th>
+                <th scope="col" style="padding: 0 16px 14px 0; font-weight: 600; width: 104px">We said</th>
+                <th scope="col" style="padding: 0 16px 14px 0; font-weight: 600; width: 88px; text-align: right">Projects</th>
+                <th scope="col" style="padding: 0 16px 14px 0; font-weight: 600; width: 112px; text-align: right">OC 12+ months late</th>
+                <th scope="col" style="padding: 0 16px 14px 0; font-weight: 600; width: 84px; text-align: right">Per 100</th>
+                <th scope="col" style="padding: 0 0 14px 0; font-weight: 600; width: 160px">Inside our range?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{calRows}}" as="cr" hint-placeholder-count="5">
+                <tr style="{{cr.rowStyle}}">
+                  <th scope="row" style="padding: 10px 16px 10px 0; text-align: left; font-weight: 600">
+                    <button type="button" class="press" onClick="{{cr.pick}}" aria-pressed="{{cr.on}}" aria-label="{{cr.aria}}" style="{{cr.btn}}">
+                      <span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{cr.meter}}" as="cm" hint-placeholder-count="5"><span style="{{cm.style}}"></span></sc-for></span>
+                      <span>{{cr.n}}</span>
+                    </button>
+                  </th>
+                  <td style="padding: 10px 24px 10px 0">
+                    <div role="img" aria-label="{{cr.plotLabel}}" style="position: relative; height: 28px">
+                      <span style="position: absolute; left: 0; right: 0; top: 10px; height: 8px; border-radius: 4px; background: {{t.track}}"></span>
+                      <span style="{{cr.rangeStyle}}"></span>
+                      <span class="slide" style="{{cr.dotWrap}}"><span style="{{cr.dot}}"></span></span>
+                    </div>
+                  </td>
+                  <td style="padding: 10px 16px 10px 0">{{cr.said}}</td>
+                  <td style="padding: 10px 16px 10px 0; text-align: right">{{cr.projects}}</td>
+                  <td style="padding: 10px 16px 10px 0; text-align: right">{{cr.late}}</td>
+                  <td style="padding: 10px 16px 10px 0; text-align: right; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.02em">{{cr.per}}</td>
+                  <td style="padding: 10px 0">{{cr.verdict}}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+            <tfoot>
+              <tr style="border-top: 2px solid {{t.ink}}">
+                <th scope="row" style="padding: 14px 16px 0 0; text-align: left; font-weight: 700">All bands</th>
+                <td style="padding: 14px 24px 0 0; font-size: 15px; color: {{t.ink2}}">The Gurugram base rate. Use it to read any band.</td>
+                <td style="padding: 14px 16px 0 0">—</td>
+                <td style="padding: 14px 16px 0 0; text-align: right; font-weight: 700">212</td>
+                <td style="padding: 14px 16px 0 0; text-align: right; font-weight: 700">76</td>
+                <td style="padding: 14px 16px 0 0; text-align: right; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.02em">36</td>
+                <td style="padding: 14px 0 0">—</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 48px 80px; align-items: center">
+          <div role="img" aria-label="{{detailLabel}}" style="flex: none; display: grid; grid-template-columns: repeat(13, 26px); gap: 8px">
+            <sc-for list="{{detailCells}}" as="dc" hint-placeholder-count="52"><span style="{{dc.base}}"><span style="{{dc.fill}}"></span></span></sc-for>
+          </div>
+          <div aria-live="polite" style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+            <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 6vw, 88px); line-height: 0.9; letter-spacing: -0.045em; color: {{dInk}}">{{dBand}}</p>
+            <p style="margin: 0; max-width: 34ch; font-size: 24px; line-height: 1.38">We said between <strong>{{dLo}} and {{dHi}} of 100</strong>. Of {{dN}} projects, {{dLate}} got their OC more than 12 months late: <strong>{{dPer}} of 100</strong>.</p>
+            <p style="margin: 0; max-width: 52ch; font-size: 19px; line-height: 1.5">{{dVerdict}}</p>
+            <div aria-hidden="true" style="display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 15px; line-height: 1.4; color: {{t.ink2}}">
+              <span style="display: inline-flex; align-items: center; gap: 8px"><span style="{{swFill}}"></span>One project, OC more than 12 months late</span>
+              <span style="display: inline-flex; align-items: center; gap: 8px"><span style="{{swEmpty}}"></span>One project, OC within 12 months</span>
+            </div>
+            <button type="button" class="press" onClick="{{togBrier}}" aria-expanded="{{xBrier}}" aria-controls="brier-more" style="{{u.disclose}}">How we score the whole table<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="{{chevBrier}}"><path d="M5 7l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <sc-if value="{{xBrier}}" hint-placeholder-val="{{false}}">
+              <p id="brier-more" style="margin: 0; max-width: 56ch; font-size: 17px; line-height: 1.55">With a Brier score: 0.19 on these 212 projects. Lower is better. Saying “36 of 100” for every project would score 0.23. Projects marked Limited history or Not scored at the time are not in this table.</p>
+            </sc-if>
+          </div>
+        </div>
+
+        <div class="rv" style="border-radius: 8px; background: {{t.track}}; padding: 40px 40px 36px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 32px 64px; align-items: flex-start">
+          <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+            <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.05; letter-spacing: -0.03em">Our own record starts now.</h3>
+            <p style="margin: 0; font-size: 19px; line-height: 1.55">The table above is hindsight. We built the method on these projects, so it should fit them. The real test is a band published before the outcome.</p>
+            <p style="margin: 0; font-size: 19px; line-height: 1.55">Our first bands went public on 15 Jul 2026. We will publish how they turned out here, from Jul 2027, even when it is bad news.</p>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding-top: 6px">
+              <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 52px; display: inline-flex; align-items: center; gap: 10px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6.5a4 4 0 0 1 8 0c0 3 1.2 4 1.5 4.5h-11C2.8 10.5 4 9.5 4 6.5zM6.5 13a1.6 1.6 0 0 0 3 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>{{followLabel}}</button>
+              <span role="status" style="font-size: 15px; color: {{t.ink2}}">{{followNote}}</span>
+            </div>
+          </div>
+          <ol aria-label="Our forward record" style="flex: 1 1 440px; min-width: 0; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px">
+            <sc-for list="{{fwd}}" as="fw" hint-placeholder-count="4">
+              <li style="display: flex; gap: 18px; align-items: stretch">
+                <span aria-hidden="true" style="flex: none; width: 18px; display: flex; flex-direction: column; align-items: center">
+                  <span style="{{fw.mark}}"></span>
+                  <span style="{{fw.stem}}"></span>
+                </span>
+                <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-bottom: 18px">
+                  <span style="font-size: 15px; color: {{t.ink2}}">{{fw.when}}</span>
+                  <span style="{{fw.titleStyle}}">{{fw.title}}</span>
+                  <span style="font-size: 17px; line-height: 1.5">{{fw.text}}</span>
+                </span>
+              </li>
+            </sc-for>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="money" aria-labelledby="money-h" style="background: {{t.track}}; overflow: hidden">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch">
+        <figure class="rv" style="flex: 1 1 400px; min-width: 0; margin: 0 0 0 -32px; position: relative; min-height: 720px; background: {{t.photo}}">
+          <img data-slot="salesGallery" src="/_blob/5fb6202e7c5c795906c6ae2cb14ac821" alt="Illustrative image: an empty property sales gallery with a scale model of two towers" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+          <figcaption style="position: absolute; left: 44px; bottom: 16px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · we are never part of the sale</figcaption>
+        </figure>
+        <div style="flex: 1 1 600px; min-width: 0; padding: 136px 0 136px clamp(0px, 5vw, 72px); box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="money-h" class="rv" style="{{u.h2}}">How do we make money?</h2>
+          <p class="rv rv1" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 38ch">We earn from services you choose to buy. From 2027, lenders pay us too, only if you take a loan through us.</p>
+          <div class="rv rv2" style="display: flex; flex-direction: column; gap: 36px; padding-top: 16px">
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <h3 style="margin: 0; font-size: 19px; font-weight: 700">Today</h3>
+              <dl style="margin: 0; display: flex; flex-direction: column; gap: 4px">
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px">
+                  <dt style="flex: 0 0 168px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em">₹999</dt>
+                  <dd style="flex: 1 1 280px; margin: 0; font-size: 19px; line-height: 1.5">Risk Report Pro for one project, paid by you. Bands, reasons and sources stay free. <a href="#pricing" class="lk" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 4px">What’s free and what’s Pro</a></dd>
+                </div>
+              </dl>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <h3 style="margin: 0; font-size: 19px; font-weight: 700">From R2, planned for 2027</h3>
+              <dl style="margin: 0; display: flex; flex-direction: column; gap: 14px">
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px">
+                  <dt style="flex: 0 0 168px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em">~0.35%</dt>
+                  <dd style="flex: 1 1 280px; margin: 0; font-size: 19px; line-height: 1.5">of a home loan, paid by the lender, only if you take the loan. Shown before you apply. From Jan–Mar 2027.</dd>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px">
+                  <dt style="flex: 0 0 168px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em">₹6,999</dt>
+                  <dd style="flex: 1 1 280px; margin: 0; font-size: 19px; line-height: 1.5">Verified Flat Check on a resale flat, paid by you. From Apr–Jun 2027.</dd>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px">
+                  <dt style="flex: 0 0 168px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em">1% + GST</dt>
+                  <dd style="flex: 1 1 280px; margin: 0; font-size: 19px; line-height: 1.5">on a resale through our desk, only when it is registered. From Apr–Jun 2027.</dd>
+                </div>
+              </dl>
+            </div>
+            <div style="border-radius: 8px; background: {{t.claimBg}}; padding: 24px 26px; display: flex; flex-direction: column; gap: 12px">
+              <h3 style="margin: 0; font-size: 19px; font-weight: 700">Never</h3>
+              <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+                <sc-for list="{{nevers}}" as="nv" hint-placeholder-count="4">
+                  <li style="display: flex; gap: 14px; align-items: flex-start; font-size: 19px; line-height: 1.5">
+                    <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none; margin-top: 3px"><circle cx="11" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7.8 7.8l6.4 6.4M14.2 7.8l-6.4 6.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+                    <span>{{nv}}</span>
+                  </li>
+                </sc-for>
+              </ul>
+            </div>
+            <p style="margin: 0; font-size: 17px; line-height: 1.55">Ranking, suggestions and AI answers never read any commercial data. We audit that every quarter; the next audit is due in Jan 2027.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stake" aria-labelledby="stake-h" style="background: {{t.bg}}; padding: 152px 0 144px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch; gap: 56px 72px">
+        <div style="flex: 1 1 680px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="stake-h" class="rv" style="{{u.h2}}; max-width: 13ch">Do we hold any stake?</h2>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 44ch">Anyone at Plinth with shares, bonds or a booked flat with a rated developer declares it here. They stay away from that developer’s scores.</p>
+          <div class="rv rv2" style="overflow-x: auto; padding-top: 12px">
+            <table style="width: 100%; min-width: 620px; border-collapse: collapse; font-size: 17px; line-height: 1.45">
+              <caption class="sr">Holdings declared by Plinth’s founder, staff, committee and investors in rated developers</caption>
+              <thead>
+                <tr style="text-align: left; color: {{t.ink2}}; font-size: 15px">
+                  <th scope="col" style="padding: 0 16px 12px 0; font-weight: 600">Who</th>
+                  <th scope="col" style="padding: 0 16px 12px 0; font-weight: 600">Role</th>
+                  <th scope="col" style="padding: 0 16px 12px 0; font-weight: 600">Holdings with a rated developer</th>
+                  <th scope="col" style="padding: 0 0 12px 0; font-weight: 600">Declared</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-top: 1px solid {{t.line}}">
+                  <th scope="row" style="padding: 14px 16px 14px 0; text-align: left; font-weight: 600"><span style="{{u.ph}}">[FOUNDER NAME]</span></th>
+                  <td style="padding: 14px 16px 14px 0">Founder and director</td>
+                  <td style="padding: 14px 16px 14px 0"><span style="{{u.ph}}">[DECLARATION]</span></td>
+                  <td style="padding: 14px 0"><span style="{{u.ph}}">[DATE]</span></td>
+                </tr>
+                <tr style="border-top: 1px solid {{t.line}}">
+                  <th scope="row" style="padding: 14px 16px 14px 0; text-align: left; font-weight: 600"><span style="{{u.ph}}">[METHODOLOGY LEAD]</span></th>
+                  <td style="padding: 14px 16px 14px 0">Methodology lead</td>
+                  <td style="padding: 14px 16px 14px 0"><span style="{{u.ph}}">[DECLARATION]</span></td>
+                  <td style="padding: 14px 0"><span style="{{u.ph}}">[DATE]</span></td>
+                </tr>
+                <tr style="border-top: 1px solid {{t.line}}">
+                  <th scope="row" style="padding: 14px 16px 14px 0; text-align: left; font-weight: 600"><span style="{{u.ph}}">[EXTERNAL MEMBER]</span></th>
+                  <td style="padding: 14px 16px 14px 0">External member, methodology committee</td>
+                  <td style="padding: 14px 16px 14px 0"><span style="{{u.ph}}">[DECLARATION]</span></td>
+                  <td style="padding: 14px 0"><span style="{{u.ph}}">[DATE]</span></td>
+                </tr>
+                <tr style="border-top: 1px solid {{t.line}}">
+                  <th scope="row" style="padding: 14px 16px 14px 0; text-align: left; font-weight: 600">Everyone else at Plinth</th>
+                  <td style="padding: 14px 16px 14px 0"><span style="{{u.ph}}">[N]</span> staff</td>
+                  <td style="padding: 14px 16px 14px 0"><span style="{{u.ph}}">[DECLARATION]</span></td>
+                  <td style="padding: 14px 0"><span style="{{u.ph}}">[DATE]</span></td>
+                </tr>
+                <tr style="border-top: 1px solid {{t.line}}">
+                  <th scope="row" style="padding: 14px 16px 14px 0; text-align: left; font-weight: 600">Investors</th>
+                  <td style="padding: 14px 16px 14px 0"><span style="{{u.ph}}">[INVESTORS, or none]</span></td>
+                  <td style="padding: 14px 16px 14px 0"><span style="{{u.ph}}">[DECLARATION]</span></td>
+                  <td style="padding: 14px 0"><span style="{{u.ph}}">[DATE]</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin: 0; max-width: 60ch; font-size: 17px; line-height: 1.55">Declarations are renewed every quarter and whenever something changes. People who sell Pro can’t see a band before it is published.</p>
+        </div>
+        <figure class="rv rv1" style="flex: 1 1 340px; min-width: 0; margin: 0; position: relative; min-height: 560px; background: {{t.photo}}">
+          <img data-slot="deedKeys" src="/_blob/6ca2bc5de9dc542dc12c4d95e30a6af3" alt="Illustrative image: apartment keys resting on a signed agreement, the kind of stake staff must declare" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+          <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · a booked flat counts as a stake</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="answer" aria-labelledby="answer-h" style="background: {{t.track}}; padding: 144px 0 152px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="answer-h" class="rv" style="{{u.h2}}; max-width: 14ch">How fast do we answer?</h2>
+          <p class="rv rv1" style="{{u.lead}}; flex: 0 1 520px; min-width: 0">Our own deadlines, and how we did in the 90 days to 18 Oct 2026. Every case sits in a public log.</p>
+        </div>
+
+        <div class="rv rv1" style="overflow-x: auto">
+          <table style="width: 100%; min-width: 1000px; border-collapse: collapse; font-size: 17px; line-height: 1.45">
+            <caption class="sr">Response-time board: our promise for each kind of request and our results over the last 90 days</caption>
+            <thead>
+              <tr style="text-align: left; color: {{t.ink2}}; font-size: 15px">
+                <th scope="col" style="padding: 0 16px 12px 0; font-weight: 600">What you send</th>
+                <th scope="col" style="padding: 0 16px 12px 0; font-weight: 600">Our promise</th>
+                <th scope="col" style="padding: 0 16px 12px 0; font-weight: 600; width: 260px">Typical time, against the promise</th>
+                <th scope="col" style="padding: 0 16px 12px 0; font-weight: 600; width: 100px; text-align: right">On time</th>
+                <th scope="col" style="padding: 0 16px 12px 0; font-weight: 600; width: 80px; text-align: right">Open</th>
+                <th scope="col" style="padding: 0 0 12px 0; font-weight: 600; width: 128px"><span class="sr">Cases</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{slaRows}}" as="sl" hint-placeholder-count="5">
+                <tr style="border-top: 1px solid {{t.lineOnTrack}}; vertical-align: top">
+                  <th scope="row" style="padding: 18px 16px 18px 0; text-align: left; font-weight: 400">
+                    <span style="display: block; font-weight: 700">{{sl.what}}</span>
+                    <span style="display: block; font-size: 15px; color: {{t.ink2}}">{{sl.who}}</span>
+                  </th>
+                  <td style="padding: 18px 16px 18px 0">{{sl.promise}}</td>
+                  <td style="padding: 18px 16px 18px 0">
+                    <span style="display: block; font-weight: 600">{{sl.median}}</span>
+                    <span aria-hidden="true" style="position: relative; display: block; height: 8px; margin-top: 8px; border-radius: 4px; background: {{t.panelSolid}}; overflow: hidden"><span style="{{sl.bar}}"></span></span>
+                    <span style="display: block; font-size: 14px; color: {{t.ink2}}; padding-top: 4px">{{sl.limitText}}</span>
+                  </td>
+                  <td style="padding: 18px 16px 18px 0; text-align: right; font-weight: 600">{{sl.onTime}}</td>
+                  <td style="padding: 18px 16px 18px 0; text-align: right">{{sl.open}}</td>
+                  <td style="padding: 10px 0 10px 0">
+                    <button type="button" class="press" onClick="{{sl.toggle}}" aria-expanded="{{sl.on}}" style="min-height: 44px; display: inline-flex; align-items: center; gap: 6px; padding: 0 16px; border: 0; border-radius: 999px; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap">{{sl.btn}}<svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true" style="{{sl.chev}}"><path d="M5 7l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+                  </td>
+                </tr>
+                <sc-if value="{{sl.on}}" hint-placeholder-val="{{false}}">
+                  <tr>
+                    <td colspan="6" style="padding: 0 0 22px">
+                      <ul style="margin: 0; padding: 18px 22px; list-style: none; border-radius: 8px; background: {{t.panelSolid}}; display: flex; flex-direction: column; gap: 8px; font-size: 17px; line-height: 1.5">
+                        <sc-for list="{{sl.cases}}" as="cs" hint-placeholder-count="3"><li>{{cs}}</li></sc-for>
+                      </ul>
+                    </td>
+                  </tr>
+                </sc-if>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="rv rv2" style="display: flex; flex-wrap: wrap; gap: 40px 72px; align-items: flex-start; padding-top: 16px">
+          <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">Who do I complain to?</h3>
+            <p style="margin: 0; font-size: 19px; line-height: 1.55">Our Grievance Officer, <span style="{{u.phOnTrack}}">[NAME]</span>. Write to <span style="{{u.phOnTrack}}">[GRIEVANCE EMAIL]</span> or call <span style="{{u.phOnTrack}}">[PHONE]</span>, in English or Hindi.</p>
+            <p style="margin: 0; font-size: 19px; line-height: 1.55">We acknowledge within 24 hours and resolve within 7 days. Unhappy with a privacy answer? You can go to the Data Protection Board of India.</p>
+            <a href="#grievance-form" class="press" style="align-self: flex-start; display: inline-flex; align-items: center; height: 52px; padding: 0 24px; margin-top: 6px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; text-decoration: none; font-size: 17px; font-weight: 600; box-sizing: border-box">Raise a grievance</a>
+          </div>
+          <dl style="flex: 1 1 420px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 22px">
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <dt style="font-size: 17px; color: {{t.ink2}}">Insurance</dt>
+              <dd style="margin: 0; font-size: 19px; line-height: 1.5">Media-liability and cyber insurance with <span style="{{u.phOnTrack}}">[INSURER]</span>, policy <span style="{{u.phOnTrack}}">[POLICY NUMBER]</span>, valid to <span style="{{u.phOnTrack}}">[DATE]</span>.</dd>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <dt style="font-size: 17px; color: {{t.ink2}}">Legal notices</dt>
+              <dd style="margin: 0; font-size: 19px; line-height: 1.5"><span style="{{u.phOnTrack}}">[LEGAL EMAIL]</span>, or by post to our registered office.</dd>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <dt style="font-size: 17px; color: {{t.ink2}}">If a developer disagrees</dt>
+              <dd style="margin: 0; font-size: 19px; line-height: 1.5">Their reply sits next to the score, and every dispute goes in the <a href="#log" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">public dispute log</a>.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="scope" aria-labelledby="scope-h" style="background: {{t.bg}}">
+      <div style="position: relative; min-height: 560px; overflow: hidden; display: flex; align-items: flex-end; background: #1B2A24">
+        <img data-slot="corridorAerial" class="drift" src="/_blob/4ccf6477a2c2bc3db2be04d5a579e1e0" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 60% 40%">
+        <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,14,12,0) 30%, rgba(8,14,12,0.78) 100%)"></div>
+        <span style="position: absolute; top: 20px; right: 32px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · Dwarka Expressway</span>
+        <div style="position: relative; width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 32px 56px; box-sizing: border-box; color: #FFFFFF; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 64px">
+          <h2 id="scope-h" class="rv" style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(44px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">What do we cover today?</h2>
+          <p class="rv rv1" style="margin: 0; flex: 0 1 460px; min-width: 0; font-size: 22px; line-height: 1.45">Gurugram only, and under-construction homes only. This is our first release, R1. Here is what comes next, and when.</p>
+        </div>
+      </div>
+      <div style="max-width: 1264px; margin: 0 auto; padding: 96px 32px 152px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 56px 88px; align-items: flex-start">
+        <div class="rv" style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+          <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">Today, in R1</h3>
+          <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px">
+            <sc-for list="{{today}}" as="td" hint-placeholder-count="7">
+              <li style="display: flex; gap: 14px; align-items: flex-start; font-size: 19px; line-height: 1.5">
+                <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M5 11.5l4 4L17 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span>{{td}}</span>
+              </li>
+            </sc-for>
+          </ul>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+          <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">Not yet, and when</h3>
+          <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px">
+            <sc-for list="{{later}}" as="lt" hint-placeholder-count="6">
+              <li style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; padding: 14px 0">
+                <span style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column">
+                  <span style="font-size: 19px; font-weight: 700; line-height: 1.4">{{lt.what}}</span>
+                  <span style="font-size: 17px; line-height: 1.5">{{lt.when}}</span>
+                  <span style="font-size: 15px; line-height: 1.5; color: {{t.ink2}}">{{lt.note}}</span>
+                </span>
+                <button type="button" class="press" onClick="{{lt.toggle}}" aria-pressed="{{lt.on}}" aria-label="{{lt.aria}}" style="{{lt.btn}}">{{lt.label}}</button>
+              </li>
+            </sc-for>
+          </ul>
+          <p style="margin: 0; font-size: 17px; line-height: 1.55">A partner we don’t have yet never appears on Plinth as if we did. Dates are plans, and we change them here first.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">This page stands on our company filings, our public dispute log and a backtest of 212 past Gurugram projects. Our bands are our opinion, based on public records. Not a credit rating. Not issued by any RERA.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report an error</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#pricing" class="lk" style="color: {{t.onSlab}}">Free and Pro</a>
+          <a href="#method" class="lk" style="color: {{t.onSlab}}">Methodology v1.2</a>
+          <a href="#log" class="lk" style="color: {{t.onSlab}}">Dispute log</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.onSlab2}}"></span>HARERA synced 2 hours ago · 17,938 orders read · next QPR due 15 Jan 2027</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"band":{"editor":"enum","options":["Low","Moderate","Elevated","High","Severe"],"default":"Elevated"},"$preview":{"width":1280,"height":10000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {themePick: null, following: false, band: '', picks: 0, sla: -1, notify: {}, xBrier: false};
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var BG = "'Bricolage Grotesque', system-ui, sans-serif";
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineOnTrack: 'rgba(255,255,255,0.14)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F',
+      emptyCell: 'rgba(255,255,255,0.06)', emptyBorder: '#7D828A', segEmpty: 'transparent',
+      panelSolid: '#16221D', claimBg: '#1D2621', phBg: 'rgba(110,231,183,0.14)',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', photo: '#E7E3DA',
+      line: '#E7E3DA', lineOnTrack: '#DDD8CD', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF',
+      emptyCell: '#EEEBE4', emptyBorder: '#8C9199', segEmpty: '#FFFFFF',
+      panelSolid: '#FFFFFF', claimBg: '#F1ECE2', phBg: '#E9F1EC',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var phBase = 'display:inline;padding:1px 8px;border-radius:4px;font-weight:600;-webkit-box-decoration-break:clone;box-decoration-break:clone;';
+    var U = {
+      h2: 'margin:0;font-family:' + BG + ';font-weight:800;font-size:clamp(44px, 5vw, 64px);line-height:1;letter-spacing:-0.035em',
+      lead: 'margin:0;font-size:22px;line-height:1.45',
+      disclose: 'align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-size:17px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:5px',
+      // Founder-supplied facts are never invented: they show as marked placeholders.
+      ph: phBase + 'background:' + T.phBg + ';color:' + T.ink,
+      phOnTrack: phBase + 'background:' + (night ? 'rgba(110,231,183,0.16)' : '#FFFFFF') + ';color:' + T.ink
+    };
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', fillN: '#15323A'},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', fillN: '#332B0C'},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillN: '#3A2210'},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', fillN: '#3D1A19'},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', fillN: '#341A33'}
+    };
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function fill(n) { return night ? B[n].fillN : B[n].fill; }
+    function textInk(n) { return night ? B[n].dark : (B[n].i <= 2 ? T.ink : B[n].light); }
+    function meter(n) {
+      return [1, 2, 3, 4, 5].map(function (j) {
+        return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= B[n].i ? 'background:' + ink(n) + ';' : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder + ';')};
+      });
+    }
+    function chev(open) { return 'flex:none;transition:transform .2s ease;transform:rotate(' + (open ? 180 : 0) + 'deg)'; }
+
+    // Signature: the calibration table. Illustrative counts for the 212-project backtest (labelled on the page).
+    var CAL = [
+      {n: 'Low', lo: 5, hi: 15, projects: 46, late: 4},
+      {n: 'Moderate', lo: 15, hi: 30, projects: 61, late: 19},
+      {n: 'Elevated', lo: 30, hi: 45, projects: 52, late: 20},
+      {n: 'High', lo: 45, hi: 65, projects: 34, late: 19},
+      {n: 'Severe', lo: 65, hi: 80, projects: 19, late: 14}
+    ];
+    var picked = '';
+    CAL.forEach(function (c) { if (c.n === s.band) picked = c.n; });
+    if (!picked) picked = B[this.props.band] ? this.props.band : 'Elevated';
+    function per(c) { return Math.round(c.late / c.projects * 100); }
+    function verdictShort(c) { var p = per(c); return p < c.lo ? 'Below: fewer were late' : (p > c.hi ? 'Above: more were late' : 'Yes'); }
+    var calRows = CAL.map(function (c) {
+      var on = c.n === picked, p = per(c);
+      return {
+        n: c.n, said: c.lo + '–' + c.hi, projects: c.projects, late: c.late, per: p, verdict: verdictShort(c),
+        on: on ? 'true' : 'false', meter: meter(c.n),
+        aria: 'Show the ' + c.projects + ' ' + c.n + ' projects',
+        pick: function () { self.setState({band: c.n, picks: (self.state.picks || 0) + 1}); },
+        plotLabel: c.n + ': we said ' + c.lo + ' to ' + c.hi + ' of 100; it was ' + p + ' of 100',
+        rowStyle: 'border-top:1px solid ' + T.line + ';background:' + (on ? T.track : 'transparent') + ';transition:background-color 220ms ease',
+        btn: 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 12px;border:0;border-radius:999px;box-sizing:border-box;cursor:pointer;font:inherit;font-size:16px;font-weight:600;white-space:nowrap;color:' + (on ? textInk(c.n) : T.ink) + ';background:' + fill(c.n),
+        rangeStyle: 'position:absolute;top:6px;height:16px;border-radius:3px;box-sizing:border-box;left:' + c.lo + '%;width:' + (c.hi - c.lo) + '%;background:repeating-linear-gradient(45deg,' + ink(c.n) + ' 0 2px,' + fill(c.n) + ' 2px 6px);border:1.5px solid ' + ink(c.n),
+        // Transform-only motion: a full-width wrapper is translated by the actual share, so the dot lands on it.
+        dotWrap: '--x:' + p + '%;position:absolute;left:0;top:0;width:100%;height:28px;transform:translateX(' + p + '%);pointer-events:none',
+        dot: 'position:absolute;left:-9px;top:5px;width:18px;height:18px;border-radius:50%;box-sizing:border-box;background:' + T.ink + ';border:3px solid ' + (on ? T.track : T.bg)
+      };
+    });
+    var cur = CAL.filter(function (c) { return c.n === picked; })[0];
+    var curPer = per(cur);
+    var anim = (s.picks || 0) % 2 ? 'plFillA' : 'plFillB';
+    var detailCells = [];
+    for (var k = 0; k < cur.projects; k++) {
+      var isLate = k < cur.late;
+      detailCells.push({
+        base: 'position:relative;display:block;width:26px;height:26px;border-radius:50%;box-sizing:border-box;background:' + T.emptyCell + ';border:1px solid ' + T.emptyBorder,
+        fill: isLate ? 'position:absolute;inset:-1px;border-radius:50%;background:' + ink(picked) + ';animation:' + anim + ' 420ms cubic-bezier(.22,1,.36,1) ' + (k * 22) + 'ms both' : 'display:none'
+      });
+    }
+    var vLong = curPer < cur.lo ? 'Below our range: fewer were late than we said. We note it, and the next refit may lower this band’s range.'
+      : (curPer > cur.hi ? 'Just above our range: more were late than we said. We publish the miss, and the next refit widens or moves this band’s range.'
+      : 'Inside our range. A range can still be wrong for one project; it describes how often projects like it were late.');
+    var sw0 = 'flex:none;display:inline-block;width:14px;height:14px;border-radius:50%;box-sizing:border-box;';
+
+    var fwdDefs = [
+      {when: '15 Jul 2026', title: 'Our first public bands', text: 'Method v1.0. Every band since then is stored, with its date and version.', st: 'done'},
+      {when: 'Today, 18 Oct 2026', title: '268 phases scored, none due for a check yet', text: 'A band is checked when the OC arrives, or 12 months after the original date.', st: 'now'},
+      {when: 'Jul 2027', title: 'First check of our live bands', text: 'Published here in full, with the misses.', st: 'next'},
+      {when: 'Then every quarter', title: 'An updated table', text: 'Same columns as above, real counts only.', st: 'next'}
+    ];
+    var fwd = fwdDefs.map(function (f, i) {
+      var markBg = f.st === 'done' ? T.ink : (f.st === 'now' ? T.accent : 'transparent');
+      var markBorder = f.st === 'next' ? '2px solid ' + T.ink2 : '2px solid ' + (f.st === 'now' ? T.accent : T.ink);
+      return {
+        when: f.when, title: f.title, text: f.text,
+        mark: 'display:block;flex:none;width:14px;height:14px;margin-top:6px;border-radius:50%;box-sizing:border-box;background:' + markBg + ';border:' + markBorder,
+        stem: i < fwdDefs.length - 1 ? 'display:block;flex:1;width:2px;margin-top:4px;background:' + (f.st === 'done' ? T.ink : T.lineStrong) : 'display:none',
+        titleStyle: 'font-size:19px;font-weight:700;line-height:1.4;color:' + T.ink
+      };
+    });
+
+    var SLA = [
+      {what: 'Report an error', who: 'Anyone, from any page', promise: 'Acknowledge in 48 hours. Decide in 15 working days.', median: '6 working days', m: 6, lim: 15, limitText: 'Promise: 15 working days', onTime: '22 of 23', open: '2',
+        cases: ['E-0431 · 9 Oct 2026 · Kestrel Park unit count · fixed in 3 working days', 'E-0412 · 2 Sep 2026 · decided in 17 working days, 2 days late. The order was a poor scan and needed a second reader.', 'E-0398 · 21 Aug 2026 · Coral Towers extension date · not upheld, order linked']},
+      {what: 'Dispute a fact', who: 'Developers, in the Evidence & Reply portal', promise: 'Acknowledge in 48 hours. Decide in 15 working days.', median: '11 working days', m: 11, lim: 15, limitText: 'Promise: 15 working days', onTime: '8 of 8', open: '1',
+        cases: ['D-127 · 10 Oct 2026 · complaint count, Aurelia Heights, Phase 2 · under review, due 30 Oct 2026', 'D-118 · 14 Aug 2026 · Apr–Jun 2026 QPR marked late · upheld in 14 working days', 'D-104 · 26 Feb 2026 · Oct–Dec 2025 QPR marked late · not upheld in 11 working days']},
+      {what: 'Clerical fix', who: 'Developers', promise: 'Fix in 2 working days.', median: '1 working day', m: 1, lim: 2, limitText: 'Promise: 2 working days', onTime: '14 of 14', open: '0',
+        cases: ['CL-201 · 6 Oct 2026 · Tower A shown with 21 floors · fixed 7 Oct 2026, our error', 'CL-196 · 22 Sep 2026 · developer office address · fixed the same day']},
+      {what: 'Grievance', who: 'Anyone', promise: 'Acknowledge in 24 hours. Resolve in 7 days.', median: '3 days', m: 3, lim: 7, limitText: 'Promise: 7 days', onTime: '6 of 6', open: '0',
+        cases: ['G-0019 · 11 Oct 2026 · a WhatsApp alert arrived during quiet hours · resolved in 2 days', 'G-0016 · 19 Sep 2026 · asked who saw a shared number · resolved in 4 days']},
+      {what: 'Your data', who: 'Anyone with an account', promise: 'A copy at once. Erasure within 30 days.', median: '12 days to erase', m: 12, lim: 30, limitText: 'Promise: 30 days', onTime: '11 of 11', open: '1',
+        cases: ['Copies of data: 37 asked for, each ready within a minute', 'Erasures: 11 completed, the slowest in 19 days']}
+    ];
+    var slaRows = SLA.map(function (x, i) {
+      var on = s.sla === i;
+      var frac = Math.max(0.04, Math.min(1, x.m / x.lim));
+      return {
+        what: x.what, who: x.who, promise: x.promise, median: x.median, limitText: x.limitText, onTime: x.onTime, open: x.open, cases: x.cases,
+        on: on, btn: on ? 'Hide cases' : 'Latest cases', chev: chev(on),
+        toggle: function () { self.setState({sla: self.state.sla === i ? -1 : i}); },
+        bar: 'position:absolute;left:0;top:0;bottom:0;width:100%;border-radius:4px;background:' + T.ink + ';transform-origin:left center;transform:scaleX(' + frac.toFixed(3) + ')'
+      };
+    });
+
+    var LATER = [
+      {k: 'gcer', what: 'Golf Course Extension Road', when: 'Planned for Dec 2026', note: 'Until then, search shows these projects as not covered yet.'},
+      {k: 'loans', what: 'Home-loan help', when: 'R2 · planned for Jan–Mar 2027', note: 'Until then, no lender pays us anything.'},
+      {k: 'resale', what: 'Resale flats, Verified Flat Check and transfer checks', when: 'R2 · planned for Apr–Jun 2027', note: 'Ready-to-move projects show their RERA records meanwhile.'},
+      {k: 'ios', what: 'The iPhone app', when: 'R2 · planned for Apr–Jun 2027', note: 'Until then, the website works on iPhone and can sit on your home screen.'},
+      {k: 'noida', what: 'Noida and Greater Noida West', when: 'R3 · planned for Jul–Sep 2027', note: 'Nothing outside Gurugram is rated yet.'},
+      {k: 'possession', what: 'Help at possession: OC, final demand, delay interest', when: 'R3 · planned for Jul–Sep 2027', note: 'Your follows and alerts keep running until then.'}
+    ];
+    var notify = s.notify || {};
+    var later = LATER.map(function (x) {
+      var on = !!notify[x.k];
+      return {
+        what: x.what, when: x.when, note: x.note, on: on ? 'true' : 'false',
+        label: on ? 'We’ll tell you' : 'Notify me', aria: (on ? 'Stop notifying me about ' : 'Notify me about ') + x.what,
+        toggle: function () { var n = Object.assign({}, self.state.notify || {}); n[x.k] = !n[x.k]; self.setState({notify: n}); },
+        btn: 'flex:none;min-height:44px;display:inline-flex;align-items:center;gap:8px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.bg : T.ink)
+      };
+    });
+
+    var following = !!s.following;
+    return {
+      t: T, u: U,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      toggleFollow: function () { self.setState({following: !self.state.following}); },
+      followingStr: following ? 'true' : 'false',
+      followShort: following ? 'Following our record' : 'Follow our record',
+      followLabel: following ? 'Following our record' : 'Tell me when it’s published',
+      followNote: following ? 'We’ll send one message when each table is published. Nothing else.' : 'One message per published table. No other mail.',
+      calRows: calRows,
+      detailCells: detailCells,
+      detailLabel: cur.n + ': ' + cur.projects + ' past projects, ' + cur.late + ' of them got their OC more than 12 months late. Illustrative numbers.',
+      dBand: cur.n, dInk: textInk(cur.n), dLo: cur.lo, dHi: cur.hi, dN: cur.projects, dLate: cur.late, dPer: curPer, dVerdict: vLong,
+      swFill: sw0 + 'background:' + ink(picked),
+      swEmpty: sw0 + 'background:' + T.emptyCell + ';border:1px solid ' + T.emptyBorder,
+      xBrier: !!s.xBrier, chevBrier: chev(!!s.xBrier),
+      togBrier: function () { self.setState({xBrier: !self.state.xBrier}); },
+      fwd: fwd,
+      nevers: [
+        'Anything from a developer: commission, leads, site visits, ads, placement, software or sponsorship.',
+        'A share of any broker’s commission. That would be developer money by another route.',
+        'Payment to change, hide, delay or preview a band.',
+        'Your number. It is never shared without your tap.'
+      ],
+      slaRows: slaRows,
+      today: [
+        'Gurugram, under-construction RERA projects on Dwarka Expressway and in New Gurugram.',
+        'A delivery risk band for every phase we cover, with its reasons and sources.',
+        'All-in cost checks, Claims vs records, Pay-as-built guard and Before you pay.',
+        'Site visits booked with a masked number, and a visit pass with questions to ask.',
+        'Alerts on the web, the Android app and WhatsApp.',
+        'Ask Plinth, our AI. It cites sources and hands you to a person.',
+        'Risk Report Pro, ₹999 for one project.'
+      ],
+      later: later
+    };
+  }
+}
+</script>
+</body>
+</html>

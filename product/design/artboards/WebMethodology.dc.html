@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How Delivery Risk works</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:pointer}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+@keyframes plPop { from { opacity: 0; transform: scale(.55); } to { opacity: 1; transform: none; } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+    .pop { animation: plPop linear both; animation-timeline: view(); animation-range: entry 10% cover 34%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 10500px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
+        <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
+        <a href="#top" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">How scores work</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; white-space: nowrap">{{followShort}}</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="top" aria-labelledby="hero-h" style="background: {{t.bg}}; padding: 48px 0 120px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch; gap: 48px 64px">
+        <div style="flex: 1 1 600px; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; padding-bottom: 8px">
+          <h1 id="hero-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 100px); line-height: 0.94; letter-spacing: -0.045em">How Delivery Risk works</h1>
+          <p class="rise rise1" style="margin: 0; max-width: 40ch; font-size: 22px; line-height: 1.45">One question for every RERA phase in Gurugram: will the OC arrive more than 12 months late? Here is exactly how we answer it.</p>
+          <div class="rise rise2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding-top: 4px">
+            <a href="#bands" class="press" style="height: 56px; display: inline-flex; align-items: center; padding: 0 28px; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font-size: 18px; font-weight: 600; text-decoration: none; white-space: nowrap">See the five bands</a>
+            <a href="#never" class="lk" style="font-size: 18px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">What we never do</a>
+          </div>
+          <p class="rise rise3" style="margin: 0; max-width: 60ch; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Methodology v1.2, published 14 Oct 2026. No developer pays us. Ever. Not a credit rating. Not issued by any RERA.</p>
+        </div>
+        <figure class="rise rise2" style="flex: 1 1 380px; min-width: 0; margin: 0; position: relative; min-height: 600px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="filingsStack" src="/_blob/f31937b65431d7097f6b6e30c0b0d403" alt="Illustrative image: a project's quarterly progress reports stacked on a desk, one per quarter, like the floors of a building" class="drift" style="position: absolute; inset: 0; background: {{t.photo}}; border-radius: 0; object-fit: cover; display: block">
+          <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · one report per quarter, the floors of the score</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="bands" aria-labelledby="bands-h" style="background: {{t.track}}; padding: 120px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="bands-h" class="rv" style="{{u.h2}}; max-width: 14ch">What does each band mean?</h2>
+          <div class="rv rv1" style="flex: 0 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+            <p style="{{u.lead}}">Each band is a pattern seen in similar past projects. Pick one to see it as 100 projects.</p>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Ranges are provisional until our first calibration backtest is published. <a href="#right" style="color: {{t.accent}}; text-decoration: underline; text-underline-offset: 3px">See how we will check ourselves</a>.</p>
+            <button type="button" class="press" onClick="{{togBands}}" aria-expanded="{{xBands}}" aria-controls="bands-more" style="{{u.disclose}}">What counts as similar<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="{{chevBands}}"><path d="M5 7l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <sc-if value="{{xBands}}" hint-placeholder-val="{{false}}">
+              <p id="bands-more" style="margin: 0; font-size: 17px">Gurugram RERA phases registered 2017–2021, of comparable size, by developers with a comparable number of finished projects.</p>
+            </sc-if>
+          </div>
+        </div>
+
+        <div role="group" aria-label="Pick a band" class="rv rv1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(176px, 100%), 1fr)); gap: 8px">
+          <sc-for list="{{bandCards}}" as="bc" hint-placeholder-count="5">
+            <button type="button" class="press" onClick="{{bc.pick}}" aria-pressed="{{bc.on}}" aria-label="{{bc.aria}}" style="{{bc.style}}">
+              <span style="{{bc.nameStyle}}">{{bc.name}}</span>
+              <span style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+                <span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{bc.meter}}" as="bm" hint-placeholder-count="5"><span style="{{bm.style}}"></span></sc-for></span>
+                <span style="font-size: 15px; font-weight: 600">{{bc.range}}</span>
+              </span>
+              <span aria-hidden="true" style="{{bc.bar}}"></span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 48px 80px; align-items: center">
+          <div role="img" aria-label="{{arrayLabel}}" style="flex: none; display: grid; grid-template-columns: repeat(10, 34px); gap: 8px">
+            <sc-for list="{{cells}}" as="c" hint-placeholder-count="100"><span class="pop" style="{{c.base}}"><span style="{{c.fill}}"></span><span style="{{c.hatch}}"></span></span></sc-for>
+          </div>
+          <div aria-live="polite" style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+            <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px">
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(64px, 7vw, 104px); line-height: 0.9; letter-spacing: -0.045em; color: {{bandText}}">{{bandName}}</span>
+              <svg viewBox="0 0 300 172" width="168" style="display: block; flex: none" role="img" aria-label="{{dialLabel}}">
+                <sc-for list="{{arcs}}" as="a" hint-placeholder-count="5">
+                  <path d="{{a.d}}" fill="none" stroke="{{a.color}}" stroke-width="{{a.w}}" opacity="{{a.op}}"></path>
+                </sc-for>
+                <g style="{{needleStyle}}">
+                  <line x1="150" y1="150" x2="150" y2="44" stroke="{{t.ink}}" stroke-width="5" stroke-linecap="round"></line>
+                </g>
+                <circle cx="150" cy="150" r="12" fill="{{t.ink}}"></circle>
+                <circle cx="150" cy="150" r="4.5" fill="{{t.track}}"></circle>
+              </svg>
+            </div>
+            <p style="margin: 0; max-width: 32ch; font-size: 24px; line-height: 1.38">Between <strong>{{lo}} and {{hi}} of 100</strong> similar Gurugram projects got their OC more than 12 months after the original RERA date. The rest got it within 12 months.</p>
+            <p style="margin: 0; max-width: 52ch; font-size: 19px; line-height: 1.5">“Within 12 months” still includes projects up to a year late. OC usually comes before keys, often by a few months.</p>
+            <p style="margin: 0; max-width: 52ch; font-size: 19px; line-height: 1.5">{{bandPattern}}</p>
+            <p style="margin: 0; font-size: 17px; line-height: 1.5">Example on Plinth: <a href="#example" class="lk" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 4px">{{exName}}</a></p>
+            <div aria-hidden="true" style="display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 15px; line-height: 1.4; color: {{t.ink2}}">
+              <span style="display: inline-flex; align-items: center; gap: 8px"><span style="{{swFill}}"></span>OC more than 12 months late</span>
+              <span style="display: inline-flex; align-items: center; gap: 8px"><span style="{{swHatch}}"></span>Uncertain range</span>
+              <span style="display: inline-flex; align-items: center; gap: 8px"><span style="{{swEmpty}}"></span>OC within 12 months</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="predict" aria-labelledby="predict-h" style="background: {{t.bg}}; overflow: hidden">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch">
+        <figure class="rv" style="flex: 1 1 400px; min-width: 0; margin: 0 0 0 -32px; position: relative; min-height: 640px; background: {{t.photo}}">
+          <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Illustrative image: Aurelia Heights, Phase 2, the example on this timeline" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+          <figcaption style="position: absolute; left: 44px; bottom: 16px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Aurelia Heights, Phase 2 · Illustrative image</figcaption>
+        </figure>
+        <div style="flex: 1 1 560px; min-width: 0; padding: 120px 0 120px clamp(0px, 5vw, 72px); box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="predict-h" class="rv" style="{{u.h2}}">What exactly do we predict?</h2>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 34ch">Whether a phase gets its OC more than 12 months after its original RERA date. We call this Late12.</p>
+          <button type="button" class="press" onClick="{{togPredict}}" aria-expanded="{{xPredict}}" aria-controls="predict-more" style="{{u.disclose}}">How we count extensions<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="{{chevPredict}}"><path d="M5 7l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <sc-if value="{{xPredict}}" hint-placeholder-val="{{false}}">
+            <p id="predict-more" style="margin: 0; max-width: 52ch; font-size: 17px">We add extensions given to every project, such as COVID and the 4-month MoHUA extension of Jul 2026. We don’t add extensions granted to one project. Those are part of the delay we predict.</p>
+          </sc-if>
+          <div class="rv rv2" style="border-radius: 8px; background: {{t.track}}; padding: 28px; display: flex; flex-direction: column; gap: 18px; box-sizing: border-box">
+            <p style="margin: 0; display: flex; align-items: baseline; gap: 6px 14px; flex-wrap: wrap; font-size: 19px">If Aurelia Heights, Phase 2 gets its OC in <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -0.025em">{{ocLabel}}</span></p>
+            <p aria-live="polite" style="margin: 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 17px; line-height: 1.45">
+              <span style="{{verdictPill}}">{{verdictShort}}</span>
+              <span style="flex: 1 1 260px; min-width: 0">{{verdictText}}</span>
+            </p>
+            <div role="img" aria-label="{{tlLabel}}" style="position: relative; height: 112px">
+              <span style="position: absolute; left: 54.76%; top: 0; transform: translateX(-50%); text-align: center; font-size: 13px; line-height: 1.3; color: {{t.ink2}}; white-space: nowrap"><span style="display: block; font-weight: 600">Today</span><span style="display: block">18 Oct 2026</span></span>
+              <span style="position: absolute; left: 71.43%; top: 0; transform: translateX(-50%); text-align: center; font-size: 13px; line-height: 1.3; color: {{t.ink2}}; white-space: nowrap"><span style="display: block; font-weight: 600">Original date</span><span style="display: block">Dec 2027</span></span>
+              <div style="position: absolute; left: 0; right: 0; top: 44px; height: 14px; border-radius: 7px; overflow: hidden; display: flex; background: {{t.bgSolid}}">
+                <span style="flex: 0 0 54.76%; background: {{t.lineStrong}}"></span>
+                <span style="flex: 0 0 16.67%"></span>
+                <span style="flex: 0 0 4.76%; background: {{hatchMuted}}"></span>
+                <span style="flex: 0 0 14.29%; background: {{windowFill}}"></span>
+                <span style="flex: 1 1 auto; background: {{t.ink2}}"></span>
+              </div>
+              <span style="position: absolute; left: 0; top: 38px; width: 2px; height: 26px; background: {{t.ink2}}"></span>
+              <span style="position: absolute; left: 54.76%; top: 38px; width: 2px; height: 26px; margin-left: -1px; background: {{t.ink2}}"></span>
+              <span style="position: absolute; left: 71.43%; top: 38px; width: 2px; height: 26px; margin-left: -1px; background: {{t.ink2}}"></span>
+              <span style="position: absolute; left: 76.19%; top: 38px; width: 2px; height: 26px; margin-left: -1px; background: {{t.ink2}}"></span>
+              <span style="position: absolute; left: 90.48%; top: 34px; width: 3px; height: 34px; margin-left: -1.5px; background: {{t.ink}}"></span>
+              <span style="{{ocMarker}}"></span>
+              <span style="position: absolute; left: 0; top: 72px; text-align: left; font-size: 13px; line-height: 1.3; color: {{t.ink2}}; white-space: nowrap"><span style="display: block; font-weight: 600">Registered</span><span style="display: block">Dec 2022</span></span>
+              <span style="position: absolute; left: 76.19%; top: 72px; transform: translateX(-50%); text-align: center; font-size: 13px; line-height: 1.3; color: {{t.ink2}}; white-space: nowrap"><span style="display: block; font-weight: 600">+4 months</span><span style="display: block">Apr 2028</span></span>
+              <span style="position: absolute; left: 90.48%; top: 72px; transform: translateX(-50%); text-align: center; font-size: 13px; line-height: 1.3; color: {{t.ink}}; white-space: nowrap"><span style="display: block; font-weight: 700">Late12 line</span><span style="display: block">Apr 2029</span></span>
+            </div>
+            <div aria-hidden="true" style="display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; line-height: 1.4; color: {{t.ink2}}">
+              <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 16px; height: 10px; border-radius: 3px; background: {{t.lineStrong}}"></span>Time used</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 16px; height: 10px; border-radius: 3px; background: {{hatchMuted}}"></span>Blanket extension</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 16px; height: 10px; border-radius: 3px; background: {{windowFill}}"></span>12 months allowed</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 16px; height: 10px; border-radius: 3px; background: {{t.ink2}}"></span>Late12</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <label for="oc-range" style="font-size: 15px">Drag to choose the month the OC arrives</label>
+              <input id="oc-range" type="range" min="0" max="24" step="1" value="{{oc}}" onChange="{{onOc}}" aria-valuetext="{{ocLabel}}">
+              <div aria-hidden="true" style="display: flex; justify-content: space-between; font-size: 14px; color: {{t.ink2}}"><span>Dec 2027</span><span>Dec 2028</span><span>Dec 2029</span></div>
+            </div>
+            <p style="margin: 0; font-size: 14px; color: {{t.ink2}}">RERA GGM/673/405/2022/117 · registered Dec 2022</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="factors" aria-labelledby="factors-h" style="background: {{t.track}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+        <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="factors-h" class="rv" style="{{u.h2}}; max-width: 12ch">What is in the score?</h2>
+          <p class="rv rv1" style="{{u.lead}}">Five groups of facts, with published weights. Tap a group to see what we read and where it comes from.</p>
+          <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">These are starting weights. We refit them after each backtest and publish the change.</p>
+          <button type="button" class="press" onClick="{{togFactors}}" aria-expanded="{{xFactors}}" aria-controls="factors-more" style="{{u.disclose}}">How the parts add up<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="{{chevFactors}}"><path d="M5 7l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <sc-if value="{{xFactors}}" hint-placeholder-val="{{false}}">
+            <p id="factors-more" style="margin: 0; font-size: 17px">Red-flag rules come first. Then an interpretable scorecard adds up the five groups. Each score lists up to 4 reasons, ranked by how much they moved it. No AI ever sets a score.</p>
+          </sc-if>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 32px">
+          <div role="group" aria-label="Factor groups and their weights" style="display: flex; gap: 4px; align-items: stretch">
+            <sc-for list="{{factorSegs}}" as="fs" hint-placeholder-count="5">
+              <button type="button" class="press" onClick="{{fs.pick}}" aria-pressed="{{fs.on}}" aria-label="{{fs.aria}}" style="{{fs.style}}">
+                <span style="{{fs.barStyle}}">{{fs.w}}%</span>
+                <span style="{{fs.labelStyle}}">{{fs.short}}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div aria-live="polite" style="min-height: 420px; display: flex; flex-direction: column; gap: 18px">
+            <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.15; letter-spacing: -0.025em">{{fName}}: {{fW}}% of the score</h3>
+            <p style="margin: 0; font-size: 17px; font-weight: 600">What we read</p>
+            <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+              <sc-for list="{{fLook}}" as="lk" hint-placeholder-count="3">
+                <li style="display: flex; gap: 14px; align-items: flex-start; font-size: 19px; line-height: 1.5"><span aria-hidden="true" style="flex: none; width: 7px; height: 7px; margin-top: 12px; border-radius: 50%; background: {{t.ink}}"></span><span>{{lk}}</span></li>
+              </sc-for>
+            </ul>
+            <div style="border-radius: 8px; background: {{t.panelSolid}}; padding: 22px 26px; display: flex; flex-direction: column; gap: 12px">
+              <p style="margin: 0; font-size: 19px; line-height: 1.5"><strong>{{fExLabel}}:</strong> {{fEx}}</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+                <sc-for list="{{fSrc}}" as="fsrc" hint-placeholder-count="2">
+                  <a href="#sources" class="press" style="{{u.chipOnPanel}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>{{fsrc}}</a>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flags" aria-labelledby="flags-h" style="background: {{t.bg}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="flags-h" class="rv" style="{{u.h2}}; max-width: 20ch">When does a rule override the model?</h2>
+          <div class="rv rv1" style="flex: 0 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+            <p style="{{u.lead}}">Four published rules. If any one applies, the band is Severe, with the order linked. The model can’t soften it.</p>
+            <a href="#rules" class="lk" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Read the rules in full</a>
+          </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 72px; align-items: stretch">
+          <div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+            <div role="radiogroup" aria-label="Red-flag rules" class="rv rv1" style="display: flex; flex-direction: column; gap: 4px">
+              <sc-for list="{{rules}}" as="ru" hint-placeholder-count="4">
+                <button type="button" role="radio" class="press" aria-checked="{{ru.on}}" onClick="{{ru.pick}}" style="{{ru.style}}">
+                  <span style="{{ru.badge}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 14.5V2M3.5 2.5h8l-1.8 3 1.8 3h-8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                  <span style="display: flex; flex-direction: column; min-width: 0">
+                    <span style="font-size: 19px; font-weight: 600; line-height: 1.4">{{ru.title}}</span>
+                    <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">Red-flag rule {{ru.n}}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+            <div aria-live="polite" style="border-radius: 8px; background: {{t.track}}; padding: 24px 26px; display: flex; flex-direction: column; gap: 12px">
+              <p style="margin: 0; font-size: 17px; font-weight: 600">What buyers see when rule {{ruleN}} applies</p>
+              <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+                <span style="{{severeChip}}"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 14.5V2M3.5 2.5h8l-1.8 3 1.8 3h-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{severeMeter}}" as="svm" hint-placeholder-count="5"><span style="{{svm.style}}"></span></sc-for></span>Severe</span>
+                <span style="font-size: 17px">Set by red-flag rule {{ruleN}}, not by the model</span>
+              </div>
+              <p style="margin: 0; font-size: 17px">{{ruleExample}}</p>
+              <a href="#source" class="press" style="{{u.chipOnTrack}}; align-self: flex-start"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>{{ruleSource}}</a>
+            </div>
+          </div>
+          <figure class="rv rv2" style="flex: 1 1 400px; min-width: 0; margin: 0; position: relative; min-height: 560px; background: {{t.photo}}">
+            <img data-slot="heroLaurel" src="/_blob/d710ca2aa38a585d11eca42df567bbf9" alt="Illustrative image: Laurel Residency, Sector 92, where red-flag rule 1 applies" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+            <figcaption style="position: absolute; left: 12px; bottom: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 6px"><span style="font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Laurel Residency, Sector 92: rule 1 since 12 Mar 2023 · Illustrative image</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="stall" aria-labelledby="stall-h" style="position: relative; overflow: hidden; background: #1B2A24">
+      <img data-slot="siteProgress" src="/_blob/186406c855932c1c91c0cfbd6c934296" alt="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+      <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,12,11,0.86) 0%, rgba(10,12,11,0.7) 46%, rgba(10,12,11,0.3) 100%)"></div>
+      <span style="position: absolute; top: 20px; right: 32px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · a tower under construction</span>
+      <div style="position: relative; max-width: 1264px; margin: 0 auto; padding: 136px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: center">
+        <div style="flex: 1 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 20px; color: #FFFFFF">
+          <h2 id="stall-h" class="rv" style="{{u.h2}}">What if a project stalls?</h2>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 36ch">We show a separate Stall flag next to the band. It is never averaged in, so good numbers elsewhere can’t hide it.</p>
+          <p class="rv rv2" style="margin: 0; max-width: 46ch; font-size: 17px; color: rgba(255,255,255,0.88)">Switch on a condition to see what buyers would see. This is a sample phase, not a real project.</p>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 460px; min-width: 0; border-radius: 8px; background: {{t.panelSolid}}; color: {{t.ink}}; padding: 28px; display: flex; flex-direction: column; gap: 18px; box-sizing: border-box">
+          <div aria-live="polite" style="display: flex; flex-direction: column; gap: 10px">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-height: 32px">
+              <span style="font-size: 17px; font-weight: 600">Sample phase</span>
+              <span style="{{stallChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{stallMeter}}" as="sm" hint-placeholder-count="5"><span style="{{sm.style}}"></span></sc-for></span>{{stallBand}}</span>
+              <sc-if value="{{stallOn}}" hint-placeholder-val="{{false}}">
+                <span style="display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 999px; background: {{t.ink}}; color: {{t.panelSolid}}; font-size: 15px; font-weight: 700; box-sizing: border-box"><svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M7 6.5v5M11 6.5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>Stall flag</span>
+              </sc-if>
+            </div>
+            <p style="margin: 0; font-size: 17px">{{stallNote}}</p>
+          </div>
+          <div role="group" aria-label="Stall conditions" style="display: flex; flex-direction: column; gap: 2px">
+            <sc-for list="{{stallRows}}" as="sr" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0">
+                <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+                  <span id="{{sr.id}}" style="font-size: 17px; font-weight: 600; line-height: 1.4">{{sr.title}}</span>
+                  <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{sr.effect}}</span>
+                </span>
+                <button type="button" role="switch" aria-checked="{{sr.on}}" aria-labelledby="{{sr.id}}" onClick="{{sr.toggle}}" style="flex: none; width: 60px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="{{sr.track}}"><span style="{{sr.knob}}"></span></span></button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="confidence" aria-labelledby="conf-h" style="background: {{t.bg}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; flex-direction: row-reverse; gap: 48px 72px; align-items: center">
+        <div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="conf-h" class="rv" style="{{u.h2}}">How sure are we?</h2>
+          <p class="rv rv1" style="{{u.lead}}">Every score carries a confidence label. When history is thin, we widen the range, or say we can’t score yet.</p>
+          <p class="rv rv2" style="margin: 0; max-width: 18ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.1; letter-spacing: -0.025em">Limited history is never a penalty.</p>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 600px; min-width: 0; border-radius: 8px; background: {{t.track}}; padding: 32px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box">
+          <div role="tablist" aria-label="Confidence states" style="align-self: flex-start; display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 26px; background: {{t.bgSolid}}">
+            <sc-for list="{{confTabs}}" as="ct" hint-placeholder-count="4">
+              <button type="button" role="tab" class="press" aria-selected="{{ct.on}}" aria-controls="conf-panel" onClick="{{ct.pick}}" style="{{ct.style}}">{{ct.name}}</button>
+            </sc-for>
+          </div>
+          <div id="conf-panel" role="tabpanel" aria-live="polite" style="min-height: 250px; display: flex; flex-direction: column; gap: 14px">
+            <span style="font-size: 17px">{{cfWhere}}</span>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+              <span aria-hidden="true" style="display: flex; gap: 3px"><sc-for list="{{cfMeter}}" as="cm" hint-placeholder-count="5"><span style="{{cm.style}}"></span></sc-for></span>
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 40px; line-height: 1.05; letter-spacing: -0.025em; color: {{cfColor}}">{{cfLabel}}</span>
+              <sc-if value="{{cfHasDots}}" hint-placeholder-val="{{true}}">
+                <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 15px; background: {{t.bgSolid}}; border-radius: 999px; padding: 4px 12px">
+                  <span aria-hidden="true" style="{{cfDot1}}"></span><span aria-hidden="true" style="{{cfDot2}}"></span>{{cfConf}}
+                </span>
+              </sc-if>
+            </div>
+            <p style="margin: 0; font-size: 19px; line-height: 1.5">{{cfSentence}}</p>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">{{cfCaption}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources" aria-labelledby="src-h" style="background: {{t.track}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="src-h" class="rv" style="{{u.h2}}; max-width: 16ch">Where does the data come from?</h2>
+          <div class="rv rv1" style="flex: 0 1 500px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+            <p style="{{u.lead}}">Public registers first. Licensed vendors only where a register has no clean public feed.</p>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">We recompute within 72 hours of a new filing or order. Data more than 120 days old gets a stale flag.</p>
+            <button type="button" class="press" onClick="{{togSources}}" aria-expanded="{{xSources}}" aria-controls="sources-more" style="{{u.disclose}}">How we read documents<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="{{chevSources}}"><path d="M5 7l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <sc-if value="{{xSources}}" hint-placeholder-val="{{false}}">
+              <p id="sources-more" style="margin: 0; font-size: 17px">Two AI extractors read each order and PDF separately. If they disagree, a person decides. Developer evidence is labelled, and moves a score only once we verify it.</p>
+            </sc-if>
+          </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: stretch">
+          <div role="table" aria-label="Data sources and when we last synced them" class="rv rv1" style="flex: 2 1 620px; min-width: 0; border-radius: 8px; background: {{t.panelSolid}}; padding: 8px 28px; box-sizing: border-box">
+            <div role="row" style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.9fr) minmax(0, 1.2fr); gap: 16px; padding: 14px 0; font-size: 15px; color: {{t.ink2}}; border-bottom: 1px solid {{t.line}}">
+              <span role="columnheader">Source</span><span role="columnheader">What we read</span><span role="columnheader">Last synced</span>
+            </div>
+            <sc-for list="{{sources}}" as="so" hint-placeholder-count="5">
+              <div role="row" style="{{so.rowStyle}}">
+                <span role="cell" style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong style="font-size: 19px; line-height: 1.4">{{so.name}}</strong><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{so.kind}}</span></span>
+                <span role="cell" style="font-size: 17px; line-height: 1.45">{{so.reads}}</span>
+                <span role="cell" style="display: flex; flex-direction: column; gap: 2px"><span style="display: inline-flex; align-items: center; gap: 8px; font-size: 17px; line-height: 1.4; font-weight: 600"><span aria-hidden="true" style="flex: none; width: 8px; height: 8px; border-radius: 50%; background: {{t.ink}}"></span>{{so.synced}}</span><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{so.cadence}}</span></span>
+              </div>
+            </sc-for>
+          </div>
+          <figure class="rv rv2" style="flex: 1 1 320px; min-width: 0; margin: 0; position: relative; min-height: 440px; background: {{t.photo}}">
+            <img data-slot="ordersDesk" src="/_blob/5785f128e1c6016201ce2483d89a35e4" alt="Illustrative image: printed regulator orders on a desk, the kind of document we read" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+            <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="never" aria-labelledby="never-h" style="background: {{t.bg}}; overflow: hidden">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch">
+        <figure class="rv" style="flex: 1 1 420px; min-width: 0; margin: 0 0 0 -32px; position: relative; min-height: 680px; background: {{t.photo}}">
+          <img data-slot="salesGallery" src="/_blob/5fb6202e7c5c795906c6ae2cb14ac821" alt="Illustrative image: an empty property sales gallery with a scale model of two towers" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+          <figcaption style="position: absolute; left: 44px; bottom: 16px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · we are never part of the sale</figcaption>
+        </figure>
+        <div style="flex: 1 1 560px; min-width: 0; padding: 120px 0 120px clamp(0px, 5vw, 72px); box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="never-h" class="rv" style="{{u.h2}}">What will we never do?</h2>
+          <p class="rv rv1" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 38ch">Take money from developers, in any form. And no one can pay to change, hide, delay or preview a score.</p>
+          <ul class="rv rv2" style="margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px">
+            <sc-for list="{{nevers}}" as="nv" hint-placeholder-count="5">
+              <li style="display: flex; gap: 14px; align-items: flex-start; font-size: 19px; line-height: 1.5">
+                <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none; margin-top: 3px"><circle cx="11" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7.8 7.8l6.4 6.4M14.2 7.8l-6.4 6.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+                <span>{{nv}}</span>
+              </li>
+            </sc-for>
+          </ul>
+          <a href="#money" class="lk" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">How we make money</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="process" aria-labelledby="process-h" style="background: {{t.track}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 56px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="process-h" class="rv" style="{{u.h2}}; max-width: 20ch">What if a developer disagrees?</h2>
+          <div class="rv rv1" style="flex: 0 1 500px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+            <p style="{{u.lead}}">They use our free Evidence &amp; Reply portal. Deadlines are fixed, and every dispute is logged in public.</p>
+            <a href="#developers" class="lk" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Open the developer portal</a>
+          </div>
+        </div>
+        <ol class="rv rv1" style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 32px">
+          <sc-for list="{{steps}}" as="sp" hint-placeholder-count="4">
+            <li style="display: flex; flex-direction: column; gap: 14px; min-width: 0">
+              <span aria-hidden="true" style="{{sp.bar}}"></span>
+              <button type="button" class="press" onClick="{{sp.pick}}" aria-expanded="{{sp.on}}" style="width: 100%; min-height: 44px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; cursor: pointer; text-align: left">
+                <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.1; letter-spacing: -0.025em">{{sp.when}}</span>
+                <span style="{{sp.titleStyle}}">{{sp.title}}</span>
+              </button>
+              <sc-if value="{{sp.on}}" hint-placeholder-val="{{false}}">
+                <p style="margin: 0; font-size: 17px; line-height: 1.5">{{sp.text}}</p>
+              </sc-if>
+            </li>
+          </sc-for>
+        </ol>
+        <p class="rv rv2" style="margin: 0; border-radius: 8px; background: {{t.panelSolid}}; padding: 22px 26px; font-size: 19px; line-height: 1.5"><strong>From the public dispute log:</strong> D-118 · Northfield Estates · Aurelia Heights, Phase 2. Filed 14 Aug 2026. Upheld 3 Sep 2026: unit count corrected to 500.</p>
+      </div>
+    </section>
+
+    <section id="changelog" aria-labelledby="log-h" style="background: {{t.bg}}; padding: 120px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+        <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="log-h" class="rv" style="{{u.h2}}; max-width: 13ch">What changed, and when?</h2>
+          <p class="rv rv1" style="{{u.lead}}">Every change to the method gets a version number. Each score shows the version that made it.</p>
+          <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">A methodology committee with one external member reviews each change. We publish a calibration backtest every quarter.</p>
+          <div class="rv rv2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding-top: 6px">
+            <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 52px; display: inline-flex; align-items: center; gap: 10px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6.5a4 4 0 0 1 8 0c0 3 1.2 4 1.5 4.5h-11C2.8 10.5 4 9.5 4 6.5zM6.5 13a1.6 1.6 0 0 0 3 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>{{followLabel}}</button>
+            <span role="status" style="font-size: 15px; color: {{t.ink2}}">{{followNote}}</span>
+          </div>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+          <sc-for list="{{versions}}" as="vr" hint-placeholder-count="3">
+            <div style="{{vr.wrap}}">
+              <h3 style="margin: 0; font-size: inherit; font-weight: inherit">
+                <button type="button" class="press" onClick="{{vr.toggle}}" aria-expanded="{{vr.on}}" style="width: 100%; min-height: 80px; display: flex; align-items: center; gap: 20px; padding: 14px 24px; border: 0; background: transparent; color: {{t.ink}}; font: inherit; cursor: pointer; text-align: left; box-sizing: border-box">
+                  <span style="flex: none; width: 64px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.025em">{{vr.v}}</span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+                    <span style="font-size: 19px; line-height: 1.4; font-weight: 600">{{vr.title}}</span>
+                    <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{vr.date}}</span>
+                  </span>
+                  <sc-if value="{{vr.current}}" hint-placeholder-val="{{false}}">
+                    <span style="flex: none; font-size: 14px; font-weight: 600; padding: 3px 12px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}">Current</span>
+                  </sc-if>
+                  <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="{{vr.chev}}"><path d="M5 7l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+              </h3>
+              <sc-if value="{{vr.on}}" hint-placeholder-val="{{false}}">
+                <div style="padding: 0 24px 24px 108px; display: flex; flex-direction: column; gap: 10px">
+                  <ul style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 6px; font-size: 17px; line-height: 1.5">
+                    <sc-for list="{{vr.items}}" as="vi" hint-placeholder-count="3"><li>{{vi}}</li></sc-for>
+                  </ul>
+                  <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{vr.note}}</span>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">Every score stands on HARERA registrations, progress reports, extensions and orders, DTCP licences and OCs, and IBBI and NCLT records, with MCA and eCourts data from licensed vendors, read to 14 Oct 2026. Our opinion, based on public records. Not a credit rating. Not issued by any RERA.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report an error</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#developers" class="lk" style="color: {{t.onSlab}}">Developer portal</a>
+          <a href="#pdf" class="lk" style="color: {{t.onSlab}}">Methodology v1.2 (PDF)</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.onSlab2}}"></span>HARERA synced 2 hours ago · 17,938 orders read · next QPR due 15 Jan 2027</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"band":{"editor":"enum","options":["Low","Moderate","Elevated","High","Severe"],"default":"Elevated"},"$preview":{"width":1280,"height":10500}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {themePick: null, following: false, ready: false, reduce: false, band: '', oc: 10, s0: false, s1: false, s2: false, s3: false, factor: 0, rule: 0, conf: 1, step: 0, open: 0, xPredict: false, xBands: false, xFactors: false, xSources: false};
+  }
+  componentDidMount() {
+    var self = this;
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { reduce = false; }
+    if (reduce) { this.setState({ready: true, reduce: true}); return; }
+    this._t = setTimeout(function () { self.setState({ready: true}); }, 300);
+  }
+  componentWillUnmount() {
+    clearTimeout(this._t);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var BG = "'Bricolage Grotesque', system-ui, sans-serif";
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      emptyCell: 'rgba(255,255,255,0.06)', emptyBorder: '#7D828A', segEmpty: 'transparent',
+      switchOff: '#5A6B64', knobOff: '#EEF3F0', limited: '#A3A8B0', notScored: '#7D828A',
+      windowFill: 'rgba(110,231,183,0.28)', panelSolid: '#16221D', claimBg: '#1D2621',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', photo: '#E7E3DA',
+      line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      emptyCell: '#EEEBE4', emptyBorder: '#8C9199', segEmpty: '#FFFFFF',
+      switchOff: '#8C9199', knobOff: '#FFFFFF', limited: '#6B7079', notScored: '#8C9199',
+      windowFill: 'rgba(29,90,68,0.22)', panelSolid: '#FFFFFF', claimBg: '#F1ECE2',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var U = {
+      h2: 'margin:0;font-family:' + BG + ';font-weight:800;font-size:clamp(44px, 5vw, 64px);line-height:1;letter-spacing:-0.035em',
+      lead: 'margin:0;font-size:22px;line-height:1.45',
+      disclose: 'align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-size:17px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:5px',
+      chipOnPanel: 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 14px;border-radius:999px;box-sizing:border-box;background:' + T.track + ';font-size:14px;color:' + T.ink + ';text-decoration:none',
+      chipOnTrack: 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 14px;border-radius:999px;box-sizing:border-box;background:' + T.panelSolid + ';font-size:14px;color:' + T.ink + ';text-decoration:none'
+    };
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', fillN: '#15323A', lo: 5, hi: 15},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', fillN: '#332B0C', lo: 15, hi: 30},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillN: '#3A2210', lo: 30, hi: 45},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', fillN: '#3D1A19', lo: 45, hi: 65},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', fillN: '#341A33', lo: 65, hi: 80}
+    };
+    var names = ['Low', 'Moderate', 'Elevated', 'High', 'Severe'];
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function fill(n) { return night ? B[n].fillN : B[n].fill; }
+    function textInk(n) { return night ? B[n].dark : (B[n].i <= 2 ? T.ink : B[n].light); }
+    function meter(n, w, h) {
+      return [1, 2, 3, 4, 5].map(function (j) {
+        return {style: 'display:block;width:' + w + 'px;height:' + h + 'px;border-radius:2px;box-sizing:border-box;' + (j <= B[n].i ? 'background:' + ink(n) + ';' : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder + ';')};
+      });
+    }
+    // Borderless risk chip (DESIGN §0): band fill, mini meter, name.
+    function chipStyle(n) {
+      return 'display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:15px;font-weight:600;border:0;background:' + fill(n) + ';color:' + T.ink;
+    }
+    function sw(on) {
+      return {
+        track: 'position:relative;display:block;width:52px;height:32px;border-radius:999px;background:' + (on ? T.ink : T.switchOff),
+        knob: 'position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:' + (on ? T.panelSolid : T.knobOff) + ';transform:translateX(' + (on ? 20 : 0) + 'px);transition:transform 200ms cubic-bezier(.22,1,.36,1)'
+      };
+    }
+    function chev(open) { return 'flex:none;transition:transform .2s ease;transform:rotate(' + (open ? 180 : 0) + 'deg)'; }
+    function tog(k) { return function () { var o = {}; o[k] = !self.state[k]; self.setState(o); }; }
+
+    var band = B[s.band] ? s.band : (B[this.props.band] ? this.props.band : 'Elevated');
+    var b = B[band];
+
+    // Quiet riskometer beside the band name; the needle sweeps when a band is picked.
+    function pt(deg, r) { var a = deg * Math.PI / 180; return (150 + r * Math.cos(a)).toFixed(1) + ' ' + (150 - r * Math.sin(a)).toFixed(1); }
+    var arcs = names.map(function (n, i) {
+      var a0 = 180 - i * 36 - 1.6, a1 = 180 - (i + 1) * 36 + 1.6, cur = n === band;
+      return {d: 'M ' + pt(a0, 112) + ' A 112 112 0 0 1 ' + pt(a1, 112), color: ink(n), w: cur ? 30 : 20, op: cur ? 1 : 0.42};
+    });
+    var angle = s.ready ? (-90 + (b.i - 0.5) * 36) : -90;
+    var needleStyle = 'transform-origin:150px 150px;transform:rotate(' + angle + 'deg);' + (s.reduce ? '' : 'transition:transform 1.4s cubic-bezier(.2,.8,.2,1)');
+
+    var info = {
+      Low: {pattern: 'Records usually show building keeping pace with time and sales, from a group that finishes close to its dates.', ex: 'Kestrel Park, Sector 113 · Orbis Land'},
+      Moderate: {pattern: 'Records usually show one or two signals to watch, such as a late QPR or one extension.', ex: 'Sapphire Grove, Phase 1, Sector 106 · Meridian Habitat'},
+      Elevated: {pattern: 'Records usually show sales running ahead of construction, late filings, or more orders than similar projects.', ex: 'Aurelia Heights, Phase 2, Sector 37D · Northfield Estates'},
+      High: {pattern: 'Records usually show several signals together: slow progress for the time used, extensions and orders.', ex: 'Coral Towers, Sector 89 · Vantage Buildcon'},
+      Severe: {pattern: 'Many signals together, or one of the four published red-flag rules applies. A rule sets Severe directly.', ex: 'Laurel Residency, Sector 92 · Elmstone Developers'}
+    };
+
+    // Signature: the band picker. Each band is a tone tile; the picked one takes its band fill and a thick band-ink bar.
+    var bandCards = names.map(function (n) {
+      var x = B[n], on = n === band;
+      return {
+        name: n, range: x.lo + '–' + x.hi + ' of 100', on: on ? 'true' : 'false',
+        aria: n + ': between ' + x.lo + ' and ' + x.hi + ' of 100 similar projects got their OC more than 12 months late',
+        pick: function () { self.setState({band: n, ready: true}); },
+        style: 'position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:14px;min-width:0;min-height:116px;padding:18px 18px 22px;border:0;border-radius:8px;box-sizing:border-box;cursor:pointer;font:inherit;text-align:left;color:' + T.ink + ';background:' + (on ? fill(n) : T.panelSolid) + ';transition:background-color 220ms ease',
+        nameStyle: 'font-family:' + BG + ';font-weight:800;font-size:26px;line-height:1.05;letter-spacing:-0.025em;color:' + (on ? textInk(n) : T.ink),
+        bar: 'position:absolute;left:0;right:0;bottom:0;height:6px;background:' + ink(n) + ';transform-origin:left center;transform:scaleX(' + (on ? 1 : 0) + ');transition:transform 420ms cubic-bezier(.22,1,.36,1)',
+        meter: meter(n, 6, 10)
+      };
+    });
+    // The big icon array. Each cell has a solid and a hatched layer; picking a band sweeps them in, row by row.
+    var cells = [];
+    for (var k = 0; k < 100; k++) {
+      var isFill = k < b.lo, isHatch = k >= b.lo && k < b.hi;
+      var lay = 'position:absolute;inset:-1px;border-radius:50%;box-sizing:border-box;transition:opacity 260ms ease ' + (k * 6) + 'ms, transform 460ms cubic-bezier(.22,1,.36,1) ' + (k * 6) + 'ms;';
+      cells.push({
+        base: 'position:relative;display:block;width:34px;height:34px;border-radius:50%;box-sizing:border-box;background:' + T.emptyCell + ';border:1px solid ' + T.emptyBorder,
+        fill: lay + 'background:' + ink(band) + ';opacity:' + (isFill ? 1 : 0) + ';transform:scale(' + (isFill ? 1 : 0.4) + ')',
+        hatch: lay + 'background:repeating-linear-gradient(45deg,' + ink(band) + ' 0 2px,' + fill(band) + ' 2px 6px);border:1.5px solid ' + ink(band) + ';opacity:' + (isHatch ? 1 : 0) + ';transform:scale(' + (isHatch ? 1 : 0.4) + ')'
+      });
+    }
+    var sw0 = 'flex:none;display:inline-block;width:14px;height:14px;border-radius:50%;box-sizing:border-box;';
+
+    var F = [
+      {name: 'Finances and cash vs progress', short: 'Finances', w: 30,
+        look: ['Share of units sold against share built, from each QPR', 'Money collected against escrow withdrawals, from CA certificates', 'Whether withdrawals keep pace with construction'],
+        exLabel: 'Aurelia Heights, Phase 2', ex: '72% of units sold, 41% built. Sales are 31 points ahead of construction.',
+        src: ['HARERA QPR · Apr–Jun 2026', 'HARERA Form 3 · CA certificate']},
+      {name: 'Developer track record', short: 'Track record', w: 30,
+        look: ['Share of the group’s finished RERA projects that got OC more than 12 months late', 'Unexecuted recovery certificates against group companies', 'Insolvency history across every linked company', 'Credit-rating level and recent downgrades, as published'],
+        exLabel: 'Northfield Estates group', ex: '2 of the group’s 6 finished RERA projects got OC more than 12 months late. No insolvency found in 9 linked companies.',
+        src: ['HARERA · DTCP', 'MCA via licensed vendor', 'IBBI · checked 14 Oct 2026']},
+      {name: 'Timeline and filing discipline', short: 'Timeline', w: 20,
+        look: ['Share of promised time used against share built', 'QPRs filed late, missing, or with impossible values', 'Number of Section 6 extensions'],
+        exLabel: 'Aurelia Heights, Phase 2', ex: '77% of the promised time used. QPRs filed late in 3 of the last 8 quarters.',
+        src: ['HARERA QPR register']},
+      {name: 'Legal and regulatory', short: 'Legal', w: 15,
+        look: ['Complaints and orders per 100 units in 24 months, against similar projects', 'Insolvency petitions filed but not yet admitted', 'Court cases that name the project or promoter'],
+        exLabel: 'Aurelia Heights, Phase 2', ex: '14 complaints decided against the promoter in 24 months, or 2.8 per 100 units. Median for similar projects: 3.',
+        src: ['HARERA orders', 'eCourts via licensed vendor']},
+      {name: 'Site and approvals', short: 'Site', w: 5,
+        look: ['DTCP licence validity and renewals', 'Land and authority dues', 'Satellite activity, used only to check QPR claims'],
+        exLabel: 'How it is used', ex: 'We read the DTCP licence status and expiry for each phase. Satellite images never move a score on their own.',
+        src: ['DTCP licence register', 'Satellite imagery · cross-check only']}
+    ];
+    var fi = Math.max(0, Math.min(4, Number(s.factor) || 0));
+    var f = F[fi];
+    var factorSegs = F.map(function (x, i) {
+      var on = i === fi;
+      return {
+        w: x.w, short: x.short, on: on ? 'true' : 'false', aria: x.name + ', ' + x.w + '% of the score',
+        pick: function () { self.setState({factor: i}); },
+        style: 'flex:' + x.w + ' 1 0px;min-width:48px;display:flex;flex-direction:column;gap:10px;padding:0;border:0;background:transparent;cursor:pointer;font:inherit;text-align:left;color:' + T.ink,
+        barStyle: 'display:flex;align-items:flex-end;height:112px;padding:0 0 12px 12px;border-radius:8px;box-sizing:border-box;font-family:' + BG + ';font-weight:800;font-size:24px;letter-spacing:-0.025em;transition:background-color 200ms ease, color 200ms ease;' + (on ? 'background:' + T.ink + ';color:' + T.bg + ';' : 'background:' + T.panelSolid + ';color:' + T.ink + ';'),
+        labelStyle: 'font-size:15px;line-height:1.3;white-space:nowrap;' + (on ? 'font-weight:700;color:' + T.ink : 'font-weight:500;color:' + T.ink2)
+      };
+    });
+
+    var R = [
+      {title: 'Insolvency (CIRP) admitted against the promoter or a group company', ex: 'Example: Laurel Residency, Sector 92. A group company of Elmstone Developers was admitted to insolvency by NCLT order of 12 Mar 2023.', src: 'IBBI · NCLT order 12 Mar 2023'},
+      {title: 'RERA registration revoked, de-registered or lapsed without an extension', ex: 'Applies from the day HARERA records the revocation, or the day a registration lapses with no extension.', src: 'HARERA registration register'},
+      {title: 'A stop-sale or abeyance order from the regulator', ex: 'Applies while the order stands. When it is lifted, the model’s band returns and the change is logged.', src: 'HARERA orders'},
+      {title: 'The promoter group is rated D or is in default', ex: 'We quote the rating agency’s own symbol and date, exactly as published.', src: 'Rating agency release, as published'}
+    ];
+    var ri = Math.max(0, Math.min(3, Number(s.rule) || 0));
+    var rules = R.map(function (x, i) {
+      var on = i === ri;
+      return {
+        n: String(i + 1), title: x.title, on: on ? 'true' : 'false', pick: function () { self.setState({rule: i}); },
+        style: 'width:100%;display:flex;align-items:center;gap:16px;min-height:72px;padding:12px 18px;border:0;border-radius:8px;box-sizing:border-box;cursor:pointer;font:inherit;text-align:left;color:' + T.ink + ';background:' + (on ? T.track : 'transparent') + ';transition:background-color 200ms ease',
+        badge: 'flex:none;width:40px;height:40px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:' + (on ? fill('Severe') : T.track) + ';color:' + (on ? textInk('Severe') : T.ink2)
+      };
+    });
+
+    var CF = [
+      {name: 'High confidence', where: 'Kestrel Park, Sector 113 · Orbis Land', band: 'Low', kind: 'band', label: 'Low', dots: 2, conf: 'High confidence', sentence: 'Many comparable finished projects, in Gurugram and in this group, so the range we show is narrow.', caption: 'Delivery risk · high confidence · data as of 14 Oct 2026 · v1.2'},
+      {name: 'Low confidence', where: 'Aurelia Heights, Phase 2, Sector 37D · Northfield Estates', band: 'Elevated', kind: 'band', label: 'Elevated', dots: 1, conf: 'Low confidence', sentence: 'Fewer comparable projects, so we show a wider range: between 30 and 45 of 100. The uncertain part is hatched.', caption: 'Delivery risk · low confidence · data as of 14 Oct 2026 · v1.2'},
+      {name: 'Limited history', where: 'Juniper Enclave, Sector 102 · Halcyon Homes', band: '', kind: 'limited', label: 'Limited history', dots: 0, conf: '', sentence: 'Halcyon Homes is a new developer with no finished RERA project yet. We don’t guess, and it never counts against them.', caption: 'Registered May 2025. We score a group once it has 3 finished RERA projects.'},
+      {name: 'Not scored', where: 'Any phase we can’t score yet', band: '', kind: 'not', label: 'Not scored', dots: 0, conf: '', sentence: 'We always say why on the card, for example: registered less than 6 months ago. Never a blank or a zero.', caption: 'The facts still appear in the project’s truth panel, each with its source.'}
+    ];
+    var ci = Math.max(0, Math.min(3, Number(s.conf)));
+    if (isNaN(ci)) ci = 1;
+    var cf = CF[ci];
+    var cfMeter = [1, 2, 3, 4, 5].map(function (j) {
+      var base = 'display:block;width:18px;height:14px;border-radius:3px;box-sizing:border-box;';
+      if (cf.kind === 'limited') return {style: base + 'border:1.5px dashed ' + T.limited + ';'};
+      if (cf.kind === 'not') return {style: base + 'border:1px solid ' + T.notScored + ';'};
+      return {style: base + (j <= B[cf.band].i ? 'background:' + ink(cf.band) + ';' : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder + ';')};
+    });
+    var dotBase = 'display:inline-block;width:8px;height:8px;border-radius:50%;box-sizing:border-box;';
+    var confTabs = CF.map(function (x, i) {
+      var on = i === ci;
+      return {name: x.name, on: on ? 'true' : 'false', pick: function () { self.setState({conf: i}); },
+        style: 'min-height:44px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;box-sizing:border-box;white-space:nowrap;background:' + (on ? T.ink : 'transparent') + ';color:' + (on ? T.bg : T.ink)};
+    });
+
+    var SRC = [
+      {name: 'HARERA', kind: 'Public register', reads: 'Registrations, QPRs, extensions, complaints and orders. 17,938 orders read so far.', synced: '2 hours ago', cadence: 'Every 6 hours'},
+      {name: 'DTCP Haryana', kind: 'Public register', reads: 'Licences and renewals, OC and CC grants', synced: 'Today, 06:00', cadence: 'Daily'},
+      {name: 'IBBI', kind: 'Public register', reads: 'Insolvency admissions and public announcements', synced: 'Today, 05:30', cadence: 'Daily'},
+      {name: 'MCA', kind: 'Via licensed vendor', reads: 'Group companies, directors, shareholding and charges', synced: '16 Oct 2026', cadence: 'Weekly'},
+      {name: 'eCourts', kind: 'Via licensed vendor', reads: 'Cases that name the promoter or a group company', synced: '17 Oct 2026', cadence: 'Weekly'}
+    ];
+    // A real data table: it keeps its row lines (DESIGN §0 exception).
+    var sources = SRC.map(function (x, i) {
+      return {name: x.name, kind: x.kind, reads: x.reads, synced: x.synced, cadence: x.cadence,
+        rowStyle: 'display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.9fr) minmax(0,1.2fr);gap:16px;padding:16px 0;align-items:start;' + (i > 0 ? 'border-top:1px solid ' + T.line + ';' : '')};
+    });
+
+    var ST = [
+      {title: 'Registration lapsed or revoked', effect: 'Also red-flag rule 2, so the band becomes Severe', rule: 2},
+      {title: 'Insolvency (CIRP) admitted against the promoter', effect: 'Also red-flag rule 1, so the band becomes Severe', rule: 1},
+      {title: 'Put in abeyance by HARERA', effect: 'Also red-flag rule 3, so the band becomes Severe', rule: 3},
+      {title: 'No construction progress in 4 QPRs in a row', effect: 'Flag only. The band stays as the model set it', rule: 0}
+    ];
+    var stOn = [!!s.s0, !!s.s1, !!s.s2, !!s.s3];
+    var anyStall = false, ruleHit = 0;
+    ST.forEach(function (x, i) { if (stOn[i]) { anyStall = true; if (x.rule && (!ruleHit || x.rule < ruleHit)) ruleHit = x.rule; } });
+    var stallBand = ruleHit ? 'Severe' : 'Moderate';
+    var stallNote = !anyStall ? 'Moderate, set by the model. No Stall flag.' : (ruleHit ? 'Severe, set by red-flag rule ' + ruleHit + '. The Stall flag sits next to it.' : 'Still Moderate, set by the model. The Stall flag sits next to it, never averaged in.');
+    var stallRows = ST.map(function (x, i) {
+      var key = 's' + i, v = sw(stOn[i]);
+      return {id: 'stall-c' + i, title: x.title, effect: x.effect, on: stOn[i] ? 'true' : 'false', track: v.track, knob: v.knob,
+        toggle: function () { var o = {}; o[key] = !self.state[key]; self.setState(o); }};
+    });
+
+    var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var oc = Math.max(0, Math.min(24, Number(s.oc)));
+    if (isNaN(oc)) oc = 10;
+    var mi = 11 + oc;
+    var ocLabel = MON[mi % 12] + ' ' + (2027 + Math.floor(mi / 12));
+    var after = oc - 4;
+    var late = oc > 16;
+    var verdictText = oc === 0 ? 'On the original RERA date.' : (oc <= 4 ? 'Within the 4-month blanket extension.' : (after + (after === 1 ? ' month' : ' months') + ' after the adjusted date, Apr 2028. ' + (late ? 'More than 12, so it counts as Late12.' : 'Within 12, so it does not count.')));
+    var ocPos = ((60 + oc) / 84 * 100).toFixed(2);
+
+    var STEPS = [
+      {when: '7 days’ notice', title: 'Before any downgrade into High or Severe', text: 'The developer can correct facts in that time. The notice is not a negotiation of our opinion.'},
+      {when: '48 hours', title: 'Dispute acknowledged', text: 'Every dispute filed in the portal gets a reference number and an acknowledgement within 48 hours.'},
+      {when: '15 working days', title: 'Decision', text: 'Our methodology team decides. Only facts we can verify move a score. Meanwhile the fact stays, marked as disputed.'},
+      {when: 'Always', title: 'Reply and public log', text: 'The developer’s reply sits next to the score, unedited except under published rules. Each dispute and outcome is logged.'}
+    ];
+    var si = Math.max(0, Math.min(3, Number(s.step) || 0));
+    // A timeline, not a numbered stepper: a thick bar fills up to the step you pick.
+    var steps = STEPS.map(function (x, i) {
+      var on = i === si;
+      return {when: x.when, title: x.title, text: x.text, on: on, pick: function () { self.setState({step: i}); },
+        bar: 'display:block;height:6px;border-radius:3px;transform-origin:left center;transition:background-color 240ms ease;background:' + (i <= si ? T.ink : T.panelSolid),
+        titleStyle: 'font-size:17px;line-height:1.4;' + (on ? 'font-weight:700;text-decoration:underline;text-underline-offset:5px' : 'font-weight:600')};
+    });
+
+    var V = [
+      {v: 'v1.2', date: '14 Oct 2026', title: 'Blanket extensions added to every original date', current: true,
+        items: ['The 4-month MoHUA extension of Jul 2026 is now added to every original RERA date before we measure Late12.', 'Extensions granted to a single project are still not added. They are part of what we predict.', 'The stale flag now shows when a key input is more than 120 days old, down from 180.'],
+        note: 'Approved by the methodology committee on 9 Oct 2026. Every band was recalculated on 14 Oct 2026.'},
+      {v: 'v1.1', date: '2 Sep 2026', title: 'Tighter QPR checks and group linking', current: false,
+        items: ['A QPR whose built share falls from the last quarter now counts as a filing problem.', 'Group companies are linked by common directors and shareholding, using MCA data from a licensed vendor.'],
+        note: 'Approved by the methodology committee on 26 Aug 2026.'},
+      {v: 'v1.0', date: '15 Jul 2026', title: 'First public bands for Gurugram', current: false,
+        items: ['Five bands with natural frequencies, up to 4 sourced reasons, and a developer reply on every card.', 'Replaced v0.9, which published facts only, with no bands.'],
+        note: 'Approved by the methodology committee on 8 Jul 2026.'}
+    ];
+    var vi = Number(s.open);
+    var versions = V.map(function (x, i) {
+      var on = i === vi;
+      return {v: x.v, date: x.date, title: x.title, current: x.current, items: x.items, note: x.note, on: on,
+        toggle: function () { self.setState({open: self.state.open === i ? -1 : i}); },
+        chev: chev(on), wrap: 'border-radius:8px;transition:background-color 200ms ease;background:' + (on ? T.track : 'transparent')};
+    });
+
+    return {
+      t: T, u: U,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      followingStr: s.following ? 'true' : 'false',
+      followShort: s.following ? 'Following changes' : 'Follow changes',
+      followLabel: s.following ? 'Following method changes' : 'Follow method changes',
+      followNote: s.following ? 'We’ll tell you when v1.3 is published, with what changed.' : 'One message per new version. Nothing else.',
+      toggleFollow: function () { self.setState({following: !self.state.following}); },
+      dialLabel: 'Riskometer pointing to ' + band + ', step ' + b.i + ' of 5, on a scale from Low to Severe',
+      arcs: arcs, needleStyle: needleStyle,
+      bandName: band, bandText: textInk(band), lo: b.lo, hi: b.hi,
+      bandCards: bandCards, cells: cells,
+      arrayLabel: 'Icon array: between ' + b.lo + ' and ' + b.hi + ' of 100 similar projects got their OC more than 12 months after the original RERA date. The rest, ' + (100 - b.hi) + ' to ' + (100 - b.lo) + ', got it within 12 months.',
+      swFill: sw0 + 'background:' + ink(band) + ';',
+      swHatch: sw0 + 'background:repeating-linear-gradient(45deg,' + ink(band) + ' 0 2px,' + fill(band) + ' 2px 4px);border:1px solid ' + ink(band) + ';',
+      swEmpty: sw0 + 'background:' + T.emptyCell + ';border:1px solid ' + T.emptyBorder + ';',
+      bandPattern: info[band].pattern, exName: info[band].ex,
+      xPredict: !!s.xPredict, togPredict: tog('xPredict'), chevPredict: chev(!!s.xPredict),
+      xBands: !!s.xBands, togBands: tog('xBands'), chevBands: chev(!!s.xBands),
+      xFactors: !!s.xFactors, togFactors: tog('xFactors'), chevFactors: chev(!!s.xFactors),
+      xSources: !!s.xSources, togSources: tog('xSources'), chevSources: chev(!!s.xSources),
+      oc: oc, ocLabel: ocLabel, onOc: function (e) { self.setState({oc: Number(e.target.value)}); },
+      verdictShort: late ? 'Late12: yes' : 'Late12: no',
+      verdictPill: 'flex:none;display:inline-flex;align-items:center;height:32px;padding:0 14px;border:0;border-radius:999px;box-sizing:border-box;font-size:15px;font-weight:700;' + (late ? 'background:' + T.ink + ';color:' + T.bg + ';' : 'background:' + T.panelSolid + ';color:' + T.ink + ';'),
+      verdictText: verdictText,
+      tlLabel: 'Timeline for Aurelia Heights, Phase 2. Registered Dec 2022. Today 18 Oct 2026. Original RERA date Dec 2027, plus a 4-month blanket extension to Apr 2028. Late12 line Apr 2029. OC chosen: ' + ocLabel + ', ' + (late ? 'counts as Late12.' : 'does not count as Late12.'),
+      hatchMuted: 'repeating-linear-gradient(45deg,' + T.ink2 + ' 0 2px,transparent 2px 6px)',
+      windowFill: T.windowFill,
+      ocMarker: 'position:absolute;left:calc(' + ocPos + '% - 11px);top:40px;width:22px;height:22px;border-radius:50%;box-sizing:border-box;background:' + T.ink + ';border:3px solid ' + T.track,
+      stallChip: chipStyle(stallBand), stallMeter: meter(stallBand, 6, 10), stallBand: stallBand,
+      stallOn: anyStall, stallNote: stallNote, stallRows: stallRows,
+      factorSegs: factorSegs, fName: f.name, fW: f.w, fLook: f.look, fExLabel: f.exLabel, fEx: f.ex, fSrc: f.src,
+      rules: rules, ruleN: ri + 1, ruleExample: R[ri].ex, ruleSource: R[ri].src,
+      severeChip: chipStyle('Severe'), severeMeter: meter('Severe', 6, 10),
+      confTabs: confTabs, cfWhere: cf.where, cfMeter: cfMeter, cfLabel: cf.label,
+      cfColor: cf.kind === 'band' ? textInk(cf.band) : T.ink2,
+      cfHasDots: cf.dots > 0, cfConf: cf.conf,
+      cfDot1: dotBase + 'background:' + T.ink + ';',
+      cfDot2: dotBase + (cf.dots === 2 ? 'background:' + T.ink + ';' : 'border:1.5px solid ' + T.ink + ';'),
+      cfSentence: cf.sentence, cfCaption: cf.caption,
+      sources: sources,
+      nevers: [
+        'No commission, leads, ads, placement or sponsorship from any developer.',
+        'No one can pay to change, hide, delay or preview a score.',
+        'No opt-out. Every RERA phase in scope is scored.',
+        'No commercial signal in ranking, alerts or AI answers. We audit this every quarter.',
+        'No early look. Sales staff can’t see a score before it is published.'
+      ],
+      steps: steps,
+      versions: versions
+    };
+  }
+}
+</script>
+</body>
+</html>

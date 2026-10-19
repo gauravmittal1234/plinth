@@ -1,0 +1,30 @@
+.env
+.env.local
+.env.*.local
+node_modules/
+.DS_Store
+
+# generated image masters (JPGs are committed)
+product/design/assets/*.png
+
+# build outputs and tooling
+.dart_tool/
+build/
+.next/
+out/
+coverage/
+.venv/
+__pycache__/
+*.pyc
+.turbo/
+.vercel/
+supabase/.temp/
+*.log
+.idea/
+.vscode/
+*.iml
+local.properties
+key.properties
+*.jks
+*.keystore
+google-services.json

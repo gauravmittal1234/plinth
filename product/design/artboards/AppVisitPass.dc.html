@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth app: Site-visit co-pilot</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hs{scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes pl-land{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes pl-seg{from{transform:scaleX(0)}to{transform:none}}
+@keyframes pl-drift{from{transform:scale(1)}to{transform:scale(1.04)}}
+.pl-rise{animation:pl-rise .62s cubic-bezier(.22,1,.36,1) both}
+.pl-r1{animation-delay:90ms}.pl-r2{animation-delay:180ms}.pl-r3{animation-delay:270ms}
+.pl-drift{transform-origin:50% 70%;animation:pl-drift 18s cubic-bezier(.33,1,.68,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums">
+  <div aria-hidden="true" style="flex: none; height: 48px"></div>
+  <header style="flex: none; height: 56px; padding: 0 8px 0 4px; display: flex; align-items: center; gap: 4px">
+    <button type="button" class="pl-press" onClick="{{goBack}}" aria-label="{{backLabel}}" style="width: 48px; height: 48px; flex: none; border: 0; padding: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer">
+      <sc-if value="{{backArrow}}" hint-placeholder-val="{{true}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+      <sc-if value="{{backClose}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></sc-if>
+    </button>
+    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2">
+      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 21px; letter-spacing: -0.02em">{{barTitle}}</span>
+      <span style="font-size: 14px; color: {{t.muted}}">{{barSub}}</span>
+    </span>
+    <button type="button" class="pl-press" onClick="{{flipTheme}}" aria-label="{{themeLabel}}" style="width: 48px; height: 48px; flex: none; border: 0; padding: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.6A6.5 6.5 0 0 1 7.4 4a6.5 6.5 0 1 0 8.6 8.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg></button>
+  </header>
+
+  <sc-if value="{{isPass}}" hint-placeholder-val="{{true}}">
+    <main class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 32px; box-sizing: border-box">
+      <div style="position: relative; margin: 0 -16px; height: 164px; overflow: hidden; background: {{t.photo}}">
+        <img class="pl-drift" data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2: the entrance court and towers" style="position: absolute; left: 0; top: 0; width: 390px; height: 164px; background: #E7E3DA; object-fit: cover; object-position: 50% 78%; display: block">
+        <span style="position: absolute; left: 12px; bottom: 10px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+      </div>
+      <section aria-labelledby="pass-h" class="pl-rise" style="margin-top: 20px; display: flex; flex-direction: column">
+        <h1 id="pass-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 52px; line-height: 0.95; letter-spacing: -0.045em">Sat 24 Oct</h1>
+        <p style="margin: 8px 0 0; font-size: 17px; line-height: 1.45">11:00 am–12:00 pm · 2 visitors</p>
+        <p style="margin: 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Aurelia Heights, Phase 2 · sales gallery, Sector 37D</p>
+        <div style="margin-top: 18px; display: flex; align-items: center; gap: 16px">
+          <span style="flex: none; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 44px; line-height: 1; letter-spacing: 0.03em">4821</span>
+          <span style="font-size: 15px; line-height: 1.4">Your visit code. Show it at the sales gallery instead of your number.</span>
+        </div>
+        <p style="margin: 14px 0 0; padding: 12px 14px; border-radius: 8px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; display: flex; gap: 10px; font-size: 16px; line-height: 1.45; font-weight: 600"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>You don't have to give your number at the gate.</span></p>
+        <div style="margin-top: 10px; padding: 12px 14px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 2px">
+          <strong style="font-size: 16px; font-weight: 600">No agent of record</strong>
+          <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">You chose to go directly. Working with an agent on this project? Add them before you go, and the sales gallery sees it with your code.</span>
+          <a href="./WaAlerts.dc.html" class="pl-press" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; font-size: 15px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 3px">Add an agent</a>
+        </div>
+      </section>
+
+      <section aria-labelledby="q-h" data-review="legal" style="margin-top: 36px; display: flex; flex-direction: column">
+        <h2 id="q-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.02; letter-spacing: -0.035em">What should I ask?</h2>
+        <p style="margin: 8px 0 0; font-size: 16px; line-height: 1.5">Five questions from the records. Questions marked Sent ahead went to the sales gallery, so they can bring the papers. Never your number.</p>
+        <ol aria-label="Questions from the records" style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 22px">
+          <sc-for list="{{questions}}" as="q" hint-placeholder-count="5">
+            <li style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{q.rec}}</span>
+              <span style="font-size: 18px; line-height: 1.4; font-weight: 600">“{{q.ask}}”</span>
+              <span style="margin-top: 4px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px">
+                <span style="display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 999px; background: {{t.track}}; font-size: 13px; color: {{t.ink}}"><svg width="11" height="13" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{q.src}}</span>
+                <button type="button" class="pl-press" role="switch" aria-checked="{{q.aheadAria}}" aria-label="{{q.aheadSr}}" onClick="{{q.toggle}}" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; cursor: pointer">{{q.aheadLabel}}<span aria-hidden="true" style="{{q.track}}"><span style="{{q.thumb}}"></span></span></button>
+              </span>
+            </li>
+          </sc-for>
+        </ol>
+      </section>
+
+      <p style="margin: 28px 0 0; padding: 14px 16px; border-radius: 8px; background: {{t.claimBg}}; font-size: 15px; line-height: 1.5">Your number stays with you. After the visit you can tap to share it with the site office, if you want to. Plinth never asks on their behalf.</p>
+      <p style="margin: 14px 0 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Questions come from HARERA records as of 14 Oct 2026 and the cost sheet of 2 Oct 2026. If a new filing appears before your visit, we update them and tell you.</p>
+    </main>
+    <div style="flex: none; height: 88px; box-sizing: border-box; padding: 14px 16px 22px; display: flex; gap: 10px; background: {{t.nav}}">
+      <a href="#directions" class="pl-press" style="flex: none; height: 52px; padding: 0 20px; box-sizing: border-box; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; text-decoration: none; font-size: 17px; font-weight: 600; display: inline-flex; align-items: center">Directions</a>
+      <button type="button" class="pl-press" onClick="{{checkIn}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"></circle></svg>Check in at the site</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isSite}}" hint-placeholder-val="{{false}}">
+    <main class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+      <section aria-labelledby="ci-h" data-review="legal" class="pl-rise" style="display: flex; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 8px; background: {{t.track}}">
+        <svg width="92" height="76" viewBox="0 0 92 76" aria-hidden="true" style="flex: none">
+          <path d="M10 20L58 6L84 36L66 70L16 64Z" fill="{{t.fenceFill}}" stroke="{{t.fence}}" stroke-width="2" stroke-linejoin="round"></path>
+          <circle cx="{{dot.cx}}" cy="{{dot.cy}}" r="8" fill="{{t.ink}}"></circle>
+          <circle cx="{{dot.cx}}" cy="{{dot.cy}}" r="3.2" fill="{{t.track2}}"></circle>
+        </svg>
+        <div style="min-width: 0; display: flex; flex-direction: column; gap: 2px" aria-live="polite">
+          <h1 id="ci-h" style="margin: 0; font-size: 18px; line-height: 1.3; font-weight: 700">{{ci.title}}</h1>
+          <span style="font-size: 15px; line-height: 1.4">{{ci.sub}}</span>
+          <span style="font-size: 13px; line-height: 1.4; color: {{t.muted}}">{{ci.note}}</span>
+        </div>
+      </section>
+      <sc-if value="{{ci.away}}" hint-placeholder-val="{{false}}">
+        <p style="margin: -6px 0 0; font-size: 15px; line-height: 1.5">You can get ready here. At the desk, the team can also check you in by code 4821.</p>
+      </sc-if>
+
+      <div role="group" aria-label="Show" style="display: flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+        <sc-for list="{{tabs}}" as="tb" hint-placeholder-count="2"><button type="button" class="pl-press" onClick="{{tb.pick}}" aria-pressed="{{tb.on}}" style="{{tb.style}}">{{tb.label}}</button></sc-for>
+      </div>
+
+      <sc-if value="{{tabPhotos}}" hint-placeholder-val="{{true}}">
+        <section aria-labelledby="ph-h" style="display: flex; flex-direction: column; gap: 4px">
+          <h2 id="ph-h" style="margin: 0 0 6px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 24px; line-height: 1.1; letter-spacing: -0.03em">What should I photograph?</h2>
+          <ul aria-label="Photo checklist" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+            <li><button type="button" class="pl-press" onClick="{{ph0.pick}}" aria-label="{{ph0.aria}}" style="{{ph0.row}}">
+              <span style="{{ph0.box}}"><sc-if value="{{ph0.done}}" hint-placeholder-val="{{true}}"><img data-slot="hoardingQrPanel" src="/_blob/47a1f77917210d81b932aeab85928398" alt="" style="width: 64px; height: 64px; background: #E7E3DA; object-fit: cover; display: block"></sc-if><sc-if value="{{ph0.todo}}" hint-placeholder-val="{{false}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.5-2h5L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"></path><circle cx="12" cy="13" r="3.5"></circle></g></svg></sc-if></span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35"><strong style="font-size: 17px; font-weight: 600">The RERA board on the hoarding</strong><span style="font-size: 15px; color: {{t.ink2}}">It should read GGM/673/405/2022/117.</span><span style="font-size: 13px; color: {{t.muted}}">{{ph0.state}}</span></span>
+            </button></li>
+            <li><button type="button" class="pl-press" onClick="{{ph1.pick}}" aria-label="{{ph1.aria}}" style="{{ph1.row}}">
+              <span style="{{ph1.box}}"><sc-if value="{{ph1.done}}" hint-placeholder-val="{{true}}"><img data-slot="siteProgress" src="/_blob/186406c855932c1c91c0cfbd6c934296" alt="" style="width: 64px; height: 64px; background: #E7E3DA; object-fit: cover; display: block"></sc-if><sc-if value="{{ph1.todo}}" hint-placeholder-val="{{false}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.5-2h5L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"></path><circle cx="12" cy="13" r="3.5"></circle></g></svg></sc-if></span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35"><strong style="font-size: 17px; font-weight: 600">Tower A from the gate</strong><span style="font-size: 15px; color: {{t.ink2}}">Count the floors cast. The last filing shows slab 9.</span><span style="font-size: 13px; color: {{t.muted}}">{{ph1.state}}</span></span>
+            </button></li>
+            <li><button type="button" class="pl-press" onClick="{{ph2.pick}}" aria-label="{{ph2.aria}}" style="{{ph2.row}}">
+              <span style="{{ph2.box}}"><sc-if value="{{ph2.done}}" hint-placeholder-val="{{false}}"><img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="" style="width: 64px; height: 64px; background: #E7E3DA; object-fit: cover; display: block"></sc-if><sc-if value="{{ph2.todo}}" hint-placeholder-val="{{true}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.5-2h5L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"></path><circle cx="12" cy="13" r="3.5"></circle></g></svg></sc-if></span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35"><strong style="font-size: 17px; font-weight: 600">The sample flat</strong><span style="font-size: 15px; color: {{t.ink2}}">Room sizes, ceiling height, windows.</span><span style="font-size: 13px; color: {{t.muted}}">{{ph2.state}}</span></span>
+            </button></li>
+            <li><button type="button" class="pl-press" onClick="{{ph3.pick}}" aria-label="{{ph3.aria}}" style="{{ph3.row}}">
+              <span style="{{ph3.box}}"><sc-if value="{{ph3.done}}" hint-placeholder-val="{{false}}"><img data-slot="costSheetDesk" src="/_blob/0df253c9bcc49614197e2e73dc9444e4" alt="" style="width: 64px; height: 64px; background: #E7E3DA; object-fit: cover; display: block"></sc-if><sc-if value="{{ph3.todo}}" hint-placeholder-val="{{true}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.5-2h5L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"></path><circle cx="12" cy="13" r="3.5"></circle></g></svg></sc-if></span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35"><strong style="font-size: 17px; font-weight: 600">The cost sheet they hand you</strong><span style="font-size: 15px; color: {{t.ink2}}">We check it against the one dated 2 Oct 2026.</span><span style="font-size: 13px; color: {{t.muted}}">{{ph3.state}}</span></span>
+            </button></li>
+            <li><button type="button" class="pl-press" onClick="{{ph4.pick}}" aria-label="{{ph4.aria}}" style="{{ph4.row}}">
+              <span style="{{ph4.box}}"><sc-if value="{{ph4.done}}" hint-placeholder-val="{{false}}"><img data-slot="receiptDesk" src="/_blob/8b723d7d89b2fb71afade8463f2f0e2e" alt="" style="width: 64px; height: 64px; background: #E7E3DA; object-fit: cover; display: block"></sc-if><sc-if value="{{ph4.todo}}" hint-placeholder-val="{{true}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.5-2h5L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"></path><circle cx="12" cy="13" r="3.5"></circle></g></svg></sc-if></span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35"><strong style="font-size: 17px; font-weight: 600">Bank details on the booking form</strong><span style="font-size: 15px; color: {{t.ink2}}">We check the payee against the HARERA account.</span><span style="font-size: 13px; color: {{t.muted}}">{{ph4.state}}</span></span>
+            </button></li>
+          </ul>
+          <p style="margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Photos stay in your account until you delete them. We don't judge construction from photos; they are your record.</p>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{tabQs}}" hint-placeholder-val="{{false}}">
+        <section aria-labelledby="qa-h" style="display: flex; flex-direction: column">
+          <h2 id="qa-h" style="margin: 0 0 10px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 24px; line-height: 1.1; letter-spacing: -0.03em">What have I asked?</h2>
+          <ul aria-label="Questions to ask" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+            <sc-for list="{{askList}}" as="aq" hint-placeholder-count="5">
+              <li><button type="button" class="pl-press" role="checkbox" aria-checked="{{aq.aria}}" onClick="{{aq.toggle}}" style="width: 100%; min-height: 56px; padding: 10px 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; text-align: left; display: flex; gap: 12px; align-items: flex-start; cursor: pointer">
+                <span aria-hidden="true" style="{{aq.box}}"><sc-if value="{{aq.on}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="{{t.bg}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></span>
+                <span style="display: flex; flex-direction: column; line-height: 1.4"><span style="font-size: 17px; font-weight: 600">{{aq.ask}}</span><span style="font-size: 14px; color: {{t.ink2}}">{{aq.rec}}</span></span>
+              </button></li>
+            </sc-for>
+          </ul>
+        </section>
+      </sc-if>
+
+      <p style="margin: 0; display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.5"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"></rect><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M4 4l16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg><span>Plinth never records the sales team. The mic stays off until you record your own recap.</span></p>
+    </main>
+    <div style="flex: none; height: 88px; box-sizing: border-box; padding: 14px 16px 22px; display: flex; gap: 10px; background: {{t.nav}}">
+      <button type="button" class="pl-press" onClick="{{toRecap}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.9"></rect><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg>I've left: record my recap</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isRec}}" hint-placeholder-val="{{false}}">
+    <main style="flex: 1; min-height: 0; padding: 4px 16px 0; box-sizing: border-box; display: flex; flex-direction: column">
+      <h1 class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 40px; line-height: 0.98; letter-spacing: -0.04em">Tell me what they said.</h1>
+      <p class="pl-rise pl-r1" style="margin: 12px 0 0; font-size: 17px; line-height: 1.5">In your own words, once you've left. I check each thing against the records.</p>
+      <p class="pl-rise pl-r1" data-review="legal" style="margin: 6px 0 0; font-size: 16px; line-height: 1.5; font-weight: 600">Only your own voice, please. Don't record the sales team.</p>
+      <p class="pl-rise pl-r2" style="margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Worth covering: the possession date, Tower A's floors, the Jul–Sep QPR, the price and any offers.</p>
+      <div aria-live="polite" class="pl-rise pl-r3" style="flex: 1; min-height: 0; margin-top: 16px; padding: 14px 16px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 6px; overflow: hidden">
+        <span style="font-size: 13px; line-height: 1.3; font-weight: 600; color: {{t.ink2}}">{{rec.label}}</span>
+        <p style="margin: 0; font-size: 18px; line-height: 1.5">{{rec.text}}</p>
+      </div>
+      <div style="flex: none; height: 196px; display: flex; flex-direction: column; align-items: center; padding-top: 8px; box-sizing: border-box">
+        <div aria-hidden="true" style="height: 40px; display: flex; align-items: center; gap: 4px">
+          <sc-for list="{{bars}}" as="b" hint-placeholder-count="29"><span style="{{b.style}}"></span></sc-for>
+        </div>
+        <p style="margin: 2px 0 0; height: 24px; display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600"><sc-if value="{{rec.live}}" hint-placeholder-val="{{true}}"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.ink}}"></span></sc-if><span>{{rec.status}}</span></p>
+        <div style="display: flex; align-items: center; gap: 36px; margin-top: 6px">
+          <button type="button" class="pl-press" onClick="{{typeInstead}}" aria-label="Type it instead" style="width: 48px; height: 48px; border-radius: 999px; border: 0; background: {{t.track}}; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"></rect><path d="M7 10h.01M10.3 10h.01M13.7 10h.01M17 10h.01M8 14h8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg></button>
+          <div style="position: relative; width: 72px; height: 72px">
+            <span aria-hidden="true" style="{{ringStyle}}"></span>
+            <button type="button" class="pl-press" onClick="{{mic}}" aria-label="{{rec.micAria}}" style="position: absolute; left: 0; top: 0; width: 72px; height: 72px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; display: grid; place-items: center; cursor: pointer">
+              <sc-if value="{{rec.stopIcon}}" hint-placeholder-val="{{true}}"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="2.5" fill="currentColor"></rect></svg></sc-if>
+              <sc-if value="{{rec.micIcon}}" hint-placeholder-val="{{false}}"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.9"></rect><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg></sc-if>
+            </button>
+          </div>
+          <button type="button" class="pl-press" onClick="{{restart}}" aria-label="Start again" style="width: 48px; height: 48px; border-radius: 999px; border: 0; background: {{t.track}}; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 1 0 2.1-5M5 4v4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+        </div>
+        <span style="margin-top: 6px; font-size: 14px; color: {{t.ink2}}">{{rec.hint}}</span>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{isDone}}" hint-placeholder-val="{{false}}">
+    <main class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 28px; box-sizing: border-box">
+      <section aria-label="Your recap, checked against the records" style="display: flex; flex-direction: column">
+        <p aria-live="polite" class="pl-rise" style="margin: 0; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap">
+          <span id="done-h" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 64px; line-height: 0.92; letter-spacing: -0.05em">{{done.big}}</span>
+          <span style="flex: 1 1 160px; font-size: 18px; line-height: 1.35">{{done.line}}</span>
+        </p>
+        <span aria-hidden="true" style="margin-top: 14px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px">
+          <sc-for list="{{strip}}" as="sg" hint-placeholder-count="5"><span style="display: block; height: 8px; border-radius: 2px; background: {{t.track}}; overflow: hidden"><span style="{{sg.style}}"></span></span></sc-for>
+        </span>
+        <p style="margin: 10px 0 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{done.mix}}</p>
+      </section>
+
+      <ul aria-label="What they said, checked against the records" style="list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 22px">
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
+          <li class="{{r.cls}}" style="{{r.liStyle}}">
+            <span style="{{r.pill}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="{{r.icon}}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{r.verdict}}</span>
+            <div style="padding: 10px 12px; border-radius: 6px; background: {{t.claimBg}}; display: flex; flex-direction: column; gap: 2px">
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; line-height: 1.3; font-weight: 600; color: {{t.ink2}}"><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>They said</span>
+              <span style="font-size: 17px; line-height: 1.4; font-weight: 600">“{{r.said}}”</span>
+            </div>
+            <div style="padding: 10px 12px; border-radius: 6px; background: {{t.track}}; display: flex; flex-direction: column; gap: 2px">
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; line-height: 1.3; font-weight: 600; color: {{t.ink2}}"><svg width="12" height="13" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>{{r.recLabel}}</span>
+              <span style="font-size: 16px; line-height: 1.45">{{r.rec}}</span>
+              <span style="font-size: 13px; line-height: 1.4; color: {{t.muted}}">{{r.src}}</span>
+            </div>
+          </li>
+        </sc-for>
+      </ul>
+
+      <p data-review="legal" style="margin: 24px 0 0; padding: 14px 16px; border-radius: 8px; background: {{t.claimBg}}; display: flex; gap: 10px; font-size: 15px; line-height: 1.5"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg><span>Saved privately on your Aurelia card as <strong>Developer says · sales office · unverified · 24 Oct 2026</strong>. Only you can see it. It never changes the band. The audio was deleted at 12:26 pm.</span></p>
+      <p style="margin: 14px 0 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Read by AI from your note; rules compare it with HARERA records and Northfield's papers. I can mishear: <button type="button" class="pl-press" onClick="{{fixHeard}}" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">fix what I heard</button>. Not legal advice.</p>
+    </main>
+    <div style="flex: none; height: 88px; box-sizing: border-box; padding: 14px 16px 22px; display: flex; gap: 10px; background: {{t.nav}}">
+      <a href="#ask" class="pl-press" style="flex: none; height: 52px; padding: 0 20px; box-sizing: border-box; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; text-decoration: none; font-size: 17px; font-weight: 600; display: inline-flex; align-items: center">Ask about it</a>
+      <button type="button" class="pl-press" onClick="{{share}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Share with family</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <p role="status" style="position: absolute; left: 16px; right: 16px; bottom: 100px; margin: 0; padding: 12px 16px; border-radius: 8px; background: {{t.inverse}}; color: {{t.onInverse}}; font-size: 15px; line-height: 1.4; box-shadow: {{t.shadow}}">{{toast}}</p>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"screen":{"editor":"enum","options":["Visit pass","At the site","Recording your recap","Recap checked"],"default":"Visit pass"},"place":{"editor":"enum","options":["At the site","Not there yet"],"default":"At the site"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      flip: false, ov: null, ovFrom: null,
+      ahead: {1: true, 4: true}, tab: 'photos', shots: {0: true, 1: true}, asked: {0: true},
+      locating: false, tick: 0, recPhase: null, recFrom: null, recStart: 0, recBase: 34,
+      checking: false, shown: 5, reduced: false, toast: ''
+    };
+  }
+  componentDidMount() {
+    var self = this;
+    var reduced = false;
+    try { reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { reduced = false; }
+    this.setState({reduced: reduced});
+    this._iv = setInterval(function () { self.step(); }, 90);
+  }
+  componentWillUnmount() { clearInterval(this._iv); clearTimeout(this._t); clearTimeout(this._toastT); }
+  scrKey() {
+    var map = {'Visit pass': 'pass', 'At the site': 'site', 'Recording your recap': 'rec', 'Recap checked': 'done'};
+    var P = this.props || {};
+    var s = this.state || {};
+    var prop = map[P.screen] || 'pass';
+    return (s.ov && s.ovFrom === P.screen) ? s.ov : prop;
+  }
+  go(scr, extra) {
+    var patch = {ov: scr, ovFrom: (this.props || {}).screen};
+    for (var k in (extra || {})) patch[k] = extra[k];
+    this.setState(patch);
+  }
+  recPhase() {
+    var s = this.state || {};
+    var P = this.props || {};
+    return (s.recPhase && s.recFrom === P.screen) ? s.recPhase : 'listening';
+  }
+  step() {
+    var s = this.state;
+    var patch = {tick: s.tick + 1};
+    var scr = this.scrKey();
+    if (scr === 'done' && s.checking) {
+      if ((s.tick + 1) % 6 === 0) {
+        var n = Math.min(5, s.shown + 1);
+        patch.shown = n;
+        if (n >= 5) patch.checking = false;
+      }
+    }
+    this.setState(patch);
+  }
+  flash(msg) {
+    var self = this;
+    clearTimeout(this._toastT);
+    this.setState({toast: msg});
+    this._toastT = setTimeout(function () { self.setState({toast: ''}); }, 2800);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var P = this.props || {};
+    var night = ((P.theme || 'Day') === 'Night') !== !!s.flip;
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#121F1A', track: 'rgba(255,255,255,0.07)', track2: '#16221D', lineStrong: 'rgba(255,255,255,0.28)', photo: '#1B2A24',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      claimBg: '#1D2621', nav: '#121D19', segOn: 'rgba(255,255,255,0.14)', inverse: '#EEF3F0', onInverse: '#0B1411', shadow: '0 8px 24px rgba(0,0,0,0.45)',
+      fence: '#93A69D', fenceFill: 'rgba(255,255,255,0.06)', emptyBorder: '#7D828A',
+      vMatch: 'rgba(255,255,255,0.15)', vNone: '#2A3530', vCant: 'rgba(255,255,255,0.09)', sMatch: '#6F8F82', sNone: 'rgba(255,255,255,0.30)',
+      hatch: 'repeating-linear-gradient(45deg, rgba(185,198,192,0.34) 0 1.5px, transparent 1.5px 7px)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', track: '#F4F2ED', track2: '#F4F2ED', lineStrong: '#C9C4B9', photo: '#E7E3DA',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      claimBg: '#F1ECE2', nav: '#EFECE5', segOn: '#FFFFFF', inverse: '#1B1A17', onInverse: '#FFFFFF', shadow: '0 8px 24px rgba(27,26,23,.12)',
+      fence: '#5E5A52', fenceFill: 'rgba(27,26,23,0.05)', emptyBorder: '#8C9199',
+      vMatch: '#E2DED4', vNone: '#EADFCB', vCant: '#EEEAE2', sMatch: '#8A847A', sNone: '#C9C4B9',
+      hatch: 'repeating-linear-gradient(45deg, rgba(63,60,54,0.30) 0 1.5px, transparent 1.5px 7px)'
+    };
+    var scr = this.scrKey();
+    var reduced = !!s.reduced;
+
+    // The 5 questions on Rohan's pass (DESIGN.md §5b, B3 block). 2 and 5 were sent ahead (WebDevInbox).
+    var Q = [
+      {rec: 'The latest QPR shows Tower A at slab 9.', ask: 'Can I see slab 9, and the floor you’re casting now?', src: 'HARERA QPR · Apr–Jun 2026'},
+      {rec: 'The Jul–Sep QPR was due 15 Oct. It isn’t on HARERA yet.', ask: 'Can I see the HARERA receipt for the Jul–Sep 2026 QPR?', src: 'QPR register · 18 Oct 2026'},
+      {rec: 'HARERA lists one collection account for Phase 2.', ask: 'Can you give me the RERA collection account in writing?', src: 'HARERA registration'},
+      {rec: 'Records show completion Dec 2027, with 41% built.', ask: 'Which completion date will my agreement carry?', src: 'Registration · QPR Apr–Jun 2026'},
+      {rec: 'The cost sheet adds ₹9.2 L in charges to the base price.', ask: 'Which charges on the cost sheet are optional?', src: 'Cost sheet · 2 Oct 2026'}
+    ];
+    var ahead = s.ahead || {};
+    var questions = Q.map(function (q, i) {
+      var on = !!ahead[i];
+      return {
+        rec: q.rec, ask: q.ask, src: q.src,
+        aheadAria: on ? 'true' : 'false', aheadLabel: on ? 'Sent ahead' : 'Send ahead',
+        aheadSr: 'Send this question to the sales gallery before the visit',
+        track: 'flex:none;position:relative;width:44px;height:26px;border-radius:999px;display:inline-block;background:' + (on ? T.ink : T.track) + ';' + (on ? '' : 'box-shadow:inset 0 0 0 2px ' + T.emptyBorder),
+        thumb: 'position:absolute;top:4px;left:' + (on ? 22 : 4) + 'px;width:18px;height:18px;border-radius:50%;background:' + (on ? T.bg : T.ink2) + ';transition:left .2s cubic-bezier(.22,1,.36,1)',
+        toggle: function () { var n = {}; for (var k in ahead) n[k] = ahead[k]; n[i] = !on; self.setState({ahead: n}); self.flash(on ? 'Taken back. The sales gallery no longer sees this question.' : 'Sent to the sales gallery with code 4821. Only the question goes.'); }
+      };
+    });
+
+    // At the site: check-in by location (the RERA site boundary), photos, questions.
+    var away = P.place === 'Not there yet';
+    var ci = s.locating
+      ? {title: 'Checking where you are…', sub: 'Matching your location to the RERA site boundary', note: 'Location used once, for this check.', away: false}
+      : (away
+        ? {title: 'You’re about 2.3 km away', sub: 'From Aurelia Heights, Phase 2. Check in when you reach the sales gallery.', note: 'Location used once. We keep nothing.', away: true}
+        : {title: 'You’re at Aurelia Heights, Phase 2', sub: 'Inside its RERA site boundary · checked in 10:52 am', note: 'Location used once. We keep only the check-in time.', away: false});
+    var dot = away ? {cx: 86, cy: 10} : {cx: 46, cy: 38};
+    var shots = s.shots || {};
+    var nShots = [0, 1, 2, 3, 4].filter(function (i) { return shots[i]; }).length;
+    var asked = s.asked || {};
+    var nAsked = [0, 1, 2, 3, 4].filter(function (i) { return asked[i]; }).length;
+    var tab = s.tab === 'qs' ? 'qs' : 'photos';
+    function seg(on) { return 'flex:1 1 0;min-width:0;min-height:44px;padding:0 10px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;line-height:1.2;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.segOn : 'transparent'); }
+    var tabs = [['photos', 'Photos · ' + nShots + ' of 5'], ['qs', 'Questions · ' + nAsked + ' of 5']].map(function (x) {
+      var on = tab === x[0];
+      return {label: x[1], on: on ? 'true' : 'false', style: seg(on), pick: function () { self.setState({tab: x[0]}); }};
+    });
+    var TIMES = ['10:54 am', '10:56 am', '11:14 am', '11:31 am', '11:38 am'];
+    var NAMES = ['the RERA board on the hoarding', 'Tower A from the gate', 'the sample flat', 'the cost sheet they hand you', 'the bank details on the booking form'];
+    function photo(i) {
+      var done = !!shots[i];
+      return {
+        done: done, todo: !done,
+        state: done ? 'Taken ' + TIMES[i] : 'Tap to take it',
+        aria: done ? 'Photo of ' + NAMES[i] + ', taken ' + TIMES[i] + '. Tap to retake.' : 'Photograph ' + NAMES[i],
+        row: 'width:100%;min-height:76px;padding:6px 0;border:0;background:transparent;color:' + T.ink + ';font:inherit;text-align:left;display:flex;gap:14px;align-items:center;cursor:pointer',
+        box: 'flex:none;width:64px;height:64px;overflow:hidden;display:grid;place-items:center;background:' + (done ? T.photo : T.track) + ';color:' + T.ink2,
+        pick: function () { var n = {}; for (var k in shots) n[k] = shots[k]; n[i] = true; self.setState({shots: n}); if (!done) self.flash('Photo saved to your visit, ' + TIMES[i] + '.'); }
+      };
+    }
+    var askList = Q.map(function (q, i) {
+      var on = !!asked[i];
+      return {
+        ask: q.ask, rec: q.rec, on: on, aria: on ? 'true' : 'false',
+        box: 'flex:none;width:24px;height:24px;margin-top:2px;border-radius:6px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;' + (on ? 'background:' + T.ink + ';border:2px solid ' + T.ink : 'border:2px solid ' + T.ink2),
+        toggle: function () { var n = {}; for (var k in asked) n[k] = asked[k]; n[i] = !on; self.setState({asked: n}); }
+      };
+    });
+
+    // Recording: the buyer's own recap, streamed as a live transcript.
+    var WORDS = 'They said possession will be December 2026. They said Tower A is at the 12th slab now. The Jul–Sep QPR, they said, was filed on 12 October. The 3 BHK starts at 2.35 crore. And they’ll waive the PLC and club charges if we book this week.'.split(' ');
+    var phase = this.recPhase();
+    var el = Math.max(0, s.tick - s.recStart);
+    var shownW = phase === 'idle' ? 0 : (phase === 'listening' && !reduced ? Math.min(WORDS.length, s.recBase + Math.floor(el / 4)) : WORDS.length);
+    var secs = phase === 'idle' ? 0 : Math.min(72, 30 + Math.floor(el / 11));
+    if (phase !== 'listening' && phase !== 'idle') secs = 72;
+    function clock(x) { return Math.floor(x / 60) + ':' + ('0' + (x % 60)).slice(-2); }
+    var rec = {
+      label: phase === 'idle' ? 'Your recap' : (phase === 'listening' ? 'Hearing you · live transcript' : 'Writing it down'),
+      text: phase === 'idle' ? 'Tap the mic and start talking.' : WORDS.slice(0, shownW).join(' ') + (phase === 'listening' && shownW < WORDS.length ? '…' : ''),
+      live: phase === 'listening',
+      status: phase === 'idle' ? 'Mic off' : (phase === 'listening' ? 'Recording only while the mic is on · ' + clock(secs) : 'Mic off · writing it down, then deleting the audio'),
+      micAria: phase === 'listening' ? 'Stop and check my recap' : 'Start recording your recap',
+      stopIcon: phase === 'listening', micIcon: phase !== 'listening',
+      hint: phase === 'listening' ? 'Tap to stop and check' : (phase === 'idle' ? 'English or Hinglish' : 'Checking next')
+    };
+    function rnd(k) { var x = Math.sin(k * 12.9898) * 43758.5453; return x - Math.floor(x); }
+    var bars = [];
+    for (var i = 0; i < 29; i++) {
+      var env = Math.sin(Math.PI * (i + 1) / 30);
+      var h = 4, col = T.lineStrong;
+      if (phase === 'listening') { h = reduced ? 4 + 18 * env : 6 + 32 * env * (0.3 + 0.7 * rnd(i * 7.31 + s.tick * 3.17)); col = T.accent; }
+      else if (phase === 'writing') { h = reduced ? 6 : 4 + 7 * (0.5 + 0.5 * Math.sin(s.tick * 0.45 - i * 0.55)); col = T.muted; }
+      bars.push({style: 'display:block;width:4px;height:40px;border-radius:2px;background:' + col + ';transform:scaleY(' + (h / 40).toFixed(3) + ');transition:transform 90ms linear,background-color .3s ease'});
+    }
+    var level = phase === 'listening' ? (reduced ? 1.2 : 1.1 + 0.28 * rnd(s.tick * 1.37)) : 1;
+    var ringStyle = 'position:absolute;left:0;top:0;width:72px;height:72px;border-radius:50%;background:' + T.accentSoft + ';transform:scale(' + level.toFixed(3) + ');transition:transform 90ms linear';
+
+    // The recap, checked (DESIGN.md §5b, B3 block). Same verdict words and tones as Claims vs records.
+    var R = [
+      {v: 'Differs', said: 'Possession in Dec 2026', recLabel: 'Records show', rec: 'Original completion Dec 2027, with 41% built. No extensions.', src: 'HARERA registration · Dec 2022 · QPR Apr–Jun 2026'},
+      {v: "Can't check", said: 'Tower A is at the 12th slab now', recLabel: 'Records show', rec: 'Slab 9 at the last filing. The Jul–Sep QPR isn’t on HARERA, so nothing newer is on record.', src: 'HARERA QPR · Apr–Jun 2026'},
+      {v: "Can't check", said: 'The Jul–Sep QPR was filed on 12 Oct', recLabel: 'Records show', rec: 'Not on HARERA when we checked at 12:26 pm. Northfield says the same in public; it isn’t verified.', src: 'QPR register · 24 Oct 2026, 12:26 pm'},
+      {v: 'Matches', said: '3 BHK from ₹2.35 Cr', recLabel: 'Price list shows', rec: '₹2.35 Cr on the developer’s price list. All-in, it comes to ₹2.74 Cr.', src: 'Developer price list · 2 Oct 2026'},
+      {v: 'Not in records', said: 'PLC and club waived if we book this week', recLabel: 'Records show', rec: 'An offer, not a record. Ask for it in writing on the cost sheet. PLC and club come to ₹4.4 L.', src: 'Developer cost sheet · 2 Oct 2026'}
+    ];
+    var VS = {
+      'Differs': {label: 'Differs', bg: T.ink, fg: T.bg, seg: T.ink, icon: 'M2.5 5.2h9M2.5 8.8h9M9.6 2.2L4.4 11.8'},
+      'Matches': {label: 'Matches the price list', bg: T.vMatch, fg: T.ink, seg: T.sMatch, icon: 'M3 7.5l2.5 2.5L11 4'},
+      'Not in records': {label: 'Not in records', bg: T.vNone, fg: T.ink, seg: T.sNone, icon: 'M9.8 6a3.8 3.8 0 1 1-7.6 0a3.8 3.8 0 1 1 7.6 0M8.8 8.8l3.2 3.2M4.3 6h3.4'},
+      "Can't check": {label: 'Can’t check yet', bg: T.hatch + ',' + T.vCant, fg: T.ink, seg: T.hatch + ',' + T.track, icon: 'M12 7a5 5 0 1 1-10 0a5 5 0 1 1 10 0M7 4.3V7l2 1.4'}
+    };
+    var shown = reduced ? 5 : (s.checking ? s.shown : 5);
+    var rows = R.slice(0, Math.max(1, shown)).map(function (r, i) {
+      var v = VS[r.v];
+      return {
+        verdict: v.label, said: r.said, recLabel: r.recLabel, rec: r.rec, src: r.src, icon: v.icon,
+        cls: 'pl-rise',
+        liStyle: 'display:flex;flex-direction:column;gap:6px;animation-delay:' + (s.checking ? 0 : i * 110) + 'ms',
+        pill: 'align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:700;background:' + v.bg + ';color:' + v.fg + ';' + (reduced ? '' : 'animation:pl-land .42s cubic-bezier(.22,1,.36,1) ' + (s.checking ? 120 : 260 + i * 110) + 'ms both')
+      };
+    });
+    if (s.checking && shown === 0) rows = [];
+    var strip = R.map(function (r, i) {
+      var on = i < shown;
+      return {style: 'display:block;height:100%;transform-origin:left center;background:' + VS[r.v].seg + ';transform:scaleX(' + (on ? 1 : 0) + ');' + (reduced ? '' : 'transition:transform .45s cubic-bezier(.22,1,.36,1)')};
+    });
+    var nD = R.slice(0, shown).filter(function (r) { return r.v === 'Differs'; }).length;
+    var done = (s.checking && shown < 5)
+      ? {big: shown + ' of 5', line: 'checked against HARERA and Northfield’s papers…', mix: 'Checking one thing at a time.'}
+      : {big: '1 of 5', line: 'things they told you differ from the records.', mix: '2 can’t be checked until the Jul–Sep QPR is on HARERA. 1 matches the price list. 1 is an offer that isn’t in any record.'};
+    if (s.checking && shown < 5 && nD) done.line = 'checked so far · ' + nD + ' differs from the records';
+
+    var titles = {
+      pass: ['Visit pass', 'Aurelia Heights, Phase 2'],
+      site: ['At the site', 'Aurelia Heights, Phase 2 · code 4821'],
+      rec: ['Your recap', 'After the visit · Sat 24 Oct'],
+      done: ['Your recap, checked', 'Sat 24 Oct 2026 · your note, 1 min 12 s']
+    };
+    var backTo = {pass: null, site: 'pass', rec: 'site', done: 'rec'};
+
+    return {
+      t: T,
+      themeLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      flipTheme: function () { self.setState({flip: !s.flip}); },
+      barTitle: titles[scr][0], barSub: titles[scr][1],
+      backArrow: scr !== 'site' && scr !== 'done', backClose: scr === 'site' || scr === 'done',
+      backLabel: scr === 'pass' ? 'Back to Aurelia Heights, Phase 2' : (scr === 'site' || scr === 'done' ? 'Close' : 'Back'),
+      goBack: function () { if (backTo[scr]) self.go(backTo[scr]); },
+      isPass: scr === 'pass', isSite: scr === 'site', isRec: scr === 'rec', isDone: scr === 'done',
+      questions: questions,
+      checkIn: function () {
+        clearTimeout(self._t);
+        self.go('site', {locating: !reduced});
+        if (!reduced) self._t = setTimeout(function () { self.setState({locating: false}); }, 1400);
+      },
+      ci: ci, dot: dot, tabs: tabs, tabPhotos: tab === 'photos', tabQs: tab === 'qs',
+      ph0: photo(0), ph1: photo(1), ph2: photo(2), ph3: photo(3), ph4: photo(4),
+      askList: askList,
+      toRecap: function () { self.go('rec', {recPhase: 'idle', recFrom: P.screen, recStart: s.tick, recBase: 0}); },
+      rec: rec, bars: bars, ringStyle: ringStyle,
+      mic: function () {
+        if (phase === 'idle') { self.setState({recPhase: 'listening', recFrom: P.screen, recStart: s.tick, recBase: 0}); return; }
+        if (phase === 'listening') {
+          clearTimeout(self._t);
+          self.setState({recPhase: 'writing', recFrom: P.screen});
+          self._t = setTimeout(function () { self.go('done', {checking: !reduced, shown: reduced ? 5 : 0}); }, reduced ? 0 : 1200);
+        }
+      },
+      restart: function () { clearTimeout(self._t); self.setState({recPhase: 'idle', recFrom: P.screen, recStart: s.tick, recBase: 0}); },
+      typeInstead: function () { self.flash('A text box opens. Type what they told you; we check it the same way.'); },
+      done: done, rows: rows, strip: strip,
+      fixHeard: function () { self.flash('Your transcript opens. Edit any line, and we check it again.'); },
+      share: function () { self.flash('Shares our summary only: the 5 lines and their sources. Never the audio.'); },
+      hasToast: !!s.toast, toast: s.toast || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

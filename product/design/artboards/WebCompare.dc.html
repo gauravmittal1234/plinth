@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Compare: 3 Dwarka Expressway projects</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+@keyframes plIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  .rowin { animation: plIn 420ms cubic-bezier(.22,1,.36,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="position: relative; min-height: 4100px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#compare" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Compare</a>
+        <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask Plinth</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer; display: inline-flex; align-items: center; justify-content: center">
+          <sc-if value="{{night}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.5" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M10 1.8v2.2M10 16v2.2M1.8 10H4M16 10h2.2M4.2 4.2l1.6 1.6M14.2 14.2l1.6 1.6M4.2 15.8l1.6-1.6M14.2 5.8l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+          <sc-if value="{{day}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.6A6.5 6.5 0 0 1 7.4 4a6.5 6.5 0 1 0 8.6 8.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg></sc-if>
+        </button>
+        <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{followLabel}}</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" style="flex: none">
+    <section aria-labelledby="cmp-h" style="position: relative; min-height: 560px; overflow: hidden; display: flex; align-items: flex-end; background: {{t.photo}}">
+      <img data-slot="corridorAerial" class="drift" src="/_blob/4ccf6477a2c2bc3db2be04d5a579e1e0" alt="Illustrative image: new residential towers along the Dwarka Expressway, Gurugram" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+      <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,11,0) 30%, rgba(10,12,11,0.55) 62%, rgba(10,12,11,0.86) 100%)"></div>
+      <span style="position: absolute; top: 20px; right: 32px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+      <div style="position: relative; width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 32px 56px; box-sizing: border-box; color: #FFFFFF; display: flex; flex-direction: column; gap: 16px">
+        <h1 id="cmp-h" class="rise" style="margin: 0; max-width: 14ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 104px); line-height: 0.96; letter-spacing: -0.045em; text-wrap: balance">How do these {{count}} compare?</h1>
+        <p class="rise rise1" style="margin: 0; max-width: 46ch; font-size: 22px; line-height: 1.45">{{namesLine}}</p>
+        <p class="rise rise2" style="margin: 0; font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.9)">Your shortlist · facts side by side, each with its source and date · data as of 14 Oct 2026</p>
+      </div>
+    </section>
+
+    <section id="compare" aria-label="Comparison" style="background: {{t.track}}; padding: 56px 0 160px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+        <div class="rv" style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px 32px">
+          <button type="button" class="press" role="switch" aria-checked="{{hl}}" onClick="{{toggleHl}}" style="{{hlBtn}}"><span aria-hidden="true" style="{{swTrack}}"><span style="{{swKnob}}"></span></span>Highlight differences</button>
+          <p aria-live="polite" style="flex: 1 1 320px; margin: 0; font-size: 22px; line-height: 1.4; color: {{t.ink}}">{{hlSummary}}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+            <button type="button" class="press" onClick="{{askAi}}" style="display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; box-sizing: border-box; border: 0; border-radius: 999px; background: {{t.panel}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 1.5l1.6 4.2L15 7.3l-4.4 1.6L9 13.2 7.4 8.9 3 7.3l4.4-1.6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>{{askLabel}}</button>
+            <button type="button" class="press" onClick="{{share}}" style="display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; box-sizing: border-box; border: 0; border-radius: 999px; background: {{t.panel}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12.5V3M6.5 6.5L10 3l3.5 3.5M4 11v4.5c0 .6.4 1 1 1h10c.6 0 1-.4 1-1V11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Share with family</button>
+          </div>
+        </div>
+        <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 0; font-size: 17px; color: {{t.ink}}">{{toast}}</p></sc-if>
+        <sc-if value="{{shareShown}}" hint-placeholder-val="{{false}}">
+          <div class="rowin" style="max-width: 640px; box-sizing: border-box; border-radius: 8px; background: {{t.panel}}; padding: 24px 28px; display: flex; flex-direction: column; gap: 14px">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+              <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">What your family sees on WhatsApp</p>
+              <button type="button" class="press" onClick="{{closeShare}}" aria-label="Close the share preview" style="width: 44px; height: 44px; flex: none; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button>
+            </div>
+            <div style="padding: 18px 20px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 8px; font-size: 17px; line-height: 1.45">
+              <sc-for list="{{shareLines}}" as="sl" hint-placeholder-count="3"><p style="margin: 0">{{sl}}</p></sc-for>
+              <p style="margin: 4px 0 0; font-size: 15px; color: {{t.ink2}}">{{shareSource}}</p>
+              <p style="margin: 0; font-size: 15px; font-weight: 600">Plinth · No developer pays us. Ever.</p>
+            </div>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">The link opens this same live table. It carries no phone number.</p>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{aiShown}}" hint-placeholder-val="{{false}}">
+          <div id="ask" aria-live="polite" class="rowin" style="max-width: 920px; box-sizing: border-box; border-radius: 8px; background: {{t.panel}}; padding: 28px 32px; display: flex; flex-direction: column; gap: 14px">
+            <p style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 15px; color: {{t.muted}}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 1.5l1.6 4.2L15 7.3l-4.4 1.6L9 13.2 7.4 8.9 3 7.3l4.4-1.6z" fill="none" stroke="{{t.accentText}}" stroke-width="1.5" stroke-linejoin="round"></path></svg>Ask Plinth · checked against our records before showing</p>
+            <p style="margin: 0; font-size: 19px; line-height: 1.6">{{aiTextShown}}</p>
+            <sc-if value="{{aiDone}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{aiChips}}" as="ac" hint-placeholder-count="4"><button type="button" class="press" onClick="{{ac.focus}}" aria-label="{{ac.aria}}" style="{{chipStyle}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{ac.label}}</button></sc-for></div>
+            </sc-if>
+            <sc-if value="{{aiStale}}" hint-placeholder-val="{{false}}"><p style="margin: 0; font-size: 15px; color: {{t.ink}}">The projects in the table changed. Ask again to update this answer.</p></sc-if>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Ask Plinth is an AI. It answers from public records like HARERA and shows its sources. I explain the records and don’t pick a winner. Each source chip highlights its row in the table. This is not advice.</p>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Prefer a person? <a href="#handoff" class="lk" style="color: {{t.ink}}; font-weight: 600">Talk to a Plinth adviser</a>, paid by you, never by developers. Free to ask.</p>
+          </div>
+        </sc-if>
+
+        <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.muted}}">Delivery risk is our opinion, based on public records. Not a credit rating. Not issued by any RERA. Data as of 14 Oct 2026 · model v1.2 · No paid placement.</p>
+        <div role="region" aria-label="Comparison table. Scrolls sideways on small screens." tabindex="0" class="rv rv1" style="overflow-x: auto; border-radius: 8px; background: {{t.panel}}">
+          <div role="table" aria-label="{{tableLabel}}" style="{{tableStyle}}">
+            <div role="row" style="{{gridRow}}">
+              <div role="columnheader" style="{{cornerStyle}}">
+                <span style="display: block; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.2; letter-spacing: -0.015em">{{count}} projects</span>
+                <span style="display: block; margin-top: 6px; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">3 BHK on each. Every row names its source.</span>
+              </div>
+              <sc-for list="{{cols}}" as="col" hint-placeholder-count="3">
+                <div role="columnheader" style="{{colHeadStyle}}">
+                  <div style="display: flex; flex-direction: column; gap: 14px; text-align: left">
+                    <div style="position: relative; height: 200px; margin: -24px -20px 4px; overflow: hidden; background: {{t.photo}}">
+                      <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2 exterior. Illustrative image." style="{{col.sAurelia}}; object-fit: cover; display: block">
+                      <img data-slot="heroKestrel" src="/_blob/29ddb4eb8af81bf41e28a3b11bdfd13e" alt="Kestrel Park exterior. Illustrative image." style="{{col.sKestrel}}; object-fit: cover; display: block">
+                      <img data-slot="heroSapphire" src="/_blob/834d8de534be36df0eb45c9468dabeb2" alt="Sapphire Grove, Phase 1 exterior. Illustrative image." style="{{col.sSapphire}}; object-fit: cover; display: block">
+                      <img data-slot="heroCoral" src="/_blob/76b15081db77011ae5930ad87bcd7272" alt="Coral Towers exterior. Illustrative image." style="{{col.sCoral}}; object-fit: cover; display: block">
+                      <img data-slot="heroJuniper" src="/_blob/dca5839367b61f6d11fb4a0306ea108a" alt="Juniper Enclave exterior. Illustrative image." style="{{col.sJuniper}}; object-fit: cover; display: block">
+                      <span style="position: absolute; left: 10px; bottom: 10px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 1px 10px; border-radius: 999px">Illustrative image</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 2px">
+                      <a href="{{col.href}}" class="lk" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.2; letter-spacing: -0.015em; color: {{t.ink}}; text-decoration: none">{{col.name}}</a>
+                      <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{col.dev}} · {{col.sector}}</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px">
+                      <svg viewBox="0 0 300 172" width="88" height="51" role="img" aria-label="{{col.dialLabel}}" style="flex: none">
+                        <sc-for list="{{col.arcs}}" as="ca" hint-placeholder-count="5"><path d="{{ca.d}}" fill="none" stroke="{{ca.color}}" stroke-width="{{ca.w}}" opacity="{{ca.op}}" stroke-dasharray="{{ca.dash}}"></path></sc-for>
+                        <g style="{{col.needleStyle}}"><line x1="150" y1="150" x2="150" y2="48" stroke="{{t.ink}}" stroke-width="11" stroke-linecap="round"></line></g>
+                        <circle cx="150" cy="150" r="18" fill="{{t.ink}}"></circle>
+                      </svg>
+                      <span style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+                        <span style="font-size: 14px; line-height: 1.3; color: {{t.ink2}}">Delivery risk</span>
+                        <span style="{{col.chipStyle}}"><span aria-hidden="true" style="display: inline-grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{col.meter}}" as="cm" hint-placeholder-count="5"><span style="{{cm.style}}"></span></sc-for></span>{{col.bandName}}</span>
+                      </span>
+                    </div>
+                    <sc-if value="{{col.withheld}}" hint-placeholder-val="{{false}}"><a href="#facts-only" class="lk" style="align-self: flex-start; font-size: 15px; font-weight: 600; color: {{t.ink}}">Facts only: see why</a></sc-if>
+                    <sc-if value="{{col.canRemove}}" hint-placeholder-val="{{true}}">
+                      <button type="button" class="press" onClick="{{col.remove}}" aria-label="{{col.removeLabel}}" style="{{removeStyle}}"><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>Remove</button>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+              <sc-if value="{{canAdd}}" hint-placeholder-val="{{true}}">
+                <div role="columnheader" style="{{addHeadStyle}}">
+                  <div style="height: calc(100% + 48px); box-sizing: border-box; margin: -24px -20px; padding: 28px 22px; background: {{t.track}}; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; text-align: left">
+                    <sc-if value="{{addClosed}}" hint-placeholder-val="{{true}}">
+                      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 12px">
+                        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.2; letter-spacing: -0.015em">One more?</span>
+                        <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Compare up to 4. Search by name or RERA number.</span>
+                        <button type="button" class="press" onClick="{{openAdd}}" aria-expanded="{{addOpen}}" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>Add a project</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{addOpen}}" hint-placeholder-val="{{false}}">
+                      <div style="display: flex; flex-direction: column; gap: 10px">
+                        <label for="add-q" style="font-size: 15px; font-weight: 600">Add a project</label>
+                        <input id="add-q" type="search" value="{{query}}" onChange="{{onQuery}}" placeholder="Name or RERA number" autocomplete="off" style="height: 44px; width: 100%; box-sizing: border-box; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 16px">
+                        <sc-for list="{{suggestions}}" as="sg" hint-placeholder-count="2"><button type="button" class="press" onClick="{{sg.add}}" style="{{suggestStyle}}"><span style="font-weight: 600">{{sg.name}}</span><span style="font-size: 14px; color: {{t.ink2}}">{{sg.meta}}</span></button></sc-for>
+                        <sc-if value="{{noSuggestions}}" hint-placeholder-val="{{false}}"><span style="font-size: 15px; color: {{t.ink2}}">No match in our records yet. Try the RERA number.</span></sc-if>
+                        <div><button type="button" onClick="{{closeAdd}}" style="min-height: 44px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 16px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px; cursor: pointer">Cancel</button></div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+
+            <sc-for list="{{rows}}" as="row" hint-placeholder-count="8">
+              <div role="row" id="{{row.domId}}" class="rowin" style="{{gridRow}}">
+                <div role="rowheader" style="{{row.headStyle}}">
+                  <span style="display: block; font-size: 17px; font-weight: 600; line-height: 1.35; color: {{t.ink}}">{{row.label}}</span>
+                  <span style="display: flex; align-items: flex-start; gap: 6px; margin-top: 6px; font-size: 14px; line-height: 1.4; color: {{t.ink2}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{row.src}}</span>
+                  <sc-if value="{{row.hasExtra}}" hint-placeholder-val="{{false}}"><span style="display: block; margin-top: 6px; font-size: 14px; line-height: 1.4; color: {{t.ink2}}">{{row.extra}}</span></sc-if>
+                  <sc-if value="{{row.showNote}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; margin-top: 10px; padding: 2px 10px; border-radius: 999px; background: {{t.bgSolid}}; font-size: 14px; font-weight: 600; line-height: 1.5; color: {{t.ink}}">{{row.note}}</span></sc-if>
+                  <sc-if value="{{row.cited}}" hint-placeholder-val="{{false}}"><span style="display: block; margin-top: 8px; font-size: 14px; font-weight: 600; color: {{t.ink}}">Cited by Ask Plinth</span></sc-if>
+                </div>
+                <sc-for list="{{row.cells}}" as="cell" hint-placeholder-count="3">
+                  <div role="cell" style="{{cell.style}}">
+                    <sc-if value="{{cell.hasBar}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="display: block; position: relative; height: 10px; margin: 6px 0 12px; border-radius: 5px; background: {{t.track}}"><span style="{{cell.barStyle}}"></span><span style="{{cell.tickStyle}}"></span></span></sc-if>
+                    <sc-if value="{{cell.hasDots}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px"><sc-for list="{{cell.dots}}" as="tdot" hint-placeholder-count="6"><span style="{{tdot.style}}"></span></sc-for></span></sc-if>
+                    <span style="{{cell.mainStyle}}">{{cell.main}}</span>
+                    <span style="display: block; margin-top: 4px; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{cell.sub}}</span>
+                    <sc-if value="{{cell.hasLink}}" hint-placeholder-val="{{false}}"><a href="#facts-only" class="lk" style="display: inline-block; margin-top: 6px; font-size: 15px; font-weight: 600; color: {{t.ink}}">Facts only: see why</a></sc-if>
+                    <sc-if value="{{cell.hasConf}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 14px; color: {{t.ink2}}"><span aria-hidden="true" style="{{cell.c1}}"></span><span aria-hidden="true" style="{{cell.c2}}"></span>{{cell.confText}}</span></sc-if>
+                    <sc-if value="{{cell.hasDiff}}" hint-placeholder-val="{{false}}"><span style="display: block; margin-top: 8px; font-size: 14px; font-weight: 600; line-height: 1.4; color: {{t.ink}}">{{cell.diff}}</span></sc-if>
+                    <sc-if value="{{cell.hasPend}}" hint-placeholder-val="{{false}}"><span style="display: block; margin-top: 12px; font-size: 15px; font-weight: 600; line-height: 1.45; color: {{t.ink}}">{{cell.pendFact}}</span><span style="display: block; margin-top: 6px; padding: 8px 12px; border-radius: 8px; background: {{t.claimBg}}; font-size: 14px; line-height: 1.45; color: {{t.ink}}">{{cell.pendDev}}</span></sc-if>
+                  </div>
+                </sc-for>
+                <sc-if value="{{canAdd}}" hint-placeholder-val="{{true}}"><div role="cell" style="{{addCellStyle}}"><span class="sr">Empty slot</span></div></sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <sc-if value="{{hasSame}}" hint-placeholder-val="{{false}}">
+          <p class="rowin" style="margin: 0; padding: 18px 22px; border-radius: 8px; background: {{t.panel}}; font-size: 17px; color: {{t.ink}}"><strong>Same for all {{count}}:</strong> {{sameText}}. These rows are folded away while differences are highlighted.</p>
+        </sc-if>
+        <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Blank cells say “Not in our records yet” rather than guess. <a href="#report" class="lk" style="color: {{t.ink}}">Report an error</a> · <a href="#money" class="lk" style="color: {{t.ink}}">How we make money</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="max-width: 1264px; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 52ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">This comparison stands on public records: Methodology v1.2, the latest HARERA progress reports, HARERA registrations and orders, DTCP OC records, and cost sheets read with Haryana rules v2026.10. Every row above names the one it uses.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#methodology" class="lk" style="color: {{t.onSlab}}">Methodology v1.2</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report an error</a>
+          <a href="#my-number" class="lk" style="color: {{t.onSlab}}">Who has my number</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.onSlab2}}"></span>HARERA synced 2 hours ago · 17,938 orders read · next QPR due 15 Jan 2027</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"band":{"editor":"enum","options":["Low","Moderate","Elevated","High","Severe"],"default":"Elevated"},"mode":{"editor":"enum","options":["Scored","Facts-only"],"default":"Scored"},"$preview":{"width":1280,"height":4100}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {ready: false, reduced: false, cols: ['aurelia', 'kestrel', 'sapphire'], hl: false, addOpen: false, query: '', aiShown: false, aiText: '', aiSrc: [], shown: 0, aiStale: false, focusRow: '', toast: '', themeOv: null, themeFrom: null, following: false, shareShown: false};
+  }
+  componentDidMount() {
+    var self = this;
+    var reduced = false;
+    try { reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    if (reduced) this.setState({ready: true, reduced: true});
+    else this._t = setTimeout(function () { self.setState({ready: true}); }, 300);
+  }
+  componentWillUnmount() {
+    clearTimeout(this._t); clearInterval(this._iv); clearTimeout(this._toastT);
+  }
+  band() {
+    var b = this.props.band;
+    return ['Low', 'Moderate', 'Elevated', 'High', 'Severe'].indexOf(b) >= 0 ? b : 'Elevated';
+  }
+  factsOnly() { return this.props.mode === 'Facts-only'; }
+  projects() {
+    // §5 / §5b. Homes, loading and commute: §5b "Homes, size and units" (From the developer, Oct 2026) and "Getting around" (Plinth estimate)
+    return {
+      aurelia: {id: 'aurelia', name: 'Aurelia Heights, Phase 2', short: 'Aurelia Phase 2', dev: 'Northfield Estates', sector: 'Sector 37D', corridor: 'Dwarka Expressway', band: this.band(), conf: 'low', northfield: true, built: 41, time: 77, allin: 2.74, quoted: 2.35, psf: 18900, carpet: 1450, superA: 2000, loading: 38, units: 500, homes: [['3 BHK', '1,450', 2.35, 2.74], ['4 BHK', '2,100', 3.38, null]], cyber: ['18 km', 35, 55], igi: '22 km, 30–45 min', date: 'Dec 2027', dateNote: 'No extensions so far', complaints: 14, rate: '2.8', reason: '72% of units sold, 41% built.', track: {late: 2, total: 6}, pending: {fact: 'Jul–Sep 2026 QPR not on HARERA yet (due 15 Oct).', dev: 'Developer says: filed 12 Oct, not yet verified.'}},
+      kestrel: {id: 'kestrel', name: 'Kestrel Park', short: 'Kestrel Park', dev: 'Orbis Land', sector: 'Sector 113', corridor: 'Dwarka Expressway', band: 'Low', conf: 'high', built: 63, time: 58, allin: 2.44, quoted: 2.10, psf: 17400, carpet: 1400, superA: 1880, loading: 34, units: 420, homes: [['2 BHK', '1,050', 1.58, null], ['3 BHK', '1,400', 2.10, 2.44]], cyber: ['19 km', 35, 50], igi: '13 km, 20–30 min', date: 'Jun 2027', dateNote: '', complaints: 2, rate: '0.5', reason: '63% built with 58% of the promised time used.', track: {late: 1, total: 9}},
+      sapphire: {id: 'sapphire', name: 'Sapphire Grove, Phase 1', short: 'Sapphire Grove', dev: 'Meridian Habitat', sector: 'Sector 106', corridor: 'Dwarka Expressway', band: 'Moderate', conf: 'high', built: 48, time: 55, allin: 2.27, quoted: 1.95, psf: 16200, carpet: 1400, superA: 1960, loading: 40, units: 360, homes: [['3 BHK', '1,400', 1.95, 2.27], ['3 BHK + study', '1,620', 2.26, null]], cyber: ['20 km', 40, 60], igi: '16 km, 25–40 min', date: 'Mar 2028', dateNote: '', complaints: 5, rate: '1.4', reason: '48% built with 55% of the promised time used.', track: {late: 2, total: 11}},
+      coral: {id: 'coral', name: 'Coral Towers', short: 'Coral Towers', dev: 'Vantage Buildcon', sector: 'Sector 89', corridor: 'New Gurugram', band: 'High', conf: 'low', built: 22, time: 70, allin: 1.90, quoted: 1.62, psf: 15300, carpet: 1240, superA: 1750, loading: 41, units: 640, homes: [['2 BHK', '980', 1.28, null], ['3 BHK', '1,240', 1.62, 1.90]], cyber: ['24 km', 45, 70], igi: '27 km, 40–60 min', date: 'Aug 2028', dateNote: 'Extended twice: Feb 2029, then Aug 2029', extensions: 2, complaints: null, rate: null, reason: '22% built with 70% of the promised time used. 2 extensions on record.', track: null},
+      juniper: {id: 'juniper', name: 'Juniper Enclave', short: 'Juniper Enclave', dev: 'Halcyon Homes', sector: 'Sector 102', corridor: 'Dwarka Expressway', band: 'Limited', conf: null, built: null, time: null, allin: null, quoted: 2.25, psf: null, carpet: null, superA: null, loading: null, units: 280, homes: [['3 BHK', null, 2.25, null]], cyber: ['19 km', 40, 55], igi: '15 km, 25–35 min', date: null, dateNote: '', complaints: null, rate: null, reason: 'Not enough history to score. No penalty.', track: {late: 0, total: 0, fresh: true}}
+    };
+  }
+  flash(msg) {
+    var self = this;
+    clearTimeout(this._toastT);
+    this.setState({toast: msg});
+    this._toastT = setTimeout(function () { self.setState({toast: ''}); }, 3200);
+  }
+  explain() {
+    var self = this;
+    var PR = this.projects();
+    var cols = this.state.cols.map(function (id) { return PR[id]; });
+    var src = [];
+    function cite(label, row) { src.push({label: label, row: row}); return ' [' + src.length + ']'; }
+    var MON = {Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11};
+    function mIdx(d) { var p = d.split(' '); return Number(p[1]) * 12 + MON[p[0]]; }
+    var fo = this.factsOnly();
+    var out = ['Here is how these ' + cols.length + ' projects differ on the public record.'];
+    var scored = cols.filter(function (p) { return p.band !== 'Limited' && !(fo && p.northfield); });
+    if (scored.length) out.push('Our delivery risk bands: ' + scored.map(function (p) { return p.short + ', ' + p.band; }).join('; ') + cite('Methodology v1.2', 'freq') + '.');
+    cols.forEach(function (p) { if (fo && p.northfield) out.push(p.short + ' is shown with facts only here.'); });
+    var built = cols.filter(function (p) { return p.built !== null; });
+    if (built.length) {
+      var bs = built.map(function (p) { return p.short + ' is ' + p.built + '% built with ' + p.time + '% of its time used'; });
+      out.push(bs.join('. ') + cite('Latest HARERA QPRs', 'built') + '.');
+    }
+    var costs = cols.filter(function (p) { return p.allin !== null; }).sort(function (a, b) { return a.allin - b.allin; });
+    if (costs.length > 1) out.push('All-in costs run from ₹' + costs[0].allin.toFixed(2) + ' Cr at ' + costs[0].short + ' to ₹' + costs[costs.length - 1].allin.toFixed(2) + ' Cr at ' + costs[costs.length - 1].short + cite('Cost sheets + rules v2026.10', 'allin') + '.');
+    var carp = cols.filter(function (p) { return p.carpet !== null; }).sort(function (a, b) { return a.carpet - b.carpet; });
+    if (carp.length > 1) out.push('The 3 BHK carpet runs from ' + carp[0].carpet.toLocaleString('en-IN') + ' sq ft (' + carp[0].short + ') to ' + carp[carp.length - 1].carpet.toLocaleString('en-IN') + ' sq ft (' + carp[carp.length - 1].short + '), from the developers\u2019 price lists, not verified' + cite('Developer price lists · Oct 2026', 'carpet') + '.');
+    var lds = cols.filter(function (p) { return p.loading !== null; }).sort(function (a, b) { return a.loading - b.loading; });
+    if (lds.length > 1) out.push('Loading, the extra super area you pay for, is ' + lds[0].loading + '% at ' + lds[0].short + ' and ' + lds[lds.length - 1].loading + '% at ' + lds[lds.length - 1].short + cite('Developer price lists · Oct 2026', 'loading') + '.');
+    out.push('To Cyber City at 9 am: ' + cols.map(function (p) { return p.short + ' ' + p.cyber[1] + '–' + p.cyber[2] + ' min'; }).join('; ') + cite('Plinth estimate · road distance, Oct 2026', 'commute') + '.');
+    var dates = cols.filter(function (p) { return p.date; }).sort(function (a, b) { return mIdx(a.date) - mIdx(b.date); });
+    if (dates.length > 1) out.push('Original completion dates run from ' + dates[0].date + ' (' + dates[0].short + ') to ' + dates[dates.length - 1].date + ' (' + dates[dates.length - 1].short + ')' + cite('HARERA registrations', 'date') + '.');
+    var comp = cols.filter(function (p) { return p.complaints !== null; });
+    if (comp.length) out.push('Complaints decided against the promoter in 24 months: ' + comp.map(function (p) { return p.short + ', ' + p.complaints + ' (' + p.rate + ' per 100 units)'; }).join('; ') + '. The median for similar projects is 3' + cite('HARERA orders · 24 months', 'complaints') + '.');
+    cols.forEach(function (p) { if (p.pending) out.push(p.short + '’s Jul–Sep 2026 QPR is not on HARERA yet; it was due 15 Oct. The developer says it filed on 12 Oct, which we have not verified' + cite('HARERA QPR register · 18 Oct 2026', 'freq') + '.'); });
+    cols.forEach(function (p) { if (p.band === 'Limited') out.push(p.short + ' has not enough history to score. That is not a penalty' + cite('Methodology v1.2', 'freq') + '.'); });
+    var gaps = cols.filter(function (p) { return p.allin === null || p.psf === null || p.date === null || p.complaints === null || p.carpet === null; });
+    if (gaps.length) out.push('Some figures for ' + gaps.map(function (p) { return p.short; }).join(' and ') + ' are not in our records yet.');
+    out.push('Which of these matters most depends on your budget and when you need to move in.');
+    var text = out.join(' ');
+    var len = text.split(' ').length;
+    clearInterval(this._iv);
+    this.setState({aiShown: true, aiText: text, aiSrc: src, shown: this.state.reduced ? 9999 : 0, aiStale: false, focusRow: ''});
+    if (this.state.reduced) return;
+    this._iv = setInterval(function () {
+      var n = (self.state.shown || 0) + 1;
+      if (n >= len) { clearInterval(self._iv); self.setState({shown: 9999}); return; }
+      self.setState({shown: n});
+    }, 45);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var P = this.props || {};
+    var tw = P.theme === 'Night' ? 'Night' : 'Day';
+    var theme = (s.themeOv && s.themeFrom === tw) ? s.themeOv : tw;
+    var night = theme === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', panelSolid: '#16221D',
+      panel: 'rgba(255,255,255,0.045)', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', accentSoftSolid: '#21392F', onAccentSoft: '#CFF7E6', emptyBorder: '#7D828A', limited: '#A3A8B0',
+      photo: '#1B2A24', slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0', claimBg: '#1D2621'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', panelSolid: '#FFFFFF',
+      panel: '#FFFFFF', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', accentSoftSolid: '#E9F1EC', onAccentSoft: '#133D2E', emptyBorder: '#8C9199', limited: '#6B7079',
+      photo: '#E7E3DA', slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0', claimBg: '#F1ECE2'
+    };
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', dfill: '#15323A', lo: 5, hi: 15, about: 10},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', dfill: '#332B0C', lo: 15, hi: 30, about: 20},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', dfill: '#3A2210', lo: 30, hi: 45, about: 35},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', dfill: '#3D1A19', lo: 45, hi: 65, about: 55},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', dfill: '#341A33', lo: 65, hi: 80, about: 70}
+    };
+    var names = ['Low', 'Moderate', 'Elevated', 'High', 'Severe'];
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function fill(n) { return night ? B[n].dfill : B[n].fill; }
+    var reduced = !!s.reduced;
+    var PR = this.projects();
+    var ids = (s.cols || []).filter(function (id) { return PR[id]; });
+    var n = ids.length;
+    var canAdd = n < 4;
+    var nCols = n + (canAdd ? 1 : 0);
+    var tpl = '220px repeat(' + nCols + ', minmax(210px, 1fr))';
+    var gridRow = 'display:grid;grid-template-columns:' + tpl;
+
+    function pt(deg, r) { var a = deg * Math.PI / 180; return (150 + r * Math.cos(a)).toFixed(1) + ' ' + (150 - r * Math.sin(a)).toFixed(1); }
+    function arcsFor(bandName) {
+      return names.map(function (nm, i) {
+        var a0 = 180 - i * 36 - 1.6, a1 = 180 - (i + 1) * 36 + 1.6, cur = nm === bandName;
+        var lim = bandName === 'Limited';
+        return {d: 'M ' + pt(a0, 112) + ' A 112 112 0 0 1 ' + pt(a1, 112), color: lim ? T.limited : ink(nm), w: cur ? 32 : 22, op: lim ? 0.9 : (cur ? 1 : 0.42), dash: lim ? '12 9' : 'none'};
+      });
+    }
+    function meterFor(bandName) {
+      return [1, 2, 3, 4, 5].map(function (j) {
+        if (bandName === 'Limited') return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;border:1px dashed ' + T.limited};
+        return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= B[bandName].i ? 'background:' + ink(bandName) : 'background:' + (night ? 'transparent' : '#FFFFFF') + ';border:1px solid ' + T.emptyBorder)};
+      });
+    }
+    function chipStyleFor(bandName) {
+      var base = 'display:inline-flex;align-items:center;gap:8px;align-self:flex-start;height:28px;padding:0 10px;box-sizing:border-box;border-radius:999px;font-size:14px;font-weight:600;line-height:1;white-space:nowrap;color:' + T.ink + ';';
+      // Borderless risk chip (DESIGN §0): band fill tone pill; Limited history sits on t.track
+      if (bandName === 'Limited') return base + 'background:' + T.track + ';border:0';
+      return base + 'background:' + fill(bandName) + ';border:0';
+    }
+    var SLOT = {aurelia: 'sAurelia', kestrel: 'sKestrel', sapphire: 'sSapphire', coral: 'sCoral', juniper: 'sJuniper'};
+
+    var fo = this.factsOnly();
+    function wh(p) { return fo && !!p.northfield; }
+    var cols = ids.map(function (id) {
+      var p = PR[id];
+      var lim = p.band === 'Limited';
+      var w = wh(p);
+      var o = {
+        name: p.name, dev: p.dev, sector: p.sector, href: '#' + id, withheld: w,
+        bandName: w ? 'Band withheld · facts only' : (lim ? 'Limited history' : p.band),
+        arcs: w ? arcsFor('Limited').map(function (a) { a.dash = 'none'; a.op = 0.5; a.w = 22; return a; }) : arcsFor(p.band),
+        meter: w ? [1, 2, 3, 4, 5].map(function () { return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;background:' + (night ? 'transparent' : '#FFFFFF') + ';border:1px solid ' + T.emptyBorder}; }) : meterFor(p.band),
+        chipStyle: w ? chipStyleFor('Limited') : chipStyleFor(p.band),
+        dialLabel: w ? 'Delivery risk band withheld, facts only' : (lim ? 'Delivery risk: limited history, not scored' : 'Delivery risk: ' + p.band + ', step ' + B[p.band].i + ' of 5'),
+        needleStyle: (lim || w) ? 'display:none' : 'transform-origin:150px 150px;transform:rotate(' + (s.ready ? (-90 + (B[p.band].i - 0.5) * 36) : -90) + 'deg);transition:' + (reduced ? 'none' : 'transform 1.4s cubic-bezier(.2,.8,.2,1)'),
+        canRemove: n > 2, removeLabel: 'Remove ' + p.name + ' from compare',
+        remove: function () { if (self.state.cols.length <= 2) return; self.setState({cols: self.state.cols.filter(function (x) { return x !== id; }), aiStale: self.state.aiShown, focusRow: ''}); }
+      };
+      Object.keys(SLOT).forEach(function (k) { o[SLOT[k]] = 'position:absolute;inset:0;background:#E7E3DA;display:' + (k === id ? 'block' : 'none'); });
+      return o;
+    });
+
+    var hl = !!s.hl;
+    var BLANK = 'Not in our records yet';
+    var mainBase = 'display:block;font-size:19px;font-weight:600;line-height:1.4;color:' + T.ink;
+    var mainBig = "display:block;font-family:'Bricolage Grotesque', system-ui, sans-serif;font-size:26px;font-weight:800;line-height:1.2;letter-spacing:-0.02em;color:" + T.ink;
+    var mainText = 'display:block;font-size:17px;font-weight:400;line-height:1.5;color:' + T.ink;
+    var mainBlank = 'display:block;font-size:17px;font-weight:500;line-height:1.45;color:' + T.muted;
+    var MON = {Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11};
+    function mIdx(d) { var q = d.split(' '); return Number(q[1]) * 12 + MON[q[0]]; }
+    function cr(v) { return '₹' + v.toFixed(2) + ' Cr'; }
+    function inr(v) { return '₹' + Math.round(v).toLocaleString('en-IN'); }
+    function dot(c) { return 'display:block;width:6px;height:6px;border-radius:50%;box-sizing:border-box;' + (c ? 'background:' + T.ink2 : 'border:1.5px solid ' + T.ink2); }
+
+    var ROWS = [
+      {id: 'freq', label: 'How often similar projects got their OC 12+ months late', src: 'Methodology v1.2 · 14 Oct 2026', extra: 'OC usually comes before keys, often by a few months.',
+        cmp: function (p) { return (p.band === 'Limited' || wh(p)) ? null : p.band; },
+        cell: function (p) {
+          if (wh(p)) return {main: 'Band withheld · facts only', sub: 'The records below still show in full.', mainStyle: mainBase, hasLink: true, pend: p.pending || null};
+          if (p.band === 'Limited') return {main: 'Not enough history to score', sub: 'No penalty.', mainStyle: mainBase};
+          var bb = B[p.band];
+          var since = (p.id === 'aurelia' && p.band === 'Elevated') ? ' Elevated since 2 Oct 2026; Moderate before.' : '';
+          return {main: p.conf === 'low' ? 'Between ' + bb.lo + ' and ' + bb.hi + ' of 100' : 'About ' + bb.about + ' of 100', sub: 'similar projects.' + since, mainStyle: mainBase, hasConf: true, c1: dot(true), c2: dot(p.conf === 'high'), confText: p.conf === 'low' ? 'We\u2019re less certain about this one, so it\u2019s a range.' : 'High confidence.', pend: p.pending || null};
+        },
+        note: function (k) { var ix = k.map(function (p) { return B[p.band].i; }); return 'Bands here run from ' + names[Math.min.apply(null, ix) - 1] + ' to ' + names[Math.max.apply(null, ix) - 1]; }},
+      {id: 'built', label: 'Built vs time used', src: 'Latest HARERA QPR for each project',
+        cmp: function (p) { return p.built === null ? null : p.built + '/' + p.time; },
+        cell: function (p) {
+          if (p.built === null) return {main: BLANK, sub: 'No QPR figures on file', mainStyle: mainBlank};
+          var gap = p.built - p.time;
+          return {main: p.built + '% built', sub: p.time + '% of the promised time used', mainStyle: mainBase, hasBar: true,
+            barStyle: 'position:absolute;left:0;top:0;bottom:0;width:' + p.built + '%;border-radius:5px;background:' + T.accent,
+            tickStyle: 'position:absolute;top:-4px;bottom:-4px;left:calc(' + p.time + '% - 1px);width:2px;background:' + T.ink,
+            diff: gap >= 0 ? 'Built is ' + gap + ' points ahead of time used' : 'Built is ' + (-gap) + ' points behind time used'};
+        },
+        note: function (k) { var v = k.map(function (p) { return p.built; }); return 'Built ranges ' + Math.min.apply(null, v) + '–' + Math.max.apply(null, v) + '%'; }},
+      {id: 'allin', label: 'All-in cost, 3 BHK', src: 'Cost sheets + rules v2026.10',
+        cmp: function (p) { return p.allin; },
+        cell: function (p) {
+          if (p.allin === null) return {main: 'Quoted ' + cr(p.quoted), sub: 'All-in not known yet. Send the cost sheet to get the all-in figure.', mainStyle: mainBase};
+          return {main: cr(p.allin) + ' all-in', sub: 'quoted ' + cr(p.quoted) + ' · ' + Math.round((p.allin / p.quoted - 1) * 100) + '% more', mainStyle: mainBig};
+        },
+        note: function (k) { var v = k.map(function (p) { return p.allin; }); return 'Range ' + cr(Math.min.apply(null, v)) + ' to ' + cr(Math.max.apply(null, v)); }},
+      {id: 'psf', label: '₹ per sq ft of carpet', src: 'All-in ÷ HARERA carpet area',
+        cmp: function (p) { return p.psf; },
+        cell: function (p) {
+          if (p.psf === null) return {main: BLANK, sub: 'Needs the all-in and the carpet area', mainStyle: mainBlank};
+          return {main: inr(p.psf), sub: p.carpet.toLocaleString('en-IN') + ' sq ft carpet', mainStyle: mainBig};
+        },
+        note: function (k) { var v = k.map(function (p) { return p.psf; }); return 'Range ' + inr(Math.min.apply(null, v)) + ' to ' + inr(Math.max.apply(null, v)); }},
+      {id: 'carpet', label: 'Carpet area, 3 BHK', src: 'Developer price list · Oct 2026', extra: 'From the developer, not verified.', same: function (v) { return Number(v).toLocaleString('en-IN') + ' sq ft carpet'; },
+        cmp: function (p) { return p.carpet; },
+        cell: function (p) {
+          if (p.carpet === null) return {main: BLANK, sub: '', mainStyle: mainBlank};
+          return {main: p.carpet.toLocaleString('en-IN') + ' sq ft', sub: 'carpet, the floor inside your walls', mainStyle: mainBig};
+        },
+        note: function (k) { var v = k.map(function (p) { return p.carpet; }); return 'Range ' + Math.min.apply(null, v).toLocaleString('en-IN') + ' to ' + Math.max.apply(null, v).toLocaleString('en-IN') + ' sq ft'; }},
+      {id: 'loading', label: 'Loading, 3 BHK (super vs carpet)', src: 'Developer price list · Oct 2026', extra: 'From the developer, not verified. You pay on super area; you live in carpet.', same: function (v) { return v + '% loading'; },
+        cmp: function (p) { return p.loading; },
+        cell: function (p) {
+          if (p.loading === null) return {main: BLANK, sub: '', mainStyle: mainBlank};
+          return {main: p.loading + '%', sub: p.superA.toLocaleString('en-IN') + ' super / ' + p.carpet.toLocaleString('en-IN') + ' carpet', mainStyle: mainBig};
+        },
+        note: function (k) { var v = k.map(function (p) { return p.loading; }); return 'Range ' + Math.min.apply(null, v) + '% to ' + Math.max.apply(null, v) + '%'; }},
+      {id: 'homes', label: 'Configurations (carpet, from)', src: 'Developer price list · Oct 2026', extra: 'From the developer, not verified. Price lists show quoted prices.',
+        cmp: function (p) { return p.homes.map(function (h) { return h[0] + h[1] + h[2]; }).join('|'); },
+        cell: function (p) {
+          function line(h) { return h[0] + ' · ' + (h[1] ? h[1] + ' sq ft carpet' : 'carpet ' + BLANK.toLowerCase()) + ' · ' + (h[3] ? cr(h[3]) + ' all-in, quoted from ' + cr(h[2]) : 'quoted from ' + cr(h[2]) + ', all-in not known yet'); }
+          return {main: line(p.homes[0]), sub: (p.homes[1] ? line(p.homes[1]) + '. ' : '') + p.units + ' homes in this phase.', mainStyle: mainText};
+        },
+        note: function () { return 'Differs'; }},
+      {id: 'date', label: 'Original completion (RERA)', src: 'HARERA registration certificates',
+        cmp: function (p) { return p.date; },
+        cell: function (p) {
+          if (!p.date) return p.extensions ? {main: 'Extended twice', sub: 'Original date is on the project page', mainStyle: mainBase} : {main: BLANK, sub: '', mainStyle: mainBlank};
+          return {main: p.date, sub: p.dateNote, mainStyle: mainBig};
+        },
+        note: function (k) { var v = k.map(function (p) { return mIdx(p.date); }); return 'Spread of ' + (Math.max.apply(null, v) - Math.min.apply(null, v)) + ' months'; }},
+      {id: 'complaints', label: 'Complaints decided against the promoter, 24 months', src: 'HARERA orders · to 14 Oct 2026', extra: 'Median for similar projects: 3',
+        cmp: function (p) { return p.complaints; },
+        cell: function (p) {
+          if (p.complaints === null) return {main: BLANK, sub: '', mainStyle: mainBlank};
+          return {main: p.complaints + ' · ' + p.rate + ' per 100 units', sub: (p.complaints === 1 ? 'complaint' : 'complaints') + ' in ' + p.units + ' homes', mainStyle: mainBase};
+        },
+        note: function (k) { var v = k.map(function (p) { return p.complaints; }); return 'Range ' + Math.min.apply(null, v) + ' to ' + Math.max.apply(null, v); }},
+      {id: 'commute', label: 'Commute to Cyber City, 9 am', src: 'Plinth estimate · road distance, Oct 2026', extra: 'Second line: IGI Airport T3.',
+        cmp: function (p) { return p.cyber[1] + '–' + p.cyber[2]; },
+        cell: function (p) { return {main: p.cyber[1] + '–' + p.cyber[2] + ' min', sub: p.cyber[0] + ' · IGI Airport T3: ' + p.igi, mainStyle: mainBig}; },
+        note: function (k) { var lo = Math.min.apply(null, k.map(function (p) { return p.cyber[1]; })), hi = Math.max.apply(null, k.map(function (p) { return p.cyber[2]; })); return 'From ' + lo + ' to ' + hi + ' min'; }},
+      {id: 'reason', label: 'Top reason for the band', src: 'Methodology v1.2',
+        cmp: function (p) { return wh(p) ? null : p.reason; },
+        cell: function (p) { if (wh(p)) return {main: 'Band withheld · facts only', sub: '', mainStyle: mainBlank, hasLink: true}; return {main: p.reason, sub: '', mainStyle: mainText}; },
+        note: function () { return 'Differs'; }},
+      {id: 'track', label: 'Developer track record', src: 'HARERA + DTCP OC records',
+        cmp: function (p) { return p.track ? p.track.late + '/' + p.track.total : null; },
+        cell: function (p) {
+          if (!p.track) return {main: BLANK, sub: '', mainStyle: mainBlank};
+          if (p.track.fresh) return {main: 'New developer. No finished RERA projects yet.', sub: '', mainStyle: mainText};
+          var dots = [];
+          for (var i = 0; i < p.track.total; i++) {
+            var late = i % Math.ceil(p.track.total / Math.max(1, p.track.late)) === 1 && dots.filter(function (d) { return d.late; }).length < p.track.late;
+            dots.push({late: late, style: late ? 'display:block;width:12px;height:12px;border-radius:3px;background:' + T.ink : 'display:block;width:12px;height:12px;border-radius:50%;background:' + T.ink2});
+          }
+          return {main: p.dev + ': ' + p.track.late + ' of ' + p.track.total + ' finished RERA projects got OC more than 12 months late.', sub: 'Squares took longer than 12 months.', mainStyle: mainText, hasDots: true, dots: dots};
+        },
+        note: function () { return 'Differs'; }},
+      {id: 'corridor', label: 'Corridor', src: 'HARERA registration', same: function (v) { return v + ' corridor'; },
+        cmp: function (p) { return p.corridor; },
+        cell: function (p) { return {main: p.corridor, sub: p.sector, mainStyle: mainBase}; },
+        note: function () { return 'Differs'; }},
+      {id: 'unit', label: 'Home compared', src: 'Developer cost sheets', same: function (v) { return v + ' compared'; },
+        cmp: function () { return '3 BHK'; },
+        cell: function () { return {main: '3 BHK', sub: '', mainStyle: mainBase}; },
+        note: function () { return 'Differs'; }}
+    ];
+
+    var sameParts = [];
+    var rows = [];
+    var diffN = 0, sameN = 0;
+    ROWS.forEach(function (R) {
+      var ps = ids.map(function (id) { return PR[id]; });
+      var vals = ps.map(function (p) { var v = R.cmp(p); return v === undefined ? null : v; });
+      var known = [];
+      var counts = {};
+      vals.forEach(function (v, i) { if (v !== null) { known.push(ps[i]); counts[v] = (counts[v] || 0) + 1; } });
+      var uniq = Object.keys(counts);
+      var same = known.length === ps.length && uniq.length === 1;
+      var differs = uniq.length > 1;
+      if (differs) diffN++;
+      if (same) sameN++;
+      if (hl && same) { sameParts.push(R.same ? R.same(String(vals[0])) : R.label); return; }
+      var majority = null;
+      if (differs) { uniq.forEach(function (u) { if (counts[u] >= 2 && (majority === null || counts[u] > counts[majority])) majority = u; }); }
+      var focus = s.focusRow === R.id;
+      var showNote = hl && differs;
+      var headBg = focus || showNote ? T.accentSoftSolid : T.panelSolid;
+      var cells = ps.map(function (p, i) {
+        var c = R.cell(p);
+        var tint = (hl && majority !== null && vals[i] !== null && String(vals[i]) !== majority) || focus;
+        return {
+          main: c.main, sub: c.sub || '', mainStyle: c.mainStyle,
+          hasBar: !!c.hasBar, barStyle: c.barStyle || '', tickStyle: c.tickStyle || '',
+          hasDots: !!c.hasDots, dots: c.dots || [],
+          hasConf: !!c.hasConf, c1: c.c1 || '', c2: c.c2 || '', confText: c.confText || '', hasLink: !!c.hasLink,
+          hasDiff: hl && !!c.diff, diff: c.diff || '',
+          hasPend: !!c.pend, pendFact: c.pend ? c.pend.fact : '', pendDev: c.pend ? c.pend.dev : '',
+          style: 'padding:22px 20px;box-sizing:border-box;border-top:1px solid ' + T.line + ';border-left:1px solid ' + T.line + ';min-width:0;' + (reduced ? '' : 'transition:background-color 320ms ease;') + 'background:' + (tint ? T.accentSoft : 'transparent') + ';'
+        };
+      });
+      rows.push({
+        domId: 'row-' + R.id, label: R.label, src: R.src, hasExtra: !!R.extra, extra: R.extra || '',
+        showNote: showNote, note: showNote ? R.note(known) : '', cited: focus,
+        headStyle: 'position:sticky;left:0;z-index:1;padding:22px 20px;box-sizing:border-box;border-top:1px solid ' + T.line + ';background:' + headBg,
+        cells: cells
+      });
+    });
+
+    var pool = ['aurelia', 'kestrel', 'sapphire', 'coral', 'juniper'];
+    var query = String(s.query || '').toLowerCase().trim();
+    var suggestions = pool.filter(function (id) { return ids.indexOf(id) < 0; }).filter(function (id) {
+      if (!query) return true;
+      var p = PR[id];
+      return (p.name + ' ' + p.dev + ' ' + p.sector).toLowerCase().indexOf(query) >= 0;
+    }).map(function (id) {
+      var p = PR[id];
+      return {name: p.name, meta: (p.band === 'Limited' ? 'Limited history' : p.band + ' delivery risk') + ' · ' + p.sector,
+        add: function () { self.setState({cols: self.state.cols.concat([id]), addOpen: false, query: '', aiStale: self.state.aiShown, focusRow: ''}); }};
+    });
+
+    var aiWords = String(s.aiText || '').split(' ');
+    var aiShownN = Math.min(aiWords.length, Number(s.shown) || 0);
+    var aiChips = (s.aiSrc || []).map(function (x, i) {
+      return {label: '[' + (i + 1) + '] ' + x.label, aria: 'Source ' + (i + 1) + ': ' + x.label + '. Highlight its row in the table.',
+        focus: function () {
+          self.setState({focusRow: x.row});
+          try { var el = document.getElementById('row-' + x.row); if (el && el.scrollIntoView) el.scrollIntoView({behavior: self.state.reduced ? 'auto' : 'smooth', block: 'center'}); } catch (e) {}
+        }};
+    });
+
+    // Share card (G-26): plain English, at most 3 lines, band with its natural frequency
+    var shareLines = ids.slice(0, 3).map(function (id) {
+      var p = PR[id];
+      var price = p.allin ? cr(p.allin) + ' all-in' : 'quoted ' + cr(p.quoted) + ', all-in not known yet';
+      if (wh(p)) return p.short + ': ' + p.built + '% built, band withheld · ' + price;
+      if (p.band === 'Limited') return p.short + ': not enough history to score · ' + price;
+      var bb = B[p.band];
+      var fq = p.conf === 'low' ? bb.lo + ' to ' + bb.hi : 'about ' + bb.about;
+      return p.short + ': ' + p.band + ' delivery risk (' + fq + ' of 100 like it finished over a year late) · ' + price;
+    });
+    var shareSource = 'From HARERA records and developer cost sheets, as of 14 Oct 2026.' + (n > 3 ? ' The link shows all ' + n + '.' : '');
+    var shorts = ids.map(function (id) { return PR[id].short; });
+    var namesJoined = shorts.length > 1 ? shorts.slice(0, -1).join(', ') + ' and ' + shorts[shorts.length - 1] : shorts.join('');
+    var corrs = ids.map(function (id) { return PR[id].corridor; });
+    var sameCorr = corrs.every(function (c) { return c === corrs[0]; });
+    var totalRows = ROWS.length;
+    var allN = n === 2 ? 'both' : 'all ' + n;
+    var hlSummary = hl
+      ? diffN + ' of ' + totalRows + ' rows differ.' + (sameN ? ' ' + sameN + (sameN === 1 ? ' row matches' : ' rows match') + ' across ' + allN + ', folded into one line under the table.' : ' Nothing matches across ' + allN + '.')
+      : 'Switch it on to fold away what matches and mark the values that stand apart.';
+
+    return {
+      t: T, night: night, day: !night,
+      themeLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themeOv: night ? 'Day' : 'Night', themeFrom: tw}); },
+      toggleFollow: function () { self.setState({following: !self.state.following}); },
+      followLabel: s.following ? 'Following ' + (n === 2 ? 'both' : n) : 'Follow ' + allN,
+      followingStr: s.following ? 'true' : 'false',
+      namesLine: namesJoined + ': 3 BHK homes' + (sameCorr && corrs.length ? ' on the ' + corrs[0] : '') + ', side by side.',
+      count: n,
+      hl: hl,
+      hlSummary: hlSummary,
+      toggleHl: function () { self.setState({hl: !self.state.hl}); },
+      hlBtn: 'display:inline-flex;align-items:center;gap:14px;height:60px;padding:0 28px 0 16px;box-sizing:border-box;border:0;border-radius:999px;background:' + T.accent + ';color:' + T.onAccent + ';font:inherit;font-size:20px;font-weight:600;cursor:pointer',
+      swTrack: 'position:relative;display:inline-block;flex:none;width:48px;height:28px;border-radius:999px;background:' + (hl ? T.onAccent : (night ? 'rgba(5,46,31,0.22)' : 'rgba(255,255,255,0.28)')) + ';' + (reduced ? '' : 'transition:background-color .2s ease'),
+      swKnob: 'position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:' + (hl ? T.accent : T.onAccent) + ';transform:translateX(' + (hl ? 20 : 0) + 'px);' + (reduced ? '' : 'transition:transform .24s cubic-bezier(.22,1,.36,1),background-color .2s ease'),
+      askAi: function () { self.explain(); },
+      askLabel: s.aiShown ? 'Ask Plinth again' : 'Ask Plinth to explain the differences',
+      share: function () { self.setState({shareShown: true}); self.flash('Link copied. Family will see the same live table.'); },
+      shareShown: !!s.shareShown, shareLines: shareLines, shareSource: shareSource,
+      closeShare: function () { self.setState({shareShown: false}); },
+      hasToast: !!s.toast, toast: s.toast || '',
+      aiShown: !!s.aiShown,
+      aiTextShown: aiWords.slice(0, aiShownN).join(' ') + (aiShownN < aiWords.length ? ' …' : ''),
+      aiDone: aiShownN >= aiWords.length,
+      aiChips: aiChips, aiStale: !!s.aiStale,
+      chipStyle: 'display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:4px 14px;box-sizing:border-box;border-radius:999px;border:0;background:' + T.track + ';font:inherit;font-size:14px;line-height:1.25;color:' + T.ink + ';cursor:pointer;text-align:left',
+      tableLabel: 'Comparison of ' + n + ' projects, 3 BHK',
+      tableStyle: 'min-width:' + (220 + nCols * 210) + 'px',
+      gridRow: gridRow,
+      cornerStyle: 'position:sticky;left:0;z-index:2;padding:24px 20px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;background:' + T.panelSolid + ';text-align:left',
+      colHeadStyle: 'padding:24px 20px;box-sizing:border-box;border-left:1px solid ' + T.line + ';min-width:0',
+      addHeadStyle: 'padding:24px 20px;box-sizing:border-box;border-left:1px solid ' + T.line,
+      addCellStyle: 'border-top:1px solid ' + T.line + ';border-left:1px solid ' + T.line,
+      removeStyle: 'align-self:flex-start;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px 0 12px;box-sizing:border-box;border-radius:999px;border:0;background:' + T.track + ';color:' + T.ink + ';font:inherit;font-size:14px;font-weight:600;cursor:pointer',
+      suggestStyle: 'display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;min-height:52px;padding:8px 12px;box-sizing:border-box;border-radius:8px;border:0;background:' + T.panelSolid + ';color:' + T.ink + ';font:inherit;font-size:16px;line-height:1.35;text-align:left;cursor:pointer',
+      cols: cols,
+      canAdd: canAdd, addOpen: !!s.addOpen, addClosed: !s.addOpen,
+      openAdd: function () { self.setState({addOpen: true}); },
+      closeAdd: function () { self.setState({addOpen: false, query: ''}); },
+      query: s.query || '', onQuery: function (e) { self.setState({query: e.target.value}); },
+      suggestions: suggestions, noSuggestions: suggestions.length === 0,
+      rows: rows,
+      hasSame: hl && sameParts.length > 0, sameText: sameParts.join(' · ')
+    };
+  }
+}
+</script>
+</body>
+</html>

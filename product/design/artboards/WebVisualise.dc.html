@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Picture it furnished: the full tool</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;cursor:pointer}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plShutter { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes plSettle { from { transform: scale(1.08); } to { transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+  .film:hover img { transform: scale(1.03); }
+}
+.film img { transition: transform 400ms cubic-bezier(.22,1,.36,1); }
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .shutter { animation: plShutter 1100ms cubic-bezier(.76,0,.24,1) 200ms both; }
+  .settle { animation: plSettle 1500ms cubic-bezier(.33,1,.68,1) 200ms both; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: {{rootMin}}px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
+        <a href="#visualise" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Picture it</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask Plinth</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer; display: inline-flex; align-items: center; justify-content: center">
+          <sc-if value="{{night}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.5" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M10 1.8v2.2M10 16v2.2M1.8 10H4M16 10h2.2M4.2 4.2l1.6 1.6M14.2 14.2l1.6 1.6M4.2 15.8l1.6-1.6M14.2 5.8l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+          <sc-if value="{{day}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.6A6.5 6.5 0 0 1 7.4 4a6.5 6.5 0 1 0 8.6 8.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg></sc-if>
+        </button>
+        <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{followLabel}}</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" style="flex: none; display: flex; flex-direction: column">
+    <nav aria-label="Picture it furnished steps" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 32px 32px 0; box-sizing: border-box">
+      <ol style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 28px">
+        <sc-for list="{{steps}}" as="st" hint-placeholder-count="3">
+          <li><button type="button" class="press" onClick="{{st.go}}" aria-current="{{st.current}}" style="{{st.btnStyle}}"><sc-if value="{{st.done}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{st.label}}</button></li>
+        </sc-for>
+      </ol>
+    </nav>
+
+    <sc-if value="{{showPath}}" hint-placeholder-val="{{true}}">
+      <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 8px 32px 0; box-sizing: border-box">
+        <p style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; font-size: 17px; color: {{t.ink}}">
+          <span>{{pathLine}}</span>
+          <button type="button" class="lk" onClick="{{switchHome}}" style="{{u.tertiarySm}}">{{switchLabel}}</button>
+        </p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isHome}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="home-h" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 160px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <h1 id="home-h" class="rise" style="{{u.h1}}; max-width: 18ch">Which home are you picturing?</h1>
+          <p class="rise rise1" style="{{u.lead}}; max-width: 52ch">A flat that's still being built has no room to photograph yet, so we start from the developer's floor plan or the sample flat. A ready or resale flat starts from your own photo.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start">
+          <div class="rise rise2" style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <p id="home-l" style="margin: 0; font-weight: 600">Your home</p>
+            <div role="radiogroup" aria-labelledby="home-l" style="display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{homeOpts}}" as="hm" hint-placeholder-count="2">
+                <button type="button" class="press" role="radio" aria-checked="{{hm.on}}" onClick="{{hm.pick}}" style="{{hm.style}}">
+                  <span aria-hidden="true" style="{{hm.ringStyle}}"><span style="{{hm.dotStyle}}"></span></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">{{hm.name}}</span>
+                    <span style="font-size: 17px">{{hm.who}}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <p id="start-l" style="margin: 0; font-weight: 600">{{startQ}}</p>
+            <div role="radiogroup" aria-labelledby="start-l" style="display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{startOpts}}" as="so" hint-placeholder-count="2">
+                <button type="button" class="press" role="radio" aria-checked="{{so.on}}" onClick="{{so.pick}}" style="{{so.style}}">
+                  <span aria-hidden="true" style="{{so.ringStyle}}"><span style="{{so.dotStyle}}"></span></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <span style="font-size: 21px; font-weight: 700; line-height: 1.3">{{so.name}}</span>
+                    <span style="font-size: 17px">{{so.note}}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+            <button type="button" class="press" onClick="{{toRoom}}" style="{{u.primary}}; align-self: flex-start; margin-top: 16px">{{homeNext}}</button>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isPlanRoom}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="plan-h" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 160px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <h1 id="plan-h" class="rise" style="{{u.h1}}; max-width: 16ch">Which room on the plan?</h1>
+          <p class="rise rise1" style="{{u.lead}}; max-width: 48ch">This is the developer's brochure plan for the 3 BHK. Tap a room and AI draws it empty at its brochure size, then furnishes it.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start">
+          <figure class="rise rise2" style="margin: 0; flex: 1.5 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: {{t.photo}}">
+              <img data-slot="floorPlan3bhk" src="/_blob/9f287072173a95c8373af8abd63a0eb1" alt="The developer's brochure floor plan of the Aurelia Heights, Phase 2 3 BHK: living and dining, three bedrooms, kitchen, utility and balcony" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block">
+              <span style="{{u.pill}}; position: absolute; left: 16px; top: 16px">Brochure plan · From the developer, not verified</span>
+            </div>
+            <figcaption style="font-size: 17px; color: {{t.ink2}}">Aurelia Heights, Phase 2 · 3 BHK, 1,450 sq ft carpet · ₹2.74 Cr all-in · quoted ₹2.35 Cr · brochure plan of 2 Oct 2026</figcaption>
+          </figure>
+          <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <p id="planroom-l" style="margin: 0; font-weight: 600">Rooms on this plan</p>
+            <div role="radiogroup" aria-labelledby="planroom-l" style="display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{planRooms}}" as="pr" hint-placeholder-count="4">
+                <button type="button" class="press" role="radio" aria-checked="{{pr.on}}" onClick="{{pr.pick}}" style="{{pr.style}}">
+                  <span aria-hidden="true" style="{{pr.ringStyle}}"><span style="{{pr.dotStyle}}"></span></span>
+                  <span style="flex: 1; min-width: 0; font-weight: 600">{{pr.name}}</span>
+                  <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.015em; white-space: nowrap">{{pr.size}}</span>
+                </button>
+              </sc-for>
+            </div>
+            <p style="margin: 0; font-size: 17px; color: {{t.ink2}}">Kitchen, utility and balcony aren't in this beta. Sizes are the brochure's; your unit may differ.</p>
+            <button type="button" class="press" onClick="{{toStyle}}" style="{{u.primary}}; align-self: flex-start; margin-top: 12px">Next: choose a style</button>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isPhotoRoom}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="room-h" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 160px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <h1 id="room-h" class="rise" style="{{u.h1}}; max-width: 16ch">{{roomH}}</h1>
+          <p class="rise rise1" style="{{u.lead}}; max-width: 48ch">{{roomLead}}</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start">
+          <div class="rise rise2" style="flex: 1.5 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <sc-if value="{{noPhoto}}" hint-placeholder-val="{{true}}">
+              <div style="box-sizing: border-box; min-height: 420px; border-radius: 8px; background: {{t.track}}; padding: 48px 40px; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 16px">
+                <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">{{addTitle}}</p>
+                <p style="margin: 0">Keep the floor and two corners in frame. Turn the lights on. Empty rooms work best.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 6px">
+                  <button type="button" class="press" onClick="{{addPhoto}}" style="{{u.primary}}">Upload a photo</button>
+                  <button type="button" class="press" onClick="{{addPhoto}}" style="{{u.secondaryOnBand}}">
+                    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6.5h3l1.5-2h5L14 6.5h3v9H3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path><circle cx="10" cy="11" r="3" fill="none" stroke="currentColor" stroke-width="1.6"></circle></svg>Take a photo
+                  </button>
+                </div>
+                <button type="button" onClick="{{addPhoto}}" style="{{u.tertiary}}">No photo yet? Try our example photo of a bare room</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{hasPhoto}}" hint-placeholder-val="{{false}}">
+              <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: {{t.photo}}">
+                <img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="{{bareLabel}}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+                <span style="{{u.pill}}; position: absolute; left: 16px; top: 16px">{{photoPill}}</span>
+                <span style="{{u.pill}}; position: absolute; right: 16px; bottom: 16px">Illustrative image</span>
+              </div>
+              <button type="button" onClick="{{removePhoto}}" style="{{u.tertiary}}">Use a different photo</button>
+            </sc-if>
+          </div>
+          <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 32px">
+            <sc-if value="{{isSample}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 18px 22px; border-radius: 8px; background: {{t.track}}">
+                <p style="margin: 0"><strong>The sample flat may not match your unit.</strong> Sizes, windows and finishes can differ from the flat you book.</p>
+                <button type="button" onClick="{{usePlan}}" style="{{u.tertiarySm}}">Start from the floor plan instead</button>
+              </div>
+            </sc-if>
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <p id="roomtype-l" style="margin: 0; font-weight: 600">What room is this?</p>
+              <div role="radiogroup" aria-labelledby="roomtype-l" style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{roomOpts}}" as="r" hint-placeholder-count="3">
+                  <button type="button" class="press" role="radio" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="{{r.style}}">{{r.name}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <p id="keep-l" style="margin: 0; font-weight: 600">Where should we keep the photo?</p>
+              <div role="radiogroup" aria-labelledby="keep-l" style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{keepOpts}}" as="k" hint-placeholder-count="2">
+                  <button type="button" class="press" role="radio" aria-checked="{{k.on}}" onClick="{{k.pick}}" style="{{k.style}}">{{k.name}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <sc-if value="{{hasPhoto}}" hint-placeholder-val="{{false}}">
+              <button type="button" class="press" onClick="{{toStyle}}" style="{{u.primary}}; align-self: flex-start">Next: choose a style</button>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isStyle}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="style-h" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 160px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <h1 id="style-h" class="rise" style="{{u.h1}}">Which style suits you?</h1>
+          <p class="rise rise1" style="{{u.lead}}; max-width: 46ch">Each style comes with a rough budget to furnish a whole 3 BHK. It's a guide, not a quote.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start">
+          <div class="rise rise2" style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: {{t.photo}}">
+              <img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="{{bareLabel}}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+              <span style="{{u.pill}}; position: absolute; left: 16px; top: 16px">{{basePill}}</span>
+              <span style="{{u.pill}}; position: absolute; right: 16px; bottom: 16px">Illustrative image</span>
+            </div>
+            <button type="button" onClick="{{toRoom}}" style="{{u.tertiary}}">{{backLabel}}</button>
+          </div>
+          <div style="flex: 1.3 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+            <div role="radiogroup" aria-label="Style" style="display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{styleOpts}}" as="o" hint-placeholder-count="3">
+                <button type="button" class="press" role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="{{o.style}}">
+                  <span aria-hidden="true" style="{{o.ringStyle}}"><span style="{{o.dotStyle}}"></span></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+                    <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">{{o.name}}</span>
+                    <span style="font-size: 17px">{{o.budget}} to furnish a 3 BHK · {{o.mood}}</span>
+                  </span>
+                  <span aria-hidden="true" style="display: flex; gap: 6px">
+                    <sc-for list="{{o.swatches}}" as="c" hint-placeholder-count="3"><span style="{{c}}"></span></sc-for>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+            <p style="margin: 0; display: flex; gap: 12px; align-items: flex-start; padding: 18px 22px; border-radius: 8px; background: {{t.track}}">
+              <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: 0 0 22px; margin-top: 3px"><rect x="4.5" y="10" width="13" height="9" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"></rect><path d="M7.5 10V7.3a3.5 3.5 0 0 1 7 0V10" fill="none" stroke="currentColor" stroke-width="1.7"></path></svg>
+              <span><strong>{{lockHead}}</strong> {{lockBody}}</span>
+            </p>
+            <button type="button" class="press" onClick="{{furnish}}" style="{{u.primary}}; align-self: flex-start">Furnish this room</button>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isGen}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="gen-h" style="width: 100%; padding: 40px 0 160px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+        <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+          <h1 id="gen-h" class="rise" style="{{u.h1}}">Furnishing your room</h1>
+          <p class="rise rise1" style="{{u.lead}}">{{genLead}}</p>
+        </div>
+        <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 720px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="{{bareLabel}}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+          <div aria-hidden="true" style="position: absolute; inset: 0; background: {{t.veil}}"></div>
+          <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 460px; max-width: calc(100% - 32px); box-sizing: border-box; padding: 32px; border-radius: 8px; background: {{t.panelSolid}}; display: flex; flex-direction: column; gap: 16px">
+            <div style="display: flex; justify-content: space-between; align-items: baseline">
+              <strong style="font-size: 19px">Making your illustration</strong>
+              <span aria-hidden="true" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em">{{genP}}%</span>
+            </div>
+            <div role="progressbar" aria-label="Illustration progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{genP}}" style="height: 8px; border-radius: 4px; background: {{t.track}}; overflow: hidden"><span style="{{genBar}}"></span></div>
+            <ol aria-live="polite" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+              <sc-for list="{{genStages}}" as="g" hint-placeholder-count="3">
+                <li style="display: flex; align-items: center; gap: 12px; font-size: 17px; color: {{g.color}}">
+                  <sc-if value="{{g.done}}" hint-placeholder-val="{{true}}"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="{{t.ink}}"></circle><path d="M6.5 11.5l3 3 6-6.5" fill="none" stroke="{{t.bg}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                  <sc-if value="{{g.cur}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9" fill="none" stroke="{{t.ink}}" stroke-width="2"></circle><circle cx="11" cy="11" r="4" fill="{{t.ink}}"></circle></svg></sc-if>
+                  <sc-if value="{{g.todo}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9" fill="none" stroke="{{t.lineStrong}}" stroke-width="2"></circle></svg></sc-if>
+                  <span>{{g.label}}<span class="sr"> · {{g.state}}</span></span>
+                </li>
+              </sc-for>
+            </ol>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center">
+              <button type="button" class="press" onClick="{{toggleNotify}}" aria-pressed="{{notifyPressed}}" style="{{u.secondarySm}}">{{notifyLabel}}</button>
+              <button type="button" onClick="{{cancelGen}}" style="{{u.tertiary}}; font-size: 17px; align-self: center">Cancel</button>
+            </div>
+          </div>
+          <span style="{{u.pill}}; position: absolute; right: 20px; bottom: 20px">Illustrative image</span>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+      <section aria-labelledby="res-h" style="width: 100%; padding: 40px 0 144px; box-sizing: border-box; display: flex; flex-direction: column; gap: 36px">
+        <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 64px">
+          <h1 id="res-h" class="rise" style="{{u.h1}}; max-width: 12ch">Does it feel like home?</h1>
+          <p class="rise rise1" style="margin: 0; flex: 0 1 520px; font-size: 22px; line-height: 1.45">{{resLead}}</p>
+        </div>
+
+        <div class="shutter" style="position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 760px; overflow: hidden; user-select: none; background: {{t.photo}}">
+          <div class="settle" style="position: absolute; inset: 0">
+            <img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="{{bareLabel}}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+            <div style="{{afterWrap}}">
+              <sc-if value="{{isMI}}" hint-placeholder-val="{{true}}"><img data-slot="roomModernIndian" src="/_blob/6b062f16f5d7632569e4c012811473c2" alt="AI-generated illustration: the same room furnished in Modern Indian style" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+              <sc-if value="{{isMin}}" hint-placeholder-val="{{false}}"><img data-slot="roomMinimal" src="/_blob/e1a0cb38dadcfa3321ba3cc1854b53bc" alt="AI-generated illustration: the same room furnished in Minimal style" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+              <sc-if value="{{isWW}}" hint-placeholder-val="{{false}}"><img data-slot="roomWarmWood" src="/_blob/d7c665ef54bd23149ee299cecb0fd15e" alt="AI-generated illustration: the same room furnished in Warm wood style" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+            </div>
+          </div>
+          <span style="{{u.pill}}; position: absolute; left: 32px; top: 24px">{{cmpLeft}}</span>
+          <div style="{{afterLabels}}">
+            <span style="{{u.aiPill}}">AI-generated illustration</span>
+            <span style="{{u.aiPill}}; font-weight: 500">Furniture added · structure unchanged</span>
+          </div>
+          <div aria-hidden="true" style="{{dividerStyle}}"></div>
+          <div aria-hidden="true" style="{{handleStyle}}"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <input type="range" min="0" max="100" value="{{vis}}" onChange="{{onVis}}" tabindex="-1" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize">
+          <span style="{{u.pill}}; position: absolute; left: 32px; bottom: 24px">Illustrative image</span>
+        </div>
+
+        <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+          <div style="display: flex; flex-wrap: wrap; gap: 16px 36px; align-items: center">
+            <div role="group" aria-label="View" style="display: flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+              <sc-for list="{{segs}}" as="sv" hint-placeholder-count="3">
+                <button type="button" class="press" onClick="{{sv.pick}}" aria-pressed="{{sv.on}}" style="{{sv.style}}">{{sv.label}}</button>
+              </sc-for>
+            </div>
+            <div style="flex: 1 1 320px; max-width: 560px; display: flex; flex-direction: column; gap: 2px">
+              <label for="vis-range" style="font-size: 15px">{{rangeLabel}}</label>
+              <input id="vis-range" type="range" min="0" max="100" value="{{vis}}" onChange="{{onVis}}" aria-valuetext="{{visText}}">
+            </div>
+            <p style="margin: 0; flex: 1 1 320px; display: flex; flex-direction: column; font-size: 15px; color: {{t.ink2}}"><span style="color: {{t.ink}}; font-weight: 600">{{sourceLine}}</span><span>AI-generated illustration: furniture added. Structure is never altered. Items are illustrative.</span></p>
+          </div>
+
+          <div class="rv" role="radiogroup" aria-label="Illustrations, one in each style" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 8px">
+            <button type="button" class="film" role="radio" aria-checked="{{g0.on}}" onClick="{{g0.pick}}" aria-label="Show the Modern Indian variant" style="{{g0.wrap}}">
+              <span style="position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: {{t.photo}}">
+                <img data-slot="roomModernIndian" src="/_blob/6b062f16f5d7632569e4c012811473c2" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+                <span style="{{u.aiPillSm}}; position: absolute; left: 10px; top: 10px">AI-generated illustration</span>
+              </span>
+              <span style="{{g0.bar}}"></span>
+              <span style="display: flex; justify-content: space-between; gap: 8px; padding: 10px 2px 0"><strong style="font-weight: 600">Modern Indian</strong><span>₹8–12 L</span></span>
+            </button>
+            <button type="button" class="film" role="radio" aria-checked="{{g1.on}}" onClick="{{g1.pick}}" aria-label="Show the Minimal variant" style="{{g1.wrap}}">
+              <span style="position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: {{t.photo}}">
+                <img data-slot="roomMinimal" src="/_blob/e1a0cb38dadcfa3321ba3cc1854b53bc" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+                <span style="{{u.aiPillSm}}; position: absolute; left: 10px; top: 10px">AI-generated illustration</span>
+              </span>
+              <span style="{{g1.bar}}"></span>
+              <span style="display: flex; justify-content: space-between; gap: 8px; padding: 10px 2px 0"><strong style="font-weight: 600">Minimal</strong><span>₹5–8 L</span></span>
+            </button>
+            <button type="button" class="film" role="radio" aria-checked="{{g2.on}}" onClick="{{g2.pick}}" aria-label="Show the Warm wood variant" style="{{g2.wrap}}">
+              <span style="position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: {{t.photo}}">
+                <img data-slot="roomWarmWood" src="/_blob/d7c665ef54bd23149ee299cecb0fd15e" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+                <span style="{{u.aiPillSm}}; position: absolute; left: 10px; top: 10px">AI-generated illustration</span>
+              </span>
+              <span style="{{g2.bar}}"></span>
+              <span style="display: flex; justify-content: space-between; gap: 8px; padding: 10px 2px 0"><strong style="font-weight: 600">Warm wood</strong><span>₹9–14 L</span></span>
+            </button>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center">
+            <button type="button" class="press" onClick="{{toggleSave}}" aria-pressed="{{savedPressed}}" style="{{u.primary}}">
+              <sc-if value="{{saved}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+              <sc-if value="{{notSaved}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 3.5h9v13l-4.5-3-4.5 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg></sc-if>
+              {{saveLabel}}
+            </button>
+            <button type="button" class="press" onClick="{{toggleShare}}" aria-expanded="{{shareExp}}" style="{{u.secondary}}">
+              <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="15" cy="5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="15" cy="15" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7 9l6-3M7 11l6 3" fill="none" stroke="currentColor" stroke-width="1.6"></path></svg>Share
+            </button>
+            <button type="button" onClick="{{toRoom}}" style="{{u.tertiary}}; align-self: center">{{againLabel}}</button>
+          </div>
+          <sc-if value="{{saved}}" hint-placeholder-val="{{false}}">
+            <p role="status" style="margin: -16px 0 0; font-size: 17px">{{savedMsg}}</p>
+          </sc-if>
+          <sc-if value="{{share}}" hint-placeholder-val="{{false}}">
+            <div style="width: 100%; max-width: 760px; box-sizing: border-box; border-radius: 8px; background: {{t.track}}; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+              <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">What people will receive</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+                <div style="position: relative; flex: 0 0 220px; height: 140px; overflow: hidden; background: {{t.photo}}">
+                  <sc-if value="{{isMI}}" hint-placeholder-val="{{true}}"><img data-slot="roomModernIndian" src="/_blob/6b062f16f5d7632569e4c012811473c2" alt="Shared image: AI-generated illustration in Modern Indian style" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                  <sc-if value="{{isMin}}" hint-placeholder-val="{{false}}"><img data-slot="roomMinimal" src="/_blob/e1a0cb38dadcfa3321ba3cc1854b53bc" alt="Shared image: AI-generated illustration in Minimal style" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                  <sc-if value="{{isWW}}" hint-placeholder-val="{{false}}"><img data-slot="roomWarmWood" src="/_blob/d7c665ef54bd23149ee299cecb0fd15e" alt="Shared image: AI-generated illustration in Warm wood style" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                  <span style="{{u.aiPillSm}}; position: absolute; left: 10px; bottom: 10px">AI-generated illustration</span>
+                </div>
+                <div style="flex: 1 1 280px; min-width: 0; border-radius: 6px; padding: 14px 18px; background: {{t.panelSolid}}; font-size: 17px; line-height: 1.55">
+                  <span style="display: block">{{shareL1}}</span>
+                  <span style="display: block">{{shareL2}}</span>
+                  <span style="display: block; text-decoration: underline">{{shareL3}}</span>
+                  <span style="display: block; margin-top: 6px; font-size: 15px; color: {{t.ink2}}">{{shareSrc}}</span>
+                  <span style="display: block; font-weight: 600">Plinth · No developer pays us. Ever.</span>
+                </div>
+              </div>
+              <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 17px">
+                <li style="display: flex; gap: 10px; align-items: center"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3.5" y="8" width="11" height="7.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M6 8V5.8a3 3 0 0 1 6 0V8" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg>The AI-generated illustration label is part of the image. It can't be turned off.</li>
+                <li style="display: flex; gap: 10px; align-items: center"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3.5" y="8" width="11" height="7.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M6 8V5.8a3 3 0 0 1 6 0V8" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg>{{shareKeep}}</li>
+              </ul>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                <button type="button" class="press" onClick="{{sendWa}}" style="{{u.secondarySm}}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 14.5l1-3A6 6 0 1 1 6.5 14z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>{{waLabel}}</button>
+                <button type="button" class="press" onClick="{{copyLink}}" style="{{u.secondarySm}}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7.5 10.5l3-3M6 8.5l-1.8 1.8a2.5 2.5 0 0 0 3.5 3.5L9.5 12M12 9.5l1.8-1.8a2.5 2.5 0 0 0-3.5-3.5L8.5 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>{{copyLabel}}</button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+      <section aria-labelledby="items-h" style="background: {{t.band}}; padding: 144px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+          <div style="flex: 1 1 360px; max-width: 460px; display: flex; flex-direction: column; gap: 20px">
+            <h2 id="items-h" class="rv" style="{{u.h2}}">What's in the picture?</h2>
+            <p class="rv rv1" style="{{u.lead}}">Illustrative items and price bands for this {{roomLower}} in {{styleName}}. Not products for sale, and not a quote.</p>
+            <p class="rv rv2" style="margin: 12px 0 0; display: flex; flex-direction: column"><span style="font-size: 17px">To furnish a whole 3 BHK in this style</span><strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(64px, 8vw, 104px); letter-spacing: -0.05em; line-height: 0.95">{{styleBudget}}</strong></p>
+          </div>
+          <div class="rv rv1" style="flex: 1.4 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px">
+              <sc-for list="{{items}}" as="it" hint-placeholder-count="6">
+                <li style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 24px; align-items: center; padding: 18px 22px; border-radius: 4px; background: {{t.panelSolid}}">
+                  <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-weight: 600">{{it.name}}</strong><span style="font-size: 17px; color: {{t.ink2}}">{{it.desc}}</span></span>
+                  <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.015em; white-space: nowrap">{{it.band}}</span>
+                </li>
+              </sc-for>
+            </ul>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Rough guides, not quotes. No brands and no sellers. Nobody pays us to show an item.</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="trust-h" style="background: {{t.bg}}; overflow: hidden">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch">
+          <div class="rv" style="flex: 1 1 440px; min-width: 0; position: relative; min-height: 600px; margin-left: -32px; background: {{t.photo}}">
+            <sc-if value="{{isPlan}}" hint-placeholder-val="{{true}}">
+              <img data-slot="floorPlan3bhk" src="/_blob/9f287072173a95c8373af8abd63a0eb1" alt="The developer's brochure floor plan of the Aurelia Heights, Phase 2 3 BHK, which the illustration is drawn from" style="position: absolute; inset: 0; width: 100%; height: 100%; background: {{t.photo}}; border-radius: 0; object-fit: contain; display: block">
+              <span style="position: absolute; left: 44px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Brochure plan, 2 Oct 2026 · From the developer, not verified</span>
+            </sc-if>
+            <sc-if value="{{notPlan}}" hint-placeholder-val="{{false}}">
+              <img data-slot="phoneSiteVisit" src="/_blob/c1ab5963b1196fad4e05972eb94b5e05" alt="Illustrative image: a buyer photographing a bare room with a phone during a site visit" style="position: absolute; inset: 0; width: 100%; height: 100%; background: {{t.photo}}; border-radius: 0; object-fit: cover; display: block">
+              <span style="position: absolute; left: 44px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+            </sc-if>
+          </div>
+          <div style="flex: 1.3 1 560px; min-width: 0; padding: 144px 0 160px 72px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+            <h2 id="trust-h" class="rv" style="{{u.h2}}">Can you trust this picture?</h2>
+            <p class="rv rv1" style="{{u.lead}}; max-width: 40ch">{{trustLead}}</p>
+            <ul class="rv rv1" style="list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 22px">
+              <li style="display: flex; flex-direction: column; gap: 2px"><strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">Structure locked.</strong><span>{{trust1}}</span></li>
+              <li style="display: flex; flex-direction: column; gap: 2px"><strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">Labelled for good.</strong><span>The AI-generated illustration label is baked into the image and stays on when you share it.</span></li>
+              <li style="display: flex; flex-direction: column; gap: 2px"><strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">Original first.</strong><span>{{trust3}}</span></li>
+            </ul>
+            <button type="button" onClick="{{toggleAbout}}" aria-expanded="{{aboutExp}}" style="{{u.tertiary}}">About this image <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="{{chevAbout}}"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <sc-if value="{{about}}" hint-placeholder-val="{{false}}">
+              <dl style="margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 16px; font-size: 17px">
+                <dt style="color: {{t.ink2}}">Made</dt><dd style="margin: 0">{{madeVal}}</dd>
+                <dt style="color: {{t.ink2}}">Tool</dt><dd style="margin: 0">Picture it furnished, beta</dd>
+                <dt style="color: {{t.ink2}}">{{checkKey}}</dt><dd style="margin: 0">{{checkVal}}</dd>
+                <dt style="color: {{t.ink2}}">Label</dt><dd style="margin: 0">AI-generated illustration, baked into the image</dd>
+                <dt style="color: {{t.ink2}}">Provenance</dt><dd style="margin: 0">Content credentials and an invisible watermark attached</dd>
+              </dl>
+            </sc-if>
+            <button type="button" onClick="{{report}}" style="{{u.tertiary}}">{{reportLabel}}</button>
+            <sc-if value="{{reported}}" hint-placeholder-val="{{false}}">
+              <p role="status" style="margin: 0; font-size: 17px">Thanks. We've hidden this illustration until a person checks the structure.</p>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="max-width: 1264px; width: 100%; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">Every furnished picture here is an AI-generated illustration: not the developer's design, the sample flat or a quote. It starts from the brochure plan or your own photo, and every share keeps the label and a link back to where it started.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report a problem</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#delete" class="lk" style="color: {{t.onSlab}}">Delete my photos</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span>Picture it furnished · beta · made 18 Oct 2026</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"step":{"editor":"enum","options":["Preview","Which home","Your room","Style","Generating"],"default":"Preview"},"home":{"editor":"enum","options":["Being built","Ready or resale"],"default":"Being built"},"start":{"editor":"enum","options":["Floor plan","Sample flat"],"default":"Floor plan"},"$preview":{"width":1280,"height":4440}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var p = props || {};
+    var m = {'Preview': 'result', 'Which home': 'home', 'Your room': 'room', 'Style': 'style', 'Generating': 'gen'};
+    var st = m[p.step] || 'result';
+    var home = p.home === 'Ready or resale' ? 'resale' : 'built';
+    var start = home === 'resale' ? 'photo' : (p.start === 'Sample flat' ? 'sample' : 'plan');
+    this.state = {
+      step: st, home: home, start: start, hasPhoto: st !== 'room', made: st === 'result', room: 0, style: 0, genP: 0, vis: 100,
+      keep: 'device', notify: false, saved: false, share: false, copied: false, sent: false, about: false, reported: false,
+      themeOv: null, themeFrom: null, following: false
+    };
+  }
+  componentDidMount() {
+    try { this._rm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { this._rm = false; }
+    if (this.state.step === 'gen') this.startGen();
+    if (this.state.step === 'result') this.reveal();
+  }
+  componentWillUnmount() {
+    clearInterval(this._gen);
+    clearTimeout(this._rv);
+    clearInterval(this._gl);
+  }
+  stopGlide() {
+    clearTimeout(this._rv);
+    clearInterval(this._gl);
+  }
+  reveal(delay) {
+    var self = this;
+    this.stopGlide();
+    this.setState({vis: 100});
+    if (this._rm) { this.setState({vis: 50}); return; }
+    this._rv = setTimeout(function () {
+      var k = 0, N = 18;
+      self._gl = setInterval(function () {
+        if (k >= N) return;
+        k++;
+        var e = 1 - Math.pow(1 - k / N, 3);
+        self.setState({vis: Math.round(100 - 50 * e)});
+        if (k >= N) clearInterval(self._gl);
+      }, 40);
+    }, delay == null ? 1300 : delay);
+  }
+  ready() {
+    return this.state.start === 'plan' || !!this.state.hasPhoto;
+  }
+  startGen() {
+    var self = this;
+    clearInterval(this._gen);
+    this.stopGlide();
+    this.setState({step: 'gen', genP: 0, notify: false, hasPhoto: true, share: false});
+    this._gen = setInterval(function () {
+      if (self.state.step !== 'gen') { clearInterval(self._gen); return; }
+      var n = Math.min(100, (self.state.genP || 0) + 2);
+      self.setState({genP: n});
+      if (n >= 100) {
+        clearInterval(self._gen);
+        self.setState({step: 'result', made: true});
+        self.reveal();
+      }
+    }, this._rm ? 30 : 220);
+  }
+  go(i) {
+    clearInterval(this._gen);
+    this.stopGlide();
+    if (i === 0) this.setState({step: 'home'});
+    else if (i === 1) this.setState({step: 'room'});
+    else if (i === 2) this.setState({step: this.ready() ? 'style' : 'room'});
+    else if (this.state.made) { this.setState({step: 'result'}); this.reveal(400); }
+    else if (this.ready()) this.startGen();
+    else this.setState({step: 'room'});
+  }
+  setPath(home, start, step) {
+    clearInterval(this._gen);
+    this.stopGlide();
+    var s = this.state;
+    var o = {home: home, start: start};
+    if (s.home !== home || s.start !== start) {
+      o.hasPhoto = false; o.made = false; o.room = 0; o.share = false; o.saved = false; o.reported = false; o.about = false;
+    }
+    if (step) o.step = step;
+    this.setState(o);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var tw = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var night = ((s.themeOv && s.themeFrom === tw) ? s.themeOv : tw) === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', headerBg: 'rgba(11,20,17,0.78)',
+      panel: 'rgba(255,255,255,0.045)', overlay: 'rgba(11,20,17,0.62)', chipBg: 'rgba(11,20,17,0.55)', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claim: '#7E8C86',
+      band: '#101B17', veil: 'rgba(11,20,17,0.45)',
+      panelSolid: '#16221D', slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', headerBg: 'rgba(251,250,247,0.85)',
+      panel: '#FFFFFF', overlay: 'rgba(255,255,255,0.80)', chipBg: 'rgba(255,255,255,0.85)', photo: '#E7E3DA',
+      line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claim: '#9A958B',
+      band: '#F4F2ED', veil: 'rgba(251,250,247,0.40)',
+      panelSolid: '#FFFFFF', slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var disp = "font-family:'Bricolage Grotesque', system-ui, sans-serif;font-weight:800;";
+    var U = {
+      h1: 'margin:0;' + disp + 'font-size:clamp(44px, 7.5vw, 104px);line-height:0.96;letter-spacing:-0.045em',
+      h2: 'margin:0;' + disp + 'font-size:clamp(40px, 5vw, 64px);line-height:1;letter-spacing:-0.035em',
+      lead: 'margin:0;font-size:22px;line-height:1.45;color:' + T.ink,
+      primary: 'display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 30px;border:0;border-radius:999px;background:' + T.accent + ';color:' + T.onAccent + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer',
+      secondary: 'display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 26px;border:0;border-radius:999px;background:' + T.track + ';color:' + T.ink + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer',
+      secondaryOnBand: 'display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 26px;border:0;border-radius:999px;background:' + T.panelSolid + ';color:' + T.ink + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer',
+      secondarySm: 'display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;border:0;border-radius:999px;background:' + T.track + ';color:' + T.ink + ';font:inherit;font-size:17px;font-weight:600;cursor:pointer',
+      tertiary: 'display:inline-flex;align-items:center;gap:8px;align-self:flex-start;min-height:44px;padding:0;border:0;background:transparent;color:' + T.ink + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:5px',
+      tertiarySm: 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:transparent;color:' + T.ink + ';font:inherit;font-size:17px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:5px',
+      pill: 'font-size:13px;line-height:1.5;color:#1B1A17;background:#FFFFFF;padding:2px 10px;border-radius:999px',
+      aiPill: 'font-size:14px;line-height:1.4;font-weight:600;color:#FFFFFF;background:#1B1A17;padding:5px 14px;border-radius:999px',
+      aiPillSm: 'font-size:13px;line-height:1.4;font-weight:600;color:#FFFFFF;background:#1B1A17;padding:3px 10px;border-radius:999px'
+    };
+
+    var STY = [
+      {name: 'Modern Indian', budget: '₹8–12 L', mood: 'warm colour, brass, handwoven textiles', sw: ['#B4663A', '#8A4E73', '#C9A44C']},
+      {name: 'Minimal', budget: '₹5–8 L', mood: 'calm greys, clean lines, few pieces', sw: ['#8E9692', '#D9D6CF', '#2E2A25']},
+      {name: 'Warm wood', budget: '₹9–14 L', mood: 'teak and walnut tones, linen, jute', sw: ['#7A4A2C', '#B98A5E', '#D7B27A']}
+    ];
+    var ROOMS = ['Living room', 'Bedroom', 'Dining room'];
+    var LOWER = ['living room', 'bedroom', 'dining room'];
+    var PLAN = [
+      {name: 'Living + dining', size: '22′ × 13′', lower: 'living + dining room', it: 0},
+      {name: 'Master bedroom', size: '14′ × 14′', lower: 'master bedroom', it: 1},
+      {name: 'Bedroom 2', size: '12′ × 14′', lower: 'second bedroom', it: 1},
+      {name: 'Bedroom 3', size: '12′ × 12′', lower: 'third bedroom', it: 1}
+    ];
+    var home = s.home === 'resale' ? 'resale' : 'built';
+    var start = home === 'resale' ? 'photo' : (s.start === 'sample' ? 'sample' : 'plan');
+    var isPlan = start === 'plan', isSample = start === 'sample', isPhoto = start === 'photo';
+    var style = Math.max(0, Math.min(2, s.style || 0));
+    var room = Math.max(0, Math.min(isPlan ? 3 : 2, s.room || 0));
+    var sty = STY[style];
+    var roomLower = isPlan ? PLAN[room].lower : LOWER[room];
+    var size = isPlan ? PLAN[room].size : '';
+    var itemsIdx = isPlan ? PLAN[room].it : room;
+    var ITEMS = [
+      [
+        ['3-seater sofa', ['Fabric, carved wooden frame', '₹55,000–1.1 L'], ['Light grey fabric, slim arms', '₹45,000–90,000'], ['Tan leather-look, teak frame', '₹70,000–1.4 L']],
+        ['Centre table', ['Sheesham-look wood, brass inlay', '₹15,000–35,000'], ['Low, white oak look', '₹12,000–28,000'], ['Solid wood, live edge', '₹20,000–45,000']],
+        ['Rug, 6 × 9 ft', ['Handwoven dhurrie', '₹12,000–30,000'], ['Flat-weave, stone grey', '₹8,000–20,000'], ['Jute and wool', '₹10,000–25,000']],
+        ['Floor lamp', ['Brass finish', '₹8,000–18,000'], ['Matte black', '₹6,000–14,000'], ['Wood and linen', '₹9,000–20,000']],
+        ['Curtains for 2 windows', ['Cotton, block-print border', '₹15,000–35,000'], ['Sheer, off-white', '₹12,000–25,000'], ['Linen, rust', '₹14,000–30,000']],
+        ['Accent chair', ['Cane and teak', '₹18,000–40,000'], ['Grey boucle', '₹15,000–32,000'], ['Walnut, leather-look seat', '₹22,000–45,000']]
+      ],
+      [
+        ['Queen bed with storage', ['Carved headboard', '₹45,000–90,000'], ['Upholstered, grey', '₹35,000–70,000'], ['Solid wood', '₹55,000–1.1 L']],
+        ['Mattress, queen', ['Medium-firm', '₹18,000–45,000'], ['Medium-firm', '₹18,000–45,000'], ['Medium-firm', '₹18,000–45,000']],
+        ['Bedside tables, pair', ['Sheesham-look wood', '₹12,000–28,000'], ['White, wall-hung', '₹8,000–18,000'], ['Teak', '₹14,000–30,000']],
+        ['Wardrobe, 3 doors', ['Laminate with cane panels', '₹60,000–1.2 L'], ['Handle-less laminate', '₹50,000–1 L'], ['Wood veneer', '₹75,000–1.5 L']],
+        ['Curtains for 1 window', ['Cotton, block-print', '₹8,000–18,000'], ['Blackout, off-white', '₹7,000–15,000'], ['Linen, ochre', '₹8,000–17,000']],
+        ['Bedside lamps, pair', ['Brass', '₹6,000–14,000'], ['White ceramic', '₹4,000–10,000'], ['Wooden base, linen shade', '₹6,000–13,000']]
+      ],
+      [
+        ['Dining table, 6 seats', ['Sheesham-look wood', '₹35,000–75,000'], ['White oak look', '₹30,000–65,000'], ['Solid teak', '₹50,000–1 L']],
+        ['Dining chairs, set of 6', ['Cane back', '₹30,000–66,000'], ['Moulded, grey', '₹18,000–42,000'], ['Wood, leather-look seat', '₹36,000–78,000']],
+        ['Pendant light', ['Brass dome', '₹7,000–16,000'], ['Matte white', '₹5,000–12,000'], ['Rattan', '₹6,000–14,000']],
+        ['Sideboard', ['Carved doors', '₹28,000–60,000'], ['Handle-less, white', '₹22,000–48,000'], ['Walnut veneer', '₹32,000–65,000']],
+        ['Wall art, 2 pieces', ['Framed textile prints', '₹6,000–15,000'], ['Line drawings', '₹4,000–10,000'], ['Carved wood relief', '₹7,000–16,000']],
+        ['Rug, 5 × 8 ft', ['Dhurrie', '₹9,000–22,000'], ['Flat-weave', '₹6,000–15,000'], ['Jute', '₹7,000–17,000']]
+      ]
+    ];
+    var items = ITEMS[itemsIdx].map(function (r) { return {name: r[0], desc: r[style + 1][0], band: r[style + 1][1]}; });
+
+    var stepIdx = s.step === 'home' ? 0 : (s.step === 'room' ? 1 : (s.step === 'style' ? 2 : 3));
+    var steps = ['Your home', 'Your room', 'Style', 'Preview'].map(function (n, i) {
+      var done = i < stepIdx, cur = i === stepIdx;
+      return {
+        n: String(i + 1), label: n, done: done, notDone: !done,
+        current: cur ? 'step' : 'false',
+        go: function () { self.go(i); },
+        btnStyle: 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:transparent;color:' + (cur || done ? T.ink : T.ink2) + ';font:inherit;font-size:17px;font-weight:' + (cur ? 700 : 500) + ';cursor:pointer;' + (cur ? 'text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:8px' : 'text-decoration:none')
+      };
+    });
+
+    function pillStyle(on) {
+      return 'min-height:52px;padding:0 24px;border:0;border-radius:999px;font:inherit;font-size:19px;font-weight:600;cursor:pointer;box-sizing:border-box;transition:background-color .2s ease,color .2s ease;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.bg : T.ink);
+    }
+    function radioRow(on, pad) {
+      return {
+        on: on ? 'true' : 'false',
+        style: 'display:flex;align-items:center;gap:18px;width:100%;min-height:56px;text-align:left;padding:' + (pad || '20px 22px') + ';border:0;border-radius:8px;box-sizing:border-box;font:inherit;cursor:pointer;color:' + T.ink + ';transition:background-color .2s ease;background:' + (on ? T.track : 'transparent'),
+        ringStyle: 'flex:0 0 24px;width:24px;height:24px;border-radius:50%;box-sizing:border-box;border:2px solid ' + (on ? T.ink : T.lineStrong) + ';display:inline-flex;align-items:center;justify-content:center',
+        dotStyle: 'width:12px;height:12px;border-radius:50%;background:' + (on ? T.ink : 'transparent')
+      };
+    }
+    var homeOpts = [
+      {k: 'built', name: 'A flat being built', who: "For under-construction projects like Aurelia Heights, Phase 2. There's no room to photograph yet."},
+      {k: 'resale', name: 'A ready or resale flat', who: 'For a flat you can walk into today. You photograph the bare room.'}
+    ].map(function (o) {
+      var r = radioRow(home === o.k);
+      r.name = o.name; r.who = o.who;
+      r.pick = function () { self.setPath(o.k, o.k === 'resale' ? 'photo' : 'plan'); };
+      return r;
+    });
+    var startDefs = home === 'resale' ? [
+      {k: 'photo', name: 'Photograph your room', note: 'Keep the floor and two corners in frame. Bare rooms work best.'}
+    ] : [
+      {k: 'plan', name: 'Start from the floor plan', note: "Tap a room on the developer's brochure plan. AI draws it at its brochure size, then furnishes it."},
+      {k: 'sample', name: 'Use my photo of the sample flat', note: 'The sample flat may not match your unit.'}
+    ];
+    var startOpts = startDefs.map(function (o) {
+      var r = radioRow(start === o.k, '16px 22px');
+      r.name = o.name; r.note = o.note;
+      r.pick = function () { self.setPath(home, o.k); };
+      return r;
+    });
+    var planRooms = PLAN.map(function (o, i) {
+      var r = radioRow(isPlan && i === room, '14px 22px');
+      r.name = o.name; r.size = o.size;
+      r.pick = function () { self.setState({room: i, made: self.state.room === i ? self.state.made : false}); };
+      return r;
+    });
+    var roomOpts = ROOMS.map(function (n, i) {
+      var on = i === room;
+      return {name: n, on: on ? 'true' : 'false', pick: function () { self.setState({room: i, made: self.state.room === i ? self.state.made : false}); }, style: pillStyle(on)};
+    });
+    var keepOpts = [{k: 'device', name: 'Only on this device'}, {k: 'account', name: 'In my Plinth account'}].map(function (o) {
+      var on = s.keep === o.k;
+      return {name: o.name, on: on ? 'true' : 'false', pick: function () { self.setState({keep: o.k}); }, style: pillStyle(on)};
+    });
+    var styleOpts = STY.map(function (o, i) {
+      var r = radioRow(i === style);
+      r.name = o.name; r.budget = o.budget; r.mood = o.mood;
+      r.pick = function () { self.setState({style: i}); };
+      r.swatches = o.sw.map(function (c) { return 'display:block;width:24px;height:24px;border-radius:50%;background:' + c; });
+      return r;
+    });
+
+    var genP = Math.max(0, Math.min(100, Number(s.genP) || 0));
+    var GS = [{label: isPlan ? 'Reading the room size from the plan' : 'Checking walls and windows', a: 0, b: 34}, {label: 'Placing furniture to scale', a: 34, b: 72}, {label: 'Adding the AI illustration label', a: 72, b: 100}];
+    var genStages = GS.map(function (g) {
+      var done = genP >= g.b, cur = !done && genP >= g.a;
+      return {label: g.label, done: done, cur: cur, todo: !done && !cur, state: done ? 'done' : (cur ? 'in progress' : 'waiting'), color: (done || cur) ? T.ink : T.muted};
+    });
+
+    var visN = Number(s.vis);
+    var vis = Math.max(0, Math.min(100, isNaN(visN) ? 100 : visN));
+    var origWord = isPlan ? 'empty room' : 'original';
+    var segDefs = [{label: isPlan ? 'Empty room' : 'Original', v: 100}, {label: 'Compare', v: 50}, {label: 'AI illustration', v: 0}];
+    var segs = segDefs.map(function (d) {
+      var on = d.v === 100 ? vis >= 100 : (d.v === 0 ? vis <= 0 : (vis > 0 && vis < 100));
+      return {
+        label: d.label, on: on ? 'true' : 'false',
+        pick: function () { self.stopGlide(); self.setState({vis: d.v}); },
+        style: 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;transition:background-color .2s ease,color .2s ease;background:' + (on ? T.ink : 'transparent') + ';color:' + (on ? T.bg : T.ink)
+      };
+    });
+    function gal(i) {
+      var on = i === style;
+      return {
+        on: on ? 'true' : 'false',
+        pick: function () { if (self.state.style !== i) { self.setState({style: i}); self.reveal(240); } },
+        wrap: 'display:block;width:100%;padding:0;border:0;background:transparent;color:' + T.ink + ';font:inherit;font-size:17px;text-align:left;cursor:pointer;transition:opacity .2s ease;opacity:' + (on ? 1 : 0.72),
+        bar: 'display:block;height:4px;margin-top:6px;background:' + (on ? T.ink : 'transparent') + ';transition:background-color .2s ease'
+      };
+    }
+
+    function chev(open) { return 'transition:transform .2s ease;transform:rotate(' + (open ? 180 : 0) + 'deg)'; }
+    var ROOTMIN = {home: 2100, room: 2000, style: 1900, gen: 2000, result: 4440};
+    var planName = isPlan ? PLAN[room].name : '';
+
+    return {
+      t: T, u: U, steps: steps,
+      rootMin: ROOTMIN[s.step] || 2000,
+      night: night, day: !night,
+      themeLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themeOv: night ? 'Day' : 'Night', themeFrom: tw}); },
+      toggleFollow: function () { self.setState({following: !self.state.following}); },
+      followLabel: s.following ? 'Following' : 'Follow project',
+      followingStr: s.following ? 'true' : 'false',
+      isHome: s.step === 'home', isRoom: s.step === 'room', isStyle: s.step === 'style', isGen: s.step === 'gen', isResult: s.step === 'result',
+      isPlanRoom: s.step === 'room' && isPlan, isPhotoRoom: s.step === 'room' && !isPlan,
+      isPlan: isPlan, notPlan: !isPlan, isSample: isSample,
+      showPath: s.step !== 'home',
+      pathLine: isPlan ? 'Flat being built: AI draws your room from the developer’s floor plan.' : (isSample ? 'Flat being built: you start from your own photo of the sample flat.' : 'Ready or resale flat: you start from a photo of the bare room.'),
+      switchLabel: home === 'resale' ? 'Flat still being built? Start from the floor plan' : 'Ready or resale flat? Photograph your room',
+      switchHome: function () { if (self.state.home === 'resale') self.setPath('built', 'plan', 'room'); else self.setPath('resale', 'photo', 'room'); },
+      usePlan: function () { self.setPath('built', 'plan', 'room'); },
+      homeOpts: homeOpts, startOpts: startOpts, planRooms: planRooms,
+      startQ: home === 'resale' ? 'How you start' : 'How do you want to start?',
+      homeNext: isPlan ? 'Next: pick a room on the plan' : 'Next: add your photo',
+      noPhoto: !s.hasPhoto, hasPhoto: !!s.hasPhoto,
+      addPhoto: function () { self.setState({hasPhoto: true}); },
+      removePhoto: function () { self.setState({hasPhoto: false, made: false}); },
+      toStyle: function () { self.go(2); },
+      toRoom: function () { self.go(1); },
+      furnish: function () { self.startGen(); },
+      roomOpts: roomOpts, keepOpts: keepOpts, styleOpts: styleOpts,
+      roomName: isPlan ? planName : ROOMS[room], roomLower: roomLower,
+      roomH: isSample ? 'Furnish the sample flat?' : 'Picture it furnished?',
+      roomLead: isSample ? 'Add a photo you took in the sample flat. AI adds furniture to scale; walls, windows and floor stay exactly as they are. Picture it furnished is in beta.' : 'For a ready or resale flat. Add a photo of a bare room and AI adds furniture to scale. Walls, windows and floor stay exactly as they are. Picture it furnished is in beta.',
+      addTitle: isSample ? 'Add your photo of the sample flat' : 'Add a photo of a bare room',
+      photoPill: isSample ? 'Your sample-flat photo · original' : 'Your photo · original',
+      bareLabel: isPlan ? 'Empty ' + roomLower + ' drawn from the brochure plan at ' + size + ', before furnishing' : (isSample ? 'Your photo of the sample flat: the ' + roomLower + ' as it is' : 'Original photo: a bare ' + roomLower + ' with walls, windows and floor visible'),
+      basePill: isPlan ? planName + ' · ' + size + ' · empty, drawn from the plan' : (isSample ? 'Your sample-flat photo · original' : 'Your ' + roomLower + ' · original'),
+      backLabel: isPlan ? 'Back to the plan' : 'Back to your photo',
+      lockHead: isPlan ? 'Structure locked: ' + size + ', as on the plan.' : 'Structure locked: walls, windows and floor unchanged.',
+      lockBody: isPlan ? 'Walls, windows and doors stay where the brochure plan puts them.' : "If our check finds any change, we don't show the result.",
+      styleName: sty.name, styleBudget: sty.budget,
+
+      genP: genP, genStages: genStages,
+      genLead: 'Your ' + roomLower + ' in ' + sty.name + (isPlan ? ', drawn at ' + size : '') + ' · usually 10 to 20 seconds. You can leave this page.',
+      genBar: 'display:block;height:100%;width:100%;border-radius:4px;background:' + T.ink + ';transform-origin:0 50%;transform:scaleX(' + (genP / 100) + ');transition:transform .1s linear',
+      toggleNotify: function () { self.setState({notify: !self.state.notify}); },
+      notifyPressed: s.notify ? 'true' : 'false',
+      notifyLabel: s.notify ? 'We will notify you when it is ready' : 'Notify me when it is ready',
+      cancelGen: function () { clearInterval(self._gen); self.setState({step: 'style', genP: 0}); },
+
+      isMI: style === 0, isMin: style === 1, isWW: style === 2,
+      resLead: isPlan ? 'Your ' + roomLower + ' at Aurelia Heights, Phase 2, drawn at its brochure size of ' + size + ' and furnished in ' + sty.name + ' by AI. The empty room comes first; drag across it to see it furnished.' : (isSample ? 'The ' + roomLower + ' of the Aurelia Heights, Phase 2 sample flat, from your photo, furnished in ' + sty.name + ' by AI. The original comes first; drag across it to reveal the illustration.' : 'Your ' + roomLower + ', from your own photo, furnished in ' + sty.name + ' by AI. The original comes first; drag across it to reveal the illustration.'),
+      cmpLeft: isPlan ? 'Empty room, drawn from the plan' : (isSample ? 'Your sample-flat photo' : 'Original photo'),
+      sourceLine: isPlan ? 'Drawn from the brochure plan of 2 Oct 2026 · From the developer, not verified · your unit may differ' : (isSample ? 'From your photo of the sample flat, 18 Oct 2026 · The sample flat may not match your unit' : 'From your own photo, 18 Oct 2026'),
+      rangeLabel: 'Compare: ' + origWord + ' on the left, AI illustration on the right',
+      vis: vis, visText: vis + '% ' + origWord + ', ' + (100 - vis) + '% AI illustration',
+      onVis: function (e) { var v = Number(e && e.target ? e.target.value : NaN); if (isNaN(v)) return; self.stopGlide(); self.setState({vis: v}); },
+      afterWrap: 'position:absolute;inset:0;clip-path:inset(0 0 0 ' + vis + '%);transition:clip-path .06s linear',
+      dividerStyle: 'position:absolute;top:0;bottom:0;left:calc(' + vis + '% - 1.5px);width:3px;background:#FFFFFF;pointer-events:none;opacity:' + (vis >= 100 || vis <= 0 ? 0.6 : 1),
+      handleStyle: 'position:absolute;top:50%;left:calc(' + vis + '% - ' + (vis >= 100 ? 30 : (vis <= 0 ? -30 : 0)) + 'px);width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:#FFFFFF;color:#1B1A17;display:flex;align-items:center;justify-content:center;pointer-events:none',
+      afterLabels: 'position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding:24px 32px;box-sizing:border-box;clip-path:inset(0 0 0 ' + vis + '%)',
+      segs: segs,
+      g0: gal(0), g1: gal(1), g2: gal(2),
+      againLabel: isPlan ? 'Pick another room' : 'Try another photo',
+
+      toggleSave: function () { self.setState({saved: !self.state.saved}); },
+      saved: !!s.saved, notSaved: !s.saved, savedPressed: s.saved ? 'true' : 'false',
+      saveLabel: isPhoto ? (s.saved ? 'Saved to your account' : 'Save to your account') : (s.saved ? 'Saved to project' : 'Save to project'),
+      savedMsg: isPhoto ? 'Saved to your account. Only you can see it. The original is saved with it.' : 'Saved to Aurelia Heights, Phase 2. Only you can see it. ' + (isPlan ? 'The empty room from the plan is saved with it.' : 'The original is saved with it.'),
+      toggleShare: function () { self.setState({share: !self.state.share, copied: false, sent: false}); },
+      share: !!s.share, shareExp: s.share ? 'true' : 'false',
+      shareL1: isPlan ? 'AI-generated illustration of a 3 BHK ' + roomLower + ' at Aurelia Heights Ph 2, drawn from the developer’s floor plan.' : (isSample ? 'AI-generated illustration of the ' + roomLower + ' in the Aurelia Heights Ph 2 sample flat, from my photo.' : 'AI-generated illustration of my ' + roomLower + ', furnished from my own photo.'),
+      shareL2: isPlan ? 'Not the developer’s design or a quote.' : (isSample ? 'The sample flat may not match the unit. Not a quote.' : 'Items are illustrative. Not a quote.'),
+      shareL3: isPlan ? 'See the empty room it started from' : 'See the original photo',
+      shareSrc: isPlan ? 'Brochure plan of 2 Oct 2026 · made 18 Oct 2026' : (isSample ? 'My photo of the sample flat · made 18 Oct 2026' : 'My photo · made 18 Oct 2026'),
+      shareKeep: isPlan ? 'A link to the empty room from the plan always goes with it.' : 'A link to your original photo always goes with it.',
+      sendWa: function () { self.setState({sent: true}); },
+      waLabel: s.sent ? 'Opening WhatsApp' : 'Send on WhatsApp',
+      copyLink: function () { self.setState({copied: true}); },
+      copyLabel: s.copied ? 'Link copied' : 'Copy link',
+
+      items: items,
+      trustLead: isPlan ? "It's an AI-generated illustration of a room on the developer's plan, at the plan's size. We lock the structure, label every image, and keep the empty room one tap away." : "It's an AI-generated illustration made from your own photo. We lock the structure, label every image, and keep the original one tap away.",
+      trust1: isPlan ? 'The room keeps its brochure size, ' + size + ', with walls, windows and doors where the plan puts them.' : 'Walls, windows and floor are checked against your photo before we show anything.',
+      trust3: 'The original opens first: ' + (isPlan ? 'the empty room drawn from the plan' : 'your photo') + '. A link to it travels with every share.',
+      madeVal: isPlan ? '18 Oct 2026, from the brochure plan of 2 Oct 2026' : (isSample ? '18 Oct 2026, from your photo of the sample flat' : '18 Oct 2026, from your photo'),
+      checkKey: isPlan ? 'Size' : 'Structure check',
+      checkVal: isPlan ? size + ', as on the brochure plan · From the developer, not verified' : 'Passed: walls, windows and floor match the original',
+      reportLabel: isPlan ? 'Room looks different from the plan? Report it' : 'Walls or windows look different? Report it',
+      about: !!s.about, aboutExp: s.about ? 'true' : 'false', chevAbout: chev(s.about),
+      toggleAbout: function () { self.setState({about: !self.state.about}); },
+      reported: !!s.reported,
+      report: function () { self.setState({reported: true}); }
+    };
+  }
+}
+</script>
+</body>
+</html>

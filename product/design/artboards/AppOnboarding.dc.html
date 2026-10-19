@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth app: first run</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hs{scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pl-drift{from{transform:scale(1)}to{transform:scale(1.04)}}
+@keyframes pl-segA{from{opacity:0;transform:scaleY(.2)}to{opacity:1;transform:none}}
+@keyframes pl-segB{from{opacity:0;transform:scaleY(.2)}to{opacity:1;transform:none}}
+@keyframes pl-inA{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pl-inB{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pl-caret{0%,49%{opacity:1}50%,100%{opacity:0}}
+.pl-rise{animation:pl-rise .72s cubic-bezier(.22,1,.36,1) both}
+.pl-drift{transform-origin:50% 60%;animation:pl-drift 16s cubic-bezier(.33,1,.68,1) both}
+.pl-caret{animation:pl-caret 1s steps(1) infinite}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease,background-color .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums; transition: background .3s ease, color .3s ease">
+
+  <div style="position: absolute; left: 0; right: 0; top: 48px; height: 48px; padding: 0 8px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 8px">
+    <sc-if value="{{isWelcome}}" hint-placeholder-val="{{true}}">
+      <span style="display: inline-flex; align-items: center; gap: 10px; padding-left: 8px">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" style="display: block"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 24px; line-height: 1">Plinth</span>
+      </span>
+    </sc-if>
+    <sc-if value="{{hasBack}}" hint-placeholder-val="{{false}}">
+      <button type="button" class="pl-press" onClick="{{back}}" aria-label="Back" style="flex: none; width: 48px; height: 48px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+    </sc-if>
+    <sc-if value="{{hasProgress}}" hint-placeholder-val="{{false}}">
+      <div role="progressbar" aria-label="Setup progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="{{progressNow}}" aria-valuetext="{{progressText}}" style="flex: 1; max-width: 168px; display: flex; gap: 4px">
+        <sc-for list="{{progress}}" as="pg" hint-placeholder-count="5"><span style="{{pg.style}}"></span></sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{hasSkip}}" hint-placeholder-val="{{false}}">
+      <button type="button" class="pl-press" onClick="{{skip}}" style="flex: none; min-width: 48px; height: 48px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">{{skipLabel}}</button>
+    </sc-if>
+    <sc-if value="{{noSkip}}" hint-placeholder-val="{{true}}">
+      <span aria-hidden="true" style="flex: none; width: 48px; height: 48px"></span>
+    </sc-if>
+  </div>
+
+  <main class="hs" style="position: absolute; left: 0; right: 0; top: 96px; bottom: 136px; overflow-x: hidden; overflow-y: auto">
+
+    <sc-if value="{{isWelcome}}" hint-placeholder-val="{{true}}">
+      <section aria-labelledby="w-h" style="padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+        <h1 id="w-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 44px; line-height: 0.96; letter-spacing: -0.045em">Know before you book.</h1>
+        <p class="pl-rise" style="margin: 0; font-size: 17px; line-height: 1.5; animation-delay: 70ms">Every Gurugram project, rated from its own public filings. No developer pays us. Ever.</p>
+        <div role="radiogroup" aria-label="Try a project" class="pl-rise hs" style="display: flex; gap: 8px; overflow-x: auto; margin: 2px -16px 0; padding: 0 16px; animation-delay: 140ms">
+          <sc-for list="{{tries}}" as="tr" hint-placeholder-count="3">
+            <button type="button" role="radio" class="pl-press" aria-checked="{{tr.on}}" onClick="{{tr.pick}}" style="{{tr.style}}">{{tr.name}}</button>
+          </sc-for>
+        </div>
+        <article data-signature="card-builds" aria-labelledby="card-name" class="pl-rise" style="background: {{t.track}}; display: flex; flex-direction: column; animation-delay: 200ms">
+          <div style="position: relative; height: 104px; overflow: hidden; background: {{t.photo}}">
+            <img data-slot="{{card.slot}}" src="{{card.src}}" alt="{{card.alt}}" class="pl-drift" style="position: absolute; left: 0; top: 0; width: 358px; height: 104px; object-fit: cover; display: block">
+            <span style="position: absolute; left: 10px; bottom: 8px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: #FFFFFF; padding: 1px 8px; border-radius: 999px">Illustrative image</span>
+          </div>
+          <div style="padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px">
+            <div>
+              <h2 id="card-name" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.15; letter-spacing: -0.02em">{{card.name}}</h2>
+              <span style="font-size: 14px; color: {{t.ink2}}">{{card.dev}}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px">
+              <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 18px); gap: 3px"><sc-for list="{{card.segs}}" as="sg" hint-placeholder-count="5"><span style="{{sg.style}}"></span></sc-for></span>
+              <span style="{{card.bandStyle}}"><span class="sr">Delivery risk: </span>{{card.band}}</span>
+            </div>
+            <p style="{{card.lineStyle}}">{{card.freq}}</p>
+            <div style="{{card.builtWrap}}">
+              <span aria-hidden="true" style="position: relative; display: block; height: 8px; border-radius: 4px; overflow: hidden; background: {{t.bgSolid}}"><span style="{{card.builtBar}}"></span></span>
+              <span style="font-size: 15px; line-height: 1.4">{{card.built}}</span>
+            </div>
+            <p style="{{card.priceStyle}}"><strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.02em">{{card.price}}</strong> <span style="font-size: 14px; color: {{t.ink2}}">{{card.priceNote}}</span></p>
+            <span style="{{card.srcStyle}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>{{card.src1}}</span>
+          </div>
+        </article>
+        <p style="margin: 0; font-size: 14px; color: {{t.ink2}}">Our opinion, based on public records. Not a credit rating. Data as of 14 Oct 2026.</p>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isBuying}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="b-h" style="padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+        <h1 id="b-h" class="pl-rise" style="{{u.h1}}">What are you buying?</h1>
+        <p class="pl-rise" style="margin: 0; font-size: 17px; line-height: 1.5; animation-delay: 70ms">So we show the right things first. Your answer stays on this phone.</p>
+        <div role="radiogroup" aria-labelledby="b-h" style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px">
+          <sc-for list="{{kinds}}" as="k" hint-placeholder-count="3">
+            <button type="button" role="radio" class="pl-press" aria-checked="{{k.on}}" onClick="{{k.pick}}" style="{{k.style}}">
+              <span aria-hidden="true" style="{{k.ring}}"><span style="{{k.dot}}"></span></span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 18px; font-weight: 700; line-height: 1.35">{{k.title}}</span>
+                <span style="{{k.subStyle}}">{{k.sub}}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isLocation}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="l-h" style="padding: 0 0 24px; display: flex; flex-direction: column; gap: 14px">
+        <div style="position: relative; height: 148px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="corridorAerial" class="pl-drift" src="/_blob/4ccf6477a2c2bc3db2be04d5a579e1e0" alt="Illustrative image: towers along the Dwarka Expressway at golden hour" style="position: absolute; left: 0; top: 0; width: 390px; height: 148px; object-fit: cover; display: block">
+          <span style="position: absolute; left: 16px; bottom: 10px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: #FFFFFF; padding: 1px 8px; border-radius: 999px">Illustrative image</span>
+        </div>
+        <div style="padding: 0 16px; display: flex; flex-direction: column; gap: 14px">
+          <h1 id="l-h" class="pl-rise" style="{{u.h1}}">Where are you looking?</h1>
+          <p class="pl-rise" style="margin: 0; font-size: 17px; line-height: 1.5; animation-delay: 70ms">Pick a corridor, use your location, or both. Each is optional.</p>
+          <div role="group" aria-label="Corridors" style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{corridors}}" as="cr" hint-placeholder-count="3">
+              <button type="button" class="pl-press" onClick="{{cr.toggle}}" aria-pressed="{{cr.on}}" aria-disabled="{{cr.soon}}" style="{{cr.style}}">{{cr.name}}</button>
+            </sc-for>
+          </div>
+          <div style="margin-top: 6px; padding: 16px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 10px">
+            <sc-if value="{{locOff}}" hint-placeholder-val="{{true}}">
+              <button type="button" class="pl-press" onClick="{{useLocation}}" style="align-self: flex-start; min-height: 48px; display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.onInk}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"></circle></svg>Use my location</button>
+              <p style="margin: 0; font-size: 15px; line-height: 1.5">Only while the app is open: for “Near me”, and for “Where am I?” at a site. Never stored with your number. Android asks you next.</p>
+            </sc-if>
+            <sc-if value="{{locOn}}" hint-placeholder-val="{{false}}">
+              <p class="pl-rise" style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Location on, while the app is open</p>
+              <p style="margin: 0; font-size: 15px; line-height: 1.5">You’re near Sector 37D. Projects nearby come first in Explore.</p>
+              <button type="button" class="pl-press" onClick="{{stopLocation}}" style="align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Turn location off</button>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isPhone}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="p-h" style="padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+        <h1 id="p-h" class="pl-rise" style="{{u.h1}}">Sign in to follow projects</h1>
+        <p class="pl-rise" style="margin: 0; font-size: 17px; line-height: 1.5; animation-delay: 70ms">Reading never needs an account. Signing in lets us alert you, on this phone, the web and WhatsApp.</p>
+        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px">
+          <label for="ph-in" style="font-size: 16px; font-weight: 600">Mobile number</label>
+          <div style="display: flex; gap: 8px">
+            <select aria-label="Country code" value="{{cc}}" onChange="{{onCc}}" style="flex: none; width: 104px; height: 56px; padding: 0 12px; border: 1.5px solid {{t.field}}; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px">
+              <option value="+91">+91 IN</option>
+              <option value="+971">+971 AE</option>
+              <option value="+1">+1 US</option>
+              <option value="+44">+44 GB</option>
+            </select>
+            <input id="ph-in" type="tel" inputmode="numeric" autocomplete="tel-national" value="{{phone}}" onChange="{{onPhone}}" placeholder="10-digit number" aria-invalid="{{phoneInvalid}}" aria-describedby="ph-err" style="flex: 1; min-width: 0; height: 56px; padding: 0 18px; border: 1.5px solid {{phoneBorder}}; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 18px; box-sizing: border-box">
+          </div>
+          <p id="ph-err" aria-live="polite" style="margin: 0; min-height: 22px; font-size: 14px; color: {{t.error}}">{{phoneErr}}</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <span id="via-l" style="font-size: 16px; font-weight: 600">Send the code by</span>
+          <div role="radiogroup" aria-labelledby="via-l" style="display: flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+            <button type="button" role="radio" class="pl-press" aria-checked="{{waOn}}" onClick="{{pickWa}}" style="{{waSeg}}">WhatsApp</button>
+            <button type="button" role="radio" class="pl-press" aria-checked="{{smsOn}}" onClick="{{pickSms}}" style="{{smsSeg}}">SMS</button>
+          </div>
+        </div>
+        <p style="margin: 4px 0 0; font-size: 15px; line-height: 1.5">We use your number to sign you in, and for alerts you switch on. It is never shared without your tap. <a href="#privacy" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Privacy notice</a></p>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isCode}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="c-h" style="padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+        <h1 id="c-h" class="pl-rise" style="{{u.h1}}">Enter the code</h1>
+        <p class="pl-rise" style="margin: 0; font-size: 17px; line-height: 1.5; animation-delay: 70ms">{{sentLine}}</p>
+        <sc-if value="{{canAutofill}}" hint-placeholder-val="{{true}}">
+          <button type="button" class="pl-press" onClick="{{autofill}}" style="min-height: 56px; display: flex; align-items: center; gap: 12px; padding: 8px 16px; border: 0; border-radius: 8px; background: {{t.track}}; color: {{t.ink}}; font: inherit; text-align: left; cursor: pointer">
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M5 5.5h14A1.5 1.5 0 0 1 20.5 7v8a1.5 1.5 0 0 1-1.5 1.5h-8.5L6 20v-3.5H5A1.5 1.5 0 0 1 3.5 15V7A1.5 1.5 0 0 1 5 5.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M8 11h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+            <span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 16px; font-weight: 700">Code arrived on WhatsApp</span><span style="font-size: 14px; color: {{t.ink2}}">Tap to fill it in</span></span>
+          </button>
+        </sc-if>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="otp-in" style="font-size: 16px; font-weight: 600">6-digit code</label>
+          <div style="position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; height: 60px">
+            <sc-for list="{{cells}}" as="c" hint-placeholder-count="6">
+              <span aria-hidden="true" style="{{c.style}}">{{c.d}}<span class="pl-caret" style="{{c.caret}}"></span></span>
+            </sc-for>
+            <input id="otp-in" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp}}" onChange="{{onOtp}}" aria-invalid="{{otpInvalid}}" aria-describedby="otp-err" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; border: 0; padding: 0; font-size: 18px">
+          </div>
+          <p id="otp-err" aria-live="polite" style="margin: 0; min-height: 22px; font-size: 14px; color: {{t.error}}">{{otpErr}}</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0 20px">
+          <button type="button" class="pl-press" onClick="{{resend}}" aria-disabled="{{resendDisabled}}" style="{{resendStyle}}">{{resendLabel}}</button>
+          <button type="button" class="pl-press" onClick="{{switchChannel}}" style="min-height: 48px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 16px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">{{switchLabel}}</button>
+        </div>
+        <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink}}">Plinth never calls to ask for this code.</p>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isFollow}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="f-h" style="padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+        <h1 id="f-h" class="pl-rise" style="{{u.h1}}">Follow your first project</h1>
+        <p class="pl-rise" style="margin: 0; font-size: 17px; line-height: 1.5; animation-delay: 70ms">We’ll tell you when its band, filings or orders change.</p>
+        <div style="position: relative; display: flex; align-items: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="position: absolute; left: 18px; color: {{t.ink2}}"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M16 16l4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+          <label for="q-in" class="sr">Search a project or developer</label>
+          <input id="q-in" type="search" value="{{query}}" onChange="{{onQuery}}" placeholder="Search a project or developer" style="width: 100%; height: 52px; padding: 0 18px 0 48px; border: 1.5px solid {{t.field}}; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; box-sizing: border-box">
+        </div>
+        <ul aria-label="Suggested projects" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px">
+          <sc-for list="{{suggest}}" as="sp" hint-placeholder-count="4">
+            <li style="display: flex; align-items: center; gap: 12px; min-height: 84px">
+              <img data-slot="{{sp.slot}}" src="{{sp.src}}" alt="" style="flex: none; width: 64px; height: 64px; object-fit: cover; display: block; background: {{t.photo}}">
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+                <span style="font-size: 16px; font-weight: 700; line-height: 1.3">{{sp.name}}</span>
+                <span style="{{sp.chip}}"><span class="sr">Delivery risk: </span><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{sp.meter}}" as="sm" hint-placeholder-count="5"><span style="{{sm.style}}"></span></sc-for></span>{{sp.band}}</span>
+                <span style="font-size: 14px; line-height: 1.35; color: {{t.ink2}}">{{sp.price}}</span>
+              </span>
+              <button type="button" class="pl-press" onClick="{{sp.toggle}}" aria-pressed="{{sp.on}}" aria-label="{{sp.aria}}" style="{{sp.btn}}">{{sp.label}}</button>
+            </li>
+          </sc-for>
+        </ul>
+        <sc-if value="{{noMatch}}" hint-placeholder-val="{{false}}">
+          <p style="margin: 0; font-size: 16px; line-height: 1.5">No covered project matches “{{query}}”. We cover Gurugram under-construction projects today.</p>
+        </sc-if>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: {{t.ink2}}">Listed by distance from your corridor. Nobody can pay to appear here. Prices are all-in where we have a cost sheet.</p>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isAlerts}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="a-h" style="padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+        <h1 id="a-h" class="pl-rise" style="{{u.h1}}">Turn on alerts?</h1>
+        <p class="pl-rise" style="margin: 0; font-size: 17px; line-height: 1.5; animation-delay: 70ms"><strong>Utility alerts only.</strong> No offers, no ads, and nothing from developers.</p>
+        <figure style="margin: 4px 0 0; padding: 14px 16px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 4px">
+          <figcaption style="font-size: 14px; color: {{t.ink2}}">What one looks like</figcaption>
+          <span style="font-size: 16px; font-weight: 700; line-height: 1.35">{{sample.title}}</span>
+          <span style="font-size: 16px; line-height: 1.45">{{sample.body}}</span>
+        </figure>
+        <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+          <li style="display: flex; gap: 10px; align-items: flex-start; font-size: 16px; line-height: 1.45"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M5 11.5l4 4L17 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>A band change, with what triggered it</span></li>
+          <li style="display: flex; gap: 10px; align-items: flex-start; font-size: 16px; line-height: 1.45"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M5 11.5l4 4L17 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>A new QPR, order or extension</span></li>
+          <li style="display: flex; gap: 10px; align-items: flex-start; font-size: 16px; line-height: 1.45"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M5 11.5l4 4L17 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Reminders for visits you book</span></li>
+        </ul>
+        <button type="button" role="switch" class="pl-press" aria-checked="{{quietAria}}" onClick="{{toggleQuiet}}" style="min-height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 4px 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; text-align: left; cursor: pointer">
+          <span style="display: flex; flex-direction: column"><span style="font-size: 16px; font-weight: 600">Quiet hours</span><span style="font-size: 14px; color: {{t.ink2}}">Nothing from 10 pm to 8 am</span></span>
+          <span aria-hidden="true" style="{{quietTrack}}"><span style="{{quietThumb}}"></span></span>
+        </button>
+        <button type="button" role="checkbox" class="pl-press" aria-checked="{{waAlertAria}}" onClick="{{toggleWaAlert}}" style="min-height: 56px; display: flex; align-items: flex-start; gap: 12px; padding: 4px 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; text-align: left; cursor: pointer">
+          <span aria-hidden="true" style="{{waAlertBox}}"><sc-if value="{{waAlertOn}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="{{t.onInk}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></span>
+          <span style="display: flex; flex-direction: column"><span style="font-size: 16px; font-weight: 600">Also send them on WhatsApp</span><span style="font-size: 14px; color: {{t.ink2}}">Reply STOP to end them.</span></span>
+        </button>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isDone}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="d-h" style="padding: 24px 16px 24px; display: flex; flex-direction: column; gap: 16px">
+        <h1 id="d-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 48px; line-height: 0.95; letter-spacing: -0.05em">You’re set.</h1>
+        <p class="pl-rise" style="margin: 0; font-size: 17px; line-height: 1.5; animation-delay: 70ms">{{doneLine}}</p>
+        <dl class="pl-rise" style="margin: 4px 0 0; display: flex; flex-direction: column; gap: 12px; animation-delay: 140ms">
+          <sc-for list="{{summary}}" as="su" hint-placeholder-count="5">
+            <div style="display: flex; gap: 12px; align-items: baseline">
+              <dt style="flex: 0 0 96px; font-size: 15px; color: {{t.ink2}}">{{su.k}}</dt>
+              <dd style="flex: 1; min-width: 0; margin: 0; font-size: 17px; line-height: 1.4; font-weight: 600">{{su.v}}</dd>
+            </div>
+          </sc-for>
+        </dl>
+        <p class="pl-rise" style="margin: 24px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 112px; line-height: 0.82; letter-spacing: -0.06em; animation-delay: 210ms" aria-hidden="true">Plinth</p>
+        <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 24px; line-height: 1.1; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+      </section>
+    </sc-if>
+  </main>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 136px; padding: 12px 16px 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; background: {{t.bg}}">
+    <button type="button" class="pl-press" onClick="{{primary}}" style="height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{primaryLabel}}</button>
+    <sc-if value="{{hasSecondary}}" hint-placeholder-val="{{true}}">
+      <button type="button" class="pl-press" onClick="{{secondary}}" style="height: 48px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; font: inherit; font-size: 16px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">{{secondaryLabel}}</button>
+    </sc-if>
+  </div>
+
+  <div role="status" aria-live="polite" style="{{toastStyle}}">{{toast}}</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"step":{"editor":"enum","options":["Welcome","Buying","Location","Sign in","Code","Follow","Alerts","Done"],"default":"Welcome"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {themePick: '', nav: null, tryP: 'aurelia', picks: 0, kind: '', corr: {dxp: true}, loc: false, cc: '+91', phone: '', phoneErr: '', via: 'wa', otp: '', otpErr: '', sentAt: 0, now: 0, signedIn: null, query: '', follows: {}, quiet: true, waAlert: false, alerts: null, toast: ''};
+  }
+  componentDidMount() {
+    var self = this;
+    this._iv = setInterval(function () {
+      if (self._step !== 'Code') return;
+      var st = self.state || {};
+      if (!st.sentAt) { self.setState({sentAt: Date.now() - 8000, now: Date.now()}); return; }
+      if (Date.now() - st.sentAt < 31000) self.setState({now: Date.now()});
+    }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this._iv); clearTimeout(this._ts); }
+  say(msg) {
+    var self = this;
+    clearTimeout(this._ts);
+    this.setState({toast: msg});
+    this._ts = setTimeout(function () { self.setState({toast: ''}); }, 3000);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var theme = s.themePick || this.props.theme || 'Day';
+    var night = theme === 'Night';
+    var STEPS = ['Welcome', 'Buying', 'Location', 'Sign in', 'Code', 'Follow', 'Alerts', 'Done'];
+    var propStep = STEPS.indexOf(this.props.step) >= 0 ? this.props.step : 'Welcome';
+    var step = (s.nav && s.nav.from === propStep) ? s.nav.to : propStep;
+    this._step = step;
+    function go(to, extra) { self.setState(Object.assign({nav: {from: propStep, to: to}}, extra || {})); }
+    var BG = "'Bricolage Grotesque', system-ui, sans-serif";
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#111C18', track: 'rgba(255,255,255,0.07)', photo: '#1B2A24', field: 'rgba(255,255,255,0.40)', fieldOn: '#EEF3F0',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', onInk: '#0B1411', error: '#FF8A80',
+      emptyBorder: '#7D828A', segEmpty: 'transparent', segOn: 'rgba(255,255,255,0.16)', progOff: 'rgba(255,255,255,0.18)', lineStrong: 'rgba(255,255,255,0.28)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', track: '#F4F2ED', photo: '#E7E3DA', field: '#8C8779', fieldOn: '#1B1A17',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', onInk: '#FFFFFF', error: '#B42318',
+      emptyBorder: '#8C9199', segEmpty: '#FFFFFF', segOn: '#FFFFFF', progOff: '#DDD8CD', lineStrong: '#C9C4B9'
+    };
+    var U = {h1: 'margin:0;font-family:' + BG + ';font-weight:800;font-size:36px;line-height:1;letter-spacing:-0.04em'};
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', fillN: '#15323A'},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', fillN: '#332B0C'},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillN: '#3A2210'},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', fillN: '#3D1A19'},
+      Limited: {i: 0, light: '#6B7079', dark: '#A3A8B0', fill: '#F4F2ED', fillN: 'rgba(255,255,255,0.07)'}
+    };
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function textInk(n) { return night ? B[n].dark : (B[n].i <= 2 ? T.ink : B[n].light); }
+    function meter(n) {
+      var lim = n === 'Limited';
+      return [1, 2, 3, 4, 5].map(function (j) {
+        var on = !lim && j <= B[n].i;
+        return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (on ? 'background:' + ink(n) + ';' : 'background:' + T.segEmpty + ';border:1px ' + (lim ? 'dashed ' + ink(n) : 'solid ' + T.emptyBorder) + ';')};
+      });
+    }
+    function chip(n) {
+      var lim = n === 'Limited';
+      return 'align-self:flex-start;display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 10px 0 9px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:14px;font-weight:600;color:' + (lim ? T.ink2 : T.ink) + ';background:' + (lim ? T.track : (night ? B[n].fillN : B[n].fill));
+    }
+
+    // Signature: the risk card builds itself for whichever project you try.
+    var P = {
+      aurelia: {name: 'Aurelia Heights, Phase 2', tab: 'Aurelia Heights', dev: 'Northfield Estates · Sector 37D', band: 'Elevated', slot: 'heroAurelia', src: '/_blob/c3b52e41d6da32356184bfa8fddea9b4', alt: 'Illustrative image: Aurelia Heights, Phase 2 towers at blue hour', freq: 'Between 30 and 45 of 100 similar Gurugram projects got their OC more than 12 months late.', built: 41, builtText: '41% built · 77% of the promised time used', price: '₹2.74 Cr all-in', priceNote: 'quoted ₹2.35 Cr', src1: 'HARERA QPR · Apr–Jun 2026'},
+      kestrel: {name: 'Kestrel Park', tab: 'Kestrel Park', dev: 'Orbis Land · Sector 113', band: 'Low', slot: 'heroKestrel', src: '/_blob/29ddb4eb8af81bf41e28a3b11bdfd13e', alt: 'Illustrative image: Kestrel Park, three slender towers', freq: 'About 10 of 100 similar Gurugram projects got their OC more than 12 months late.', built: 63, builtText: '63% built · 58% of the promised time used', price: '₹2.44 Cr all-in', priceNote: 'quoted ₹2.10 Cr', src1: 'HARERA QPR · Jul–Sep 2026'},
+      coral: {name: 'Coral Towers', tab: 'Coral Towers', dev: 'Vantage Buildcon · Sector 89', band: 'High', slot: 'heroCoral', src: '/_blob/76b15081db77011ae5930ad87bcd7272', alt: 'Illustrative image: Coral Towers, two partly built towers', freq: 'Between 45 and 65 of 100 similar Gurugram projects got their OC more than 12 months late.', built: 22, builtText: '22% built · 70% of the promised time used · extended twice', price: '₹1.90 Cr all-in', priceNote: 'quoted ₹1.62 Cr', src1: 'HARERA extension order · 14 Oct 2026'}
+    };
+    var tp = P[s.tryP] ? s.tryP : 'aurelia';
+    var cp = P[tp];
+    var alt = (s.picks || 0) % 2 ? 'A' : 'B';
+    var inAnim = function (d) { return 'animation:pl-in' + alt + ' 480ms cubic-bezier(.22,1,.36,1) ' + d + 'ms both'; };
+    var card = {
+      name: cp.name, dev: cp.dev, band: cp.band, slot: cp.slot, src: cp.src, alt: cp.alt, freq: cp.freq, built: cp.builtText, price: cp.price, priceNote: cp.priceNote, src1: cp.src1,
+      segs: [1, 2, 3, 4, 5].map(function (j) {
+        var on = j <= B[cp.band].i;
+        return {style: 'display:block;width:18px;height:14px;border-radius:3px;box-sizing:border-box;transform-origin:bottom center;' + (on ? 'background:' + ink(cp.band) + ';animation:pl-seg' + alt + ' 360ms cubic-bezier(.22,1,.36,1) ' + (120 + j * 110) + 'ms both' : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder + ';')};
+      }),
+      bandStyle: 'font-family:' + BG + ';font-weight:800;font-size:30px;line-height:1;letter-spacing:-0.03em;color:' + textInk(cp.band) + ';' + inAnim(560),
+      lineStyle: 'margin:0;font-size:16px;line-height:1.45;' + inAnim(680),
+      builtWrap: 'display:flex;flex-direction:column;gap:6px;' + inAnim(780),
+      builtBar: 'position:absolute;left:0;top:0;bottom:0;width:100%;border-radius:4px;background:' + T.accent + ';transform-origin:left center;transform:scaleX(' + (cp.built / 100).toFixed(2) + ');transition:transform 900ms cubic-bezier(.22,1,.36,1)',
+      priceStyle: 'margin:0;' + inAnim(880),
+      srcStyle: 'align-self:flex-start;display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:2px 12px;border-radius:999px;box-sizing:border-box;background:' + T.bgSolid + ';font-size:13px;color:' + T.ink + ';' + inAnim(960)
+    };
+    var tries = ['aurelia', 'kestrel', 'coral'].map(function (k) {
+      var on = k === tp;
+      return {name: P[k].tab, on: on ? 'true' : 'false',
+        pick: function () { if (k !== tp) self.setState({tryP: k, picks: (self.state.picks || 0) + 1}); },
+        style: 'flex:none;min-height:44px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.onInk : T.ink)};
+    });
+
+    // What are you buying?
+    var KINDS = [
+      {k: 'uc', title: 'A flat being built', sub: 'Under construction. This is what Plinth rates today.'},
+      {k: 'ready', title: 'A ready flat', sub: 'Ready to move in, or resale. Full checks arrive in R2, planned Apr–Jun 2027. Until then you see the project’s RERA records.'},
+      {k: 'check', title: 'Just checking', sub: 'A project someone sent you, or one you have already booked.'}
+    ];
+    var kinds = KINDS.map(function (x) {
+      var on = s.kind === x.k;
+      return {title: x.title, sub: x.sub, on: on ? 'true' : 'false',
+        pick: function () { self.setState({kind: x.k}); },
+        style: 'width:100%;min-height:76px;display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border:0;border-radius:8px;box-sizing:border-box;font:inherit;text-align:left;cursor:pointer;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.onInk : T.ink),
+        ring: 'flex:none;width:22px;height:22px;margin-top:3px;border-radius:50%;box-sizing:border-box;display:grid;place-items:center;border:2px solid ' + (on ? T.onInk : T.ink2),
+        dot: on ? 'display:block;width:10px;height:10px;border-radius:50%;background:' + T.onInk : 'display:none',
+        subStyle: 'font-size:15px;line-height:1.45;color:' + (on ? T.onInk : T.ink2)};
+    });
+
+    // Where are you looking?
+    var corr = s.corr || {};
+    var CORR = [{k: 'dxp', name: 'Dwarka Expressway'}, {k: 'ng', name: 'New Gurugram'}, {k: 'gcer', name: 'Golf Course Ext Rd · from Dec 2026', soon: true}];
+    var corridors = CORR.map(function (c) {
+      var on = !!corr[c.k] && !c.soon;
+      return {name: c.name, on: on ? 'true' : 'false', soon: c.soon ? 'true' : 'false',
+        toggle: function () {
+          if (c.soon) { self.say('Golf Course Ext Rd is planned for Dec 2026. We’ll show it here then.'); return; }
+          var n = Object.assign({}, self.state.corr || {}); n[c.k] = !n[c.k]; self.setState({corr: n});
+        },
+        style: 'min-height:44px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.onInk : (c.soon ? T.ink2 : T.ink))};
+    });
+    var corrNames = CORR.filter(function (c) { return corr[c.k] && !c.soon; }).map(function (c) { return c.name; });
+
+    // Sign in
+    var digits = String(s.phone || '').replace(/\D/g, '');
+    function masked() { return digits.length >= 6 ? (s.cc || '+91') + ' ' + digits.slice(0, 2) + '••• ••' + digits.slice(-3) : '+91 99••• ••318'; }
+    function phoneOk() { return (s.cc || '+91') === '+91' ? /^[6-9]\d{9}$/.test(digits) : digits.length >= 7; }
+    var wa = s.via !== 'sms';
+    function seg(on) { return 'flex:1;min-height:48px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;background:' + (on ? T.segOn : 'transparent') + ';color:' + (on ? T.ink : T.ink2); }
+    var sendCode = function () {
+      if (!phoneOk()) { self.setState({phoneErr: (s.cc || '+91') === '+91' ? 'Enter a 10-digit mobile number, starting with 6, 7, 8 or 9.' : 'Enter your number without the country code.'}); return; }
+      go('Code', {phoneErr: '', otp: '', otpErr: '', sentAt: Date.now(), now: Date.now()});
+    };
+    var otp = String(s.otp || '').replace(/\D/g, '').slice(0, 6);
+    var cells = [];
+    for (var i = 0; i < 6; i++) {
+      var active = i === otp.length;
+      cells.push({d: i < otp.length ? otp.charAt(i) : '',
+        style: 'position:relative;display:flex;align-items:center;justify-content:center;height:60px;border-radius:8px;box-sizing:border-box;font-family:' + BG + ';font-weight:800;font-size:28px;background:' + T.bgSolid + ';color:' + T.ink + ';border:' + (active ? '2px solid ' + T.fieldOn : '1.5px solid ' + (s.otpErr ? T.error : T.field)),
+        caret: active ? 'display:block;width:2px;height:26px;background:' + T.ink : 'display:none'});
+    }
+    var left = s.sentAt ? Math.max(0, 30 - Math.floor(((s.now || s.sentAt) - s.sentAt) / 1000)) : 22;
+    var verify = function () {
+      if (otp.length < 6) { self.setState({otpErr: 'Enter all 6 digits.'}); return; }
+      go('Follow', {otpErr: '', signedIn: true});
+      self.say('Signed in. The same account works on the web and WhatsApp.');
+    };
+
+    // Follow your first project: ordered by distance from the corridor, never by payment.
+    var SUG = [
+      {k: 'kestrel', name: 'Kestrel Park', band: 'Low', slot: 'heroKestrel', src: '/_blob/29ddb4eb8af81bf41e28a3b11bdfd13e', price: '₹2.44 Cr all-in · Sector 113', dev: 'orbis land'},
+      {k: 'sapphire', name: 'Sapphire Grove, Phase 1', band: 'Moderate', slot: 'heroSapphire', src: '/_blob/834d8de534be36df0eb45c9468dabeb2', price: '₹2.27 Cr all-in · Sector 106', dev: 'meridian habitat'},
+      {k: 'aurelia', name: 'Aurelia Heights, Phase 2', band: 'Elevated', slot: 'heroAurelia', src: '/_blob/c3b52e41d6da32356184bfa8fddea9b4', price: '₹2.74 Cr all-in · Sector 37D', dev: 'northfield estates'},
+      {k: 'juniper', name: 'Juniper Enclave', band: 'Limited', slot: 'heroJuniper', src: '/_blob/dca5839367b61f6d11fb4a0306ea108a', price: '₹2.25 Cr quoted · all-in not yet known', dev: 'halcyon homes'}
+    ];
+    var q = String(s.query || '').trim().toLowerCase();
+    var follows = s.follows || {};
+    var shown = SUG.filter(function (x) { return !q || x.name.toLowerCase().indexOf(q) >= 0 || x.dev.indexOf(q) >= 0; });
+    var suggest = shown.map(function (x) {
+      var on = !!follows[x.k];
+      return {name: x.name, band: x.band === 'Limited' ? 'Limited history' : x.band, slot: x.slot, src: x.src, price: x.price, chip: chip(x.band), meter: meter(x.band), on: on ? 'true' : 'false',
+        label: on ? 'Following' : 'Follow', aria: (on ? 'Stop following ' : 'Follow ') + x.name,
+        toggle: function () { var n = Object.assign({}, self.state.follows || {}); n[x.k] = !n[x.k]; self.setState({follows: n}); },
+        btn: 'flex:none;min-width:96px;min-height:44px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.onInk : T.ink)};
+    });
+    var followed = SUG.filter(function (x) { return follows[x.k]; });
+    var fCount = followed.length;
+
+    // Alerts
+    var SAMPLE = {
+      aurelia: {title: 'Aurelia Heights, Phase 2 · 2 Oct 2026', body: 'Moved from Moderate to Elevated. Trigger: the Apr–Jun 2026 QPR and new complaint orders.'},
+      kestrel: {title: 'Kestrel Park · 12 Oct 2026', body: 'The Jul–Sep 2026 QPR was filed on time. The band stays Low.'},
+      sapphire: {title: 'Sapphire Grove, Phase 1 · 27 Jul 2026', body: 'The Apr–Jun 2026 QPR was filed 12 days late. The band stays Moderate.'},
+      juniper: {title: 'Juniper Enclave · when it happens', body: 'Its first band, once Halcyon Homes has enough finished projects to score.'}
+    };
+    var sample = followed.length ? SAMPLE[followed[0].k] : SAMPLE.aurelia;
+    function sw(on) {
+      return {
+        track: 'position:relative;flex:none;width:52px;height:32px;border-radius:16px;box-sizing:border-box;transition:background-color .2s ease;' + (on ? 'background:' + T.ink + ';border:2px solid ' + T.ink + ';' : 'background:' + T.track + ';border:2px solid ' + T.ink2 + ';'),
+        thumb: 'position:absolute;left:2px;top:2px;width:24px;height:24px;border-radius:50%;transition:transform .22s cubic-bezier(.22,1,.36,1);' + (on ? 'transform:translateX(20px);background:' + T.onInk + ';' : 'transform:scale(.667);background:' + T.ink2 + ';')
+      };
+    }
+    var quiet = s.quiet !== false;
+    var qs = sw(quiet);
+
+    // Done summary
+    var KIND_WORD = {uc: 'A flat being built', ready: 'A ready flat', check: 'Just checking'};
+    var signed = s.signedIn === true || (s.signedIn === null && step === 'Done' && propStep === 'Done');
+    var alertsOn = s.alerts === true || (s.alerts === null && propStep === 'Done' && step === 'Done');
+    var summary = [
+      {k: 'Buying', v: KIND_WORD[s.kind] || (propStep === 'Done' && step === 'Done' ? 'A flat being built' : 'Not said')},
+      {k: 'Looking', v: corrNames.length ? corrNames.join(', ') : 'All of Gurugram'},
+      {k: 'Account', v: signed ? masked() + ' · the same on the web and WhatsApp' : 'None. You can sign in later from You'},
+      {k: 'Following', v: fCount ? followed.map(function (x) { return x.name; }).join(', ') : (signed && propStep === 'Done' ? 'Kestrel Park' : 'Nothing yet')},
+      {k: 'Alerts', v: alertsOn ? 'On · quiet from 10 pm to 8 am' + (s.waAlert ? ' · also on WhatsApp' : '') : 'Off'},
+      {k: 'Location', v: s.loc ? 'On, only while the app is open' : 'Off'}
+    ];
+
+    var ORDER = {Buying: 1, Location: 2, 'Sign in': 3, Code: 3, Follow: 4, Alerts: 5};
+    var now = ORDER[step] || 0;
+    var progress = [1, 2, 3, 4, 5].map(function (j) {
+      return {style: 'flex:1;display:block;height:4px;border-radius:2px;background:' + (j <= now ? T.ink : T.progOff) + ';transition:background-color .3s ease'};
+    });
+
+    // Bottom actions per step
+    var A = {
+      Welcome: {p: 'Next: what you’re buying', pf: function () { go('Buying'); }, s: 'Explore without an account', sf: function () { go('Done', {signedIn: false, alerts: false}); }},
+      Buying: {p: 'Next: where you’re looking', pf: function () { go('Location'); }},
+      Location: {p: 'Next: sign in', pf: function () { go('Sign in'); }},
+      'Sign in': {p: wa ? 'Send code on WhatsApp' : 'Send code by SMS', pf: sendCode, s: 'Not now, explore first', sf: function () { go('Done', {signedIn: false, alerts: false}); }},
+      Code: {p: 'Verify', pf: verify},
+      Follow: {p: fCount ? 'Next: alerts for ' + (fCount === 1 ? '1 project' : fCount + ' projects') : 'Next: alerts', pf: function () { go('Alerts'); }},
+      Alerts: {p: 'Turn on alerts', pf: function () { go('Done', {alerts: true}); self.say('Android will ask for permission now. You can change it any time in You.'); }, s: 'Not now', sf: function () { go('Done', {alerts: false}); }},
+      Done: {p: 'Open Explore', pf: function () { self.say('This is where the Explore tab opens.'); }, s: 'Change any of this in You', sf: function () { self.say('All of this lives in the You tab.'); }}
+    };
+    var a = A[step];
+    var PREV = {Buying: 'Welcome', Location: 'Buying', 'Sign in': 'Location', Code: 'Sign in', Follow: 'Code', Alerts: 'Follow', Done: 'Alerts'};
+    var SKIP = {Buying: 'Location', Location: 'Sign in', 'Sign in': 'Done', Follow: 'Alerts', Alerts: 'Done'};
+    var hasSkip = !!SKIP[step];
+
+    return {
+      t: T, u: U,
+      isNight: night, isDay: !night,
+      themeLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      flipTheme: function () { self.setState({themePick: night ? 'Day' : 'Night'}); },
+      isWelcome: step === 'Welcome', isBuying: step === 'Buying', isLocation: step === 'Location', isPhone: step === 'Sign in', isCode: step === 'Code', isFollow: step === 'Follow', isAlerts: step === 'Alerts', isDone: step === 'Done',
+      hasBack: step !== 'Welcome', hasProgress: now > 0, hasSkip: hasSkip, noSkip: !hasSkip,
+      back: function () { if (PREV[step]) go(PREV[step]); },
+      skip: function () {
+        var to = SKIP[step];
+        if (!to) return;
+        if (step === 'Sign in') go('Done', {signedIn: false, alerts: false});
+        else if (step === 'Alerts') go('Done', {alerts: false});
+        else go(to);
+      },
+      skipLabel: 'Skip',
+      progress: progress, progressNow: now, progressText: now ? 'Step ' + now + ' of 5' : 'Not started',
+      tries: tries, card: card,
+      kinds: kinds,
+      corridors: corridors,
+      locOff: !s.loc, locOn: !!s.loc,
+      useLocation: function () { self.setState({loc: true}); },
+      stopLocation: function () { self.setState({loc: false}); },
+      cc: s.cc || '+91',
+      onCc: function (e) { self.setState({cc: e.target.value, phoneErr: ''}); },
+      phone: s.phone || '',
+      onPhone: function (e) { self.setState({phone: String(e.target.value || '').replace(/[^\d ]/g, '').slice(0, 14), phoneErr: ''}); },
+      phoneErr: s.phoneErr || '', phoneInvalid: s.phoneErr ? 'true' : 'false', phoneBorder: s.phoneErr ? T.error : T.field,
+      waOn: wa ? 'true' : 'false', smsOn: wa ? 'false' : 'true', waSeg: seg(wa), smsSeg: seg(!wa),
+      pickWa: function () { self.setState({via: 'wa'}); },
+      pickSms: function () { self.setState({via: 'sms'}); },
+      sentLine: (wa ? 'We sent it to WhatsApp, ' : 'We sent it by SMS to ') + masked() + '. It works for 10 minutes.',
+      canAutofill: wa && otp.length < 6,
+      autofill: function () { self.setState({otp: '482193', otpErr: ''}); },
+      cells: cells, otp: otp,
+      onOtp: function (e) { self.setState({otp: String(e.target.value || '').replace(/\D/g, '').slice(0, 6), otpErr: ''}); },
+      otpErr: s.otpErr || '', otpInvalid: s.otpErr ? 'true' : 'false',
+      resendDisabled: left > 0 ? 'true' : 'false',
+      resendLabel: left > 0 ? 'New code in 0:' + (left < 10 ? '0' : '') + left : 'Send a new code',
+      resendStyle: 'min-height:48px;padding:0;border:0;background:transparent;font:inherit;font-size:16px;font-weight:600;cursor:' + (left > 0 ? 'default' : 'pointer') + ';color:' + (left > 0 ? T.ink2 : T.ink) + ';text-decoration:' + (left > 0 ? 'none' : 'underline') + ';text-underline-offset:3px',
+      resend: function () { if (left > 0) return; self.setState({sentAt: Date.now(), now: Date.now(), otp: '', otpErr: ''}); self.say('New code sent. The old one no longer works.'); },
+      switchLabel: wa ? 'Send by SMS instead' : 'Send on WhatsApp instead',
+      switchChannel: function () { self.setState({via: wa ? 'sms' : 'wa', sentAt: Date.now(), now: Date.now(), otp: '', otpErr: ''}); self.say(wa ? 'Code sent by SMS.' : 'Code sent on WhatsApp.'); },
+      query: s.query || '',
+      onQuery: function (e) { self.setState({query: e.target.value}); },
+      suggest: suggest, noMatch: shown.length === 0,
+      sample: sample,
+      quietAria: quiet ? 'true' : 'false', quietTrack: qs.track, quietThumb: qs.thumb,
+      toggleQuiet: function () { self.setState({quiet: !(self.state.quiet !== false)}); },
+      waAlertOn: !!s.waAlert, waAlertAria: s.waAlert ? 'true' : 'false',
+      waAlertBox: 'width:24px;height:24px;flex:none;margin-top:2px;border-radius:6px;box-sizing:border-box;display:grid;place-items:center;' + (s.waAlert ? 'background:' + T.ink + ';border:2px solid ' + T.ink + ';' : 'background:transparent;border:2px solid ' + T.ink2 + ';'),
+      toggleWaAlert: function () { self.setState({waAlert: !self.state.waAlert}); },
+      doneLine: signed ? 'Your account is the same everywhere: this app, the web and WhatsApp. Reading is still free without it.' : 'You can read every band, reason and source without an account. Sign in later to follow projects.',
+      summary: summary,
+      primary: a.pf, primaryLabel: a.p,
+      hasSecondary: !!a.s, secondary: a.sf || function () {}, secondaryLabel: a.s || '',
+      toast: s.toast,
+      toastStyle: 'position:absolute;left:16px;right:16px;bottom:148px;min-height:48px;box-sizing:border-box;padding:12px 16px;border-radius:8px;font-size:15px;line-height:1.4;background:' + (night ? '#EEF3F0' : '#1B1A17') + ';color:' + (night ? '#0B1411' : '#FFFFFF') + ';box-shadow:0 8px 24px rgba(27,26,23,.18);transition:opacity .25s,transform .25s;opacity:' + (s.toast ? 1 : 0) + ';transform:translateY(' + (s.toast ? '0' : '8px') + ');pointer-events:none'
+    };
+  }
+}
+</script>
+</body>
+</html>

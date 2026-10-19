@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Direction B: Precision Instrument, project page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@75..125,300..800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F1F3F6}
+a{color:#2442C7}a:hover{color:#18308F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</helmet>
+<div style="min-height: 1760px; background: #F1F3F6; color: #0F1722; font-family: 'Anek Latin', 'Noto Sans', system-ui, sans-serif; font-size: 16px; line-height: 1.5; font-variant-numeric: tabular-nums lining-nums">
+
+  <div style="background: #0E1B2B; color: #E8EDF3">
+    <header style="max-width: 1200px; margin: 0 auto; padding: 14px 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #FFFFFF">
+        <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M4 21h18M7 21V9h12v12M10 9V5h6v4" fill="none" stroke="#8FA8FF" stroke-width="2"></path></svg>
+        <span style="font-weight: 700; font-size: 22px; font-stretch: 90%; letter-spacing: 0.01em">Plinth</span>
+      </a>
+      <form style="flex: 1 1 320px; display: flex; min-width: 0" onsubmit="return false">
+        <label for="b-search" class="sr">Search projects, developers or sectors</label>
+        <input id="b-search" type="search" placeholder="Search a project, developer or sector" style="flex: 1; min-width: 0; height: 44px; padding: 0 14px; border: 1px solid #2C3D53; border-radius: 10px; background: #15253A; font: inherit; color: #FFFFFF">
+      </form>
+      <nav aria-label="Primary" style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap">
+        <a href="#following" style="text-decoration: none; color: #E8EDF3; font-weight: 500">Following</a>
+        <a href="#ask" style="text-decoration: none; color: #E8EDF3; font-weight: 500">Ask</a>
+        <a href="#methodology" style="text-decoration: none; color: #E8EDF3; font-weight: 500">How scores work</a>
+        <button type="button" style="height: 44px; padding: 0 18px; border: 0; border-radius: 10px; background: #FFFFFF; color: #0E1B2B; font: inherit; font-weight: 600; cursor: pointer">Sign in</button>
+      </nav>
+    </header>
+
+    <section style="max-width: 1200px; margin: 0 auto; padding: 16px 32px 36px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-end">
+      <div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <nav aria-label="Breadcrumb" style="font-size: 14px; color: #A9B6C6; display: flex; gap: 8px; flex-wrap: wrap">
+          <a href="#g" style="color: #A9B6C6">Gurugram</a><span aria-hidden="true">/</span><a href="#d" style="color: #A9B6C6">Dwarka Expressway</a><span aria-hidden="true">/</span><span>Sector 37D</span>
+        </nav>
+        <h1 style="margin: 0; font-weight: 700; font-size: 48px; font-stretch: 82%; line-height: 1.04; letter-spacing: -0.01em; color: #FFFFFF">Aurelia Heights, Phase 2</h1>
+        <p style="margin: 0; color: #C5CFDB">Sector 37D · by <a href="#dev" style="color: #B9C8FF">Northfield Estates</a> · 3 and 4 BHK · 1,450–2,100 sq ft carpet · RERA GGM/673/405/2022/117, checked 14 Oct 2026</p>
+        <dl style="margin: 8px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); gap: 12px">
+          <div style="background: #15253A; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 13px; color: #A9B6C6">Quoted, 3 BHK</dt><dd style="margin: 0; font-size: 30px; font-weight: 700; font-stretch: 85%; color: #FFFFFF">₹2.35 Cr</dd></div>
+          <div style="background: #15253A; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 13px; color: #A9B6C6">All-in, estimated</dt><dd style="margin: 0; font-size: 30px; font-weight: 700; font-stretch: 85%; color: #FFFFFF">₹2.74 Cr</dd></div>
+          <div style="background: #15253A; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 13px; color: #A9B6C6">Per sq ft carpet</dt><dd style="margin: 0; font-size: 30px; font-weight: 700; font-stretch: 85%; color: #FFFFFF">₹18,900</dd></div>
+          <div style="background: #15253A; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
+            <dt style="font-size: 13px; color: #A9B6C6">Delivery risk</dt>
+            <dd style="margin: 0; display: flex; align-items: center; gap: 10px">
+              <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 12px); gap: 2px"><sc-for list="{{meterDark}}" as="m" hint-placeholder-count="5"><span style="{{m.style}}"></span></sc-for></span>
+              <span style="font-size: 24px; font-weight: 700; font-stretch: 85%; color: {{darkInk}}">{{bandName}}</span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+      <div role="img" aria-label="Project photo placeholder" style="flex: 1 1 300px; max-width: 360px; height: 240px; border-radius: 10px; background: #22344B; display: flex; align-items: flex-end; padding: 12px; box-sizing: border-box">
+        <span style="font-size: 13px; color: #C5CFDB">Photo placeholder · 24 photos</span>
+      </div>
+    </section>
+  </div>
+
+  <main id="top" style="max-width: 1200px; margin: 0 auto; padding: 28px 32px 64px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+    <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+
+      <section aria-labelledby="b-risk-h" style="background: #FFFFFF; border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 22px">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap">
+          <div>
+            <h2 id="b-risk-h" style="margin: 0; font-size: 26px; font-weight: 700; font-stretch: 88%; line-height: 1.15">Delivery risk</h2>
+            <p style="margin: 0; font-size: 14px; color: #556070">Will Phase 2 get its OC within 12 months of the original RERA date?</p>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+            <span style="font-size: 13px; color: #556070">Data as of 14 Oct 2026 · Model v1.2</span>
+            <button type="button" aria-label="Share this risk card" style="width: 44px; height: 44px; border: 0; border-radius: 10px; background: #EEF1F5; cursor: pointer"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2v10M5 6l4-4 4 4M3 11v4h12v-4" fill="none" stroke="#33404F" stroke-width="1.5"></path></svg></button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start">
+          <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap">
+              <span style="font-size: 44px; font-weight: 800; font-stretch: 80%; line-height: 1; color: {{labelColor}}">{{bandName}}</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #33404F; background: #EEF1F5; border-radius: 999px; padding: 4px 10px">
+                <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #33404F"></span>
+                <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #33404F; box-sizing: border-box"></span>
+                Low confidence
+              </span>
+            </div>
+            <div role="img" aria-label="{{scaleLabel}}" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px">
+              <sc-for list="{{scale}}" as="s" hint-placeholder-count="5">
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <div style="{{s.barStyle}}"></div>
+                  <span style="{{s.textStyle}}">{{s.name}}</span>
+                </div>
+              </sc-for>
+            </div>
+            <p style="margin: 0; font-size: 20px; line-height: 1.4">Between <strong>{{lo}} and {{hi}} of 100</strong> similar Gurugram projects finished more than 12 months after their original RERA date.</p>
+            <p style="margin: 0; font-size: 14px; color: #556070">Similar = registered 2017–2021, 300–800 units, developer with 3–8 finished RERA projects. n = 212.</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div role="img" aria-label="Icon array: between {{lo}} and {{hi}} of 100 similar projects finished more than 12 months late" style="display: grid; grid-template-columns: repeat(10, 16px); gap: 3px">
+              <sc-for list="{{cells}}" as="c" hint-placeholder-count="100"><span style="{{c.style}}"></span></sc-for>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #33404F">
+              <span style="display: flex; align-items: center; gap: 6px"><span aria-hidden="true" style="{{legendLate}}"></span>Late &gt;12 months</span>
+              <span style="display: flex; align-items: center; gap: 6px"><span aria-hidden="true" style="{{legendRange}}"></span>Uncertain</span>
+              <span style="display: flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 12px; height: 12px; border-radius: 3px; background: #E9ECF1; border: 1px solid #8C9199; box-sizing: border-box"></span>On time</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 12px">
+          <sc-for list="{{reasons}}" as="r" hint-placeholder-count="4">
+            <div style="background: #F5F7FA; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 8px">
+              <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #556070"><span style="display: inline-flex; width: 22px; height: 22px; border-radius: 6px; background: #0E1B2B; color: #FFFFFF; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">{{r.n}}</span>{{r.group}}</span>
+              <span style="font-size: 16px">{{r.fact}}</span>
+              <a href="#source" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 2px 10px; box-sizing: border-box; border-radius: 999px; background: #E3E9FF; color: #1D36A8; font-size: 13px; text-decoration: none">
+                <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1h4l2.5 2.5V11H3z" fill="none" stroke="#1D36A8" stroke-width="1.2"></path></svg>{{r.source}}
+              </a>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 12px">
+          <p style="flex: 1 1 320px; margin: 0; padding: 14px 16px; border-radius: 10px; background: #E8F0FF; color: #14225E"><strong>What would change this:</strong> two consecutive quarters with construction ahead of sales would move this to Moderate.</p>
+          <div style="flex: 1 1 320px; padding: 14px 16px; border-radius: 10px; border: 1px dashed #8C96A3; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; font-weight: 600; color: #33404F">Developer says · not yet verified · 15 Oct 2026</span>
+            <span style="font-size: 15px">"Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October."</span>
+          </div>
+        </div>
+
+        <footer style="display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: #4A5563">
+          <span>Our opinion, based on public records.</span>
+          <span>Not a credit rating. Not issued by any RERA.</span>
+          <a href="#methodology">How this is calculated</a>
+          <a href="#report">Report an error</a>
+          <a href="#money">How we make money</a>
+        </footer>
+      </section>
+
+      <section aria-labelledby="b-rec-h" style="background: #FFFFFF; border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 20px">
+        <h2 id="b-rec-h" style="margin: 0; font-size: 26px; font-weight: 700; font-stretch: 88%">Records show <span style="font-size: 14px; font-weight: 400; color: #556070; font-stretch: 100%">· HARERA, DTCP, IBBI</span></h2>
+        <div style="position: relative; display: flex; flex-direction: column; gap: 10px">
+          <div style="display: grid; grid-template-columns: 96px 1fr 52px; gap: 10px; align-items: center">
+            <span style="font-size: 14px; color: #33404F">Built</span>
+            <span style="height: 14px; border-radius: 7px; background: #E9ECF1; display: block; overflow: hidden"><span style="display: block; width: 41%; height: 100%; background: #2442C7"></span></span>
+            <strong style="text-align: right; font-size: 18px">41%</strong>
+            <span style="font-size: 14px; color: #33404F">Time used</span>
+            <span style="height: 14px; border-radius: 7px; background: #E9ECF1; display: block; overflow: hidden"><span style="display: block; width: 77%; height: 100%; background: #8C96A3"></span></span>
+            <strong style="text-align: right; font-size: 18px">77%</strong>
+          </div>
+        </div>
+        <ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; position: relative">
+          <li style="display: flex; flex-direction: column; gap: 6px; padding-top: 18px; border-top: 3px solid #0E1B2B"><span style="font-size: 13px; color: #556070">Registered</span><strong style="font-size: 18px">Dec 2022</strong></li>
+          <li style="display: flex; flex-direction: column; gap: 6px; padding-top: 18px; border-top: 3px solid #2442C7"><span style="font-size: 13px; color: #556070">Today</span><strong style="font-size: 18px">18 Oct 2026</strong></li>
+          <li style="display: flex; flex-direction: column; gap: 6px; padding-top: 18px; border-top: 3px dashed #8C96A3"><span style="font-size: 13px; color: #556070">Original completion</span><strong style="font-size: 18px">Dec 2027</strong><span style="font-size: 13px; color: #556070">No extensions so far</span></li>
+        </ol>
+        <dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 10px">
+          <div style="background: #F5F7FA; border-radius: 10px; padding: 12px 14px"><dt style="font-size: 13px; color: #556070">Complaints decided, 24 months</dt><dd style="margin: 0; font-size: 22px; font-weight: 700">14 <span style="font-size: 13px; font-weight: 400; color: #556070">NCR median 3</span></dd></div>
+          <div style="background: #F5F7FA; border-radius: 10px; padding: 12px 14px"><dt style="font-size: 13px; color: #556070">OC / CC</dt><dd style="margin: 0; font-size: 22px; font-weight: 700">Not applied</dd></div>
+          <div style="background: #F5F7FA; border-radius: 10px; padding: 12px 14px"><dt style="font-size: 13px; color: #556070">Insolvency, promoter + 9 linked</dt><dd style="margin: 0; font-size: 22px; font-weight: 700">None found</dd></div>
+          <div style="background: #F5F7FA; border-radius: 10px; padding: 12px 14px"><dt style="font-size: 13px; color: #556070">DTCP licence</dt><dd style="margin: 0; font-size: 22px; font-weight: 700">Valid to Mar 2028</dd></div>
+        </dl>
+      </section>
+    </div>
+
+    <aside aria-label="Cost and actions" style="flex: 1 1 320px; max-width: 372px; position: sticky; top: 20px; background: #FFFFFF; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-sizing: border-box">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 700; font-stretch: 90%">All-in cost, 3 BHK</h2>
+      <dl style="margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; font-size: 15px">
+        <dt style="color: #33404F">Base price</dt><dd style="margin: 0; text-align: right">₹2.35 Cr</dd>
+        <dt style="color: #33404F">Cost-sheet charges</dt><dd style="margin: 0; text-align: right">₹9.2 L</dd>
+        <dt style="color: #33404F">GST, 5%</dt><dd style="margin: 0; text-align: right">₹12.2 L</dd>
+        <dt style="color: #33404F">Stamp duty and registration</dt><dd style="margin: 0; text-align: right">₹17.6 L</dd>
+        <dt style="font-weight: 700; padding-top: 8px; border-top: 1px solid #E3E7ED">All-in</dt><dd style="margin: 0; text-align: right; font-weight: 700; padding-top: 8px; border-top: 1px solid #E3E7ED">₹2.74 Cr</dd>
+      </dl>
+      <p style="margin: 0; font-size: 14px; color: #33404F">17% above quoted · loading 38% (2,000 super vs 1,450 carpet)</p>
+      <button type="button" style="height: 48px; border: 0; border-radius: 10px; background: #2442C7; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer">Follow this project</button>
+      <button type="button" style="height: 48px; border: 0; border-radius: 10px; background: #EEF1F5; color: #0F1722; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer">Upload your cost sheet</button>
+      <p style="margin: 0; font-size: 13px; color: #4A5563">No developer pays us. Ever. Your number stays private until you choose who may call.</p>
+    </aside>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"band":{"editor":"enum","options":["Low","Moderate","Elevated","High","Severe"],"default":"Elevated"},"$preview":{"width":1280,"height":1760}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var B = {
+      Low: {i: 1, ink: '#4A90A4', fill: '#E6F2F5', dark: '#7CC0D2', lo: 5, hi: 15},
+      Moderate: {i: 2, ink: '#9E8300', fill: '#F7F0D2', dark: '#D9BC45', lo: 15, hi: 30},
+      Elevated: {i: 3, ink: '#A9480C', fill: '#FBE6D8', dark: '#F08A4B', lo: 30, hi: 45},
+      High: {i: 4, ink: '#94211C', fill: '#F8DFDD', dark: '#F2706A', lo: 45, hi: 65},
+      Severe: {i: 5, ink: '#4A1445', fill: '#F0E1EE', dark: '#D58BD0', lo: 65, hi: 80}
+    };
+    var names = ['Low', 'Moderate', 'Elevated', 'High', 'Severe'];
+    var band = B[this.props.band] ? this.props.band : 'Elevated';
+    var b = B[band];
+    var scale = names.map(function (n) {
+      var x = B[n]; var cur = n === band;
+      return {
+        name: n,
+        barStyle: 'height:' + (cur ? 20 : 10) + 'px;border-radius:5px;background:' + (cur ? x.ink : x.fill) + ';' + (cur ? 'outline:2px solid #0F1722;outline-offset:2px;' : 'border:1px solid ' + x.ink + ';box-sizing:border-box;margin-top:10px;'),
+        textStyle: 'font-size:13px;' + (cur ? 'font-weight:700;color:#0F1722' : 'color:#556070')
+      };
+    });
+    var cells = [];
+    for (var k = 0; k < 100; k++) {
+      var st = 'width:16px;height:16px;border-radius:4px;box-sizing:border-box;';
+      if (k < b.lo) st += 'background:' + b.ink + ';';
+      else if (k < b.hi) st += 'background:repeating-linear-gradient(45deg,' + b.ink + ' 0 2px,' + b.fill + ' 2px 5px);border:1px solid ' + b.ink + ';';
+      else st += 'background:#E9ECF1;border:1px solid #8C9199;';
+      cells.push({style: st});
+    }
+    var meterDark = [1, 2, 3, 4, 5].map(function (j) {
+      return {style: 'width:12px;height:16px;border-radius:3px;box-sizing:border-box;' + (j <= b.i ? 'background:' + b.dark + ';' : 'background:#22344B;border:1px solid #7D828A;')};
+    });
+    return {
+      bandName: band,
+      labelColor: b.i <= 2 ? '#0F1722' : b.ink,
+      darkInk: b.dark,
+      lo: b.lo, hi: b.hi,
+      scale: scale,
+      scaleLabel: 'Delivery risk scale from Low to Severe. This project: ' + band + ', step ' + b.i + ' of 5.',
+      cells: cells,
+      meterDark: meterDark,
+      legendLate: 'width:12px;height:12px;border-radius:3px;background:' + b.ink,
+      legendRange: 'width:12px;height:12px;border-radius:3px;box-sizing:border-box;border:1px solid ' + b.ink + ';background:repeating-linear-gradient(45deg,' + b.ink + ' 0 2px,' + b.fill + ' 2px 5px)',
+      reasons: [
+        {n: '1', group: 'Finances', fact: '72% of units sold, 41% built.', source: 'HARERA QPR · Apr–Jun 2026'},
+        {n: '2', group: 'Timeline', fact: '77% of promised time used. QPRs late in 3 of the last 8 quarters.', source: 'HARERA QPR register'},
+        {n: '3', group: 'Legal', fact: '14 complaints decided against the promoter in 24 months (NCR median: 3).', source: 'HARERA orders'},
+        {n: '4', group: 'Track record', fact: '2 of the group’s 6 finished RERA projects got OC more than 12 months late.', source: 'HARERA · DTCP'}
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

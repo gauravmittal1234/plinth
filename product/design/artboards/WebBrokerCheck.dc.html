@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Is this broker registered?</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  .res { animation: plRise 420ms cubic-bezier(.22,1,.36,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 3900px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
+        <a href="#how-scores-work" class="lk" style="color: {{t.ink}}; text-decoration: none">How scores work</a>
+        <a href="#top" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Check a broker</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <a href="#for-agents" class="press" style="height: 44px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font-size: 17px; font-weight: 600; text-decoration: none; white-space: nowrap">I’m an agent</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="top" aria-labelledby="hero-h" style="background: {{t.bg}}; padding: 56px 0 120px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h1 id="hero-h" class="rise" style="margin: 0; max-width: 13ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 100px); line-height: 0.94; letter-spacing: -0.045em">Is this broker registered?</h1>
+          <div class="rise rise1" style="flex: 0 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+            <p style="margin: 0; font-size: 22px; line-height: 1.45">Search the HARERA and UP RERA agent registers by name or registration number. We show what the register says, nothing more.</p>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Registers read 14 Oct 2026 · checked monthly · free, no sign-in</p>
+          </div>
+        </div>
+
+        <div id="check" class="rise rise2" style="padding: 32px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 20px">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <label for="q" style="font-size: 17px; font-weight: 600">Agent name or registration number</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px">
+              <input id="q" type="search" autocomplete="off" spellcheck="false" value="{{q}}" onChange="{{onQ}}" placeholder="For example, Larkspur Realty or RC/REA/HARERA/GGM/2023/487" aria-describedby="q-hint" style="flex: 1 1 420px; min-width: 0; height: 60px; padding: 0 24px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 20px">
+              <sc-if value="{{hasQ}}" hint-placeholder-val="{{false}}">
+                <button type="button" class="press" onClick="{{clearQ}}" style="height: 60px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Clear</button>
+              </sc-if>
+            </div>
+            <span id="q-hint" style="font-size: 15px; color: {{t.ink2}}">The number is on their HARERA or UP RERA certificate, and often on their visiting card.</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px">
+            <div role="radiogroup" aria-label="Which register" style="display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.panelSolid}}">
+              <sc-for list="{{regs}}" as="rg" hint-placeholder-count="3">
+                <button type="button" class="press" role="radio" aria-checked="{{rg.on}}" onClick="{{rg.pick}}" style="{{rg.style}}">{{rg.label}}</button>
+              </sc-for>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+              <span style="font-size: 15px; color: {{t.ink2}}">Try</span>
+              <sc-for list="{{examples}}" as="ex" hint-placeholder-count="4">
+                <button type="button" class="press" onClick="{{ex.pick}}" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 999px; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 15px; cursor: pointer">{{ex.label}}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div aria-live="polite" style="display: flex; flex-direction: column; gap: 16px">
+          <sc-if value="{{idle}}" hint-placeholder-val="{{false}}">
+            <p style="margin: 0; font-size: 17px; color: {{t.ink2}}">Type at least 3 letters or digits. Results appear as you type.</p>
+          </sc-if>
+          <sc-if value="{{hasResults}}" hint-placeholder-val="{{true}}">
+            <p style="margin: 0; font-size: 17px; font-weight: 600">{{resultCount}}</p>
+            <sc-for list="{{results}}" as="r" hint-placeholder-count="1">
+              <article class="res" aria-label="{{r.aria}}" style="display: flex; flex-wrap: wrap; gap: 24px 56px; padding: 32px; border-radius: 8px; background: {{t.panelSolid}}">
+                <div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+                  <span style="{{r.statusStyle}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="{{r.statusIcon}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{r.status}}</span>
+                  <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 40px; line-height: 1.05; letter-spacing: -0.03em">{{r.name}}</h2>
+                  <p style="margin: 0; font-size: 17px">{{r.kind}} · {{r.match}}</p>
+                  <p style="margin: 4px 0 0; font-size: 17px">{{r.partner}}</p>
+                  <sc-if value="{{r.isPartner}}" hint-placeholder-val="{{false}}">
+                    <a href="#agent-profile" class="lk" style="align-self: flex-start; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">See their Plinth profile</a>
+                  </sc-if>
+                </div>
+                <dl style="flex: 1 1 380px; min-width: 0; margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 10px 24px; font-size: 17px">
+                  <dt style="color: {{t.ink2}}">Registration</dt><dd style="margin: 0; font-weight: 600; overflow-wrap: anywhere">{{r.reg}}</dd>
+                  <dt style="color: {{t.ink2}}">Register</dt><dd style="margin: 0">{{r.register}}</dd>
+                  <dt style="color: {{t.ink2}}">{{r.validLabel}}</dt><dd style="margin: 0; font-weight: 600">{{r.valid}}</dd>
+                  <dt style="color: {{t.ink2}}">Office</dt><dd style="margin: 0">{{r.office}}</dd>
+                  <dt style="color: {{t.ink2}}">Source</dt><dd style="margin: 0"><span style="{{u.chip}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 1.5h5l2.5 2.5v8.5h-7.5z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>{{r.source}}</span></dd>
+                </dl>
+                <sc-if value="{{r.lapsed}}" hint-placeholder-val="{{false}}">
+                  <p style="flex: 1 1 100%; margin: 0; padding: 16px 20px; border-radius: 8px; background: {{t.claimBg}}; font-size: 17px">The register shows this registration ended on 30 Jun 2026, and no renewal is on it yet. Ask whether a renewal is pending, and check again here before you pay anyone anything.</p>
+                </sc-if>
+              </article>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{noMatch}}" hint-placeholder-val="{{false}}">
+            <article class="res" aria-labelledby="nm-h" style="display: flex; flex-wrap: wrap; gap: 24px 56px; padding: 32px; border-radius: 8px; background: {{t.panelSolid}}">
+              <div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+                <span style="{{u.neutralPill}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M10.5 10.5L14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Not found</span>
+                <h2 id="nm-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 40px; line-height: 1.05; letter-spacing: -0.03em">No match for “{{qShown}}”</h2>
+                <p style="margin: 0; font-size: 17px">{{noMatchWhere}}</p>
+                <p style="margin: 0; font-size: 17px">That alone doesn’t mean anything is wrong. Registers spell names differently, and many firms register under a person’s name.</p>
+              </div>
+              <div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+                <h3 style="margin: 0; font-size: 19px; font-weight: 700">What to do next</h3>
+                <ol style="margin: 0; padding: 0 0 0 24px; display: flex; flex-direction: column; gap: 8px; font-size: 17px">
+                  <li>Ask for the registration number on their certificate, and search for it here.</li>
+                  <li>Check the regulator’s own site: <a href="#harera-agents" class="lk" style="color: {{t.ink}}">HARERA agents</a> or <a href="#uprera-agents" class="lk" style="color: {{t.ink}}">UP RERA agents</a>.</li>
+                  <li>Still nothing? You can keep talking to them. Just pay a booking amount only to the seller or the project’s RERA collection account, never to an agent.</li>
+                </ol>
+              </div>
+            </article>
+          </sc-if>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="pays-h" style="background: {{t.track}}; padding: 120px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 80px; align-items: center">
+        <figure class="rv" style="flex: 1 1 380px; min-width: 0; margin: 0; position: relative; min-height: 520px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="agentVisitingCards" src="/_blob/4cc3d0910c4290aa575cdbc35a02c714" alt="Illustrative image: a hand holding three plain visiting cards at a site-office desk" class="drift" style="position: absolute; inset: 0; background: #E7E3DA; border-radius: 0; object-fit: cover; display: block">
+          <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</figcaption>
+        </figure>
+        <div style="flex: 1 1 460px; max-width: 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="pays-h" class="rv" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(44px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">Who pays the agent?</h2>
+          <p class="rv rv1" style="margin: 0; font-size: 22px; line-height: 1.45">Ask before your first visit. Every agent on Plinth carries a label that answers it.</p>
+          <dl class="rv rv1" style="margin: 0; display: flex; flex-direction: column; gap: 16px; font-size: 17px">
+            <div><dt style="font-weight: 700">On a new launch</dt><dd style="margin: 4px 0 0">The developer usually pays the agent if you book. You pay them nothing.</dd></div>
+            <div><dt style="font-weight: 700">On a resale flat</dt><dd style="margin: 4px 0 0">The seller pays their agent. If you hire an agent too, you pay yours, once.</dd></div>
+            <div><dt style="font-weight: 700">What Plinth gets</dt><dd style="margin: 4px 0 0">Nothing from developers, ever. Partner agents pay us nothing to appear here. On resale deals through our desk, we share our own fee with the agent who did the field work.</dd></div>
+          </dl>
+          <p class="rv rv1" style="margin: 0; font-size: 17px">Anyone who sells a unit from the developer in a RERA-registered project must be registered (RERA Act, section 9). For older resale flats the rule is less clear, so read registration as a good sign rather than a must.</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="partner-h" style="background: {{t.bg}}; padding: 120px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px 80px; align-items: flex-start">
+        <h2 id="partner-h" class="rv" style="margin: 0; max-width: 14ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(44px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">What does “Plinth partner” mean?</h2>
+        <div class="rv rv1" style="flex: 0 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+          <p style="margin: 0; font-size: 22px; line-height: 1.45">Verified, never endorsed. We checked their registration, PAN and office, and they agreed to our published rules.</p>
+          <p style="margin: 0; font-size: 17px">It doesn’t mean we vouch for a project they sell, or for their advice. Their delivery bands are the same as everyone’s, and nobody can pay us to appear here or to rank higher.</p>
+          <a href="#for-agents" class="lk" style="align-self: flex-start; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Read the rules partner agents follow</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">This check stands on the HARERA and UP RERA agent registers, read 14 Oct 2026. We show the register as it is. Spotted a mistake? Report it and we’ll check it against the regulator’s own record.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report an error</a>
+          <a href="#for-agents" class="lk" style="color: {{t.onSlab}}">For agents</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.onSlab2}}"></span>HARERA and UP RERA agent registers read 14 Oct 2026</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"result":{"editor":"enum","options":["Empty","Found","Not found","Lapsed"],"default":"Found"},"$preview":{"width":1280,"height":3900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {themePick: null, q: null, reg: 'both'};
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var T = night ? {
+      bg: '#0B1411', photo: '#1B2A24', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', accent: '#6EE7B7', onAccent: '#052E1F', panelSolid: '#16221D', claimBg: '#1D2621',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', photo: '#E7E3DA', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', accent: '#1D5A44', onAccent: '#FFFFFF', panelSolid: '#FFFFFF', claimBg: '#F1ECE2',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var pillBase = 'align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:2px 14px;border-radius:999px;box-sizing:border-box;font-size:15px;font-weight:600;';
+    var U = {
+      chip: 'display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:2px 12px;border-radius:999px;box-sizing:border-box;background:' + T.track + ';font-size:14px;color:' + T.ink,
+      neutralPill: pillBase + 'background:' + T.track + ';color:' + T.ink
+    };
+
+    // Fictional register extract (proposed DESIGN §5b additions; see fix-broker.md).
+    var REG = [
+      {name: 'Larkspur Realty', kind: 'Firm', reg: 'RC/REA/HARERA/GGM/2023/487', register: 'HARERA Gurugram', regKey: 'harera', valid: '21 Jun 2028', office: 'Sector 102, Gurugram', partner: 'Plinth partner: Verified agent since 6 Apr 2026. Verified, never endorsed.', isPartner: true},
+      {name: 'Kabir Malhotra', kind: 'Individual agent', reg: 'RC/REA/HARERA/GGM/2024/1187', register: 'HARERA Gurugram', regKey: 'harera', valid: '14 Mar 2029', office: 'Sector 56, Gurugram', partner: 'Plinth partner: Verified agent since 18 Oct 2026. Verified, never endorsed.', isPartner: true},
+      {name: 'Arora Estates', kind: 'Firm', reg: 'RC/REA/HARERA/GGM/2026/1342', register: 'HARERA Gurugram', regKey: 'harera', valid: '2 Sep 2031', office: 'Sector 66, Gurugram', partner: 'Plinth partner: Verified agent since 20 Sep 2026. Verified, never endorsed.', isPartner: true},
+      {name: 'Bluegate Homes', kind: 'Firm', reg: 'RC/REA/HARERA/GGM/2022/233', register: 'HARERA Gurugram', regKey: 'harera', valid: '9 Aug 2027', office: 'Sector 104, Gurugram', partner: 'Not a Plinth partner. That says nothing about their work.', isPartner: false},
+      {name: 'Northgate Realtors', kind: 'Firm', reg: 'RC/REA/HARERA/GGM/2021/061', register: 'HARERA Gurugram', regKey: 'harera', valid: '30 Jun 2026', office: 'Sector 49, Gurugram', partner: 'Not a Plinth partner. That says nothing about their work.', isPartner: false, lapsed: true},
+      {name: 'Meadowline Realty', kind: 'Firm', reg: 'UPRERAAGT10457', register: 'UP RERA', regKey: 'up', valid: '11 Jan 2028', office: 'Gautam Buddh Nagar, Uttar Pradesh', partner: 'Not a Plinth partner. Plinth covers Gurugram for now.', isPartner: false}
+    ];
+    var PROPQ = {Empty: '', Found: 'Larkspur Realty', 'Not found': 'Skyline Property Point', Lapsed: 'Northgate Realtors'};
+    var q = s.q === null || s.q === undefined ? (PROPQ[this.props.result] !== undefined ? PROPQ[this.props.result] : 'Larkspur Realty') : s.q;
+    function norm(x) { return String(x || '').toLowerCase().replace(/[\s\-_.]/g, ''); }
+    var nq = norm(q);
+    var regKey = s.reg || 'both';
+    var hits = [];
+    if (nq.length >= 3) {
+      REG.forEach(function (r) {
+        if (regKey !== 'both' && r.regKey !== regKey) return;
+        var byName = norm(r.name).indexOf(nq) !== -1;
+        var byNum = norm(r.reg).indexOf(nq) !== -1;
+        if (byName || byNum) hits.push({r: r, exact: norm(r.name) === nq || norm(r.reg) === nq, byNum: byNum && !byName});
+      });
+    }
+    var results = hits.slice(0, 3).map(function (h) {
+      var r = h.r;
+      var lapsed = !!r.lapsed;
+      return {
+        name: r.name, kind: r.kind, reg: r.reg, register: r.register, office: r.office, partner: r.partner, isPartner: r.isPartner, lapsed: lapsed,
+        match: h.byNum ? (h.exact ? 'Registration number matches exactly' : 'Part of the registration number matches') : (h.exact ? 'Name matches exactly' : 'Partial name match: check the full name with them'),
+        validLabel: lapsed ? 'Ended' : 'Valid until', valid: r.valid,
+        source: r.register + ' agent register, read 14 Oct 2026',
+        status: lapsed ? 'Found · registration ended' : 'Found · registered',
+        statusIcon: lapsed ? 'M8 4.5v4.5M8 11.5v.2' : 'M3.5 8.5l3 3 6-7',
+        statusStyle: pillBase + 'background:' + (lapsed ? T.claimBg : T.track) + ';color:' + T.ink,
+        aria: r.name + ', ' + (lapsed ? 'registration ended 30 Jun 2026' : 'registered until ' + r.valid) + ', ' + r.register
+      };
+    });
+    var regs = [['both', 'Both registers'], ['harera', 'HARERA'], ['up', 'UP RERA']].map(function (o) {
+      var on = regKey === o[0];
+      return {
+        label: o[1], on: on ? 'true' : 'false', pick: function () { self.setState({reg: o[0]}); },
+        style: 'min-height:40px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (on ? T.ink : 'transparent') + ';color:' + (on ? T.bg : T.ink)
+      };
+    });
+    var examples = ['Larkspur Realty', 'RC/REA/HARERA/GGM/2024/1187', 'Northgate', 'Skyline Property Point'].map(function (x) {
+      return {label: x, pick: function () { self.setState({q: x}); }};
+    });
+    var where = regKey === 'both' ? 'the HARERA or UP RERA agent registers' : (regKey === 'harera' ? 'the HARERA agent register' : 'the UP RERA agent register');
+
+    return {
+      t: T, u: U,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      q: q, qShown: q.trim(), hasQ: q.length > 0,
+      onQ: function (e) { self.setState({q: e.target.value}); },
+      clearQ: function () { self.setState({q: ''}); },
+      regs: regs, examples: examples,
+      idle: nq.length < 3,
+      hasResults: results.length > 0,
+      noMatch: nq.length >= 3 && results.length === 0,
+      resultCount: results.length === 1 ? '1 match on the register' : results.length + ' matches on the registers',
+      results: results,
+      noMatchWhere: 'We couldn’t find this name or number on ' + where + ' we read on 14 Oct 2026.'
+    };
+  }
+}
+</script>
+</body>
+</html>

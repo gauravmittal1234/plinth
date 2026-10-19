@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project: Aurelia Heights, Phase 2 (phone)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hs{scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:pointer}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pl-drift{from{transform:scale(1)}to{transform:scale(1.04)}}
+@keyframes pl-sheet{from{opacity:.4;transform:translateY(56px)}to{opacity:1;transform:none}}
+@keyframes pl-out{from{opacity:1}to{opacity:0}}
+@keyframes pl-wipe{from{transform:scaleX(0)}to{transform:none}}
+@keyframes pl-popA{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes pl-popB{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.pl-rise{animation:pl-rise .72s cubic-bezier(.22,1,.36,1) both}
+.pl-drift{transform-origin:50% 70%;animation:pl-drift 16s cubic-bezier(.33,1,.68,1) both}
+.pl-sheet{animation:pl-sheet .4s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 9800px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+<div style="display: flex; flex-direction: column; min-height: 100%">
+
+<sc-if value="{{simple}}" hint-placeholder-val="{{false}}">
+<section id="simple" aria-labelledby="simple-h" style="padding: 40px 16px 48px; background: {{t.bg}}; font-size: 21px; line-height: 1.55">
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+    <a href="#back" class="pl-press" aria-label="Back" style="width: 48px; height: 48px; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; text-decoration: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"></path></g></svg></a>
+    <button type="button" class="pl-press" onClick="{{toggleSimple}}" aria-pressed="{{simple}}" style="{{simpleBtn}}"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none; display: block"><path d="M2.5 17L7 5h1.2l4.5 12M4.2 12.8h6.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14.2 10.6c.5-1 1.4-1.6 2.6-1.6 1.7 0 2.7 1 2.7 2.6V17M19.5 13.6c-3.4 0-5.3.8-5.3 2.1 0 .9.8 1.5 1.9 1.5 1.9 0 3.4-1.3 3.4-3.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{simpleLabel}}</button>
+  </div>
+  <p style="margin: 20px 0 0; font-size: 17px; line-height: 1.45; color: {{t.ink2}}">Aurelia Heights, Phase 2 · Sector 37D · large-text view</p>
+  <h1 id="simple-h" style="margin: 8px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 40px; line-height: 1.02; letter-spacing: -0.04em">Will it be delivered on time?</h1>
+  <button type="button" class="pl-press" onClick="{{toggleRead}}" aria-pressed="{{reading}}" style="{{readBtn}}"><svg width="26" height="26" viewBox="0 0 20 20" aria-hidden="true" style="flex: none; display: block"><path d="M3 8v4h3l4 3.5v-11L6 8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path><path d="M13.5 7.5a3.5 3.5 0 0 1 0 5M15.8 5.2a6.8 6.8 0 0 1 0 9.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>{{readLabel}}</button>
+  <p aria-live="polite" style="margin: 8px 0 0; font-size: 17px; line-height: 1.4; color: {{t.ink2}}">{{readStatus}}</p>
+  <div style="{{sv.p0}}">
+    <div style="display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap">
+      <span aria-hidden="true" style="display: inline-grid; grid-template-columns: repeat(5, 28px); gap: 4px"><sc-for list="{{meterXL}}" as="mx" hint-placeholder-count="5"><span style="{{mx.style}}"></span></sc-for></span>
+      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 56px; line-height: 1; letter-spacing: -0.045em; color: {{bandText}}"><span class="sr">Delivery risk: </span>{{bandName}}</span>
+    </div>
+    <p style="margin: 12px 0 0">{{sv.bandLine}}</p>
+  </div>
+  <div style="{{sv.p1}}">
+    <h2 style="{{svH2}}">When might we get the keys?</h2>
+    <p style="margin: 10px 0 0"><strong>Promised: Dec 2027.</strong></p>
+    <p style="margin: 6px 0 0">{{sv.keysLine}}</p>
+    <p style="margin: 6px 0 0">Keys come after the OC, often a few months later.</p>
+  </div>
+  <div style="{{sv.p2}}"><p style="margin: 0"><strong>We’re less certain about this one.</strong> Northfield has only 6 finished projects to learn from. That is why we give a range, not one number.</p></div>
+  <div style="{{sv.p3}}">
+    <h2 style="{{svH2}}">Why {{bandName}}?</h2>
+    <ul style="margin: 10px 0 0; padding: 0 0 0 24px; display: flex; flex-direction: column; gap: 12px">
+      <sc-for list="{{svReasons}}" as="sr2" hint-placeholder-count="3"><li><span style="display: block">{{sr2.text}}</span><span style="display: block; font-size: 17px; color: {{t.ink2}}">Source: {{sr2.src}}</span></li></sc-for>
+    </ul>
+  </div>
+  <div style="{{sv.p4}}">
+    <h2 style="{{svH2}}">How much is built?</h2>
+    <p aria-live="polite" style="margin: 10px 0 0"><strong>{{qLabel}}:</strong> {{qBuilt}}% built, {{qSold}}% of homes sold, {{qTime}}% of the promised time used.</p>
+    <div style="margin-top: 14px; display: flex; gap: 10px">
+      <button type="button" class="pl-press" onClick="{{qPrev}}" aria-disabled="{{qFirst}}" style="{{svStepBtn}}">Earlier report</button>
+      <button type="button" class="pl-press" onClick="{{qNext}}" aria-disabled="{{qLast}}" style="{{svStepBtn}}">Later report</button>
+    </div>
+  </div>
+  <div style="{{sv.p5}}">
+    <h2 style="{{svH2}}">What can we do?</h2>
+    <ul style="margin: 10px 0 0; padding: 0 0 0 24px; display: flex; flex-direction: column; gap: 12px"><sc-for list="{{svSteps}}" as="ss" hint-placeholder-count="3"><li><strong>{{ss.h}}</strong> {{ss.p}}</li></sc-for></ul>
+  </div>
+  <p style="margin: 20px 0 0; font-size: 17px; line-height: 1.5; color: {{t.ink2}}">Our opinion, based on public records. Not a credit rating. Not issued by any RERA. Data as of 14 Oct 2026.</p>
+  <button type="button" class="pl-press" onClick="{{toggleSimple}}" style="{{svBack}}">Back to the full page</button>
+</section>
+</sc-if>
+
+<sc-if value="{{full}}" hint-placeholder-val="{{true}}">
+<header style="position: relative; flex: none; height: 620px; overflow: hidden; background: #1B2A24">
+  <img class="pl-drift" data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2: residential towers seen from the entrance road" style="position: absolute; left: 0; top: 0; width: 390px; height: 620px; background: #E7E3DA; object-fit: cover; display: block">
+  <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 620px; background: linear-gradient(180deg, rgba(11,20,17,0.55) 0%, rgba(11,20,17,0) 20%, rgba(11,20,17,0) 30%, rgba(11,20,17,0.64) 54%, rgba(11,20,17,0.94) 100%)"></div>
+  <div style="position: absolute; left: 12px; right: 12px; top: 40px; height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 8px">
+    <a href="#back" class="pl-press" aria-label="Back" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: {{t.glass}}; color: {{t.glassInk}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; text-decoration: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"></path></g></svg></a>
+    <div style="display: flex; gap: 8px">
+      <button type="button" class="pl-press" onClick="{{toggleSimple}}" aria-pressed="{{simple}}" style="{{simpleBtnHero}}"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none; display: block"><path d="M2.5 17L7 5h1.2l4.5 12M4.2 12.8h6.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14.2 10.6c.5-1 1.4-1.6 2.6-1.6 1.7 0 2.7 1 2.7 2.6V17M19.5 13.6c-3.4 0-5.3.8-5.3 2.1 0 .9.8 1.5 1.9 1.5 1.9 0 3.4-1.3 3.4-3.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{simpleLabel}}</button>
+      <button type="button" class="pl-press" aria-label="Share project" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: {{t.glass}}; color: {{t.glassInk}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; text-decoration: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="18.5" r="2.5"></circle><path d="M8.2 10.8l7.6-4.1M8.2 13.2l7.6 4.1"></path></g></svg></button>
+      <button type="button" class="pl-press" aria-label="More: compare, book a site visit, report an error" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: {{t.glass}}; color: {{t.glassInk}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; text-decoration: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v.01M12 12v.01M12 18.5v.01" stroke-width="3"></path></g></svg></button>
+    </div>
+  </div>
+  <span style="position: absolute; left: 16px; top: 98px; font-size: 13px; line-height: 1; color: #FFFFFF">Illustrative image</span>
+  <div style="position: absolute; left: 16px; right: 16px; bottom: 24px; color: #FFFFFF">
+    <h1 class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 46px; line-height: 0.96; letter-spacing: -0.04em; animation-delay: 120ms">Aurelia Heights, Phase 2</h1>
+    <p class="pl-rise" style="margin: 14px 0 0; font-size: 17px; line-height: 1.5; color: #FFFFFF; animation-delay: 190ms">by <a href="#developer" style="color: #FFFFFF; text-decoration: underline; text-underline-offset: 3px">Northfield Estates</a> (claimed developer page, replies here) · Sector 37D, Dwarka Expressway, Gurugram · 3 and 4 BHK · 1,450–2,100 sq ft carpet</p>
+    <p class="pl-rise" style="margin: 16px 0 0; font-size: 18px; line-height: 1.45; font-weight: 600; animation-delay: 260ms">Delivery risk: {{bandName}} · All-in ₹2.74 Cr · 41% built · Original completion Dec 2027</p>
+    <button type="button" class="pl-press" style="margin-top: 10px; display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0; border: 0; background: transparent; color: #FFFFFF; font: inherit; text-align: left; cursor: pointer">
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><path d="M14 14h2v2M20 14v.01M18 18h2v2M14 20h2"></path></g></svg>
+      <span style="font-size: 14px; line-height: 1.35"><span class="sr">Show the RERA QR code for </span><strong style="text-decoration: underline; text-underline-offset: 3px">RERA GGM/673/405/2022/117</strong> · haryanarera.gov.in · checked 14 Oct</span>
+    </button>
+  </div>
+</header>
+
+<section id="risk" aria-labelledby="risk-h" style="padding: 56px 16px 48px; background: {{t.bg}}">
+  <h2 id="risk-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.02">Will it be delivered on time?</h2>
+  <p class="pl-rise" style="margin: 14px 0 0; font-size: 18px; line-height: 1.55; color: {{t.ink}}; animation-delay: 80ms">Delivery risk is <strong style="color: {{bandText}}">{{bandName}}</strong>. Original completion is Dec 2027. Between {{lo}} and {{hi}} of 100 similar Gurugram projects got their OC more than 12 months late. Here, that means after Apr 2029, with the 4-month blanket extension of Jul 2026.</p>
+  <div class="pl-rise" style="margin-top: 28px; display: flex; flex-direction: column; gap: 16px; animation-delay: 160ms">
+    <div role="group" aria-label="Risk view" style="display: flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+      <button type="button" class="pl-press" onClick="{{showDial}}" aria-pressed="{{dialOn}}" style="{{dialBtn}}">Dial</button>
+      <button type="button" class="pl-press" onClick="{{showArray}}" aria-pressed="{{arrayOn}}" style="{{arrayBtn}}">100 projects</button>
+    </div>
+    <sc-if value="{{dialOn}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 2px">
+        <svg viewBox="0 0 300 172" width="300" height="172" role="img" aria-label="{{dialLabel}}" style="display: block; max-width: 100%">
+          <sc-for list="{{arcs}}" as="a" hint-placeholder-count="5"><path d="{{a.d}}" fill="none" stroke="{{a.color}}" stroke-width="{{a.w}}" opacity="{{a.op}}"></path></sc-for>
+          <g style="{{needleStyle}}"><line x1="150" y1="150" x2="150" y2="46" stroke="{{t.ink}}" stroke-width="4" stroke-linecap="round"></line></g>
+          <circle cx="150" cy="150" r="11" fill="{{t.ink}}"></circle>
+          <circle cx="150" cy="150" r="4" fill="{{t.bgSolid}}"></circle>
+        </svg>
+        <div aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); width: 100%; max-width: 320px; font-size: 13px; line-height: 1.3; color: {{t.muted}}; text-align: center"><span>Low</span><span>Moderate</span><span>Elevated</span><span>High</span><span>Severe</span></div>
+      </div>
+    </sc-if>
+    <sc-if value="{{arrayOn}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 2px">
+        <div role="img" aria-label="{{arrayLabel}}" style="display: grid; grid-template-columns: repeat(10, 16px); gap: 4px">
+          <sc-for list="{{cells}}" as="c" hint-placeholder-count="100"><span style="{{c.style}}"></span></sc-for>
+        </div>
+        <p style="margin: 0; font-size: 14px; line-height: 1.45; color: {{t.muted}}; text-align: center">Filled: more than 12 months late · {{hatchText}} · Empty: within 12 months</p>
+      </div>
+    </sc-if>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap">
+      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.04em; font-size: 46px; line-height: 1; color: {{bandText}}">{{bandName}}</span>
+    </div>
+    <p style="{{changeStyle}}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-6"></path><path d="M15 8h5v5"></path></g></svg><span>Was Moderate until 2 Oct 2026</span></p>
+  </div>
+  <p style="margin: 22px 0 0; display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 1.55"><span aria-hidden="true" style="flex: none; margin-top: 8px; display: inline-flex; gap: 3px"><span style="display: block; width: 8px; height: 8px; border-radius: 50%; background: {{t.ink2}}"></span><span style="display: block; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid {{t.ink2}}; box-sizing: border-box"></span></span><span><strong>We’re less certain about this one.</strong> Northfield has only 6 finished RERA projects to learn from, so we show a range, not one number.</span></p>
+  <p style="margin: 16px 0 0; font-size: 16px; line-height: 1.55">The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed. At possession, we’ll help you check the OC, the final demand and delay interest (planned for Jul–Sep 2027).</p>
+  <div id="pending" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px">
+    <p style="margin: 0; display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 1.55"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" style="flex: none; margin-top: 2px"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M10 5.5V10l3 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong>The Jul–Sep 2026 QPR is not on HARERA yet.</strong> It was due 15 Oct 2026; we checked again on 18 Oct. If it is still missing on 25 Oct 2026, this band may change. Followers hear first.</span></p>
+    <div style="padding: 14px 16px; border-radius: 8px; background: {{t.claimBg}}; font-size: 15px; line-height: 1.5; display: flex; flex-direction: column; gap: 4px">
+      <span style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: {{t.ink2}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg>Developer says · not yet verified · 15 Oct 2026</span>
+      <span>“The QPR for Jul–Sep 2026 was filed on 12 Oct 2026.” We’ll match it to HARERA when it appears.</span>
+    </div>
+  </div>
+  <a href="#risk-card" class="pl-press" style="margin-top: 18px; display: inline-flex; align-items: center; gap: 4px; min-height: 48px; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 3px">See the 4 reasons and their sources <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></g></svg></a>
+  <p style="margin: 6px 0 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">HARERA synced 2 hours ago · 17,938 orders read · latest QPR on file: Apr–Jun 2026</p>
+</section>
+
+<section id="next" aria-labelledby="next-h" style="padding: 56px 16px 48px; background: {{t.track}}">
+  <h2 id="next-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.02">So what do we do now?</h2>
+  <p style="margin: 14px 0 0; font-size: 18px; line-height: 1.5">{{nextIntro}}</p>
+  <ul style="margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px">
+    <sc-for list="{{nextSteps}}" as="ns" hint-placeholder-count="4">
+      <li style="display: flex; align-items: flex-start; gap: 12px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block; margin-top: 4px"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></g></svg><span style="font-size: 17px; line-height: 1.55"><strong style="font-weight: 700">{{ns.h}}</strong> {{ns.p}}</span></li>
+    </sc-for>
+  </ul>
+  <div style="margin-top: 26px; padding: 18px 16px; border-radius: 8px; background: {{t.bgSolid}}; display: flex; flex-direction: column; gap: 6px">
+    <p style="margin: 0; font-size: 14px; font-weight: 600; color: {{t.ink2}}">For scale</p>
+    <p style="margin: 0; font-size: 16px; line-height: 1.5">{{baseLine}}</p>
+  </div>
+  <p style="margin: 16px 0 0; font-size: 16px; line-height: 1.5">{{nearLine}}</p>
+  <a href="#book" style="margin-top: 8px; display: inline-flex; align-items: center; min-height: 48px; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Payment plans, loans and selling, explained</a>
+</section>
+
+<section id="book" aria-labelledby="book-h" style="padding: 56px 16px 48px; background: {{t.bg}}">
+  <h2 id="book-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.02">What else before booking?</h2>
+  <p style="margin: 14px 0 0; font-size: 18px; line-height: 1.5">Four things buyers ask about before the first cheque, with the rules behind them.</p>
+  <ul style="margin: 22px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+    <sc-for list="{{bookItems}}" as="bi" hint-placeholder-count="4">
+      <li style="border-radius: 8px; background: {{t.track}}">
+        <button type="button" class="pl-press" onClick="{{bi.toggle}}" aria-expanded="{{bi.open}}" aria-controls="{{bi.panelId}}" style="{{bookBtn}}">
+          <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 20px; line-height: 1.2; letter-spacing: -0.02em">{{bi.title}}</span><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{bi.sub}}</span></span>
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="{{bi.chev}}"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+        <sc-if value="{{bi.open}}" hint-placeholder-val="{{false}}">
+          <div id="{{bi.panelId}}" data-review="{{bi.review}}" style="padding: 0 16px 20px; display: flex; flex-direction: column; gap: 12px">
+            <sc-for list="{{bi.paras}}" as="bp" hint-placeholder-count="4"><p style="{{bp.style}}"><strong>{{bp.lead}}</strong> {{bp.text}}</p></sc-for>
+            <sc-if value="{{bi.hasNotify}}" hint-placeholder-val="{{false}}"><button type="button" class="pl-press" onClick="{{toggleNotify}}" aria-pressed="{{notify}}" style="{{notifyStyle}}">{{notifyLabel}}</button></sc-if>
+          </div>
+        </sc-if>
+      </li>
+    </sc-for>
+  </ul>
+  <p style="margin: 14px 0 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">General information, not legal, tax or financial advice.</p>
+</section>
+
+<section id="built" aria-labelledby="built-h" data-signature="replay-tower" style="padding: 56px 16px 48px; background: {{t.track}}">
+  <h2 id="built-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.02">How much is built?</h2>
+  <p class="pl-rise" style="margin: 14px 0 0; font-size: 18px; line-height: 1.55; color: {{t.ink}}; animation-delay: 80ms">41% is built, with 77% of the promised time used. By tower: A at slab 9, B at slab 7, C at slab 5, of 20. Drag or step through each report, and pick a tower to follow it.</p>
+  <div style="margin-top: 18px; display: flex; justify-content: space-between; align-items: center; gap: 8px">
+    <div role="group" aria-label="Show progress for" style="display: inline-flex; align-items: center; gap: 2px; padding: 3px 3px 3px 12px; border-radius: 999px; background: {{t.bgSolid}}">
+      <span aria-hidden="true" style="font-size: 14px; color: {{t.ink2}}; padding-right: 2px">Tower</span>
+      <sc-for list="{{towers}}" as="tw" hint-placeholder-count="4"><button type="button" class="pl-press" onClick="{{tw.pick}}" aria-pressed="{{tw.on}}" aria-label="{{tw.aria}}" style="{{tw.style}}">{{tw.label}}</button></sc-for>
+    </div>
+    <span style="display: inline-flex; gap: 6px">
+      <button type="button" class="pl-press" onClick="{{qPrev}}" aria-label="Earlier report" aria-disabled="{{qFirst}}" style="{{stepBtn}}"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+      <button type="button" class="pl-press" onClick="{{qNext}}" aria-label="Later report" aria-disabled="{{qLast}}" style="{{stepBtn}}"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+    </span>
+  </div>
+  <div aria-hidden="true" style="height: 360px; margin-top: 8px; display: flex; align-items: flex-end; justify-content: center; perspective: 1000px; padding-bottom: 20px; box-sizing: border-box">
+    <div style="position: relative; width: 164px; height: 164px; transform-style: preserve-3d; transform: rotateX(58deg) rotateZ(-42deg)">
+      <sc-for list="{{floors}}" as="f" hint-placeholder-count="20"><div style="{{f.style}}"></div></sc-for>
+    </div>
+  </div>
+  <dl style="margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; text-align: center">
+    <div><dt style="font-size: 14px; color: {{t.muted}}">{{tile1l}}</dt><dd style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.1; color: {{t.accentText}}">{{tile1v}}</dd></div>
+    <div><dt style="font-size: 14px; color: {{t.muted}}">Sold</dt><dd style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.1; color: {{qSoldInk}}">{{qSold}}%</dd></div>
+    <div><dt style="font-size: 14px; color: {{t.muted}}">Time used</dt><dd style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.1">{{qTime}}%</dd></div>
+  </dl>
+  <p aria-live="polite" style="margin: 10px 0 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}; text-align: center">{{towerNote}}</p>
+  <div style="margin-top: 26px; display: flex; flex-direction: column; gap: 8px">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+      <label for="q-range" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.02">{{qLabel}}</label>
+      <span style="font-size: 14px; color: {{t.muted}}">Report {{qNum}} of 8 shown</span>
+    </div>
+    <input id="q-range" type="range" min="0" max="7" step="1" value="{{q}}" onChange="{{onQ}}" aria-valuetext="{{qLabel}}">
+    <div aria-hidden="true" style="display: flex; justify-content: space-between; font-size: 13px; color: {{t.muted}}"><span>Jun 2023</span><span>Jun 2026</span></div>
+    <p style="margin: 14px 0 0; font-size: 17px; line-height: 1.55"><strong>On record that quarter:</strong> {{qNote}}</p>
+    <a href="#source" class="pl-press" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 48px; text-decoration: none; color: {{t.ink}}"><span style="display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 12px; border-radius: 999px; background: {{t.bgSolid}}; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4v13H7z"></path><path d="M14 3.5v4h4"></path></g></svg>HARERA QPR · {{qLabel}}</span></a>
+  </div>
+</section>
+
+<section id="homes" aria-labelledby="homes-h" style="padding: 56px 16px 48px; background: {{t.bg}}">
+  <h2 id="homes-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.02">What are the homes like?</h2>
+  <p class="pl-rise" style="margin: 14px 0 0; font-size: 18px; line-height: 1.55; animation-delay: 80ms">Two layouts across Towers A, B and C, 500 homes in all. Sizes are carpet area: the floor you can use.</p>
+  <div role="group" aria-label="Choose a layout" style="margin-top: 24px; display: flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+    <sc-for list="{{configs}}" as="cf" hint-placeholder-count="2"><button type="button" class="pl-press" onClick="{{cf.pick}}" aria-pressed="{{cf.on}}" style="{{cf.style}}">{{cf.name}}</button></sc-for>
+  </div>
+  <p style="margin: 18px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.03em; line-height: 1.1">{{cfgSize}}</span><span style="font-size: 17px">{{cfgPrice}}</span></p>
+  <figure style="margin: 14px 0 0">
+    <div style="background: {{t.bgSolid}}; padding: 10px 0 6px">
+      <svg viewBox="{{plan.viewBox}}" width="358" style="display: block; max-width: 100%" role="img" aria-label="{{plan.label}}">
+        <rect x="{{plan.balc.x}}" y="{{plan.balc.y}}" width="{{plan.balc.w}}" height="{{plan.balc.h}}" fill="{{t.track}}" stroke="{{t.ink}}" stroke-width="1"></rect>
+        <sc-for list="{{plan.rooms}}" as="pr" hint-placeholder-count="10"><rect x="{{pr.x}}" y="{{pr.y}}" width="{{pr.w}}" height="{{pr.h}}" fill="none" stroke="{{t.ink}}" stroke-width="1.5"></rect></sc-for>
+        <path d="{{plan.foot}}" fill="none" stroke="{{t.ink}}" stroke-width="4"></path>
+        <sc-for list="{{plan.lines}}" as="pl" hint-placeholder-count="20"><line x1="{{pl.x1}}" y1="{{pl.y1}}" x2="{{pl.x2}}" y2="{{pl.y2}}" stroke="{{pl.c}}" stroke-width="{{pl.w}}"></line></sc-for>
+        <sc-for list="{{plan.arcs}}" as="pa" hint-placeholder-count="7"><path d="{{pa.d}}" fill="none" stroke="{{t.ink2}}" stroke-width="1"></path></sc-for>
+        <sc-for list="{{plan.labels}}" as="pt" hint-placeholder-count="14"><text x="{{pt.x}}" y="{{pt.y}}" text-anchor="middle" font-family="Mukta, 'Noto Sans', sans-serif" font-size="{{pt.size}}" font-weight="{{pt.weight}}" fill="{{pt.fill}}">{{pt.text}}</text></sc-for>
+      </svg>
+    </div>
+    <figcaption style="margin-top: 8px; font-size: 14px; line-height: 1.45; color: {{t.muted}}">{{plan.caption}}</figcaption>
+  </figure>
+  <dl style="margin: 18px 0 0; display: flex; flex-direction: column; gap: 14px">
+    <sc-for list="{{cfgFacts}}" as="cx" hint-placeholder-count="4">
+      <div style="display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 2px 12px">
+        <dt style="font-size: 15px; color: {{t.ink2}}; padding-top: 2px">{{cx.label}}</dt>
+        <dd style="margin: 0; font-size: 17px; line-height: 1.45"><strong>{{cx.value}}</strong> {{cx.detail}}</dd>
+        <dd style="margin: 0; grid-column: 2; font-size: 14px; color: {{t.muted}}">{{cx.lane}}</dd>
+      </div>
+    </sc-for>
+  </dl>
+  <p style="margin: 16px 0 0; font-size: 16px; line-height: 1.5">Towers A, B and C, 20 floors each, 500 homes. Latest QPR: Tower A at slab 9, B at slab 7, C at slab 5.</p>
+  <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 4px">
+    <p style="margin: 0; font-size: 16px; font-weight: 700">Reported waterlogging near Sector 37D</p>
+    <span style="display: flex; flex-wrap: wrap; gap: 0 8px"><sc-for list="{{floodChips}}" as="fc" hint-placeholder-count="2"><a href="#news" class="pl-press" aria-label="{{fc.aria}}" style="display: inline-flex; align-items: center; min-height: 48px; text-decoration: none; color: {{t.ink}}"><span style="display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 4px 14px 4px 12px; box-sizing: border-box; border-radius: 999px; background: {{t.track}}; font-size: 14px; line-height: 1.3"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4v13H7z"></path><path d="M14 3.5v4h4"></path></g></svg>{{fc.label}}</span></a></sc-for></span>
+    <p style="margin: 0; font-size: 14px; line-height: 1.45; color: {{t.muted}}">Reported, not verified by Plinth. No report names the Aurelia site itself.</p>
+  </div>
+  <button type="button" class="pl-press" onClick="{{toggleAround}}" aria-expanded="{{aroundOpen}}" aria-controls="around" style="margin-top: 8px; display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">{{aroundLabel}}<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="{{aroundChev}}"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+  <sc-if value="{{aroundOpen}}" hint-placeholder-val="{{false}}">
+    <div id="around" style="display: flex; flex-direction: column; gap: 16px; padding-bottom: 8px">
+      <div><p style="margin: 0; font-size: 14px; color: {{t.muted}}">Developer says · brochure, 2 Oct 2026</p><p style="margin: 2px 0 0; font-size: 16px; line-height: 1.5">A clubhouse with a pool and a gym. A central park; park-facing homes pay a PLC. Covered parking on two basement levels. Power back-up for lifts and common areas.</p></div>
+      <div><p style="margin: 0; font-size: 14px; color: {{t.muted}}">Our estimate · road distances, Oct 2026</p><p style="margin: 2px 0 0; font-size: 16px; line-height: 1.5">Dwarka Expressway 0.8 km. Cyber City 18 km, 35–55 min at 9 am. IGI Airport T3 22 km, 30–45 min. Schools: 3 within 3 km. Metro: none within 5 km.</p></div>
+    </div>
+  </sc-if>
+  <button type="button" class="pl-press" onClick="{{toggleDev}}" aria-expanded="{{devOpen}}" aria-controls="from-dev" style="margin-top: 4px; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 56px; padding: 8px 18px; border: 0; border-radius: 999px; background: {{t.claimBg}}; color: {{t.ink}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer"><span style="display: inline-flex; align-items: center; gap: 8px; text-align: left"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" style="flex: none"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg>From the developer · not verified by Plinth</span><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="{{devChev}}"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+  <sc-if value="{{devOpen}}" hint-placeholder-val="{{false}}">
+    <div id="from-dev" data-review="founder" style="margin-top: 10px; padding: 18px 16px; border-radius: 8px; background: {{t.claimBg}}; display: flex; flex-direction: column; gap: 14px">
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: {{t.ink2}}">Prices and plan. Northfield Estates added this in its free Plinth workspace, updated 2 Oct 2026. We show it as given, not verified by Plinth. It never moves the delivery risk.</p>
+      <p style="margin: 0; font-size: 16px; line-height: 1.5"><strong>Price list, 2 Oct 2026:</strong> 3 BHK from ₹2.35 Cr (₹16,207/sq ft carpet). 4 BHK from ₹3.38 Cr (₹16,095/sq ft carpet). Base prices.</p>
+      <p style="margin: 0; font-size: 15px; line-height: 1.5">Earlier lists, 3 BHK: ₹2.24 Cr (1 Apr 2026), ₹2.03 Cr (1 Jul 2025), ₹1.58 Cr at launch (Jan 2023). Up 49% since launch.</p>
+      <p style="margin: 0; font-size: 16px; line-height: 1.5"><strong>Payment plan, construction-linked:</strong> 10% on booking, 10% with the registered agreement, then by stage. Foundation and slabs 3, 6 and 9 are on record, so a buyer booking today pays 52.5% by registration. Slab stages follow your tower: in Tower B it is 45%, in Tower C 37.5%.</p>
+      <p style="margin: 0; padding: 10px 12px; border-radius: 8px; background: {{t.bgSolid}}; font-size: 15px; line-height: 1.5"><strong>Slab 12, 7.5%:</strong> Northfield sent buyers a demand for this on 10 Oct 2026. The latest QPR shows slab 9.</p>
+    </div>
+  </sc-if>
+</section>
+
+<section id="pay" aria-labelledby="pay-h" style="padding: 56px 16px 48px; background: {{t.track}}">
+  <h2 id="pay-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.02">What will I really pay?</h2>
+  <p class="pl-rise" style="margin: 14px 0 0; font-size: 18px; line-height: 1.55; color: {{t.ink}}; animation-delay: 80ms">About ₹2.74 Cr all-in for a park-facing 3 BHK quoted at ₹2.35 Cr, from the cost sheet of 2 Oct 2026. That is 17% more than the quote.</p>
+  <div class="pl-rise" style="margin-top: 28px; display: flex; align-items: baseline; gap: 6px 12px; flex-wrap: wrap; animation-delay: 160ms">
+    <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 72px; letter-spacing: -0.05em; line-height: 0.9">₹2.74 Cr</span>
+    <span style="font-size: 17px; color: {{t.ink}}">all-in · ₹18,900/sq ft carpet</span>
+  </div>
+  <div aria-hidden="true" style="margin-top: 16px; display: flex; height: 14px; border-radius: 7px; overflow: hidden; gap: 2px">
+    <span style="flex: 235; background: {{t.accent}}"></span><span style="flex: 9.2; background: {{t.ink2}}"></span><span style="flex: 12.2; background: {{t.muted}}"></span><span style="flex: 17.6; background: {{t.lineStrong}}"></span>
+  </div>
+  <p style="margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; color: {{t.ink2}}">
+    <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: {{t.accent}}"></span>Base ₹2.35 Cr</span>
+    <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: {{t.ink2}}"></span>Charges ₹9.2 L</span>
+    <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: {{t.muted}}"></span>GST ₹12.2 L</span>
+    <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: {{t.lineStrong}}"></span>Stamp duty ₹17.6 L</span>
+  </p>
+  <button type="button" class="pl-press" onClick="{{togglePay}}" aria-expanded="{{payOpen}}" aria-controls="pay-more" style="margin-top: 12px; display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">{{payLabel}}<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="{{payChev}}"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+  <sc-if value="{{payOpen}}" hint-placeholder-val="{{false}}">
+    <div id="pay-more" style="display: flex; flex-direction: column; gap: 12px; padding-top: 4px">
+      <dl style="margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; font-size: 16px; line-height: 1.4">
+        <dt style="color: {{t.ink2}}">Base price</dt><dd style="margin: 0; text-align: right; font-weight: 600">₹2.35 Cr</dd>
+        <dt style="color: {{t.ink2}}">PLC, park-facing</dt><dd style="margin: 0; text-align: right; font-weight: 600">₹2.9 L</dd>
+        <dt style="color: {{t.ink2}}">Club</dt><dd style="margin: 0; text-align: right; font-weight: 600">₹1.5 L</dd>
+        <dt style="color: {{t.ink2}}">Parking</dt><dd style="margin: 0; text-align: right; font-weight: 600">₹3.5 L</dd>
+        <dt style="color: {{t.ink2}}">IFMS</dt><dd style="margin: 0; text-align: right; font-weight: 600">₹1.3 L</dd>
+        <dt style="color: {{t.ink2}}; font-weight: 600">Charges total</dt><dd style="margin: 0; text-align: right; font-weight: 600">₹9.2 L</dd>
+        <dt style="color: {{t.ink2}}">GST, 5%</dt><dd style="margin: 0; text-align: right; font-weight: 600">₹12.2 L</dd>
+        <dt style="color: {{t.ink2}}">Stamp duty and registration (estimate)</dt><dd style="margin: 0; text-align: right; font-weight: 600">₹17.6 L</dd>
+        <dt style="padding-top: 10px; border-top: 1px solid {{t.line}}; font-weight: 700">All-in</dt><dd style="margin: 0; padding-top: 10px; border-top: 1px solid {{t.line}}; text-align: right; font-weight: 700">₹2.74 Cr</dd>
+      </dl>
+      <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">17% more than quoted · ₹18,900/sq ft carpet. You pay for 2,000 sq ft super and can use 1,450 sq ft carpet (38% loading). PLC and club, ₹4.4 L together, are often negotiable.</p>
+      <p style="margin: 0; font-size: 14px; line-height: 1.45; color: {{t.muted}}">From the developer's cost sheet of 2 Oct 2026 and Haryana stamp duty rules · calculated 18 Oct 2026 · information, not tax advice. For a 4 BHK, send us its cost sheet.</p>
+    </div>
+  </sc-if>
+</section>
+
+<section id="wait" aria-labelledby="wait-h" style="padding: 56px 16px 48px; background: {{t.bg}}">
+  <h2 id="wait-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.02">Can we afford the wait?</h2>
+  <p class="pl-rise" aria-live="polite" style="margin: 14px 0 0; font-size: 18px; line-height: 1.55; animation-delay: 80ms">{{waitAnswer}}</p>
+  <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+    <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+      <label for="w-income" style="font-size: 14px; color: {{t.ink2}}">Take-home, a month</label>
+      <span style="display: flex; align-items: center; height: 52px; padding: 0 14px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}"><span aria-hidden="true" style="font-weight: 600; margin-right: 4px">₹</span><input id="w-income" type="text" inputmode="numeric" autocomplete="off" value="{{incomeStr}}" onChange="{{onIncome}}" style="flex: 1; min-width: 0; height: 48px; border: 0; padding: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600"></span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+      <label for="w-rent" style="font-size: 14px; color: {{t.ink2}}">Rent now, a month</label>
+      <span style="display: flex; align-items: center; height: 52px; padding: 0 14px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}"><span aria-hidden="true" style="font-weight: 600; margin-right: 4px">₹</span><input id="w-rent" type="text" inputmode="numeric" autocomplete="off" value="{{rentStr}}" onChange="{{onRent}}" style="flex: 1; min-width: 0; height: 48px; border: 0; padding: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600"></span>
+    </div>
+  </div>
+  <p style="margin: 8px 0 0; font-size: 14px; line-height: 1.45; color: {{t.muted}}">Loan at 20% down, 8.50%, 20 years. What you type stays on this phone.</p>
+  <div role="group" aria-label="How late to show" style="margin-top: 22px; display: flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+    <sc-for list="{{delayOpts}}" as="dlo" hint-placeholder-count="2"><button type="button" class="pl-press" onClick="{{dlo.pick}}" aria-pressed="{{dlo.on}}" style="{{dlo.style}}">{{dlo.label}}</button></sc-for>
+  </div>
+  <p style="margin: 18px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px"><span aria-live="polite" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 60px; letter-spacing: -0.045em; line-height: 0.95">{{delayCost}}</span><span style="font-size: 16px; line-height: 1.45">more in rent and pre-EMI if keys come {{delayN}} months after Dec 2027.</span></p>
+  <p style="margin: 8px 0 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">{{waitFreq}}</p>
+  <div role="img" aria-label="{{chartLabel}}" style="position: relative; height: 140px; margin-top: 18px">
+    <div aria-hidden="true" style="{{halfLine}}"></div>
+    <span aria-hidden="true" style="{{halfLabel}}">Half your take-home</span>
+    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 140px; display: flex; align-items: flex-end; gap: 2px">
+      <sc-for list="{{waitBars}}" as="wb2" hint-placeholder-count="26"><span style="{{wb2.col}}"><span style="{{wb2.top}}"></span><span style="{{wb2.bottom}}"></span></span></sc-for>
+    </div>
+    <div aria-hidden="true" style="{{keysMark}}"></div>
+  </div>
+  <div aria-hidden="true" style="position: relative; height: 20px; margin-top: 6px; font-size: 13px; color: {{t.muted}}">
+    <span style="position: absolute; left: 0; top: 0">Nov 2026</span>
+    <span style="{{origTick}}">Dec 2027</span>
+    <span style="position: absolute; right: 0; top: 0">{{delayEndLabel}}</span>
+  </div>
+  <p style="margin: 8px 0 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; color: {{t.ink2}}">
+    <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="{{swPre}}"></span>Pre-EMI</span>
+    <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="{{swRent}}"></span>Rent</span>
+    <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="{{swLate}}"></span>If it’s late</span>
+  </p>
+  <dl style="margin: 18px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+    <div><dt style="font-size: 14px; color: {{t.muted}}">Now</dt><dd style="margin: 0; font-size: 18px; font-weight: 700; line-height: 1.3">{{outNow}}</dd><dd style="margin: 0; font-size: 14px">{{shareNow}} of pay</dd></div>
+    <div><dt style="font-size: 14px; color: {{t.muted}}">By Dec 2027</dt><dd style="margin: 0; font-size: 18px; font-weight: 700; line-height: 1.3">{{outEnd}}</dd><dd style="margin: 0; font-size: 14px">{{shareEnd}} of pay</dd></div>
+    <div><dt style="font-size: 14px; color: {{t.muted}}">After keys</dt><dd style="margin: 0; font-size: 18px; font-weight: 700; line-height: 1.3">{{emiText}}</dd><dd style="margin: 0; font-size: 14px">EMI, {{shareEmi}}</dd></div>
+  </dl>
+  <p style="margin: 16px 0 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Pre-EMI is interest on what the bank has paid out, in step with the payment plan: 52.5% of the price due today, 95% by Dec 2027. A late project keeps you on rent and pre-EMI. RERA s.18 delay interest isn't counted. Arithmetic, not advice.</p>
+  <a href="#before-you-pay" class="pl-press" style="margin-top: 18px; display: flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 22px; border-radius: 999px; background: {{t.inverse}}; color: {{t.onInverse}}; text-decoration: none; font-weight: 600"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" style="flex: none; display: block"><path d="M10 2.5l6 2.5v4.5c0 4-2.6 6.8-6 8-3.4-1.2-6-4-6-8V5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.2 10.2l2 2 3.6-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Check before you pay anything</a>
+  <p style="margin: 8px 0 0; font-size: 14px; text-align: center; color: {{t.muted}}">Plinth never takes or moves your money.</p>
+</section>
+
+<section id="furnish" aria-labelledby="fur-h" style="padding: 56px 16px 48px; background: {{t.track}}">
+  <h2 id="fur-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 34px; line-height: 1.02">What would it look like furnished?</h2>
+  <p class="pl-rise" style="margin: 14px 0 0; font-size: 18px; line-height: 1.55; color: {{t.ink}}; animation-delay: 80ms">Snap a bare room on your site visit. AI furnishes it to scale and never moves a wall or window.</p>
+  <div class="pl-rise" style="position: relative; margin: 28px -16px 0; height: 260px; overflow: hidden; animation-delay: 160ms">
+    <img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="Empty 3 BHK living room in a sample flat, before furnishing" style="position: absolute; left: 0; top: 0; width: 390px; height: 260px; background: #E7E3DA; object-fit: cover; display: block">
+    <span style="position: absolute; left: 12px; top: 12px; font-size: 13px; line-height: 1; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #1B1A17; color: #FFFFFF">Original photo</span>
+    <div style="{{afterMI}}"><img data-slot="roomModernIndian" src="/_blob/6b062f16f5d7632569e4c012811473c2" alt="The same living room furnished in a modern Indian style by AI" style="position: absolute; left: 0; top: 0; width: 390px; height: 260px; background: #E7E3DA; object-fit: cover; display: block"><span style="position: absolute; right: 12px; top: 12px; font-size: 13px; line-height: 1; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #1B1A17; color: #FFFFFF">AI-generated preview</span></div>
+    <div style="{{afterMin}}"><img data-slot="roomMinimal" src="/_blob/e1a0cb38dadcfa3321ba3cc1854b53bc" alt="The same living room furnished in a minimal style by AI" style="position: absolute; left: 0; top: 0; width: 390px; height: 260px; background: #E7E3DA; object-fit: cover; display: block"><span style="position: absolute; right: 12px; top: 12px; font-size: 13px; line-height: 1; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #1B1A17; color: #FFFFFF">AI-generated preview</span></div>
+    <div style="{{afterWW}}"><img data-slot="roomWarmWood" src="/_blob/d7c665ef54bd23149ee299cecb0fd15e" alt="The same living room furnished in a warm wood style by AI" style="position: absolute; left: 0; top: 0; width: 390px; height: 260px; background: #E7E3DA; object-fit: cover; display: block"><span style="position: absolute; right: 12px; top: 12px; font-size: 13px; line-height: 1; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #1B1A17; color: #FFFFFF">AI-generated preview</span></div>
+    <div aria-hidden="true" style="{{divider}}"></div>
+  </div>
+  <label for="vis-range" style="display: block; margin-top: 16px; font-size: 15px; color: {{t.ink}}">{{visHint}}</label>
+  <input id="vis-range" type="range" min="0" max="100" value="{{vis}}" onChange="{{onVis}}" style="margin-top: 6px">
+  <div role="group" aria-label="Furnishing style" class="hs" style="margin-top: 10px; display: flex; gap: 8px; overflow-x: auto">
+    <sc-for list="{{styles}}" as="st" hint-placeholder-count="3"><button type="button" class="pl-press" onClick="{{st.pick}}" aria-pressed="{{st.on}}" style="flex: none; height: 48px; padding: 0; border: 0; background: transparent; font: inherit; cursor: pointer"><span style="{{st.style}}">{{st.name}}</span></button></sc-for>
+  </div>
+  <p style="margin: 4px 0 0; font-size: 14px; color: {{t.muted}}">{{styleNote}}</p>
+  <a href="#visualise" class="pl-press" style="margin-top: 20px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 22px; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; text-decoration: none; font-weight: 600"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.5-2h5L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"></path><circle cx="12" cy="13" r="3.5"></circle></g></svg>Try it on your room · beta</a>
+</section>
+
+</sc-if>
+
+<footer style="flex: 1 0 auto; padding: 64px 16px 128px; display: flex; flex-direction: column; gap: 12px">
+  <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 128px; line-height: 0.82; letter-spacing: -0.06em; color: {{t.ink}}">Plinth</p>
+  <p style="margin: 14px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 26px; line-height: 1.1">No developer pays us. Ever.</p>
+  <p style="margin: 0; font-size: 16px; line-height: 1.55; color: {{t.ink}}">Our opinion, based on public records. Not a credit rating. Not issued by any RERA. Data as of 14 Oct 2026 · model v1.2.</p>
+  <p style="margin: 0; display: flex; flex-wrap: wrap; gap: 0 22px"><a href="#money" style="display: inline-flex; align-items: center; min-height: 48px; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">How we make money</a><a href="#report" style="display: inline-flex; align-items: center; min-height: 48px; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Report an error</a></p>
+</footer>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 30; height: 80px; box-sizing: border-box; padding: 14px 16px; display: flex; gap: 10px; background: {{t.nav}}">
+  <button type="button" class="pl-press" onClick="{{followTap}}" aria-pressed="{{following}}" style="{{followBtn}}"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v16.5l-5-3.6-5 3.6z"></path></g></svg><span>{{followLabel}}</span></button>
+  <button type="button" class="pl-press" onClick="{{openAsk}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.1 5.4L19.5 10l-5.4 2.1L12 17.5l-2.1-5.4L4.5 10l5.4-2.1z"></path><path d="M18.5 16l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"></path></g></svg><span>Ask about this</span></button>
+</div>
+
+<sc-if value="{{followSheet}}" hint-placeholder-val="{{false}}">
+  <div aria-hidden="true" onClick="{{closeSheet}}" style="position: absolute; inset: 0; z-index: 40; background: {{t.scrim}}"></div>
+  <section class="pl-sheet" role="dialog" aria-modal="true" aria-labelledby="fo-h" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 41; background: {{t.sheet}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; padding: 10px 20px 28px; display: flex; flex-direction: column; gap: 12px">
+    <div aria-hidden="true" style="display: flex; justify-content: center"><span style="width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span></div>
+    <h2 id="fo-h" style="margin: 10px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 30px; line-height: 1.04">Get alerts for Aurelia Heights, Phase 2?</h2>
+    <p style="margin: 0; font-size: 17px; line-height: 1.55; color: {{t.ink2}}">We'll tell you when its delivery risk changes, it gets a date extension, or it files or misses a quarterly report. At most one alert a day.</p>
+    <p style="margin: 0; font-size: 14px; line-height: 1.45; color: {{t.muted}}">Android will ask to allow notifications next. Change this anytime in You › Notifications.</p>
+    <button type="button" class="pl-press" onClick="{{turnOnAlerts}}" style="margin-top: 6px; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Turn on alerts</button>
+    <button type="button" class="pl-press" onClick="{{justFollow}}" style="height: 48px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Not now, just follow</button>
+  </section>
+</sc-if>
+
+<sc-if value="{{askOpen}}" hint-placeholder-val="{{false}}">
+  <div aria-hidden="true" onClick="{{closeSheet}}" style="position: absolute; inset: 0; z-index: 40; background: {{t.scrim}}"></div>
+  <section class="pl-sheet" role="dialog" aria-modal="true" aria-labelledby="ask-h" style="position: absolute; left: 0; right: 0; bottom: 0; height: 680px; z-index: 41; background: {{t.sheet}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; display: flex; flex-direction: column">
+    <div aria-hidden="true" style="display: flex; justify-content: center; padding-top: 10px"><span style="width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span></div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 6px 8px 0 20px">
+      <span style="color: {{t.ink}}"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.1 5.4L19.5 10l-5.4 2.1L12 17.5l-2.1-5.4L4.5 10l5.4-2.1z"></path><path d="M18.5 16l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"></path></g></svg></span>
+      <div style="flex: 1; min-width: 0">
+        <h2 id="ask-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 26px; line-height: 1.1">Ask about this project</h2>
+        <p style="margin: 0; font-size: 14px; color: {{t.muted}}">Aurelia Heights, Phase 2 · AI · answers cite public records</p>
+      </div>
+      <button type="button" class="pl-press" onClick="{{closeSheet}}" aria-label="Close" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></g></svg></button>
+    </div>
+    <div class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 14px 20px 16px; display: flex; flex-direction: column; gap: 14px">
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: {{t.ink2}}">I'm Plinth's AI assistant. I answer from public records like HARERA and show sources. I can make mistakes, so check them. I don't give legal, tax or investment advice.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{prompts}}" as="p" hint-placeholder-count="3"><button type="button" class="pl-press" onClick="{{p.pick}}" aria-pressed="{{p.on}}" style="{{p.style}}">{{p.text}}</button></sc-for>
+      </div>
+      <div aria-live="polite" style="border-radius: 8px; background: {{t.track}}; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 13px; color: {{t.muted}}">AI answer · checked against our records before showing</span>
+        <p style="margin: 0; font-size: 17px; line-height: 1.6">{{answerText}}</p>
+        <sc-if value="{{answerDone}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; flex-wrap: wrap; gap: 6px">
+            <sc-for list="{{answerSources}}" as="src" hint-placeholder-count="3"><a href="#source" style="display: inline-flex; align-items: center; min-height: 48px; text-decoration: none"><span style="display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 999px; background: {{t.bgSolid}}; font-size: 14px; color: {{t.ink}}">{{src}}</span></a></sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Want a person to check? <a href="#human" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Talk to a Plinth adviser · paid by you, never by developers</a> · Mon–Sat, 10 am–7 pm</p>
+    </div>
+    <div style="display: flex; gap: 8px; padding: 12px 16px 20px; background: {{t.track}}">
+      <label for="ask-in" class="sr">Ask a question about Aurelia Heights, Phase 2</label>
+      <input id="ask-in" type="text" placeholder="Ask in English or Hinglish" style="flex: 1; min-width: 0; height: 52px; padding: 0 18px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; box-sizing: border-box">
+      <button type="button" class="pl-press" aria-label="Ask by voice" style="flex: none; width: 52px; height: 52px; border: 0; border-radius: 999px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"></path></g></svg></button>
+      <button type="button" class="pl-press" aria-label="Send question" style="flex: none; width: 52px; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"></path></g></svg></button>
+    </div>
+  </section>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"band":{"editor":"enum","options":["Low","Moderate","Elevated","High","Severe"],"default":"Elevated"},"view":{"editor":"enum","options":["Full","Simple"],"default":"Full"},"$preview":{"width":390,"height":9800}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {flip: false, ready: false, view: 'dial', q: 7, payOpen: false, vis: 100, style: 0, following: false, alerts: false, sheet: '', ai: -1, shown: 0, cfg: 0, devOpen: false, aroundOpen: false, income: 450000, rent: 55000, delay: 12, tower: 'all', book: '', notify: false, viewOv: null, viewFrom: null, reading: false, readIdx: 0};
+  }
+  componentDidMount() {
+    var self = this;
+    try { this._rm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { this._rm = false; }
+    this._t = setTimeout(function () { self.setState({ready: true}); }, 300);
+  }
+  componentWillUnmount() {
+    clearTimeout(this._t);
+    clearInterval(this._iv);
+    clearInterval(this._read);
+  }
+  // Simple view read-aloud (G-27): steps through the six blocks and highlights the one being read.
+  toggleRead() {
+    var self = this;
+    clearInterval(this._read);
+    if (this.state.reading) { this.setState({reading: false, readIdx: 0}); return; }
+    this.setState({reading: true, readIdx: 0});
+    this._read = setInterval(function () {
+      var n = (self.state.readIdx || 0) + 1;
+      if (n > 5) { clearInterval(self._read); self.setState({reading: false, readIdx: 0}); return; }
+      self.setState({readIdx: n});
+    }, 3200);
+  }
+  ask(i) {
+    var self = this;
+    clearInterval(this._iv);
+    if (this._rm) { this.setState({ai: i, shown: 999}); return; }
+    this.setState({ai: i, shown: 0});
+    this._iv = setInterval(function () {
+      var n = (self.state.shown || 0) + 1;
+      self.setState({shown: n});
+      if (n > 90) clearInterval(self._iv);
+    }, 45);
+  }
+  renderVals() {
+
+    var self = this;
+    var s = this.state || {};
+    var night = ((this.props.theme || 'Day') === 'Night') !== !!s.flip;
+    var vw = this.props.view === 'Simple' ? 'Simple' : 'Full';
+    var simple = ((s.viewOv && s.viewFrom === vw) ? s.viewOv : vw) === 'Simple';
+    var reduced = !!this._rm;
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', headerBg: 'rgba(11,20,17,0.78)',
+      panel: 'rgba(255,255,255,0.045)', overlay: 'rgba(11,20,17,0.62)', chipBg: 'rgba(11,20,17,0.55)', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claim: '#7E8C86', wire: 'rgba(238,243,240,0.30)',
+      emptyCell: 'rgba(255,255,255,0.06)', emptyBorder: '#7D828A', segOff: 'transparent', slabOff: 'rgba(255,255,255,0.12)',
+      nav: '#121D19', navInd: 'rgba(110,231,183,0.16)', sheet: '#111D19', scrim: 'rgba(0,0,0,0.58)', shadow: '0 8px 24px rgba(0,0,0,0.45)',
+      glass: '#111D19', glassInk: '#EEF3F0', solid: '#111D19', inverse: '#EEF3F0', onInverse: '#0B1411', segOn: 'rgba(255,255,255,0.14)',
+      claimBg: '#1D2621', barPre: '#EEF3F0', barRent: '#5F6E68'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', headerBg: 'rgba(251,250,247,0.85)',
+      panel: '#FFFFFF', overlay: 'rgba(255,255,255,0.80)', chipBg: 'rgba(255,255,255,0.85)', photo: '#E7E3DA',
+      line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claim: '#9A958B', wire: 'rgba(27,26,23,0.30)',
+      emptyCell: '#EEEBE4', emptyBorder: '#8C9199', segOff: '#FFFFFF', slabOff: '#E2DED4',
+      nav: '#EFECE5', navInd: '#E9F1EC', sheet: '#FFFFFF', scrim: 'rgba(27,26,23,0.42)', shadow: '0 8px 24px rgba(27,26,23,.12)',
+      glass: '#FFFFFF', glassInk: '#1B1A17', solid: '#FFFFFF', inverse: '#1B1A17', onInverse: '#FFFFFF', segOn: '#FFFFFF',
+      claimBg: '#F1ECE2', barPre: '#1B1A17', barRent: '#A39E92'
+    };
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', fillD: '#15323A', lo: 5, hi: 15},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', fillD: '#332B0C', lo: 15, hi: 30},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillD: '#3A2210', lo: 30, hi: 45},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', fillD: '#3D1A19', lo: 45, hi: 65},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', fillD: '#341A33', lo: 65, hi: 80},
+      Limited: {i: 0, light: '#6B7079', dark: '#A3A8B0', fill: '#FFFFFF', fillD: '#1C1F24', lo: 0, hi: 0}
+    };
+    var names = ['Low', 'Moderate', 'Elevated', 'High', 'Severe'];
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function bfill(n) { return night ? B[n].fillD : B[n].fill; }
+    function textInk(n) { return night ? B[n].dark : (B[n].i <= 2 ? T.ink : B[n].light); }
+    function chip(n, conf, flag) {
+      var lim = n === 'Limited';
+      var x = B[n];
+      var segInk = ink(n);
+      var meter = [1, 2, 3, 4, 5].map(function (j) {
+        var on = !lim && j <= x.i;
+        return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (on ? 'background:' + segInk + ';' : 'background:' + T.segOff + ';border:1px ' + (lim ? 'dashed ' + segInk : 'solid ' + T.emptyBorder) + ';')};
+      });
+      var dot = 'display:block;width:7px;height:7px;border-radius:50%;box-sizing:border-box;';
+      return {
+        wrap: 'display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;flex:none;color:' + T.ink + ';background:' + (lim ? T.track : bfill(n)) + ';',
+        meter: meter,
+        name: lim ? 'Limited history' : n,
+        text: 'font-size:14px;font-weight:600;line-height:1;color:' + (lim ? T.ink2 : T.ink),
+        dots: conf ? 'display:inline-flex;gap:3px;align-items:center' : 'display:none',
+        d1: dot + 'background:' + T.ink2 + ';',
+        d2: dot + (conf === 'high' ? 'background:' + T.ink2 + ';' : 'border:1.5px solid ' + T.ink2 + ';'),
+        flag: flag ? 'display:block;flex:none;color:' + T.ink : 'display:none',
+        sr: 'Delivery risk: ' + (lim ? 'limited history, not scored' : n + ', step ' + x.i + ' of 5') + (conf ? ', ' + conf + ' confidence' : '') + (flag ? ', set by a red-flag rule' : '')
+      };
+    }
+    function seg(on) {
+      return 'height:48px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;flex:1 1 0;color:' + T.ink + ';background:' + (on ? T.segOn : 'transparent') + ';';
+    }
+    function pill(on, alt) {
+      return 'display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 18px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:15px;font-weight:600;color:' + (on ? T.onInverse : T.ink) + ';background:' + (on ? T.inverse : (alt ? T.bgSolid : T.track)) + ';';
+    }
+    var themeIcons = {moon: night ? 'display:none' : 'display:block', sun: night ? 'display:block' : 'display:none'};
+    var themeLabel = night ? 'Switch to Day theme' : 'Switch to Night theme';
+    var flipTheme = function () { self.setState({flip: !s.flip}); };
+
+    var band = (B[this.props.band] && this.props.band !== 'Limited') ? this.props.band : 'Elevated';
+    var b = B[band];
+    var bandText = textInk(band);
+
+    function pt(deg, r) { var a = deg * Math.PI / 180; return (150 + r * Math.cos(a)).toFixed(1) + ' ' + (150 - r * Math.sin(a)).toFixed(1); }
+    var arcs = names.map(function (n, i) {
+      var a0 = 180 - i * 36 - 1.6, a1 = 180 - (i + 1) * 36 + 1.6, cur = n === band;
+      return {d: 'M ' + pt(a0, 112) + ' A 112 112 0 0 1 ' + pt(a1, 112), color: ink(n), w: cur ? 30 : 20, op: cur ? 1 : 0.42};
+    });
+    // the dial sits quietly at its band: the replay tower is this page's one signature move
+    var angle = -90 + (b.i - 0.5) * 36;
+    var needleStyle = 'transform-origin:150px 150px;transform:rotate(' + angle + 'deg)';
+
+    var cells = [];
+    for (var k = 0; k < 100; k++) {
+      var st = 'display:block;width:16px;height:16px;border-radius:50%;box-sizing:border-box;';
+      if (k < b.lo) st += 'background:' + ink(band) + ';';
+      else if (k < b.hi) st += 'background:repeating-linear-gradient(45deg,' + ink(band) + ' 0 2px,' + bfill(band) + ' 2px 5px);border:1px solid ' + ink(band) + ';';
+      else st += 'background:' + T.emptyCell + ';border:1px solid ' + T.emptyBorder + ';';
+      cells.push({style: st});
+    }
+
+    var Q = [
+      {label: 'Jun 2023', sold: 24, built: 6, time: 10, band: 'Moderate', note: 'QPR filed on time. Excavation complete.'},
+      {label: 'Dec 2023', sold: 38, built: 12, time: 20, band: 'Moderate', note: 'Foundations for Towers A–C. 2 complaints filed.'},
+      {label: 'Jun 2024', sold: 49, built: 19, time: 30, band: 'Moderate', note: 'QPR filed on time. 49% sold, 19% built.'},
+      {label: 'Dec 2024', sold: 58, built: 26, time: 40, band: 'Moderate', note: 'Sales running 32 points ahead of construction. The Jul–Sep 2024 QPR came 12 days late.'},
+      {label: 'Jun 2025', sold: 64, built: 31, time: 50, band: 'Moderate', note: '5 complaints decided against the promoter this half-year. The Jan–Mar 2025 QPR came 41 days late.'},
+      {label: 'Dec 2025', sold: 68, built: 36, time: 60, band: 'Moderate', note: 'QPR filed 38 days late. Escrow withdrawals certified by a CA.'},
+      {label: 'Mar 2026', sold: 70, built: 38, time: 65, band: 'Moderate', note: 'Tower A slab 9 cast.'},
+      {label: 'Jun 2026', sold: 72, built: 41, time: 70, band: 'Moderate', note: '72% sold, 41% built. Filed 15 Jul 2026, on time. With new complaint orders, it moved the band from Moderate to Elevated on 2 Oct 2026.'}
+    ];
+    var q = Math.max(0, Math.min(7, Number(s.q)));
+    var cur = Q[q];
+    // G-33: slabs by tower, where the QPR reports them (from Oct–Dec 2024). Index = Q.
+    var TW = {A: [null, null, null, 4, 6, 8, 9, 9], B: [null, null, null, 3, 4, 6, 6, 7], C: [null, null, null, 1, 2, 4, 4, 5]};
+    var twSel = ['A', 'B', 'C'].indexOf(s.tower) >= 0 ? s.tower : 'all';
+    var slabNow = twSel !== 'all' ? TW[twSel][q] : null;
+    var byTower = slabNow !== null;
+    var builtFloors = s.ready ? (byTower ? slabNow : Math.round(cur.built / 5)) : 0;
+    var soldFloor = byTower ? -1 : Math.round(cur.sold / 5);
+    var towers = [['all', 'All', 'All of Phase 2'], ['A', 'A', 'Tower A'], ['B', 'B', 'Tower B'], ['C', 'C', 'Tower C']].map(function (x) {
+      var on = twSel === x[0];
+      return {label: x[1], aria: x[2], on: on, pick: function () { self.setState({tower: x[0]}); },
+        style: 'min-width:44px;height:40px;padding:0 12px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;color:' + (on ? T.onInverse : T.ink) + ';background:' + (on ? T.inverse : 'transparent')};
+    });
+    var towerNote = twSel === 'all'
+      ? (TW.A[q] === null ? 'Phase 2 as a whole: this QPR doesn’t report slabs by tower.' : 'By tower this quarter: A at slab ' + TW.A[q] + ', B at ' + TW.B[q] + ', C at ' + TW.C[q] + ', of 20.')
+      : (byTower ? 'Tower ' + twSel + ': slab ' + slabNow + ' of 20 on this QPR.' + (twSel === 'A' && q === 7 ? ' A demand for slab 12 went out on 10 Oct 2026.' : '') : 'This QPR reports Phase 2 as a whole, not by tower.');
+    var floors = [];
+    for (var f = 0; f < 20; f++) {
+      var isBuilt = f < builtFloors;
+      var fs = 'position:absolute;left:0;top:0;width:164px;height:164px;box-sizing:border-box;border-radius:4px;transform:translateZ(' + (f * 10) + 'px);transition:background .5s ease ' + (f * 45) + 'ms,border-color .5s ease;';
+      fs += isBuilt ? ('background:' + (night ? 'rgba(110,231,183,0.62)' : 'rgba(29,90,68,0.86)') + ';border:1px solid ' + (night ? '#A7F3D0' : '#12402F') + ';') : ('background:transparent;border:1px dashed ' + T.wire + ';');
+      if (f === soldFloor - 1) fs += 'outline:2px solid ' + ink(cur.band) + ';outline-offset:3px;';
+      floors.push({style: fs});
+    }
+
+    var answers = [
+      {q: 'Why is it Elevated?', a: 'Mostly because money is ahead of construction. 72% of units are sold but only 41% is built [1]. QPRs were filed late in 3 of the last 8 quarters [2]. And 14 complaints were decided against the promoter in 24 months, or 2.8 per 100 units; similar projects had a median of 3 [3].', src: ['[1] HARERA QPR · Jun 2026', '[2] HARERA QPR register', '[3] HARERA orders']},
+      {q: 'What should I ask the developer?', a: 'Ask for the CA certificate on escrow withdrawals for 2026 [1], the slab schedule for Towers A–C, and why the QPRs were late [2]. Get the answers in writing before you pay more than 10% of the price, the RERA limit before a registered agreement [3].', src: ['[1] HARERA Form 3', '[2] HARERA QPR register', '[3] RERA Act s.13']},
+      {q: 'Compare with Kestrel Park', a: 'Kestrel Park (Low risk) is 63% built with 58% of its time used [1]. Aurelia Phase 2 is 41% built with 77% used [2]. All-in, Kestrel is about ₹2.44 Cr against ₹2.74 Cr here, for a similar 3 BHK [3].', src: ['[1] HARERA QPR · Kestrel Park', '[2] HARERA QPR · Aurelia Ph 2', '[3] Developer cost sheets']}
+    ];
+    var ai = answers[s.ai];
+    var words = ai ? ai.a.split(' ') : [];
+    var shown = Math.min(words.length, s.shown || 0);
+    var prompts = answers.map(function (x, i) {
+      var on = i === s.ai;
+      return {text: x.q, on: on, pick: function () { self.ask(i); }, style: 'min-height:48px;padding:6px 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (on ? T.inverse : T.track) + ';color:' + (on ? T.onInverse : T.ink)};
+    });
+
+    var S = [
+      {name: 'Modern Indian', note: 'Modern Indian · estimated furnishing ₹8–12 L · items are illustrative'},
+      {name: 'Minimal', note: 'Minimal · estimated furnishing ₹5–8 L · items are illustrative'},
+      {name: 'Warm wood', note: 'Warm wood · estimated furnishing ₹9–14 L · items are illustrative'}
+    ];
+    var vis = Math.max(0, Math.min(100, Number(s.vis)));
+    function after(i) { return 'position:absolute;left:0;top:0;width:390px;height:260px;clip-path:inset(0 0 0 ' + vis + '%);display:' + (s.style === i ? 'block' : 'none'); }
+    var styles = S.map(function (x, i) {
+      return {name: x.name, on: i === s.style, style: pill(i === s.style, true), pick: function () { self.setState({style: i, vis: (s.vis >= 100 ? 50 : s.vis)}); }};
+    });
+
+
+    // Homes (F-97), sized for the phone: shorter room names, labels never under 13 px.
+    var cfgI = s.cfg === 1 ? 1 : 0;
+    var configs = ['3 BHK', '4 BHK'].map(function (n, i) { return {name: n, on: i === cfgI, style: seg(i === cfgI), pick: function () { self.setState({cfg: i}); }}; });
+    var FACTS = [[
+      ['Carpet area', '1,450 sq ft,', 'as registered.', 'Records show · HARERA registration'],
+      ['Super area', '2,000 sq ft,', 'so loading is 38%.', 'Developer says · cost sheet, 2 Oct 2026'],
+      ['Base price', 'From ₹2.35 Cr,', '₹16,207/sq ft carpet.', 'Developer says · price list, 2 Oct 2026'],
+      ['All-in', '₹2.74 Cr', 'for a park-facing unit.', 'Our estimate · charges, GST, stamp duty']
+    ], [
+      ['Carpet area', '2,100 sq ft,', 'as registered.', 'Records show · HARERA registration'],
+      ['Super area', 'Not on a cost sheet yet.', 'Ask for it in writing.', 'Developer says'],
+      ['Base price', 'From ₹3.38 Cr,', '₹16,095/sq ft carpet.', 'Developer says · price list, 2 Oct 2026'],
+      ['All-in', 'Not worked out yet.', 'Send us a 4 BHK cost sheet.', 'Our estimate']
+    ]];
+    var cfgFacts = FACTS[cfgI].map(function (x) { return {label: x[0], value: x[1], detail: x[2], lane: x[3]}; });
+    var PLANS = [
+      {sc: 7.2, ox: 6, oy: 42, vb: '0 0 358 280', foot: [[0, 0], [48, 0], [48, 24], [36, 24], [36, 32], [0, 32]],
+        rooms: [[0, 0, 12, 14, 'Bedroom 2', '12′ × 14′'], [12, 0, 22, 13, 'Living + dining', '22′ × 13′'], [34, 0, 14, 14, 'Master', '14′ × 14′'], [0, 14, 6, 6, 'Toilet', ''], [0, 20, 12, 12, 'Bedroom 3', '12′ × 12′'], [12, 24, 6, 8, 'Toilet', ''], [24, 13, 10, 11, 'Kitchen', '10′ × 11′'], [24, 24, 12, 8, 'Utility', '12′ × 8′'], [34, 14, 6, 10, 'Dress', ''], [40, 14, 8, 10, 'Toilet', '']],
+        open: [[18, 18.5, 'Foyer']], balc: [12, -5, 22, 5],
+        gaps: [['h', 13, 14, 22], ['v', 24, 15, 19], ['h', 24, 26.5, 29.5], ['h', 14, 35, 38]],
+        slides: [['h', 0, 15, 31]],
+        windows: [['v', 0, 4, 10], ['h', 0, 3, 9], ['h', 0, 37, 45], ['v', 48, 4, 10], ['v', 48, 18, 21], ['v', 0, 23, 29], ['h', 32, 3, 9], ['h', 32, 27, 33], ['v', 0, 15.5, 18.5], ['h', 32, 13.5, 16.5]],
+        doors: [[19.5, 32, 19.5, 29, 22.5, 32], [8, 14, 8, 11, 11, 14], [6, 15, 3.5, 15, 6, 17.5], [8, 20, 8, 23, 11, 20], [18, 25, 15.5, 25, 18, 27.5], [34, 9.5, 37, 9.5, 34, 12.5], [40, 16, 42.5, 16, 40, 18.5]],
+        label: 'Floor plan of the 3 BHK, 1,450 sq ft carpet. Living and dining, 22 by 13 feet, opens to a balcony. Master bedroom, 14 by 14 feet, with a dressing area and its own toilet. Bedroom 2, 12 by 14 feet, with a toilet beside it. Bedroom 3, 12 by 12 feet. Kitchen, 10 by 11 feet, with a utility room. A third toilet by the entrance.',
+        caption: 'Redrawn by Plinth from the developer’s brochure plan, 2 Oct 2026. Room sizes are the developer’s; the total is the carpet area on the HARERA registration. Approximate.'},
+      {sc: 5.8, ox: 5, oy: 34, vb: '0 0 358 240', foot: [[0, 0], [60, 0], [60, 26], [52, 26], [52, 34], [0, 34]],
+        rooms: [[0, 0, 13, 15, 'Bedroom 2', '13′ × 15′'], [13, 0, 27, 15, 'Living + dining', '27′ × 15′'], [40, 0, 14, 16, 'Master', '14′ × 16′'], [54, 0, 6, 9, 'Toilet', ''], [54, 9, 6, 7, 'Dress', ''], [0, 15, 7, 6, 'Toilet', ''], [0, 21, 13, 13, 'Bedroom 3', '13′ × 13′'], [13, 22, 7, 8, 'Toilet', ''], [13, 30, 7, 4, 'Store', ''], [26, 22, 9, 12, 'Kitchen', '9′ × 12′'], [35, 22, 5, 12, 'Utility', ''], [40, 20, 12, 14, 'Bedroom 4', '12′ × 14′'], [52, 16, 8, 10, 'Toilet', '']],
+        open: [[26.5, 18.5, 'Foyer']], balc: [13, -5, 27, 5],
+        gaps: [['h', 15, 16, 30], ['h', 22, 27, 31], ['v', 35, 28, 31], ['v', 54, 10, 13], ['v', 20, 31, 33]],
+        slides: [['h', 0, 17, 35]],
+        windows: [['v', 0, 4, 11], ['h', 0, 3, 10], ['v', 0, 24, 31], ['h', 34, 3, 10], ['h', 0, 43, 51], ['v', 60, 3, 6], ['h', 34, 43, 49], ['v', 60, 19, 22], ['h', 34, 28, 33], ['h', 34, 36, 39], ['v', 52, 28, 32], ['v', 0, 16.5, 19.5]],
+        doors: [[21.5, 34, 21.5, 31, 24.5, 34], [9, 15, 9, 12, 12, 15], [7, 16, 4.5, 16, 7, 18.5], [9, 21, 9, 24, 12, 21], [20, 23, 17.5, 23, 20, 25.5], [43, 16, 43, 13, 46, 16], [55.5, 9, 55.5, 6.5, 58, 9], [43, 20, 43, 23, 46, 20], [52, 17, 54.5, 17, 52, 19.5]],
+        label: 'Floor plan of the 4 BHK, 2,100 sq ft carpet. Living and dining, 27 by 15 feet, opens to a balcony. Master bedroom, 14 by 16 feet, with a dressing area and its own toilet. Bedroom 2, 13 by 15 feet, with a toilet beside it. Bedroom 3, 13 by 13 feet. Bedroom 4, 12 by 14 feet, with a toilet beside it. Kitchen, 9 by 12 feet, with a utility. A store and a fourth toilet by the entrance.',
+        caption: 'Redrawn by Plinth from the developer’s brochure plan, 2 Oct 2026. Room sizes are the developer’s; the total is the carpet area on the HARERA registration. Approximate.'}
+    ];
+    function buildPlan(P) {
+      function X(f) { return +(P.ox + f * P.sc).toFixed(1); }
+      function Y(f) { return +(P.oy + f * P.sc).toFixed(1); }
+      function sg(o, at, a, b2) { return o === 'h' ? [X(a), Y(at), X(b2), Y(at)] : [X(at), Y(a), X(at), Y(b2)]; }
+      var panel = T.bgSolid, lines = [], arcs = [], labels = [];
+      P.gaps.forEach(function (g) { var q = sg(g[0], g[1], g[2], g[3]); lines.push({x1: q[0], y1: q[1], x2: q[2], y2: q[3], c: panel, w: 6}); });
+      P.windows.concat(P.slides).forEach(function (g) {
+        var q = sg(g[0], g[1], g[2], g[3]);
+        var dx = g[0] === 'h' ? 0 : 1.5, dy = g[0] === 'h' ? 1.5 : 0;
+        lines.push({x1: q[0], y1: q[1], x2: q[2], y2: q[3], c: panel, w: 6});
+        lines.push({x1: q[0] - dx, y1: q[1] - dy, x2: q[2] - dx, y2: q[3] - dy, c: T.ink, w: 1});
+        lines.push({x1: q[0] + dx, y1: q[1] + dy, x2: q[2] + dx, y2: q[3] + dy, c: T.ink, w: 1});
+      });
+      P.doors.forEach(function (d) {
+        lines.push({x1: X(d[0]), y1: Y(d[1]), x2: X(d[4]), y2: Y(d[5]), c: panel, w: 6});
+        lines.push({x1: X(d[0]), y1: Y(d[1]), x2: X(d[2]), y2: Y(d[3]), c: T.ink, w: 1.5});
+        var lx = d[2] - d[0], ly = d[3] - d[1], cx = d[4] - d[0], cy = d[5] - d[1];
+        var r = +(Math.sqrt(lx * lx + ly * ly) * P.sc).toFixed(1);
+        arcs.push({d: 'M' + X(d[2]) + ' ' + Y(d[3]) + ' A' + r + ' ' + r + ' 0 0 ' + ((lx * cy - ly * cx) > 0 ? 1 : 0) + ' ' + X(d[4]) + ' ' + Y(d[5])});
+      });
+      P.rooms.forEach(function (r) {
+        var wpx = r[2] * P.sc;
+        if (wpx < 32) return;
+        var cx = X(r[0] + r[2] / 2), cy = Y(r[1] + r[3] / 2);
+        var name = (r[4] === 'Toilet' && wpx < 40) ? 'WC' : r[4];
+        if (r[5]) {
+          labels.push({x: cx, y: +(cy - 2).toFixed(1), text: name, size: 14, weight: 600, fill: T.ink});
+          labels.push({x: cx, y: +(cy + 13).toFixed(1), text: r[5], size: 13, weight: 400, fill: T.ink2});
+        } else {
+          labels.push({x: cx, y: +(cy + 4).toFixed(1), text: name, size: 13, weight: 500, fill: T.ink2});
+        }
+      });
+      P.open.forEach(function (o) { labels.push({x: X(o[0]), y: +(Y(o[1]) + 4).toFixed(1), text: o[2], size: 13, weight: 500, fill: T.ink2}); });
+      var bb = P.balc;
+      labels.push({x: X(bb[0] + bb[2] / 2), y: +(Y(bb[1] + bb[3] / 2) + 4).toFixed(1), text: 'Balcony, not carpet', size: 13, weight: 500, fill: T.ink2});
+      return {
+        viewBox: P.vb,
+        rooms: P.rooms.map(function (r) { return {x: X(r[0]), y: Y(r[1]), w: +(r[2] * P.sc).toFixed(1), h: +(r[3] * P.sc).toFixed(1)}; }),
+        foot: P.foot.map(function (pt, i) { return (i ? 'L' : 'M') + X(pt[0]) + ' ' + Y(pt[1]); }).join(' ') + ' Z',
+        balc: {x: X(bb[0]), y: Y(bb[1]), w: +(bb[2] * P.sc).toFixed(1), h: +(bb[3] * P.sc).toFixed(1)},
+        lines: lines, arcs: arcs, labels: labels, label: P.label, caption: P.caption
+      };
+    }
+    var plan = buildPlan(PLANS[cfgI]);
+
+    // Afford the wait (F-95): same arithmetic as the web page, with the web defaults (20% down, 8.50%, 20 years).
+    var allIn = 27400000, dpf = 0.2, mr = 8.5 / 1200;
+    var income = Math.max(0, Number(s.income) || 0), rentV = Math.max(0, Number(s.rent) || 0);
+    var delayN = s.delay === 24 ? 24 : 12;
+    function preEmi(due) { return allIn * Math.max(0, due - dpf) * mr; }
+    function inr(v) { return '₹' + Math.round(v).toLocaleString('en-IN'); }
+    function lakh(v) { return v >= 1e7 ? '₹' + (v / 1e7).toFixed(2) + ' Cr' : '₹' + (v / 1e5).toFixed(1) + ' L'; }
+    function share(v) { return income > 0 ? Math.round(v / income * 100) + '%' : '—'; }
+    var M0 = 14, preEnd = preEmi(0.95), series = [];
+    for (var mi = 0; mi < M0; mi++) series.push({pre: preEmi(0.525 + (0.95 - 0.525) * mi / (M0 - 1)), late: false});
+    for (var di = 0; di < delayN; di++) series.push({pre: preEnd, late: true});
+    var nBars = series.length, CHH = 140;
+    var outNowV = series[0].pre + rentV, outEndV = preEnd + rentV;
+    var Lp = allIn * (1 - dpf), xr = Math.pow(1 + mr, 240), emiV = Lp * mr * xr / (xr - 1);
+    var maxV = Math.max(income * 0.6, outEndV * 1.1, 1);
+    var halfB = Math.round(income * 0.5 / maxV * CHH);
+    var lateHatch = 'repeating-linear-gradient(45deg,' + ink(band) + ' 0 2px,' + bfill(band) + ' 2px 5px)';
+    var waitBars = series.map(function (x) {
+      return {
+        col: 'flex:1 1 0;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:2px',
+        top: 'display:block;height:' + Math.max(2, Math.round(x.pre / maxV * CHH)) + 'px;border-radius:3px 3px 0 0;background:' + (x.late ? lateHatch : T.barPre) + ';transition:height .35s cubic-bezier(.22,1,.36,1)',
+        bottom: 'display:block;height:' + (rentV > 0 ? Math.max(2, Math.round(rentV / maxV * CHH)) : 0) + 'px;background:' + T.barRent + ';transition:height .35s cubic-bezier(.22,1,.36,1)'
+      };
+    });
+    var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var endK = 10 + nBars - 1;
+    var swBase = 'display:inline-block;flex:none;width:12px;height:12px;border-radius:2px;';
+    // G-08: steps that lower what is at stake. Never "buy" or "don't buy".
+    var NEXT = {
+      Low: [['Keep to 10% until the agreement is registered.', 'That is the RERA limit before an agreement for sale (s.13).'], ['Pay only for stages on record.', 'Check every demand letter against the latest QPR.'], ['Follow it.', 'We tell you the day a QPR is late or the band moves.']],
+      Moderate: [['Ask for it in writing.', 'The CA certificate on escrow withdrawals, filed with each QPR.'], ['Prefer a plan that pays as it’s built.', 'Construction-linked, and only for stages on record.'], ['Keep a rent buffer.', 'About 12 months of rent and pre-EMI, in case keys come late.'], ['Follow it.', 'Late filings and new orders reach you first.']],
+      Elevated: [['Ask for it in writing.', 'The slab schedule for your tower, and the CA certificate on escrow withdrawals.'], ['Prefer a plan that pays as it’s built.', 'Pay only for stages on record. Tower A is at slab 9, yet slab 12 was demanded on 10 Oct 2026.'], ['Keep a rent buffer.', '12 months late costs about ₹24.1 L more in rent and pre-EMI, on our default loan.'], ['Watch the next QPR.', 'Jul–Sep 2026 isn’t on HARERA yet. If it is still missing on 25 Oct 2026, this band may change.']],
+      High: [['Ask for it in writing.', 'The slab schedule, the CA escrow certificate and any extension application.'], ['Pay no more than the law allows.', '10% before a registered agreement; after that, only stages on record.'], ['Keep a longer buffer.', 'About 24 months of rent and pre-EMI: ₹48.1 L on our default loan.'], ['Read the complaint orders.', 'They show what buyers before you went through.']],
+      Severe: [['Read the reason first.', 'A published rule or the record sets this band. Open its source.'], ['If you’ve paid already,', 'your RERA rights to a refund or delay interest still stand.'], ['Before paying anything more,', 'ask for the project’s status in writing, and keep every receipt.']]
+    };
+    var nextSteps = (NEXT[band] || NEXT.Elevated).map(function (x) { return {h: x[0], p: x[1]}; });
+    var where = b.hi < 36 ? (b.i === 1 ? 'well below' : 'below') : (b.lo > 36 ? (b.i === 5 ? 'well above' : 'above') : 'around');
+    var near = [['Kestrel Park', 'Low', 1, '₹2.44 Cr'], ['Sapphire Grove, Phase 1', 'Moderate', 2, '₹2.27 Cr']].filter(function (x) { return x[2] < b.i; });
+
+    // G-14, G-15, G-17, G-40: the same four explainers as the web page, marked for legal review.
+    var pBody = 'margin:0;font-size:16px;line-height:1.55';
+    var pDev = 'margin:0;padding:12px 14px;border-radius:8px;background:' + T.claimBg + ';font-size:15px;line-height:1.5';
+    var pKey = 'margin:0;font-size:16px;line-height:1.55;font-weight:600';
+    var BOOKS = [
+      {k: 'plans', title: 'Which payment plan?', sub: 'Construction-linked, down payment or subvention.', paras: [
+        ['', 'Northfield’s plan for Phase 2 is construction-linked: 11 stages, from 10% on booking to 5% on offer of possession.', pBody],
+        ['Construction-linked.', 'You pay each stage once it is built. Watch for demands ahead of the filings: slab 12 was demanded on 10 Oct 2026; the latest QPR shows slab 9.', pBody],
+        ['Down payment.', 'Most of the price early, often for a discount. If the project is late, more of your money waits with it. Before a registered agreement, the law still caps you at 10%.', pBody],
+        ['Subvention, or “no EMI till possession”.', 'The bank pays the developer early, and the developer promises to pay your pre-EMI. You are still the borrower: if the developer stops paying, the bank collects from you.', pBody],
+        ['Before a subvention booking,', 'get the lender’s confirmation in writing: what it pays out, when, and who pays the pre-EMI if the developer stops.', pKey]
+      ]},
+      {k: 'loans', title: 'Home loans', sub: 'Loan checks arrive in 2027. What to check now.', notify: true, paras: [
+        ['Loan checks arrive in 2027.', 'Plinth doesn’t arrange loans or pass your number to any lender today.', pBody],
+        ['Check now:', 'is this project approved by your bank? Ask the bank, in writing, not the developer.', pKey],
+        ['Developer says · brochure, 2 Oct 2026 · not verified:', '“Approved by major banks.”', pDev],
+        ['With a 75–80% loan,', 'the bank pays the developer stage by stage, usually after its own site check. Until the last payout you pay pre-EMI, interest only. If keys are late, pre-EMI and rent run on.', pBody],
+        ['If the bank’s engineer finds less built', 'than a demand letter says, it can hold its payout. Ask the developer, in writing, whether you would then owe late-payment interest.', pBody]
+      ]},
+      {k: 'nri', title: 'Buying from abroad (NRI)', sub: 'NRE or NRO payments, a power of attorney, FEMA basics.', paras: [
+        ['Paying.', 'From an NRE, FCNR(B) or NRO account, or money sent to India through a bank. FEMA doesn’t allow foreign currency notes or traveller’s cheques.', pBody],
+        ['TDS.', 'Like any buyer, you deduct 1% from each instalment when the price is ₹50 L or more (s.194-IA). You need a PAN.', pBody],
+        ['Power of attorney.', 'Make it specific to this flat, and list what your relative may sign. One signed abroad is attested at an Indian mission or apostilled, then stamped in India within 3 months.', pBody],
+        ['Keep a record', 'of which account paid each instalment. It decides how much of the sale money you can take abroad later.', pBody],
+        ['From abroad on Plinth,', 'alerts work on an international WhatsApp number, and family in India can join your alerts with a link.', pBody]
+      ]},
+      {k: 'resale', title: 'Selling before possession', sub: 'Transfer charges, the builder’s NOC, RERA.', paras: [
+        ['', 'Selling before possession means transferring your allotment. The developer endorses the new buyer on your agreement and issues a no-objection certificate (NOC).', pBody],
+        ['From the developer · not verified by Plinth · transfer policy, 2 Oct 2026:', '₹150 per sq ft of super area, so ₹3.0 L on a 2,000 sq ft 3 BHK. All dues to date first. No transfer before the agreement is registered.', pDev],
+        ['Under RERA,', 'whoever takes your allotment becomes the allottee, with your rights, including delay interest (s.2(d)).', pBody],
+        ['Ask a CA', 'about capital-gains tax, and a lawyer about stamp duty. Our transfer checks arrive in R2, planned for Apr–Jun 2027.', pBody]
+      ]}
+    ];
+    var bookItems = BOOKS.map(function (x) {
+      var open = s.book === x.k;
+      return {title: x.title, sub: x.sub, review: 'legal', open: open, panelId: 'book-' + x.k, hasNotify: !!x.notify,
+        chev: 'flex:none;display:block;transition:transform .2s ease;transform:rotate(' + (open ? 180 : 0) + 'deg)',
+        toggle: function () { self.setState({book: self.state.book === x.k ? '' : x.k}); },
+        paras: x.paras.map(function (y) { return {lead: y[0], text: y[1], style: y[2]}; })};
+    });
+
+    // G-27 Simple view.
+    var reading = !!s.reading;
+    var rIdx = Number(s.readIdx) || 0;
+    function svBlock(i) { return 'margin:20px -12px 0;padding:14px 12px;border-radius:8px;background:' + (reading && rIdx === i ? T.track : 'transparent') + ';' + (reduced ? '' : 'transition:background-color .3s ease'); }
+    var READ_PARTS = ['the band', 'when keys might come', 'how sure we are', 'why', 'how much is built', 'what you can do'];
+    var bigBtn = 'display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:60px;padding:0 20px;box-sizing:border-box;border-radius:999px;border:0;font:inherit;font-size:20px;font-weight:600;cursor:pointer;';
+
+    var following = !!s.following;
+    return {
+      t: T,
+      bandName: band, bandText: bandText, lo: b.lo, hi: b.hi,
+      arcs: arcs, needleStyle: needleStyle,
+      dialLabel: 'Riskometer pointing to ' + band + ', step ' + b.i + ' of 5, on a scale from Low to Severe. Between ' + b.lo + ' and ' + b.hi + ' of 100 similar projects finished more than 12 months late.',
+      arrayLabel: 'Between ' + b.lo + ' and ' + b.hi + ' of 100 similar projects finished more than 12 months late. The rest, ' + (100 - b.hi) + ' to ' + (100 - b.lo) + ', finished within 12 months.',
+      dialOn: s.view === 'dial', arrayOn: s.view !== 'dial',
+      dialBtn: seg(s.view === 'dial'), arrayBtn: seg(s.view !== 'dial'),
+      showDial: function () { self.setState({view: 'dial'}); },
+      showArray: function () { self.setState({view: 'array'}); },
+      cells: cells,
+      changeStyle: band === 'Elevated' ? 'margin:0;display:flex;align-items:center;justify-content:center;gap:6px;font-size:15px;color:' + T.ink2 : 'display:none',
+      floors: floors,
+      q: q, qNum: q + 1, onQ: function (e) { self.setState({q: Number(e.target.value)}); },
+      qLabel: cur.label, qSold: cur.sold, qBuilt: cur.built, qTime: cur.time, qNote: cur.note, qSoldInk: textInk(cur.band),
+      payOpen: !!s.payOpen, payLabel: s.payOpen ? 'Hide the breakdown' : 'See the full breakdown',
+      payChev: 'display:block;transition:transform .2s ease;transform:rotate(' + (s.payOpen ? 180 : 0) + 'deg)',
+      togglePay: function () { self.setState({payOpen: !s.payOpen}); },
+      vis: vis, onVis: function (e) { self.setState({vis: Number(e.target.value)}); },
+      visHint: vis >= 100 ? 'Showing the original photo. Drag to reveal the AI preview. Images are illustrative.' : 'Drag to compare the original photo and the AI preview. Images are illustrative.',
+      afterMI: after(0), afterMin: after(1), afterWW: after(2),
+      divider: 'position:absolute;top:0;bottom:0;left:calc(' + vis + '% - 2px);width:4px;background:#FFFFFF;box-shadow:0 0 0 1px rgba(0,0,0,.25);display:' + (vis > 0 && vis < 100 ? 'block' : 'none'),
+      styles: styles, styleNote: S[s.style].note,
+      following: following,
+      followLabel: following ? (s.alerts ? 'Following · alerts on' : 'Following') : 'Follow',
+      followBtn: 'flex:1 1 0;height:52px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;' + (following ? 'background:' + T.accentSoft + ';color:' + T.onAccentSoft + ';' : 'background:' + T.accent + ';color:' + T.onAccent + ';'),
+      followTap: function () { if (s.following) { self.setState({following: false, alerts: false}); } else { self.setState({sheet: 'follow'}); } },
+      turnOnAlerts: function () { self.setState({following: true, alerts: true, sheet: ''}); },
+      justFollow: function () { self.setState({following: true, alerts: false, sheet: ''}); },
+      followSheet: s.sheet === 'follow',
+      askOpen: s.sheet === 'ask',
+      openAsk: function () { self.setState({sheet: 'ask'}); },
+      closeSheet: function () { clearInterval(self._iv); self.setState({sheet: ''}); },
+      prompts: prompts,
+      answerText: ai ? (words.slice(0, shown).join(' ') + (shown < words.length ? ' …' : '')) : 'Pick a question above, or type your own. Answers stream with numbered sources.',
+      answerDone: !!ai && shown >= words.length,
+      answerSources: ai ? ai.src : [],
+
+      configs: configs, cfgFacts: cfgFacts, plan: plan,
+      cfgSize: cfgI ? '2,100 sq ft carpet' : '1,450 sq ft carpet', cfgPrice: cfgI ? 'from ₹3.38 Cr base' : 'from ₹2.35 Cr base',
+      aroundOpen: !!s.aroundOpen, aroundLabel: s.aroundOpen ? 'Hide amenities and getting around' : 'Amenities and getting around',
+      aroundChev: 'display:block;transition:transform .2s ease;transform:rotate(' + (s.aroundOpen ? 180 : 0) + 'deg)',
+      toggleAround: function () { self.setState({aroundOpen: !s.aroundOpen}); },
+      devOpen: !!s.devOpen, devChev: 'display:block;transition:transform .2s ease;transform:rotate(' + (s.devOpen ? 180 : 0) + 'deg)',
+      toggleDev: function () { self.setState({devOpen: !s.devOpen}); },
+
+      simple: simple, full: !simple,
+      toggleSimple: function () { clearInterval(self._read); self.setState({viewOv: simple ? 'Full' : 'Simple', viewFrom: vw, reading: false, readIdx: 0}); },
+      simpleLabel: simple ? 'Full page' : 'Simple view',
+      simpleBtn: 'display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 18px;box-sizing:border-box;border-radius:999px;border:0;font:inherit;font-size:17px;font-weight:600;cursor:pointer;background:' + T.inverse + ';color:' + T.onInverse,
+      simpleBtnHero: 'display:inline-flex;align-items:center;gap:6px;height:48px;padding:0 16px;box-sizing:border-box;border-radius:999px;border:0;font:inherit;font-size:16px;font-weight:600;cursor:pointer;background:' + T.glass + ';color:' + T.glassInk,
+      hatchText: 'Hatched: the ' + (b.hi - b.lo) + ' of 100 we’re less certain about',
+      nextIntro: 'We never say buy or don’t buy. At ' + band + ', these steps keep less of your money at stake.',
+      nextSteps: nextSteps,
+      baseLine: 'Across 212 past Gurugram projects, about 36 of 100 got their OC more than 12 months late. ' + band + ', ' + b.lo + ' to ' + b.hi + ' of 100, sits ' + where + ' that.',
+      nearLine: near.length ? 'Same corridor, a lower band, all-in within 20%: ' + near.map(function (x) { return x[0] + ' (' + x[1] + ', ' + x[3] + ')'; }).join(' and ') + '. A published rule picks ' + (near.length > 1 ? 'them' : 'it') + '; nobody pays to appear here.' : 'No project on this corridor has a lower band at a similar all-in.',
+      bookItems: bookItems,
+      bookBtn: 'width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:76px;padding:14px 16px;box-sizing:border-box;border:0;border-radius:8px;background:transparent;color:' + T.ink + ';font:inherit;text-align:left;cursor:pointer',
+      notify: !!s.notify, notifyLabel: s.notify ? 'We’ll tell you when loan checks open' : 'Tell me when loan checks open',
+      notifyStyle: 'align-self:flex-start;min-height:48px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;' + (s.notify ? 'background:' + T.inverse + ';color:' + T.onInverse : 'background:' + T.bgSolid + ';color:' + T.ink),
+      toggleNotify: function () { self.setState({notify: !self.state.notify}); },
+      towers: towers, towerNote: towerNote,
+      tile1l: byTower ? 'Tower ' + twSel + ', slab' : 'Built', tile1v: byTower ? slabNow + ' of 20' : cur.built + '%',
+      qFirst: q === 0 ? 'true' : 'false', qLast: q === 7 ? 'true' : 'false',
+      qPrev: function () { if (q > 0) self.setState({q: q - 1}); },
+      qNext: function () { if (q < 7) self.setState({q: q + 1}); },
+      stepBtn: 'width:44px;height:44px;padding:0;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;background:' + T.bgSolid + ';color:' + T.ink,
+      floodChips: [{label: 'News report · 28 Jul 2026', aria: 'News report, 28 Jul 2026: waterlogging on the Dwarka Expressway service road at the Sector 37D turn. Reported, not verified.'}, {label: 'News report · 21 Aug 2025', aria: 'News report, 21 Aug 2025: waterlogging on the Sector 37C–37D dividing road. Reported, not verified.'}],
+      reading: reading, toggleRead: function () { self.toggleRead(); },
+      readLabel: reading ? 'Stop reading' : 'Read this aloud',
+      readStatus: reading ? 'Reading ' + READ_PARTS[rIdx] + ' aloud, in English. Part ' + (rIdx + 1) + ' of 6.' : 'Reads this page aloud, in English.',
+      readBtn: 'margin-top:18px;' + bigBtn + (reading ? 'background:' + T.inverse + ';color:' + T.onInverse : 'background:' + T.accent + ';color:' + T.onAccent),
+      sv: {p0: svBlock(0), p1: svBlock(1), p2: svBlock(2), p3: svBlock(3), p4: svBlock(4), p5: svBlock(5),
+        bandLine: 'Delivery risk: ' + band + '. That is step ' + b.i + ' of our five, from Low to Severe. It is our opinion, from public records.',
+        keysLine: 'Out of every 100 similar projects, ' + b.lo + ' to ' + b.hi + ' got the OC after Apr 2029.'},
+      svH2: 'margin:0;font-family:\'Bricolage Grotesque\', system-ui, sans-serif;font-weight:800;font-size:30px;line-height:1.1;letter-spacing:-0.03em',
+      svReasons: [
+        {text: 'Money is ahead of building: 72% of homes sold, 41% built.', src: 'HARERA progress report, Apr–Jun 2026'},
+        {text: 'Time is running: 77% of the promised time used, and 3 of the last 8 reports were filed late.', src: 'HARERA filing register'},
+        {text: '14 complaints decided against the developer in 2 years, or 2.8 per 100 homes. Similar projects had 3.', src: 'HARERA orders'}
+      ],
+      svSteps: nextSteps.slice(0, 3),
+      meterXL: [1, 2, 3, 4, 5].map(function (j) { return {style: 'display:block;width:28px;height:20px;border-radius:4px;box-sizing:border-box;' + (j <= b.i ? 'background:' + ink(band) + ';' : 'background:' + T.segOff + ';border:1.5px solid ' + T.emptyBorder + ';')}; }),
+      svStepBtn: 'flex:1 1 0;min-height:60px;padding:0 14px;border:0;border-radius:999px;font:inherit;font-size:18px;font-weight:600;cursor:pointer;background:' + T.track + ';color:' + T.ink,
+      svBack: 'margin-top:20px;' + bigBtn + 'background:' + T.track + ';color:' + T.ink,
+      waitAnswer: income > 0 ? 'Until Dec 2027, rent and pre-EMI come to ' + inr(outNowV) + ' a month now, rising to ' + inr(outEndV) + '. That is ' + share(outNowV) + ' to ' + share(outEndV) + ' of your take-home pay.' : 'Add your take-home pay and rent to see what you would pay each month until Dec 2027.',
+      incomeStr: income ? income.toLocaleString('en-IN') : '', rentStr: rentV ? rentV.toLocaleString('en-IN') : '',
+      onIncome: function (e) { var d = String(e.target.value || '').replace(/[^0-9]/g, '').slice(0, 9); self.setState({income: d ? Number(d) : 0}); },
+      onRent: function (e) { var d = String(e.target.value || '').replace(/[^0-9]/g, '').slice(0, 8); self.setState({rent: d ? Number(d) : 0}); },
+      delayOpts: [12, 24].map(function (n) { return {label: n + ' months late', on: n === delayN, style: seg(n === delayN), pick: function () { self.setState({delay: n}); }}; }),
+      delayN: delayN, delayCost: lakh(delayN * outEndV),
+      waitFreq: 'Between ' + b.lo + ' and ' + b.hi + ' of 100 similar projects got their OC more than 12 months late.',
+      chartLabel: 'Rent plus pre-EMI each month from Nov 2026 to Dec 2027, rising from ' + inr(outNowV) + ' to ' + inr(outEndV) + ', then ' + delayN + ' more months at ' + inr(outEndV) + ' if it is late.',
+      halfLine: income > 0 ? 'position:absolute;left:0;right:0;bottom:' + halfB + 'px;height:0;border-top:1px solid ' + T.ink2 + ';z-index:1' : 'display:none',
+      halfLabel: income > 0 ? 'position:absolute;right:0;bottom:' + (halfB + 3) + 'px;z-index:2;padding-left:6px;font-size:13px;line-height:1.3;color:' + T.ink2 + ';background:' + T.bg : 'display:none',
+      waitBars: waitBars,
+      keysMark: 'position:absolute;top:0;bottom:0;left:calc(' + (M0 / nBars * 100).toFixed(2) + '% - 1px);width:2px;background:' + T.ink,
+      origTick: 'position:absolute;top:0;left:' + (M0 / nBars * 100).toFixed(2) + '%;transform:translateX(-50%);white-space:nowrap;font-weight:600;color:' + T.ink,
+      delayEndLabel: MON[endK % 12] + ' ' + (2026 + Math.floor(endK / 12)),
+      swPre: swBase + 'background:' + T.barPre, swRent: swBase + 'background:' + T.barRent, swLate: swBase + 'background:' + lateHatch,
+      outNow: inr(outNowV), outEnd: inr(outEndV), shareNow: share(outNowV), shareEnd: share(outEndV), emiText: inr(emiV), shareEmi: share(emiV) + ' of pay'
+    };
+  }
+}
+</script>
+</body>
+</html>

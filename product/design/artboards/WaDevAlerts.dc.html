@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Developer WhatsApp alerts</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input::placeholder{color:currentColor;opacity:.62}
+@keyframes pl-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pl-fade{from{opacity:0}to{opacity:1}}
+@keyframes pl-sheet{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
+.pl-rise{animation:pl-rise .6s cubic-bezier(.22,1,.36,1) both}
+.pl-d1{animation-delay:70ms}
+.pl-d2{animation-delay:140ms}
+.pl-fade{animation:pl-fade .24s ease both}
+.pl-sheet{animation:pl-sheet .42s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),background-color .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1880px; overflow: hidden; box-sizing: border-box; padding: 28px 16px 24px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 16px; line-height: 22px; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="flex: none">
+    <h1 class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 30px; letter-spacing: -0.02em">What does Northfield get on WhatsApp?</h1>
+    <p class="pl-rise pl-d1" style="margin: 8px 0 0">Utility alerts only, never marketing. Each one goes to the roles you choose in Team.</p>
+    <div role="group" aria-label="Whose phone to show" class="pl-rise pl-d2" style="margin-top: 16px; display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.track}}">
+      <sc-for list="{{roles}}" as="r" hint-placeholder-count="2">
+        <button type="button" class="pl-press" aria-pressed="{{r.on}}" onClick="{{r.pick}}" style="{{r.style}}">{{r.label}}</button>
+      </sc-for>
+    </div>
+  </header>
+
+  <section aria-labelledby="wda-dev-strip" style="flex: 1 1 0; min-height: 0; margin-top: 20px; display: flex; flex-direction: column">
+    <div style="position: relative; flex: 1 1 0; min-height: 0; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; background: {{t.chatBg}}">
+      <p id="wda-dev-strip" style="flex: none; height: 26px; margin: 0; padding: 0 16px; display: flex; align-items: center; font-size: 13px; line-height: 16px; color: {{t.muted}}; background: {{t.bg}}">{{who.strip}}</p>
+      <div style="flex: none; height: 52px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}">
+        <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+        <svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="{{t.accent}}"></circle><path d="M11 24h14M13.5 24v-8h9v8" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 4px">
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600">Plinth<svg width="15" height="15" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+          <span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">Business account</span>
+        </div>
+      </div>
+
+      <div role="log" aria-label="{{who.log}}" style="flex: 1 1 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px 10px 12px">
+
+        <sc-if value="{{isComp}}" hint-placeholder-val="{{true}}">
+          <div class="pl-fade" style="flex: none; display: flex; flex-direction: column; gap: 6px">
+            <p style="{{u.day}}">Sun 11 Oct</p>
+            <div style="align-self: flex-start; width: 312px; display: flex; flex-direction: column; gap: 4px">
+              <div style="{{u.bin}}">
+                <p style="margin: 0">D-127 acknowledged. Your dispute on the complaint count for Aurelia Heights, Phase 2 is under review. Decision due by 30 Oct 2026.<span style="{{u.time}}">10:15 am</span></p>
+              </div>
+              <a href="#d-127" class="pl-press" style="{{u.cta}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Open D-127<span class="sr">, opens the workspace on this phone</span></a>
+            </div>
+
+            <p style="{{u.day}}">Today</p>
+            <div style="align-self: flex-start; width: 312px; display: flex; flex-direction: column; gap: 4px">
+              <div style="{{u.bin}}">
+                <p style="margin: 0; font-weight: 700">Private notice · Aurelia Heights, Phase 2</p>
+                <p style="margin: 4px 0 0">It may move from Elevated to High on 25 Oct 2026. Why: the Jul–Sep 2026 QPR was due 15 Oct 2026 and is not on HARERA as of 18 Oct 2026. Buyers already see the missing QPR. The band waits for this notice; if the QPR is on record before 25 Oct, it stays Elevated.</p>
+                <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">Sent to Admin and Compliance. Facts change scores; arguments don’t.<span style="{{u.time}}">9:00 am</span></p>
+              </div>
+              <button id="wda-send" type="button" class="pl-press" aria-haspopup="dialog" aria-disabled="{{sendOff}}" onClick="{{openFlow}}" style="{{sendStyle}}">
+                <sc-if value="{{notSent}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h5.5L12 5v8.5H4zM6.5 8h3.5M6.5 10.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                <sc-if value="{{sent}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{sendLabel}}
+              </button>
+              <a href="#notice" class="pl-press" style="{{u.cta}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Open the notice<span class="sr">, opens the Northfield workspace on this phone</span></a>
+            </div>
+
+            <sc-if value="{{sent}}" hint-placeholder-val="{{false}}">
+              <div class="pl-rise" style="align-self: flex-end; max-width: 280px; margin-top: 2px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+                <div style="padding: 5px 10px; border-radius: 8px; background: {{t.quoteBg}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">Private notice · Aurelia Heights, Phase 2</div>
+                <p style="margin: 0; padding: 4px 8px 0">Receipt sent · QPR-JulSep2026-acknowledgement.pdf</p>
+                <p style="margin: 0; padding: 0 8px; font-size: 13px; line-height: 18px; color: {{t.ink2}}">{{ackLine}}<span style="{{u.time}}">9:14 am</span></p>
+              </div>
+              <div class="pl-rise" style="align-self: flex-start; width: 312px; display: flex; flex-direction: column; gap: 4px; animation-delay: 90ms">
+                <div style="{{u.bin}}">
+                  <p style="margin: 0"><strong>Received · CL-202.</strong> We check the HARERA register by 20 Oct 2026, before the change could take effect. The proposed change stays private and on hold. Buyers see the missing QPR marked “Correction requested · checking the register”.<span style="{{u.time}}">9:14 am</span></p>
+                </div>
+                <a href="#cl-202" class="pl-press" style="{{u.cta}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Track CL-202<span class="sr">, opens the workspace on this phone</span></a>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isSales}}" hint-placeholder-val="{{false}}">
+          <div class="pl-fade" style="flex: none; display: flex; flex-direction: column; gap: 6px">
+            <p style="{{u.day}}">Yesterday</p>
+            <div style="align-self: flex-start; width: 312px; display: flex; flex-direction: column; gap: 4px">
+              <div style="{{u.bin}}">
+                <p style="margin: 0; font-weight: 700">New enquiry · Aurelia Heights, Phase 2</p>
+                <p style="margin: 4px 0 0">Ishita asked for the official price list. 3 BHK · ₹2.6–2.9 Cr all-in · agent of record: Larkspur Realty. Her number stays hidden; reply from your workspace.<span style="{{u.time}}">7:42 pm</span></p>
+              </div>
+              <a href="#enquiry" class="pl-press" style="{{u.cta}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Open the enquiry<span class="sr">, opens the workspace on this phone</span></a>
+            </div>
+
+            <p style="{{u.day}}">Today</p>
+            <div style="align-self: flex-start; width: 312px; display: flex; flex-direction: column; gap: 4px">
+              <div style="{{u.bin}}">
+                <p style="margin: 0; font-weight: 700">Visit booked</p>
+                <p style="margin: 4px 0 0">Rohan · Aurelia Heights, Phase 2 · Sat 24 Oct 2026, 11 am · 2 visitors · visit code 4821 · no agent of record.<span style="{{u.time}}">9:15 am</span></p>
+              </div>
+              <a href="#visits" class="pl-press" style="{{u.cta}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Open visit slots<span class="sr">, opens the workspace on this phone</span></a>
+            </div>
+            <div style="align-self: flex-start; width: 312px; display: flex; flex-direction: column; gap: 4px">
+              <div style="{{u.bin}}">
+                <p style="margin: 0">3 enquiries need a reply. The oldest is Farah’s, from 16 Oct 2026.<span style="{{u.time}}">9:30 am</span></p>
+              </div>
+              <a href="#inbox" class="pl-press" style="{{u.cta}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Open the inbox<span class="sr">, opens the workspace on this phone</span></a>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <p class="sr" aria-live="polite">{{liveText}}</p>
+
+      <!-- SIGNATURE LIVE THING: the WhatsApp Flow sheet. Tap "Send the HARERA receipt", attach the PDF, type the acknowledgement number, request the clerical fix. The sheet closes, your receipt and Plinth's CL-202 confirmation land in the chat, and the follower's alert below picks up "Correction requested · checking the register". -->
+      <sc-if value="{{flowOpen}}" hint-placeholder-val="{{false}}">
+        <div aria-hidden="true" class="pl-fade" style="position: absolute; left: 0; right: 0; top: 26px; bottom: 0; background: {{t.scrim}}"></div>
+        <div id="wda-flow" role="dialog" aria-labelledby="wda-flow-h" aria-describedby="wda-flow-d" class="pl-sheet" style="position: absolute; left: 0; right: 0; bottom: 0; max-height: calc(100% - 50px); overflow-y: auto; box-sizing: border-box; display: flex; flex-direction: column; border-radius: 20px 20px 0 0; background: {{t.sheet}}; box-shadow: 0 8px 24px rgba(27,26,23,.12)">
+          <div style="flex: none; display: flex; align-items: center; gap: 4px; padding: 8px 12px 0 4px">
+            <button type="button" class="pl-press" aria-label="Close" onClick="{{closeFlow}}" style="flex: none; width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+              <h2 id="wda-flow-h" style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 700">Send the HARERA receipt</h2>
+              <p id="wda-flow-d" style="margin: 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">Aurelia Heights, Phase 2 · clerical lane</p>
+            </div>
+          </div>
+          <div style="padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+            <button id="wda-file" type="button" class="pl-press" aria-pressed="{{filePressed}}" onClick="{{toggleFile}}" style="{{fileStyle}}">
+              <span aria-hidden="true" style="{{fileIconWrap}}">
+                <sc-if value="{{noFile}}" hint-placeholder-val="{{true}}"><svg width="18" height="18" viewBox="0 0 20 20"><path d="M14.5 9.5l-5.2 5.2a3 3 0 0 1-4.2-4.2l6-6a2 2 0 0 1 2.8 2.8l-6 6a1 1 0 0 1-1.4-1.4l5.2-5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                <sc-if value="{{hasFile}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 16 16"><path d="M3 8.5l3 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+              </span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+                <span style="font-weight: 600">{{fileTitle}}</span>
+                <span style="font-size: 13px; line-height: 18px; color: {{t.ink2}}; overflow-wrap: anywhere">QPR-JulSep2026-acknowledgement.pdf · 0.4 MB</span>
+              </span>
+            </button>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <label for="wda-ack" style="font-size: 13px; line-height: 18px; font-weight: 600">Acknowledgement number</label>
+              <input id="wda-ack" type="text" autocomplete="off" spellcheck="false" placeholder="As printed on the receipt" value="{{ack}}" onChange="{{onAck}}" aria-describedby="wda-missing" style="height: 48px; width: 100%; box-sizing: border-box; padding: 0 16px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.sheet}}; color: {{t.ink}}; font: inherit">
+            </div>
+            <div style="display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 8px; background: {{t.track}}">
+              <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M5 2.5h6.5l3.5 3.5v11.5H5zM8 10h5M8 13h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <p style="margin: 0">Register shows: QPR for Jul–Sep 2026 filed on 12 Oct 2026</p>
+            </div>
+            <p style="margin: 0; font-size: 13px; line-height: 18px; color: {{t.ink2}}">The clerical lane decides in 2 working days: by 20 Oct 2026. No quota used if the error was ours.</p>
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 2px">
+              <button type="button" class="pl-press" aria-disabled="{{submitOff}}" aria-describedby="wda-missing" onClick="{{submitFlow}}" style="{{submitStyle}}">{{submitLabel}}</button>
+              <p id="wda-missing" aria-live="polite" style="margin: 0; text-align: center; font-size: 13px; line-height: 18px; color: {{t.ink2}}">{{missingText}}</p>
+              <button type="button" class="pl-press" onClick="{{closeFlow}}" style="align-self: center; height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; cursor: pointer">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <section aria-labelledby="wda-buyer-h" style="flex: none; margin-top: 36px">
+    <h2 id="wda-buyer-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 20px; line-height: 26px; letter-spacing: -0.02em">How does your reply reach buyers?</h2>
+    <p style="margin: 6px 0 0">Developers can’t message buyers through Plinth. Your public reply rides with the alert, word for word.</p>
+    <div style="margin-top: 12px; height: 640px; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; background: {{t.chatBg}}">
+      <p style="flex: none; height: 26px; margin: 0; padding: 0 16px; display: flex; align-items: center; font-size: 13px; line-height: 16px; color: {{t.muted}}; background: {{t.bg}}">A follower’s WhatsApp (illustrative)</p>
+      <div style="flex: none; height: 48px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}">
+        <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+        <svg width="28" height="28" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="{{t.accent}}"></circle><path d="M11 24h14M13.5 24v-8h9v8" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 4px">
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600">Plinth<svg width="15" height="15" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+          <span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">Business account</span>
+        </div>
+      </div>
+      <div role="log" aria-label="A follower’s conversation with Plinth" style="flex: 1 1 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px 10px 12px">
+        <div style="flex: none; display: flex; flex-direction: column; gap: 6px">
+          <p style="{{u.day}}">Fri 2 Oct</p>
+          <div style="align-self: flex-start; width: 312px; box-sizing: border-box; {{u.bin}}">
+            <p style="margin: 0"><strong>Aurelia Heights, Phase 2</strong>: delivery risk moved from Moderate to Elevated on 2 Oct 2026.</p>
+            <p style="margin: 8px 0 0; display: flex">
+              <span style="{{chip.wrap}}">
+                <span class="sr">{{chip.sr}}</span>
+                <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{chip.meter}}" as="m" hint-placeholder-count="5"><span style="{{m.style}}"></span></sc-for></span>
+                <span aria-hidden="true" style="{{chip.text}}">Elevated</span>
+                <span aria-hidden="true" style="display: inline-flex; gap: 3px; align-items: center"><span style="{{chip.d1}}"></span><span style="{{chip.d2}}"></span></span>
+              </span>
+            </p>
+            <p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: {{t.ink2}}">Trigger: the Apr–Jun 2026 QPR (72% sold, 41% built) and new complaint orders. Northfield had a heads-up 48 hours earlier.<span style="{{u.time}}">9:02 am</span></p>
+          </div>
+
+          <p style="{{u.day}}">Thu 15 Oct</p>
+          <div style="align-self: flex-start; width: 312px; display: flex; flex-direction: column; gap: 4px">
+            <div style="{{u.bin}}">
+              <p style="margin: 0; font-weight: 700">Northfield Estates replied to this change</p>
+              <div style="margin-top: 8px; padding: 10px 12px; border-radius: 8px; background: {{t.claimBg}}; display: flex; flex-direction: column; gap: 4px">
+                <p style="margin: 0; display: flex; gap: 6px; align-items: flex-start; font-size: 13px; line-height: 18px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg><span>Developer says · not yet verified · we check it by 5 Nov 2026</span></p>
+                <blockquote style="margin: 0">“Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.”</blockquote>
+              </div>
+              <p style="margin: 4px 0 0; text-align: right; font-size: 13px; line-height: 16px; color: {{t.muted}}">6:10 pm</p>
+            </div>
+            <a href="#reply" class="pl-press" style="{{u.cta}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Read the reply and the records<span class="sr">, opens Plinth in the browser</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <sc-if value="{{sent}}" hint-placeholder-val="{{false}}">
+      <p class="pl-rise" style="margin: 10px 0 0; display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 8px; background: {{t.claimBg}}; font-size: 15px; line-height: 20px"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" style="flex: none; margin-top: 2px"><circle cx="8.5" cy="8.5" r="5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M12.2 12.2l4.3 4.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span>Live now on the card this opens: the missing QPR reads “Correction requested · checking the register since 18 Oct 2026”. Followers get no message for a request; if the register confirms the filing, they hear that, as they heard the change.</span></p>
+    </sc-if>
+    <p style="margin: 10px 0 0; font-size: 15px; line-height: 20px; color: {{t.ink2}}">Marketing messages are never allowed. Followers can stop alerts any time.</p>
+  </section>
+
+  <div style="flex: none; margin-top: 28px; display: flex; align-items: flex-end; gap: 12px">
+    <p style="flex: 1; min-width: 0; margin: 0; font-size: 15px; line-height: 20px">Every alert opens the workspace on the phone it arrives on. Notices, disputes, the inbox and visit check-in work at 390 px.</p>
+    <sc-if value="{{sent}}" hint-placeholder-val="{{false}}">
+      <button type="button" class="pl-press" onClick="{{startOver}}" style="flex: none; height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Start over</button>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"$preview":{"width":390,"height":1880}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {role: 'comp', flow: false, file: false, ack: '', sent: false};
+  }
+  componentWillUnmount() {
+    clearTimeout(this._f);
+  }
+  // Moves focus into the Flow sheet when it opens and back to its trigger when it closes. No UI is built here.
+  focusLater(id) {
+    clearTimeout(this._f);
+    this._f = setTimeout(function () {
+      try {
+        if (typeof document !== 'undefined') {
+          var el = document.getElementById(id);
+          if (el && el.focus) el.focus();
+        }
+      } catch (e) {}
+    }, 60);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var night = (this.props.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', chatBg: '#111C17', headerBg: '#121C18', bubbleIn: '#17221E', bubbleOut: '#173A2D', sheet: '#121C18', divBg: '#1A2621',
+      track: 'rgba(255,255,255,0.07)', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D',
+      accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7', accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      quoteBg: 'rgba(110,231,183,0.10)', pressed: '#1C2E27', claimBg: '#1D2621', scrim: 'rgba(0,0,0,0.58)',
+      disabledBg: 'rgba(255,255,255,0.10)', disabledFg: '#B9C6C0', inverse: '#EEF3F0', onInverse: '#0B1411',
+      segEmpty: 'transparent', emptyBorder: '#7D828A', bandInk: '#F08A4B', bandFill: '#3A2210', bandText: '#F08A4B'
+    } : {
+      bg: '#FBFAF7', chatBg: '#EEEBE4', headerBg: '#FFFFFF', bubbleIn: '#FFFFFF', bubbleOut: '#DCEBE2', sheet: '#FFFFFF', divBg: '#F8F6F1',
+      track: '#F4F2ED', line: '#E7E3DA', lineStrong: '#C9C4B9',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52',
+      accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44', accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      quoteBg: 'rgba(29,90,68,0.08)', pressed: '#E9F1EC', claimBg: '#F1ECE2', scrim: 'rgba(27,26,23,0.42)',
+      disabledBg: '#EEEBE4', disabledFg: '#3F3C36', inverse: '#1B1A17', onInverse: '#FFFFFF',
+      segEmpty: '#FFFFFF', emptyBorder: '#8C9199', bandInk: '#A9480C', bandFill: '#FBE6D8', bandText: '#A9480C'
+    };
+
+    var ctaBase = 'height:44px;width:100%;box-sizing:border-box;margin:0;padding:0 16px;border:0;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:16px;font-weight:600;text-decoration:none;background:' + T.bubbleIn + ';';
+    var U = {
+      bin: 'padding:8px 12px 6px;border-radius:4px 16px 16px 16px;background:' + T.bubbleIn,
+      time: 'float:right;margin:5px 0 0 12px;font-size:13px;line-height:16px;font-weight:400;color:' + T.muted,
+      day: 'align-self:center;margin:4px 0;padding:2px 12px;border-radius:999px;font-size:13px;line-height:18px;color:' + T.ink2 + ';background:' + T.divBg,
+      cta: ctaBase + 'cursor:pointer;color:' + T.ink
+    };
+
+    var role = s.role === 'sales' ? 'sales' : 'comp';
+    var roles = [
+      {key: 'comp', label: 'Neha · Compliance'},
+      {key: 'sales', label: 'Vikram · Sales'}
+    ].map(function (r) {
+      var on = role === r.key;
+      return {
+        label: r.label,
+        on: on ? 'true' : 'false',
+        style: 'flex:1 1 0;min-width:0;height:44px;padding:0 12px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;white-space:nowrap;cursor:pointer;color:' + (on ? T.onInverse : T.ink) + ';background:' + (on ? T.inverse : 'transparent'),
+        pick: function () { self.setState({role: r.key, flow: false}); }
+      };
+    });
+    var who = role === 'sales'
+      ? {strip: 'WhatsApp conversation (illustrative) · Vikram Sethi’s phone', log: 'Plinth alerts on Vikram Sethi’s phone, Sales'}
+      : {strip: 'WhatsApp conversation (illustrative) · Neha Kapoor’s phone', log: 'Plinth alerts on Neha Kapoor’s phone, Compliance'};
+
+    // Flow sheet: ready only with the receipt attached and an acknowledgement number of 4 or more characters.
+    var ack = String(s.ack || '');
+    var ackTrim = ack.trim();
+    var hasFile = !!s.file;
+    var numOk = ackTrim.length >= 4;
+    var ready = hasFile && numOk;
+    var sent = !!s.sent;
+    var flowOpen = !!s.flow && !sent && role === 'comp';
+    var missingText;
+    if (ready) missingText = 'Ready. This becomes clerical request CL-202.';
+    else if (!hasFile && !ackTrim) missingText = 'To send, attach the receipt and add the acknowledgement number.';
+    else if (!hasFile && !numOk) missingText = 'To send, attach the receipt and finish the acknowledgement number (at least 4 characters).';
+    else if (!hasFile) missingText = 'To send, attach the receipt.';
+    else if (!ackTrim) missingText = 'To send, add the acknowledgement number.';
+    else missingText = 'To send, finish the acknowledgement number (at least 4 characters).';
+
+    // Borderless risk chip: band fill on a tone pill, 5-segment mini meter, the name, confidence dots (low).
+    var dot = 'display:block;width:7px;height:7px;border-radius:50%;box-sizing:border-box;';
+    var chip = {
+      wrap: 'display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;background:' + T.bandFill,
+      meter: [1, 2, 3, 4, 5].map(function (j) {
+        return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= 3 ? 'background:' + T.bandInk : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder)};
+      }),
+      text: 'font-size:13px;line-height:16px;font-weight:700;color:' + T.bandText,
+      d1: dot + 'background:' + T.ink2,
+      d2: dot + 'border:1.5px solid ' + T.ink2,
+      sr: 'Delivery risk: Elevated, step 3 of 5, low confidence.'
+    };
+
+    return {
+      t: T,
+      u: U,
+      roles: roles,
+      who: who,
+      isComp: role === 'comp',
+      isSales: role === 'sales',
+      sent: sent,
+      notSent: !sent,
+      sendOff: sent ? 'true' : 'false',
+      sendLabel: sent ? 'Receipt sent' : 'Send the HARERA receipt',
+      sendStyle: ctaBase + (sent ? 'cursor:default;color:' + T.muted : 'cursor:pointer;color:' + T.accentText),
+      ackLine: ackTrim ? 'Acknowledgement no. ' + ackTrim : 'Acknowledgement number added',
+      liveText: sent ? 'Receipt sent. Received · CL-202. We check the HARERA register by 20 Oct 2026. The proposed change stays private and on hold.' : '',
+      flowOpen: flowOpen,
+      hasFile: hasFile,
+      noFile: !hasFile,
+      filePressed: hasFile ? 'true' : 'false',
+      fileTitle: hasFile ? 'Receipt attached' : 'Attach the receipt',
+      fileStyle: 'width:100%;min-height:60px;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:10px 12px;border:0;border-radius:8px;font:inherit;font-size:16px;text-align:left;cursor:pointer;color:' + T.ink + ';background:' + (hasFile ? T.claimBg : T.track),
+      fileIconWrap: 'flex:none;width:36px;height:36px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:' + T.ink + ';background:' + T.sheet,
+      ack: ack,
+      missingText: missingText,
+      submitOff: ready ? 'false' : 'true',
+      submitLabel: 'Request the clerical fix',
+      submitStyle: 'width:100%;height:52px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:' + (ready ? 'pointer' : 'not-allowed') + ';background:' + (ready ? T.accent : T.disabledBg) + ';color:' + (ready ? T.onAccent : T.disabledFg),
+      chip: chip,
+      openFlow: function () {
+        var st = self.state || {};
+        if (st.sent) return;
+        self.setState({flow: true});
+        self.focusLater('wda-file');
+      },
+      closeFlow: function () {
+        self.setState({flow: false});
+        self.focusLater('wda-send');
+      },
+      toggleFile: function () {
+        var st = self.state || {};
+        self.setState({file: !st.file});
+      },
+      onAck: function (e) {
+        self.setState({ack: e && e.target ? String(e.target.value || '') : ''});
+      },
+      submitFlow: function () {
+        var st = self.state || {};
+        var ok = !!st.file && String(st.ack || '').trim().length >= 4;
+        if (!ok) return;
+        self.setState({sent: true, flow: false});
+        self.focusLater('wda-send');
+      },
+      startOver: function () {
+        clearTimeout(self._f);
+        self.setState({role: 'comp', flow: false, file: false, ack: '', sent: false});
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

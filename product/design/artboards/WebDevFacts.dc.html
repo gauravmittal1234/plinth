@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>From the developer · Workspace</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input::placeholder{color:currentColor;opacity:.62}
+@keyframes plRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.98); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.98); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 620ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 24%; }
+    .rv1 { animation-range: entry 8% cover 30%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 4400px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px">
+      <a href="#overview" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <span style="font-size: 17px; font-weight: 600">Northfield Estates <span style="font-weight: 400; color: {{t.ink2}}">· Workspace</span></span>
+      <nav aria-label="Account" style="margin-left: auto; display: flex; align-items: center; gap: 8px 20px; flex-wrap: wrap">
+        <a href="#help" class="lk" style="font-size: 17px; font-weight: 500; color: {{t.ink}}; text-decoration: none">Help</a>
+        <span style="display: inline-flex; align-items: center; gap: 10px; padding: 4px 16px 4px 4px; border-radius: 999px; background: {{t.track}}">
+          <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: {{t.panelSolid}}; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700">AM</span>
+          <span style="display: flex; flex-direction: column; line-height: 1.25"><span style="font-size: 15px; font-weight: 600">Arjun Mehta</span><span style="font-size: 14px; color: {{t.ink2}}">Marketing</span></span>
+        </span>
+        <button type="button" class="press" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 500; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">Sign out</button>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <button type="button" class="press" onClick="{{publish}}" aria-disabled="{{pubDisabled}}" style="{{pubStyle}}">{{pubLabel}}</button>
+      </div>
+    </div>
+  </header>
+
+  <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 144px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
+
+    <nav aria-label="Workspace" style="flex: 0 0 220px; position: sticky; top: 104px; display: flex; flex-direction: column; gap: 4px">
+      <sc-for list="{{nav}}" as="nv" hint-placeholder-count="6">
+        <a href="{{nv.href}}" aria-current="{{nv.current}}" class="press" style="{{nv.style}}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="flex: none"><path d="{{nv.icon}}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg><span style="flex: 1">{{nv.label}}</span><sc-if value="{{nv.hasBadge}}" hint-placeholder-val="{{false}}"><span style="{{nv.badgeStyle}}">{{nv.badge}}<span class="sr">{{nv.badgeSr}}</span></span></sc-if></a>
+      </sc-for>
+      <div style="margin-top: 32px; padding: 0 14px; display: flex; flex-direction: column; gap: 10px; font-size: 15px">
+        <p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 600">Free, forever. Payments never affect scores.</p>
+        <a href="#charter" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Developer Charter</a>
+        <a href="#content-rules" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Content rules</a>
+      </div>
+    </nav>
+
+    <main style="flex: 1 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 104px">
+
+      <section id="facts" aria-labelledby="fx-h" style="display: flex; flex-direction: column; gap: 16px; scroll-margin-top: 96px">
+        <h1 id="fx-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(38px, 4vw, 52px); line-height: 1; letter-spacing: -0.04em">What do you want buyers to know?</h1>
+        <p class="rise rise1" style="margin: 0; font-size: 17px; color: {{t.ink2}}">Projects &amp; facts · Aurelia Heights, Phase 2 · {{lastPub}}</p>
+        <p class="rise rise2" style="margin: 0; max-width: 60ch; font-size: 21px; line-height: 1.45">Your price list, plans and site photos appear on the project page as “From the developer · not verified”. Anything we can match to a public record says so instead.</p>
+        <p class="rise rise3" style="margin: 0; font-size: 17px">Other projects: <a href="#facts-cw2" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Cedar Walk, Phase 2</a> (price list 128 days old) · <a href="#facts-hp2" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Heron Point, Phase 2</a> (not scored yet) · <a href="#launch" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Cedar Walk, Phase 3</a> (private draft)</p>
+      </section>
+
+      <section id="editor" aria-labelledby="ed-h" style="display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="ed-h" class="rv" style="{{u.h2}}">How will it read on the project page?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 60ch; font-size: 19px">Edit on the left. The right side is the project-page section, as buyers will see it once you publish.</p>
+        </div>
+        <div role="tablist" aria-label="What to edit" style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{tabs}}" as="tb" hint-placeholder-count="5">
+            <button type="button" role="tab" id="{{tb.id}}" aria-selected="{{tb.on}}" aria-controls="ed-panel" class="press" onClick="{{tb.pick}}" style="{{tb.style}}">{{tb.label}}<sc-if value="{{tb.dirty}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="{{tb.dotStyle}}"></span><span class="sr"> (edited)</span></sc-if></button>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+
+          <div id="ed-panel" role="tabpanel" aria-labelledby="{{tabId}}" style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+
+            <sc-if value="{{isConfig}}" hint-placeholder-val="{{true}}">
+              <div class="rise" style="display: flex; flex-direction: column; gap: 18px">
+                <h3 style="margin: 0; font-size: 21px; font-weight: 700; line-height: 1.3">Homes and starting prices</h3>
+                <div role="table" aria-label="Configurations" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden">
+                  <div role="row" style="{{u.cfgRow}}; padding-top: 12px; padding-bottom: 12px; font-size: 15px; color: {{t.ink2}}; background: {{t.track}}">
+                    <span role="columnheader">Home</span><span role="columnheader">Carpet area</span><span role="columnheader">From, ₹ Cr</span>
+                  </div>
+                  <div role="row" style="{{u.cfgRow}}">
+                    <span role="cell" style="display: flex; flex-direction: column"><span style="font-weight: 700">3 BHK</span><span style="font-size: 14px; color: {{t.ink2}}">Towers A–C</span></span>
+                    <span role="cell" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start"><span>1,450 sq ft</span><span style="{{u.recPill}}">HARERA registration</span></span>
+                    <span role="cell" style="display: flex; flex-direction: column; gap: 4px"><label for="p3-in" class="sr">3 BHK starting price in crore</label><input id="p3-in" type="text" inputmode="decimal" value="{{p3}}" onChange="{{onP3}}" style="{{u.input}}"><span style="font-size: 14px; color: {{t.ink2}}">{{p3Note}}</span></span>
+                  </div>
+                  <div role="row" style="{{u.cfgRow}}; border-top: 1px solid {{t.line}}">
+                    <span role="cell" style="display: flex; flex-direction: column"><span style="font-weight: 700">4 BHK</span><span style="font-size: 14px; color: {{t.ink2}}">Towers A–C</span></span>
+                    <span role="cell" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start"><span>2,100 sq ft</span><span style="{{u.recPill}}">HARERA registration</span></span>
+                    <span role="cell" style="display: flex; flex-direction: column; gap: 4px"><label for="p4-in" class="sr">4 BHK starting price in crore</label><input id="p4-in" type="text" inputmode="decimal" value="{{p4}}" onChange="{{onP4}}" style="{{u.input}}"><span style="font-size: 14px; color: {{t.ink2}}">{{p4Note}}</span></span>
+                  </div>
+                </div>
+                <p style="margin: 0; font-size: 17px">500 units in Towers A–C, from the HARERA registration. Carpet areas and unit counts come from the register and are locked here. If one is wrong, use the clerical lane in Evidence &amp; disputes.</p>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{isPrice}}" hint-placeholder-val="{{false}}">
+              <div class="rise" style="display: flex; flex-direction: column; gap: 18px">
+                <h3 style="margin: 0; font-size: 21px; font-weight: 700; line-height: 1.3">Price list</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px">
+                  <div style="flex: 1 1 180px; display: flex; flex-direction: column; gap: 6px"><label for="p3b-in" style="font-size: 15px; font-weight: 600">3 BHK base, ₹ Cr</label><input id="p3b-in" type="text" inputmode="decimal" value="{{p3}}" onChange="{{onP3}}" style="{{u.input}}"></div>
+                  <div style="flex: 1 1 180px; display: flex; flex-direction: column; gap: 6px"><label for="p4b-in" style="font-size: 15px; font-weight: 600">4 BHK base, ₹ Cr</label><input id="p4b-in" type="text" inputmode="decimal" value="{{p4}}" onChange="{{onP4}}" style="{{u.input}}"></div>
+                </div>
+                <dl style="margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; font-size: 17px">
+                  <dt>PLC, park-facing</dt><dd style="margin: 0; text-align: right">₹2.9 L</dd>
+                  <dt>Club</dt><dd style="margin: 0; text-align: right">₹1.5 L</dd>
+                  <dt>Parking</dt><dd style="margin: 0; text-align: right">₹3.5 L</dd>
+                  <dt>IFMS</dt><dd style="margin: 0; text-align: right">₹1.3 L</dd>
+                  <dt style="font-weight: 700">Charges total</dt><dd style="margin: 0; text-align: right; font-weight: 700">₹9.2 L</dd>
+                </dl>
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <h4 style="margin: 0; font-size: 17px; font-weight: 700">Every version, as buyers see it</h4>
+                  <div role="table" aria-label="Price list versions" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden">
+                    <div role="row" style="{{u.verRow}}; padding-top: 10px; padding-bottom: 10px; font-size: 14px; color: {{t.ink2}}; background: {{t.track}}">
+                      <span role="columnheader">Dated</span><span role="columnheader">3 BHK</span><span role="columnheader">4 BHK</span><span role="columnheader">Status</span>
+                    </div>
+                    <sc-for list="{{versions}}" as="vr" hint-placeholder-count="4">
+                      <div role="row" style="{{vr.style}}">
+                        <span role="cell" style="font-weight: 600">{{vr.date}}</span><span role="cell">{{vr.p3}}</span><span role="cell">{{vr.p4}}</span><span role="cell" style="color: {{t.ink2}}">{{vr.status}}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <p style="margin: 0; font-size: 17px">Old versions are never deleted. When you publish a new list, followers get one alert, and you choose when that is.</p>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{isPlan}}" hint-placeholder-val="{{false}}">
+              <div class="rise" style="display: flex; flex-direction: column; gap: 18px">
+                <h3 style="margin: 0; font-size: 21px; font-weight: 700; line-height: 1.3">Payment plan: construction-linked</h3>
+                <p style="margin: 0; font-size: 17px">We match each stage to the latest QPR. Stages on record say so to buyers; the rest stay labelled as yours.</p>
+                <ol aria-label="Payment stages" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px">
+                  <sc-for list="{{stages}}" as="sg" hint-placeholder-count="11">
+                    <li style="{{sg.style}}">
+                      <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 600">{{sg.stage}}</span><span style="{{sg.noteStyle}}">{{sg.note}}</span></span>
+                      <strong style="text-align: right; white-space: nowrap">{{sg.pct}}</strong>
+                    </li>
+                  </sc-for>
+                </ol>
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <span style="font-size: 17px; font-weight: 700">Other plans you offer</span>
+                  <button type="button" class="press" aria-pressed="{{plan2On}}" onClick="{{togglePlan2}}" style="{{plan2Style}}">
+                    <span aria-hidden="true" style="{{plan2Box}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                    <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 17px; font-weight: 600">Possession-linked, 20:80</span><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">20% up to the registered agreement, 80% on offer of possession. Shown as given; nothing in it is on record.</span></span>
+                  </button>
+                </div>
+                <p style="margin: 0; font-size: 17px">Your demand of 10 Oct 2026 for Tower A slab 12 is ahead of the latest QPR, which shows slab 9. Buyers see that on the project page. Site photos help, and the Jul–Sep 2026 QPR settles it.</p>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{isPlans}}" hint-placeholder-val="{{false}}">
+              <div class="rise" style="display: flex; flex-direction: column; gap: 18px">
+                <h3 style="margin: 0; font-size: 21px; font-weight: 700; line-height: 1.3">Floor plans</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+                  <div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+                    <div style="position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: {{t.photo}}">
+                      <img data-slot="floorPlan3bhk" src="/_blob/9f287072173a95c8373af8abd63a0eb1" alt="3 BHK floor plan drawing, Type A" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; background: #FBF8F1">
+                    </div>
+                    <span style="font-size: 17px; font-weight: 700">3 BHK · Type A</span>
+                    <span style="font-size: 15px; color: {{t.ink2}}">AH2-3BHK-TypeA.pdf · added 2 Oct 2026</span>
+                    <span style="{{u.recPill}}; align-self: flex-start">Carpet 1,450 sq ft matches HARERA</span>
+                  </div>
+                  <div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+                    <sc-if value="{{noPlan4}}" hint-placeholder-val="{{true}}">
+                      <div style="border-radius: 8px; background: {{t.track}}; padding: 22px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
+                        <span style="font-size: 17px; font-weight: 700">No 4 BHK plan yet</span>
+                        <span style="font-size: 15px; line-height: 1.45">Buyers see the 3 BHK plan only. Upload a PDF with room dimensions; we check its carpet area against the register.</span>
+                        <button type="button" class="press" onClick="{{addPlan4}}" style="height: 48px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Add the 4 BHK plan</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{hasPlan4}}" hint-placeholder-val="{{false}}">
+                      <div class="rise" style="border-radius: 8px; background: {{t.claimBg}}; padding: 22px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+                        <svg width="28" height="28" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 2h6l3 3v11H5zM8 9h4M8 12h4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                        <span style="font-size: 17px; font-weight: 700">4 BHK · Type B</span>
+                        <span style="font-size: 15px; color: {{t.ink2}}">AH2-4BHK-TypeB.pdf · 0.9 MB · added 18 Oct 2026</span>
+                        <span style="{{u.recPill}}">Carpet 2,100 sq ft matches HARERA</span>
+                        <button type="button" class="press" onClick="{{removePlan4}}" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; cursor: pointer">Remove</button>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{isSite}}" hint-placeholder-val="{{false}}">
+              <div class="rise" style="display: flex; flex-direction: column; gap: 18px">
+                <h3 style="margin: 0; font-size: 21px; font-weight: 700; line-height: 1.3">Construction updates</h3>
+                <p style="margin: 0; font-size: 17px">Your site team takes photos on a phone at the site, from a one-time capture link sent on WhatsApp. We check each photo’s location against the RERA footprint and its time, then seal the file with a hash. Buyers see them as “Location-verified · from the developer”.</p>
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <span id="tag-l" style="font-size: 15px; font-weight: 600">What do the photos show?</span>
+                  <div role="radiogroup" aria-labelledby="tag-l" style="display: flex; flex-wrap: wrap; gap: 8px">
+                    <sc-for list="{{tagOpts}}" as="to" hint-placeholder-count="4"><button type="button" role="radio" class="press" aria-checked="{{to.on}}" onClick="{{to.pick}}" style="{{to.style}}">{{to.label}}</button></sc-for>
+                  </div>
+                </div>
+                <sc-if value="{{noPhotos}}" hint-placeholder-val="{{true}}">
+                  <button type="button" class="press" onClick="{{addPhotos}}" style="align-self: flex-start; height: 48px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Bring in today’s photos</button>
+                </sc-if>
+                <sc-if value="{{hasPhotos}}" hint-placeholder-val="{{false}}">
+                  <ul aria-label="Location check results" class="rise" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
+                    <li style="display: flex; gap: 12px; align-items: center; padding: 8px; border-radius: 8px; background: {{t.claimBg}}">
+                      <img data-slot="towerBSite" src="/_blob/63563bddef8fb0534f0a376b2c1501d1" alt="Tower under construction, upper slabs" style="flex: none; width: 72px; height: 72px; object-fit: cover; display: block">
+                      <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-weight: 700">Inside the RERA footprint</span><span style="font-size: 14px; color: {{t.ink2}}">18 Oct 2026, 10:42 · {{tag}} · sealed</span></span>
+                      <span style="{{u.okPill}}">Will post</span>
+                    </li>
+                    <li style="display: flex; gap: 12px; align-items: center; padding: 8px; border-radius: 8px; background: {{t.claimBg}}">
+                      <img data-slot="siteProgress" src="/_blob/186406c855932c1c91c0cfbd6c934296" alt="Construction site with cranes" style="flex: none; width: 72px; height: 72px; object-fit: cover; display: block">
+                      <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-weight: 700">Inside the RERA footprint</span><span style="font-size: 14px; color: {{t.ink2}}">18 Oct 2026, 10:44 · {{tag}} · sealed</span></span>
+                      <span style="{{u.okPill}}">Will post</span>
+                    </li>
+                    <li style="display: flex; gap: 12px; align-items: center; padding: 8px; border-radius: 8px; background: {{t.track}}">
+                      <span aria-hidden="true" style="flex: none; width: 72px; height: 72px; display: inline-flex; align-items: center; justify-content: center; background: {{t.panelSolid}}"><svg width="24" height="24" viewBox="0 0 18 18"><path d="M2 6h3l1.5-2h5L13 6h3v9H2zM3 3l12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                      <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-weight: 700">No location in the file</span><span style="font-size: 14px; color: {{t.ink2}}">IMG_2207.jpg · uploaded from a laptop · retake it with the capture link</span></span>
+                      <span style="font-size: 14px; font-weight: 700">Not posted</span>
+                    </li>
+                  </ul>
+                  <button type="button" class="press" onClick="{{clearPhotos}}" style="align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; cursor: pointer">Discard this batch</button>
+                </sc-if>
+                <p style="margin: 0; font-size: 17px">Photos post to the project page when you publish. Followers hear about at most one update a month: your next can go out from 16 Nov 2026. A photo never moves a score; the next QPR confirms it or doesn’t.</p>
+              </div>
+            </sc-if>
+          </div>
+
+          <div class="rv rv1" style="flex: 1 1 400px; min-width: 0; position: sticky; top: 104px; border-radius: 8px; background: {{t.track}}; padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+            <p style="margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 17px; font-weight: 600"><span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8 12.1 12.5 8 12.5 1.5 8 1.5 8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path><circle cx="8" cy="8" r="2" fill="currentColor"></circle></svg>On the project page</span><span aria-live="polite" style="{{stateTagStyle}}">{{stateTag}}</span></p>
+            <div data-ui="from-developer-preview" style="border-radius: 8px; background: {{t.panelSolid}}; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; color: {{t.ink2}}">
+                <span style="{{elevChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{elevMeter}}" as="em" hint-placeholder-count="5"><span style="{{em.style}}"></span></sc-for></span>Elevated</span>
+                <span>Aurelia Heights, Phase 2 · records and risk sit above this section and never read from it</span>
+              </div>
+              <div style="border-radius: 8px; background: {{t.claimBg}}; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+                <div style="display: flex; flex-direction: column; gap: 4px">
+                  <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>From the developer · not verified · Northfield Estates · updated {{pvDate}}</span>
+                  <span style="font-size: 14px; line-height: 1.45">Shown as given, with every change dated. Items matched to a public record say so. None of it moves the delivery risk.</span>
+                </div>
+
+                <div style="{{blk.config}}">
+                  <span style="font-size: 15px; font-weight: 700">Price list, {{pvDate}}</span>
+                  <span style="display: flex; justify-content: space-between; gap: 10px; font-size: 15px"><span>3 BHK · 1,450 sq ft carpet · {{psf3}}</span><strong style="white-space: nowrap">from ₹{{pv3}} Cr</strong></span>
+                  <span style="display: flex; justify-content: space-between; gap: 10px; font-size: 15px"><span>4 BHK · 2,100 sq ft carpet · {{psf4}}</span><strong style="white-space: nowrap">from ₹{{pv4}} Cr</strong></span>
+                  <span style="{{u.recPill}}; align-self: flex-start">Carpet areas match the HARERA registration</span>
+                </div>
+
+                <div style="{{blk.price}}">
+                  <span style="font-size: 15px; font-weight: 700">Price lists on file</span>
+                  <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px">
+                    <sc-for list="{{pvHist}}" as="ph" hint-placeholder-count="4">
+                      <li style="display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 2px 12px; align-items: center; font-size: 14px">
+                        <span>{{ph.date}}</span>
+                        <span style="display: flex; align-items: center; gap: 10px; min-width: 0"><span aria-hidden="true" style="{{ph.bar}}"></span><span style="white-space: nowrap"><strong>{{ph.p3}}</strong> · {{ph.p4}}</span></span>
+                      </li>
+                    </sc-for>
+                  </ul>
+                  <span style="font-size: 14px; line-height: 1.45">{{allinLine}}</span>
+                </div>
+
+                <div style="{{blk.plan}}">
+                  <span style="font-size: 15px; font-weight: 700">Payment plan: construction-linked</span>
+                  <span style="font-size: 14px; line-height: 1.45">11 stages. Booking, agreement, foundation and slabs 3, 6 and 9 are on record: 52.5% in all.</span>
+                  <sc-if value="{{plan2Shown}}" hint-placeholder-val="{{false}}"><span class="rise" style="font-size: 14px; line-height: 1.45; font-weight: 600">{{plan2Line}}</span></sc-if>
+                  <span style="display: flex; flex-wrap: wrap; gap: 6px"><span style="{{u.recPill}}">Slab 9 on record · QPR Jan–Mar 2026</span><span style="{{u.claimPill}}">Slab 12 not yet on record</span></span>
+                </div>
+
+                <div style="{{blk.plans}}">
+                  <span style="font-size: 15px; font-weight: 700">Floor plans</span>
+                  <span style="display: flex; gap: 8px; align-items: stretch">
+                    <span style="position: relative; flex: none; width: 96px; height: 72px; overflow: hidden; background: {{t.photo}}"><img data-slot="floorPlan3bhk" src="/_blob/9f287072173a95c8373af8abd63a0eb1" alt="3 BHK floor plan thumbnail" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; background: #FBF8F1"></span>
+                    <span style="display: flex; flex-direction: column; justify-content: center; font-size: 14px; line-height: 1.4"><span style="font-weight: 600">3 BHK · Type A</span><span>{{plan4Line}}</span></span>
+                  </span>
+                </div>
+
+                <div style="{{blk.site}}">
+                  <span style="font-size: 15px; font-weight: 700">Latest from the site</span>
+                  <span style="display: flex; gap: 10px; align-items: center">
+                    <img data-slot="towerBSite" src="/_blob/63563bddef8fb0534f0a376b2c1501d1" alt="Tower under construction" style="flex: none; width: 96px; height: 72px; object-fit: cover; display: block">
+                    <span style="display: flex; flex-direction: column; font-size: 14px; line-height: 1.4"><span style="font-weight: 600">{{siteLine}}</span><span>Location-verified · from the developer · progress not verified until the next QPR</span></span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <p aria-live="polite" style="margin: 0; font-size: 17px; line-height: 1.45; font-weight: 600">{{pvCaption}}</p>
+          </div>
+        </div>
+      </section>
+
+
+      <section id="launch" aria-labelledby="la-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="la-h" class="rv" style="{{u.h2}}">Launching a new phase?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">Prepare its page privately. It publishes by itself the day HARERA shows the registration, labelled “Not scored yet”, and never a day before.</p>
+        </div>
+        <div role="group" aria-label="Show the page" style="display: flex; padding: 4px; border-radius: 999px; background: {{t.track}}; align-self: flex-start">
+          <sc-for list="{{launchViews}}" as="lv" hint-placeholder-count="2"><button type="button" class="press" aria-pressed="{{lv.on}}" onClick="{{lv.pick}}" style="{{lv.style}}">{{lv.label}}</button></sc-for>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+          <div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+            <h3 style="margin: 0; font-size: 21px; font-weight: 700; line-height: 1.3">Cedar Walk, Phase 3 · Sector 69 · private draft</h3>
+            <dl style="margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; font-size: 17px">
+              <dt>Towers and units</dt><dd style="margin: 0; text-align: right">D and E · 288 units</dd>
+              <dt>3 BHK carpet · from</dt><dd style="margin: 0; text-align: right">1,380 sq ft · ₹2.18 Cr</dd>
+              <dt>4 BHK carpet · from</dt><dd style="margin: 0; text-align: right">1,960 sq ft · ₹3.05 Cr</dd>
+            </dl>
+            <p style="margin: 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Your draft figures. On the day, the register’s carpet areas and unit counts replace them and lock, as they do for every live project.</p>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 17px; font-weight: 700">Approvals you hold</span>
+              <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
+                <sc-for list="{{approvals}}" as="ap" hint-placeholder-count="4">
+                  <li><button type="button" class="press" aria-pressed="{{ap.on}}" onClick="{{ap.toggle}}" style="{{ap.style}}"><span aria-hidden="true" style="{{ap.box}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 17px; font-weight: 600">{{ap.name}}</span><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{ap.sub}}</span></span></button></li>
+                </sc-for>
+              </ul>
+            </div>
+            <button type="button" class="press" aria-pressed="{{launchPriceOn}}" onClick="{{toggleLaunchPrice}}" style="{{launchPriceStyle}}"><span aria-hidden="true" style="{{launchPriceBox}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 17px; font-weight: 600">Publish the price list on the day</span><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">Dated and kept in the version history. Leave it off to publish it later.</span></span></button>
+            <p style="margin: 0; padding: 16px 20px; border-radius: 8px; background: {{t.track}}; font-size: 17px; line-height: 1.5">No page, link, QR or price before the registration. Plinth never shows a project, takes an expression of interest or touches money before its RERA number.</p>
+          </div>
+          <div class="rv rv1" style="flex: 1 1 400px; min-width: 0; border-radius: 8px; background: {{t.track}}; padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+            <p style="margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 17px; font-weight: 600"><span>{{launch.where}}</span><span aria-live="polite" style="{{launch.tagStyle}}">{{launch.tag}}</span></p>
+            <sc-if value="{{launch.before}}" hint-placeholder-val="{{true}}">
+              <div class="rise" style="border-radius: 8px; background: {{t.panelSolid}}; padding: 22px; display: flex; flex-direction: column; gap: 10px">
+                <span style="font-size: 19px; font-weight: 700">Nothing is public</span>
+                <span style="font-size: 17px; line-height: 1.5">Only your team sees this draft. We check HARERA every day; the page goes live within hours of the registration appearing.</span>
+                <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{launch.ready}}</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{launch.after}}" hint-placeholder-val="{{false}}">
+              <div class="rise" style="border-radius: 8px; background: {{t.panelSolid}}; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+                <div style="display: flex; flex-direction: column; gap: 4px">
+                  <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em">Cedar Walk, Phase 3</strong>
+                  <span style="font-size: 15px; color: {{t.ink2}}">Sector 69 · Northfield Estates · RERA number as HARERA issues it</span>
+                </div>
+                <span style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+                  <span style="{{notChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{notMeter}}" as="nm" hint-placeholder-count="5"><span style="{{nm.style}}"></span></sc-for></span>Not scored yet</span>
+                  <span style="font-size: 14px; color: {{t.ink2}}">Registered on the day this page went live</span>
+                </span>
+                <span style="font-size: 15px; line-height: 1.45">Registered less than 6 months ago. We show the facts, each with its source, and score once there is enough record. Northfield’s group record sits on its developer page.</span>
+                <span style="{{u.recPill}}; align-self: flex-start">Towers, units and carpet areas from the HARERA registration</span>
+                <div style="border-radius: 8px; background: {{t.claimBg}}; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+                  <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>From the developer · not verified · Northfield Estates</span>
+                  <sc-for list="{{launch.devItems}}" as="di" hint-placeholder-count="3"><span class="rise" style="font-size: 15px; line-height: 1.45">{{di}}</span></sc-for>
+                </div>
+                <span style="font-size: 14px; line-height: 1.45; color: {{t.ink2}}">Followers of Northfield get one alert: “Northfield Estates registered a new project.”</span>
+              </div>
+            </sc-if>
+            <p aria-live="polite" style="margin: 0; font-size: 17px; line-height: 1.45; font-weight: 600">{{launch.caption}}</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="content-rules" aria-labelledby="cr-h" style="display: flex; flex-direction: column; gap: 22px; scroll-margin-top: 96px">
+        <h2 id="cr-h" class="rv" style="{{u.h2}}">Where does your content never appear?</h2>
+        <ul class="rv rv1" style="margin: 0; padding: 0 0 0 22px; max-width: 66ch; display: flex; flex-direction: column; gap: 10px; font-size: 19px; line-height: 1.5">
+          <li>In the delivery-risk band, its reasons or its confidence.</li>
+          <li>In search order or Compare. Ranking never reads anything you publish here.</li>
+          <li>In AI answers, except quoted and labelled “Developer says”.</li>
+        </ul>
+        <p class="rv rv1" style="margin: 0; max-width: 66ch; font-size: 17px; color: {{t.ink2}}">Plinth’s cost sheet uses your latest published price list for the all-in figure, labelled as calculated from it. If a price list or plan proves false, we publish a correction note next to it.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 112px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">What you publish here sits on the project page beside the records, never inside them. The band stands on HARERA, DTCP and MCA filings alone. Our opinion, based on public records. Not a credit rating. Not issued by any RERA.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#charter" class="lk" style="color: {{t.onSlab}}">Developer Charter</a>
+          <a href="#content-rules" class="lk" style="color: {{t.onSlab}}">Content rules</a>
+          <a href="#methodology" class="lk" style="color: {{t.onSlab}}">Methodology v1.2</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+        </nav>
+        <span>Plinth Developer workspace · free, forever</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"$preview":{"width":1280,"height":4400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      themePick: null, tab: 0,
+      p3: '2.35', p4: '3.38', plan2: false, plan4: false, photos: false, tag: 'Tower A · slab 12',
+      pub: {p3: '2.35', p4: '3.38', plan2: false, plan4: false, photos: false, tag: ''}, pubAt: '', pubVersions: [],
+      launchView: 'before', launchPrice: true, apLic: true, apPlan: true, apEnv: false, apFire: false
+    };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var T = night ? {
+      bg: '#0B1411', panelSolid: '#16221D', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)', photo: '#1B2A24',
+      ink: '#EEF3F0', ink2: '#B9C6C0', accent: '#6EE7B7', onAccent: '#052E1F', claimBg: '#1D2621', bar2: 'rgba(255,255,255,0.28)',
+      emptyBorder: '#7D828A', segEmpty: 'transparent', disabledBg: 'rgba(255,255,255,0.10)', disabledFg: '#B9C6C0', hi: 'rgba(110,231,183,0.12)',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', panelSolid: '#FFFFFF', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED', photo: '#E7E3DA',
+      ink: '#1B1A17', ink2: '#3F3C36', accent: '#1D5A44', onAccent: '#FFFFFF', claimBg: '#F1ECE2', bar2: '#C9C4B9',
+      emptyBorder: '#8C9199', segEmpty: '#FFFFFF', disabledBg: '#EEEBE4', disabledFg: '#3F3C36', hi: '#E9F1EC',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var grid = function (cols) { return 'display:grid;grid-template-columns:' + cols + ';gap:14px;padding:14px 18px;align-items:start'; };
+    var pillBase = 'display:inline-flex;align-items:center;min-height:26px;padding:2px 12px;border-radius:999px;box-sizing:border-box;font-size:13px;font-weight:700;line-height:1.3;';
+    var U = {
+      h2: "margin:0;font-family:'Bricolage Grotesque', system-ui, sans-serif;font-weight:800;font-size:clamp(34px, 3.6vw, 44px);line-height:1.04;letter-spacing:-0.03em",
+      cfgRow: grid('minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1.3fr)'),
+      verRow: grid('minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)'),
+      input: 'height:44px;width:100%;padding:0 16px;border-radius:999px;border:1px solid ' + T.lineStrong + ';background:' + T.panelSolid + ';color:' + T.ink + ';font:inherit;font-size:17px;box-sizing:border-box',
+      recPill: pillBase + 'background:' + T.ink + ';color:' + T.bg,
+      claimPill: pillBase + 'background:' + T.panelSolid + ';color:' + T.ink,
+      okPill: pillBase + 'background:' + T.ink + ';color:' + T.bg + ';flex:none'
+    };
+    var B = {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillN: '#3A2210'};
+    var bInk = night ? B.dark : B.light;
+    var elevMeter = [1, 2, 3, 4, 5].map(function (j) {
+      return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= B.i ? 'background:' + bInk + ';' : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder + ';')};
+    });
+    // Borderless risk chip (DESIGN §0).
+    var elevChip = 'display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:14px;font-weight:600;border:0;background:' + (night ? B.fillN : B.fill) + ';color:' + T.ink;
+
+    var NAV = [
+      {key: 'overview', label: 'Overview', href: '#overview', icon: 'M3 8l6-5 6 5v7H3z'},
+      {key: 'inbox', label: 'Enquiries & visits', href: '#enquiries', icon: 'M2.5 10.5L4.5 4h9l2 6.5V15h-13zM2.5 10.5h4l1 2h3l1-2h4', badge: '3', badgeSr: ' need a reply'},
+      {key: 'facts', label: 'Projects & facts', href: '#facts', icon: 'M4 16V3h7v13M11 7h3v9M2 16h14'},
+      {key: 'live', label: 'Live Record', href: '#live-record', icon: 'M3 3h4v4H3zM11 3h4v4h-4zM3 11h4v4H3zM11 11h1.5M14.5 11v1.5M11 14.5h4'},
+      {key: 'evidence', label: 'Evidence & disputes', href: '#evidence', icon: 'M5 2h6l3 3v11H5zM8 9h4M8 12h4', badge: '1', badgeSr: ' notice'},
+      {key: 'team', label: 'Team', href: '#team', icon: 'M6.5 8.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM2 15c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4M12 4a2.2 2.2 0 010 4.3M13.5 11c1.6.4 2.5 1.8 2.5 4'}
+    ];
+    var nav = NAV.map(function (x) {
+      var on = x.key === 'facts';
+      return {label: x.label, href: x.href, icon: x.icon, current: on ? 'page' : 'false', hasBadge: !!x.badge, badge: x.badge || '', badgeSr: x.badgeSr || '',
+        badgeStyle: 'min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:' + T.ink + ';color:' + T.bg + ';font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box',
+        style: 'display:flex;align-items:center;gap:12px;min-height:44px;padding:0 14px;border-radius:8px;color:' + T.ink + ';text-decoration:none;font-weight:' + (on ? '600' : '500') + ';background:' + (on ? T.track : 'transparent')};
+    });
+
+    // Prices: parse what's typed, keep the last valid figure for the preview.
+    function parse(v) { var n = parseFloat(String(v || '').replace(/[^0-9.]/g, '')); return (isFinite(n) && n >= 0.5 && n <= 20) ? n : null; }
+    var pub = s.pub || {p3: '2.35', p4: '3.38', plan4: false, photos: false, tag: ''};
+    var n3 = parse(s.p3), n4 = parse(s.p4);
+    var v3 = n3 !== null ? n3 : parse(pub.p3), v4 = n4 !== null ? n4 : parse(pub.p4);
+    var p3Changed = n3 !== null && n3.toFixed(2) !== Number(pub.p3).toFixed(2);
+    var p4Changed = n4 !== null && n4.toFixed(2) !== Number(pub.p4).toFixed(2);
+    var priceDirty = p3Changed || p4Changed;
+    var plan4Dirty = !!s.plan4 !== !!pub.plan4;
+    var plan2Dirty = !!s.plan2 !== !!pub.plan2;
+    var photosDirty = !!s.photos !== !!pub.photos || (!!s.photos && s.tag !== pub.tag);
+    var dirty = priceDirty || plan2Dirty || plan4Dirty || photosDirty;
+    function inr(n) { return Math.round(n).toLocaleString('en-IN'); }
+    function psf(cr, sqft) { return '₹' + inr(cr * 1e7 / sqft) + ' per sq ft carpet'; }
+    // All-in for a park-facing 3 BHK, the same arithmetic as the cost sheet of 2 Oct 2026: base + ₹9.2 L charges, then 5% GST and 7.21% stamp duty and registration.
+    var allin = (v3 + 0.092) * 1.1221;
+    var allinPsf = Math.round(allin * 1e7 / 1450 / 100) * 100;
+
+    var TABS = ['Configurations', 'Price list', 'Payment plan', 'Floor plans', 'Construction updates'];
+    var tab = Math.max(0, Math.min(4, Number(s.tab) || 0));
+    var dirtyByTab = [priceDirty, priceDirty, plan2Dirty, plan4Dirty, photosDirty];
+    var tabs = TABS.map(function (x, i) {
+      var on = i === tab;
+      return {id: 'tab-' + i, label: x, on: on ? 'true' : 'false', dirty: dirtyByTab[i],
+        dotStyle: 'display:inline-block;width:8px;height:8px;margin-left:8px;border-radius:50%;background:' + (on ? T.bg : T.ink),
+        pick: function () { self.setState({tab: i}); },
+        style: 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;box-sizing:border-box;display:inline-flex;align-items:center;transition:background-color 180ms ease, color 180ms ease;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.bg : T.ink)};
+    });
+
+    var HIST = [['2 Oct 2026', 2.35, 3.38], ['1 Apr 2026', 2.24, 3.22], ['1 Jul 2025', 2.03, 2.92], ['Jan 2023, launch', 1.58, 2.27]];
+    var pubVersions = s.pubVersions || [];
+    var hist = pubVersions.concat(HIST);
+    var versions = [];
+    if (priceDirty) versions.push({date: 'Draft', p3: '₹' + v3.toFixed(2) + ' Cr', p4: '₹' + v4.toFixed(2) + ' Cr', status: 'Not public yet'});
+    hist.forEach(function (h, i) { versions.push({date: h[0], p3: '₹' + h[1].toFixed(2) + ' Cr', p4: '₹' + h[2].toFixed(2) + ' Cr', status: i === 0 ? 'Current' : 'Earlier'}); });
+    versions = versions.map(function (x, i) { x.style = U.verRow + ';font-size:15px;line-height:1.4;' + (i > 0 ? 'border-top:1px solid ' + T.line + ';' : '') + (x.date === 'Draft' ? 'background:' + T.claimBg + ';' : ''); return x; });
+    var pvRows = [];
+    if (priceDirty) pvRows.push(['Draft', v3, v4, true]);
+    hist.forEach(function (h) { pvRows.push([h[0], h[1], h[2], false]); });
+    var maxP = Math.max.apply(null, pvRows.map(function (r) { return r[1]; }));
+    var pvHist = pvRows.slice(0, 4).map(function (r, i) {
+      return {date: r[0], p3: '3 BHK ₹' + r[1].toFixed(2) + ' Cr', p4: '4 BHK ₹' + r[2].toFixed(2) + ' Cr',
+        bar: 'display:block;flex:none;height:10px;border-radius:2px;transition:width 420ms cubic-bezier(.22,1,.36,1);width:' + Math.round(r[1] / maxP * 96) + 'px;background:' + (i === 0 ? T.ink : T.bar2)};
+    });
+
+    var PS = [
+      ['On booking', '10%', 'The legal limit before a registered agreement for sale', ''],
+      ['With the registered agreement', '10%', 'Within 45 days of booking', ''],
+      ['Foundation', '10%', 'On record: Oct–Dec 2023 QPR', 'done'],
+      ['Slab 3', '7.5%', 'On record', 'done'],
+      ['Slab 6', '7.5%', 'On record', 'done'],
+      ['Slab 9', '7.5%', 'On record: Jan–Mar 2026 QPR', 'done'],
+      ['Slab 12', '7.5%', 'Not yet on record. The latest QPR shows slab 9.', 'flag'],
+      ['Slabs 15, 18 and 20 (top)', '22.5%', '7.5% each · not yet on record', ''],
+      ['Brickwork and plaster', '7.5%', 'Not yet on record', ''],
+      ['Flooring and finishing', '5%', 'Not yet on record', ''],
+      ['On offer of possession', '5%', 'After the OC, with stamp duty and registration', '']
+    ];
+    var stages = PS.map(function (x) {
+      var bg = x[3] === 'done' ? T.track : (x[3] === 'flag' ? T.claimBg : 'transparent');
+      return {stage: x[0], pct: x[1], note: x[2],
+        noteStyle: 'font-size:15px;line-height:1.45;color:' + (x[3] === 'flag' ? T.ink : T.ink2) + (x[3] === 'flag' ? ';font-weight:600' : ''),
+        style: 'display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:start;padding:10px 14px;border-radius:8px;font-size:17px;line-height:1.4;background:' + bg};
+    });
+
+    var KEYS = ['config', 'price', 'plan', 'plans', 'site'];
+    var activeKey = ['config', 'price', 'plan', 'plans', 'site'][tab];
+    var blk = {};
+    KEYS.forEach(function (k) {
+      var lit = k === activeKey || (k === 'config' && activeKey === 'price') || (k === 'price' && activeKey === 'config');
+      blk[k] = 'display:flex;flex-direction:column;gap:6px;padding:10px 12px;margin:0 -12px;border-radius:8px;transition:background-color 260ms ease;background:' + (lit ? T.panelSolid : 'transparent') + ';';
+    });
+
+    var published = !!s.pubAt;
+    var pvDate = dirty ? '18 Oct 2026 (draft)' : (published ? '18 Oct 2026' : '2 Oct 2026');
+    var stateTag = dirty ? 'Draft · not public yet' : (published ? 'Live since ' + s.pubAt : 'Live since 2 Oct 2026');
+    var stateTagStyle = pillBase + (dirty ? 'background:' + T.panelSolid + ';color:' + T.ink + ';' : 'background:' + T.ink + ';color:' + T.bg + ';');
+    var changes = [];
+    if (priceDirty) changes.push('a new price list');
+    if (plan2Dirty) changes.push(s.plan2 ? 'a possession-linked plan' : 'removing the possession-linked plan');
+    if (plan4Dirty) changes.push(s.plan4 ? 'the 4 BHK plan' : 'removing the 4 BHK plan');
+    if (photosDirty) changes.push(s.photos ? '2 site photos' : 'removing the site photos');
+    var pvCaption = dirty ? 'Draft: ' + changes.join(', ') + '. Buyers see nothing until you publish.' + (priceDirty ? ' Followers will get one alert about the new price list.' : '') : (published ? 'Published 18 Oct 2026. Buyers see this now.' : 'This is what buyers see today. Edit on the left to preview a change.');
+
+    var TAGS = ['Tower A · slab 12', 'Tower A · slab 11', 'Tower B · structure', 'Site · entrance road'];
+    var shownPhotos = s.photos;
+    var siteLine = shownPhotos ? '18 Oct 2026 · ' + s.tag + ' · 2 photos' + (photosDirty ? ' (draft)' : '') : (pub.photos ? '18 Oct 2026 · ' + pub.tag + ' · 2 photos' : '16 Oct 2026 · Towers A and B · 6 photos');
+
+    // G17 launch-day kit: a private draft that publishes itself when the RERA registration appears.
+    var APS = [
+      {key: 'apLic', name: 'DTCP licence', on: 'Letter added · shown as yours until we match it to DTCP', off: 'Not added yet'},
+      {key: 'apPlan', name: 'Building plan approval', on: 'Letter added · shown as yours until we match it to DTCP', off: 'Not added yet'},
+      {key: 'apEnv', name: 'Environment clearance', on: 'Letter added · shown as yours until we match it to the register', off: 'Not added. Buyers see “not on record yet”'},
+      {key: 'apFire', name: 'Fire NOC, provisional', on: 'Letter added · shown as yours until we match it', off: 'Not added yet'}
+    ];
+    var approvals = APS.map(function (a) {
+      var on = !!s[a.key];
+      return {name: a.name, sub: on ? a.on : a.off, on: on ? 'true' : 'false',
+        toggle: function () { var o = {}; o[a.key] = !self.state[a.key]; self.setState(o); },
+        style: 'width:100%;display:flex;align-items:flex-start;gap:14px;padding:12px 14px;border:0;border-radius:8px;box-sizing:border-box;cursor:pointer;font:inherit;text-align:left;color:' + T.ink + ';transition:background-color 200ms ease;background:' + (on ? T.claimBg : T.track),
+        box: 'flex:none;width:22px;height:22px;margin-top:2px;border-radius:6px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;' + (on ? 'background:' + T.ink + ';color:' + T.bg + ';' : 'border:2px solid ' + T.ink2 + ';color:transparent;')};
+    });
+    var nAp = APS.filter(function (a) { return !!s[a.key]; }).length;
+    var after = s.launchView === 'after';
+    var launchViews = [{key: 'before', label: 'Today, 18 Oct'}, {key: 'after', label: 'The day HARERA registers it'}].map(function (x) {
+      var on = (x.key === 'after') === after;
+      return {label: x.label, on: on ? 'true' : 'false', pick: function () { self.setState({launchView: x.key}); },
+        style: 'height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (on ? T.panelSolid : 'transparent') + ';color:' + T.ink};
+    });
+    var devItems = [];
+    if (s.launchPrice) devItems.push('Price list, dated launch day: 3 BHK from ₹2.18 Cr · 4 BHK from ₹3.05 Cr');
+    APS.forEach(function (a) { if (s[a.key]) devItems.push(a.name + ': letter on file'); });
+    if (!devItems.length) devItems.push('Nothing yet. Records from the register show above.');
+    var launch = {
+      before: !after, after: after,
+      where: after ? 'On the project page, launch day' : 'Where it stands today',
+      tag: after ? 'Live · not scored yet' : 'Private draft',
+      tagStyle: pillBase + (after ? 'background:' + T.ink + ';color:' + T.bg + ';' : 'background:' + T.panelSolid + ';color:' + T.ink + ';'),
+      ready: 'Ready to publish: facts, ' + nAp + ' of 4 approvals' + (s.launchPrice ? ', and the price list.' : '. The price list stays back until you publish it.'),
+      devItems: devItems,
+      caption: after ? 'Live within hours of the registration. Nothing here moves a band; there is no band yet.' : 'Edit the draft on the left. Switch to launch day to see the page buyers will get.'
+    };
+    var notChip = 'display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:14px;font-weight:600;border:0;background:' + T.track + ';color:' + T.ink;
+    var notMeter = [1, 2, 3, 4, 5].map(function () { return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;border:1px solid ' + T.emptyBorder + ';'}; });
+
+    function pubStyleFn(dis) {
+      return 'height:44px;display:inline-flex;align-items:center;padding:0 20px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;white-space:nowrap;box-sizing:border-box;' + (dis ? 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';' : 'cursor:pointer;background:' + T.accent + ';color:' + T.onAccent + ';');
+    }
+    return {
+      t: T, u: U, nav: nav,
+      approvals: approvals, launchViews: launchViews, launch: launch, notChip: notChip, notMeter: notMeter,
+      launchPriceOn: s.launchPrice ? 'true' : 'false',
+      toggleLaunchPrice: function () { self.setState({launchPrice: !self.state.launchPrice}); },
+      launchPriceStyle: 'width:100%;display:flex;align-items:flex-start;gap:14px;padding:12px 14px;border:0;border-radius:8px;box-sizing:border-box;cursor:pointer;font:inherit;text-align:left;color:' + T.ink + ';transition:background-color 200ms ease;background:' + (s.launchPrice ? T.claimBg : T.track),
+      launchPriceBox: 'flex:none;width:22px;height:22px;margin-top:2px;border-radius:6px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;' + (s.launchPrice ? 'background:' + T.ink + ';color:' + T.bg + ';' : 'border:2px solid ' + T.ink2 + ';color:transparent;'),
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      lastPub: published ? 'last published 18 Oct 2026 by Arjun Mehta' : 'last published 2 Oct 2026 by Arjun Mehta',
+      tabs: tabs, tabId: 'tab-' + tab,
+      isConfig: tab === 0, isPrice: tab === 1, isPlan: tab === 2, isPlans: tab === 3, isSite: tab === 4,
+      p3: s.p3, p4: s.p4,
+      onP3: function (e) { self.setState({p3: e.target.value}); },
+      onP4: function (e) { self.setState({p4: e.target.value}); },
+      p3Note: n3 === null ? 'Enter crore, e.g. 2.35' : psf(n3, 1450),
+      p4Note: n4 === null ? 'Enter crore, e.g. 3.38' : psf(n4, 2100),
+      versions: versions, stages: stages,
+      plan2On: s.plan2 ? 'true' : 'false',
+      togglePlan2: function () { self.setState({plan2: !self.state.plan2}); },
+      plan2Style: 'width:100%;display:flex;align-items:flex-start;gap:14px;padding:12px 14px;border:0;border-radius:8px;box-sizing:border-box;cursor:pointer;font:inherit;text-align:left;color:' + T.ink + ';transition:background-color 200ms ease;background:' + (s.plan2 ? T.claimBg : T.track),
+      plan2Box: 'flex:none;width:22px;height:22px;margin-top:2px;border-radius:6px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;' + (s.plan2 ? 'background:' + T.ink + ';color:' + T.bg + ';' : 'border:2px solid ' + T.ink2 + ';color:transparent;'),
+      plan2Shown: !!s.plan2,
+      plan2Line: 'Also offered: possession-linked, 20:80' + (plan2Dirty ? ' (draft)' : '') + '. From the developer · not verified.',
+      noPlan4: !s.plan4, hasPlan4: !!s.plan4,
+      addPlan4: function () { self.setState({plan4: true}); },
+      removePlan4: function () { self.setState({plan4: false}); },
+      tag: s.tag,
+      tagOpts: TAGS.map(function (x) { var on = x === s.tag; return {label: x, on: on ? 'true' : 'false', pick: function () { self.setState({tag: x}); }, style: 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;box-sizing:border-box;transition:background-color 180ms ease, color 180ms ease;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.bg : T.ink)}; }),
+      noPhotos: !s.photos, hasPhotos: !!s.photos,
+      addPhotos: function () { self.setState({photos: true}); },
+      clearPhotos: function () { self.setState({photos: false}); },
+      elevChip: elevChip, elevMeter: elevMeter,
+      blk: blk, pvDate: pvDate,
+      pv3: v3.toFixed(2), pv4: v4.toFixed(2), psf3: psf(v3, 1450), psf4: psf(v4, 2100),
+      pvHist: pvHist,
+      allinLine: 'All-in for a park-facing 3 BHK on Plinth’s cost sheet: ₹' + allin.toFixed(2) + ' Cr, or ₹' + inr(allinPsf) + ' per sq ft carpet. Calculated by Plinth from this list.',
+      plan4Line: s.plan4 || pub.plan4 ? '4 BHK · Type B' + (plan4Dirty ? ' (draft)' : '') : '4 BHK plan not added yet',
+      siteLine: siteLine,
+      stateTag: stateTag, stateTagStyle: stateTagStyle, pvCaption: pvCaption,
+      pubLabel: dirty ? 'Publish changes' : (published ? 'Published' : 'Nothing to publish'),
+      pubDisabled: dirty ? 'false' : 'true',
+      pubStyle: pubStyleFn(!dirty),
+      publish: function () {
+        var st = self.state;
+        var a = parse(st.p3), b = parse(st.p4);
+        var pb = st.pub || {};
+        var pd = (a !== null && a.toFixed(2) !== Number(pb.p3).toFixed(2)) || (b !== null && b.toFixed(2) !== Number(pb.p4).toFixed(2));
+        var d = pd || !!st.plan2 !== !!pb.plan2 || !!st.plan4 !== !!pb.plan4 || !!st.photos !== !!pb.photos || (!!st.photos && st.tag !== pb.tag);
+        if (!d) return;
+        var vers = (st.pubVersions || []).slice();
+        var np3 = a !== null ? a : Number(pb.p3), np4 = b !== null ? b : Number(pb.p4);
+        if (pd) vers.unshift(['18 Oct 2026', np3, np4]);
+        self.setState({pub: {p3: np3.toFixed(2), p4: np4.toFixed(2), plan2: !!st.plan2, plan4: !!st.plan4, photos: !!st.photos, tag: st.photos ? st.tag : ''}, p3: np3.toFixed(2), p4: np4.toFixed(2), pubAt: '18 Oct 2026, 11:50', pubVersions: vers});
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

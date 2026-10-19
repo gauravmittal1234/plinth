@@ -1,0 +1,17 @@
+[
+  {
+    "slot": "agentSocietyGate",
+    "aspect": "4:5",
+    "prompt": "Documentary photograph, early morning, of a small, neat property agent's office at the main gate of a mature residential society on Golf Course Extension Road, Gurugram, India. A narrow glass-fronted kiosk with a plain desk, a closed laptop and a few plain folders visible inside; two steel chairs outside under a small awning; a parked scooter; a security cabin with a boom barrier beside it; 20-storey apartment towers with balconies rising behind through soft morning haze. A middle-aged agent in a plain shirt unlocks the kiosk door, seen from behind and slightly to the side, face not visible. Warm, low sunlight from the right, calm and ordinary, shallow depth of field. No signage text, no logos, no brand names, no emblems, no posters, no readable number plates, no legible text anywhere in the frame. Portrait crop: the kiosk sits in the lower third, the towers fill the upper two thirds. Used as the hero picture of Plinth's 'For agents' page."
+  },
+  {
+    "slot": "agentVisitingCards",
+    "aspect": "4:5",
+    "prompt": "Close-up documentary photograph of a homebuyer's hand holding three plain, completely blank visiting cards fanned out (cream, white and pale grey card stock, with no printing at all) above a light wooden desk in a property site office in Gurugram, India. Out of focus behind: a glass partition and the soft shape of an architectural scale model of residential towers. Soft daylight from a window on the left, shallow depth of field, calm and matter-of-fact. The cards carry no text, no logos, no emblems, no QR codes and no numbers. No legible text anywhere in the frame. Portrait crop with the hand and cards in the centre and quiet space above. Used on Plinth's 'Is this broker registered?' page."
+  },
+  {
+    "slot": "agentLarkspurOffice",
+    "aspect": "4:5",
+    "prompt": "Interior photograph of a small, tidy real-estate agent's office on the first floor of a commercial block on Dwarka Expressway, Gurugram, India, mid-morning. One wooden desk by a large window with a closed laptop, a neat stack of plain folders and a potted snake plant; two upholstered chairs facing the desk; a framed abstract print on a pale wall; a pin board holding blank index cards. Through the window, apartment towers under construction along a wide road, with one tower crane. Bright natural daylight, clean and warm, no people. No logos, no brand names, no emblems, no certificates or documents with readable text, no signage, no legible text anywhere in the frame. Portrait crop. Used as the hero picture of a fictional agent's public profile on Plinth."
+  }
+]

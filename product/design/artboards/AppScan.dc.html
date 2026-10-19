@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth app: Camera identify</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pl-drift{from{transform:scale(1)}to{transform:scale(1.04)}}
+@keyframes pl-scan{from{transform:translateY(-104px)}to{transform:translateY(104px)}}
+@keyframes pl-popA{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes pl-popB{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.pl-rise{animation:pl-rise .72s cubic-bezier(.22,1,.36,1) both}
+.pl-drift{transform-origin:50% 45%;animation:pl-drift 16s cubic-bezier(.33,1,.68,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums">
+
+  <div style="position: absolute; left: 0; top: 0; width: 390px; height: 620px; overflow: hidden; background: #1B2A24">
+    <img class="pl-drift" data-slot="cameraSite" src="/_blob/08f92d41639fba4056e16a3b4b3e0107" alt="Live camera view of a construction hoarding at a Gurugram project site" style="position: absolute; left: 0; top: 0; width: 390px; height: 620px; background: #E7E3DA; object-fit: cover; display: block">
+    <div aria-hidden="true" style="{{torchStyle}}"></div>
+    <sc-if value="{{isQr}}" hint-placeholder-val="{{true}}">
+      <svg width="390" height="620" viewBox="0 0 390 620" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+        <path fill-rule="evenodd" fill="#080C0A" fill-opacity="0.64" d="M0 0H390V620H0Z M97 184H293A30 30 0 0 1 323 214V410A30 30 0 0 1 293 440H97A30 30 0 0 1 67 410V214A30 30 0 0 1 97 184Z"></path>
+      </svg>
+      <div aria-hidden="true" style="{{frameStyle}}">
+        <sc-for list="{{corners}}" as="c" hint-placeholder-count="4"><span style="{{c.style}}"></span></sc-for>
+        <span style="{{scanLine}}"></span>
+      </div>
+      <p aria-live="polite" style="position: absolute; left: 24px; right: 24px; top: 462px; margin: 0; text-align: center; color: #FFFFFF; font-size: 17px; font-weight: 500; line-height: 1.4">
+        <sc-if value="{{scanning}}" hint-placeholder-val="{{true}}"><span>Point at the RERA QR on a hoarding or brochure. It scans on its own.</span></sc-if>
+        <sc-if value="{{reading}}" hint-placeholder-val="{{false}}"><span>Reading the QR, then checking the number on HARERA</span></sc-if>
+        <sc-if value="{{open}}" hint-placeholder-val="{{false}}"><span>Scan paused</span></sc-if>
+      </p>
+    </sc-if>
+    <sc-if value="{{isWhere}}" hint-placeholder-val="{{false}}">
+      <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 620px; background: rgba(8,12,10,0.76)"></div>
+      <div style="position: absolute; left: 24px; right: 24px; top: 168px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; color: #FFFFFF">
+        <svg width="168" height="132" viewBox="0 0 168 132" aria-hidden="true">
+          <path d="M22 34L104 8L152 62L122 120L30 110Z" fill="rgba(110,231,183,0.16)" stroke="#6EE7B7" stroke-width="2" stroke-linejoin="round"></path>
+          <circle cx="86" cy="66" r="11" fill="#6EE7B7"></circle>
+          <circle cx="86" cy="66" r="4.5" fill="#0B1411"></circle>
+        </svg>
+        <p class="pl-rise" style="margin: 4px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.035em; line-height: 1.04">Standing at a project site?</p>
+        <p class="pl-rise" style="margin: 0; font-size: 17px; line-height: 1.45; color: #FFFFFF; animation-delay: 80ms">We match your location to registered RERA project boundaries in Gurugram.</p>
+        <sc-if value="{{needLoc}}" hint-placeholder-val="{{true}}">
+          <button type="button" class="pl-press" onClick="{{allowLoc}}" style="height: 48px; padding: 0 22px; margin-top: 4px; border: 0; border-radius: 999px; background: #FFFFFF; color: #1B1A17; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"></circle></svg>Use my location
+          </button>
+        </sc-if>
+        <sc-if value="{{locIdle}}" hint-placeholder-val="{{false}}">
+          <span style="display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border-radius: 999px; background: rgba(110,231,183,0.16); color: #CFF7E6; font-size: 15px; font-weight: 600">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#6EE7B7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Location on. Tap Check where I am.
+          </span>
+        </sc-if>
+        <sc-if value="{{whereReading}}" hint-placeholder-val="{{false}}">
+          <span aria-live="polite" style="display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border-radius: 999px; background: rgba(110,231,183,0.16); color: #CFF7E6; font-size: 15px; font-weight: 600">Matching your location to RERA boundaries</span>
+        </sc-if>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="position: absolute; left: 12px; right: 12px; top: 40px; height: 48px; display: flex; align-items: center; gap: 12px; color: #FFFFFF">
+    <a href="#explore" class="pl-press" aria-label="Close scanner" style="width: 48px; height: 48px; flex: none; border-radius: 999px; background: #111D19; color: #FFFFFF; display: grid; place-items: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+    </a>
+    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 21px; letter-spacing: -0.03em; line-height: 1.1">Identify a project</span>
+      <span style="font-size: 13px; line-height: 1.3; color: #FFFFFF">Illustrative image</span>
+    </span>
+    <sc-if value="{{isQr}}" hint-placeholder-val="{{true}}">
+      <button type="button" class="pl-press" onClick="{{toggleTorch}}" aria-label="Torch" aria-pressed="{{torchAria}}" style="{{torchBtn}}">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L5.5 13.5h5.5L10 21l8-11h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+      </button>
+    </sc-if>
+  </div>
+
+  <p style="position: absolute; left: 16px; right: 16px; top: 104px; margin: 0; display: flex; align-items: flex-start; gap: 8px; color: #FFFFFF; font-size: 15px; line-height: 1.45">
+    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"></rect><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg>
+    <sc-if value="{{isQr}}" hint-placeholder-val="{{true}}"><span>Camera is on only while you scan. Nothing is recorded or uploaded.</span></sc-if>
+    <sc-if value="{{needLoc}}" hint-placeholder-val="{{false}}"><span>We ask for your location only when you tap Use my location.</span></sc-if>
+    <sc-if value="{{locOn}}" hint-placeholder-val="{{false}}"><span>Your location is used once for this match. It isn't stored.</span></sc-if>
+  </p>
+
+  <div role="group" aria-label="Identify mode" style="position: absolute; left: 0; right: 0; top: 548px; display: flex; justify-content: center; gap: 8px">
+    <button type="button" class="pl-press" onClick="{{setQr}}" aria-pressed="{{qrAria}}" style="{{qrBtn}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.8"></rect><rect x="14" y="4" width="6" height="6" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.8"></rect><rect x="4" y="14" width="6" height="6" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.8"></rect><path d="M14 14h2.5M19.5 14H20M14 17.5v2.5M17 17.5h3V20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>Scan RERA QR
+    </button>
+    <button type="button" class="pl-press" onClick="{{setWhere}}" aria-pressed="{{whereAria}}" style="{{whereBtn}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"></circle></svg>Where am I?
+    </button>
+  </div>
+
+  <div style="position: absolute; left: 16px; right: 16px; top: 640px; display: flex; flex-direction: column; gap: 4px">
+    <sc-if value="{{isQr}}" hint-placeholder-val="{{true}}">
+      <button type="button" class="pl-press" onClick="{{fromGallery}}" aria-busy="{{busyAria}}" style="height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"></rect><circle cx="9" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"></path></svg>Scan a QR from a photo
+      </button>
+    </sc-if>
+    <sc-if value="{{isWhere}}" hint-placeholder-val="{{false}}">
+      <button type="button" class="pl-press" onClick="{{checkWhere}}" aria-busy="{{busyAria}}" style="height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"></circle></svg>{{whereLabel}}
+      </button>
+    </sc-if>
+    <button type="button" class="pl-press" onClick="{{openSearch}}" style="margin-top: 8px; min-height: 48px; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Can't scan? Search by name</button>
+  </div>
+
+  <div aria-hidden="true" onClick="{{closeSheet}}" style="{{scrimStyle}}"></div>
+
+  <section role="dialog" aria-modal="true" aria-labelledby="match-h" style="{{matchSheet}}">
+    <div aria-hidden="true" style="position: absolute; left: 50%; top: 10px; width: 32px; height: 4px; margin-left: -16px; border-radius: 2px; background: {{t.lineStrong}}"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 18px; bottom: 88px; overflow-y: auto; padding: 0 20px 32px; box-sizing: border-box; display: flex; flex-direction: column">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+        <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; color: {{t.ink}}">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{matchedFrom}}
+        </span>
+        <button type="button" class="pl-press" onClick="{{closeSheet}}" aria-label="Close result" style="width: 48px; height: 48px; margin-right: -12px; flex: none; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+        </button>
+      </div>
+
+      <div style="{{rise.a}}">
+        <div style="margin: 4px -20px 0; width: 390px; height: 188px; overflow: hidden; background: #E7E3DA">
+          <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2: exterior of the towers" style="width: 390px; height: 188px; background: #E7E3DA; object-fit: cover; object-position: 50% 40%; display: block">
+        </div>
+        <p style="margin: 8px 0 0; font-size: 13px; color: {{t.muted}}">Illustrative image</p>
+      </div>
+
+      <div style="{{rise.b}}">
+        <h2 id="match-h" style="margin: 20px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 34px; letter-spacing: -0.04em; line-height: 1">Aurelia Heights, Phase 2</h2>
+        <p style="margin: 10px 0 0; font-size: 17px; color: {{t.ink}}">Northfield Estates · Sector 37D, Dwarka Expressway</p>
+      </div>
+
+      <div style="{{rise.c}}">
+        <div role="img" aria-label="Delivery risk: Elevated, step 3 of 5, since 2 Oct 2026" style="margin-top: 28px; display: flex; align-items: center; gap: 14px">
+          <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 16px); gap: 4px"><sc-for list="{{meterM}}" as="mm" hint-placeholder-count="5"><span style="{{mm.style}}"></span></sc-for></span>
+          <span aria-hidden="true" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 46px; letter-spacing: -0.045em; line-height: 0.95; color: {{bandText}}">Elevated</span>
+        </div>
+        <p style="margin: 10px 0 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Delivery risk, our opinion · Elevated since 2 Oct 2026, Moderate before · data as of 14 Oct 2026</p>
+        <p style="margin: 14px 0 0; font-size: 17px; line-height: 1.55">Between <strong>30 and 45 of 100</strong> similar Gurugram projects got their OC more than 12 months after the original RERA date. For Aurelia, that means an OC after Apr 2029. Keys usually follow the OC.</p>
+        <p style="margin: 10px 0 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">We're less certain about this one: Northfield has only 6 finished RERA projects to learn from, so we show a range, not one number.</p>
+        <p style="margin: 18px 0 0; display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.035em; line-height: 1.05">₹2.74 Cr all-in</span><span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">quoted ₹2.35 Cr · 3 BHK, park-facing, developer's cost sheet of 2 Oct 2026</span></p>
+      </div>
+
+      <div style="{{rise.d}}">
+        <div style="margin-top: 24px; display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 8px; background: {{t.track}}; color: {{t.ink}}">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M8.8 12.2l2.3 2.3 4.3-4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <div>
+            <strong style="display: block; font-size: 17px; font-weight: 700">RERA GGM/673/405/2022/117</strong>
+            <span style="display: block; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Number verified on HARERA (haryanarera.gov.in) · checked 14 Oct 2026</span>
+          </div>
+        </div>
+        <div style="margin-top: 12px; padding: 14px 16px; border-radius: 8px; background: {{t.track}}; color: {{t.ink}}">
+          <strong style="display: block; font-size: 17px; font-weight: 700">Not on HARERA yet: the Jul–Sep 2026 progress report</strong>
+          <span style="display: block; margin-top: 2px; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">The quarterly progress report (QPR) was due 15 Oct 2026. Records show it isn't on HARERA as of 18 Oct.</span>
+        </div>
+        <div style="margin-top: 8px; display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 8px; background: {{t.claimBg}}; color: {{t.ink}}">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M5 5.5h14v10H10l-4 3.5v-3.5H5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+          <span style="font-size: 15px; line-height: 1.45"><strong style="font-weight: 700">Developer says · not yet verified:</strong> "filed on 12 Oct 2026". We'll check it when it appears on HARERA.</span>
+        </div>
+      </div>
+
+      <div style="{{rise.e}}">
+        <h3 style="margin: 36px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 24px; letter-spacing: -0.03em; line-height: 1.1">What do the records show?</h3>
+        <ul style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 22px">
+          <li style="display: flex; gap: 16px; align-items: flex-start">
+            <span style="flex: none; width: 80px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 34px; letter-spacing: -0.04em; line-height: 1">41%</span>
+            <span style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start; font-size: 17px; line-height: 1.5">built, as filed by the developer
+              <a href="#source-qpr" class="pl-press" style="display: inline-flex; align-items: center; min-height: 48px; text-decoration: none; color: {{t.ink}}"><span style="display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px 0 12px; border-radius: 999px; background: {{t.track}}; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg>HARERA QPR · Apr–Jun 2026</span></a>
+            </span>
+          </li>
+          <li style="display: flex; gap: 16px; align-items: flex-start">
+            <span style="flex: none; width: 80px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 34px; letter-spacing: -0.04em; line-height: 1">77%</span>
+            <span style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start; font-size: 17px; line-height: 1.5">of the promised time used. Registered Dec 2022, due Dec 2027.
+              <a href="#source-reg" class="pl-press" style="display: inline-flex; align-items: center; min-height: 48px; text-decoration: none; color: {{t.ink}}"><span style="display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px 0 12px; border-radius: 999px; background: {{t.track}}; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg>HARERA registration · Dec 2022</span></a>
+            </span>
+          </li>
+          <li style="display: flex; gap: 16px; align-items: flex-start">
+            <span style="flex: none; width: 80px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 34px; letter-spacing: -0.04em; line-height: 1">14</span>
+            <span style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start; font-size: 17px; line-height: 1.5">complaints decided against the promoter in 24 months · 2.8 per 100 units. Similar projects: median 3.
+              <a href="#source-orders" class="pl-press" style="display: inline-flex; align-items: center; min-height: 48px; text-decoration: none; color: {{t.ink}}"><span style="display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px 0 12px; border-radius: 999px; background: {{t.track}}; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg>HARERA orders · to 14 Oct 2026</span></a>
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <p style="margin: 28px 0 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Our opinion, based on public records. Not a credit rating. Not issued by any RERA. No developer pays us. Ever. <a href="#report" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Report an error</a></p>
+    </div>
+
+    <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 88px; box-sizing: border-box; display: flex; gap: 10px; padding: 14px 16px 22px; background: {{t.nav}}">
+      <a href="#project" class="pl-press" style="flex: 1 1 0; height: 52px; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; text-decoration: none; font-weight: 600; font-size: 17px">Open project</a>
+      <button type="button" class="pl-press" onClick="{{toggleFollow}}" aria-pressed="{{followAria}}" style="{{followBtn}}">
+        <sc-if value="{{following}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{followLabel}}
+      </button>
+    </div>
+  </section>
+
+  <section role="dialog" aria-modal="true" aria-labelledby="nomatch-h" style="{{noMatchSheet}}">
+    <div aria-hidden="true" style="position: absolute; left: 50%; top: 10px; width: 32px; height: 4px; margin-left: -16px; border-radius: 2px; background: {{t.lineStrong}}"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 22px; bottom: 0; overflow-y: auto; padding: 0 20px 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px">
+        <sc-if value="{{failed}}" hint-placeholder-val="{{true}}">
+          <h2 id="nomatch-h" style="margin: 8px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.035em; line-height: 1.02">We couldn't match this.</h2>
+        </sc-if>
+        <sc-if value="{{manual}}" hint-placeholder-val="{{false}}">
+          <h2 id="nomatch-h2" style="margin: 8px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.035em; line-height: 1.02">Which project are you looking at?</h2>
+        </sc-if>
+        <button type="button" class="pl-press" onClick="{{closeSheet}}" aria-label="Close" style="width: 48px; height: 48px; margin-right: -12px; flex: none; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+        </button>
+      </div>
+      <p style="margin: 0; font-size: 17px; color: {{t.ink}}">{{noMatchBody}}</p>
+      <div style="display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 20px; border-radius: 999px; background: {{t.track}}; box-sizing: border-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; color: {{t.ink2}}"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+        <label for="scan-search" class="sr">Search by project, developer or RERA number</label>
+        <input id="scan-search" type="text" value="{{query}}" onChange="{{onQuery}}" placeholder="Project, developer or RERA number" autocomplete="off" style="flex: 1; min-width: 0; height: 48px; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px">
+      </div>
+      <sc-if value="{{hasResults}}" hint-placeholder-val="{{false}}">
+        <ul aria-label="Matching projects" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px">
+          <sc-for list="{{results}}" as="r" hint-placeholder-count="2">
+            <li class="pl-rise" style="{{r.anim}}">
+              <a href="#project" class="pl-press" style="min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; color: {{t.ink}}; text-decoration: none">
+                <span style="display: flex; flex-direction: column"><strong style="font-size: 17px; font-weight: 600">{{r.name}}</strong><span style="font-size: 15px; color: {{t.ink2}}">{{r.where}}</span></span>
+                <span role="img" aria-label="{{r.chip.sr}}" style="{{r.chip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{r.chip.meter}}" as="rm" hint-placeholder-count="5"><span style="{{rm.style}}"></span></sc-for></span><span aria-hidden="true">{{r.chip.name}}</span></span>
+              </a>
+            </li>
+          </sc-for>
+        </ul>
+      </sc-if>
+      <sc-if value="{{noResults}}" hint-placeholder-val="{{false}}">
+        <p style="margin: 0; font-size: 16px; color: {{t.ink}}">Not in our records yet. If it has a Gurugram RERA number, we'll add it within 14 days or tell you why not.</p>
+        <sc-if value="{{canRequest}}" hint-placeholder-val="{{true}}">
+          <button type="button" class="pl-press" onClick="{{requestIt}}" style="align-self: flex-start; height: 48px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Request {{reqName}}</button>
+        </sc-if>
+        <sc-if value="{{requested}}" hint-placeholder-val="{{false}}">
+          <p role="status" style="margin: 0; padding: 14px 16px; border-radius: 8px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; font-size: 16px; line-height: 1.45"><strong style="font-weight: 700">Requested · R-1018-07.</strong> We'll add {{reqName}} by 1 Nov 2026 or tell you why not.</p>
+        </sc-if>
+      </sc-if>
+      <div style="display: flex; gap: 10px; padding-top: 4px">
+        <button type="button" class="pl-press" onClick="{{scanAgain}}" style="flex: 1; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Scan again</button>
+        <button type="button" class="pl-press" onClick="{{tryWhere}}" style="flex: 1; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Try Where am I?</button>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"screen":{"editor":"enum","options":["Scan QR","Where am I?","Reading","Match","No match","Search by name"],"default":"Scan QR"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {scrFrom: null, mode: 'qr', phase: 'scan', result: 'match', via: 'qr', torch: false, locAllowed: false, following: false, query: '', requested: '', reduced: false};
+  }
+  componentDidMount() {
+    var self = this;
+    var reduced = false;
+    try { reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { reduced = false; }
+    this.setState({reduced: reduced});
+  }
+  componentWillUnmount() {
+    clearTimeout(this._read);
+  }
+  // The `screen` tweak sets a starting state; once you tap, your taps win until the tweak changes.
+  eff() {
+    var s = this.state || {};
+    var scr = this.props.screen || 'Scan QR';
+    if (s.scrFrom === scr) return s;
+    var preset = {
+      'Scan QR': {mode: 'qr', phase: 'scan', via: 'qr'},
+      'Where am I?': {mode: 'where', phase: 'scan', via: 'where', locAllowed: false},
+      'Reading': {mode: 'qr', phase: 'reading', via: 'qr'},
+      'Match': {mode: 'qr', phase: 'match', result: 'match', via: 'qr'},
+      'No match': {mode: 'qr', phase: 'nomatch', result: 'nomatch', via: 'qr', query: ''},
+      'Search by name': {mode: 'qr', phase: 'nomatch', result: 'nomatch', via: 'manual', query: 'Indigo Terraces'}
+    }[scr] || {};
+    return Object.assign({}, s, preset);
+  }
+  go(patch) {
+    this.setState(Object.assign({}, this.eff(), patch, {scrFrom: this.props.screen || 'Scan QR'}));
+  }
+  run(via) {
+    var self = this;
+    if (this.eff().phase === 'reading') return;
+    clearTimeout(this._read);
+    var patch = {phase: 'reading', via: via, query: ''};
+    if (via === 'where') patch.locAllowed = true;
+    if (via === 'photo') patch.mode = 'qr';
+    this.go(patch);
+    this._read = setTimeout(function () {
+      self.setState({phase: 'match', result: 'match'});
+    }, 1400);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.eff();
+    var night = (this.props.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', sheet: '#111C18', panel: 'rgba(255,255,255,0.045)', track: 'rgba(255,255,255,0.07)',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claimBg: '#1D2621', emptyBorder: '#7D828A', nav: '#121D19', segOff: 'transparent', shadow: '0 8px 24px rgba(0,0,0,0.45)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', sheet: '#FFFFFF', panel: '#FFFFFF', track: '#F4F2ED',
+      line: '#E7E3DA', lineStrong: '#C9C4B9',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claimBg: '#F1ECE2', emptyBorder: '#8C9199', nav: '#EFECE5', segOff: '#FFFFFF', shadow: '0 8px 24px rgba(27,26,23,.12)'
+    };
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5'},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2'},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8'},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD'},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE'}
+    };
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    var fillD = {Low: '#15323A', Moderate: '#332B0C', Elevated: '#3A2210', High: '#3D1A19', Severe: '#341A33'};
+    function chipFor(n) {
+      var base = 'display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:600;line-height:1;white-space:nowrap;flex:none;';
+      if (!B[n]) {
+        var neutral = night ? '#A3A8B0' : '#6B7079';
+        return {name: n, sr: 'Delivery risk: limited history, not scored', style: base + 'background:' + T.track + ';color:' + T.ink2,
+          meter: [1, 2, 3, 4, 5].map(function () { return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;background:' + T.segOff + ';border:1px dashed ' + neutral}; })};
+      }
+      var b = B[n];
+      return {name: n, sr: 'Delivery risk: ' + n + ', step ' + b.i + ' of 5', style: base + 'background:' + (night ? fillD[n] : b.fill) + ';color:' + T.ink,
+        meter: [1, 2, 3, 4, 5].map(function (j) {
+          return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= b.i ? 'background:' + ink(n) : 'background:' + T.segOff + ';border:1px solid ' + T.emptyBorder)};
+        })};
+    }
+
+    var isQr = s.mode === 'qr';
+    var scanning = s.phase === 'scan';
+    var reading = s.phase === 'reading';
+    var open = s.phase === 'match' || s.phase === 'nomatch';
+    var hot = reading || s.phase === 'match';
+    var cc = hot ? '#6EE7B7' : '#FFFFFF';
+    var cornerDefs = [
+      'left:0;top:0;border-left:4px solid ' + cc + ';border-top:4px solid ' + cc + ';border-top-left-radius:30px;',
+      'right:0;top:0;border-right:4px solid ' + cc + ';border-top:4px solid ' + cc + ';border-top-right-radius:30px;',
+      'left:0;bottom:0;border-left:4px solid ' + cc + ';border-bottom:4px solid ' + cc + ';border-bottom-left-radius:30px;',
+      'right:0;bottom:0;border-right:4px solid ' + cc + ';border-bottom:4px solid ' + cc + ';border-bottom-right-radius:30px;'
+    ];
+    var corners = cornerDefs.map(function (d) { return {style: 'position:absolute;width:52px;height:52px;box-sizing:border-box;transition:border-color .3s ease;' + d}; });
+    var frameStyle = 'position:absolute;left:67px;top:184px;width:256px;height:256px;transition:transform .34s cubic-bezier(.22,1,.36,1);transform:scale(' + (hot ? 0.92 : 1) + ')';
+    var scanLine = 'position:absolute;left:22px;right:22px;top:127px;height:2px;border-radius:2px;background:#6EE7B7;transition:opacity .2s ease;opacity:' + (scanning ? 1 : 0) + ';' + (scanning && !s.reduced ? 'animation:pl-scan 1.8s cubic-bezier(.76,0,.24,1) infinite alternate;' : '');
+
+    function modeBtn(on) {
+      return 'height:48px;padding:0 18px;border:0;border-radius:999px;display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:16px;font-weight:600;white-space:nowrap;cursor:pointer;transition:transform .14s cubic-bezier(.22,1,.36,1),background-color .18s ease,color .18s ease;' +
+        (on ? 'background:#FFFFFF;color:#1B1A17;' : 'background:#111D19;color:#FFFFFF;');
+    }
+
+    var P = [
+      {name: 'Aurelia Heights, Phase 2', where: 'Northfield Estates · Sector 37D', band: 'Elevated', key: 'aurelia heights phase 2 northfield estates sector 37d dwarka expressway ggm/673/405/2022/117'},
+      {name: 'Kestrel Park', where: 'Orbis Land · Sector 113', band: 'Low', key: 'kestrel park orbis land sector 113 dwarka expressway'},
+      {name: 'Sapphire Grove, Phase 1', where: 'Meridian Habitat · Sector 106', band: 'Moderate', key: 'sapphire grove phase 1 meridian habitat sector 106 dwarka expressway'},
+      {name: 'Coral Towers', where: 'Vantage Buildcon · Sector 89', band: 'High', key: 'coral towers vantage buildcon sector 89 new gurugram'},
+      {name: 'Laurel Residency', where: 'Elmstone Developers · Sector 92', band: 'Severe', key: 'laurel residency elmstone developers sector 92 new gurugram'},
+      {name: 'Juniper Enclave', where: 'Halcyon Homes · Sector 102', band: 'Limited history', key: 'juniper enclave halcyon homes sector 102 dwarka expressway'}
+    ];
+    var qy = String(s.query || '').trim().toLowerCase();
+    var reqName = String(s.query || '').trim().replace(/\s+/g, ' ').slice(0, 40) || 'it';
+    var results = qy.length ? P.filter(function (p) { return p.key.indexOf(qy) >= 0; }).slice(0, 3).map(function (p, i) {
+      return {name: p.name, where: p.where, chip: chipFor(p.band), anim: 'animation-delay:' + (i * 70) + 'ms'};
+    }) : [];
+
+    var isMatch = s.result === 'match';
+    var matchOpen = open && isMatch;
+    var noOpen = open && !isMatch;
+    var ease = 'cubic-bezier(.22,1,.36,1)';
+    function riseAt(i) { return matchOpen ? 'animation:pl-rise .62s ' + ease + ' ' + (180 + i * 80) + 'ms both' : ''; }
+    var rise = {a: riseAt(0), b: riseAt(1), c: riseAt(2), d: riseAt(3), e: riseAt(4)};
+    var meterM = [1, 2, 3, 4, 5].map(function (j) {
+      var on = j <= B.Elevated.i;
+      return {style: 'display:block;width:16px;height:12px;border-radius:3px;box-sizing:border-box;' + (on ? 'background:' + ink('Elevated') + ';' : 'background:' + T.segOff + ';border:1px solid ' + T.emptyBorder + ';') + (matchOpen && on ? 'animation:pl-popA .36s ' + ease + ' ' + (420 + j * 110) + 'ms both;' : '')};
+    });
+    function sheet(isOpen, geom) {
+      return 'position:absolute;left:0;right:0;bottom:0;' + geom + 'background:' + T.sheet + ';color:' + T.ink + ';border-radius:28px 28px 0 0;box-shadow:' + T.shadow + ';transform:translateY(' + (isOpen ? '0' : '105%') + ');visibility:' + (isOpen ? 'visible' : 'hidden') + ';transition:' + (isOpen ? 'transform .4s cubic-bezier(.22,1,.36,1), visibility 0s' : 'transform .26s cubic-bezier(.76,0,.24,1), visibility 0s linear .26s');
+    }
+    var via = s.via;
+    var matchedFrom = via === 'where' ? 'Matched from your location' : (via === 'photo' ? 'Matched from the QR in your photo' : 'Matched from the RERA QR');
+    var manual = via === 'manual';
+    var noMatchBody = manual ? 'Type a project, developer or RERA number. We cover Gurugram for now.' : 'Search by name instead. ' +
+      (via === 'where' ? "You don't seem to be inside a registered project boundary we cover. We cover Gurugram for now." :
+        'The QR may be damaged, or the project may be outside Gurugram. We cover Gurugram for now.');
+
+    return {
+      t: T,
+      isQr: isQr, isWhere: !isQr,
+      scanning: scanning, reading: reading, open: open,
+      needLoc: !isQr && !s.locAllowed,
+      locOn: !isQr && s.locAllowed,
+      locIdle: !isQr && s.locAllowed && !reading,
+      whereReading: !isQr && reading,
+      corners: corners, scanLine: scanLine, frameStyle: frameStyle,
+      meterM: meterM, bandText: night ? B.Elevated.dark : B.Elevated.light, rise: rise,
+      torchStyle: 'position:absolute;left:0;top:0;width:390px;height:624px;background:rgba(255,248,225,0.12);pointer-events:none;transition:opacity .25s;opacity:' + (s.torch ? 1 : 0),
+      torchAria: s.torch ? 'true' : 'false',
+      torchBtn: 'width:48px;height:48px;flex:none;border:0;border-radius:999px;display:grid;place-items:center;cursor:pointer;' + (s.torch ? 'background:#FFFFFF;color:#1B1A17;' : 'background:#111D19;color:#FFFFFF;'),
+      toggleTorch: function () { self.go({torch: !s.torch}); },
+      qrBtn: modeBtn(isQr), whereBtn: modeBtn(!isQr),
+      qrAria: isQr ? 'true' : 'false', whereAria: isQr ? 'false' : 'true',
+      setQr: function () { clearTimeout(self._read); self.go({mode: 'qr', phase: 'scan'}); },
+      setWhere: function () { clearTimeout(self._read); self.go({mode: 'where', phase: 'scan', torch: false}); },
+      allowLoc: function () { self.go({locAllowed: true}); },
+      checkWhere: function () { self.run('where'); },
+      whereLabel: reading ? 'Checking where you are…' : 'Check where I am',
+      fromGallery: function () { self.run('photo'); },
+      busyAria: reading ? 'true' : 'false',
+      openSearch: function () { clearTimeout(self._read); self.go({phase: 'nomatch', result: 'nomatch', via: 'manual', query: ''}); },
+      scrimStyle: 'position:absolute;left:0;top:0;width:390px;height:844px;background:rgba(8,12,10,0.48);transition:opacity .3s;opacity:' + (open ? 1 : 0) + ';pointer-events:' + (open ? 'auto' : 'none'),
+      closeSheet: function () { self.go({phase: 'scan'}); },
+      matchSheet: sheet(matchOpen, 'top:96px;'),
+      noMatchSheet: sheet(noOpen, 'height:600px;'),
+      matchedFrom: matchedFrom,
+      chip: chipFor('Elevated'),
+      following: !!s.following,
+      followAria: s.following ? 'true' : 'false',
+      followLabel: s.following ? 'Following' : 'Follow',
+      followBtn: 'flex:1.4 1 0;height:52px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;' + (s.following ? 'background:' + T.accentSoft + ';color:' + T.onAccentSoft + ';' : 'background:' + T.accent + ';color:' + T.onAccent + ';'),
+      toggleFollow: function () { self.go({following: !s.following}); },
+      failed: !manual, manual: manual,
+      noMatchBody: noMatchBody,
+      query: s.query,
+      onQuery: function (e) { self.go({query: e.target.value, requested: ''}); },
+      results: results,
+      hasResults: results.length > 0,
+      noResults: qy.length > 0 && results.length === 0,
+      reqName: reqName,
+      canRequest: qy.length > 0 && results.length === 0 && s.requested !== reqName,
+      requested: qy.length > 0 && results.length === 0 && s.requested === reqName,
+      requestIt: function () { self.go({requested: reqName}); },
+      scanAgain: function () { self.go({phase: 'scan', mode: 'qr', query: ''}); },
+      tryWhere: function () { self.go({phase: 'scan', mode: 'where', query: '', torch: false}); }
+    };
+  }
+}
+</script>
+</body>
+</html>

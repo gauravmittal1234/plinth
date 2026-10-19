@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project page: hard states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+button,a{transition:transform 140ms cubic-bezier(.22,1,.36,1),filter 180ms ease,background-color 180ms ease,text-decoration-thickness 180ms ease}
+button:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){button:hover{filter:brightness(.93)}.pl-night button:hover{filter:brightness(1.15)}}
+.pl-line{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+.pl-l{display:block}
+@keyframes plRise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes plLine{from{transform:translateY(106%)}to{transform:none}}
+@keyframes plDrift{from{transform:scale(1)}to{transform:scale(1.04)}}
+@keyframes plGrow{from{transform:scaleY(0)}to{transform:none}}
+@media (prefers-reduced-motion:no-preference){
+html{scroll-behavior:smooth}
+.pl-l{animation:plLine 950ms cubic-bezier(.22,1,.36,1) 120ms both}
+.pl-in{animation:plRise 800ms cubic-bezier(.22,1,.36,1) 200ms both}
+.pl-drift{animation:plDrift 26s cubic-bezier(.33,1,.68,1) infinite alternate}
+.pl-d1{animation-delay:200ms}.pl-d2{animation-delay:290ms}.pl-d3{animation-delay:380ms}.pl-d4{animation-delay:470ms}
+.pl-grow{transform-origin:50% 100%;animation:plGrow 900ms cubic-bezier(.22,1,.36,1) 300ms both}
+@supports (animation-timeline:view()){
+.pl-rv{animation:plRise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+.pl-rv.pl-d1{animation-delay:0s;animation-range:entry 8% entry 63%}.pl-rv.pl-d2{animation-delay:0s;animation-range:entry 16% entry 71%}
+}
+}
+</style>
+</helmet>
+<div id="top" class="{{rootClass}}" style="position: relative; min-height: 3960px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 30; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <span style="display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-right: auto; min-width: 0">
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 19px; letter-spacing: -0.01em">{{p.name}}</span>
+        <span style="{{chip.style}}"><span class="sr">{{chip.sr}}</span><span aria-hidden="true" style="display: inline-grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{chip.meter}}" as="m" hint-placeholder-count="5"><span style="{{m.style}}"></span></sc-for></span><sc-if value="{{chip.flag}}" hint-placeholder-val="{{false}}"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if><span aria-hidden="true">{{chip.name}}</span></span>
+        <sc-if value="{{p.flag}}" hint-placeholder-val="{{false}}"><span style="{{stallPill}}"><svg width="13" height="13" viewBox="0 0 18 18" aria-hidden="true"><path d="{{p.flagIcon}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{p.flagLabel}}</span></sc-if>
+      </span>
+      <nav aria-label="On this page" style="display: flex; flex-wrap: wrap; gap: 2px">
+        <a href="#risk" style="{{navLink}}">Delivery risk</a>
+        <a href="#booked" style="{{navLink}}">If you’ve booked</a>
+      </nav>
+      <span style="display: flex; align-items: center; gap: 10px">
+        <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer; display: inline-flex; align-items: center; justify-content: center">
+          <sc-if value="{{night}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.5" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M10 1.8v2.2M10 16v2.2M1.8 10H4M16 10h2.2M4.2 4.2l1.6 1.6M14.2 14.2l1.6 1.6M4.2 15.8l1.6-1.6M14.2 5.8l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+          <sc-if value="{{day}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.6A6.5 6.5 0 0 1 7.4 4a6.5 6.5 0 1 0 8.6 8.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg></sc-if>
+        </button>
+        <button type="button" onClick="{{toggleFollow}}" aria-pressed="{{following}}" style="{{pillFollowStyle}}"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="{{followIcon}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{pillFollowLabel}}</button>
+      </span>
+    </div>
+  </header>
+
+  <section id="overview" aria-labelledby="hero-h" style="position: relative; height: 680px; overflow: hidden; background: #E7E3DA">
+    <sc-if value="{{isLaurel}}" hint-placeholder-val="{{true}}"><img data-slot="heroLaurel" class="pl-drift" src="/_blob/d710ca2aa38a585d11eca42df567bbf9" alt="Laurel Residency: unfinished concrete towers behind a boundary wall. Illustrative image." style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 30%"></sc-if>
+    <sc-if value="{{isJuniper}}" hint-placeholder-val="{{false}}"><img data-slot="heroJuniper" class="pl-drift" src="/_blob/dca5839367b61f6d11fb4a0306ea108a" alt="Juniper Enclave: residential towers under construction. Illustrative image." style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 30%"></sc-if>
+    <sc-if value="{{isHeron}}" hint-placeholder-val="{{false}}"><img data-slot="heroHeron" class="pl-drift" src="/_blob/f43f61bcdf684a03da237858ab789a9f" alt="Heron Point, Phase 2: a levelled, fenced plot with a site hoarding, before construction. Illustrative image." style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: #E7E3DA; transform-origin: 50% 30%"></sc-if>
+    <sc-if value="{{isAurelia}}" hint-placeholder-val="{{false}}"><img data-slot="heroAurelia" class="pl-drift" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2: exterior of the towers. Illustrative image." style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 30%"></sc-if>
+    <sc-if value="{{isCoral}}" hint-placeholder-val="{{false}}"><img data-slot="heroCoral" class="pl-drift" src="/_blob/76b15081db77011ae5930ad87bcd7272" alt="Coral Towers: two partly built residential towers. Illustrative image." style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 30%"></sc-if>
+    <sc-if value="{{isSapphire}}" hint-placeholder-val="{{false}}"><img data-slot="heroSapphire" class="pl-drift" src="/_blob/834d8de534be36df0eb45c9468dabeb2" alt="Sapphire Grove, Phase 1: residential towers under construction. Illustrative image." style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 30%"></sc-if>
+    <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,16,13,0.06) 18%, rgba(10,16,13,0.52) 52%, rgba(10,16,13,0.88) 100%)"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 24px 32px 0; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+        <span style="font-size: 14px; color: #1B1A17; background: rgba(255,255,255,0.92); padding: 4px 14px; border-radius: 999px">Images on this page are illustrative</span>
+        <span style="display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 4px 16px; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.92); color: #1B1A17; font-size: 15px; font-weight: 600"><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l3.5 3.5L16 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{p.reg}}</span>
+      </div>
+    </div>
+    <div style="position: absolute; left: 0; right: 0; bottom: 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px 64px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px; color: #FFFFFF">
+        <p class="pl-in" style="margin: 0; font-size: 18px">{{p.where}}</p>
+        <p class="pl-in" style="margin: -8px 0 0; display: flex; align-items: center; gap: 8px; font-size: 16px; color: rgba(255,255,255,0.94)"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="{{claimIcon}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{claimLine}}</p>
+        <h1 id="hero-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 112px); line-height: 0.92; letter-spacing: -0.045em">
+          <span class="pl-line"><span class="pl-l">{{p.t1}}</span></span>
+          <span class="pl-line"><span class="pl-l pl-d1">{{p.t2}}</span></span>
+        </h1>
+        <p class="pl-in pl-d2" style="margin: 0; font-size: 22px; line-height: 1.45; font-weight: 500; max-width: 980px">{{p.summary}}</p>
+        <p class="pl-in pl-d2" style="margin: 0; font-size: 17px; color: rgba(255,255,255,0.94)">{{p.price}}</p>
+        <div class="pl-in pl-d3" style="display: flex; gap: 12px 14px; flex-wrap: wrap; align-items: center; margin-top: 6px">
+          <button type="button" onClick="{{toggleFollow}}" aria-pressed="{{following}}" style="{{heroFollowStyle}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="{{followIcon}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{followLabel}}</button>
+          <a href="#ask" style="display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 24px; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.94); color: #1B1A17; text-decoration: none; font-size: 18px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="2.5" width="6" height="10" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"></rect><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v2.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg>Ask about it</a>
+          <a href="#booked" style="height: 52px; display: inline-flex; align-items: center; padding: 0 12px; color: #FFFFFF; font-size: 18px; font-weight: 600; text-decoration: underline">Already booked here?</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="main">
+    <section id="risk" aria-labelledby="risk-h" style="scroll-margin-top: 72px; background: {{t.bg}}; padding: 144px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 56px 80px">
+        <div style="flex: 1 1 420px; max-width: 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+          <h2 id="risk-h" class="pl-rv" style="{{h2}}">{{a.h2}}</h2>
+          <div class="pl-rv pl-d1" style="display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap">
+            <sc-if value="{{a.showMeter}}" hint-placeholder-val="{{true}}"><span aria-hidden="true" style="display: inline-grid; grid-template-columns: repeat(5, 20px); gap: 4px"><sc-for list="{{a.meter}}" as="mm" hint-placeholder-count="5"><span style="{{mm.style}}"></span></sc-for></span></sc-if>
+            <sc-if value="{{a.showPause}}" hint-placeholder-val="{{false}}"><svg width="44" height="44" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7.6" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M7 6.2v5.6M11 6.2v5.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></sc-if>
+            <span style="{{a.nameStyle}}"><span class="sr">{{a.srPrefix}}</span>{{a.name}}</span>
+            <span style="{{a.tagStyle}}">{{a.tag}}</span>
+          </div>
+          <sc-for list="{{a.paras}}" as="pa" hint-placeholder-count="3"><p class="pl-rv pl-d2" style="{{pa.style}}">{{pa.text}}</p></sc-for>
+          <sc-if value="{{a.hasUnsure}}" hint-placeholder-val="{{false}}"><p style="margin: 0; display: flex; align-items: flex-start; gap: 10px; font-size: 17px; line-height: 1.55"><span aria-hidden="true" style="flex: none; margin-top: 9px; display: inline-flex; gap: 3px"><span style="display: block; width: 8px; height: 8px; border-radius: 50%; background: {{t.ink2}}"></span><span style="display: block; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid {{t.ink2}}; box-sizing: border-box"></span></span><span><strong>We’re less certain about this one.</strong> {{a.unsure}}</span></p></sc-if>
+          <p style="margin: 0; font-size: 17px; line-height: 1.55"><strong>{{a.changeHead}}</strong> {{a.change}}</p>
+          <p style="margin: 0; font-size: 16px; line-height: 1.5; color: {{t.ink2}}">Our opinion, based on public records. Not a credit rating. Not issued by any RERA. Data as of 14 Oct 2026 · model v1.2.</p>
+        </div>
+
+        <div class="pl-rv pl-d1" style="flex: 1 1 500px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+          <sc-if value="{{a.isScale}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 28px">
+              <div role="img" aria-label="Delivery risk scale from Low to Severe. This project: Severe, step 5 of 5, set by a red-flag rule." style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px">
+                <sc-for list="{{scale}}" as="sc" hint-placeholder-count="5">
+                  <span style="display: flex; flex-direction: column; gap: 8px">
+                    <span style="height: 28px; display: flex; align-items: center"><span style="{{sc.barStyle}}"></span></span>
+                    <span style="{{sc.textStyle}}">{{sc.name}}</span>
+                  </span>
+                </sc-for>
+              </div>
+              <div style="padding: 28px 32px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 12px">
+                <span style="display: flex; align-items: center; gap: 10px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.02em; line-height: 1.15"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Red-flag rule 1</span>
+                <span>Insolvency (CIRP) admitted against the promoter or a group company. The band is Severe while the case stands.</span>
+                <span style="font-size: 17px; color: {{t.ink2}}">When a rule sets the band we don’t show a frequency of 100: the rule is the reason. It is one of four published rules.</span>
+                <span style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{ruleChips}}" as="rc" hint-placeholder-count="2"><button type="button" onClick="{{rc.open}}" aria-label="{{rc.aria}}" style="{{chipStyleOnTrack}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{rc.label}}</button></sc-for></span>
+                <a href="#methodology" style="font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline">How red-flag rules work</a>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{a.isStall}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 22px">
+              <h3 style="{{h3}}">Built, by quarterly report</h3>
+              <div role="img" aria-label="Built share in the last 4 quarterly reports: 34%, 34%, 34% and 34%, from Jul–Sep 2025 to Apr–Jun 2026." style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+                <sc-for list="{{slabs}}" as="sb" hint-placeholder-count="4">
+                  <span style="display: flex; flex-direction: column; gap: 10px">
+                    <span aria-hidden="true" style="position: relative; display: block; height: 240px; border-radius: 4px; background: {{t.track}}; overflow: hidden"><span class="pl-grow" style="{{sb.fill}}"></span></span>
+                    <span style="display: flex; flex-direction: column; line-height: 1.3"><strong style="font-size: 22px">34%</strong><span style="font-size: 15px; color: {{t.ink2}}">{{sb.q}}</span></span>
+                  </span>
+                </sc-for>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px">
+                <div role="img" aria-label="Promised time: 100% used at the original completion date, Jun 2026. Today, 18 Oct 2026, 106% is used." style="position: relative; height: 72px">
+                  <span style="position: absolute; left: 0; top: 26px; width: 90.9%; height: 12px; border-radius: 2px 0 0 2px; background: {{t.ink}}"></span>
+                  <span style="{{overdue}}"></span>
+                  <span style="position: absolute; left: 90.9%; top: 14px; width: 2px; height: 36px; margin-left: -1px; background: {{t.ink}}"></span>
+                  <span style="position: absolute; left: 96.4%; top: 18px; width: 3px; height: 28px; margin-left: -1.5px; background: {{t.ink}}"></span>
+                  <span style="position: absolute; left: 96.4%; top: -6px; transform: translateX(-100%); white-space: nowrap; font-size: 15px; font-weight: 700">Today, 18 Oct 2026 · 106% of the time used</span>
+                  <span style="position: absolute; left: 0; top: 46px; font-size: 15px; color: {{t.ink2}}">Registered</span>
+                  <span style="position: absolute; left: 90.9%; top: 50px; transform: translateX(-100%); padding-right: 8px; white-space: nowrap; font-size: 15px; color: {{t.ink2}}">Original completion · Jun 2026</span>
+                </div>
+              </div>
+              <span style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{stallChips}}" as="sc2" hint-placeholder-count="2"><button type="button" onClick="{{sc2.open}}" aria-label="{{sc2.aria}}" style="{{chipStyle}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{sc2.label}}</button></sc-for></span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{a.isAge}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 22px">
+              <h3 style="{{h3}}">How old is each record?</h3>
+              <div role="img" aria-label="{{a.ageLabel}}" style="display: flex; flex-direction: column; gap: 18px">
+                <sc-for list="{{a.ages}}" as="ag" hint-placeholder-count="4">
+                  <div style="display: flex; flex-direction: column; gap: 6px">
+                    <span style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px; font-size: 17px; line-height: 1.4"><strong>{{ag.label}}</strong><span style="{{ag.stStyle}}">{{ag.status}}</span></span>
+                    <span aria-hidden="true" style="position: relative; display: block; height: 14px; border-radius: 2px; background: {{t.track}}"><span style="{{ag.bar}}"></span><span style="{{ageLine}}"></span></span>
+                    <span style="font-size: 15px; color: {{t.ink2}}">{{ag.when}}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">The line marks 120 days. Past it, a record is stale and we say so on the band. The bar runs to 200 days.</p>
+              <span style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{ageChips}}" as="ac" hint-placeholder-count="2"><button type="button" onClick="{{ac.open}}" aria-label="{{ac.aria}}" style="{{chipStyle}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{ac.label}}</button></sc-for></span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{a.isSteps}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 20px; padding: 32px 36px; border-radius: 8px; background: {{t.track}}">
+              <h3 style="{{h3}}">Reading the new filing</h3>
+              <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px">
+                <sc-for list="{{a.steps}}" as="rs" hint-placeholder-count="5">
+                  <li style="{{rs.row}}">
+                    <span aria-hidden="true" style="{{rs.dot}}"><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="{{rs.icon}}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                    <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong style="font-size: 18px; line-height: 1.35">{{rs.h}}</strong><span style="font-size: 16px; line-height: 1.45; color: {{t.ink2}}"><span class="sr">{{rs.sr}}</span>{{rs.when}}</span></span>
+                  </li>
+                </sc-for>
+              </ol>
+              <p style="margin: 0; font-size: 16px; line-height: 1.5">We show no figures from the new filing until two extractors agree and a person has checked them.</p>
+              <span style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{stepChips}}" as="sp" hint-placeholder-count="2"><button type="button" onClick="{{sp.open}}" aria-label="{{sp.aria}}" style="{{chipStyleOnTrack}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{sp.label}}</button></sc-for></span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{a.isFacts}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 18px; padding: 32px 36px; border-radius: 8px; background: {{t.track}}">
+              <h3 style="{{h3}}">The records, as they stand</h3>
+              <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px">
+                <sc-for list="{{factRows}}" as="fr" hint-placeholder-count="6">
+                  <li style="display: grid; grid-template-columns: minmax(0, 140px) minmax(0, 1fr); gap: 4px 20px">
+                    <span style="font-size: 16px; line-height: 1.5; color: {{t.ink2}}">{{fr.label}}</span>
+                    <span style="display: flex; flex-direction: column; gap: 8px; min-width: 0"><span style="font-size: 17px; line-height: 1.5">{{fr.text}}</span><span><button type="button" onClick="{{fr.open}}" aria-label="{{fr.aria}}" style="{{chipStyleOnTrack}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{fr.chip}}</button></span></span>
+                  </li>
+                </sc-for>
+              </ul>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{a.isChecks}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 18px; padding: 32px 36px; border-radius: 8px; background: {{t.track}}">
+              <h3 style="{{h3}}">What to check instead</h3>
+              <ol style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 18px">
+                <sc-for list="{{a.checks}}" as="ck" hint-placeholder-count="4">
+                  <li style="padding-left: 4px">
+                    <span style="display: flex; flex-direction: column; gap: 8px">
+                      <span><strong>{{ck.h}}:</strong> {{ck.p}}</span>
+                      <span><button type="button" onClick="{{ck.open}}" aria-label="{{ck.aria}}" style="{{chipStyleOnTrack}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{ck.chip}}</button></span>
+                    </span>
+                  </li>
+                </sc-for>
+              </ol>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </section>
+
+    <section id="booked" aria-labelledby="booked-h" style="scroll-margin-top: 72px; background: {{t.track}}; padding: 136px 0 144px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch; gap: 56px 80px">
+        <figure class="pl-rv" style="flex: 1 1 340px; max-width: 420px; min-width: 0; min-height: 560px; margin: 0; position: relative; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="ordersDesk" src="/_blob/5785f128e1c6016201ce2483d89a35e4" alt="Illustrative image: a short stack of printed regulator orders on an office desk" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+        </figure>
+        <div style="flex: 1 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 32px">
+          <div style="display: flex; flex-direction: column; gap: 18px">
+            <h2 id="booked-h" class="pl-rv" style="{{h2}}">If you’ve already booked here</h2>
+            <p class="pl-rv pl-d1" style="margin: 0; font-size: 21px; line-height: 1.5">{{bk.intro}}</p>
+          </div>
+          <div class="pl-rv pl-d1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 36px 48px">
+            <sc-for list="{{bk.blocks}}" as="bb" hint-placeholder-count="4">
+              <div style="display: flex; flex-direction: column; gap: 10px">
+                <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em">{{bb.h}}</h3>
+                <sc-if value="{{bb.hasP}}" hint-placeholder-val="{{true}}"><p style="margin: 0; font-size: 17px; line-height: 1.55">{{bb.p}}</p></sc-if>
+                <sc-if value="{{bb.hasList}}" hint-placeholder-val="{{false}}"><ul style="margin: 0; padding: 0 0 0 20px; display: flex; flex-direction: column; gap: 6px; font-size: 17px; line-height: 1.5"><sc-for list="{{bb.list}}" as="wi" hint-placeholder-count="4"><li>{{wi}}</li></sc-for></ul></sc-if>
+                <sc-if value="{{bb.hasChip}}" hint-placeholder-val="{{true}}"><span><button type="button" onClick="{{bb.open}}" aria-label="{{bb.aria}}" style="{{chipStyleOnTrack}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{bb.chip}}</button></span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div class="pl-rv pl-d2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px">
+            <button type="button" onClick="{{toggleBooked}}" aria-pressed="{{booked}}" style="{{bookedStyle}}"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="{{bookedIcon}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{bookedLabel}}</button>
+            <a href="#before-you-pay" style="font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline">Haven’t paid yet? Run the before-you-pay check</a>
+          </div>
+          <p aria-live="polite" style="margin: 0; font-size: 16px; line-height: 1.5; color: {{t.ink2}}">{{bookedNote}}</p>
+        </div>
+      </div>
+    </section>
+
+    <div style="position: sticky; bottom: 24px; height: 0; z-index: 40">
+      <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+        <p role="status" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 48px); margin: 0; padding: 12px 20px; box-sizing: border-box; border-radius: 8px; background: {{t.ink}}; color: {{t.bg}}; font-size: 16px; line-height: 1.4">{{toast}}</p>
+      </sc-if>
+    </div>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; background: {{t.bg}}; padding-top: 112px">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 56px">
+      <p class="pl-rv" style="margin: 0; max-width: 620px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.1; letter-spacing: -0.025em">No developer pays us. Ever. Hard news gets the same care as good news.</p>
+      <nav aria-label="Footer" style="flex: 0 1 520px; display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 17px">
+        <a href="#methodology" style="color: {{t.ink}}; text-decoration: none">Methodology v1.2</a>
+        <a href="#money" style="color: {{t.ink}}; text-decoration: none">How we make money</a>
+        <a href="#report" style="color: {{t.ink}}; text-decoration: none">Report an error</a>
+        <a href="#privacy" style="color: {{t.ink}}; text-decoration: none">Privacy</a>
+      </nav>
+    </div>
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; margin-top: 56px; overflow: hidden">
+      <p class="pl-rv pl-d1" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 16px; box-sizing: border-box; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(110px, 35vw, 470px); line-height: 0.8; letter-spacing: -0.06em; white-space: nowrap; color: {{t.ink}}">Plinth</p>
+      <div style="background: {{t.ink}}; color: {{t.bg}}">
+        <p style="max-width: 1264px; margin: 0 auto; padding: 28px 32px 32px; box-sizing: border-box; font-size: 16px; line-height: 1.5">Our opinion, based on public records. Not a credit rating. Not issued by any RERA. Information, not legal advice. <a href="#report" style="color: {{t.bg}}; text-decoration: underline">Report an error</a> · <a href="#money" style="color: {{t.bg}}; text-decoration: underline">How we make money</a></p>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"state":{"editor":"enum","options":["Severe","Limited history","Not scored","Stalled","Stale data","Re-scoring","Facts-only"],"default":"Severe"},"claim":{"editor":"enum","options":["As on record","Not claimed"],"default":"As on record"},"$preview":{"width":1280,"height":3960}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {following: false, booked: false, toast: '', themeOv: null, themeFrom: null};
+  }
+  componentWillUnmount() { clearTimeout(this._toastT); }
+  flash(msg) {
+    var self = this;
+    clearTimeout(this._toastT);
+    this.setState({toast: msg});
+    this._toastT = setTimeout(function () { self.setState({toast: ''}); }, 3200);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var P = this.props || {};
+    var tw = P.theme === 'Night' ? 'Night' : 'Day';
+    var theme = (s.themeOv && s.themeFrom === tw) ? s.themeOv : tw;
+    var night = theme === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#121F1A', photo: '#1B2A24', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      claimBg: '#1D2621', chipFill: 'rgba(255,255,255,0.10)', chipFillOnTrack: 'rgba(255,255,255,0.12)', emptyBorder: '#7D828A', limited: '#A3A8B0', notScored: '#8C9199'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', photo: '#E7E3DA', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      claimBg: '#F1ECE2', chipFill: '#ECE8DF', chipFillOnTrack: '#E6E1D6', emptyBorder: '#8C9199', limited: '#6B7079', notScored: '#8C9199'
+    };
+    var D = "'Bricolage Grotesque', system-ui, sans-serif";
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', dfill: '#15323A'},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', dfill: '#332B0C'},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', dfill: '#3A2210'},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', dfill: '#3D1A19'},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', dfill: '#341A33'}
+    };
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function fill(n) { return night ? B[n].dfill : B[n].fill; }
+    var names = ['Low', 'Moderate', 'Elevated', 'High', 'Severe'];
+    var stateKey = ['Severe', 'Limited history', 'Not scored', 'Stalled', 'Stale data', 'Re-scoring', 'Facts-only'].indexOf(P.state) >= 0 ? P.state : 'Severe';
+    var kind = {'Severe': 'severe', 'Stalled': 'stall', 'Limited history': 'limited', 'Not scored': 'not', 'Stale data': 'stale', 'Re-scoring': 'rescore', 'Facts-only': 'facts'}[stateKey];
+    var who = {severe: 'laurel', stall: 'laurel', limited: 'juniper', not: 'heron', stale: 'coral', rescore: 'sapphire', facts: 'aurelia'}[kind];
+    var ICON = {
+      stall: 'M9 2a7 7 0 1 1 0 14a7 7 0 1 1 0-14zM7 6.5v5M11 6.5v5',
+      stale: 'M9 2a7 7 0 1 1 0 14a7 7 0 1 1 0-14zM9 5.5V9l2.5 1.5',
+      rescore: 'M14.5 6.5A6 6 0 0 0 3.6 7.5M3.5 11.5a6 6 0 0 0 10.9 1M14.5 3v3.5H11M3.5 15v-3.5H7',
+      facts: 'M4 3.5h7l3 3V16H4zM7 9.5h4M7 12.5h4'
+    };
+
+    var PROJ = {
+      laurel: {name: 'Laurel Residency', t1: 'Laurel', t2: 'Residency', where: 'Sector 92, New Gurugram · by Elmstone Developers', reg: 'HARERA registration · checked 14 Oct 2026',
+        summary: 'Delivery risk: Severe, set by a published rule · Stall flag · 34% built · Original completion Jun 2026, passed', price: '3 BHK quoted at ₹1.48 Cr. We show all-in once we have a cost sheet.', flag: true, flagLabel: 'Stall flag', flagIcon: ICON.stall},
+      juniper: {name: 'Juniper Enclave', t1: 'Juniper', t2: 'Enclave', where: 'Sector 102, Dwarka Expressway · by Halcyon Homes', reg: 'HARERA registration, May 2025 · checked 14 Oct 2026',
+        summary: 'Delivery risk: Limited history, not enough history to score · no penalty · 9% built · 31% of the time used · Original completion Dec 2029', price: '3 BHK quoted at ₹2.25 Cr. We show all-in once we have a cost sheet.', flag: false, flagLabel: '', flagIcon: ''},
+      heron: {name: 'Heron Point, Phase 2', t1: 'Heron Point,', t2: 'Phase 2', where: 'Sector 104, Dwarka Expressway · by Heronstone Projects, a Northfield Estates company', reg: 'RERA GGM/902/634/2026/12 · checked 14 Oct 2026',
+        summary: 'Delivery risk: Not scored yet · Registered Apr 2026 · Original completion Apr 2031', price: 'No price list or cost sheet with us yet.', flag: false, flagLabel: '', flagIcon: ''},
+      coral: {name: 'Coral Towers', t1: 'Coral', t2: 'Towers', where: 'Sector 89, New Gurugram · by Vantage Buildcon', reg: 'HARERA registration · checked 14 Oct 2026',
+        summary: 'Delivery risk: High · Stale data, progress 187 days old · 22% built · Original completion Aug 2028, extended to Aug 2029', price: '3 BHK all-in about ₹1.90 Cr, quoted at ₹1.62 Cr · ₹15,300 per sq ft carpet.', flag: true, flagLabel: 'Stale data', flagIcon: ICON.stale},
+      aurelia: {name: 'Aurelia Heights, Phase 2', t1: 'Aurelia Heights,', t2: 'Phase 2', where: 'Sector 37D, Dwarka Expressway · by Northfield Estates', reg: 'RERA GGM/673/405/2022/117 · checked 14 Oct 2026',
+        summary: 'Band withheld pending review, from 18 Oct 2026 · All-in ₹2.74 Cr · 41% built · Original completion Dec 2027', price: '3 BHK all-in about ₹2.74 Cr, quoted at ₹2.35 Cr · ₹18,900 per sq ft carpet.', flag: false, flagLabel: '', flagIcon: ''},
+      sapphire: {name: 'Sapphire Grove, Phase 1', t1: 'Sapphire Grove,', t2: 'Phase 1', where: 'Sector 106, Dwarka Expressway · by Meridian Habitat', reg: 'HARERA registration · checked 16 Oct 2026',
+        summary: 'Delivery risk: Moderate, re-scoring now · 48% built · 55% of the time used · Original completion Mar 2028', price: '3 BHK all-in about ₹2.27 Cr, quoted at ₹1.95 Cr · ₹16,200 per sq ft carpet.', flag: true, flagLabel: 'Re-scoring', flagIcon: ICON.rescore}
+    };
+    var p = PROJ[who];
+
+    // Header chip: borderless everywhere; Limited history and Not scored sit on the track tone.
+    function seg5(mode, w, h) {
+      return [1, 2, 3, 4, 5].map(function (j) {
+        var st = 'display:block;width:' + w + 'px;height:' + h + 'px;border-radius:' + (h > 10 ? 4 : 2) + 'px;box-sizing:border-box;';
+        if (mode === 'severe') st += 'background:' + ink('Severe') + ';';
+        else if (mode === 'withheld') st += 'background:transparent;border:1px solid ' + T.emptyBorder + ';';
+        else if (B[mode]) st += j <= B[mode].i ? 'background:' + ink(mode) + ';' : 'background:' + (night ? 'transparent' : '#FFFFFF') + ';border:1px solid ' + T.emptyBorder + ';';
+        else if (mode === 'limited') st += 'background:transparent;border:1.5px dashed ' + T.limited + ';';
+        else st += 'background:transparent;border:1.5px solid ' + T.notScored + ';';
+        return {style: st};
+      });
+    }
+    var chipBaseS = 'display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;box-sizing:border-box;border-radius:999px;font-size:14px;font-weight:600;line-height:1;white-space:nowrap;color:' + T.ink + ';';
+    var chip = who === 'laurel'
+      ? {meter: seg5('severe', 6, 10), name: 'Severe', flag: true, sr: 'Delivery risk: Severe, step 5 of 5, set by a red-flag rule', style: chipBaseS + 'background:' + fill('Severe')}
+      : (who === 'juniper'
+        ? {meter: seg5('limited', 6, 10), name: 'Limited history', flag: false, sr: 'Delivery risk: limited history, not enough history to score, no penalty', style: chipBaseS + 'background:' + T.track + ';color:' + T.ink2}
+        : who === 'heron' ? {meter: seg5('not', 6, 10), name: 'Not scored', flag: false, sr: 'Delivery risk: not scored yet, registered less than 6 months ago', style: chipBaseS + 'background:' + T.track + ';color:' + T.ink2}
+        : who === 'aurelia' ? {meter: seg5('withheld', 6, 10), name: 'Band withheld · facts only', flag: false, sr: 'Delivery risk band withheld pending review. Facts only.', style: chipBaseS + 'background:' + T.track}
+        : who === 'coral' ? {meter: seg5('High', 6, 10), name: 'High', flag: false, sr: 'Delivery risk: High, step 4 of 5. Stale data: progress figures are 187 days old', style: chipBaseS + 'background:' + fill('High')}
+        : {meter: seg5('Moderate', 6, 10), name: 'Moderate', flag: false, sr: 'Delivery risk: Moderate, step 2 of 5. Re-scoring after a new filing', style: chipBaseS + 'background:' + fill('Moderate')});
+    var stallPill = 'display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;box-sizing:border-box;border-radius:999px;background:' + T.ink + ';color:' + T.bg + ';font-size:14px;font-weight:700;white-space:nowrap';
+
+    var big = 'font-family:' + D + ';font-weight:800;font-size:clamp(40px, 4.7vw, 60px);line-height:1;letter-spacing:-0.035em;';
+    var tagBase = 'display:inline-flex;align-items:center;min-height:30px;padding:2px 12px;box-sizing:border-box;border-radius:999px;font-size:15px;font-weight:600;';
+    var lead = 'margin:0;font-size:21px;line-height:1.5';
+    var body = 'margin:0;font-size:19px;line-height:1.6';
+    function ev(label) { return {label: label, chip: label, aria: 'Source: ' + label + '. Open evidence.', open: function () { self.flash('Opens the record with our saved copy and its date.'); }}; }
+
+    var ANS = {
+      severe: {h2: 'Will it be delivered on time?', showMeter: true, showPause: false, meter: seg5('severe', 20, 15), name: 'Severe', srPrefix: 'Delivery risk: ',
+        nameStyle: big + 'color:' + ink('Severe'), tag: 'Set by red-flag rule 1', tagStyle: tagBase + 'background:' + fill('Severe') + ';color:' + T.ink,
+        paras: [
+          {text: 'A published rule sets this band, not our model. A group company of Elmstone Developers was admitted to insolvency by NCLT order on 12 Mar 2023.', style: lead},
+          {text: 'Original completion was Jun 2026. That date has passed with 34% built. Keys come after the OC, and an OC needs a finished building.', style: body},
+          {text: 'Its last 4 QPRs show no construction progress, so a Stall flag sits beside the band.', style: body}
+        ],
+        changeHead: 'What would change this:', change: 'the rule applies while the insolvency case stands. If it is closed or set aside, the model sets the band again, and we log the change.',
+        isScale: true, isStall: false, isChecks: false, checks: [], isAge: false, isSteps: false, hasUnsure: false, unsure: ''},
+      stall: {h2: 'Is it still being built?', showMeter: false, showPause: true, meter: [], name: 'Stalled', srPrefix: 'Stall flag: ',
+        nameStyle: big + 'color:' + T.ink, tag: 'Delivery risk: Severe, red-flag rule 1', tagStyle: tagBase + 'background:' + fill('Severe') + ';color:' + T.ink,
+        paras: [
+          {text: 'No construction progress in its last 4 QPRs: 34% built in each, from Jul–Sep 2025 to Apr–Jun 2026.', style: lead},
+          {text: 'Original completion was Jun 2026, 4 months ago. Keys come after the OC, and an OC needs a finished building.', style: body},
+          {text: 'We show the Stall flag beside the band and never average it in. Here the band is Severe anyway, set by a published rule.', style: body}
+        ],
+        changeHead: 'What would lift the flag:', change: 'a QPR that shows construction moving again. We read each one the day it appears.',
+        isScale: false, isStall: true, isChecks: false, checks: [], isAge: false, isSteps: false, hasUnsure: false, unsure: ''},
+      limited: {h2: 'Will it be delivered on time?', showMeter: true, showPause: false, meter: seg5('limited', 20, 15), name: 'Limited history', srPrefix: 'Delivery risk: ',
+        nameStyle: big + 'color:' + T.ink2, tag: 'Not enough history to score · no penalty', tagStyle: tagBase + 'background:' + T.track + ';color:' + T.ink,
+        paras: [
+          {text: 'Halcyon Homes is a new developer with no finished RERA project yet. We don’t guess, and it never counts against them.', style: lead},
+          {text: 'We score a group once it has 3 finished RERA projects. Until then, these are the records to read.', style: body},
+          {text: 'Original completion is Dec 2029. The latest QPR shows 9% built with 31% of the promised time used. Keys come after the OC.', style: body}
+        ],
+        changeHead: 'What would change this:', change: 'Halcyon’s first finished projects. Each one adds to the record we score from.',
+        isScale: false, isStall: false, isChecks: true, isAge: false, isSteps: false, hasUnsure: false, unsure: '',
+        checks: [
+          {h: 'Who is behind it', p: 'Halcyon Homes’ directors, and their other companies in MCA filings.', src: 'MCA company records'},
+          {h: 'The licence', p: 'The DTCP licence for the Sector 102 site, and that it is in force.', src: 'DTCP licence register'},
+          {h: 'The escrow account', p: 'A CA certificate with each QPR on money taken out of the project account.', src: 'HARERA Form 3 · with each QPR'},
+          {h: 'Progress against time', p: '9% built with 31% of the time used. Watch that the gap doesn’t widen.', src: 'HARERA QPR · latest'}
+        ]},
+      not: {h2: 'Will it be delivered on time?', showMeter: true, showPause: false, meter: seg5('not', 20, 15), name: 'Not scored', srPrefix: 'Delivery risk: ',
+        nameStyle: big + 'color:' + T.ink2, tag: 'Registered Apr 2026', tagStyle: tagBase + 'background:' + T.track + ';color:' + T.ink,
+        paras: [
+          {text: 'Registered in Apr 2026, less than 6 months ago. We show the facts until there is enough to score.', style: lead},
+          {text: 'Its developer is not new. Heronstone Projects is part of the Northfield Estates group: 2 of the group’s 6 finished RERA projects got OC more than 12 months late.', style: body},
+          {text: 'Original completion is Apr 2031. Keys come after the OC.', style: body}
+        ],
+        changeHead: 'What would change this:', change: 'enough quarterly reports to compare building with time. We score as soon as there are.',
+        isScale: false, isStall: false, isChecks: true, isAge: false, isSteps: false, hasUnsure: false, unsure: '',
+        checks: [
+          {h: 'The group’s record', p: '2 of 6 finished projects late. Its ongoing phases: Aurelia Heights, Phase 2 (Elevated) and Cedar Walk, Phase 2 (Moderate).', src: 'HARERA + DTCP OC records'},
+          {h: 'The registration', p: 'Approved plans, the DTCP licence and the promised date, all filed with HARERA.', src: 'HARERA registration · Apr 2026'},
+          {h: 'The escrow account', p: 'A CA certificate with each QPR on money taken out of the project account.', src: 'HARERA Form 3 · with each QPR'},
+          {h: 'The first QPRs', p: 'Due 15 days after each quarter ends. They show whether building starts on time.', src: 'HARERA QPR register'}
+        ]},
+      stale: {h2: 'Will it be delivered on time?', showMeter: true, showPause: false, meter: seg5('High', 20, 15), name: 'High', srPrefix: 'Delivery risk: ',
+        nameStyle: big + 'color:' + ink('High'), tag: 'Stale data · progress 187 days old', tagStyle: tagBase + 'background:' + T.track + ';color:' + T.ink,
+        paras: [
+          {text: 'Between 45 and 65 of 100 similar Gurugram projects got their OC more than 12 months late. This band rests on old building figures.', style: lead},
+          {text: 'The newest QPR on HARERA is for Jan–Mar 2026, filed 14 Apr 2026: 187 days ago. The Apr–Jun and Jul–Sep 2026 QPRs are not on HARERA.', style: body},
+          {text: 'Missing reports already count against it. What has been built since, nobody outside the company can see from the records.', style: body}
+        ],
+        hasUnsure: true, unsure: 'Vantage Buildcon’s record is short, and the old building figures widen the range.',
+        changeHead: 'What would clear the flag:', change: 'a new QPR on HARERA. We read it the day it appears and re-score within 72 hours.',
+        isScale: false, isStall: false, isChecks: false, isAge: true, isSteps: false, checks: []},
+      rescore: {h2: 'Will it be delivered on time?', showMeter: true, showPause: false, meter: seg5('Moderate', 20, 15), name: 'Moderate', srPrefix: 'Delivery risk: ',
+        nameStyle: big + 'color:' + (night ? ink('Moderate') : T.ink), tag: 'Re-scoring · new filing received', tagStyle: tagBase + 'background:' + T.track + ';color:' + T.ink,
+        paras: [
+          {text: 'About 20 of 100 similar Gurugram projects got their OC more than 12 months late. That is the band from the Apr–Jun 2026 QPR.', style: lead},
+          {text: 'A new filing arrived: the Jul–Sep 2026 QPR, filed 15 Oct 2026, on time. It appeared on HARERA on 16 Oct, and we fetched it that evening.', style: body},
+          {text: 'We’re reading it now. The updated band is due by 19 Oct 2026, 7:40 pm. Until then, every figure on this page is from Apr–Jun 2026.', style: body}
+        ],
+        hasUnsure: false, unsure: '',
+        changeHead: 'What happens next:', change: 'if the new figures move the band, followers hear first, with what changed and why. If they don’t, we log “no change” with the date.',
+        isScale: false, isStall: false, isChecks: false, isAge: false, isSteps: true, checks: []},
+      facts: {h2: 'What do the records show?', showMeter: true, showPause: false, meter: seg5('withheld', 20, 15), name: 'Band withheld', srPrefix: 'Delivery risk: ',
+        nameStyle: big + 'color:' + T.ink2, tag: 'Facts only · from 18 Oct 2026', tagStyle: tagBase + 'background:' + T.track + ';color:' + T.ink,
+        paras: [
+          {text: 'We’re not showing a band for this project while a court considers an application about our bands for the Northfield Estates group. Every fact below is from public records.', style: lead},
+          {text: 'Withheld everywhere: the band, its reasons and the “of 100 similar projects” figure. Still here: dates, progress, filings, complaints and company links, each with its source.', style: body},
+          {text: 'Not a finding: this says nothing about Northfield, and no record has changed. We update this page the day anything changes.', style: body}
+        ],
+        hasUnsure: false, unsure: '',
+        changeHead: 'What would change this:', change: 'the court’s decision, or the application being withdrawn. Either way, we log it here with the date.',
+        isScale: false, isStall: false, isChecks: false, isAge: false, isSteps: false, checks: []}
+    };
+    var A0 = ANS[kind];
+    var a = {};
+    for (var k in A0) a[k] = A0[k];
+    a.isFacts = kind === 'facts';
+    a.ageLabel = 'Age of each record behind this band. Building progress: 187 days old, stale. Completion date and extensions: 4 days. Complaint orders: 4 days. Insolvency checks: 4 days. Records older than 120 days are stale.';
+    a.checks = A0.checks.map(function (c) { var e = ev(c.src); return {h: c.h, p: c.p, chip: c.src, aria: e.aria, open: e.open}; });
+
+    var scale = names.map(function (n) {
+      var cur = n === 'Severe';
+      return {name: n,
+        barStyle: 'display:block;width:100%;box-sizing:border-box;border-radius:999px;height:' + (cur ? 22 : 12) + 'px;' + (cur ? 'background:' + ink(n) + ';outline:2px solid ' + T.ink + ';outline-offset:3px;' : 'background:' + fill(n) + ';border:1px solid ' + ink(n) + ';'),
+        textStyle: 'font-size:14px;line-height:1.3;text-align:center;' + (cur ? 'font-weight:700;color:' + T.ink : 'color:' + T.muted)};
+    });
+    var AGE = [['Building progress (QPR)', 'Jan–Mar 2026 QPR, filed 14 Apr 2026', 187], ['Completion date and extensions', 'Extension 2, HARERA order of 14 Oct 2026', 4], ['Complaint orders', 'Searched 14 Oct 2026', 4], ['Insolvency checks', 'Searched 14 Oct 2026', 4]];
+    var ages = AGE.map(function (x) {
+      var stale = x[2] > 120;
+      return {label: x[0], when: x[1] + ' · ' + x[2] + (x[2] === 1 ? ' day' : ' days') + ' old', status: stale ? 'Stale' : 'Fresh',
+        stStyle: 'font-size:15px;font-weight:700;' + (stale ? 'color:' + T.ink : 'color:' + T.ink2),
+        bar: 'position:absolute;left:0;top:0;bottom:0;border-radius:2px;width:' + Math.max(1.5, Math.min(100, x[2] / 200 * 100)).toFixed(1) + '%;background:' + (stale ? 'repeating-linear-gradient(45deg,' + T.ink + ' 0 2px,' + T.claimBg + ' 2px 5px)' : T.ink2)};
+    });
+    var STEPS = [['Filed with HARERA', '15 Oct 2026, on time', 'done'], ['Fetched by Plinth', '16 Oct 2026, 7:40 pm', 'done'], ['Read by two extractors', 'In progress now', 'now'], ['Checked by a person', 'Next', 'todo'], ['Band updated or confirmed', 'By 19 Oct 2026, 7:40 pm', 'todo']];
+    var steps = STEPS.map(function (x) {
+      var done = x[2] === 'done', now = x[2] === 'now';
+      return {h: x[0], when: x[1], sr: done ? 'Done: ' : (now ? 'In progress: ' : 'To come: '),
+        icon: done ? 'M4 10.5l3.5 3.5L16 6' : (now ? 'M10 4v6l4 2' : 'M6 10h8'),
+        row: 'display:grid;grid-template-columns:36px minmax(0,1fr);gap:14px;align-items:start;padding:10px 12px;border-radius:8px;background:' + (now ? T.bgSolid : 'transparent'),
+        dot: 'display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;box-sizing:border-box;' + (done ? 'background:' + T.ink + ';color:' + T.bg : (now ? 'background:' + T.accentSoft + ';color:' + T.onAccentSoft : 'border:1.5px solid ' + T.ink2 + ';color:' + T.ink2))};
+    });
+    a.ages = ages; a.steps = steps;
+    var slabs = ['Jul–Sep 2025', 'Oct–Dec 2025', 'Jan–Mar 2026', 'Apr–Jun 2026'].map(function (q, i) {
+      return {q: q, fill: 'position:absolute;left:0;right:0;bottom:0;height:34%;background:' + T.ink + ';animation-delay:' + (300 + i * 90) + 'ms'};
+    });
+
+    var COMPLAIN = {h: 'Where to complain', p: 'HARERA Gurugram hears buyers’ complaints. File online in Form CRA with your agreement, receipts and demand letters. Claims for compensation go to its adjudicating officer, in Form CAO.', chip: 'HARERA Gurugram · complaints'};
+    var S18 = {h: 'If the date slips', p: 'The date in your agreement is what counts. If it passes without possession, RERA s.18 lets you withdraw with a refund and interest, or stay and get interest for every month of delay.', chip: 'RERA Act 2016 · s.18'};
+    var BOOK = {
+      laurel: {intro: 'Booking here doesn’t leave you without routes. These are the rights every allottee has, and the records we would keep watching.',
+        blocks: [COMPLAIN,
+          {h: 'Your money back, or interest', p: 'RERA s.18: when possession is late against your agreement, you can withdraw and get your money back with interest, or stay and get interest for every month of delay. In Haryana the rate is SBI’s highest MCLR plus 2%.', chip: 'RERA Act 2016 · s.18'},
+          {h: 'Buyers acting together', p: 'RERA s.31 lets an association of allottees file a complaint. The NCLT order of 12 Mar 2023 is against a group company. If a case is ever admitted against this project’s promoter, homebuyers file claims with the resolution professional as financial creditors.', chip: 'RERA Act 2016 · s.31'},
+          {h: 'What to watch', list: ['Each QPR: does the built share move from 34%?', 'Any demand letter: it should match work on record. Check it with Pay-as-built first.', 'NCLT and IBBI lists for Elmstone Developers and its group.', 'New HARERA orders on this project.']}]},
+      juniper: {intro: 'Nothing here is a reason for concern by itself. These are the rights every allottee has, and what to watch while the record is short.',
+        blocks: [COMPLAIN, S18,
+          {h: 'Buyers acting together', p: 'RERA s.31 lets an association of allottees file a complaint. A buyers’ group also hears early about site and payment news.', chip: 'RERA Act 2016 · s.31'},
+          {h: 'What to watch', list: ['Each QPR: is building keeping pace with time? Today 9% built, 31% of the time used.', 'The CA certificate on escrow withdrawals with each QPR.', 'Demand letters against stages on record, with Pay-as-built.', 'Halcyon Homes’ first finished project, when it comes.']}]},
+      aurelia: {intro: 'Facts-only mode changes nothing about your rights. These are the rights every allottee has, and the records we keep watching.',
+        blocks: [COMPLAIN, S18,
+          {h: 'Buyers acting together', p: 'RERA s.31 lets an association of allottees file a complaint. A buyers’ group also hears early about site and payment news.', chip: 'RERA Act 2016 · s.31'},
+          {h: 'What to watch', list: ['The Jul–Sep 2026 QPR: due 15 Oct 2026, not on HARERA yet.', 'Demand letters against stages on record. Tower A slab 12 was demanded on 10 Oct 2026; the latest QPR shows slab 9.', 'New HARERA orders on this project.', 'This page: we note the day the review ends.']}]},
+      coral: {intro: 'Old data is a reason to ask, not to panic. These are the rights every allottee has, and what to watch until the reports catch up.',
+        blocks: [COMPLAIN,
+          {h: 'If the date slips', p: 'Two extensions moved the RERA date to Aug 2029. The date in your agreement still matters: ask a lawyer how the extensions affect a claim under RERA s.18.', chip: 'RERA Act 2016 · s.18'},
+          {h: 'Buyers acting together', p: 'RERA s.31 lets an association of allottees file a complaint. Missing QPRs are a public fact you can cite.', chip: 'RERA Act 2016 · s.31'},
+          {h: 'What to watch', list: ['The Apr–Jun and Jul–Sep 2026 QPRs: neither is on HARERA yet.', 'Demand letters against stages on record. Check them with Pay-as-built first.', 'New HARERA orders on this project.', 'Any further extension application.']}]},
+      sapphire: {intro: 'Nothing changes for you while we re-score. These are the rights every allottee has, and the records we watch for you.',
+        blocks: [COMPLAIN, S18,
+          {h: 'Buyers acting together', p: 'RERA s.31 lets an association of allottees file a complaint. A buyers’ group also hears early about site and payment news.', chip: 'RERA Act 2016 · s.31'},
+          {h: 'What to watch', list: ['The re-score, due by 19 Oct 2026. Followers hear first.', 'Each QPR: 48% built with 55% of the time used, as of Apr–Jun 2026.', 'Demand letters against stages on record, with Pay-as-built.', 'New HARERA orders on this project.']}]},
+      heron: {intro: 'Early bookings carry the same rights as any other. Here is where to go if you need them, and what to watch in the first year.',
+        blocks: [COMPLAIN,
+          {h: 'Before the agreement', p: 'Until the agreement for sale is registered, the developer can’t take more than 10% of the price (RERA s.13). If you have paid a booking amount, ask for the agreement before paying more.', chip: 'RERA Act 2016 · s.13'},
+          S18,
+          {h: 'What to watch', list: ['Its first QPRs: we score once there are enough.', 'The group’s other phases, and its record as they finish.', 'Demand letters against stages on record, with Pay-as-built.', 'The CA certificate on escrow withdrawals with each QPR.']}]}
+    };
+    var bk0 = BOOK[who];
+    var bk = {intro: bk0.intro, blocks: bk0.blocks.map(function (x) {
+      var e = ev(x.chip || '');
+      return {h: x.h, p: x.p || '', hasP: !!x.p, list: x.list || [], hasList: !!x.list, hasChip: !!x.chip, chip: x.chip || '', aria: e.aria, open: e.open};
+    })};
+
+    // Claim status (fix-dev2 G20). As on record: DESIGN.md 5b. "Not claimed" shows the neutral invited line for any state.
+    var CLAIM = {laurel: false, juniper: true, heron: true, coral: false, sapphire: true, aurelia: true};
+    var DEVN = {laurel: 'Elmstone Developers', juniper: 'Halcyon Homes', heron: 'Northfield Estates', coral: 'Vantage Buildcon', sapphire: 'Meridian Habitat', aurelia: 'Northfield Estates'};
+    var claimed = P.claim === 'Not claimed' ? false : CLAIM[who];
+    var claimLine = claimed ? (who === 'heron' ? 'Claimed by Northfield Estates for its group · replies here' : 'Claimed developer page · replies here') : DEVN[who] + ' · invited 24 Nov 2025 · not yet claimed';
+    var following = !!s.following, booked = !!s.booked;
+    var followIcon = following ? 'M4 10.5l3.5 3.5L16 6' : 'M10 3a4.5 4.5 0 0 0-4.5 4.5V11L4 13.5h12L14.5 11V7.5A4.5 4.5 0 0 0 10 3zM8.2 16a2 2 0 0 0 3.6 0';
+    var btnBase = 'display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 26px;box-sizing:border-box;border-radius:999px;font:inherit;font-size:18px;font-weight:600;cursor:pointer;border:0;';
+    var chipBase = 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 12px;box-sizing:border-box;border-radius:999px;border:0;font:inherit;font-size:14px;line-height:1.25;color:' + T.ink + ';cursor:pointer;text-align:left;';
+    return {
+      t: T, night: night, day: !night, rootClass: night ? 'pl-night' : 'pl-day',
+      themeLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themeOv: night ? 'Day' : 'Night', themeFrom: tw}); },
+      h2: 'margin:0;font-family:' + D + ';font-weight:800;font-size:clamp(40px, 4.7vw, 60px);line-height:1.0;letter-spacing:-0.035em;text-wrap:balance',
+      h3: 'margin:0;font-family:' + D + ';font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-0.02em',
+      navLink: 'display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;text-decoration:none;font-size:16px;font-weight:600;color:' + T.ink2,
+      chipStyle: chipBase + 'background:' + T.chipFill, chipStyleOnTrack: chipBase + 'background:' + T.chipFillOnTrack,
+      p: p, chip: chip, stallPill: stallPill,
+      isAurelia: who === 'aurelia',
+      factRows: [['Promised date', 'Original completion Dec 2027. No extensions so far.', 'HARERA registration · 2022'], ['Progress', '41% built, 72% sold, 77% of the promised time used. Tower A at slab 9, B at 7, C at 5.', 'HARERA QPR · Apr–Jun 2026'], ['QPR filings', '3 of the last 8 filed late. Jul–Sep 2026 is not on HARERA yet; it was due 15 Oct 2026.', 'HARERA QPR register'], ['Complaints', '14 decided against the promoter in 24 months · 2.8 per 100 units. Median count for similar projects: 3.', 'HARERA orders · 24 months'], ['Group record', '2 of the group’s 6 finished RERA projects got OC more than 12 months late.', 'HARERA + DTCP OC records'], ['Insolvency checks', 'None found for the group. Registers can lag by weeks.', 'IBBI + NCLT · 14 Oct 2026']].map(function (x) { var e = ev(x[2]); return {label: x[0], text: x[1], chip: x[2], aria: e.aria, open: e.open}; }),
+      claimLine: claimLine, claimIcon: claimed ? 'M4 10.5l3.5 3.5L16 6' : 'M3.5 5.5h13v9h-13zM3.5 6l6.5 5 6.5-5',
+      isLaurel: who === 'laurel', isJuniper: who === 'juniper', isHeron: who === 'heron', isCoral: who === 'coral', isSapphire: who === 'sapphire',
+      ageLine: 'position:absolute;left:60%;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:' + T.ink,
+      ageChips: [ev('HARERA QPR register · Coral Towers'), ev('HARERA order · Extension 2 · 14 Oct 2026')],
+      stepChips: [ev('HARERA QPR · Jul–Sep 2026 · filed 15 Oct 2026'), ev('HARERA QPR · Apr–Jun 2026')],
+      a: a, scale: scale, slabs: slabs,
+      ruleChips: [ev('NCLT order · 12 Mar 2023'), ev('IBBI record · checked 14 Oct 2026')],
+      stallChips: [ev('HARERA QPRs · Jul–Sep 2025 to Apr–Jun 2026'), ev('HARERA registration · original date')],
+      overdue: 'position:absolute;left:90.9%;top:26px;width:5.5%;height:12px;border-radius:0 2px 2px 0;background:repeating-linear-gradient(45deg,' + T.ink + ' 0 2px,' + T.claimBg + ' 2px 5px)',
+      bk: bk,
+      following: following, followIcon: followIcon,
+      followLabel: following ? 'Following · alerts on' : 'Follow this project',
+      heroFollowStyle: btnBase + (following ? 'background:' + T.accentSoft + ';color:' + T.onAccentSoft : 'background:' + T.accent + ';color:' + T.onAccent),
+      pillFollowLabel: following ? 'Following' : 'Follow',
+      pillFollowStyle: 'display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;box-sizing:border-box;border-radius:999px;border:0;font:inherit;font-size:16px;font-weight:600;cursor:pointer;' + (following ? 'background:' + T.accentSoft + ';color:' + T.onAccentSoft : 'background:' + T.accent + ';color:' + T.onAccent),
+      toggleFollow: function () { var nf = !self.state.following; self.setState({following: nf}); self.flash(nf ? 'Following. We alert you to QPR filings, orders and band changes.' : 'Stopped following.'); },
+      booked: booked,
+      bookedLabel: booked ? 'Booked here · alerts written for allottees' : 'I’ve booked here',
+      bookedIcon: booked ? 'M4 10.5l3.5 3.5L16 6' : 'M4 5.5h12v11H4zM4 9h12M8 3.5v3M12 3.5v3',
+      bookedStyle: 'display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 24px;box-sizing:border-box;border-radius:999px;border:0;font:inherit;font-size:17px;font-weight:600;cursor:pointer;' + (booked ? 'background:' + T.ink + ';color:' + T.bg : 'background:' + T.chipFillOnTrack + ';color:' + T.ink),
+      toggleBooked: function () { self.setState({booked: !self.state.booked, following: true}); },
+      bookedNote: booked ? 'Your alerts now cover every QPR, order and demand-letter check for this project, written for someone who has paid. Only you see that you booked.' : 'Tell us you booked and alerts change: each one says what it means for an allottee. Only you see it.',
+      hasToast: !!s.toast, toast: s.toast || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

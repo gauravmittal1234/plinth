@@ -1,0 +1,1214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Following and alerts</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 12100px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
+        <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
+        <a href="#top" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Following</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <a href="#account" class="press" aria-label="Your account, privacy and who has your number" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}">
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+        </a>
+        <a href="#explore" class="press" style="height: 44px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font-size: 17px; font-weight: 600; text-decoration: none; white-space: nowrap">Follow a project</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section aria-labelledby="since-h" data-signature="replay-since" style="background: {{t.bg}}; padding: 56px 0 120px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px 64px">
+        <div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+          <h1 id="since-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(52px, 5.6vw, 76px); line-height: 0.96; letter-spacing: -0.045em">{{sinceTitle}}</h1>
+          <p class="rise rise1" aria-live="polite" style="margin: 0; max-width: 36ch; font-size: 22px; line-height: 1.45">{{sinceSummary}}</p>
+          <div class="rise rise2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding-top: 4px">
+            <button type="button" class="press" onClick="{{markSeen}}" aria-disabled="{{seenDisabled}}" style="{{seenBtn}}"><sc-if value="{{allSeen}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{seenLabel}}</button>
+            <a href="#feed" class="lk" style="font-size: 18px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Open the full record</a>
+          </div>
+          <p class="rise rise3" style="margin: 0; font-size: 15px; color: {{t.ink2}}">{{heroMeta}}</p>
+
+          <div class="rise rise3" style="margin-top: 16px; border-radius: 8px; background: {{t.track}}; padding: 26px 28px 22px; display: flex; flex-direction: column; gap: 12px">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 20px">
+              <label for="replay-range" style="font-size: 17px; font-weight: 600">Replay from any date</label>
+              <output for="replay-range" aria-live="polite" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em">{{sinceLong}}</output>
+            </div>
+            <div style="position: relative; padding-top: 30px">
+              <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 28px">
+                <sc-for list="{{ticks}}" as="tk" hint-placeholder-count="8"><span style="{{tk}}"></span></sc-for>
+              </div>
+              <input id="replay-range" type="range" min="0" max="109" step="1" value="{{sinceIdx}}" onChange="{{onReplay}}" aria-valuetext="{{sinceLong}}" aria-describedby="replay-hint" style="display: block; width: 100%; height: 32px; margin: 0; accent-color: {{t.accent}}; cursor: pointer">
+            </div>
+            <div aria-hidden="true" style="position: relative; height: 22px; font-size: 14px; line-height: 22px; color: {{t.ink2}}">
+              <sc-for list="{{axis}}" as="ax" hint-placeholder-count="5"><span style="{{ax.style}}">{{ax.label}}</span></sc-for>
+            </div>
+            <p id="replay-hint" style="margin: 0; font-size: 15px; color: {{t.ink2}}">Each mark is one change on record. Drag back to see everything since that day.</p>
+            <div role="group" aria-label="Jump to a date" style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px">
+              <sc-for list="{{jumps}}" as="jp" hint-placeholder-count="4"><button type="button" class="press" onClick="{{jp.pick}}" aria-pressed="{{jp.on}}" style="{{jp.style}}">{{jp.label}}</button></sc-for>
+            </div>
+          </div>
+
+          <ol aria-label="{{sinceListLabel}}" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+            <sc-for list="{{sinceItems}}" as="ev" hint-placeholder-count="3">
+              <li style="{{ev.style}}">
+                <span style="display: flex; flex-direction: column; gap: 2px; padding-top: 3px">
+                  <span style="font-size: 17px; font-weight: 600">{{ev.date}}</span>
+                  <span style="font-size: 15px; color: {{t.ink2}}">{{ev.kind}}</span>
+                </span>
+                <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-width: 0">
+                  <span style="font-size: 19px; line-height: 1.5"><strong>{{ev.project}}.</strong> {{ev.sentence}}</span>
+                  <sc-if value="{{ev.hasDiff}}" hint-placeholder-val="{{true}}">
+                    <span style="{{u.diff}}"><span style="color: {{t.ink2}}">{{ev.diffLabel}}</span><span class="sr">was</span><s style="color: {{t.ink2}}">{{ev.was}}</s><svg width="20" height="12" viewBox="0 0 22 14" aria-hidden="true"><path d="M2 7h17M14 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="sr">now</span><strong>{{ev.now}}</strong></span>
+                  </sc-if>
+                  <sc-if value="{{ev.isBand}}" hint-placeholder-val="{{false}}">
+                    <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+                      <span style="{{fromChip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{fromChip.meter}}" as="sm1" hint-placeholder-count="5"><span style="{{sm1}}"></span></sc-for></span>{{fromChip.name}}</span>
+                      <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><path d="M2 7h17M14 2l5 5-5 5" fill="none" stroke="{{t.ink2}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                      <span class="sr">changed to</span>
+                      <span style="{{toChip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{toChip.meter}}" as="sm2" hint-placeholder-count="5"><span style="{{sm2}}"></span></sc-for></span>{{toChip.name}}</span>
+                    </span>
+                  </sc-if>
+                  <sc-if value="{{ev.claim}}" hint-placeholder-val="{{false}}">
+                    <span style="display: flex; align-items: flex-start; gap: 10px; border-radius: 8px; background: {{t.claimBg}}; padding: 12px 16px; font-size: 17px; line-height: 1.45"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Developer says · not yet verified:</strong> “The QPR for Jul–Sep 2026 was filed on 12 October.”</span></span>
+                  </sc-if>
+                  <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px">
+                    <sc-for list="{{ev.src}}" as="es" hint-placeholder-count="1"><a href="#source" class="press" style="{{u.chip}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>{{es}}</a></sc-for>
+                  </span>
+                  <sc-if value="{{ev.isBand}}" hint-placeholder-val="{{false}}">
+                    <button type="button" class="press" onClick="{{toggleBandDetail}}" aria-expanded="{{bandExp}}" aria-controls="band-diff-h" style="{{u.tertiary}}; font-size: 17px">{{bandBtnLabel}} <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="{{chevBand}}"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+                  </sc-if>
+                  <sc-if value="{{ev.open}}" hint-placeholder-val="{{false}}">
+                    <div id="band-diff-h" style="display: flex; flex-direction: column; gap: 28px; padding-top: 8px">
+                      <div class="rise" style="border-radius: 8px; background: {{t.track}}; padding: 28px 32px 32px; display: flex; flex-direction: column; gap: 28px">
+                        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px">
+                          <p aria-live="polite" style="margin: 0; font-size: 17px; font-weight: 600">{{diffCaption}}</p>
+                          <div role="group" aria-label="Show the score" style="display: flex; padding: 4px; border-radius: 999px; background: {{t.bgSolid}}">
+                            <sc-for list="{{diffModes}}" as="hdm" hint-placeholder-count="2">
+                              <button type="button" class="press" onClick="{{hdm.pick}}" aria-pressed="{{hdm.on}}" style="{{hdm.style}}">{{hdm.text}}</button>
+                            </sc-for>
+                          </div>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 32px 64px; align-items: flex-start">
+                          <div role="img" aria-label="{{diffAria}}" style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 16px">
+                            <span aria-hidden="true" style="display: flex; gap: 6px">
+                              <sc-for list="{{diffSegs}}" as="hds" hint-placeholder-count="5"><span style="{{hds.base}}"><span style="{{hds.a}}"></span><span style="{{hds.b}}"></span></span></sc-for>
+                            </span>
+                            <span aria-hidden="true" style="position: relative; display: block; height: 48px; min-width: 248px">
+                              <span style="{{diffNameA}}">Moderate</span>
+                              <span style="{{diffNameB}}">Elevated</span>
+                            </span>
+                            <span style="max-width: 30ch; font-size: 17px; line-height: 1.45">{{diffRange}}</span>
+                          </div>
+                          <dl style="flex: 1 1 340px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 18px">
+                            <sc-for list="{{diffRows}}" as="hdr" hint-placeholder-count="3">
+                              <div style="display: flex; flex-direction: column; gap: 6px">
+                                <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+                                  <dt style="font-size: 17px">{{hdr.label}}</dt>
+                                  <dd style="margin: 0; font-size: 17px; font-weight: 700">{{hdr.value}}</dd>
+                                </div>
+                                <span aria-hidden="true" style="position: relative; display: block; height: 10px; border-radius: 5px; overflow: hidden; background: {{t.bgSolid}}"><span style="{{hdr.bar}}"></span></span>
+                              </div>
+                            </sc-for>
+                            <p aria-live="polite" style="margin: 4px 0 0; font-size: 19px; line-height: 1.5">{{diffGap}}</p>
+                          </dl>
+                        </div>
+                      </div>
+                      <div class="rise rise1" style="display: flex; flex-direction: column; gap: 12px">
+                        <p style="margin: 0; font-size: 17px; font-weight: 600">Reasons added on 2 Oct 2026, strongest first</p>
+                        <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px">
+                          <li style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px"><span>Finances: 72% of units sold, 41% built. Sales are 31 points ahead of construction.</span><a href="#source" class="press" style="{{u.chip}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>HARERA QPR · Apr–Jun 2026</a></li>
+                          <li style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px"><span>Timeline: QPRs filed late in 3 of the last 8 quarters.</span><a href="#source" class="press" style="{{u.chip}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>HARERA QPR register</a></li>
+                        </ol>
+                      </div>
+                      <p class="rise rise2" style="margin: 0; font-size: 19px; line-height: 1.5"><strong>Records show:</strong> the Jul–Sep 2026 QPR is not on HARERA yet (due 15 Oct). Checked 18 Oct 2026. New records are under review, so this band may change.</p>
+                      <div class="rise rise2" style="border-radius: 8px; background: {{t.claimBg}}; padding: 22px 26px; display: flex; flex-direction: column; gap: 8px">
+                        <p style="margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 15px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Developer says · not yet verified · 15 Oct 2026</p>
+                        <p style="margin: 0; font-size: 19px; line-height: 1.55">“Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.”</p>
+                      </div>
+                      <p class="rise rise3" style="margin: 0; border-radius: 8px; background: {{t.track}}; padding: 20px 26px; font-size: 19px; line-height: 1.5"><strong>What would change this:</strong> two quarters in a row with construction ahead of sales would move it back to Moderate.</p>
+                    </div>
+                  </sc-if>
+                </div>
+              </li>
+            </sc-for>
+          </ol>
+          <sc-if value="{{sinceEmpty}}" hint-placeholder-val="{{false}}">
+            <p role="status" style="margin: 0; padding: 24px 0; font-size: 19px">No new records yet. Drag the date back to see earlier changes.</p>
+          </sc-if>
+          <sc-if value="{{hasQuiet}}" hint-placeholder-val="{{true}}">
+            <p style="margin: 0; font-size: 17px; color: {{t.ink2}}">{{quietLine}}</p>
+          </sc-if>
+        </div>
+        <figure class="rise rise2" style="flex: 1 1 440px; min-width: 0; margin: 0; position: sticky; top: 96px; display: flex; flex-direction: column; gap: 14px">
+          <div style="position: relative; height: 560px; overflow: hidden; background: {{t.photo}}">
+            <img data-slot="heroAurelia" class="drift" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Illustrative image: Aurelia Heights, Phase 2, the project you follow whose delivery risk changed on 2 Oct 2026" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+            <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+          </div>
+          <figcaption style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 15px; color: {{t.ink2}}">
+            <span style="color: {{t.ink}}; font-weight: 600">Aurelia Heights, Phase 2</span>
+            <span style="{{fromChip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{fromChip.meter}}" as="h1m" hint-placeholder-count="5"><span style="{{h1m}}"></span></sc-for></span>{{fromChip.name}}</span>
+            <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><path d="M2 7h17M14 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span class="sr">changed to</span>
+            <span style="{{toChip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{toChip.meter}}" as="h2m" hint-placeholder-count="5"><span style="{{h2m}}"></span></sc-for></span>{{toChip.name}}</span>
+            <span>2 Oct 2026</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="projects" aria-labelledby="pace-h" style="background: {{t.track}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="pace-h" class="rv" style="{{u.h2}}; max-width: 13ch">Are they keeping pace?</h2>
+          <p class="rv rv1" style="{{u.lead}}; flex: 0 1 520px">The bar shows how much is built. The tick marks how much of the promised time is used.</p>
+        </div>
+        <ul class="rv rv1" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 28px">
+          <sc-for list="{{projects}}" as="p" hint-placeholder-count="4">
+            <li style="{{p.rowStyle}}">
+              <div style="position: relative; width: 128px; height: 128px; overflow: hidden; background: {{t.photo}}">
+                <sc-if value="{{p.isA}}" hint-placeholder-val="{{true}}"><img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Illustrative image: Aurelia Heights exterior" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                <sc-if value="{{p.isK}}" hint-placeholder-val="{{false}}"><img data-slot="heroKestrel" src="/_blob/29ddb4eb8af81bf41e28a3b11bdfd13e" alt="Illustrative image: Kestrel Park exterior" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                <sc-if value="{{p.isS}}" hint-placeholder-val="{{false}}"><img data-slot="heroSapphire" src="/_blob/834d8de534be36df0eb45c9468dabeb2" alt="Illustrative image: Sapphire Grove exterior" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                <sc-if value="{{p.isC}}" hint-placeholder-val="{{false}}"><img data-slot="heroCoral" src="/_blob/76b15081db77011ae5930ad87bcd7272" alt="Illustrative image: Coral Towers exterior" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+                <a href="#project" class="lk" style="align-self: flex-start; color: {{t.ink}}; text-decoration: none; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.025em; line-height: 1.15">{{p.name}}</a>
+                <span style="font-size: 15px; color: {{t.ink2}}">{{p.where}}</span>
+                <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding-top: 4px">
+                  <span style="{{p.chip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{p.chip.meter}}" as="m" hint-placeholder-count="5"><span style="{{m}}"></span></sc-for></span>{{p.chip.name}}</span>
+                  <span style="{{p.changeStyle}}">
+                    <sc-if value="{{p.changed}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9M2.5 2.5v2.8h2.8M8 5v3.2l2 1.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                    {{p.change}}
+                  </span>
+                </span>
+                <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding-top: 2px; font-size: 15px; color: {{t.ink2}}">
+                  <a href="#follow-type" onClick="{{p.pickType}}" class="press" style="{{p.typeStyle}}">{{p.typeLabel}}<span class="sr"> for {{p.name}}. Change follow type</span></a>
+                  <span style="display: inline-flex; align-items: center; gap: 8px">
+                    <span aria-hidden="true" style="display: inline-flex; gap: 4px"><sc-for list="{{p.faces}}" as="pf" hint-placeholder-count="1"><span style="{{pf.style}}"><sc-if value="{{pf.person}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></sc-if>{{pf.init}}</span></sc-for></span>
+                    {{p.family}}
+                  </span>
+                </span>
+                <sc-if value="{{p.off}}" hint-placeholder-val="{{false}}"><span role="status" style="font-size: 15px; color: {{t.ink2}}">Unfollowed. Alerts for this project have stopped.</span></sc-if>
+              </div>
+              <div role="img" aria-label="{{p.aria}}" style="display: flex; flex-direction: column; gap: 12px">
+                <span style="font-size: 15px; color: {{t.ink2}}"><strong style="font-size: 17px; color: {{t.ink}}">{{p.built}}%</strong> built · <strong style="font-size: 17px; color: {{t.ink}}">{{p.time}}%</strong> of time used</span>
+                <span aria-hidden="true" style="position: relative; display: block; height: 10px; border-radius: 5px; background: {{t.bgSolid}}">
+                  <span style="{{p.builtBar}}"></span>
+                  <span style="{{p.timeTick}}"></span>
+                </span>
+                <span aria-hidden="true" style="font-size: 14px; line-height: 1.4; color: {{t.ink2}}">{{p.asOf}}</span>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
+                <a href="#project" class="lk" style="display: inline-flex; align-items: center; min-height: 44px; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px; white-space: nowrap">Open project<span class="sr"> {{p.name}}</span></a>
+                <button type="button" class="press" onClick="{{p.toggle}}" aria-pressed="{{p.offPressed}}" style="min-height: 44px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 17px; color: {{t.ink2}}; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; white-space: nowrap">{{p.toggleLabel}}</button>
+              </div>
+            </li>
+          </sc-for>
+        </ul>
+        <p style="margin: -12px 0 0; font-size: 15px; color: {{t.ink2}}">Illustrative images. Bands as of 14 Oct 2026; each bar names the QPR it comes from.</p>
+      </div>
+    </section>
+
+    <section id="follow-type" aria-labelledby="type-h" style="background: {{t.bg}}; padding: 120px 0; scroll-margin-top: 72px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="max-width: 820px; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="type-h" class="rv" style="{{u.h2}}; max-width: 15ch">Have you booked any of these?</h2>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 44ch">Tell us, and we add the alerts a booked buyer needs: payments, demand letters and possession. Only you get them.</p>
+        </div>
+        <div class="rv rv2" style="border-radius: 8px; background: {{t.track}}; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
+          <div role="group" aria-label="Choose a project" style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{typeProjects}}" as="tp" hint-placeholder-count="4"><button type="button" class="press" onClick="{{tp.pick}}" aria-pressed="{{tp.on}}" style="{{tp.style}}">{{tp.name}}<sc-if value="{{tp.booked}}" hint-placeholder-val="{{false}}"><span style="{{tp.tagStyle}}">Booked</span></sc-if></button></sc-for>
+          </div>
+          <fieldset style="margin: 0; padding: 0; border: 0; min-width: 0">
+            <legend style="padding: 0; margin: 0 0 16px; font-size: 19px; font-weight: 600">{{typeLegend}}</legend>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr)); gap: 16px">
+              <sc-for list="{{typeOpts}}" as="to" hint-placeholder-count="2">
+                <div style="{{to.style}}">
+                  <label style="display: flex; align-items: flex-start; gap: 14px; cursor: pointer">
+                    <input type="radio" name="follow-type" value="{{to.k}}" checked="{{to.checked}}" onChange="{{to.pick}}" style="flex: none; width: 22px; height: 22px; margin: 8px 0 0; accent-color: {{t.accent}}; cursor: pointer">
+                    <span style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+                      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.15; letter-spacing: -0.025em">{{to.title}}</span>
+                      <span style="font-size: 17px; color: {{t.ink2}}">{{to.sub}}</span>
+                    </span>
+                  </label>
+                  <ul style="list-style: none; margin: 0; padding: 0 0 0 36px; display: flex; flex-direction: column; gap: 8px">
+                    <sc-for list="{{to.items}}" as="ti" hint-placeholder-count="3"><li style="display: flex; align-items: flex-start; gap: 10px; font-size: 17px; line-height: 1.45"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>{{ti}}</span></li></sc-for>
+                  </ul>
+                </div>
+              </sc-for>
+            </div>
+          </fieldset>
+          <sc-if value="{{typeBooked}}" hint-placeholder-val="{{false}}">
+            <div class="rise" style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px 48px">
+              <p style="flex: 1 1 440px; margin: 0; font-size: 19px; line-height: 1.5">{{typeProgress}}</p>
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px">
+                <a href="#pay-as-built" class="press" style="{{u.inkBtn}}">Check a demand letter</a>
+                <a href="#if-booked" class="lk" style="font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">What a booked buyer can do</a>
+              </div>
+            </div>
+          </sc-if>
+          <p role="status" style="margin: 0; font-size: 15px; color: {{t.ink2}}">{{typeNote}}</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="family" aria-labelledby="fam-h" style="background: {{t.track}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 64px 80px">
+        <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="fam-h" class="rv" style="{{u.h2}}; max-width: 12ch">Who’s deciding with you?</h2>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 34ch">Invite family by link. Each person taps it to get the same alerts on their own phone. Their number stays theirs.</p>
+          <ul aria-label="Your family circle" style="list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column">
+            <sc-for list="{{members}}" as="mb" hint-placeholder-count="3">
+              <li style="display: flex; flex-direction: column; gap: 12px; padding: 14px 0">
+                <div style="display: flex; align-items: flex-start; gap: 16px">
+                  <span aria-hidden="true" style="{{mb.avatar}}"><sc-if value="{{mb.person}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>{{mb.init}}</span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <strong style="font-weight: 600">{{mb.name}}</strong>
+                    <span style="font-size: 17px; line-height: 1.45; color: {{t.ink2}}">{{mb.sub}}</span>
+                  </span>
+                  <sc-if value="{{mb.hasAct}}" hint-placeholder-val="{{true}}"><button type="button" class="press" onClick="{{mb.act}}" aria-expanded="{{mb.exp}}" style="{{u.tertiary}}; flex: none; font-size: 17px">{{mb.actLabel}}<span class="sr"> {{mb.name}}</span></button></sc-if>
+                </div>
+                <sc-if value="{{mb.confirmOpen}}" hint-placeholder-val="{{false}}">
+                  <div class="rise" role="group" aria-label="{{mb.confirmLabel}}" style="margin-left: 56px; border-radius: 8px; background: {{t.bgSolid}}; padding: 18px 22px; display: flex; flex-direction: column; gap: 14px">
+                    <p style="margin: 0; font-size: 17px; line-height: 1.5">{{mb.confirmText}}</p>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px">
+                      <button type="button" class="press" onClick="{{mb.yes}}" style="{{u.inkBtn}}">{{mb.yesLabel}}</button>
+                      <button type="button" class="press" onClick="{{mb.no}}" style="{{u.tertiary}}; font-size: 17px">{{mb.noLabel}}</button>
+                    </div>
+                  </div>
+                </sc-if>
+              </li>
+            </sc-for>
+          </ul>
+
+          <div style="display: flex; flex-direction: column; gap: 14px; padding-top: 16px">
+            <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.15; letter-spacing: -0.025em">Invite someone</h3>
+            <label for="inv-scope" style="font-size: 17px; font-weight: 600">What they follow with you</label>
+            <select id="inv-scope" value="{{scope}}" onChange="{{onScope}}" style="align-self: flex-start; max-width: 100%; height: 52px; padding: 0 18px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; cursor: pointer">
+              <option value="A">Aurelia Heights, Phase 2</option>
+              <option value="all">All 4 projects you follow</option>
+            </select>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-top: 4px">
+              <button type="button" class="press" onClick="{{shareWa}}" style="{{u.inkBtn}}"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.2 16.5l1.2-3.4A6.8 6.8 0 1 1 7.3 15.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Share invite on WhatsApp</button>
+              <button type="button" class="press" onClick="{{copyLink}}" style="{{u.tertiary}}; font-size: 17px">Copy link</button>
+            </div>
+            <p role="status" style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">{{inviteStatus}}</p>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 24px 40px; padding-top: 16px">
+            <div style="flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+              <h3 style="margin: 0; font-size: 19px; font-weight: 600">They can see</h3>
+              <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 17px; line-height: 1.45">
+                <li style="display: flex; gap: 10px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>The projects you invite them to</span></li>
+                <li style="display: flex; gap: 10px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>The same alerts, on their own phone</span></li>
+                <li style="display: flex; gap: 10px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Your shared shortlist and notes</span></li>
+              </ul>
+            </div>
+            <div style="flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+              <h3 style="margin: 0; font-size: 19px; font-weight: 600">They can’t change</h3>
+              <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 17px; line-height: 1.45">
+                <li style="display: flex; gap: 10px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>Your follows or follow type</span></li>
+                <li style="display: flex; gap: 10px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>Your alert settings</span></li>
+                <li style="display: flex; gap: 10px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>Who is in this circle</span></li>
+              </ul>
+            </div>
+          </div>
+          <p style="margin: 0; font-size: 17px; line-height: 1.5">Stays private to you: cost sheets, visit passes, payment alerts and who has your number.</p>
+        </div>
+
+        <div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 32px">
+          <div class="rv" style="position: relative">
+            <img data-slot="familyShortlist" src="/_blob/cc80621f31f4f26ef0ff38dea30f4423" alt="Illustrative image: a printed shortlist of three projects with handwritten notes in two hands on a dining table" style="width: 100%; aspect-ratio: 2 / 1; background: #E7E3DA; object-fit: cover; display: block">
+            <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.15; letter-spacing: -0.025em">Your shared shortlist</h3>
+            <p style="margin: 0; font-size: 17px; color: {{t.ink2}}">{{shortSub}}</p>
+          </div>
+          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 32px">
+            <sc-for list="{{shortlist}}" as="sl" hint-placeholder-count="3">
+              <li style="display: flex; flex-direction: column; gap: 14px">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px">
+                  <a href="#project" class="lk" style="font-size: 19px; font-weight: 700; color: {{t.ink}}; text-decoration: none">{{sl.name}}</a>
+                  <span style="{{sl.chip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{sl.chip.meter}}" as="slm" hint-placeholder-count="5"><span style="{{slm}}"></span></sc-for></span>{{sl.chip.name}}</span>
+                  <span style="font-size: 15px; color: {{t.ink2}}">{{sl.allin}}</span>
+                </div>
+                <ul aria-label="{{sl.notesLabel}}" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+                  <sc-for list="{{sl.notes}}" as="nt" hint-placeholder-count="2">
+                    <li style="display: flex; align-items: flex-start; gap: 12px">
+                      <span aria-hidden="true" style="{{nt.avatar}}">{{nt.init}}</span>
+                      <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+                        <span style="font-size: 15px; color: {{t.ink2}}"><strong style="font-weight: 600; color: {{t.ink}}">{{nt.who}}</strong> · {{nt.date}}</span>
+                        <span style="font-size: 17px; line-height: 1.5">{{nt.text}}</span>
+                      </span>
+                    </li>
+                  </sc-for>
+                </ul>
+              </li>
+            </sc-for>
+          </ul>
+          <div style="border-radius: 8px; background: {{t.bgSolid}}; padding: 22px 24px; display: flex; flex-direction: column; gap: 12px">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px">
+              <label for="note-for" style="font-size: 17px; font-weight: 600">Add a note to</label>
+              <select id="note-for" value="{{noteFor}}" onChange="{{onNoteFor}}" style="height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; cursor: pointer">
+                <option value="K">Kestrel Park</option>
+                <option value="S">Sapphire Grove, Phase 1</option>
+                <option value="A">Aurelia Heights, Phase 2</option>
+              </select>
+            </div>
+            <label for="note-text" class="sr">Your note</label>
+            <textarea id="note-text" rows="2" maxlength="280" value="{{draft}}" onChange="{{onDraft}}" placeholder="For example: ask about the parking charge at the visit" style="width: 100%; box-sizing: border-box; padding: 12px 16px; border-radius: 8px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; line-height: 1.5; resize: vertical"></textarea>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px">
+              <p role="status" style="margin: 0; font-size: 15px; color: {{t.ink2}}">{{noteStatus}}</p>
+              <button type="button" class="press" onClick="{{addNote}}" aria-disabled="{{noteDisabled}}" style="{{noteBtn}}">Add note</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="feed" aria-labelledby="feed-h" style="background: {{t.bg}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="feed-h" class="rv" style="{{u.h2}}; max-width: 14ch">{{feedTitle}}</h2>
+          <p class="rv rv1" style="{{u.lead}}; flex: 0 1 520px">Earlier updates, back to the day you followed. Each is dated and sourced, and the developer is told at the same time as you.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+          <div role="tablist" aria-label="Filter updates" style="display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.track}}">
+            <sc-for list="{{tabs}}" as="tb" hint-placeholder-count="4">
+              <button type="button" role="tab" class="press" id="{{tb.id}}" aria-selected="{{tb.on}}" aria-controls="feed-panel" onClick="{{tb.pick}}" style="{{tb.style}}">{{tb.label}} <span style="{{tb.countStyle}}">{{tb.count}}</span></button>
+            </sc-for>
+          </div>
+          <div style="display: flex; align-items: center; gap: 20px">
+            <span role="status" style="font-size: 15px; color: {{t.ink2}}">{{unreadText}}</span>
+            <button type="button" class="press" onClick="{{markAll}}" style="{{u.tertiary}}; font-size: 17px">Mark all as read</button>
+          </div>
+        </div>
+        <ul id="feed-panel" role="tabpanel" aria-labelledby="{{activeTabId}}" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{feed}}" as="f" hint-placeholder-count="6">
+            <li id="{{f.anchor}}" style="display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: 8px 40px; padding: 32px 0; scroll-margin-top: 88px">
+              <div style="display: flex; flex-direction: column; gap: 2px; padding-top: 4px">
+                <span style="display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600"><span aria-hidden="true" style="{{f.dotStyle}}"></span><span class="sr">{{f.unreadSr}}</span>{{f.date}}</span>
+                <span style="padding-left: 20px; font-size: 15px; color: {{t.ink2}}">{{f.cat}}</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0">
+                <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.025em; line-height: 1.15">{{f.head}}</h3>
+                <a href="#project" class="lk" style="align-self: flex-start; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">{{f.project}}</a>
+                <sc-if value="{{f.hasDiff}}" hint-placeholder-val="{{true}}">
+                  <p style="{{u.diff}}"><span style="color: {{t.ink2}}">{{f.diffLabel}}</span><span class="sr">was</span><s style="color: {{t.ink2}}">{{f.was}}</s><svg width="20" height="12" viewBox="0 0 22 14" aria-hidden="true"><path d="M2 7h17M14 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="sr">now</span><strong>{{f.now}}</strong></p>
+                </sc-if>
+                <sc-if value="{{f.isBand}}" hint-placeholder-val="{{false}}">
+                  <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 2px 0">
+                    <span style="{{fromChip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{fromChip.meter}}" as="m1" hint-placeholder-count="5"><span style="{{m1}}"></span></sc-for></span>{{fromChip.name}}</span>
+                    <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><path d="M2 7h17M14 2l5 5-5 5" fill="none" stroke="{{t.ink2}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    <span class="sr">changed to</span>
+                    <span style="{{toChip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{toChip.meter}}" as="m2" hint-placeholder-count="5"><span style="{{m2}}"></span></sc-for></span>{{toChip.name}}</span>
+                  </span>
+                </sc-if>
+                <p style="margin: 0; max-width: 62ch">{{f.body}}</p>
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-top: 2px">
+                  <sc-for list="{{f.src}}" as="sc" hint-placeholder-count="1"><a href="#source" class="press" style="{{u.chip}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>{{sc}}</a></sc-for>
+                  <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 15px; color: {{t.ink2}}">
+                    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 11V7.5a4 4 0 0 1 8 0V11l1.2 1.5H2.8zM6.6 14h2.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Developer notified at the same time
+                  </span>
+                </div>
+                <sc-if value="{{f.isBand}}" hint-placeholder-val="{{false}}">
+                  <button type="button" class="press" onClick="{{toggleBandDetail}}" aria-expanded="{{bandExp}}" aria-controls="band-diff" style="{{u.tertiary}}">{{bandBtnLabel}} <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="{{chevBand}}"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+                </sc-if>
+                <sc-if value="{{f.open}}" hint-placeholder-val="{{false}}">
+                  <div id="band-diff" style="display: flex; flex-direction: column; gap: 28px; padding-top: 8px">
+                    <div class="rise" style="border-radius: 8px; background: {{t.track}}; padding: 28px 32px 32px; display: flex; flex-direction: column; gap: 28px">
+                      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px">
+                        <p aria-live="polite" style="margin: 0; font-size: 17px; font-weight: 600">{{diffCaption}}</p>
+                        <div role="group" aria-label="Show the score" style="display: flex; padding: 4px; border-radius: 999px; background: {{t.bgSolid}}">
+                          <sc-for list="{{diffModes}}" as="dm" hint-placeholder-count="2">
+                            <button type="button" class="press" onClick="{{dm.pick}}" aria-pressed="{{dm.on}}" style="{{dm.style}}">{{dm.text}}</button>
+                          </sc-for>
+                        </div>
+                      </div>
+                      <div style="display: flex; flex-wrap: wrap; gap: 32px 64px; align-items: flex-start">
+                        <div role="img" aria-label="{{diffAria}}" style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 16px">
+                          <span aria-hidden="true" style="display: flex; gap: 6px">
+                            <sc-for list="{{diffSegs}}" as="ds" hint-placeholder-count="5"><span style="{{ds.base}}"><span style="{{ds.a}}"></span><span style="{{ds.b}}"></span></span></sc-for>
+                          </span>
+                          <span aria-hidden="true" style="position: relative; display: block; height: 48px; min-width: 248px">
+                            <span style="{{diffNameA}}">Moderate</span>
+                            <span style="{{diffNameB}}">Elevated</span>
+                          </span>
+                          <span style="max-width: 30ch; font-size: 17px; line-height: 1.45">{{diffRange}}</span>
+                        </div>
+                        <dl style="flex: 1 1 340px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 18px">
+                          <sc-for list="{{diffRows}}" as="dr" hint-placeholder-count="3">
+                            <div style="display: flex; flex-direction: column; gap: 6px">
+                              <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+                                <dt style="font-size: 17px">{{dr.label}}</dt>
+                                <dd style="margin: 0; font-size: 17px; font-weight: 700">{{dr.value}}</dd>
+                              </div>
+                              <span aria-hidden="true" style="position: relative; display: block; height: 10px; border-radius: 5px; overflow: hidden; background: {{t.bgSolid}}"><span style="{{dr.bar}}"></span></span>
+                            </div>
+                          </sc-for>
+                          <p aria-live="polite" style="margin: 4px 0 0; font-size: 19px; line-height: 1.5">{{diffGap}}</p>
+                        </dl>
+                      </div>
+                    </div>
+                    <div class="rise rise1" style="display: flex; flex-direction: column; gap: 12px">
+                      <p style="margin: 0; font-size: 17px; font-weight: 600">Reasons added on 2 Oct 2026, strongest first</p>
+                      <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px">
+                        <li style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px"><span>Finances: 72% of units sold, 41% built. Sales are 31 points ahead of construction.</span><a href="#source" class="press" style="{{u.chip}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>HARERA QPR · Apr–Jun 2026</a></li>
+                        <li style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px"><span>Timeline: QPRs filed late in 3 of the last 8 quarters.</span><a href="#source" class="press" style="{{u.chip}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>HARERA QPR register</a></li>
+                      </ol>
+                    </div>
+                    <p class="rise rise2" style="margin: 0; font-size: 19px; line-height: 1.5"><strong>Records show:</strong> the Jul–Sep 2026 QPR is not on HARERA yet (due 15 Oct). Checked 18 Oct 2026. New records are under review, so this band may change.</p>
+                    <div class="rise rise2" style="border-radius: 8px; background: {{t.claimBg}}; padding: 22px 26px; display: flex; flex-direction: column; gap: 8px">
+                      <p style="margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 15px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Developer says · not yet verified · 15 Oct 2026</p>
+                      <p style="margin: 0; font-size: 19px; line-height: 1.55">“Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.”</p>
+                    </div>
+                    <p class="rise rise3" style="margin: 0; border-radius: 8px; background: {{t.track}}; padding: 20px 26px; font-size: 19px; line-height: 1.5"><strong>What would change this:</strong> two quarters in a row with construction ahead of sales would move it back to Moderate.</p>
+                  </div>
+                </sc-if>
+              </div>
+            </li>
+          </sc-for>
+        </ul>
+        <sc-if value="{{feedEmpty}}" hint-placeholder-val="{{false}}">
+          <p style="margin: 0; padding: 40px 0; font-size: 19px">{{feedEmptyText}}</p>
+        </sc-if>
+      </div>
+    </section>
+
+    <section id="saved" aria-labelledby="saved-h" style="background: {{t.track}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 56px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="saved-h" class="rv" style="{{u.h2}}; max-width: 15ch">What are you watching for?</h2>
+          <p class="rv rv1" style="{{u.lead}}; flex: 0 1 520px">Your saved searches. We tell you when a new project matches.</p>
+        </div>
+        <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 48px 72px">
+          <sc-for list="{{searches}}" as="q" hint-placeholder-count="2">
+            <li class="rv rv1" style="display: flex; flex-direction: column; gap: 10px; min-width: 0">
+              <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.1; letter-spacing: -0.025em">{{q.title}}</strong>
+              <span style="font-size: 19px">{{q.filters}}</span>
+              <span style="font-size: 17px; color: {{t.ink2}}">{{q.matches}}</span>
+              <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px; padding-top: 6px">
+                <button type="button" role="switch" aria-checked="{{q.on}}" onClick="{{q.flip}}" style="display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 17px; color: {{t.ink}}; cursor: pointer">
+                  <span aria-hidden="true" style="{{q.track}}"><span style="{{q.knob}}"></span></span>{{q.label}}
+                </button>
+                <a href="#search" class="lk" style="font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Run search</a>
+              </span>
+            </li>
+          </sc-for>
+        </ul>
+      </div>
+    </section>
+
+    <section id="digest" aria-labelledby="dig-h" style="background: {{t.bg}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap-reverse; align-items: center; gap: 56px 80px">
+        <figure class="rv" style="flex: 1 1 520px; min-width: 0; margin: 0; border-radius: 8px; background: {{t.track}}; padding: 40px 32px 32px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 18px">
+          <div data-ui="whatsapp-digest-preview" style="width: 100%; max-width: 448px; display: flex; flex-direction: column; gap: 6px">
+            <div style="border-radius: 20px 20px 20px 6px; padding: 6px; background: {{t.bgSolid}}">
+              <div role="img" aria-label="{{wkCardLabel}}" style="position: relative; width: 100%; max-width: 436px; aspect-ratio: 288 / 152; overflow: hidden">
+                <div style="position: absolute; left: 0; top: 0; width: 288px; height: 152px; transform-origin: 0 0; transform: scale(1.5139); box-sizing: border-box; padding: 8px 10px; background: #F4F2ED; color: #1B1A17; display: flex; flex-direction: column; gap: 5px; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif">
+                  <div style="display: flex; flex-direction: column">
+                    <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 17px; line-height: 19px; letter-spacing: -0.02em; white-space: nowrap">This week in your projects</span>
+                    <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 15px; color: #3F3C36"><span>{{wk.range}} · {{wk.count}}</span><svg width="16" height="16" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="#1D5A44"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg></span>
+                  </div>
+                  <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px">
+                    <sc-for list="{{wk.floors}}" as="fl" hint-placeholder-count="4"><div style="height: 22px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 8px; border-radius: 2px; background: #FFFFFF; font-size: 13px; line-height: 16px; white-space: nowrap"><span style="font-weight: 700">{{fl.p}}</span><span style="{{fl.cStyle}}">{{fl.c}}</span></div></sc-for>
+                  </div>
+                </div>
+              </div>
+              <div style="padding: 12px 12px 6px; font-size: 17px; line-height: 1.5; display: flex; flex-direction: column; gap: 8px">
+                <sc-for list="{{wk.body}}" as="wb" hint-placeholder-count="4"><p style="margin: 0">{{wb}}</p></sc-for>
+                <p style="margin: 2px 0 0; font-size: 13px; color: {{t.ink2}}">Weekly digest you chose · reply STOP to end all alerts</p>
+              </div>
+            </div>
+            <div aria-hidden="true" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px">
+              <span style="height: 44px; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600">See changes</span>
+              <span style="height: 44px; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600">Stop weekly</span>
+            </div>
+          </div>
+          <figcaption style="max-width: 448px; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Preview for {{wk.range}}. A utility message, sent only because you chose a weekly digest.</figcaption>
+        </figure>
+        <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="dig-h" class="rv" style="{{u.h2}}; max-width: 12ch">What lands every Sunday?</h2>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 36ch">This week in filings: one message at 9 am with what changed on HARERA for your projects. Band changes still reach you at once.</p>
+          <div role="group" aria-label="Preview a week" style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{weeks}}" as="wkb" hint-placeholder-count="3"><button type="button" class="press" onClick="{{wkb.pick}}" aria-pressed="{{wkb.on}}" style="{{wkb.style}}">{{wkb.label}}</button></sc-for>
+          </div>
+          <p role="status" style="margin: 0; font-size: 17px; line-height: 1.5">{{digestStatus}} <a href="#alerts" class="lk" style="font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Change how often</a></p>
+          <p style="margin: 0; font-size: 17px; line-height: 1.55">Old cards answer for themselves. Send any Plinth card back to us on WhatsApp, or scan its QR code, and we tell you what has changed since it was sent.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="alerts" aria-labelledby="pref-h" style="background: {{t.track}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 56px 80px">
+        <div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="pref-h" class="rv" style="{{u.h2}}; max-width: 13ch">How should we tell you?</h2>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 40ch">Risk changes go out at once. Filings, orders and prices come together in a digest, as often as you choose.</p>
+          <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 6px">
+            <p id="cad-l" style="margin: 0; font-size: 17px; font-weight: 600">Digest of filings, orders and prices</p>
+            <div role="group" aria-labelledby="cad-l" style="align-self: flex-start; display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.bgSolid}}">
+              <sc-for list="{{cadences}}" as="cd" hint-placeholder-count="3"><button type="button" class="press" onClick="{{cd.pick}}" aria-pressed="{{cd.on}}" style="{{cd.style}}">{{cd.label}}</button></sc-for>
+            </div>
+            <p style="margin: 0; font-size: 17px; color: {{t.ink2}}">{{cadenceSub}}</p>
+          </div>
+          <ul style="list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px">
+            <sc-for list="{{channels}}" as="c" hint-placeholder-count="4">
+              <li style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px 0">
+                <span style="display: flex; align-items: center; gap: 16px; min-width: 0">
+                  <span aria-hidden="true" style="flex: 0 0 48px; height: 48px; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center">
+                    <sc-if value="{{c.isWa}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M3.2 16.5l1.2-3.4A6.8 6.8 0 1 1 7.3 15.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg></sc-if>
+                    <sc-if value="{{c.isPush}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M5 13.5V9a5 5 0 0 1 10 0v4.5l1.5 2h-13zM8.3 17.5h3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                    <sc-if value="{{c.isMail}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20"><rect x="2.5" y="4.5" width="15" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"></rect><path d="M3 5.5l7 5.5 7-5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg></sc-if>
+                    <sc-if value="{{c.isQuiet}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M15.5 12.5A6.5 6.5 0 0 1 7.5 4.5a6.5 6.5 0 1 0 8 8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg></sc-if>
+                  </span>
+                  <span style="display: flex; flex-direction: column; min-width: 0">
+                    <strong style="font-weight: 600">{{c.name}}</strong>
+                    <span style="font-size: 17px; color: {{t.ink2}}">{{c.sub}}</span>
+                  </span>
+                </span>
+                <button type="button" role="switch" aria-checked="{{c.on}}" aria-label="{{c.name}}" onClick="{{c.flip}}" style="flex: 0 0 auto; display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 17px; color: {{t.ink2}}; cursor: pointer">
+                  <span aria-hidden="true">{{c.state}}</span>
+                  <span aria-hidden="true" style="{{c.track}}"><span style="{{c.knob}}"></span></span>
+                </button>
+              </li>
+            </sc-for>
+            <li style="display: flex; align-items: center; gap: 16px; padding: 12px 0">
+              <span aria-hidden="true" style="flex: 0 0 48px; height: 48px; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 2.5l6 2.3v4.6c0 3.8-2.5 6.6-6 8.1-3.5-1.5-6-4.3-6-8.1V4.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path><path d="M7.2 10l2 2 3.8-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span style="display: flex; flex-direction: column; min-width: 0">
+                <strong style="font-weight: 600">Utility alerts only, never marketing</strong>
+                <span style="font-size: 17px; color: {{t.ink2}}">Only updates about projects and searches you follow. No ads or offers, and developers can't message you through us.</span>
+              </span>
+            </li>
+          </ul>
+          <p style="margin: 8px 0 0; font-size: 17px">Your number is never shared without your tap. 3 parties can reach you now. Family in your circle never see it. <a href="#who" class="lk" style="font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Who has my number</a></p>
+          <p role="status" style="margin: 0; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; color: {{t.ink2}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{saveNote}}</p>
+        </div>
+        <div class="rv rv2" style="flex: 1 1 420px; min-width: 0; position: sticky; top: 104px; border-radius: 8px; background: {{t.bgSolid}}; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+          <p aria-live="polite" style="margin: 0; font-size: 17px; font-weight: 600">{{previewTitle}}</p>
+          <sc-if value="{{waOn}}" hint-placeholder-val="{{true}}">
+            <div data-ui="whatsapp-preview" style="max-width: 460px; border-radius: 20px 20px 20px 6px; padding: 16px 20px; background: {{t.track}}; font-size: 17px; line-height: 1.55">
+              <p style="margin: 0">Update on Aurelia Heights, Phase 2, which you follow:</p>
+              <p style="margin: 6px 0 0"><strong>Delivery risk changed: Moderate → Elevated</strong></p>
+              <p style="margin: 0">Phase 2 · 2 Oct 2026. Trigger: the Apr–Jun 2026 QPR (72% sold, 41% built) and new complaint orders.</p>
+              <p style="margin: 6px 0 0; text-decoration: underline">Details on Plinth</p>
+              <p style="margin: 8px 0 0; font-size: 13px; color: {{t.ink2}}">Utility message · reply STOP to end alerts</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{waOff}}" hint-placeholder-val="{{false}}">
+            <p style="margin: 0; font-size: 19px">WhatsApp alerts are off. {{fallbackNote}}</p>
+          </sc-if>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">Your alerts stand on HARERA registrations, progress reports, extensions and complaint orders, and developers’ published price lists, read to 14 Oct 2026 with model v1.2. Our opinion, based on public records. Not a credit rating. Not issued by any RERA.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#method" class="lk" style="color: {{t.onSlab}}">Methodology v1.2</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report an error</a>
+          <a href="#who" class="lk" style="color: {{t.onSlab}}">Who has my number</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.onSlab2}}"></span>HARERA synced 2 hours ago · 17,938 orders read · next QPR due 15 Jan 2027</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"$preview":{"width":1280,"height":12100}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      themePick: null,
+      tab: 'all', bandOpen: false, diff: 'now',
+      // Last look was 14 Oct 2026, 8:40 am, so the three later changes are unread.
+      read: {price: false, sjqpr: false, miss: false, cmiss2: false, ext: false, kqpr: true, comp: true, band: true, sqpr: true, lqpr: true, cmiss1: true},
+      off: {}, searchOn: {dx: true, ng: false},
+      wa: true, push: true, email: false, quiet: true, cadence: 'weekly', touched: false,
+      since: 105,
+      typeFor: 'A', booked: {}, typeTouched: false,
+      members: {meera: 'joined', father: 'invited'}, confirm: '', scope: 'A', invite: '',
+      notes: [], noteFor: 'A', draft: '', noteAdded: false,
+      week: 0
+    };
+  }
+  componentDidMount() {
+    try { this._rm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { this._rm = false; }
+  }
+  componentWillUnmount() {
+    clearTimeout(this._dt);
+  }
+  openBand() {
+    // The band reveal: open the band change, show the score as it was, then let it move to now.
+    var self = this;
+    var cur = this.state.read || {};
+    var r = {};
+    for (var x in cur) r[x] = cur[x];
+    r.band = true;
+    clearTimeout(this._dt);
+    if (this._rm) { this.setState({bandOpen: true, tab: 'all', diff: 'now', read: r}); return; }
+    this.setState({bandOpen: true, tab: 'all', diff: 'then', read: r});
+    this._dt = setTimeout(function () { self.setState({diff: 'now'}); }, 900);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      emptyCell: 'rgba(255,255,255,0.08)', emptyBorder: '#7D828A', segEmpty: 'transparent',
+      switchOff: '#5A6B64', knobOff: '#EEF3F0', claimBg: '#1D2621', panelSolid: '#16221D',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', photo: '#E7E3DA',
+      line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      emptyCell: '#EEEBE4', emptyBorder: '#8C9199', segEmpty: '#FFFFFF',
+      switchOff: '#8C9199', knobOff: '#FFFFFF', claimBg: '#F1ECE2', panelSolid: '#FFFFFF',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var disp = "font-family:'Bricolage Grotesque', system-ui, sans-serif;font-weight:800;";
+    var U = {
+      h2: 'margin:0;' + disp + 'font-size:clamp(40px, 5vw, 64px);line-height:1;letter-spacing:-0.035em',
+      lead: 'margin:0;font-size:22px;line-height:1.45',
+      tertiary: 'display:inline-flex;align-items:center;gap:8px;align-self:flex-start;min-height:44px;padding:0;border:0;background:transparent;color:' + T.ink + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:5px',
+      chip: 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 14px;border-radius:999px;box-sizing:border-box;background:' + T.track + ';font-size:14px;color:' + T.ink + ';text-decoration:none;white-space:nowrap',
+      diff: 'margin:0;align-self:flex-start;display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-height:36px;padding:4px 16px;box-sizing:border-box;border-radius:999px;background:' + T.track + ';font-size:17px;line-height:1.3',
+      inkBtn: 'display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;border:0;border-radius:999px;box-sizing:border-box;background:' + T.ink + ';color:' + T.bg + ';font:inherit;font-size:17px;font-weight:600;cursor:pointer;white-space:nowrap;text-decoration:none'
+    };
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', dfill: '#15323A', lo: 5, hi: 15},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', dfill: '#332B0C', lo: 15, hi: 30},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', dfill: '#3A2210', lo: 30, hi: 45},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', dfill: '#3D1A19', lo: 45, hi: 65},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', dfill: '#341A33', lo: 65, hi: 80}
+    };
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function textInk(n) { return night ? B[n].dark : (B[n].i <= 2 ? T.ink : B[n].light); }
+    // Borderless risk chip: band fill, mini meter, name. Same chip as web, app and WhatsApp.
+    function chip(n) {
+      var b = B[n];
+      return {
+        name: n,
+        style: 'display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;font-size:15px;font-weight:600;line-height:1;white-space:nowrap;color:' + T.ink + ';background:' + (night ? b.dfill : b.fill) + ';border:0',
+        meter: [1, 2, 3, 4, 5].map(function (j) {
+          return 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= b.i ? 'background:' + ink(n) : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder);
+        })
+      };
+    }
+    function sw(on) {
+      return {
+        track: 'position:relative;display:inline-block;flex:none;width:52px;height:32px;border-radius:999px;background:' + (on ? T.ink : T.switchOff),
+        knob: 'position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:' + (on ? T.bg : T.knobOff) + ';transform:translateX(' + (on ? 20 : 0) + 'px);transition:transform 200ms cubic-bezier(.22,1,.36,1)'
+      };
+    }
+    function seg(on, base, size) {
+      return 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:0;border-radius:999px;box-sizing:border-box;font:inherit;font-size:' + (size || 17) + 'px;font-weight:600;cursor:pointer;white-space:nowrap;color:' + (on ? T.bg : T.ink) + ';background:' + (on ? T.ink : base);
+    }
+    function avatar(size, pending) {
+      return 'flex:none;width:' + size + 'px;height:' + size + 'px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:' + (size > 30 ? 16 : 13) + 'px;font-weight:700;line-height:1;color:' + T.ink + ';background:' + T.bgSolid + ';opacity:' + (pending ? 0.62 : 1);
+    }
+    function touch(o) { o.touched = true; self.setState(o); }
+    function joinList(a, word) { if (a.length <= 1) return a.join(''); return a.slice(0, -1).join(', ') + ' ' + (word || 'and') + ' ' + a[a.length - 1]; }
+
+    var PR = [
+      {k: 'A', name: 'Aurelia Heights, Phase 2', where: 'Sector 37D, Dwarka Expressway · Northfield Estates', band: 'Elevated', change: 'Was Moderate until 2 Oct', changed: true, built: 41, time: 77},
+      {k: 'K', name: 'Kestrel Park', where: 'Sector 113, Dwarka Expressway · Orbis Land', band: 'Low', change: 'No band change since you followed', changed: false, built: 63, time: 58},
+      {k: 'S', name: 'Sapphire Grove, Phase 1', where: 'Sector 106, Dwarka Expressway · Meridian Habitat', band: 'Moderate', change: 'New QPR in · re-score due by 19 Oct', changed: true, built: 48, time: 55},
+      {k: 'C', name: 'Coral Towers', where: 'Sector 89, New Gurugram · Vantage Buildcon', band: 'High', change: 'Completion extended on 14 Oct, the 2nd extension', changed: true, built: 22, time: 70}
+    ];
+    var NAME = {A: 'Aurelia Heights, Phase 2', K: 'Kestrel Park', S: 'Sapphire Grove, Phase 1', C: 'Coral Towers'};
+    // Which QPR the bar comes from, and how fresh it is (DESIGN §5b: Sapphire re-score, Coral stale data).
+    var ASOF = {A: 'From the Apr–Jun 2026 QPR', K: 'From the Jul–Sep 2026 QPR', S: 'From the Apr–Jun 2026 QPR · the new one is being read', C: 'From the Jan–Mar 2026 QPR · 187 days old'};
+    var off = s.off || {};
+    var booked = s.booked || {};
+    var mem = s.members || {};
+    var meeraIn = mem.meera === 'joined';
+    var fatherSt = mem.father;
+
+    // ---------- Since you last looked: one dated event list feeds the summary, the replay marks and the list (canonical timeline, DESIGN §5b) ----------
+    var MAX = 109; // 1 Jul 2026 (day 0, the day Rohan followed) to 18 Oct 2026 (today)
+    var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    function dayOf(i) { var d = new Date(2026, 6, 1 + i); return {d: d.getDate(), m: MON[d.getMonth()], w: WD[d.getDay()]}; }
+    var EV = [
+      {id: 'price', d: 107, date: '16 Oct', kind: 'Price list', k: 'S', type: 'price', sentence: 'New price list from the developer. All-in is now about ₹2.27 Cr.', diffLabel: '3 BHK quoted', was: '₹1.89 Cr', now: '₹1.95 Cr', src: ['Developer price list · 16 Oct 2026']},
+      {id: 'sjqpr', d: 107, date: '16 Oct', kind: 'QPR', k: 'S', type: 'ontime', sentence: 'Filed on time, on HARERA since 16 Oct. We’re reading it: new figures and any band change by 19 Oct, 7:40 pm.', diffLabel: 'Jul–Sep 2026 QPR', was: 'Due 15 Oct', now: 'Filed 15 Oct, on time', src: ['HARERA QPR · Jul–Sep 2026 · fetched 16 Oct 2026']},
+      {id: 'cmiss2', d: 106, date: '15 Oct', kind: 'QPR', k: 'C', type: 'missing', sentence: 'Not on HARERA. The Apr–Jun QPR is missing too, so our newest figures are 187 days old.', diffLabel: 'Jul–Sep 2026 QPR', was: 'Due 15 Oct', now: 'Not on HARERA as of 18 Oct', src: ['HARERA QPR register · checked 18 Oct 2026']},
+      {id: 'miss', d: 106, date: '15 Oct', kind: 'QPR', k: 'A', type: 'missing', sentence: 'Not on HARERA yet. New records are under review, so the band may change.', diffLabel: 'Jul–Sep 2026 QPR', was: 'Due 15 Oct', now: 'Not on HARERA as of 18 Oct', claim: true, src: ['HARERA QPR register · checked 18 Oct 2026']},
+      {id: 'ext', d: 105, date: '14 Oct', kind: 'Extension', k: 'C', type: 'extension', sentence: 'HARERA granted a 2nd extension, of 6 months. The original date was Aug 2028.', diffLabel: 'Completion date', was: 'Feb 2029', now: 'Aug 2029', src: ['HARERA order · 14 Oct 2026']},
+      {id: 'kqpr', d: 103, date: '12 Oct', kind: 'QPR', k: 'K', type: 'ontime', sentence: 'Jul–Sep 2026 QPR filed on time: 63% built, 58% of time used.', diffLabel: 'Built', was: '59%', now: '63%', src: ['HARERA QPR · Jul–Sep 2026']},
+      {id: 'comp', d: 100, date: '9 Oct', kind: 'Complaint order', k: 'A', type: 'order', sentence: 'One more complaint decided against the promoter, with delay interest. The median is 3.', diffLabel: 'Decided against it in 24 months', was: '13', now: '14', src: ['HARERA order · 9 Oct 2026']},
+      {id: 'band', d: 93, date: '2 Oct', kind: 'Delivery risk', k: 'A', type: 'band', isBand: true, sentence: 'Delivery risk moved from Moderate to Elevated. Trigger: new records, the Apr–Jun 2026 QPR and new complaint orders.', src: ['HARERA QPR · Apr–Jun 2026', 'HARERA complaint orders', 'Method v1.1']},
+      {id: 'sqpr', d: 26, date: '27 Jul', kind: 'QPR', k: 'S', type: 'late', sentence: 'Apr–Jun 2026 QPR filed 12 days late: 48% built, 55% of time used.', diffLabel: 'Filed', was: 'Due 15 Jul', now: '27 Jul', src: ['HARERA QPR register · 27 Jul 2026']},
+      {id: 'lqpr', d: 14, date: '15 Jul', kind: 'QPR', k: 'A', type: 'ontime', sentence: 'Apr–Jun 2026 QPR filed on time: 72% of units sold, Tower A at slab 9.', diffLabel: 'Built', was: '38%', now: '41%', src: ['HARERA QPR · Apr–Jun 2026']},
+      {id: 'cmiss1', d: 14, date: '15 Jul', kind: 'QPR', k: 'C', type: 'missing', sentence: 'Still not on HARERA. The newest QPR is Jan–Mar 2026, filed 14 Apr: 22% built.', diffLabel: 'Apr–Jun 2026 QPR', was: 'Due 15 Jul', now: 'Not on HARERA as of 18 Oct', src: ['HARERA QPR register · checked 18 Oct 2026']}
+    ];
+    var TYPES = [
+      {t: 'band', one: 'band change', many: 'band changes'},
+      {t: 'extension', one: 'extension', many: 'extensions'},
+      {t: 'ontime', one: 'filing on time', many: 'filings on time'},
+      {t: 'late', one: 'late filing', many: 'late filings'},
+      {t: 'missing', one: 'missing filing', many: 'missing filings'},
+      {t: 'order', one: 'complaint order', many: 'complaint orders'},
+      {t: 'price', one: 'price change', many: 'price changes'}
+    ];
+    var since = (s.since === undefined || s.since === null || isNaN(+s.since)) ? 105 : Math.max(0, Math.min(MAX, Math.round(+s.since)));
+    var sd = dayOf(since);
+    var sinceShort = sd.d + ' ' + sd.m;
+    var sinceLong = (since === MAX ? 'Today, ' : '') + sd.w + ' ' + sd.d + ' ' + sd.m + ' 2026';
+    var followed = PR.filter(function (p) { return !off[p.k]; });
+    var inWin = EV.filter(function (e) { return !off[e.k] && e.d >= since; });
+    var cnt = {};
+    inWin.forEach(function (e) { cnt[e.type] = (cnt[e.type] || 0) + 1; });
+    var parts = TYPES.filter(function (c) { return cnt[c.t]; }).map(function (c) { return cnt[c.t] + ' ' + (cnt[c.t] === 1 ? c.one : c.many); });
+    var sinceSummary;
+    if (!followed.length) sinceSummary = 'You don’t follow any projects right now. Follow one to see what changes.';
+    else if (!inWin.length) sinceSummary = (since === MAX ? 'Nothing new today yet.' : 'Nothing new since ' + sinceShort + '.') + ' We last checked HARERA today at 6 am.';
+    else sinceSummary = inWin.length + (inWin.length === 1 ? ' change' : ' changes') + ' across your ' + followed.length + (followed.length === 1 ? ' project: ' : ' projects: ') + joinList(parts) + '.' + (cnt.band ? '' : ' No band moved.');
+    var SHORT = {A: 'Aurelia Heights Ph 2', K: 'Kestrel Park', S: 'Sapphire Grove Ph 1', C: 'Coral Towers'};
+    var quiet = followed.filter(function (p) { return !inWin.some(function (e) { return e.k === p.k; }); }).map(function (p) { return SHORT[p.k]; });
+    var sinceItems = EV.map(function (e) {
+      var show = !off[e.k] && e.d >= since;
+      return {
+        date: e.date, kind: e.kind, project: NAME[e.k], sentence: e.sentence, src: e.src,
+        hasDiff: !e.isBand, diffLabel: e.diffLabel || '', was: e.was || '', now: e.now || '',
+        isBand: !!e.isBand, claim: !!e.claim, open: !!e.isBand && show && !!s.bandOpen,
+        style: show ? 'display:grid;grid-template-columns:88px minmax(0, 1fr);gap:4px 24px;padding:22px 0;animation:plRise 640ms cubic-bezier(.22,1,.36,1) both' : 'display:none'
+      };
+    });
+    function pos(i) { return 'calc(8px + (100% - 16px) * ' + (i / MAX).toFixed(4) + ')'; }
+    var ticks = EV.filter(function (e) { return !off[e.k]; }).map(function (e) {
+      var on = e.d >= since;
+      return 'position:absolute;bottom:0;left:' + pos(e.d) + ';width:4px;margin-left:-2px;border-radius:2px;height:' + (on ? 26 : 12) + 'px;background:' + (on ? (e.isBand ? ink('Elevated') : T.ink) : T.lineStrong) + ';transition:height 260ms cubic-bezier(.22,1,.36,1), background-color 260ms ease';
+    });
+    var AX = [{i: 0, l: '1 Jul'}, {i: 31, l: '1 Aug'}, {i: 62, l: '1 Sep'}, {i: 92, l: '1 Oct'}, {i: MAX, l: 'Today'}];
+    var axis = AX.map(function (a, n) {
+      var tx = n === 0 ? '0' : (n === AX.length - 1 ? '-100%' : '-50%');
+      return {label: a.l, style: 'position:absolute;top:0;left:' + (n === 0 ? '0' : (n === AX.length - 1 ? '100%' : pos(a.i))) + ';transform:translateX(' + tx + ');white-space:nowrap'};
+    });
+    var JUMPS = [{i: 105, l: 'Your last look · 14 Oct'}, {i: 92, l: '1 Oct'}, {i: 62, l: '1 Sep'}, {i: 0, l: 'When you followed · 1 Jul'}];
+    var jumps = JUMPS.map(function (j) {
+      var on = since === j.i;
+      return {label: j.l, on: on ? 'true' : 'false', style: seg(on, T.bgSolid, 15), pick: function () { self.setState({since: j.i}); }};
+    });
+    var read = s.read || {};
+    var unreadN = ['price', 'sjqpr', 'miss', 'cmiss2', 'ext', 'kqpr', 'comp', 'band', 'sqpr', 'lqpr', 'cmiss1'].filter(function (x) { return !read[x]; }).length;
+    var allSeen = unreadN === 0;
+
+    // ---------- Projects: follow type and family on each row ----------
+    var projects = PR.map(function (p) {
+      var isOff = !!off[p.k];
+      var bk = !!booked[p.k];
+      var faces = [];
+      var fam = 'Only you follow this';
+      if (meeraIn) { faces.push({init: 'M', person: false, style: avatar(28, false)}); fam = 'Meera follows too'; }
+      if (p.k === 'A' && (fatherSt === 'invited' || fatherSt === 'joined')) {
+        faces.push({init: '', person: true, style: avatar(28, fatherSt === 'invited')});
+        fam = fatherSt === 'joined' ? (meeraIn ? 'Meera and her father follow too' : 'Meera’s father follows too') : (meeraIn ? 'Meera follows too · her father is invited' : 'Meera’s father is invited');
+      }
+      return {
+        name: p.name, where: p.where, chip: chip(p.band), change: p.change, changed: p.changed,
+        built: p.built, time: p.time,
+        isA: p.k === 'A', isK: p.k === 'K', isS: p.k === 'S', isC: p.k === 'C',
+        off: isOff, offPressed: isOff ? 'true' : 'false',
+        toggleLabel: isOff ? 'Follow again' : 'Unfollow',
+        toggle: function () { var o = {}; for (var x in off) o[x] = off[x]; o[p.k] = !isOff; self.setState({off: o}); },
+        typeLabel: bk ? 'Booked here' : 'Just watching',
+        typeStyle: 'display:inline-flex;align-items:center;min-height:32px;padding:0 14px;border-radius:999px;box-sizing:border-box;background:' + T.bgSolid + ';color:' + T.ink + ';font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap',
+        pickType: function () { self.setState({typeFor: p.k}); },
+        faces: faces, family: fam,
+        aria: p.built + '% built with ' + p.time + '% of the promised time used. ' + ASOF[p.k] + '.',
+        asOf: ASOF[p.k],
+        rowStyle: 'display:grid;grid-template-columns:128px minmax(0, 1fr) 240px auto;gap:28px;align-items:center;opacity:' + (isOff ? 0.55 : 1) + ';transition:opacity .2s ease',
+        changeStyle: 'display:inline-flex;align-items:center;gap:6px;font-size:15px;color:' + (p.changed ? T.ink + ';font-weight:600' : T.ink2),
+        builtBar: 'position:absolute;left:0;top:0;bottom:0;border-radius:5px;width:' + p.built + '%;background:' + T.accent,
+        timeTick: 'position:absolute;top:-5px;left:calc(' + p.time + '% - 1.5px);width:3px;height:20px;border-radius:2px;background:' + T.ink
+      };
+    });
+
+    // ---------- Follow type (G-19) ----------
+    var typeFor = NAME[s.typeFor] ? s.typeFor : 'A';
+    var bkNow = !!booked[typeFor];
+    var typeProjects = ['A', 'K', 'S', 'C'].map(function (k) {
+      var on = k === typeFor;
+      return {
+        name: NAME[k], on: on ? 'true' : 'false', booked: !!booked[k],
+        style: seg(on, T.bgSolid),
+        tagStyle: 'display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;font-size:13px;font-weight:700;background:' + (on ? T.bg : T.track) + ';color:' + T.ink,
+        pick: function () { self.setState({typeFor: k}); }
+      };
+    });
+    var OPTS = [
+      {k: 'watch', title: 'Just watching', sub: 'For a project you’re still deciding on.', items: ['Band changes, at once', 'QPRs filed, late or missing', 'Extensions and complaint orders', 'Price-list changes']},
+      {k: 'booked', title: 'I’ve booked here', sub: 'Everything in Just watching, plus alerts that guard the money you pay.', items: ['Payment-stage alerts, slab by slab', 'Demand letters checked against filed slabs', 'Possession: OC, offers and delay interest']}
+    ];
+    var typeOpts = OPTS.map(function (o) {
+      var on = (o.k === 'booked') === bkNow;
+      return {
+        k: o.k, title: o.title, sub: o.sub, items: o.items, checked: on,
+        style: 'display:flex;flex-direction:column;gap:16px;padding:24px 26px 26px;border-radius:8px;box-sizing:border-box;background:' + (on ? T.bgSolid : 'transparent') + ';transition:background-color .2s ease',
+        pick: function () { var b = {}; for (var x in booked) b[x] = booked[x]; b[typeFor] = o.k === 'booked'; self.setState({booked: b, typeTouched: true}); }
+      };
+    });
+    var PROG = {
+      A: 'Latest QPR: Tower A at slab 9 (Apr–Jun 2026). The Jul–Sep 2026 QPR is not on HARERA yet. Completion on record: Dec 2027.',
+      K: 'Latest QPR: 63% built (Jul–Sep 2026, filed 12 Oct). Completion on record: Jun 2027.',
+      S: 'Latest QPR read: 48% built (Apr–Jun 2026). The Jul–Sep 2026 QPR is in and being read, by 19 Oct. Completion on record: Mar 2028.',
+      C: 'Newest QPR on HARERA: 22% built (Jan–Mar 2026); the next two are missing. Completion on record: Aug 2029, after 2 extensions.'
+    };
+    var typeNote = s.typeTouched ? 'Saved. ' + NAME[typeFor] + ': ' + (bkNow ? 'booked here' : 'just watching') + '. Applies from the next update. Payment and demand-letter alerts go only to you.' : 'Your follow type is private. Your family circle doesn’t see it.';
+
+    // ---------- Family circle (F-98, G-13) ----------
+    function setMem(k, v) { var m = {}; for (var x in mem) m[x] = mem[x]; m[k] = v; self.setState({members: m, confirm: ''}); }
+    var MB = [
+      {k: 'you', name: 'Rohan (you)', init: 'R'},
+      {k: 'meera', name: 'Meera', init: 'M'},
+      {k: 'father', name: 'Meera’s father', person: true}
+    ];
+    var SUB = {
+      you: 'Started this circle · follows 4 projects',
+      meera: {joined: 'Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes', removed: 'Removed today. Her alerts through your circle have stopped.'},
+      father: {invited: 'Invited today to Aurelia Heights, Phase 2. Nothing is sent to him until he taps the link.', joined: 'Joined today · Aurelia Heights, Phase 2', cancelled: 'Invite cancelled. The link no longer works.', removed: 'Removed today. His alerts through your circle have stopped.'}
+    };
+    var members = MB.map(function (m) {
+      var st = mem[m.k];
+      var isYou = m.k === 'you';
+      var confirmOpen = s.confirm === m.k;
+      var actLabel = '', act = null, yesLabel = '', confirmText = '';
+      if (m.k === 'meera') {
+        if (st === 'joined') { actLabel = 'Remove'; confirmText = 'Remove Meera from your circle? Her alerts through your circle stop, and she loses your shortlist and notes. Anything she follows on her own stays hers.'; yesLabel = 'Remove Meera'; }
+        else { actLabel = 'Undo'; }
+      }
+      if (m.k === 'father') {
+        if (st === 'invited') { actLabel = 'Cancel invite'; confirmText = 'Cancel this invite? The link stops working. Nothing was ever sent to him.'; yesLabel = 'Cancel invite'; }
+        else if (st === 'joined') { actLabel = 'Remove'; confirmText = 'Remove Meera’s father? His alerts through your circle stop, and he gets one message saying so.'; yesLabel = 'Remove him'; }
+        else { actLabel = 'Undo'; }
+      }
+      var undo = actLabel === 'Undo';
+      return {
+        name: m.name, init: m.init || '', person: !!m.person,
+        avatar: avatar(40, m.k === 'father' && st === 'invited'),
+        sub: isYou ? SUB.you : SUB[m.k][st] || '',
+        hasAct: !isYou, actLabel: actLabel, exp: confirmOpen ? 'true' : 'false',
+        act: function () {
+          if (undo) { setMem(m.k, m.k === 'meera' ? 'joined' : 'invited'); return; }
+          self.setState({confirm: confirmOpen ? '' : m.k});
+        },
+        confirmOpen: confirmOpen && !undo, confirmLabel: 'Confirm: ' + actLabel + ' ' + m.name,
+        confirmText: confirmText, yesLabel: yesLabel, noLabel: 'Keep',
+        yes: function () { setMem(m.k, m.k === 'father' && st === 'invited' ? 'cancelled' : 'removed'); },
+        no: function () { self.setState({confirm: ''}); }
+      };
+    });
+    var scope = s.scope === 'all' ? 'all' : 'A';
+    var code = scope === 'all' ? 'plinth.in/j/RC4-2MW' : 'plinth.in/j/AH2-7KQ';
+    var inviteStatus = s.invite === 'copied' ? 'Copied ' + code + '. It works for one person, for 7 days, and carries no phone number.'
+      : s.invite === 'wa' ? 'WhatsApp opened with your message and the link. Pick who to send it to. They opt in themselves.'
+      : 'The link carries no phone number. It works for one person, for 7 days.';
+
+    var SL = [
+      {k: 'K', band: 'Low', allin: '₹2.44 Cr all-in', notes: [
+        {who: 'Rohan', init: 'R', date: '15 Oct', text: 'Asked Larkspur for the 3 BHK cost sheet, so we can compare all-in prices.'},
+        {who: 'Meera', init: 'M', date: '12 Oct', text: 'Site visit done. The 3 BHK layout works for us.'}]},
+      {k: 'S', band: 'Moderate', allin: '₹2.27 Cr all-in', notes: [
+        {who: 'Meera', init: 'M', date: '16 Oct', text: 'New price list: ₹1.95 Cr quoted. Still under our ₹2.5 Cr all-in limit.'},
+        {who: 'Rohan', init: 'R', date: '15 Oct', text: 'Visited the site today. The office says the new QPR was filed today; wait for Plinth’s re-score.'}]},
+      {k: 'A', band: 'Elevated', allin: '₹2.74 Cr all-in', notes: [
+        {who: 'Rohan', init: 'R', date: '17 Oct', text: 'Visit on Sat 24 Oct, 11 am. Ask why the Jul–Sep QPR isn’t on HARERA.'},
+        {who: 'Meera', init: 'M', date: '17 Oct', text: 'Over our limit at ₹2.74 Cr all-in. Is the visit still worth it?'}]}
+    ];
+    var userNotes = s.notes || [];
+    var shortlist = SL.map(function (x) {
+      var mine = userNotes.filter(function (n) { return n.k === x.k; }).reverse().map(function (n) { return {who: 'You', init: 'R', date: 'Just now', text: n.text}; });
+      var notes = mine.concat(x.notes).map(function (n) { return {who: n.who, init: n.init, date: n.date, text: n.text, avatar: avatar(32, false)}; });
+      return {name: NAME[x.k], chip: chip(x.band), allin: x.allin, notes: notes, notesLabel: 'Notes on ' + NAME[x.k]};
+    });
+    var noteFor = (s.noteFor === 'K' || s.noteFor === 'S') ? s.noteFor : 'A';
+    var draft = s.draft || '';
+    var canAdd = draft.trim().length > 0;
+    var noteStatus = s.noteAdded ? (meeraIn ? 'Added. Meera sees it next time she opens Plinth.' : 'Added. Only you see notes right now.') : (meeraIn ? 'Everyone in your circle sees notes. Cost sheets stay private unless you share one.' : 'Only you see notes right now.');
+
+    // ---------- Feed (the full record) ----------
+    // Each update says what it was and what it is now. Coral Towers: original Aug 2028, 1st extension to Feb 2029, 2nd to Aug 2029.
+    var FEED = [
+      {id: 'price', d: 107, cat: 'prices', catLabel: 'Price', date: '16 Oct 2026', project: 'Sapphire Grove, Phase 1', head: 'Price list updated: 3 BHK now quoted at ₹1.95 Cr', diffLabel: '3 BHK quoted', was: '₹1.89 Cr', now: '₹1.95 Cr', body: 'All-in about ₹2.27 Cr with charges, GST and stamp duty. The developer published the new list on its site.', src: ['Developer price list · 16 Oct 2026']},
+      {id: 'sjqpr', d: 107, cat: 'filings', catLabel: 'QPR', date: '16 Oct 2026', project: 'Sapphire Grove, Phase 1', head: 'QPR for Jul–Sep 2026 filed on time', diffLabel: 'Filed', was: 'Due 15 Oct', now: '15 Oct', body: 'It reached HARERA on 16 Oct. We’re reading it, so the page keeps Moderate and the Apr–Jun figures until the re-score, due by 19 Oct, 7:40 pm.', src: ['HARERA QPR · Jul–Sep 2026 · fetched 16 Oct 2026']},
+      {id: 'cmiss2', d: 106, cat: 'filings', catLabel: 'QPR', date: '15 Oct 2026', project: 'Coral Towers', head: 'Jul–Sep 2026 QPR not on HARERA', diffLabel: 'Jul–Sep 2026 QPR', was: 'Due 15 Oct', now: 'Not on HARERA as of 18 Oct', body: 'The Apr–Jun 2026 QPR, due 15 Jul, is missing too. Our newest figures are from Jan–Mar 2026, 187 days old.', src: ['HARERA QPR register · checked 18 Oct 2026']},
+      {id: 'miss', d: 106, cat: 'filings', catLabel: 'QPR', date: '15 Oct 2026', project: 'Aurelia Heights, Phase 2', head: 'Jul–Sep 2026 QPR not on HARERA yet', diffLabel: 'Jul–Sep 2026 QPR', was: 'Due 15 Oct', now: 'Not on HARERA as of 18 Oct', body: 'Developer says: filed 12 Oct, not yet verified. New records are under review, so this band may change.', src: ['HARERA QPR register · checked 18 Oct 2026']},
+      {id: 'ext', d: 105, cat: 'filings', catLabel: 'Extension', date: '14 Oct 2026', project: 'Coral Towers', head: 'Completion date extended to Aug 2029', diffLabel: 'Completion date', was: 'Feb 2029', now: 'Aug 2029', body: 'HARERA granted a 2nd extension, of 6 months. The last QPR showed 22% built with 70% of the original time used.', src: ['HARERA order · 14 Oct 2026']},
+      {id: 'kqpr', d: 103, cat: 'filings', catLabel: 'QPR', date: '12 Oct 2026', project: 'Kestrel Park', head: 'QPR for Jul–Sep 2026 filed on time', diffLabel: 'Built', was: '59%', now: '63%', body: 'Filed 3 days before the due date. It shows 63% built with 58% of time used.', src: ['HARERA QPR · Jul–Sep 2026']},
+      {id: 'comp', d: 100, cat: 'filings', catLabel: 'Complaint order', date: '9 Oct 2026', project: 'Aurelia Heights, Phase 2', head: 'New complaint decided against the promoter', diffLabel: 'Decided against it in 24 months', was: '13', now: '14', body: 'HARERA ordered delay interest for one allottee. The median for similar projects is 3.', src: ['HARERA order · 9 Oct 2026']},
+      {id: 'band', d: 93, cat: 'risk', catLabel: 'Delivery risk', date: '2 Oct 2026', project: 'Aurelia Heights, Phase 2', head: 'Delivery risk changed: Moderate → Elevated', body: 'Trigger: new records. The Apr–Jun 2026 QPR shows 72% of units sold but 41% built, and new complaint orders went against the promoter.', src: ['HARERA QPR · Apr–Jun 2026', 'HARERA complaint orders', 'Method v1.1'], isBand: true},
+      {id: 'sqpr', d: 26, cat: 'filings', catLabel: 'QPR', date: '27 Jul 2026', project: 'Sapphire Grove, Phase 1', head: 'QPR for Apr–Jun 2026 filed 12 days late', diffLabel: 'Filed', was: 'Due 15 Jul', now: '27 Jul', body: 'It shows 48% built with 55% of time used.', src: ['HARERA QPR register · 27 Jul 2026']},
+      {id: 'lqpr', d: 14, cat: 'filings', catLabel: 'QPR', date: '15 Jul 2026', project: 'Aurelia Heights, Phase 2', head: 'QPR for Apr–Jun 2026 filed on time', diffLabel: 'Built', was: '38%', now: '41%', body: 'Filed on the due date. 72% of units sold; Tower A at slab 9. Earlier late filings: Jul–Sep 2024 (12 days), Jan–Mar 2025 (41 days) and Oct–Dec 2025 (38 days).', src: ['HARERA QPR · Apr–Jun 2026', 'HARERA QPR register']},
+      {id: 'cmiss1', d: 14, cat: 'filings', catLabel: 'QPR', date: '15 Jul 2026', project: 'Coral Towers', head: 'Apr–Jun 2026 QPR not on HARERA', diffLabel: 'Apr–Jun 2026 QPR', was: 'Due 15 Jul', now: 'Not on HARERA as of 18 Oct', body: 'The newest QPR on HARERA is Jan–Mar 2026, filed 14 Apr 2026, showing 22% built.', src: ['HARERA QPR register · checked 18 Oct 2026']}
+    ];
+    var tab = s.tab || 'all';
+    // The record shows what happened before the replay date, so each change appears once on the page.
+    var before = FEED.filter(function (f) { return f.d < since; });
+    var feed = before.filter(function (f) { return tab === 'all' || f.cat === tab; }).map(function (f) {
+      var unread = !read[f.id];
+      return {
+        anchor: 'change-' + f.id,
+        date: f.date, cat: f.catLabel, project: f.project, head: f.head, body: f.body, src: f.src,
+        hasDiff: !f.isBand, diffLabel: f.diffLabel || '', was: f.was || '', now: f.now || '',
+        isBand: !!f.isBand, open: !!f.isBand && !!s.bandOpen,
+        unreadSr: unread ? 'Unread. ' : '',
+        dotStyle: 'flex:0 0 10px;width:10px;height:10px;border-radius:50%;box-sizing:border-box;' + (unread ? 'background:' + T.ink : 'border:1.5px solid ' + T.ink2)
+      };
+    });
+    var TABS = [{k: 'all', label: 'All'}, {k: 'risk', label: 'Risk changes'}, {k: 'filings', label: 'Filings'}, {k: 'prices', label: 'Prices'}];
+    var tabs = TABS.map(function (x) {
+      var on = x.k === tab;
+      var n = before.filter(function (f) { return x.k === 'all' || f.cat === x.k; }).length;
+      return {
+        id: 'tab-' + x.k, label: x.label, count: String(n), on: on ? 'true' : 'false',
+        pick: function () { self.setState({tab: x.k}); },
+        style: 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.bgSolid : 'transparent'),
+        countStyle: 'font-size:14px;font-weight:600;color:' + T.ink2
+      };
+    });
+    var allRead = {price: true, sjqpr: true, miss: true, cmiss2: true, ext: true, kqpr: true, comp: true, band: true, sqpr: true, lqpr: true, cmiss1: true};
+
+    // The "what changed" reveal: the score before and after 2 Oct, on the same instrument.
+    var isThen = s.diff === 'then';
+    var diffSegs = [1, 2, 3, 4, 5].map(function (j) {
+      var lay = 'position:absolute;inset:-1px;border-radius:4px;transition:opacity 420ms ease ' + (j * 90) + 'ms;';
+      return {
+        base: 'position:relative;display:block;width:44px;height:26px;border-radius:4px;box-sizing:border-box;background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder,
+        a: lay + 'background:' + ink('Moderate') + ';opacity:' + (isThen && j <= 2 ? 1 : 0),
+        b: lay + 'background:' + ink('Elevated') + ';opacity:' + (!isThen && j <= 3 ? 1 : 0)
+      };
+    });
+    var nameBase = 'position:absolute;left:0;top:0;' + disp + 'font-size:44px;line-height:1.05;letter-spacing:-0.03em;white-space:nowrap;transition:opacity 420ms ease, transform 620ms cubic-bezier(.22,1,.36,1);';
+    var DR = [
+      {label: 'Units sold', a: 70, b: 72, col: T.ink},
+      {label: 'Built', a: 38, b: 41, col: T.accent},
+      {label: 'Promised time used', a: 65, b: 77, col: T.ink2}
+    ];
+    var diffRows = DR.map(function (r) {
+      var v = isThen ? r.a : r.b;
+      return {
+        label: r.label,
+        value: isThen ? r.a + '%' : r.b + '%, up ' + (r.b - r.a),
+        bar: 'position:absolute;left:0;top:0;bottom:0;width:100%;border-radius:5px;background:' + r.col + ';transform-origin:left center;transform:scaleX(' + (v / 100) + ');transition:transform 900ms cubic-bezier(.22,1,.36,1)'
+      };
+    });
+    var diffModes = [{k: 'then', text: 'Before 2 Oct'}, {k: 'now', text: 'After 2 Oct'}].map(function (m) {
+      var on = (m.k === 'then') === isThen;
+      return {
+        text: m.text, on: on ? 'true' : 'false',
+        pick: function () { clearTimeout(self._dt); self.setState({diff: m.k}); },
+        style: 'min-height:40px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap;background:' + (on ? T.ink : 'transparent') + ';color:' + (on ? T.bg : T.ink)
+      };
+    });
+
+    var SR = [
+      {k: 'dx', title: '3 BHK on Dwarka Expressway', filters: 'Up to ₹2.5 Cr all-in · Low or Moderate delivery risk · under construction', matches: '2 projects match: Kestrel Park and Sapphire Grove, Phase 1'},
+      {k: 'ng', title: '3 BHK in New Gurugram', filters: 'Up to ₹2 Cr quoted · any delivery risk', matches: '2 projects match: Coral Towers (High) and Laurel Residency (Severe)'}
+    ];
+    var son = s.searchOn || {};
+    var searches = SR.map(function (q) {
+      var on = !!son[q.k];
+      var st = sw(on);
+      return {
+        title: q.title, filters: q.filters, matches: q.matches, on: on ? 'true' : 'false',
+        label: on ? 'Alerts on · in your digest' : 'Alerts off',
+        track: st.track, knob: st.knob,
+        flip: function () { var o = {}; for (var x in son) o[x] = son[x]; o[q.k] = !on; touch({searchOn: o}); }
+      };
+    });
+
+    // ---------- Weekly digest (F-93): the same event list, cut by week ----------
+    var WEEKS = [
+      {label: '12–18 Oct', range: '12–18 Oct 2026', count: '5 changes on record',
+        floors: [{p: 'Aurelia Ph 2', c: 'QPR not on HARERA'}, {p: 'Sapphire Ph 1', c: 'QPR filed on time'}, {p: 'Coral Towers', c: 'Extended; QPR missing'}, {p: 'Kestrel Park', c: 'QPR filed on time'}],
+        body: ['This week in your 4 projects, 12–18 Oct 2026:', 'Aurelia Heights Ph 2: the Jul–Sep 2026 QPR was due 15 Oct and is not on HARERA. The developer says it filed on 12 Oct (not verified).', 'Sapphire Grove Ph 1: Jul–Sep 2026 QPR filed on time. We’re reading it; any band change by 19 Oct.', 'Coral Towers: completion extended to Aug 2029 (HARERA order, 14 Oct). Its Jul–Sep 2026 QPR is not on HARERA either.', 'Kestrel Park: Jul–Sep 2026 QPR filed on time on 12 Oct. 63% built.', 'No band changed. Also 1 price-list update, for Sapphire Grove Ph 1.']},
+      {label: '5–11 Oct', range: '5–11 Oct 2026', count: '1 change on record',
+        floors: [{p: 'Aurelia Ph 2', c: '1 more complaint order'}, {p: 'Sapphire Ph 1', c: 'Nothing new', quiet: true}, {p: 'Coral Towers', c: 'Nothing new', quiet: true}, {p: 'Kestrel Park', c: 'Nothing new', quiet: true}],
+        body: ['This week in your 4 projects, 5–11 Oct 2026:', 'Aurelia Heights Ph 2: HARERA decided 1 more complaint against the promoter (order of 9 Oct). That makes 14 in 24 months; the median is 3.', 'Nothing new for the other 3. No band changed.']},
+      {label: '28 Sep–4 Oct', range: '28 Sep–4 Oct 2026', count: '1 band change',
+        floors: [{p: 'Aurelia Ph 2', c: 'Moderate → Elevated'}, {p: 'Sapphire Ph 1', c: 'Nothing new', quiet: true}, {p: 'Coral Towers', c: 'Nothing new', quiet: true}, {p: 'Kestrel Park', c: 'Nothing new', quiet: true}],
+        body: ['This week in your 4 projects, 28 Sep–4 Oct 2026:', 'Aurelia Heights Ph 2: delivery risk moved from Moderate to Elevated on 2 Oct. Trigger: the Apr–Jun 2026 QPR and new complaint orders.', 'You got this alert on the day. Nothing new for the other 3.']}
+    ];
+    WEEKS.forEach(function (w) { w.floors.forEach(function (f) { f.cStyle = 'flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;text-align:right;' + (f.quiet ? 'color:#5E5A52' : 'color:#1B1A17;font-weight:600'); }); });
+    var wi = (s.week >= 0 && s.week < WEEKS.length) ? s.week : 0;
+    var wk = WEEKS[wi];
+    var weeks = WEEKS.map(function (w, i) { var on = i === wi; return {label: w.label, on: on ? 'true' : 'false', style: seg(on, T.track), pick: function () { self.setState({week: i}); }}; });
+    var cadence = s.cadence === 'daily' || s.cadence === 'off' ? s.cadence : 'weekly';
+    var dest = [];
+    if (s.wa) dest.push('WhatsApp');
+    if (s.email) dest.push('email');
+    var destText = dest.length ? joinList(dest) : 'this page only, because WhatsApp and email are off';
+    var digestStatus = cadence === 'weekly' ? 'You get this every Sunday at 9 am on ' + destText + '.' : cadence === 'daily' ? 'You chose a daily digest at 8 am, so this weekly round-up is off.' : 'Digests are off. You get band changes only.';
+    var CAD = [{k: 'daily', label: 'Daily, 8 am'}, {k: 'weekly', label: 'Weekly, Sunday 9 am'}, {k: 'off', label: 'Off'}];
+    var cadences = CAD.map(function (c) { var on = c.k === cadence; return {label: c.label, on: on ? 'true' : 'false', style: seg(on, 'transparent'), pick: function () { touch({cadence: c.k}); }}; });
+    var cadenceSub = cadence === 'weekly' ? 'One round-up on Sunday: this week in filings.' : cadence === 'daily' ? 'One message at 8 am, only on days something changes.' : 'Only band changes reach you. Everything else waits on this page.';
+
+    var CH = [
+      {k: 'wa', name: 'WhatsApp', sub: 'To +91 98••• ••721, your verified number', isWa: true},
+      {k: 'push', name: 'Push', sub: 'On this browser and the Plinth app', isPush: true},
+      {k: 'email', name: 'Email', sub: 'A weekly summary, never more often', isMail: true},
+      {k: 'quiet', name: 'Quiet hours, 10 pm to 8 am', sub: 'Nothing arrives at night. Updates wait until 8 am.', isQuiet: true}
+    ];
+    var channels = CH.map(function (c) {
+      var on = !!s[c.k];
+      var st = sw(on);
+      return {
+        name: c.name, sub: c.sub, on: on ? 'true' : 'false', state: on ? 'On' : 'Off',
+        isWa: !!c.isWa, isPush: !!c.isPush, isMail: !!c.isMail, isQuiet: !!c.isQuiet,
+        track: st.track, knob: st.knob,
+        flip: function () { var o = {}; o[c.k] = !self.state[c.k]; touch(o); }
+      };
+    });
+    var others = [];
+    if (s.push) others.push('push');
+    if (s.email) others.push('the weekly email');
+    var fallbackNote = others.length ? 'You still get ' + others.join(' and ') + '.' : 'All channels are off. You can still see every update on this page.';
+
+    return {
+      t: T, u: U,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      sinceTitle: since === MAX ? 'What changed today?' : 'What changed since ' + sinceShort + '?',
+      sinceSummary: sinceSummary,
+      sinceShort: sinceShort, sinceLong: sinceLong, sinceIdx: since,
+      sinceListLabel: 'Changes since ' + sinceLong + ', newest first',
+      onReplay: function (e) { var v = +(e && e.target ? e.target.value : 105); self.setState({since: isNaN(v) ? 105 : v}); },
+      ticks: ticks, axis: axis, jumps: jumps, sinceItems: sinceItems,
+      sinceEmpty: followed.length > 0 && inWin.length === 0,
+      hasQuiet: inWin.length > 0 && quiet.length > 0,
+      quietLine: quiet.length ? 'Nothing new for ' + joinList(quiet, 'or') + ' since ' + sinceShort + '.' : '',
+      allSeen: allSeen, seenDisabled: allSeen ? 'true' : 'false',
+      seenLabel: allSeen ? 'All seen' : 'Mark these as seen',
+      seenBtn: 'height:56px;display:inline-flex;align-items:center;gap:10px;padding:0 28px;border:0;border-radius:999px;box-sizing:border-box;font:inherit;font-size:18px;font-weight:600;white-space:nowrap;cursor:' + (allSeen ? 'default' : 'pointer') + ';background:' + (allSeen ? T.track : T.accent) + ';color:' + (allSeen ? T.ink : T.onAccent),
+      markSeen: function () { if (!allSeen) self.setState({read: allRead}); },
+      heroMeta: 'Last looked 14 Oct 2026, 8:40 am · ' + (unreadN ? unreadN + ' unread' : 'all read') + ' · bands as of 14 Oct 2026 · HARERA checked 18 Oct 2026',
+      openBand: function () { self.openBand(); },
+      projects: projects,
+      typeProjects: typeProjects, typeOpts: typeOpts, typeBooked: bkNow,
+      typeLegend: 'How do you follow ' + NAME[typeFor] + '?',
+      typeProgress: PROG[typeFor], typeNote: typeNote,
+      members: members, scope: scope,
+      onScope: function (e) { self.setState({scope: e && e.target && e.target.value === 'all' ? 'all' : 'A', invite: ''}); },
+      shareWa: function () { self.setState({invite: 'wa'}); },
+      copyLink: function () { self.setState({invite: 'copied'}); },
+      inviteStatus: inviteStatus,
+      shortlist: shortlist,
+      shortSub: '3 projects · ' + (meeraIn ? 'notes from you and Meera, newest first' : 'your notes, newest first'),
+      noteFor: noteFor, draft: draft,
+      onNoteFor: function (e) { self.setState({noteFor: e && e.target ? e.target.value : 'A'}); },
+      onDraft: function (e) { self.setState({draft: e && e.target ? String(e.target.value) : '', noteAdded: false}); },
+      addNote: function () { if (!canAdd) return; self.setState({notes: userNotes.concat([{k: noteFor, text: draft.trim()}]), draft: '', noteAdded: true}); },
+      noteDisabled: canAdd ? 'false' : 'true',
+      noteBtn: 'display:inline-flex;align-items:center;height:48px;padding:0 22px;border:0;border-radius:999px;box-sizing:border-box;font:inherit;font-size:17px;font-weight:600;white-space:nowrap;cursor:' + (canAdd ? 'pointer' : 'default') + ';background:' + (canAdd ? T.ink : T.track) + ';color:' + (canAdd ? T.bg : T.ink2),
+      noteStatus: noteStatus,
+      tabs: tabs, feed: feed, feedEmpty: feed.length === 0, activeTabId: 'tab-' + tab,
+      feedTitle: since === MAX ? 'What happened before today?' : 'What happened before ' + sinceShort + '?',
+      feedEmptyText: before.length ? 'No updates of this kind before ' + sinceShort + '. We check HARERA records every day.' : 'Nothing earlier. You started following on 1 Jul 2026, and every change since then is listed above.',
+      fromChip: chip('Moderate'), toChip: chip('Elevated'),
+      bandExp: s.bandOpen ? 'true' : 'false',
+      bandBtnLabel: s.bandOpen ? 'Hide what changed' : 'See what changed',
+      chevBand: 'transition:transform .2s ease;transform:rotate(' + (s.bandOpen ? 180 : 0) + 'deg)',
+      toggleBandDetail: function () { if (self.state.bandOpen) { clearTimeout(self._dt); self.setState({bandOpen: false}); } else { self.openBand(); } },
+      unreadText: (function () { var n = before.filter(function (f) { return !read[f.id]; }).length; return n ? n + ' unread here' : 'All read here'; })(),
+      markAll: function () { self.setState({read: allRead}); },
+      diffCaption: isThen ? 'Before 2 Oct: scored on the Jan–Mar 2026 QPR' : 'After 2 Oct: scored on the Apr–Jun 2026 QPR (filed 15 Jul) and new complaint orders',
+      diffModes: diffModes, diffSegs: diffSegs, diffRows: diffRows,
+      diffNameA: nameBase + 'color:' + textInk('Moderate') + ';opacity:' + (isThen ? 1 : 0) + ';transform:translateY(' + (isThen ? 0 : -14) + 'px)',
+      diffNameB: nameBase + 'color:' + textInk('Elevated') + ';opacity:' + (isThen ? 0 : 1) + ';transform:translateY(' + (isThen ? 14 : 0) + 'px)',
+      diffAria: isThen ? 'Delivery risk before 2 Oct 2026: Moderate, step 2 of 5' : 'Delivery risk after 2 Oct 2026: Elevated, step 3 of 5',
+      diffRange: (isThen ? 'Between 15 and 30 of 100 similar projects got their OC more than 12 months late.' : 'Between 30 and 45 of 100 similar projects got their OC more than 12 months late.') + ' OC usually comes before keys, often by a few months.',
+      diffGap: isThen ? 'Built 27 points behind the time used. QPRs late in 3 of the last 8 quarters.' : 'Built 36 points behind the time used, and new complaint orders went against the promoter.',
+      searches: searches,
+      wk: wk, weeks: weeks,
+      wkCardLabel: 'Weekly digest image: This week in your projects, ' + wk.range + ', ' + wk.count + '. ' + wk.floors.map(function (f) { return f.p + ': ' + f.c; }).join('. ') + '.',
+      digestStatus: digestStatus,
+      cadences: cadences, cadenceSub: cadenceSub,
+      channels: channels,
+      waOn: !!s.wa, waOff: !s.wa,
+      previewTitle: s.wa ? (s.quiet ? 'What a WhatsApp alert looks like · sent after 8 am' : 'What a WhatsApp alert looks like') : 'WhatsApp',
+      fallbackNote: fallbackNote,
+      saveNote: s.touched ? 'Saved. Applies from the next update.' : 'Changes save as you make them'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth app: You tab</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.hs{scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pl-popA{from{opacity:0;transform:translateY(18px) scale(.8)}to{opacity:1;transform:none}}
+@keyframes pl-popB{from{opacity:0;transform:translateY(18px) scale(.8)}to{opacity:1;transform:none}}
+.pl-rise{animation:pl-rise .72s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease,background-color .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums; transition: background .3s ease, color .3s ease">
+
+  <div class="hs" style="position: absolute; left: 0; top: 0; width: 390px; height: 780px; overflow-y: auto">
+    <div style="padding-top: 40px">
+
+      <section aria-labelledby="you-h" style="padding: 16px 16px 0; display: flex; flex-direction: column; gap: 12px">
+        <h1 id="you-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 40px; letter-spacing: -0.045em; line-height: 0.95">You</h1>
+        <div class="pl-rise" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; animation-delay: 70ms">
+          <span aria-label="Your number, masked: plus 91, ending 721" style="font-size: 22px; font-weight: 600; letter-spacing: 0.02em">+91 98••• ••721</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font-size: 14px; font-weight: 600">
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path></svg>Masked number
+          </span>
+        </div>
+        <p class="pl-rise" style="margin: 0; font-size: 16px; color: {{t.ink}}; animation-delay: 140ms">Your number is never shared without your tap. The relay stays alive while a deal is active, and ends 30 days after your last message unless you renew. <span style="color: {{t.ink2}}">Verified 2 Oct 2026</span></p>
+      </section>
+
+      <section aria-labelledby="who-h" style="padding: 56px 16px 0; display: flex; flex-direction: column; gap: 12px">
+        <h2 id="who-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.035em; line-height: 1.05">Who has my number?</h2>
+        <div data-signature="who-can-reach-me" style="display: flex; align-items: flex-end; gap: 14px; margin-top: 4px">
+          <span aria-hidden="true" style="{{countStyle}}">{{activeCount}}</span>
+          <p aria-live="polite" style="margin: 0 0 10px; font-size: 18px; line-height: 1.35; color: {{t.ink}}">{{countLine}}</p>
+        </div>
+        <p style="margin: 0; font-size: 16px; color: {{t.ink}}">You choose who can contact you. At most 3 parties in any 30 days.</p>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <div aria-hidden="true" style="display: flex; gap: 4px">
+            <span style="flex: 1; height: 8px; border-radius: 2px; background: {{t.ink}}"></span>
+            <span style="flex: 1; height: 8px; border-radius: 2px; background: {{t.ink}}"></span>
+            <span style="flex: 1; height: 8px; border-radius: 2px; background: {{t.ink}}"></span>
+          </div>
+          <span style="font-size: 15px; color: {{t.ink2}}">3 of 3 contacts used in the last 30 days · next free slot 11 Nov 2026</span>
+        </div>
+        <ul style="list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 20px">
+          <sc-for list="{{parties}}" as="p" hint-placeholder-count="4">
+            <li style="display: flex; align-items: center; gap: 12px">
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <strong style="font-size: 17px; font-weight: 600; line-height: 1.35">{{p.name}}</strong>
+                <span style="font-size: 15px; line-height: 1.4; color: {{t.ink}}">{{p.purpose}}</span>
+                <span style="font-size: 14px; line-height: 1.4; color: {{t.ink2}}">{{p.meta}}</span>
+              </div>
+              <sc-if value="{{p.active}}" hint-placeholder-val="{{true}}">
+                <button type="button" class="pl-press" onClick="{{p.ask}}" aria-label="{{p.label}}" style="flex: none; min-height: 48px; padding: 0 18px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Revoke</button>
+              </sc-if>
+              <sc-if value="{{p.gone}}" hint-placeholder-val="{{false}}">
+                <span class="pl-rise" style="flex: none; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: {{t.ink2}}"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Revoked today</span>
+              </sc-if>
+            </li>
+          </sc-for>
+        </ul>
+        <div style="display: flex; flex-direction: column; margin-top: 8px; border-radius: 8px; background: {{t.track}}; padding: 0 16px">
+          <button type="button" class="pl-press" onClick="{{openConsent}}" style="min-height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-weight: 600; text-align: left; cursor: pointer">Consent history<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <button type="button" class="pl-press" onClick="{{openDownload}}" style="min-height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-weight: 600; text-align: left; cursor: pointer">Download my data<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+        </div>
+      </section>
+
+      <section aria-labelledby="agree-h" style="padding: 56px 16px 0; display: flex; flex-direction: column; gap: 8px">
+        <h2 id="agree-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.035em; line-height: 1.05">What have I agreed to?</h2>
+        <p style="margin: 0; font-size: 16px; color: {{t.ink}}">Nothing is ticked until you tick it. Change your mind anytime.</p>
+        <button type="button" class="pl-press" role="checkbox" aria-checked="{{waAria}}" onClick="{{toggleConsentWa}}" style="margin-top: 4px; min-height: 64px; display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; text-align: left; cursor: pointer">
+          <span aria-hidden="true" style="{{boxWa}}"><sc-if value="{{consentWa}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="{{t.onAccent}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></span>
+          <span style="display: flex; flex-direction: column"><span style="font-weight: 600">WhatsApp alerts for projects I follow</span><span style="font-size: 15px; color: {{t.ink2}}">{{waConsentSub}}</span></span>
+        </button>
+        <button type="button" class="pl-press" role="checkbox" aria-checked="{{newsAria}}" onClick="{{toggleConsentNews}}" style="min-height: 64px; display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; text-align: left; cursor: pointer">
+          <span aria-hidden="true" style="{{boxNews}}"><sc-if value="{{consentNews}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="{{t.onAccent}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></span>
+          <span style="display: flex; flex-direction: column"><span style="font-weight: 600">Occasional product updates from Plinth</span><span style="font-size: 15px; color: {{t.ink2}}">New tools only. Never offers from developers.</span></span>
+        </button>
+      </section>
+
+      <section aria-labelledby="notify-h" style="padding: 56px 16px 0; display: flex; flex-direction: column; gap: 4px">
+        <h2 id="notify-h" style="margin: 0 0 8px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.035em; line-height: 1.05">How should we tell you?</h2>
+        <sc-for list="{{switches}}" as="w" hint-placeholder-count="4">
+          <button type="button" role="switch" aria-checked="{{w.aria}}" aria-disabled="{{w.disabled}}" onClick="{{w.flip}}" style="min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; text-align: left; cursor: pointer">
+            <span style="display: flex; flex-direction: column; min-width: 0"><span style="font-weight: 600; color: {{w.titleColor}}">{{w.title}}</span><span style="font-size: 15px; line-height: 1.4; color: {{w.subColor}}">{{w.sub}}</span></span>
+            <span aria-hidden="true" style="{{w.track}}"><span style="{{w.thumb}}"></span></span>
+          </button>
+        </sc-for>
+        <a href="#family" class="pl-press" style="margin-top: 8px; min-height: 72px; padding: 12px 16px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 8px; background: {{t.track}}; color: {{t.ink}}; text-decoration: none">
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">Family circle</span><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">Relatives you invite get the same project alerts, nothing more. Payment alerts, what you follow and why, cost sheets, visit passes and who has your number stay private to you.</span></span>
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </a>
+      </section>
+
+      <section aria-labelledby="look-h" style="padding: 56px 16px 0; display: flex; flex-direction: column; gap: 12px">
+        <h2 id="look-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.035em; line-height: 1.05">How should Plinth look?</h2>
+        <div role="group" aria-label="Appearance" style="display: flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+          <button type="button" class="pl-press" onClick="{{pickDay}}" aria-pressed="{{dayAria}}" style="{{dayBtn}}">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M12 2.5v2M12 19.5v2M4.6 4.6L6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>Day
+          </button>
+          <button type="button" class="pl-press" onClick="{{pickNight}}" aria-pressed="{{nightAria}}" style="{{nightBtn}}">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>Night
+          </button>
+        </div>
+        <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Night is easier on the eyes after dark. Risk bands keep the same names, order and meter.</p>
+      </section>
+
+      <section aria-label="Account" style="padding: 48px 16px 56px; display: flex; flex-direction: column; gap: 12px">
+        <a href="#agent-onboarding" class="pl-press" style="min-height: 64px; display: flex; align-items: center; gap: 14px; padding: 8px 0; color: {{t.ink}}; text-decoration: none">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><rect x="3.5" y="6.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect><path d="M9 6.5V5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5v1.5M3.5 12h17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+          <span style="flex: 1; display: flex; flex-direction: column"><span style="font-weight: 600">I'm an agent</span><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">Verify your HARERA registration on WhatsApp. Saying you're an agent changes nothing you see on Plinth: same records, same bands, no previews.</span></span>
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </a>
+        <sc-if value="{{notDeleting}}" hint-placeholder-val="{{true}}">
+          <button type="button" class="pl-press" onClick="{{askDelete}}" style="min-height: 64px; display: flex; align-items: center; gap: 14px; padding: 8px 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; text-align: left; cursor: pointer">
+            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v5.5M14 11v5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span style="display: flex; flex-direction: column"><span style="font-weight: 600">Delete account</span><span style="font-size: 15px; color: {{t.ink2}}">Deletes your number, follows, chats and consents.</span></span>
+          </button>
+        </sc-if>
+        <sc-if value="{{deleting}}" hint-placeholder-val="{{false}}">
+          <div role="status" class="pl-rise" style="padding: 16px 16px 4px; border-radius: 8px; background: {{t.claimBg}}; display: flex; flex-direction: column; gap: 4px">
+            <strong style="font-size: 17px; font-weight: 700">Deletion requested on 18 Oct 2026</strong>
+            <span style="font-size: 16px; color: {{t.ink}}">We'll confirm by SMS when it's done.</span>
+            <button type="button" class="pl-press" onClick="{{cancelDelete}}" style="align-self: flex-start; min-height: 48px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Cancel the request</button>
+          </div>
+        </sc-if>
+      </section>
+
+      <section aria-labelledby="money-h" style="padding: 0 0 48px; background: {{t.track}}; display: flex; flex-direction: column">
+        <img data-slot="keysOnDeed" src="/_blob/6ca2bc5de9dc542dc12c4d95e30a6af3" alt="House keys resting on a signed sale deed on a table: the moment a buyer's decision becomes a home" style="width: 390px; height: 236px; background: #E7E3DA; object-fit: cover; display: block">
+        <p style="margin: 8px 16px 0; font-size: 13px; color: {{t.ink2}}">Illustrative image</p>
+        <p aria-hidden="true" style="margin: 36px 16px 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 120px; line-height: 0.82; letter-spacing: -0.06em; color: {{t.ink}}">Plinth</p>
+        <h2 id="money-h" style="margin: 18px 16px 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.035em; line-height: 1.05">No developer pays us. Ever.</h2>
+        <ul style="margin: 12px 16px 0; padding: 0 0 0 20px; display: flex; flex-direction: column; gap: 8px; font-size: 17px; line-height: 1.45; color: {{t.ink}}">
+          <li><strong style="font-weight: 700">Pro:</strong> ₹999 per project · 12 months of written updates. Alerts are always free.</li>
+          <li><strong style="font-weight: 700">Loans:</strong> loan checks arrive in 2027. No lender pays us anything today.</li>
+          <li><strong style="font-weight: 700">Agents:</strong> a published fee split, only when you choose them.</li>
+          <li><strong style="font-weight: 700">Developers:</strong> never.</li>
+        </ul>
+        <p style="margin: 12px 16px 0; font-size: 16px; color: {{t.ink}}">Ratings and Ask Plinth answers never use commercial data.</p>
+        <div style="display: flex; flex-direction: column; margin: 12px 16px 0">
+          <a href="#money" class="pl-press" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">How we make money<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+          <a href="#method" class="pl-press" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">How ratings are calculated<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+          <a href="#grievance" class="pl-press" style="min-height: 72px; padding: 8px 0; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px; color: {{t.ink}}; text-decoration: none">
+            <span style="display: flex; flex-direction: column"><span style="font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Grievance officer</span><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">We acknowledge within 24 hours and resolve within 7 days.</span></span>
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </a>
+        </div>
+        <p style="margin: 16px 16px 0; font-size: 14px; color: {{t.ink2}}">Our ratings are our opinion, based on public records. Not a credit rating. Not issued by any RERA.</p>
+      </section>
+    </div>
+  </div>
+
+  <sc-if value="{{viewConsent}}" hint-placeholder-val="{{false}}">
+    <section aria-labelledby="ch-h" class="hs" style="position: absolute; left: 0; top: 0; width: 390px; height: 780px; overflow-y: auto; background: {{t.bg}}; color: {{t.ink}}">
+      <div style="padding: 40px 16px 48px; display: flex; flex-direction: column; gap: 14px">
+        <button type="button" class="pl-press" onClick="{{backToYou}}" aria-label="Back to You" style="width: 48px; height: 48px; margin-left: -12px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+        <h1 id="ch-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; letter-spacing: -0.045em; line-height: 0.98">What did I say yes to?</h1>
+        <p style="margin: 0; font-size: 16px; color: {{t.ink}}">Every line is a tap you made, newest first. {{activeCount}} parties can reach you now; a relay doesn't count.</p>
+        <ol style="list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 22px">
+          <sc-for list="{{history}}" as="h" hint-placeholder-count="5">
+            <li class="pl-rise" style="{{h.anim}}">
+              <span style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; color: {{t.ink2}}"><span>{{h.date}}</span><span>Consent {{h.ref}}</span></span>
+              <strong style="display: block; margin-top: 2px; font-size: 17px; font-weight: 600; line-height: 1.35">{{h.who}}</strong>
+              <span style="display: block; font-size: 15px; line-height: 1.45; color: {{t.ink}}">{{h.what}}</span>
+              <span style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px">
+                <span style="{{h.statusStyle}}">{{h.status}}</span>
+                <sc-if value="{{h.canRevoke}}" hint-placeholder-val="{{false}}"><button type="button" class="pl-press" onClick="{{h.revoke}}" aria-label="{{h.revokeLabel}}" style="flex: none; min-height: 48px; padding: 0 18px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Revoke</button></sc-if>
+              </span>
+            </li>
+          </sc-for>
+        </ol>
+        <p style="margin: 8px 0 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">References use the form C-MMDD-NN, so you can quote one to us or to the site office.</p>
+        <button type="button" class="pl-press" onClick="{{openDownload}}" style="align-self: flex-start; min-height: 48px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 16px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Download this with the rest of my data</button>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{viewDownload}}" hint-placeholder-val="{{false}}">
+    <section aria-labelledby="dl-h" class="hs" style="position: absolute; left: 0; top: 0; width: 390px; height: 780px; overflow-y: auto; background: {{t.bg}}; color: {{t.ink}}">
+      <div style="padding: 40px 16px 48px; display: flex; flex-direction: column; gap: 14px">
+        <button type="button" class="pl-press" onClick="{{backToYou}}" aria-label="Back to You" style="width: 48px; height: 48px; margin-left: -12px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+        <h1 id="dl-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; letter-spacing: -0.045em; line-height: 0.98">What do you hold about me?</h1>
+        <p style="margin: 0; font-size: 17px; line-height: 1.5; color: {{t.ink}}">One ZIP file: a PDF you can read and a JSON file another app can use.</p>
+        <ul style="list-style: none; margin: 4px 0 0; padding: 4px 16px; border-radius: 8px; background: {{t.track}}">
+          <sc-for list="{{dataParts}}" as="d" hint-placeholder-count="6">
+            <li style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 16px"><span>{{d.name}}</span><span style="font-size: 14px; color: {{t.ink2}}">{{d.count}}</span></li>
+          </sc-for>
+        </ul>
+        <p style="margin: 0; font-size: 16px; line-height: 1.5; color: {{t.ink}}">Ready within 24 hours. The link works for 7 days and opens only after your sign-in code.</p>
+        <sc-if value="{{dlIdle}}" hint-placeholder-val="{{true}}">
+          <button type="button" class="pl-press" onClick="{{prepareFile}}" style="height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Prepare my file</button>
+        </sc-if>
+        <sc-if value="{{dlPreparing}}" hint-placeholder-val="{{false}}">
+          <div role="status" class="pl-rise" style="padding: 16px; border-radius: 8px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; display: flex; flex-direction: column; gap: 4px">
+            <strong style="font-size: 17px; font-weight: 700">Preparing · requested 18 Oct 2026</strong>
+            <span style="font-size: 16px; line-height: 1.45">We'll message you on WhatsApp and here when it's ready, by 19 Oct 2026.</span>
+            <button type="button" class="pl-press" onClick="{{prepareFile}}" style="align-self: flex-start; min-height: 48px; padding: 0; border: 0; background: transparent; color: {{t.onAccentSoft}}; font: inherit; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Cancel the request</button>
+          </div>
+        </sc-if>
+        <p style="margin: 4px 0 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Want something corrected or deleted instead? The grievance officer acknowledges within 24 hours and resolves within 7 days.</p>
+      </div>
+    </section>
+  </sc-if>
+
+  <div role="status" aria-live="polite" style="{{toastStyle}}">{{toast}}</div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; display: flex; background: {{t.navBg}}">
+    <a href="#explore" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-decoration: none; color: {{t.ink2}}; font-size: 13px; font-weight: 500">
+      <span style="width: 56px; height: 32px; border-radius: 999px; display: grid; place-items: center"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg></span>Explore
+    </a>
+    <a href="#following" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-decoration: none; color: {{t.ink2}}; font-size: 13px; font-weight: 500">
+      <span style="width: 56px; height: 32px; border-radius: 999px; display: grid; place-items: center"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-3.5L7 20z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg></span>Following
+    </a>
+    <a href="#ask" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-decoration: none; color: {{t.ink2}}; font-size: 13px; font-weight: 500">
+      <span style="width: 56px; height: 32px; border-radius: 999px; display: grid; place-items: center"><svg width="24" height="24" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 1.5l1.6 4.2L15 7.3l-4.4 1.6L9 13.2 7.4 8.9 3 7.3l4.4-1.6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>Ask Plinth
+    </a>
+    <a href="#you" aria-current="page" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-decoration: none; color: {{t.ink}}; font-size: 13px; font-weight: 700">
+      <span style="width: 56px; height: 32px; border-radius: 999px; display: grid; place-items: center; background: {{t.navInd}}; color: {{t.ink}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></span>You
+    </a>
+  </nav>
+
+  <div aria-hidden="true" onClick="{{closeSheet}}" style="{{scrimStyle}}"></div>
+
+  <section role="dialog" aria-modal="true" aria-labelledby="revoke-h" style="{{revokeSheet}}">
+    <div aria-hidden="true" style="width: 32px; height: 4px; margin: 0 auto 4px; border-radius: 2px; background: {{t.lineStrong}}"></div>
+    <h2 id="revoke-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.035em; line-height: 1.08">Stop sharing your number with {{revokeWho}}?</h2>
+    <p style="margin: 0; color: {{t.ink}}">{{revokeNote}}</p>
+    <div style="display: flex; gap: 12px; padding-top: 4px">
+      <button type="button" class="pl-press" onClick="{{closeSheet}}" style="flex: 1; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Keep sharing</button>
+      <button type="button" class="pl-press" onClick="{{confirmRevoke}}" style="flex: 1; height: 52px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bgSolid}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Stop sharing</button>
+    </div>
+  </section>
+
+  <section role="dialog" aria-modal="true" aria-labelledby="delete-h" style="{{deleteSheet}}">
+    <div aria-hidden="true" style="width: 32px; height: 4px; margin: 0 auto 4px; border-radius: 2px; background: {{t.lineStrong}}"></div>
+    <h2 id="delete-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.035em; line-height: 1.08">Delete your account?</h2>
+    <p style="margin: 0; color: {{t.ink}}">We'll delete your number, follows, chats and consents. Records the law requires us to keep are held only for that period. This can't be undone.</p>
+    <div style="display: flex; gap: 12px; padding-top: 4px">
+      <button type="button" class="pl-press" onClick="{{closeSheet}}" style="flex: 1; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Keep my account</button>
+      <button type="button" class="pl-press" onClick="{{confirmDelete}}" style="flex: 1; height: 52px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bgSolid}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Delete account</button>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"screen":{"editor":"enum","options":["You","Consent history","Download my data"],"default":"You"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {themePick: '', revoked: [false, false, false, false], who: 0, sheet: '', consentWa: true, consentNews: false, push: true, wa: true, quiet: true, digest: true, delDone: false, toast: '', scrFrom: null, view: '', dl: false};
+  }
+  componentWillUnmount() { clearTimeout(this._ts); }
+  say(msg) {
+    var self = this;
+    clearTimeout(this._ts);
+    this.setState({toast: msg});
+    this._ts = setTimeout(function () { self.setState({toast: ''}); }, 3000);
+  }
+  // The `screen` tweak opens a sub-screen on the canvas; your taps win until the tweak changes.
+  eff() {
+    var s = this.state || {};
+    var scr = this.props.screen || 'You';
+    if (s.scrFrom === scr) return s;
+    return Object.assign({}, s, {view: {'You': '', 'Consent history': 'consent', 'Download my data': 'download'}[scr] || ''});
+  }
+  go(patch) { this.setState(Object.assign({}, this.eff(), patch, {scrFrom: this.props.screen || 'You'})); }
+  renderVals() {
+    var self = this;
+    var s = this.eff();
+    var theme = s.themePick || this.props.theme || 'Day';
+    var night = theme === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', sheet: '#111C18', track: 'rgba(255,255,255,0.07)', navBg: '#121D19', navInd: 'rgba(110,231,183,0.16)',
+      inverse: '#EEF3F0', onInverse: '#0B1411', claimBg: '#1D2621', slabOff: 'rgba(255,255,255,0.12)', segOn: 'rgba(255,255,255,0.14)', shadow: '0 8px 24px rgba(0,0,0,0.45)',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', sheet: '#FFFFFF', track: '#F4F2ED', navBg: '#EFECE5', navInd: '#E9F1EC',
+      inverse: '#1B1A17', onInverse: '#FFFFFF', claimBg: '#F1ECE2', slabOff: '#E2DED4', segOn: '#FFFFFF', shadow: '0 8px 24px rgba(27,26,23,.12)',
+      line: '#E7E3DA', lineStrong: '#C9C4B9',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E'
+    };
+    function seg(on) {
+      return 'flex:1;height:48px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;' +
+        (on ? 'background:' + T.segOn + ';color:' + T.ink + ';' : 'background:transparent;color:' + T.ink2 + ';');
+    }
+    var P = [
+      // Identical to DESIGN §5b "Who has my number" and to WebPrivacy.
+      {name: 'Orbis Land site office', short: 'Orbis Land site office', purpose: 'Kestrel Park site visit, shared 12 Oct 2026, consent C-1012-04, access until 11 Nov 2026', meta: 'Developer · pays us nothing'},
+      {name: 'Larkspur Realty', short: 'Larkspur Realty', purpose: 'Your agent of record for Kestrel Park (you added them; shared by your tap after the visit, 12 Oct 2026)', meta: 'Agent · paid by the developer or you, never by Plinth', revokeNote: 'This ends their relay. You shared your real number with them on 12 Oct 2026, and a shared number can’t be recalled, so ask them to delete it.'},
+      {name: 'Meridian Habitat site office', short: 'Meridian Habitat site office', purpose: 'Sapphire Grove Ph 1 site visit, shared 15 Oct 2026, consent C-1015-02, access until 14 Nov 2026', meta: 'Developer · pays us nothing'},
+      {name: 'Meridian Habitat sales office', short: 'Meridian Habitat sales office', purpose: 'Price list, Sep 2026', meta: 'Ended 2 Oct 2026 · 30 days after your last message', ended: true}
+    ];
+    var revoked = s.revoked || [false, false, false, false];
+    var parties = P.map(function (p, i) {
+      return {name: p.name, purpose: p.purpose, meta: revoked[i] ? p.meta.split(' · ')[0] + ' · access ended 18 Oct 2026' : p.meta,
+        active: !revoked[i] && !p.ended, gone: !!revoked[i], label: 'Revoke access for ' + p.short,
+        ask: function () { self.go({sheet: 'revoke', who: i}); }};
+    });
+    function box(on) {
+      return 'width:24px;height:24px;flex:none;margin-top:2px;border-radius:6px;box-sizing:border-box;display:grid;place-items:center;transition:background-color .2s ease;' + (on ? 'background:' + T.accent + ';border:2px solid ' + T.accent + ';' : 'background:transparent;border:2px solid ' + T.ink2 + ';');
+    }
+    function sw(on, dim) {
+      var trackOn = 'background:' + T.accent + ';border:2px solid ' + T.accent + ';';
+      var trackOff = 'background:' + T.track + ';border:2px solid ' + (dim ? T.lineStrong : T.ink2) + ';';
+      return {
+        track: 'position:relative;flex:none;width:52px;height:32px;border-radius:16px;box-sizing:border-box;transition:background-color .2s ease;' + (on ? trackOn : trackOff),
+        thumb: 'position:absolute;left:2px;top:2px;width:24px;height:24px;border-radius:50%;transition:transform .22s cubic-bezier(.22,1,.36,1),background-color .2s ease;' + (on ? 'transform:translateX(20px);background:' + T.onAccent + ';' : 'transform:scale(.667);background:' + (dim ? T.lineStrong : T.ink2) + ';')
+      };
+    }
+    var waBlocked = !s.consentWa;
+    var defs = [
+      {key: 'push', title: 'Push notifications', sub: 'Rating changes, filings and visit reminders'},
+      {key: 'wa', title: 'WhatsApp alerts', sub: waBlocked ? 'Tick the WhatsApp consent above to turn this on' : 'The same alerts, on WhatsApp'},
+      {key: 'quiet', title: 'Quiet hours', sub: 'No alerts from 10 pm to 8 am'},
+      {key: 'digest', title: 'Weekly digest', sub: 'One summary of your followed projects, Sundays at 9 am'}
+    ];
+    var switches = defs.map(function (d) {
+      var on = !!s[d.key];
+      var dim = d.key === 'wa' && waBlocked;
+      var v = sw(on, dim);
+      return {title: d.title, sub: d.sub, aria: on ? 'true' : 'false', disabled: dim ? 'true' : 'false',
+        titleColor: dim ? T.muted : T.ink, subColor: dim ? T.ink2 : T.muted, track: v.track, thumb: v.thumb,
+        flip: function () {
+          if (dim) { self.say('Tick "WhatsApp alerts for projects I follow" first.'); return; }
+          var patch = {}; patch[d.key] = !on; self.go(patch);
+        }};
+    });
+    var sheetOpen = s.sheet === 'revoke' || s.sheet === 'delete';
+    function sheet(on) {
+      return 'position:absolute;left:0;right:0;bottom:0;box-sizing:border-box;padding:10px 20px 32px;display:flex;flex-direction:column;gap:14px;background:' + T.sheet + ';color:' + T.ink + ';border-radius:28px 28px 0 0;box-shadow:' + T.shadow + ';transform:translateY(' + (on ? '0' : '105%') + ');visibility:' + (on ? 'visible' : 'hidden') + ';transition:' + (on ? 'transform .4s cubic-bezier(.22,1,.36,1), visibility 0s' : 'transform .26s cubic-bezier(.76,0,.24,1), visibility 0s linear .26s');
+    }
+    var who = P[s.who] || P[0];
+    var H = [
+      {date: '18 Oct 2026', ref: 'C-1018-11', who: 'Northfield Estates site office', what: 'Aurelia Heights Ph 2 visit, Sat 24 Oct, 11 am, code 4821. They get your first name and a relay number, not your number.', status: 'Active · relay only, not counted', idx: -1, kind: 'relay'},
+      {date: '15 Oct 2026', ref: 'C-1015-02', who: 'Meridian Habitat site office', what: 'Sapphire Grove Ph 1 visit. You shared your number.', status: 'Can reach you until 14 Nov 2026', idx: 2},
+      {date: '12 Oct 2026', ref: 'C-1012-05', who: 'Larkspur Realty', what: 'Your agent of record for Kestrel Park. You shared your number by your tap after the visit.', status: 'Can reach you while your Kestrel Park deal is active', idx: 1},
+      {date: '12 Oct 2026', ref: 'C-1012-04', who: 'Orbis Land site office', what: 'Kestrel Park visit. You shared your number.', status: 'Can reach you until 11 Nov 2026', idx: 0},
+      {date: '2 Sep 2026', ref: 'C-0902-01', who: 'Meridian Habitat sales office', what: 'Sapphire Grove Ph 1 price list.', status: 'Ended 2 Oct 2026', idx: 3, ended: true}
+    ];
+    var history = H.map(function (h, k) {
+      var gone = h.idx >= 0 && revoked[h.idx];
+      var live = !h.ended && !gone;
+      return {date: h.date, ref: h.ref, who: h.who, what: h.what,
+        status: gone ? 'Revoked 18 Oct 2026' : h.status,
+        statusStyle: 'display:inline-flex;align-items:center;min-height:30px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:600;' + (live ? 'background:' + T.accentSoft + ';color:' + T.onAccentSoft : 'background:' + T.track + ';color:' + T.ink2),
+        canRevoke: live && h.idx >= 0, revokeLabel: 'Revoke access for ' + h.who,
+        revoke: function () { self.go({sheet: 'revoke', who: h.idx}); },
+        anim: 'animation-delay:' + (k * 60) + 'ms'};
+    });
+    var dataParts = [
+      {name: 'Projects you follow', count: 'with the dates'}, {name: 'Alerts sent to you', count: 'since 14 Sep 2026'},
+      {name: 'Saved cost sheets', count: '1'}, {name: 'Questions to Ask Plinth', count: 'all of them'},
+      {name: 'Consent history', count: '5 lines'}, {name: 'Who had your number', count: '4 parties'}
+    ];
+    var activeCount = P.filter(function (p, i) { return !p.ended && !revoked[i]; }).length;
+    return {
+      t: T,
+      activeCount: activeCount,
+      countLine: activeCount === 0 ? 'Nobody can contact you right now.' : (activeCount === 1 ? 'party can contact you right now.' : 'parties can contact you right now.'),
+      countStyle: 'display:block;font-family:\'Bricolage Grotesque\', system-ui, sans-serif;font-weight:800;font-size:88px;line-height:0.82;letter-spacing:-0.05em;color:' + T.ink + ';animation:' + (activeCount % 2 ? 'pl-popA' : 'pl-popB') + ' .5s cubic-bezier(.22,1,.36,1) both',
+      pickDay: function () { self.go({themePick: 'Day'}); },
+      pickNight: function () { self.go({themePick: 'Night'}); },
+      dayAria: night ? 'false' : 'true', nightAria: night ? 'true' : 'false',
+      dayBtn: seg(!night), nightBtn: seg(night),
+      parties: parties,
+      consentWa: !!s.consentWa, consentNews: !!s.consentNews,
+      waAria: s.consentWa ? 'true' : 'false', newsAria: s.consentNews ? 'true' : 'false',
+      boxWa: box(s.consentWa), boxNews: box(s.consentNews),
+      waConsentSub: s.consentWa ? 'You ticked this on 14 Sep 2026. Rating changes, filings and the Sunday digest. Reply STOP to end them.' : 'Rating changes and filings. Reply STOP to end them.',
+      viewConsent: s.view === 'consent', viewDownload: s.view === 'download',
+      openConsent: function () { self.go({view: 'consent'}); },
+      openDownload: function () { self.go({view: 'download'}); },
+      backToYou: function () { self.go({view: ''}); },
+      history: history, dataParts: dataParts,
+      dlIdle: !s.dl, dlPreparing: !!s.dl,
+      prepareFile: function () { self.go({dl: !s.dl}); },
+      toggleConsentWa: function () {
+        var on = !s.consentWa;
+        self.go(on ? {consentWa: true} : {consentWa: false, wa: false});
+        if (!on && s.wa) self.say('WhatsApp alerts are off. Push alerts continue.');
+      },
+      toggleConsentNews: function () { self.go({consentNews: !s.consentNews}); },
+      switches: switches,
+      notDeleting: !s.delDone, deleting: !!s.delDone,
+      askDelete: function () { self.go({sheet: 'delete'}); },
+      cancelDelete: function () { self.go({delDone: false}); self.say('Deletion cancelled. Your account stays as it is.'); },
+      scrimStyle: 'position:absolute;left:0;top:0;width:390px;height:844px;background:rgba(8,12,10,0.48);transition:opacity .3s;opacity:' + (sheetOpen ? 1 : 0) + ';pointer-events:' + (sheetOpen ? 'auto' : 'none'),
+      closeSheet: function () { self.go({sheet: ''}); },
+      revokeSheet: sheet(s.sheet === 'revoke'),
+      deleteSheet: sheet(s.sheet === 'delete'),
+      revokeWho: who.short,
+      revokeNote: who.revokeNote || 'They won\'t be able to call or message you. Messages you already exchanged stay on your phone.',
+      confirmRevoke: function () {
+        var r = (s.revoked || [false, false, false, false]).slice();
+        r[s.who] = true;
+        self.go({revoked: r, sheet: ''});
+        self.say(who.short.charAt(0).toUpperCase() + who.short.slice(1) + ' can no longer reach you through Plinth.');
+      },
+      confirmDelete: function () { self.go({delDone: true, sheet: ''}); },
+      toast: s.toast,
+      toastStyle: 'position:absolute;left:16px;right:16px;bottom:76px;min-height:48px;box-sizing:border-box;padding:12px 16px;border-radius:8px;font-size:15px;line-height:1.4;background:' + (night ? '#EEF3F0' : '#1B1A17') + ';color:' + (night ? '#0B1411' : '#FFFFFF') + ';transition:opacity .25s,transform .25s;opacity:' + (s.toast ? 1 : 0) + ';transform:translateY(' + (s.toast ? '0' : '8px') + ');pointer-events:none'
+    };
+  }
+}
+</script>
+</body>
+</html>

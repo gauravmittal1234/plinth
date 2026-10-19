@@ -1,0 +1,198 @@
+{
+  "style_suffix": "Photorealistic architectural photography, natural light, true-to-life colours, 35mm look. Fictional project. No text, no signage, no logos, no watermarks, no recognisable real buildings.",
+  "images": [
+    {
+      "slot": "corridorAerial",
+      "aspect": "16:9",
+      "prompt": "Aerial photograph at golden hour of a new residential high-rise district beside a wide eight-lane expressway on the edge of Gurugram, India. Clusters of 30 to 40 storey apartment towers with balconies, a few still under construction with tower cranes, landscaped green pockets between them, the Aravalli hills soft in the haze on the horizon."
+    },
+    {
+      "slot": "heroAurelia",
+      "aspect": "16:9",
+      "prompt": "A pair of modern 32-storey residential apartment towers in Gurugram, India, at blue hour. Warm light in many balconies, off-white facade with slim vertical green fins, a landscaped entrance plaza with palms and a water feature in the foreground, shot from eye level with a wide lens. The towers look recently topped out with a little construction still visible at the crown."
+    },
+    {
+      "slot": "heroKestrel",
+      "aspect": "4:3",
+      "prompt": "Three slender 28-storey residential towers in Gurugram, India, on a clear afternoon. Terracotta and white facade, deep balconies with planters, a tidy landscaped podium and walking track in the foreground."
+    },
+    {
+      "slot": "heroSapphire",
+      "aspect": "4:3",
+      "prompt": "A mid-rise residential complex of four 20-storey towers in Gurugram, India, in soft morning light. Blue-grey facade with glass balconies, young trees along a wide internal road, mostly complete with the top two floors still under finishing."
+    },
+    {
+      "slot": "heroCoral",
+      "aspect": "4:3",
+      "prompt": "Two partially completed 25-storey residential towers in New Gurugram, India, on an overcast day. The lower half is finished and painted, the upper floors are exposed concrete frame, one tower crane is parked, and a plain green construction hoarding runs along the base."
+    },
+    {
+      "slot": "heroLaurel",
+      "aspect": "4:3",
+      "prompt": "Documentary photograph of a quiet construction site in New Gurugram, India: two concrete residential tower shells about 12 floors high with rusting rebar at the top, no workers, no cranes moving, weeds at the base, a faded blank boundary wall, flat overcast light."
+    },
+    {
+      "slot": "heroJuniper",
+      "aspect": "4:3",
+      "prompt": "A newly launched residential project site on Dwarka Expressway, Gurugram, India: a modern single-storey glass sales pavilion with a landscaped approach and young trees, excavation and the first basement works visible behind it, clear morning light."
+    },
+    {
+      "slot": "siteProgress",
+      "aspect": "4:3",
+      "prompt": "A residential tower under construction in Gurugram, India, about 9 floors of concrete frame complete out of a planned 32, a tower crane above, scaffolding and safety netting, small figures of workers in safety vests far away, warm morning light, slight haze."
+    },
+    {
+      "slot": "roomBare",
+      "aspect": "4:3",
+      "prompt": "An empty, bare living room in a newly completed apartment in Gurugram, India. White walls, light grey large-format vitrified tile floor, a wide sliding glass door to a balcony on the left letting in daylight, a window on the right wall, plain white ceiling with a single light point and a split AC unit. No furniture at all. Shot from one corner at eye level with a 24mm lens, real-estate photography.",
+      "style": "interior"
+    },
+    {
+      "slot": "roomModernIndian",
+      "aspect": "4:3",
+      "edit_of": "roomBare",
+      "prompt": "Furnish this exact room in a warm Modern Indian style. Keep every wall, window, door, the sliding door, floor tiles, ceiling, AC unit, lighting direction and the camera viewpoint exactly the same; do not change any architecture or room size. Add, at realistic scale: a low three-seater sofa in deep teal fabric with mustard cushions, a carved sheesham coffee table, a handwoven cotton dhurrie rug, a brass floor lamp, a jute pouf, a potted areca palm near the balcony door and one framed abstract artwork in earthy tones."
+    },
+    {
+      "slot": "roomMinimal",
+      "aspect": "4:3",
+      "edit_of": "roomBare",
+      "prompt": "Furnish this exact room in a calm minimal Japandi style. Keep every wall, window, door, the sliding door, floor tiles, ceiling, AC unit, lighting direction and the camera viewpoint exactly the same; do not change any architecture or room size. Add, at realistic scale: a cream boucle sofa, a low light-oak coffee table, a pale wool rug, linen curtains on the sliding door, a paper floor lamp and a single olive tree in a ceramic pot."
+    },
+    {
+      "slot": "roomWarmWood",
+      "aspect": "4:3",
+      "edit_of": "roomBare",
+      "prompt": "Furnish this exact room in a warm wood style. Keep every wall, window, door, the sliding door, floor tiles, ceiling, AC unit, lighting direction and the camera viewpoint exactly the same; do not change any architecture or room size. Add, at realistic scale: a teak-framed sofa with rust and cream cushions, a solid wood console and coffee table, a textured beige rug, a cane armchair, warm pendant lighting glow and a few indoor plants."
+    },
+    {
+      "slot": "cameraSite",
+      "aspect": "9:16",
+      "prompt": "A smartphone-camera view, held at eye level, looking at the boundary hoarding of a residential construction project in Gurugram, India. The hoarding is a plain green panel with a white rectangle holding a square QR-code-like pattern (no readable text), and an under-construction concrete tower with a crane rises behind it in daylight."
+    },
+    {
+      "slot": "qprDesk",
+      "aspect": "16:9",
+      "prompt": "Documentary photograph, slightly overhead, of a thick stapled printed construction progress report with plain typed pages and a few tables, lying on a pale wooden desk beside a window, high-rise apartment towers soft and out of focus outside, reading glasses and a pencil beside it, a cup of chai, morning light. Strictly: no government emblems, no national symbols, no official seals or rubber stamps, no logos; every word on the paper is out of focus and illegible."
+    },
+    {
+      "slot": "ordersDesk",
+      "aspect": "4:5",
+      "prompt": "A short stack of printed regulator order documents, stapled at the corner, lying on a plain teak office desk in Gurugram, India. A pair of reading glasses and a ballpoint pen rest on the top page, soft window light from the left, shallow depth of field, calm and documentary. The printed text is small and not legible. No seals, no logos, no names, no readable words."
+    },
+    {
+      "slot": "towerBSite",
+      "aspect": "4:5",
+      "prompt": "Ground-level photograph of a 30-storey residential tower in Gurugram, India, at the structure-complete stage: the reinforced concrete frame and all floor slabs are finished up to the roof, but there is no facade, glazing or paint yet. A tower crane stands beside it, scaffolding at the lower floors, a construction site boundary in the foreground, hazy winter morning light. Shot like an honest site-visit photo, slightly off-axis. No signage, no logos, no text."
+    },
+    {
+      "slot": "costSheetDesk",
+      "aspect": "4:5",
+      "prompt": "Top-down photograph of a two-page printed apartment cost sheet lying flat on a light wooden dining table in an Indian home, next to a smartphone and a pen, natural daylight from a window, a cup of chai at the edge of the frame. The sheet shows a simple table of line items and amounts, but the text and numbers are too small to read. No logos, no brand names, no legible words."
+    },
+    {
+      "slot": "deedKeys",
+      "aspect": "3:4",
+      "prompt": "Close-up photograph of a new set of apartment keys on a plain steel ring resting on a signed multi-page typed agreement on cream paper, lying on a wooden table in warm afternoon light, a coffee mug softly blurred behind. Strictly: no government emblems, no national symbols, no official seals or rubber stamps, no logos; every word on the paper is out of focus and illegible."
+    },
+    {
+      "slot": "salesGallery",
+      "aspect": "4:5",
+      "prompt": "An empty property sales gallery in Gurugram, India, in the quiet of mid-morning: a long white desk with two chairs facing it, and a large architectural scale model of two residential towers under a clear acrylic cover in the foreground. Polished stone floor, soft even light, no people. Calm, slightly clinical, documentary. No signage, no logos, no brochures with readable text."
+    },
+    {
+      "slot": "phoneSiteVisit",
+      "aspect": "4:5",
+      "prompt": "Over-the-shoulder photograph of a young Indian homebuyer holding up a smartphone to photograph a bare, unfurnished living room in a newly built apartment during a site visit: plain off-white walls, a large window with daylight, grey vitrified floor tiles, no furniture. The phone screen shows the same room. Natural light, honest and documentary, the buyer's face not visible. No logos, no text."
+    },
+    {
+      "slot": "qprDeskTall",
+      "aspect": "2:3",
+      "prompt": "Documentary photograph, slightly overhead, of a printed quarterly construction progress report lying on a pale wooden desk beside a window in a Gurugram apartment. A few stapled A4 pages fanned out, one page showing a progress table with handwritten pencil ticks in the margin, a yellow pencil and a pair of reading glasses beside it. All printed text soft and illegible, no logos, no names, no letterheads. Soft morning daylight, shallow depth of field, calm and matter-of-fact. Portrait crop with the pages filling the lower two thirds. Used on the Plinth home page beside 'How does Plinth know?'."
+    },
+    {
+      "slot": "filingsStack",
+      "aspect": "4:5",
+      "prompt": "Documentary photograph of a tall, neat stack of printed A4 quarterly construction progress reports on a plain pale wooden desk beside a window in a Gurugram office, India. Each report is held by a single black bulldog clip and squared up on the one below, so the stack reads like the floor slabs of a building under construction; the top two reports sit slightly offset, as if just filed. A yellow pencil and a pair of reading glasses rest beside the stack. Soft morning daylight from the left, shallow depth of field, calm and matter-of-fact. All printed text soft and illegible. No logos, no names, no letterheads, no seals, no readable words. Portrait crop with the stack filling the centre two thirds and quiet space above it. Used as the hero picture of Plinth's 'How Delivery Risk works' page. Strictly: no government emblems, no national symbols, no official seals or stamps, no logos; every word on the paper is out of focus and illegible."
+    },
+    {
+      "slot": "hoardingQrPanel",
+      "aspect": "4:5",
+      "prompt": "Documentary photograph of a construction-site hoarding along a service road off the Dwarka Expressway, Gurugram, India, in soft late-morning light. A long run of corrugated metal hoarding panels painted plain matte off-white with a narrow dark forest-green band along the base. Behind the hoarding, the upper floors of a concrete residential tower under construction and one tower crane against a pale hazy sky. At eye level on the hoarding, one clean blank rectangular panel in portrait A-series proportion (about 1:1.41), matte white, mounted flush with four small bolts and completely empty: this is where a printed QR code and short link will be placed later. A swept footpath with a few dry leaves in the foreground, no people, no vehicles. Calm and matter-of-fact, gentle depth of field that keeps the blank panel sharp. No text, no letters, no numbers, no logos, no emblems, no QR code, no signboards, no RERA board text, no brand colours. Portrait 4:5 crop with the blank panel in the left-centre third and quiet space above it. Used on Plinth's Live Record kit page to show where the printed QR panel goes on a hoarding."
+    },
+    {
+      "slot": "floorPlan3bhk",
+      "aspect": "4:3",
+      "prompt": "Clean architectural floor plan of a 3-bedroom apartment (an Indian 3 BHK of about 1,450 sq ft carpet area) drawn as a crisp black line drawing on a plain warm-white background, seen straight from above. Solid dark walls, thin arcs for door swings, double lines for windows. Rooms: one living-dining room opening onto a long balcony, a kitchen with a small utility balcony, three bedrooms each with an attached bathroom, a short entrance passage. Furniture shown only as a few faint outline shapes (beds, sofa, dining table) so the rooms read at thumbnail size. No text, no room labels, no numbers, no dimensions, no north arrow, no scale bar, no title block, no logos, no watermark. Even margins, the plan centred and filling about 85% of the frame, no perspective, no shadows, no paper texture. Landscape 4:3. Used as the 3 BHK floor-plan picture in Plinth's developer workspace and in the 'From the developer' section of the project page.",
+      "raw": true
+    },
+    {
+      "slot": "heroHeron",
+      "aspect": "16:9",
+      "prompt": "Documentary photograph of a freshly levelled, fenced plot of land in Sector 104, Gurugram, India, before any building has started: bare compacted earth, a few survey pegs with orange tape, a parked yellow excavator at the far edge, and a tall plain site hoarding along the boundary carrying a small blank white board where a RERA number would go. Low mid-rise apartment towers stand in the hazy distance, and an elevated expressway runs across the far background. Early morning light with light winter haze, calm and matter-of-fact, wide landscape crop with the open ground filling the lower half so a title can sit over it. Hoarding and board are blank: no text, no logos, no signage, no readable words. Used as the hero picture of a just-registered, not-yet-scored project page on Plinth. Strictly no government emblems, national symbols, official seals, rubber stamps, crests or logos anywhere; all text illegible."
+    },
+    {
+      "slot": "receiptDesk",
+      "aspect": "4:5",
+      "prompt": "Close-up documentary photograph, slightly overhead, of a printed payment receipt with a faint handwritten signature line and a cheque-book counterfoil lying on a plain teak dining table in an Indian home, next to a smartphone with its screen off, a ballpoint pen and a steel paper clip. Soft late-morning window light from the left, shallow depth of field, calm and careful mood. All printed and handwritten text is soft and illegible; No logos, no bank names, no brand marks, no faces. Portrait crop with the receipt in the centre two thirds. Used beside the 'Keep the receipt' step of Plinth's Before you pay check. Strictly no government emblems, national symbols, official seals, rubber stamps, crests or logos anywhere; all text illegible."
+    },
+    {
+      "slot": "aboutTable",
+      "aspect": "4:5",
+      "prompt": "Documentary photograph, slightly overhead, of a plain light-oak work table in a small, quiet office in Gurugram, India, in late-afternoon window light. Printed A4 quarterly construction progress reports and regulator orders lie in three neat piles, a few pages fanned out, with yellow paper flags marking pages and a steel ruler beside them. One person's forearm and hand (no face visible, plain cotton sleeve) holds a pencil against one row of a printed table, checking it against a second printout. A closed laptop and a steel tumbler of water sit at the edge of the frame. Soft daylight from the left, shallow depth of field, calm and matter-of-fact. All printed text soft and illegible. No logos, no names, no letterheads, no seals, no emblems, no readable words, no screens showing content. Portrait crop with the hand and the open page in the lower centre and quiet table space above. Used as the hero picture of Plinth's 'Who is Plinth?' page: where the records get read. Strictly no government emblems, national symbols, official seals, rubber stamps, crests or logos anywhere; all text illegible."
+    },
+    {
+      "slot": "evidencePack",
+      "aspect": "1:1",
+      "prompt": "Documentary photograph of a thick printed report of about 46 A4 pages, spiral-bound with five muted coloured tab dividers, lying on a light wooden dining table in a Gurugram apartment, India. Beside it: a smartphone lying face down, a ballpoint pen and a cup of chai. The report is open at a divider, showing a page with a plain table and a small photograph of a building under construction; all text is soft and illegible. Natural morning daylight from a window, shallow depth of field, calm and premium, true-to-life colours. No logos, no names, no letterheads, no seals, no emblems, no readable words. Square crop with the report filling the lower two thirds of the frame. Used as the hero picture of Plinth's 'What's free, and what's Pro?' page: a Pro deep report, printed. Strictly no government emblems, national symbols, official seals, rubber stamps, crests or logos anywhere; all text illegible."
+    },
+    {
+      "slot": "brokerFlyer",
+      "aspect": "3:4",
+      "prompt": "A flat, straight-on digital image of a generic Indian real-estate promotional flyer for a new residential high-rise project, as it looks when forwarded on WhatsApp: slight JPEG softness, filling the whole frame edge to edge, no phone frame, no hands, no table. Portrait layout in a navy-blue and warm-gold palette on an off-white ground. Top to bottom: (1) from about 4% to 19% of the height, a very large bold two-line headline in navy, left-aligned; (2) from 19% to 24%, one thinner line of sub-headline text; (3) from 25% to 58%, a glossy architectural rendering of two modern residential towers with balconies, landscaped gardens and a blue sky, with a round gold starburst sticker overlapping the rendering's top-right corner (about 65% to 95% across, 26% to 38% down) with no words on it, just a plain gold disc; (4) from 59% to 70%, a full-width navy price ribbon with one very large figure on its left side and a smaller line of text on its right third; (5) from 72% to 83%, a row of four simple gold line icons in circles (a swimming pool, a dumbbell, a tree, a building), each with a short caption below; (6) from 86% to 96%, a pale strip with three lines of tiny fine print on the left and a small plain empty square at the far right. IMPORTANT: there is NO text anywhere in this image. Every place where text would be is drawn as solid rounded placeholder bars (a 'greeked' layout mock-up): navy bars of varying length for the headline lines, thinner grey bars for the sub-headline and captions, one large off-white bar on the navy ribbon where the price would be, and rows of very thin grey bars for the fine print. Absolutely no letters, no numbers, no rupee sign, no words in any language. No logos, no brand names, no phone numbers, no QR codes, no government emblems or seals, no people.",
+      "raw": true
+    },
+    {
+      "slot": "hoardingClaim",
+      "aspect": "4:5",
+      "prompt": "Street-level documentary photograph in Gurugram, India, on a hazy winter morning. A long printed construction-site hoarding (a billboard panel on the site's boundary wall), shot nearly straight on, spans the full width of the frame across its middle band, from about 35% to 70% of the image height. Above it rises a residential tower under construction, with bare concrete floors and a tower crane; below it is a dusty footpath with a parked scooter at one edge. The hoarding is navy and warm gold. On its left half: a very large two-line headline at the top (about 37% to 47% of the image height), a medium single line below it (about 49% to 56%), and a thin strip of small print along the hoarding's bottom edge (about 61% to 67%). On its right half: a printed rendering of finished glass-and-concrete towers. All text on the hoarding is completely illegible: smudged pseudo-letters with no real words, numbers or names. Natural light, honest and unretouched, like a buyer's own phone photo. No logos, no brand names, no developer names, no government emblems or seals, no QR codes, no phone numbers, no readable signage, no faces.",
+      "raw": false
+    },
+    {
+      "slot": "agentSocietyGate",
+      "aspect": "4:5",
+      "prompt": "Documentary photograph, early morning, of a small, neat property agent's office at the main gate of a mature residential society on Golf Course Extension Road, Gurugram, India. A narrow glass-fronted kiosk with a plain desk, a closed laptop and a few plain folders visible inside; two steel chairs outside under a small awning; a parked scooter; a security cabin with a boom barrier beside it; 20-storey apartment towers with balconies rising behind through soft morning haze. A middle-aged agent in a plain shirt unlocks the kiosk door, seen from behind and slightly to the side, face not visible. Warm, low sunlight from the right, calm and ordinary, shallow depth of field. No signage text, no logos, no brand names, no emblems, no posters, no readable number plates, no legible text anywhere in the frame. Portrait crop: the kiosk sits in the lower third, the towers fill the upper two thirds. Used as the hero picture of Plinth's 'For agents' page. Strictly no government emblems, national symbols, official seals, rubber stamps, crests or logos anywhere; no readable words or numbers."
+    },
+    {
+      "slot": "agentVisitingCards",
+      "aspect": "4:5",
+      "prompt": "Close-up documentary photograph of a homebuyer's hand holding three plain, completely blank visiting cards fanned out (cream, white and pale grey card stock, with no printing at all) above a light wooden desk in a property site office in Gurugram, India. Out of focus behind: a glass partition and the soft shape of an architectural scale model of residential towers. Soft daylight from a window on the left, shallow depth of field, calm and matter-of-fact. The cards carry no text, no logos, no emblems, no QR codes and no numbers. No legible text anywhere in the frame. Portrait crop with the hand and cards in the centre and quiet space above. Used on Plinth's 'Is this broker registered?' page. Strictly no government emblems, national symbols, official seals, rubber stamps, crests or logos anywhere; no readable words or numbers."
+    },
+    {
+      "slot": "agentLarkspurOffice",
+      "aspect": "4:5",
+      "prompt": "Interior photograph of a small, tidy real-estate agent's office on the first floor of a commercial block on Dwarka Expressway, Gurugram, India, mid-morning. One wooden desk by a large window with a closed laptop, a neat stack of plain folders and a potted snake plant; two upholstered chairs facing the desk; a framed abstract print on a pale wall; a pin board holding blank index cards. Through the window, apartment towers under construction along a wide road, with one tower crane. Bright natural daylight, clean and warm, no people. No logos, no brand names, no emblems, no certificates or documents with readable text, no signage, no legible text anywhere in the frame. Portrait crop. Used as the hero picture of a fictional agent's public profile on Plinth. Strictly no government emblems, national symbols, official seals, rubber stamps, crests or logos anywhere; no readable words or numbers."
+    },
+    {
+      "slot": "slabDeckA",
+      "aspect": "4:5",
+      "prompt": "Documentary phone-camera photograph taken at chest height by a site engineer standing on a freshly cast upper-floor concrete slab of a residential tower under construction in Gurugram, India, in soft early-morning light. Rebar starter bars for the next floor's columns rise in neat clusters near the slab edge, steel props and plywood shuttering are stacked to one side, a tower crane mast and jib cross a pale hazy sky, and two neighbouring towers at a similar frame stage sit softly in the distance. Slightly wide angle, natural true-to-life colours, calm and matter-of-fact, no people's faces. No text, letters, numbers, signage, logos, emblems, safety posters or legible markings anywhere. Portrait 4:5 crop that still reads well when cropped to a square in the centre. Used as the live camera view on Plinth's phone site-capture page for developers. Strictly no government emblems, national symbols, official seals, rubber stamps, crests or logos anywhere; no readable words or numbers."
+    },
+    {
+      "slot": "heroAshgrove",
+      "aspect": "16:9",
+      "prompt": "Documentary photograph of a newly registered residential site at excavation stage in New Gurugram, India, in hazy late-afternoon light. A plain matte off-white hoarding runs along a quiet service road; behind it, a wide excavated foundation pit with one piling rig, two small excavators and a single-storey site office cabin, flat open land around it and a row of finished towers far in the soft distance. No people close to camera, no vehicles in the foreground. Calm, true-to-life colours, gentle depth of field. No text, letters, numbers, logos, emblems, QR codes, RERA boards or legible signage on the hoarding or anywhere else. Landscape 16:9 crop with the pit in the lower two thirds and open sky above. Used as the illustrative photo on a new developer's page preview in Plinth's claim-your-page flow. Strictly no government emblems, national symbols, official seals, rubber stamps, crests or logos anywhere; no readable words or numbers."
+    },
+    {
+      "slot": "familyShortlist",
+      "aspect": "16:9",
+      "prompt": "A printed one-page shortlist of three apartment projects lying on a light wooden dining table in warm evening light, with short handwritten notes in two different hands, blue ink and black ink, in the margins. A pen, a pair of reading glasses and a steel tumbler of chai sit beside it, and a phone lies face down at the edge of the frame. Very shallow depth of field so no words, numbers or logos are legible. No people and no faces. Calm, documentary, true-to-life colours; a Gurugram apartment interior softly out of focus behind. Strictly no government emblems, official seals, rubber stamps, crests or logos anywhere; no readable words or numbers."
+    },
+    {
+      "slot": "demandLetter",
+      "aspect": "3:4",
+      "prompt": "Straight-on, top-down documentary photograph of a single printed A4 business letter lying flat on a light oak desk in an Indian home, used as the background for a 'demand letter' that the page overlays with real text in HTML. The sheet is perfectly square to the camera with no perspective tilt, no curl and no shadow across it, and fills the frame from about 6% to 94% across and 3% to 97% down; only a thin margin of desk shows around it. Soft, even morning daylight, true-to-life colours, very slight paper texture. The letter is fully GREEKED: there are no letters, words or numbers anywhere; every line of text is a solid, flat, mid-grey rounded bar, like a wireframe. Place the bars exactly as follows (percent of the whole image, left-right then top-bottom): (1) letterhead: one thick dark-grey bar from 12% to 46% across at 7% to 9.5% down, and one thin bar from 12% to 34% at 10.5% to 11.5% down; (2) date: one thin bar from 68% to 88% across at 8% to 9.2% down; (3) addressee: three thin bars from 12% to 40% across at 18%, 20.5% and 23% down, each about 1.2% tall; (4) subject: one thick dark bar from 12% to 70% across at 30% to 32.5% down; (5) body: four thin bars from 12% to 88% across at 36%, 38.6%, 41.2% and 43.8% down, the last one ending at 62% across; (6) a simple table from 12% to 88% across and 47.5% to 65.5% down with four rows of equal height, alternate rows on a very pale grey band, each row holding one thin bar on the left (14% to 36% across) and one short bar on the right (70% to 86% across), with no ruled lines; (7) due line: one medium-dark bar from 12% to 52% across at 70% to 72% down; (8) payee block: three thin bars from 12% to 62% across at 76.5%, 79% and 81.5% down; (9) sign-off: one thin bar from 66% to 88% across at 90% to 91.2% down, with empty paper above it. Everything else on the sheet is blank white paper. No text, no letters, no numbers, no logos, no letterhead emblem or crest, no seals, no rubber stamps, no signatures, no QR codes, no watermarks, no hands, no pen, no other objects on the paper. Strictly no letters, numbers, words, signatures, government emblems, official seals, rubber stamps, crests or logos anywhere: every text area is a solid grey placeholder bar.",
+      "raw": true
+    }
+  ]
+}

@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WhatsApp before you pay</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pl-lit{from{transform:scaleX(0)}to{transform:none}}
+.pl-rise{animation:pl-rise .6s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1)}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1260px; overflow: hidden; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 16px; line-height: 22px; font-variant-numeric: tabular-nums lining-nums">
+
+  <div style="flex: none; height: 28px; padding: 0 12px 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 16px; color: {{t.muted}}">
+    <span>WhatsApp conversation (illustrative) · {{caseNote}}</span>
+    <button type="button" class="pl-press" onClick="{{replay}}" style="flex: none; height: 28px; padding: 0 6px; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-weight: 600; cursor: pointer">Replay</button>
+  </div>
+
+  <header style="flex: none; height: 56px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
+    <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+    <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="{{t.accent}}"></circle><path d="M11 24h14M13.5 24v-8h9v8" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 4px">
+      <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 17px; line-height: 22px; font-weight: 600">Plinth<svg width="16" height="16" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+      <span aria-live="polite" style="font-size: 13px; line-height: 16px; color: {{t.muted}}">{{subtitle}}</span>
+    </div>
+    <button type="button" class="pl-press" aria-label="More options" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="5" r="1.7" fill="currentColor"></circle><circle cx="11" cy="11" r="1.7" fill="currentColor"></circle><circle cx="11" cy="17" r="1.7" fill="currentColor"></circle></svg></button>
+  </header>
+
+  <main aria-label="Conversation with Plinth" style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 8px 12px 16px; background: {{t.chatBg}}">
+    <div style="align-self: center; font-size: 13px; line-height: 16px; padding: 4px 12px; border-radius: 999px; background: {{t.pill}}; color: {{t.ink2}}">Today</div>
+
+    <sc-if value="{{isRequest}}" hint-placeholder-val="{{true}}">
+      <div style="align-self: flex-end; width: 286px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+        <span style="display: flex; align-items: center; gap: 4px; padding: 0 6px 2px; font-size: 13px; line-height: 18px; font-style: italic; color: {{t.muted}}"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M9.5 3.5L14 8l-4.5 4.5M14 8H7a4.5 4.5 0 0 0-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Forwarded</span>
+        <div style="padding: 0 8px">
+          <p style="margin: 0">Greetings from Northfield! To block your 3 BHK at Aurelia Heights Ph 2, please transfer the EOI amount of Rs 11,00,000 today to:</p>
+          <p style="margin: 4px 0 0">Northfield Realty Services LLP<br>A/c 919020045118082<br>IFSC MRGL0000912, Marigold Bank</p>
+          <p style="margin: 4px 0 0">Kindly share the UTR on this number after payment.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:14 am</span></p>
+        </div>
+      </div>
+      <div style="align-self: flex-end; max-width: 260px; padding: 6px 12px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">Can I pay this?<span style="float: right; display: inline-flex; align-items: center; gap: 4px; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:15 am<svg width="18" height="12" viewBox="0 0 18 12" role="img" aria-label="Read"><path d="M1.5 6.5l3 3 6.5-7.5M8.5 9.5l6.5-7.5" fill="none" stroke="{{t.accentText}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div>
+    </sc-if>
+
+    <sc-if value="{{isForm}}" hint-placeholder-val="{{false}}">
+      <div style="align-self: flex-end; width: 236px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+        <div style="position: relative; width: 228px; height: 228px; overflow: hidden; border-radius: 12px; background: #E7E3DA">
+          <img data-slot="costSheetDesk" src="/_blob/0df253c9bcc49614197e2e73dc9444e4" alt="Your photo of the booking form's bank details page (illustrative image)" style="position: absolute; left: 0; top: 0; width: 228px; height: 228px; background: #E7E3DA; object-fit: cover; display: block">
+          <span style="position: absolute; left: 8px; bottom: 8px; font-size: 13px; line-height: 16px; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 1px 8px; border-radius: 999px">Illustrative image</span>
+        </div>
+        <div style="padding: 4px 6px 0">Bank page of the booking form they gave me. OK to pay the EOI here?<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:40 am</span></div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isLetter}}" hint-placeholder-val="{{false}}">
+      <div style="align-self: flex-end; width: 268px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+        <span style="display: flex; align-items: center; gap: 4px; padding: 0 6px 2px; font-size: 13px; line-height: 18px; font-style: italic; color: {{t.muted}}"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M9.5 3.5L14 8l-4.5 4.5M14 8H7a4.5 4.5 0 0 0-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Forwarded</span>
+        <div style="position: relative; width: 260px; height: 124px; overflow: hidden; border-radius: 12px 12px 0 0; background: #E7E3DA">
+          <img data-slot="demandLetter" src="/_blob/57870dcfd92321e78ef9ea1863f06a9e" alt="Preview of the first page of the PDF (illustrative image)" style="position: absolute; left: 0; top: -31px; width: 260px; height: 348px; background: #E7E3DA; object-fit: cover; display: block">
+          <span style="position: absolute; left: 8px; bottom: 6px; font-size: 13px; line-height: 16px; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 1px 8px; border-radius: 999px">Illustrative image</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 0 0 12px 12px; background: {{t.quoteBg}}">
+          <svg width="32" height="38" viewBox="0 0 32 38" aria-hidden="true" style="flex: none"><path d="M3 1h18l8 8v28H3z" fill="#FFFFFF" stroke="{{t.ink2}}" stroke-width="1.5" stroke-linejoin="round"></path><path d="M21 1v8h8" fill="none" stroke="{{t.ink2}}" stroke-width="1.5"></path><path d="M8 18h16M8 23h16M8 28h10" stroke="{{t.ink2}}" stroke-width="1.5" stroke-linecap="round"></path></svg>
+          <span style="min-width: 0; display: flex; flex-direction: column"><strong style="font-weight: 600; overflow-wrap: anywhere">Demand letter A-1104.pdf</strong><span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">2 pages · PDF · 184 kB</span></span>
+        </div>
+        <div style="padding: 4px 6px 0">Is this OK to pay?<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:02 am</span></div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{showConfirm}}" hint-placeholder-val="{{true}}">
+      <div class="pl-rise" style="align-self: flex-start; width: 296px; display: flex; flex-direction: column; gap: 4px">
+        <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+          <p style="margin: 0">I'm Plinth's AI assistant. {{confirmLead}} <strong>{{confirmProject}}</strong>{{confirmTail}}</p>
+          <p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: {{t.ink2}}">Sector 37D · RERA GGM/673/405/2022/117<span style="float: right; margin: 2px 0 0 10px; font-size: 13px; line-height: 16px; color: {{t.muted}}">{{tIn}}</span></p>
+        </div>
+        <sc-if value="{{confirmOpen}}" hint-placeholder-val="{{false}}">
+          <div role="group" aria-label="Reply options" style="display: flex; flex-direction: column; gap: 4px">
+            <button type="button" class="pl-press" onClick="{{yes}}" style="{{btn}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{yesLabel}}</button>
+            <button type="button" class="pl-press" onClick="{{no}}" style="{{btn}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>No, another one</button>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{showAnswer}}" hint-placeholder-val="{{true}}">
+      <div class="pl-rise" style="align-self: flex-end; max-width: 260px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+        <div style="padding: 5px 10px; border-radius: 12px; background: {{t.quoteBg}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">{{answerQuote}}</div>
+        <div style="padding: 4px 8px 0">{{answer}}<span style="float: right; display: inline-flex; align-items: center; gap: 4px; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">{{tOut}}<svg width="18" height="12" viewBox="0 0 18 12" role="img" aria-label="Read"><path d="M1.5 6.5l3 3 6.5-7.5M8.5 9.5l6.5-7.5" fill="none" stroke="{{t.accentText}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div>
+      </div>
+    </sc-if>
+    <sc-if value="{{saidNo}}" hint-placeholder-val="{{false}}">
+      <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">Which project is it? Type its name or RERA number, and I'll check against the account registered for that one.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">{{tOut}}</span></div>
+    </sc-if>
+
+    <sc-if value="{{typing}}" hint-placeholder-val="{{false}}">
+      <div role="status" aria-label="{{typingText}}" class="pl-rise" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 14px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+        <span aria-hidden="true" style="display: inline-flex; gap: 5px"><span style="width: 7px; height: 7px; border-radius: 50%; background: {{t.muted}}"></span><span style="width: 7px; height: 7px; border-radius: 50%; background: {{t.muted}}; opacity: 0.6"></span><span style="width: 7px; height: 7px; border-radius: 50%; background: {{t.muted}}; opacity: 0.3"></span></span>
+        <span aria-hidden="true" style="font-size: 13px; line-height: 18px; color: {{t.ink2}}">{{typingText}}</span>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{showCard}}" hint-placeholder-val="{{true}}">
+      <div style="align-self: flex-start; width: 296px; display: flex; flex-direction: column; gap: 4px">
+        <div class="pl-rise" style="padding: 4px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+
+          <sc-if value="{{payeeCard}}" hint-placeholder-val="{{true}}">
+            <div role="img" aria-label="{{cardLabel}}" style="width: 288px; height: 316px; box-sizing: border-box; border-radius: 12px; background: #FFFFFF; color: #1B1A17; padding: 13px 14px 12px; display: flex; flex-direction: column; overflow: hidden">
+              <span style="font-size: 13px; line-height: 16px; font-weight: 600; color: #3F3C36">Payee check · Aurelia Heights, Phase 2</span>
+              <div style="margin-top: 6px; display: flex; align-items: center; gap: 12px">
+                <span style="flex: none; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 44px; line-height: 42px; letter-spacing: -0.045em">{{payee.big}}</span>
+                <span style="font-size: 15px; line-height: 18px">match the account registered with HARERA.</span>
+              </div>
+              <span style="margin-top: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px">
+                <sc-for list="{{strip}}" as="sg" hint-placeholder-count="3"><span style="{{sg.style}}"></span></sc-for>
+              </span>
+              <div style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 6px; font-size: 13px; line-height: 16px">
+                <span style="display: inline-flex; align-items: center; gap: 5px; font-weight: 600; color: #3F3C36"><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>{{payee.saysHead}}</span>
+                <span style="display: inline-flex; align-items: center; gap: 5px; font-weight: 600; color: #3F3C36"><svg width="12" height="13" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>HARERA shows</span>
+                <sc-for list="{{payeeRows}}" as="pr" hint-placeholder-count="3">
+                  <span style="display: block; box-sizing: border-box; min-height: 44px; padding: 4px 7px; border-radius: 4px; background: #F1ECE2"><span style="display: block; font-size: 13px; color: #3F3C36">{{pr.k}}</span>{{pr.says}}</span>
+                  <span style="display: flex; gap: 5px; align-items: flex-start; box-sizing: border-box; min-height: 44px; padding: 4px 7px; border-radius: 4px; background: #F4F2ED; font-weight: 600"><svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="{{pr.icon}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><span style="display: block; font-size: 13px; font-weight: 400; color: #3F3C36">{{pr.verdict}}</span>{{pr.reg}}</span></span>
+                </sc-for>
+              </div>
+              <div style="margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+                <div style="min-width: 0; display: flex; flex-direction: column; font-size: 13px; line-height: 16px; color: #3F3C36">
+                  <span style="display: inline-flex; align-items: center; gap: 6px; margin-bottom: 2px"><svg width="16" height="16" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="#1D5A44"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 15px; line-height: 18px; letter-spacing: -0.02em; color: #1B1A17">Plinth</span></span>
+                  <span style="font-weight: 700; color: #1B1A17">No developer pays us. Ever.</span>
+                  <span>HARERA registration · 14 Oct 2026</span>
+                </div>
+                <div style="flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px">
+                  <svg width="44" height="44" viewBox="0 0 25 25" aria-hidden="true"><rect width="25" height="25" fill="#FFFFFF"></rect><path d="{{qr}}" fill="#1B1A17"></path></svg>
+                  <span style="font-size: 13px; line-height: 16px; font-weight: 600">Live check</span>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{stageCard}}" hint-placeholder-val="{{false}}">
+            <div role="img" aria-label="{{cardLabel}}" style="width: 288px; height: 352px; box-sizing: border-box; border-radius: 12px; background: #FFFFFF; color: #1B1A17; padding: 13px 14px 12px; display: flex; flex-direction: column; overflow: hidden">
+              <span style="font-size: 13px; line-height: 16px; font-weight: 600; color: #3F3C36">Stage check · A-1104, Aurelia Heights, Phase 2</span>
+              <p style="margin: 6px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 21px; line-height: 23px; letter-spacing: -0.025em">The latest filing shows slab 9. This letter asks for the slab 12 instalment.</p>
+              <div style="margin-top: 10px; display: flex; gap: 12px; align-items: flex-start">
+                <div style="flex: none; width: 104px; display: flex; flex-direction: column; gap: 3px">
+                  <div style="position: relative; height: 160px">
+                    <sc-for list="{{miniFloors}}" as="mf" hint-placeholder-count="20"><span style="{{mf.style}}"></span></sc-for>
+                    <span style="position: absolute; left: 50px; top: 61px; display: flex; align-items: center; gap: 3px; font-size: 13px; line-height: 14px; font-weight: 700; white-space: nowrap"><span style="width: 6px; height: 2px; background: #1B1A17"></span>Letter 12</span>
+                    <span style="position: absolute; left: 50px; top: 85px; display: flex; align-items: center; gap: 3px; font-size: 13px; line-height: 14px; font-weight: 700; white-space: nowrap"><span style="width: 6px; height: 2px; background: #1B1A17"></span>Filed 9</span>
+                  </div>
+                  <span style="height: 3px; width: 44px; background: #1B1A17"></span>
+                  <span style="font-size: 13px; line-height: 16px; color: #3F3C36">Tower A · 20 floors</span>
+                </div>
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 16px">
+                  <sc-for list="{{stageRows}}" as="sr" hint-placeholder-count="3">
+                    <span style="{{sr.style}}"><span style="display: flex; align-items: center; gap: 5px; font-weight: 700"><svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><path d="{{sr.icon}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{sr.verdict}}</span><span>{{sr.text}}</span></span>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+                <div style="min-width: 0; display: flex; flex-direction: column; font-size: 13px; line-height: 16px; color: #3F3C36">
+                  <span style="display: inline-flex; align-items: center; gap: 6px; margin-bottom: 2px"><svg width="16" height="16" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="#1D5A44"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 15px; line-height: 18px; letter-spacing: -0.02em; color: #1B1A17">Plinth</span></span>
+                  <span style="font-weight: 700; color: #1B1A17">No developer pays us. Ever.</span>
+                  <span>QPR Apr–Jun 2026 · your letter, 10 Oct</span>
+                </div>
+                <div style="flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px">
+                  <svg width="44" height="44" viewBox="0 0 25 25" aria-hidden="true"><rect width="25" height="25" fill="#FFFFFF"></rect><path d="{{qr}}" fill="#1B1A17"></path></svg>
+                  <span style="font-size: 13px; line-height: 16px; font-weight: 600">Live check</span>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <div style="padding: 8px 8px 2px" data-review="legal">
+            <p style="margin: 0"><strong>{{body.strong}}</strong> {{body.rest}}</p>
+            <p style="margin: 6px 0 0">{{body.second}}</p>
+            <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">{{body.small}}<span style="float: right; margin-left: 10px">{{tCard}}</span></p>
+          </div>
+        </div>
+        <div role="group" aria-label="Reply options" style="display: flex; flex-direction: column; gap: 4px">
+          <sc-for list="{{replies}}" as="r" hint-placeholder-count="3">
+            <button type="button" class="pl-press" onClick="{{r.pick}}" aria-pressed="{{r.on}}" style="{{r.style}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{r.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{hasTurn}}" hint-placeholder-val="{{false}}">
+      <div class="pl-rise" style="align-self: flex-end; max-width: 260px; margin-top: 6px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+        <div style="padding: 5px 10px; border-radius: 12px; background: {{t.quoteBg}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">{{turnQuote}}</div>
+        <div style="padding: 4px 8px 0">{{turnLabel}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">{{tTurn}}</span></div>
+      </div>
+      <div class="pl-rise" style="align-self: flex-start; width: 300px; display: flex; flex-direction: column; gap: 4px; animation-delay: 90ms">
+        <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+          <p style="margin: 0">{{turn.lead}}</p>
+          <sc-if value="{{turn.hasQuote}}" hint-placeholder-val="{{false}}">
+            <p data-review="legal" style="margin: 6px 0 0; padding: 8px 10px; border-radius: 8px; background: {{t.quoteBg}}; white-space: pre-line">{{turn.quote}}</p>
+          </sc-if>
+          <p style="margin: 6px 0 0">{{turn.after}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">{{tTurn}}</span></p>
+        </div>
+        <sc-if value="{{turn.hasCta}}" hint-placeholder-val="{{false}}">
+          <a href="#harera" class="pl-press" style="height: 44px; border-radius: 999px; background: {{t.bubbleIn}}; color: {{t.accentText}}; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; text-decoration: none"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{turn.cta}}</a>
+        </sc-if>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"message":{"editor":"enum","options":["Payment request","Booking form","Demand letter"],"default":"Payment request"},"$preview":{"width":390,"height":1260}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = this.initFor(props);
+  }
+  pkey(p) { p = p || this.props || {}; return p.message || 'Payment request'; }
+  initFor(p) { return {pk: this.pkey(p), phase: 'card', answer: 'yes', turn: null}; }
+  st() { var s = this.state || {}; return s.pk === this.pkey() ? s : this.initFor(this.props); }
+  set(patch) {
+    var base = this.state && this.state.pk === this.pkey() ? {} : this.initFor(this.props);
+    for (var k in patch) base[k] = patch[k];
+    base.pk = this.pkey();
+    this.setState(base);
+  }
+  componentDidMount() {
+    try { this._rm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { this._rm = false; }
+  }
+  componentWillUnmount() { clearTimeout(this._t); }
+  replay() { clearTimeout(this._t); this.set({phase: 'confirm', answer: null, turn: null}); }
+  check() {
+    var self = this;
+    clearTimeout(this._t);
+    this.set({phase: 'checking', answer: 'yes', turn: null});
+    this._t = setTimeout(function () { self.setState({phase: 'card'}); }, this._rm ? 0 : 2000);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.st();
+    var P = this.props || {};
+    var night = (P.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', chatBg: '#0E1814', headerBg: '#121C18', bubbleIn: '#17221E', bubbleOut: '#173A2D',
+      line: 'rgba(255,255,255,0.11)', ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D',
+      accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7', quoteBg: 'rgba(110,231,183,0.10)', pressed: '#1C2E27', pill: '#17221E'
+    } : {
+      bg: '#FBFAF7', chatBg: '#EEEBE4', headerBg: '#FFFFFF', bubbleIn: '#FFFFFF', bubbleOut: '#DCEBE2',
+      line: '#E7E3DA', ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52',
+      accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44', quoteBg: 'rgba(29,90,68,0.08)', pressed: '#E9F1EC', pill: '#FFFFFF'
+    };
+    var key = this.pkey();
+    var isRequest = key === 'Payment request', isForm = key === 'Booking form', isLetter = key === 'Demand letter';
+
+    // Illustrative QR (21 modules, 2-module quiet zone), as on the other WhatsApp cards.
+    var n = 21, g = [], seed = isLetter ? 41 : 17;
+    function rnd() { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+    for (var y = 0; y < n; y++) { g.push([]); for (var x = 0; x < n; x++) g[y].push(-1); }
+    function finder(ox, oy) {
+      for (var dy = -1; dy <= 7; dy++) for (var dx = -1; dx <= 7; dx++) {
+        var xx = ox + dx, yy = oy + dy;
+        if (xx < 0 || yy < 0 || xx >= n || yy >= n) continue;
+        var ring = Math.max(Math.abs(dx - 3), Math.abs(dy - 3));
+        g[yy][xx] = (ring === 3 || ring <= 1) ? 1 : 0;
+      }
+    }
+    finder(0, 0); finder(14, 0); finder(0, 14);
+    for (var q = 8; q < 13; q++) { g[6][q] = q % 2 === 0 ? 1 : 0; g[q][6] = q % 2 === 0 ? 1 : 0; }
+    var qr = '';
+    for (var y2 = 0; y2 < n; y2++) for (var x2 = 0; x2 < n; x2++) {
+      var v = g[y2][x2];
+      if (v === -1) v = rnd() < 0.48 ? 1 : 0;
+      if (v === 1) qr += 'M' + (x2 + 2) + ' ' + (y2 + 2) + 'h1v1h-1z';
+    }
+
+    // The registered collection account (DESIGN.md §5b) against what was forwarded. Cards are images we send, light in both themes.
+    var ICON = {differs: 'M2.5 5.2h9M2.5 8.8h9M9.6 2.2L4.4 11.8', match: 'M3 7.5l2.5 2.5L11 4', cant: 'M12 7a5 5 0 1 1-10 0a5 5 0 1 1 10 0M7 4.3V7l2 1.4'};
+    var REQ = [
+      {k: 'Payee', says: 'Northfield Realty Services LLP', reg: 'Northfield Estates Pvt Ltd', v: 'differs'},
+      {k: 'Account', says: 'ending 8082', reg: 'ending 4417', v: 'differs'},
+      {k: 'Bank, IFSC', says: 'Marigold Bank · MRGL0000912', reg: 'Peepal Bank · PEPL0000418', v: 'differs'}
+    ];
+    var FORM = [
+      {k: 'Payee', says: 'Northfield Estates Pvt Ltd', reg: 'Northfield Estates Pvt Ltd', v: 'match'},
+      {k: 'Account', says: 'ending 4417', reg: 'ending 4417', v: 'match'},
+      {k: 'Bank, IFSC', says: 'Peepal Bank · PEPL0000418', reg: 'Peepal Bank · PEPL0000418', v: 'match'}
+    ];
+    var rowsSrc = isForm ? FORM : REQ;
+    var cardIn = s.phase === 'card';
+    var strip = rowsSrc.map(function (r, i) {
+      return {style: 'display:block;height:8px;border-radius:2px;background:' + (r.v === 'match' ? '#8A847A' : '#1B1A17') + ';transform-origin:0 50%;' + (cardIn && !self._rm ? 'animation:pl-lit .45s cubic-bezier(.22,1,.36,1) ' + (300 + i * 110) + 'ms both' : '')};
+    });
+    var payeeRows = rowsSrc.map(function (r) { return {k: r.k, says: r.says, reg: r.reg, icon: ICON[r.v], verdict: r.v === 'match' ? 'Matches' : 'Differs'}; });
+
+    // Stage card: Tower A, slab 9 on record, slab 12 asked (DESIGN.md §5b, B3 block).
+    var miniFloors = [];
+    for (var f = 20; f >= 1; f--) {
+      var kind = f <= 9 ? 'filed' : (f <= 12 ? 'gap' : 'empty');
+      miniFloors.push({style: 'position:absolute;left:0;width:44px;top:' + ((20 - f) * 8) + 'px;height:6px;border-radius:1px;background:' +
+        (kind === 'filed' ? '#1B1A17' : (kind === 'gap' ? 'repeating-linear-gradient(45deg, rgba(27,26,23,0.6) 0 1.5px, transparent 1.5px 4px), #F1ECE2' : '#EEEBE4')) +
+        ';transform-origin:0 50%;' + (cardIn && !self._rm && kind !== 'empty' ? 'animation:pl-lit .4s cubic-bezier(.22,1,.36,1) ' + (200 + (f - 1) * 45) + 'ms both' : '')});
+    }
+    var stageRows = [
+      {verdict: 'Can’t check yet', text: 'Stage: slab 12 isn’t in a filing yet', icon: ICON.cant, style: 'display:flex;flex-direction:column;padding:5px 8px;border-radius:4px;background:repeating-linear-gradient(45deg, rgba(63,60,54,0.18) 0 1.5px, transparent 1.5px 7px), #F4F2ED'},
+      {verdict: 'Matches', text: '₹13,16,700: 7.5% of your price plus GST', icon: ICON.match, style: 'display:flex;flex-direction:column;padding:5px 8px;border-radius:4px;background:#F4F2ED'},
+      {verdict: 'Matches', text: 'Pay to: the HARERA account, ending 4417', icon: ICON.match, style: 'display:flex;flex-direction:column;padding:5px 8px;border-radius:4px;background:#F4F2ED'}
+    ];
+
+    var C = {
+      'Payment request': {
+        note: 'a forwarded payment request', tIn: '10:15 am', tOut: '10:15 am', tCard: '10:16 am', tTurn: '10:17 am',
+        lead: 'This asks you to pay ₹11,00,000 for', project: 'Aurelia Heights, Phase 2', tail: '. Is that the project?', yes: 'Yes, that one', quote: 'Is that the project?',
+        big: '0 of 3', saysHead: 'Message says',
+        cardLabel: 'Payee check image. Aurelia Heights, Phase 2. 0 of 3 match the account registered with HARERA. Payee: message says Northfield Realty Services LLP; HARERA shows Northfield Estates Pvt Ltd. Account: message says ending 8082; HARERA shows ending 4417. Bank: message says Marigold Bank, IFSC MRGL0000912; HARERA shows Peepal Bank, IFSC PEPL0000418. Plinth. No developer pays us. Ever. HARERA registration, 14 Oct 2026. QR code: the live check.',
+        body: {strong: 'This account doesn’t match the one Northfield registered with HARERA for Phase 2.', rest: 'Pause before you pay. Ask Northfield to confirm the account in writing, on its letterhead. Call the number listed on HARERA, not one from a message.',
+          second: '₹11,00,000 is within the ₹24.4 L Northfield can ask for before a registered agreement.',
+          small: 'I keep the result, not the bank details. Plinth never takes, holds or moves money. Read by AI, checked by rules. Type human for a person.'},
+        replies: [['draft', 'Draft a message'], ['account', 'See HARERA account'], ['human', 'Talk to a person']]
+      },
+      'Booking form': {
+        note: 'a photo of the booking form', tIn: '10:40 am', tOut: '10:41 am', tCard: '10:41 am', tTurn: '10:42 am',
+        lead: 'This form asks you to pay the EOI for', project: 'Aurelia Heights, Phase 2', tail: '. Is that the project?', yes: 'Yes, that one', quote: 'Is that the project?',
+        big: '3 of 3', saysHead: 'Form says',
+        cardLabel: 'Payee check image. Aurelia Heights, Phase 2. 3 of 3 match the account registered with HARERA: Northfield Estates Pvt Ltd, account ending 4417, Peepal Bank, IFSC PEPL0000418. Plinth. No developer pays us. Ever. HARERA registration, 14 Oct 2026. QR code: the live check.',
+        body: {strong: 'This matches the account Northfield registered with HARERA.', rest: 'Pay by transfer or a cheque in this account’s name, from your own account. Then send me a photo of the receipt.',
+          second: '₹11,00,000 is within the ₹24.4 L Northfield can ask for before a registered agreement.',
+          small: 'I keep the result, not the bank details. Plinth never takes, holds or moves money. Read by AI, checked by rules. Type human for a person.'},
+        replies: [['receipt', 'Send the receipt'], ['amount', 'Check the amount'], ['human', 'Talk to a person']]
+      },
+      'Demand letter': {
+        note: 'a forwarded demand letter', tIn: '9:03 am', tOut: '9:03 am', tCard: '9:04 am', tTurn: '9:05 am',
+        lead: 'This is a demand letter of 10 Oct 2026 for unit', project: 'A-1104 at Aurelia Heights, Phase 2', tail: '. Is that your home?', yes: 'Yes, that’s mine', quote: 'Is that your home?',
+        big: '', saysHead: '',
+        cardLabel: 'Stage check image. A-1104, Aurelia Heights, Phase 2. The latest filing shows slab 9. This letter asks for the slab 12 instalment. Tower A, 20 floors: floors 1 to 9 on record, 10 to 12 not on record yet. Stage: can’t check yet. Amount 13,16,700 rupees, 7.5% of your price plus GST: matches. Pay to the HARERA account ending 4417: matches. Plinth. No developer pays us. Ever. QPR Apr–Jun 2026 and your letter of 10 Oct. QR code: the live check.',
+        body: {strong: 'The latest filing shows slab 9. This letter asks for the slab 12 instalment:', rest: '₹13,16,700, due 30 Oct 2026. The Jul–Sep QPR isn’t on HARERA yet, so nothing newer is on record.',
+          second: 'What you can do: ask Northfield for the architect’s certificate for slab 12. If it shows slab 12, pay on time into the account ending 4417; that payee matches HARERA.',
+          small: 'Paying on time is your duty under the agreement (RERA s.19(6)). Not legal advice. I keep the result, not the bank details.'},
+        replies: [['draft', 'Draft the request'], ['alert', 'Tell me when filed'], ['human', 'Talk to a person']]
+      }
+    };
+    var c = C[key] || C['Payment request'];
+    var HUMAN = {lead: 'A person from our team will take over this chat.', after: 'They reply Mon–Sat, 10 am–7 pm, usually within 4 working hours. They can’t pay or move money for you either.'};
+    var TURN = {
+      draft: isLetter
+        ? {lead: 'Here’s a short draft. Edit it as you like:', quote: 'Dear Northfield Estates,\nYour demand letter of 10 Oct 2026 asks for the Tower A slab 12 instalment for unit A-1104, Aurelia Heights, Phase 2. The latest QPR on HARERA (Apr–Jun 2026) shows slab 9.\nBefore 30 Oct 2026, please send the architect’s certificate that slab 12 is cast, with the date, and the HARERA receipt for the Jul–Sep 2026 QPR. I want to pay on time.\nKavya Nair', after: 'Long-press to copy. Send it from your own email to the address on Northfield’s HARERA registration.'}
+        : {lead: 'Here’s a short draft. Edit it as you like:', quote: 'Dear Northfield Estates,\nI was asked on WhatsApp to pay ₹11,00,000 for a 3 BHK at Aurelia Heights, Phase 2 (RERA GGM/673/405/2022/117) to Northfield Realty Services LLP, Marigold Bank.\nThis differs from the collection account on HARERA. Please confirm in writing, on your letterhead, the account I should pay.', after: 'Long-press to copy. Send it to the email on the HARERA registration, not to the number that sent the request.'},
+      account: {lead: 'Registered with HARERA for Phase 2, checked 14 Oct 2026: Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd, Peepal Bank, Golf Course Road, Gurugram. Account ending 4417, IFSC PEPL0000418.', after: 'I show only the last 4 digits. Your booking form or a letter on Northfield’s letterhead gives the full number.', cta: 'Open the HARERA page'},
+      receipt: {lead: 'Send the receipt here after you pay: a photo or a PDF.', after: 'I check that it names this account and the amount, and keep it in your Plinth account until you delete it.'},
+      amount: {lead: 'Before your agreement for sale is registered, Northfield can ask for up to ₹24.4 L: 10% of ₹2.44 Cr, the base plus charges (RERA s.13).', after: '₹11,00,000 leaves ₹13.4 L under that limit.'},
+      alert: {lead: 'Done. When the Jul–Sep QPR is on HARERA, I’ll check this letter again and tell you here.', after: 'At most 1 message a day. Reply STOP anytime.'},
+      human: HUMAN
+    };
+    var LABELS = {draft: isLetter ? 'Draft the request' : 'Draft a message', account: 'See HARERA account', receipt: 'Send the receipt', amount: 'Check the amount', alert: 'Tell me when filed', human: 'Talk to a person'};
+    function btnStyle(on) {
+      return 'height:44px;width:100%;border:0;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;color:' + T.accentText + ';background:' + (on ? T.pressed : T.bubbleIn) + ';';
+    }
+    var replies = c.replies.map(function (r) {
+      var on = s.turn === r[0];
+      return {label: r[1], on: on ? 'true' : 'false', style: btnStyle(on), pick: function () { self.set({turn: r[0]}); }};
+    });
+    var tsrc = s.turn ? TURN[s.turn] : null;
+    var turn = tsrc ? {lead: tsrc.lead, quote: tsrc.quote || '', hasQuote: !!tsrc.quote, after: tsrc.after, cta: tsrc.cta || '', hasCta: !!tsrc.cta} : {lead: '', quote: '', hasQuote: false, after: '', cta: '', hasCta: false};
+    var ph = s.phase;
+    var typing = ph === 'checking';
+
+    return {
+      t: T, qr: qr, caseNote: c.note,
+      isRequest: isRequest, isForm: isForm, isLetter: isLetter,
+      subtitle: typing ? 'typing…' : 'Business account · AI assistant',
+      replay: function () { self.replay(); },
+      btn: btnStyle(false),
+      showConfirm: true, confirmOpen: ph === 'confirm' && !s.answer,
+      confirmLead: c.lead, confirmProject: c.project, confirmTail: c.tail, yesLabel: c.yes,
+      tIn: c.tIn, tOut: c.tOut, tCard: c.tCard, tTurn: c.tTurn,
+      yes: function () { self.check(); },
+      no: function () { clearTimeout(self._t); self.set({answer: 'no', phase: 'confirm'}); },
+      showAnswer: !!s.answer, answer: s.answer === 'no' ? 'No, another one' : c.yes, answerQuote: c.quote,
+      saidNo: s.answer === 'no',
+      typing: typing, typingText: isLetter ? 'Checking the stage and the payee against HARERA' : 'Checking the payee against HARERA',
+      showCard: ph === 'card',
+      payeeCard: !isLetter, stageCard: isLetter,
+      payee: {big: c.big, saysHead: c.saysHead}, strip: strip, payeeRows: payeeRows,
+      miniFloors: miniFloors, stageRows: stageRows,
+      cardLabel: c.cardLabel, body: c.body,
+      replies: replies,
+      hasTurn: ph === 'card' && !!s.turn,
+      turnQuote: isLetter ? 'Stage check · A-1104' : 'Payee check · Aurelia Heights, Phase 2',
+      turnLabel: s.turn ? LABELS[s.turn] : '',
+      turn: turn
+    };
+  }
+}
+</script>
+</body>
+</html>

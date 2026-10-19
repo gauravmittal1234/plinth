@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Family circle (phone)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hs{scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pl-sheet{from{opacity:.4;transform:translateY(56px)}to{opacity:1;transform:none}}
+@keyframes pl-drift{from{transform:scale(1)}to{transform:scale(1.04)}}
+@keyframes pl-join{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.pl-rise{animation:pl-rise .6s cubic-bezier(.22,1,.36,1) both}
+.pl-sheet{animation:pl-sheet .4s cubic-bezier(.22,1,.36,1) both}
+.pl-drift{transform-origin:50% 70%;animation:pl-drift 16s cubic-bezier(.33,1,.68,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <sc-if value="{{isCircle}}" hint-placeholder-val="{{true}}">
+    <div style="position: absolute; inset: 0 0 64px 0; padding: 52px 16px 0; box-sizing: border-box">
+      <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 56px; line-height: 0.92; letter-spacing: -0.05em">Following</p>
+      <p style="margin: 12px 0 0; font-size: 17px; line-height: 1.45">4 projects · alerts in the app and on WhatsApp</p>
+      <button type="button" class="pl-press" onClick="{{openSheet}}" aria-haspopup="dialog" style="margin-top: 6px; min-height: 44px; width: 100%; display: flex; align-items: center; gap: 10px; padding: 0; border: 0; background: transparent; font: inherit; color: {{t.ink}}; text-align: left; cursor: pointer">
+        <span aria-hidden="true" style="display: inline-flex; gap: 4px"><sc-for list="{{entryFaces}}" as="ef" hint-placeholder-count="2"><span style="{{ef.style}}"><sc-if value="{{ef.person}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></sc-if>{{ef.init}}</span></sc-for></span>
+        <span style="flex: 1; min-width: 0; font-size: 15px; line-height: 1.35"><span class="sr">Family circle: </span>{{entryText}}</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+      <p style="margin: 24px 0 0; font-size: 15px; line-height: 1.5; color: {{t.muted}}">Your 4 projects and their updates are listed here.</p>
+    </div>
+    <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: {{t.nav}}">
+      <a href="#explore" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.ink2}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5l-2 5-5 2 2-5z"></path></g></svg><span style="font-size: 13px; line-height: 16px; font-weight: 500">Explore</span></a>
+      <a href="#following" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.ink}}"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 32px; border-radius: 999px; background: {{t.navInd}}; color: {{t.onAccentSoft}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16.5l-5-3.6-5 3.6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg></span><span style="font-size: 13px; line-height: 16px; font-weight: 700">Following</span></a>
+      <a href="#ask" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.ink2}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.1 5.4L19.5 10l-5.4 2.1L12 17.5l-2.1-5.4L4.5 10l5.4-2.1z"></path></g></svg><span style="font-size: 13px; line-height: 16px; font-weight: 500">Ask</span></a>
+      <a href="#you" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.ink2}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 20c1.3-3.5 4-5.3 7-5.3s5.7 1.8 7 5.3"></path></g></svg><span style="font-size: 13px; line-height: 16px; font-weight: 500">You</span></a>
+    </nav>
+
+    <sc-if value="{{sheetOpen}}" hint-placeholder-val="{{true}}">
+      <div aria-hidden="true" onClick="{{closeSheet}}" style="position: absolute; inset: 0; z-index: 40; background: {{t.scrim}}"></div>
+      <section class="pl-sheet" role="dialog" aria-modal="true" aria-labelledby="fc-h" data-signature="circle" style="position: absolute; left: 0; right: 0; top: 76px; bottom: 0; z-index: 41; background: {{t.sheet}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; display: flex; flex-direction: column">
+        <div aria-hidden="true" style="display: flex; justify-content: center; padding-top: 10px"><span style="width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span></div>
+        <div style="display: flex; align-items: flex-start; gap: 8px; padding: 6px 8px 0 20px">
+          <div style="flex: 1; min-width: 0">
+            <h2 id="fc-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 28px; line-height: 1.06">Who follows with you?</h2>
+            <p style="margin: 4px 0 0; font-size: 14px; line-height: 1.4; color: {{t.muted}}">Your family circle · same alerts, separate numbers</p>
+          </div>
+          <button type="button" class="pl-press" onClick="{{closeSheet}}" aria-label="Close family circle" style="flex: none; width: 48px; height: 48px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button>
+        </div>
+        <div class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 8px 20px 28px">
+          <ul aria-label="People in your circle" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+            <sc-for list="{{members}}" as="mb" hint-placeholder-count="3">
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0">
+                <span aria-hidden="true" style="{{mb.avatar}}"><sc-if value="{{mb.person}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>{{mb.init}}</span>
+                <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px">
+                  <strong style="font-size: 17px; line-height: 1.35; font-weight: 600">{{mb.name}}</strong>
+                  <span style="font-size: 14px; line-height: 1.4; color: {{t.ink2}}">{{mb.sub}}</span>
+                </span>
+                <sc-if value="{{mb.hasAct}}" hint-placeholder-val="{{true}}"><button type="button" class="pl-press" onClick="{{mb.act}}" aria-haspopup="{{mb.popup}}" style="flex: none; min-height: 44px; padding: 0 2px; border: 0; background: transparent; font: inherit; font-size: 15px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; white-space: nowrap">{{mb.actLabel}}<span class="sr"> {{mb.name}}</span></button></sc-if>
+              </li>
+            </sc-for>
+          </ul>
+
+          <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 10px">
+            <h3 style="margin: 0; font-size: 19px; line-height: 1.3; font-weight: 700">Invite someone</h3>
+            <p id="scope-l" style="margin: 0; font-size: 15px; color: {{t.ink2}}">What they follow with you</p>
+            <div role="group" aria-labelledby="scope-l" style="display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.track}}">
+              <sc-for list="{{scopes}}" as="sc" hint-placeholder-count="2"><button type="button" class="pl-press" onClick="{{sc.pick}}" aria-pressed="{{sc.on}}" style="{{sc.style}}">{{sc.label}}</button></sc-for>
+            </div>
+            <button type="button" class="pl-press" onClick="{{shareWa}}" style="margin-top: 4px; width: 100%; height: 52px; border: 0; border-radius: 999px; display: flex; align-items: center; justify-content: center; gap: 10px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.2 16.5l1.2-3.4A6.8 6.8 0 1 1 7.3 15.8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg>Invite on WhatsApp</button>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+              <p role="status" style="flex: 1; min-width: 0; margin: 0; font-size: 14px; line-height: 1.45; color: {{t.ink2}}">{{inviteStatus}}</p>
+              <button type="button" class="pl-press" onClick="{{copyLink}}" style="flex: none; min-height: 44px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 15px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Copy link</button>
+            </div>
+          </div>
+
+          <div style="margin-top: 20px; display: flex; gap: 16px">
+            <div style="flex: 1 1 0; min-width: 0">
+              <h3 style="margin: 0 0 6px; font-size: 16px; line-height: 1.3; font-weight: 700">They can see</h3>
+              <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.4">
+                <li style="display: flex; gap: 6px"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>The projects you invite them to</span></li>
+                <li style="display: flex; gap: 6px"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>The same alerts, on their own phone</span></li>
+                <li style="display: flex; gap: 6px"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Your shortlist and notes</span></li>
+              </ul>
+            </div>
+            <div style="flex: 1 1 0; min-width: 0">
+              <h3 style="margin: 0 0 6px; font-size: 16px; line-height: 1.3; font-weight: 700">They can’t change</h3>
+              <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.4">
+                <li style="display: flex; gap: 6px"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>Your follows or follow type</span></li>
+                <li style="display: flex; gap: 6px"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>Your alert settings</span></li>
+                <li style="display: flex; gap: 6px"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>Who is in this circle</span></li>
+              </ul>
+            </div>
+          </div>
+          <p style="margin: 14px 0 0; font-size: 14px; line-height: 1.45">Stays private to you: cost sheets, visit passes, payment alerts and who has your number.</p>
+
+          <div style="margin-top: 22px; display: flex; flex-direction: column; gap: 10px">
+            <h3 style="margin: 0; font-size: 19px; line-height: 1.3; font-weight: 700">What they’ll get</h3>
+            <div style="border-radius: 8px; background: {{t.chatBg}}; padding: 12px">
+              <div style="max-width: 290px; border-radius: 4px 16px 16px 16px; padding: 8px 12px 6px; background: {{t.bubbleIn}}; font-size: 15px; line-height: 21px">
+                <p style="margin: 0">{{previewLine1}}</p>
+                <p style="margin: 6px 0 0">{{previewLine2}}</p>
+                <p style="margin: 6px 0 0; font-size: 13px; line-height: 16px; color: {{t.muted}}">Utility message · reply STOP to stop</p>
+              </div>
+            </div>
+            <button type="button" class="pl-press" onClick="{{openPreview}}" style="align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 15px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">See the page he opens from the link</button>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{dialogOpen}}" hint-placeholder-val="{{false}}">
+      <div aria-hidden="true" onClick="{{dlgNo}}" style="position: absolute; inset: 0; z-index: 50; background: {{t.scrim}}"></div>
+      <section class="pl-sheet" role="alertdialog" aria-modal="true" aria-labelledby="rv-h" aria-describedby="rv-d" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 51; background: {{t.sheet}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; padding: 10px 20px 20px; display: flex; flex-direction: column; gap: 12px">
+        <div aria-hidden="true" style="display: flex; justify-content: center"><span style="width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span></div>
+        <div style="display: flex; align-items: center; gap: 12px; padding-top: 6px">
+          <span aria-hidden="true" style="{{dlgAvatar}}"><sc-if value="{{dlgPerson}}" hint-placeholder-val="{{true}}"><svg width="18" height="18" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>{{dlgInit}}</span>
+          <h2 id="rv-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 28px; line-height: 1.06">{{dlgTitle}}</h2>
+        </div>
+        <ul id="rv-d" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{dlgPoints}}" as="dp" hint-placeholder-count="3"><li style="display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 1.45"><span aria-hidden="true" style="flex: none; width: 6px; height: 6px; margin-top: 9px; border-radius: 50%; background: {{t.ink}}"></span><span>{{dp}}</span></li></sc-for>
+        </ul>
+        <button type="button" class="pl-press" onClick="{{dlgYes}}" style="margin-top: 6px; width: 100%; height: 52px; border: 0; border-radius: 999px; background: {{t.inverse}}; color: {{t.onInverse}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{dlgYesLabel}}</button>
+        <button type="button" class="pl-press" onClick="{{dlgNo}}" style="width: 100%; height: 48px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; cursor: pointer">{{dlgNoLabel}}</button>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+      <div role="status" class="pl-rise" style="position: absolute; left: 12px; right: 12px; bottom: 16px; z-index: 60; display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 18px; border-radius: 16px; background: {{t.inverse}}; color: {{t.onInverse}}; box-shadow: {{t.shadow}}">
+        <span style="flex: 1; min-width: 0; font-size: 15px; line-height: 1.4">{{toast}}</span>
+        <button type="button" class="pl-press" onClick="{{undo}}" style="flex: none; height: 44px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; color: {{t.onInverse}}; font: inherit; font-size: 15px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Undo</button>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <sc-if value="{{isRelative}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 0; right: 0; top: 0; height: 36px; z-index: 5; padding: 0 8px 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: {{t.bannerBg}}">
+      <span style="font-size: 13px; line-height: 16px; color: {{t.ink2}}">{{bannerText}}</span>
+      <sc-if value="{{isPreview}}" hint-placeholder-val="{{false}}"><button type="button" class="pl-press" onClick="{{backToCircle}}" style="height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: {{t.bg}}; color: {{t.ink}}; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Back to your circle</button></sc-if>
+    </div>
+    <main class="hs" style="position: absolute; left: 0; right: 0; top: 36px; bottom: {{mainBottom}}; overflow-y: auto; padding: 12px 16px 24px; box-sizing: border-box">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 40px">
+        <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.02em">Plinth</span></span>
+        <span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">plinth.in/j/AH2-7KQ</span>
+      </div>
+
+      <sc-if value="{{showInvite}}" hint-placeholder-val="{{true}}">
+        <div style="position: relative; margin-top: 10px; height: 164px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="heroAurelia" class="pl-drift" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Illustrative image: Aurelia Heights, Phase 2, the project Rohan invited you to follow" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; display: block">
+          <span style="position: absolute; left: 10px; bottom: 10px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+        </div>
+        <h1 class="pl-rise" style="margin: 18px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1; letter-spacing: -0.04em">Rohan invited you</h1>
+        <p class="pl-rise" style="margin: 8px 0 0; font-size: 19px; line-height: 1.45; animation-delay: 80ms">to follow Aurelia Heights Ph 2. You’ll get the same alerts. Your number stays yours.</p>
+        <p style="margin: 8px 0 0; font-size: 14px; line-height: 1.4; color: {{t.muted}}">Sector 37D, Dwarka Expressway · RERA GGM/673/405/2022/117</p>
+        <h2 style="margin: 20px 0 0; font-size: 19px; line-height: 1.3; font-weight: 700">What you’ll get</h2>
+        <ul style="list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+          <li style="display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 1.45"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>An alert when its band changes, a QPR is filed or missed, its date moves or an order is passed.</span></li>
+          <li style="display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 1.45"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>A short round-up on Sundays. Nothing between 10 pm and 8 am.</span></li>
+          <li style="display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 1.45"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Rohan sees that you joined, never your number. No developer or agent gets it.</span></li>
+          <li style="display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 1.45"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Stop anytime: reply STOP, or leave from this page.</span></li>
+        </ul>
+        <p id="ch-l" style="margin: 20px 0 8px; font-size: 15px; font-weight: 600">Where should the alerts go?</p>
+        <div role="group" aria-labelledby="ch-l" style="display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.track}}">
+          <sc-for list="{{channels}}" as="ch" hint-placeholder-count="2"><button type="button" class="pl-press" onClick="{{ch.pick}}" aria-pressed="{{ch.on}}" style="{{ch.style}}">{{ch.label}}</button></sc-for>
+        </div>
+        <p style="margin: 16px 0 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Utility updates about this project only, never marketing. Plinth works for buyers. No developer pays us. Ever.</p>
+      </sc-if>
+
+      <sc-if value="{{showDone}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" role="status" style="margin-top: 40px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px">
+          <span aria-hidden="true" style="width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; animation: pl-join .5s cubic-bezier(.22,1,.36,1) both"><svg width="30" height="30" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+          <h1 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1; letter-spacing: -0.04em">{{doneTitle}}</h1>
+          <p style="margin: 0; font-size: 19px; line-height: 1.45">{{doneText}}</p>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">{{doneNote}}</p>
+        </div>
+      </sc-if>
+    </main>
+
+    <sc-if value="{{hasBar}}" hint-placeholder-val="{{true}}">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 4px; background: {{t.nav}}">
+        <sc-if value="{{barStatusOn}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 0 0 6px; font-size: 14px; line-height: 1.45">{{barStatus}}</p></sc-if>
+        <button type="button" class="pl-press" onClick="{{barPrimary}}" aria-disabled="{{barBusy}}" style="{{barBtn}}">{{barLabel}}</button>
+        <sc-if value="{{hasSecondary}}" hint-placeholder-val="{{true}}"><button type="button" class="pl-press" onClick="{{barSecondary}}" style="width: 100%; height: 44px; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 16px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; cursor: pointer">{{secondaryLabel}}</button></sc-if>
+      </div>
+    </sc-if>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"screen":{"editor":"enum","options":["Your circle","Relative opt-in","Revoke"],"default":"Your circle"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // Overrides are keyed to the screen lever, so switching the lever always starts that screen fresh.
+    this.state = {ov: null};
+  }
+  componentWillUnmount() {
+    clearTimeout(this._t);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var night = (this.props.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', photo: '#1B2A24', track: 'rgba(255,255,255,0.07)', lineStrong: 'rgba(255,255,255,0.28)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      nav: '#121D19', navInd: 'rgba(110,231,183,0.16)', sheet: '#111D19', scrim: 'rgba(0,0,0,0.58)', shadow: '0 8px 24px rgba(0,0,0,0.45)',
+      inverse: '#EEF3F0', onInverse: '#0B1411', segOn: 'rgba(255,255,255,0.14)', face: '#22302A',
+      chatBg: '#0E1814', bubbleIn: '#17221E', bannerBg: '#16221D'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', photo: '#E7E3DA', track: '#F4F2ED', lineStrong: '#C9C4B9',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      nav: '#EFECE5', navInd: '#E9F1EC', sheet: '#FFFFFF', scrim: 'rgba(27,26,23,0.42)', shadow: '0 8px 24px rgba(27,26,23,.12)',
+      inverse: '#1B1A17', onInverse: '#FFFFFF', segOn: '#FFFFFF', face: '#EEEBE4',
+      chatBg: '#EEEBE4', bubbleIn: '#FFFFFF', bannerBg: '#EFECE5'
+    };
+    var SCREENS = ['Your circle', 'Relative opt-in', 'Revoke'];
+    var scr = SCREENS.indexOf(this.props.screen) >= 0 ? this.props.screen : 'Your circle';
+    var BASE = {
+      'Your circle': {view: 'circle', sheet: true, father: 'invited', meera: 'joined', dialog: ''},
+      'Relative opt-in': {view: 'relative', sheet: true, father: 'invited', meera: 'joined', dialog: ''},
+      'Revoke': {view: 'circle', sheet: true, father: 'joined', meera: 'joined', dialog: 'father'}
+    };
+    var ov = (s.ov && s.ov.scr === scr) ? s.ov : {scr: scr};
+    var st = {scope: 'A', invite: '', optin: 'idle', channel: 'wa', toast: '', undoKey: '', undoTo: ''};
+    var b = BASE[scr];
+    for (var k1 in b) st[k1] = b[k1];
+    for (var k2 in ov) st[k2] = ov[k2];
+    function set(o) {
+      var n = {};
+      var cur = (self.state.ov && self.state.ov.scr === scr) ? self.state.ov : {scr: scr};
+      for (var x in cur) n[x] = cur[x];
+      for (var y in o) n[y] = o[y];
+      n.scr = scr;
+      self.setState({ov: n});
+    }
+    function face(init, person, pending, size) {
+      return 'flex:none;width:' + size + 'px;height:' + size + 'px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:' + (size > 30 ? 16 : 12) + 'px;font-weight:700;line-height:1;color:' + T.ink + ';background:' + T.face + ';opacity:' + (pending ? 0.6 : 1);
+    }
+
+    // ---------- Rohan's circle ----------
+    var SUB = {
+      meera: {joined: 'Joined 6 Oct 2026 · same alerts, 4 projects · can add notes', removed: 'Removed today · her alerts through your circle stopped'},
+      father: {invited: 'Invited today · Aurelia Heights Ph 2 · hasn’t tapped the link yet', joined: 'Joined today · Aurelia Heights Ph 2 · same alerts', cancelled: 'Invite cancelled · the link no longer works', removed: 'Removed today · his alerts through your circle stopped'}
+    };
+    var MB = [
+      {k: 'you', name: 'Rohan (you)', init: 'R', sub: 'Started this circle · follows 4 projects'},
+      {k: 'meera', name: 'Meera', init: 'M'},
+      {k: 'father', name: 'Meera’s father', person: true}
+    ];
+    var members = MB.map(function (m) {
+      var stt = st[m.k];
+      var isYou = m.k === 'you';
+      var gone = stt === 'removed' || stt === 'cancelled';
+      var label = isYou ? '' : (gone ? 'Undo' : (m.k === 'father' && stt === 'invited' ? 'Cancel invite' : 'Remove'));
+      return {
+        name: m.name, init: m.init || '', person: !!m.person,
+        avatar: face(m.init, m.person, m.k === 'father' && stt === 'invited', 40) + (gone ? ';opacity:0.45' : ''),
+        sub: isYou ? m.sub : SUB[m.k][stt],
+        hasAct: !isYou, actLabel: label, popup: gone ? 'false' : 'dialog',
+        act: function () {
+          if (gone) { var o = {toast: ''}; o[m.k] = m.k === 'meera' ? 'joined' : (stt === 'cancelled' ? 'invited' : 'joined'); set(o); return; }
+          set({dialog: m.k, toast: ''});
+        }
+      };
+    });
+    var fatherIn = st.father === 'invited' || st.father === 'joined';
+    var entryFaces = [];
+    if (st.meera === 'joined') entryFaces.push({init: 'M', person: false, style: face('M', false, false, 28)});
+    if (fatherIn) entryFaces.push({init: '', person: true, style: face('', true, st.father === 'invited', 28)});
+    var who = [];
+    if (st.meera === 'joined') who.push('Meera');
+    var entryText = (who.length ? 'With ' + who.join(' and ') : 'Just you') + (st.father === 'invited' ? ' · her father is invited' : (st.father === 'joined' ? (who.length ? ' and her father' : 'With Meera’s father') : ''));
+
+    var scope = st.scope === 'all' ? 'all' : 'A';
+    var code = scope === 'all' ? 'plinth.in/j/RC4-2MW' : 'plinth.in/j/AH2-7KQ';
+    var scopes = [{k: 'A', label: 'Aurelia Heights Ph 2'}, {k: 'all', label: 'All 4 projects'}].map(function (x) {
+      var on = x.k === scope;
+      return {label: x.label, on: on ? 'true' : 'false', pick: function () { set({scope: x.k, invite: ''}); },
+        style: 'flex:1 1 0;min-width:0;height:44px;padding:0 10px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;white-space:nowrap;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.segOn : 'transparent')};
+    });
+    var inviteStatus = st.invite === 'copied' ? 'Copied ' + code + '. Works once, for 7 days.' : (st.invite === 'wa' ? 'WhatsApp is open with your message. Pick who to send it to; they opt in themselves.' : 'The link carries no phone number. Works once, for 7 days.');
+    var previewLine1 = scope === 'all' ? 'This week in the 4 projects you follow with Rohan’s circle, 12–18 Oct 2026: 5 changes on record. No band changed.' : 'Update on Aurelia Heights, Phase 2, which you follow with Rohan’s circle:';
+    var previewLine2 = scope === 'all' ? 'Aurelia Heights Ph 2’s Jul–Sep QPR is not on HARERA yet, so its band may change.' : 'The Jul–Sep 2026 QPR is not on HARERA yet (due 15 Oct). Developer says: filed 12 Oct, not yet verified.';
+
+    // ---------- Revoke (and cancel invite) ----------
+    var dk = st.dialog;
+    var DLG = {
+      meera: {title: 'Remove Meera?', init: 'M', person: false, points: ['Her alerts through your circle stop now.', 'She loses your shared shortlist and notes.', 'Anything she follows on her own stays hers.'], yes: 'Remove Meera', no: 'Keep her', toast: 'Meera removed. Her alerts through your circle stopped.', to: 'removed'},
+      fatherJoined: {title: 'Remove Meera’s father?', init: '', person: true, points: ['His alerts through your circle stop now.', 'He gets one last message: “Alerts from Rohan’s circle have stopped.”', 'He loses your shortlist and notes. Anything he follows on his own stays his.'], yes: 'Remove him', no: 'Keep him', toast: 'Removed. He gets one message saying the alerts stopped.', to: 'removed'},
+      fatherInvited: {title: 'Cancel the invite?', init: '', person: true, points: ['The link stops working at once.', 'Nothing was ever sent to him, and we never had his number.'], yes: 'Cancel invite', no: 'Keep it', toast: 'Invite cancelled. The link no longer works.', to: 'cancelled'}
+    };
+    var dkey = dk === 'meera' ? 'meera' : (dk === 'father' ? (st.father === 'joined' ? 'fatherJoined' : (st.father === 'invited' ? 'fatherInvited' : '')) : '');
+    var D = DLG[dkey] || null;
+
+    // ---------- The relative's opt-in (Meera's father's phone) ----------
+    var isPreview = st.view === 'preview';
+    var isRelative = st.view === 'relative' || isPreview;
+    var optin = isPreview ? 'idle' : st.optin;
+    var viaApp = st.channel === 'app';
+    var channels = [{k: 'wa', label: 'WhatsApp, this number'}, {k: 'app', label: 'Plinth app'}].map(function (x) {
+      var on = x.k === (viaApp ? 'app' : 'wa');
+      return {label: x.label, on: on ? 'true' : 'false', pick: function () { if (!isPreview) set({channel: x.k}); },
+        style: 'flex:1 1 0;min-width:0;height:44px;padding:0 10px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;white-space:nowrap;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.segOn : 'transparent')};
+    });
+    var showDone = !isPreview && (optin === 'joined' || optin === 'left' || optin === 'declined');
+    var doneTitle = optin === 'joined' ? 'You’re following Aurelia Heights Ph 2' : (optin === 'left' ? 'You’ve left Rohan’s circle' : 'Nothing was sent');
+    var doneText = optin === 'joined' ? (viaApp ? 'Alerts will come in the Plinth app. Rohan sees that you joined, never your number.' : 'Alerts will come to this WhatsApp number. Rohan sees that you joined, never your number.') : (optin === 'left' ? 'No more alerts from his circle. Rohan sees that you left.' : 'We don’t have your number, and Rohan won’t be told. The link works until 25 Oct.');
+    var doneNote = optin === 'joined' ? 'The first alert comes when something changes on record. Reply STOP anytime.' : (optin === 'left' ? 'You can still follow the project on your own.' : 'Changed your mind? The link still works.');
+    var busy = optin === 'opening';
+    var barLabel, barPrimary, hasSecondary = true, secondaryLabel = 'Not now', barSecondary;
+    if (isPreview) {
+      barLabel = 'Back to your circle'; barPrimary = function () { set({view: 'circle'}); }; hasSecondary = false; barSecondary = function () {};
+    } else if (optin === 'joined') {
+      barLabel = 'Open Aurelia Heights Ph 2'; barPrimary = function () {}; secondaryLabel = 'Leave Rohan’s circle'; barSecondary = function () { set({optin: 'left'}); };
+    } else if (optin === 'left' || optin === 'declined') {
+      barLabel = viaApp ? 'Follow with Rohan in the app' : 'Get these alerts on WhatsApp'; barPrimary = function () { set({optin: 'idle'}); }; hasSecondary = false; barSecondary = function () {};
+    } else {
+      barLabel = busy ? 'Waiting for your message…' : (viaApp ? 'Follow with Rohan in the app' : 'Get these alerts on WhatsApp');
+      barPrimary = function () {
+        if (busy) return;
+        if (viaApp) { set({optin: 'joined'}); return; }
+        set({optin: 'opening'});
+        clearTimeout(self._t);
+        self._t = setTimeout(function () {
+          var cur = self.state.ov;
+          if (!cur || cur.scr !== scr || cur.optin !== 'opening') return;
+          var n = {};
+          for (var x in cur) n[x] = cur[x];
+          n.optin = 'joined';
+          self.setState({ov: n});
+        }, 1800);
+      };
+      barSecondary = function () { if (!busy) set({optin: 'declined'}); };
+    }
+
+    return {
+      t: T,
+      isCircle: !isRelative, isRelative: isRelative, isPreview: isPreview,
+      sheetOpen: !!st.sheet,
+      openSheet: function () { set({sheet: true}); },
+      closeSheet: function () { set({sheet: false, dialog: ''}); },
+      entryFaces: entryFaces, entryText: entryText,
+      members: members,
+      scopes: scopes,
+      shareWa: function () { set({invite: 'wa'}); },
+      copyLink: function () { set({invite: 'copied'}); },
+      inviteStatus: inviteStatus,
+      previewLine1: previewLine1, previewLine2: previewLine2,
+      openPreview: function () { set({view: 'preview'}); },
+      dialogOpen: !!D && !!st.sheet,
+      dlgTitle: D ? D.title : '', dlgPoints: D ? D.points : [], dlgYesLabel: D ? D.yes : '', dlgNoLabel: D ? D.no : '',
+      dlgInit: D ? D.init : '', dlgPerson: D ? D.person : false, dlgAvatar: face('', false, false, 44),
+      dlgYes: function () { if (!D) return; var o = {dialog: '', toast: D.toast, undoKey: dk, undoTo: st[dk]}; o[dk] = D.to; set(o); },
+      dlgNo: function () { set({dialog: ''}); },
+      hasToast: !!st.toast && !isRelative, toast: st.toast,
+      undo: function () { var o = {toast: ''}; if (st.undoKey) o[st.undoKey] = st.undoTo; set(o); },
+      bannerText: isPreview ? 'Preview: what Meera’s father sees' : 'Meera’s father’s phone · link opened from WhatsApp (illustrative)',
+      backToCircle: function () { set({view: 'circle'}); },
+      mainBottom: (isPreview ? 84 : (optin === 'joined' ? 136 : (showDone ? 84 : (busy ? 158 : 136)))) + 'px',
+      showInvite: !showDone, showDone: showDone,
+      doneTitle: doneTitle, doneText: doneText, doneNote: doneNote,
+      channels: channels,
+      hasBar: true, barLabel: barLabel, barPrimary: barPrimary, barBusy: busy ? 'true' : 'false',
+      barBtn: 'width:100%;height:52px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:' + (busy ? 'default' : 'pointer') + ';background:' + (busy ? T.track : T.accent) + ';color:' + (busy ? T.ink : T.onAccent),
+      barStatusOn: busy, barStatus: 'WhatsApp opened with “JOIN AH2-7KQ” ready to send. Send it, and your alerts start.',
+      hasSecondary: hasSecondary && !busy, secondaryLabel: secondaryLabel, barSecondary: barSecondary
+    };
+  }
+}
+</script>
+</body>
+</html>

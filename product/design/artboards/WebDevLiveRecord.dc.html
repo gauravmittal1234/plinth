@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Live Record kit · Workspace</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes plRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.98); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.98); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 620ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  .drift { animation: plDrift 26s cubic-bezier(.33,1,.68,1) infinite alternate; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 24%; }
+    .rv1 { animation-range: entry 8% cover 30%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 4300px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px">
+      <a href="#overview" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <span style="font-size: 17px; font-weight: 600">Northfield Estates <span style="font-weight: 400; color: {{t.ink2}}">· Workspace</span></span>
+      <nav aria-label="Account" style="margin-left: auto; display: flex; align-items: center; gap: 8px 20px; flex-wrap: wrap">
+        <a href="#help" class="lk" style="font-size: 17px; font-weight: 500; color: {{t.ink}}; text-decoration: none">Help</a>
+        <span style="display: inline-flex; align-items: center; gap: 10px; padding: 4px 16px 4px 4px; border-radius: 999px; background: {{t.track}}">
+          <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: {{t.panelSolid}}; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700">AM</span>
+          <span style="display: flex; flex-direction: column; line-height: 1.25"><span style="font-size: 15px; font-weight: 600">Arjun Mehta</span><span style="font-size: 14px; color: {{t.ink2}}">Marketing</span></span>
+        </span>
+        <button type="button" class="press" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 500; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">Sign out</button>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <a href="#print" class="press" style="height: 44px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font-size: 17px; font-weight: 600; text-decoration: none; white-space: nowrap">Download print files</a>
+      </div>
+    </div>
+  </header>
+
+  <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 144px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
+
+    <nav aria-label="Workspace" style="flex: 0 0 220px; position: sticky; top: 104px; display: flex; flex-direction: column; gap: 4px">
+      <sc-for list="{{nav}}" as="nv" hint-placeholder-count="6">
+        <a href="{{nv.href}}" aria-current="{{nv.current}}" class="press" style="{{nv.style}}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="flex: none"><path d="{{nv.icon}}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg><span style="flex: 1">{{nv.label}}</span><sc-if value="{{nv.hasBadge}}" hint-placeholder-val="{{false}}"><span style="{{nv.badgeStyle}}">{{nv.badge}}<span class="sr">{{nv.badgeSr}}</span></span></sc-if></a>
+      </sc-for>
+      <div style="margin-top: 32px; padding: 0 14px; display: flex; flex-direction: column; gap: 10px; font-size: 15px">
+        <p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 600">Free, forever. Payments never affect scores.</p>
+        <a href="#brand-terms" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Brand-use terms</a>
+        <a href="#charter" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Developer Charter</a>
+      </div>
+    </nav>
+
+    <main style="flex: 1 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 104px">
+
+      <section id="live-record" aria-labelledby="lr-h" style="display: flex; flex-direction: column; gap: 16px; scroll-margin-top: 96px">
+        <h1 id="lr-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(38px, 4vw, 52px); line-height: 1; letter-spacing: -0.04em">Where will buyers check your record?</h1>
+        <p class="rise rise1" style="margin: 0; font-size: 17px; color: {{t.ink2}}">Live Record kit · Aurelia Heights, Phase 2 · free, and the same for every developer</p>
+        <p class="rise rise2" style="margin: 0; max-width: 60ch; font-size: 21px; line-height: 1.45">A QR code and a short link that open the live Plinth record for this project. You can’t edit what it shows, and that is why buyers believe it.</p>
+        <p class="rise rise3" style="margin: 0; font-size: 17px">Kits for <a href="#kit-cw2" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Cedar Walk, Phase 2</a>, <a href="#kit-hp2" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Heron Point, Phase 2</a> and your <a href="#kit-group" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">group record</a> work the same way.</p>
+      </section>
+
+      <section id="card" aria-labelledby="cd-h" style="display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="cd-h" class="rv" style="{{u.h2}}">What does a buyer see after scanning?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 60ch; font-size: 19px">Whatever is true on the day they scan. Pick a day to see the same QR open a different record.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+          <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <span id="sc-l" style="font-size: 19px; font-weight: 700">If a buyer scans your hoarding…</span>
+              <div role="radiogroup" aria-labelledby="sc-l" style="display: flex; flex-direction: column; gap: 4px">
+                <sc-for list="{{scenarios}}" as="sn" hint-placeholder-count="3">
+                  <button type="button" role="radio" class="press" aria-checked="{{sn.on}}" onClick="{{sn.pick}}" style="{{sn.style}}">
+                    <span aria-hidden="true" style="{{sn.radio}}"></span>
+                    <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+                      <span style="font-size: 17px; font-weight: 700; line-height: 1.4">{{sn.name}}</span>
+                      <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{sn.sub}}</span>
+                    </span>
+                  </button>
+                </sc-for>
+              </div>
+              <p aria-live="polite" style="margin: 0; padding-top: 6px; font-size: 19px; line-height: 1.5; font-weight: 600">{{scText}}</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">What happens when a band changes</h3>
+              <ol style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 8px; font-size: 17px; line-height: 1.5">
+                <li>You hear first: a private heads-up, or 7 days’ notice before High or Severe.</li>
+                <li>The QR opens the new band from the moment it is published. Your print never changes, so there is nothing to reprint.</li>
+                <li>Followers get an alert with your public reply linked.</li>
+                <li>If a project is ever under a facts-only review, the QR opens the facts-only record.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="rv rv1" style="flex: 0 1 380px; min-width: 300px; border-radius: 8px; background: {{t.track}}; padding: 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+            <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="1.5" width="8" height="13" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"></rect><path d="M7 12.5h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>The buyer’s phone, after the scan</p>
+            <div data-ui="live-record-card" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden; display: flex; flex-direction: column">
+              <div style="position: relative; height: 170px; overflow: hidden; background: {{t.photo}}">
+                <img data-slot="heroAurelia" class="drift" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights towers" style="width: 100%; height: 100%; object-fit: cover; display: block">
+                <span style="position: absolute; left: 10px; bottom: 10px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+              </div>
+              <div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 12px">
+                <span style="font-size: 14px; color: {{t.ink2}}">Plinth Record · opened {{sc.scanAt}}</span>
+                <div style="display: flex; flex-direction: column; gap: 2px">
+                  <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.1; letter-spacing: -0.02em">Aurelia Heights, Phase 2</span>
+                  <span style="font-size: 14px; color: {{t.ink2}}">Northfield Estates · Sector 37D · HARERA GGM/673/405/2022/117</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <span style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+                    <span style="{{bandChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{bandMeter}}" as="bm" hint-placeholder-count="5"><span style="{{bm.style}}"></span></sc-for></span>{{sc.band}}</span>
+                    <span style="font-size: 14px; color: {{t.ink2}}">Delivery risk · low confidence · data as of {{sc.asOf}} · v1.2</span>
+                  </span>
+                  <sc-if value="{{sc.changed}}" hint-placeholder-val="{{false}}">
+                    <span class="rise" style="font-size: 15px; font-weight: 600">Changed from Elevated on 25 Oct 2026. Northfield had 7 days’ notice.</span>
+                  </sc-if>
+                  <span style="font-size: 15px; line-height: 1.45">{{sc.freq}}</span>
+                </div>
+                <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.45">
+                  <li style="display: flex; gap: 8px"><span aria-hidden="true" style="flex: none; width: 6px; height: 6px; margin-top: 9px; border-radius: 50%; background: {{t.ink}}"></span><span>41% built, 72% sold · QPR Apr–Jun 2026</span></li>
+                  <li style="display: flex; gap: 8px"><span aria-hidden="true" style="flex: none; width: 6px; height: 6px; margin-top: 9px; border-radius: 50%; background: {{t.ink}}"></span><span>Original completion Dec 2027 · no extensions</span></li>
+                  <li style="display: flex; gap: 8px"><span aria-hidden="true" style="flex: none; width: 6px; height: 6px; margin-top: 9px; border-radius: 50%; background: {{t.ink}}"></span><span style="font-weight: 600">{{sc.qpr}}</span></li>
+                </ul>
+                <sc-if value="{{sc.showReply}}" hint-placeholder-val="{{true}}">
+                  <div style="border-radius: 8px; background: {{t.claimBg}}; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+                    <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Developer says · not yet verified · 15 Oct 2026</span>
+                    <span style="font-size: 15px; line-height: 1.45">“The QPR for Jul–Sep 2026 was filed on 12 October.”</span>
+                  </div>
+                </sc-if>
+                <a href="#group" class="lk" style="font-size: 15px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">All 9 RERA projects by Northfield Estates</a>
+                <p style="margin: 0; font-size: 13px; line-height: 1.45; color: {{t.ink2}}">No developer pays us. Ever. Our opinion, based on public records. Not a credit rating, not issued by any RERA, and not an endorsement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="print" aria-labelledby="pt-h" style="display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="pt-h" class="rv" style="{{u.h2}}">What goes on the hoarding?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 60ch; font-size: 19px">The QR and the short link, never the band. A printed band goes out of date; the QR never does.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+          <figure class="rv" style="flex: 0 1 360px; min-width: 280px; margin: 0; display: flex; flex-direction: column; gap: 10px">
+            <div data-ui="print-panel" role="img" aria-label="{{panelLabel}}" style="width: 100%; aspect-ratio: 594 / 841; background: #FFFFFF; color: #1B1A17; padding: 8% 9%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between">
+              <div style="display: flex; flex-direction: column; gap: 14px">
+                <span style="display: flex; align-items: center; gap: 8px"><svg width="22" height="22" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="#1D5A44"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.02em">Plinth Record</span></span>
+                <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.02; letter-spacing: -0.035em">Check this project’s record, live.</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px">
+                <svg viewBox="-2 -2 29 29" width="58%" aria-hidden="true" style="display: block"><rect x="-2" y="-2" width="29" height="29" fill="#FFFFFF"></rect><path d="{{qr}}" fill="#1B1A17" fill-rule="evenodd"></path></svg>
+                <span style="font-size: 22px; font-weight: 700; letter-spacing: -0.01em">plinth.in/r/AH2</span>
+                <span style="font-size: 13px; line-height: 1.4">Scan with any phone camera. It opens today’s record, read from public filings.</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 1.35">
+                <span style="font-weight: 600">Aurelia Heights, Phase 2 · HARERA GGM/673/405/2022/117 · haryanarera.gov.in</span>
+                <span>No developer pays Plinth. This is not an endorsement.</span>
+              </div>
+            </div>
+            <figcaption style="font-size: 15px; color: {{t.ink2}}">{{panelCaption}}</figcaption>
+          </figure>
+
+          <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+            <div class="rv rv1" style="position: relative; width: 100%; aspect-ratio: 4 / 5; max-height: 460px; overflow: hidden; background: {{t.photo}}">
+              <img data-slot="hoardingQrPanel" src="/_blob/47a1f77917210d81b932aeab85928398" alt="A construction hoarding along a Gurugram road with a blank panel where the Live Record QR is mounted" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: #E7E3DA">
+              <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span id="fmt-l" style="font-size: 17px; font-weight: 700">Format</span>
+              <div role="radiogroup" aria-labelledby="fmt-l" style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{formats}}" as="fm" hint-placeholder-count="4">
+                  <button type="button" role="radio" class="press" aria-checked="{{fm.on}}" onClick="{{fm.pick}}" style="{{fm.style}}">{{fm.name}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center">
+              <button type="button" class="press" onClick="{{download}}" style="height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{downloadLabel}}</button>
+              <span aria-live="polite" style="font-size: 15px; font-weight: 600">{{downloadNote}}</span>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">Where is it shown?</h3>
+          <div role="table" aria-label="Placements and scans" class="rv rv1" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden">
+            <div role="row" style="{{u.plRow}}; padding-top: 12px; padding-bottom: 12px; font-size: 15px; color: {{t.ink2}}; background: {{t.track}}">
+              <span role="columnheader">Placement</span><span role="columnheader">Code</span><span role="columnheader">Scans in Oct 2026</span>
+            </div>
+            <sc-for list="{{placements}}" as="pl" hint-placeholder-count="3">
+              <div role="row" style="{{pl.style}}">
+                <span role="cell" style="font-weight: 600">{{pl.where}}</span>
+                <span role="cell">{{pl.code}}</span>
+                <span role="cell">{{pl.scans}}</span>
+              </div>
+            </sc-for>
+          </div>
+          <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Each file carries its own code, so you can see which placement buyers scan. Counts only: we never tell you who scanned.</p>
+        </div>
+      </section>
+
+      <section id="rules" aria-labelledby="ru-h" style="display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="ru-h" class="rv" style="{{u.h2}}">How may you use it?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 60ch; font-size: 19px">Live, always. A Live Record is evidence, not an award, and the same rules apply to every developer.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 32px 56px; align-items: flex-start">
+          <div class="rv rv1" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-size: 21px; font-weight: 700; line-height: 1.3">You can</h3>
+            <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 17px; line-height: 1.5">
+              <sc-for list="{{rulesYes}}" as="ry" hint-placeholder-count="3">
+                <li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 14 14" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>{{ry}}</span></li>
+              </sc-for>
+            </ul>
+          </div>
+          <div class="rv rv1" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-size: 21px; font-weight: 700; line-height: 1.3">You can’t</h3>
+            <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 17px; line-height: 1.5">
+              <sc-for list="{{rulesNo}}" as="rn" hint-placeholder-count="3">
+                <li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 14 14" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M4 4l6 6M10 4l-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg><span>{{rn}}</span></li>
+              </sc-for>
+            </ul>
+          </div>
+        </div>
+        <p class="rv" style="margin: 0; max-width: 66ch; padding: 20px 24px; border-radius: 8px; background: {{t.track}}; font-size: 17px; line-height: 1.55">If the kit is misused, we publish a correction note on your developer page. We don’t switch the kit off, because a kit we could switch off would become a lever. You accepted these rules with the brand-use terms on 2 Sep 2026.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 112px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">A Live Record stands on the same HARERA, DTCP and MCA filings as every score. Nobody can buy one, so nobody can doubt yours. Our opinion, based on public records. Not a credit rating. Not issued by any RERA.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#brand-terms" class="lk" style="color: {{t.onSlab}}">Brand-use terms</a>
+          <a href="#charter" class="lk" style="color: {{t.onSlab}}">Developer Charter</a>
+          <a href="#methodology" class="lk" style="color: {{t.onSlab}}">Methodology v1.2</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+        </nav>
+        <span>Plinth Developer workspace · free, forever</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"$preview":{"width":1280,"height":4300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {themePick: null, scenario: 0, format: 0, downloaded: -1};
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var T = night ? {
+      bg: '#0B1411', panelSolid: '#16221D', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)', photo: '#1B2A24',
+      ink: '#EEF3F0', ink2: '#B9C6C0', accent: '#6EE7B7', onAccent: '#052E1F', claimBg: '#1D2621', emptyBorder: '#7D828A', segEmpty: 'transparent',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', panelSolid: '#FFFFFF', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED', photo: '#E7E3DA',
+      ink: '#1B1A17', ink2: '#3F3C36', accent: '#1D5A44', onAccent: '#FFFFFF', claimBg: '#F1ECE2', emptyBorder: '#8C9199', segEmpty: '#FFFFFF',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var U = {
+      h2: "margin:0;font-family:'Bricolage Grotesque', system-ui, sans-serif;font-weight:800;font-size:clamp(34px, 3.6vw, 44px);line-height:1.04;letter-spacing:-0.03em",
+      plRow: 'display:grid;grid-template-columns:minmax(0, 2.2fr) minmax(0, 1fr) minmax(0, 1fr);gap:16px;padding:14px 22px;align-items:start'
+    };
+    function pillBtn(on) {
+      return 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;box-sizing:border-box;transition:background-color 180ms ease, color 180ms ease;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.bg : T.ink);
+    }
+    function radioDot(on) {
+      return 'flex:none;width:20px;height:20px;margin-top:3px;border-radius:50%;box-sizing:border-box;' + (on ? 'border:6px solid ' + T.ink : 'border:2px solid ' + T.ink2);
+    }
+
+    var NAV = [
+      {key: 'overview', label: 'Overview', href: '#overview', icon: 'M3 8l6-5 6 5v7H3z'},
+      {key: 'inbox', label: 'Enquiries & visits', href: '#enquiries', icon: 'M2.5 10.5L4.5 4h9l2 6.5V15h-13zM2.5 10.5h4l1 2h3l1-2h4', badge: '3', badgeSr: ' need a reply'},
+      {key: 'facts', label: 'Projects & facts', href: '#facts', icon: 'M4 16V3h7v13M11 7h3v9M2 16h14'},
+      {key: 'live', label: 'Live Record', href: '#live-record', icon: 'M3 3h4v4H3zM11 3h4v4h-4zM3 11h4v4H3zM11 11h1.5M14.5 11v1.5M11 14.5h4'},
+      {key: 'evidence', label: 'Evidence & disputes', href: '#evidence', icon: 'M5 2h6l3 3v11H5zM8 9h4M8 12h4', badge: '1', badgeSr: ' notice'},
+      {key: 'team', label: 'Team', href: '#team', icon: 'M6.5 8.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM2 15c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4M12 4a2.2 2.2 0 010 4.3M13.5 11c1.6.4 2.5 1.8 2.5 4'}
+    ];
+    var nav = NAV.map(function (x) {
+      var on = x.key === 'live';
+      return {label: x.label, href: x.href, icon: x.icon, current: on ? 'page' : 'false', hasBadge: !!x.badge, badge: x.badge || '', badgeSr: x.badgeSr || '',
+        badgeStyle: 'min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:' + T.ink + ';color:' + T.bg + ';font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box',
+        style: 'display:flex;align-items:center;gap:12px;min-height:44px;padding:0 14px;border-radius:8px;color:' + T.ink + ';text-decoration:none;font-weight:' + (on ? '600' : '500') + ';background:' + (on ? T.track : 'transparent')};
+    });
+
+    var B = {
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillN: '#3A2210', freq: 'Between 30 and 45 of 100 similar projects finished more than 12 months after their original RERA date.'},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', fillN: '#3D1A19', freq: 'Between 45 and 65 of 100 similar projects finished more than 12 months after their original RERA date.'}
+    };
+    // Signature: one printed QR, three days. The card behind it changes; the print never does.
+    var SC = [
+      {name: 'Today, 18 Oct 2026', sub: 'The notice to you is private', band: 'Elevated', asOf: '14 Oct 2026', scanAt: '18 Oct 2026, 11:40', changed: false, showReply: true,
+        qpr: 'QPR for Jul–Sep 2026: not on HARERA (due 15 Oct 2026)',
+        text: 'Elevated, with the missing QPR shown as a fact. The proposed change stays between you and us until 25 Oct.'},
+      {name: '25 Oct 2026, QPR still missing', sub: 'The 7-day notice takes effect', band: 'High', asOf: '25 Oct 2026', scanAt: '25 Oct 2026, 10:15', changed: true, showReply: true,
+        qpr: 'QPR for Jul–Sep 2026: not on HARERA (due 15 Oct 2026)',
+        text: 'The same QR now opens High. Nothing to reprint, and your reply stays on the card.'},
+      {name: '25 Oct 2026, QPR on record', sub: 'The notice lapses', band: 'Elevated', asOf: '25 Oct 2026', scanAt: '25 Oct 2026, 10:15', changed: false, showReply: false,
+        qpr: 'QPR for Jul–Sep 2026: on HARERA',
+        text: 'The QPR is on record, so the band stays Elevated. We recompute with its figures within 72 hours.'}
+    ];
+    var si = Math.max(0, Math.min(2, Number(s.scenario) || 0));
+    var cur = SC[si];
+    var scenarios = SC.map(function (x, i) {
+      var on = i === si;
+      return {name: x.name, sub: x.sub, on: on ? 'true' : 'false', radio: radioDot(on),
+        pick: function () { self.setState({scenario: i}); },
+        style: 'width:100%;display:flex;align-items:flex-start;gap:14px;padding:12px 14px;border:0;border-radius:8px;box-sizing:border-box;cursor:pointer;font:inherit;text-align:left;color:' + T.ink + ';transition:background-color 200ms ease;background:' + (on ? T.track : 'transparent')};
+    });
+    var bd = B[cur.band];
+    var bandInk = night ? bd.dark : bd.light;
+    var bandMeter = [1, 2, 3, 4, 5].map(function (j) {
+      var on = j <= bd.i;
+      return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;transition:background-color 360ms ease ' + (j * 70) + 'ms, border-color 360ms ease ' + (j * 70) + 'ms;border:1px solid ' + (on ? bandInk : T.emptyBorder) + ';background:' + (on ? bandInk : T.segEmpty) + ';'};
+    });
+    // Borderless risk chip; the fill eases between bands.
+    var bandChip = 'display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:15px;font-weight:600;border:0;transition:background-color 420ms ease;background:' + (night ? bd.fillN : bd.fill) + ';color:' + T.ink;
+
+    // An illustrative QR: three finder squares, timing rows and seeded modules. One path, even-odd fill.
+    var N = 25, d = '';
+    function finder(x, y) { return 'M' + x + ' ' + y + 'h7v7h-7zM' + (x + 1) + ' ' + (y + 1) + 'v5h5v-5zM' + (x + 2) + ' ' + (y + 2) + 'h3v3h-3z'; }
+    d += finder(0, 0) + finder(N - 7, 0) + finder(0, N - 7);
+    var seed = 4821;
+    function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    for (var y = 0; y < N; y++) {
+      for (var x = 0; x < N; x++) {
+        var inF = (x < 8 && y < 8) || (x > N - 9 && y < 8) || (x < 8 && y > N - 9);
+        if (inF) { rnd(); continue; }
+        var on = (y === 6 || x === 6) ? ((x + y) % 2 === 0) : rnd() < 0.47;
+        if (x > 15 && x < 21 && y > 15 && y < 21) on = (x === 16 || x === 20 || y === 16 || y === 20 || (x === 18 && y === 18));
+        if (on) d += 'M' + x + ' ' + y + 'h1v1h-1z';
+      }
+    }
+
+    var FMT = [
+      {name: 'A1 hoarding panel', code: 'AH2-H', file: 'AH2-A1-hoarding.pdf and .svg', caption: 'A1 hoarding panel · 594 × 841 mm · print preview · no band is ever printed'},
+      {name: 'A4 brochure insert', code: 'AH2-B', file: 'AH2-A4-brochure.pdf', caption: 'A4 brochure insert · 210 × 297 mm · same layout, scaled · no band is ever printed'},
+      {name: 'Square social tile', code: 'AH2-S', file: 'AH2-social-1080.png', caption: 'Square social tile · 1080 × 1080 px · the QR and link only, so it never goes stale'},
+      {name: 'WhatsApp link', code: 'AH2-W', file: 'plinth.in/r/AH2?w', caption: 'WhatsApp link · opens the same live record · preview shows no band'}
+    ];
+    var fi = Math.max(0, Math.min(3, Number(s.format) || 0));
+    var formats = FMT.map(function (x, i) {
+      var on = i === fi;
+      return {name: x.name, on: on ? 'true' : 'false', style: pillBtn(on), pick: function () { self.setState({format: i}); }};
+    });
+    var isLink = fi === 3;
+    var PL = [
+      {where: 'Hoarding, Sector 37D gate', code: 'AH2-H1', scans: '214'},
+      {where: 'Brochure, Sep 2026 edition', code: 'AH2-B3', scans: '61'},
+      {where: 'WhatsApp link', code: 'AH2-W', scans: '138'}
+    ];
+    var placements = PL.map(function (x, i) {
+      return {where: x.where, code: x.code, scans: x.scans, style: U.plRow + ';font-size:15px;line-height:1.45;' + (i > 0 ? 'border-top:1px solid ' + T.line + ';' : '')};
+    });
+
+    return {
+      t: T, u: U, nav: nav,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      scenarios: scenarios, scText: cur.text,
+      sc: {band: cur.band, asOf: cur.asOf, scanAt: cur.scanAt, changed: cur.changed, showReply: cur.showReply, qpr: cur.qpr, freq: bd.freq},
+      bandChip: bandChip, bandMeter: bandMeter,
+      qr: d,
+      panelLabel: 'Print preview of an A1 hoarding panel: Plinth Record. Check this project’s record, live. A QR code and the short link plinth.in/r/AH2. Scan with any phone camera. Aurelia Heights, Phase 2, HARERA GGM/673/405/2022/117. No developer pays Plinth. This is not an endorsement. No band is printed.',
+      panelCaption: FMT[fi].caption,
+      formats: formats,
+      downloadLabel: isLink ? 'Copy the WhatsApp link' : 'Download ' + FMT[fi].name,
+      download: function () { self.setState({downloaded: fi}); },
+      downloadNote: s.downloaded === fi ? (isLink ? 'Copied: plinth.in/r/AH2?w' : FMT[fi].file + ' · code ' + FMT[fi].code + ' · prepared 18 Oct 2026, 11:42') : '',
+      placements: placements,
+      rulesYes: [
+        'Print the QR and short link on hoardings, brochures, site boards and ads.',
+        'Share the link on WhatsApp, in emails and on your own website.',
+        'Place it next to your RERA number and the HARERA website, as Haryana rules already require.'
+      ],
+      rulesNo: [
+        'Print or post a band, a screenshot or a static badge. Only the live record may show a band.',
+        'Call it a rating, an approval, a certificate or an award. It is not an endorsement.',
+        'Crop out the group line (“All 9 RERA projects by Northfield Estates”) or the disclaimer.'
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

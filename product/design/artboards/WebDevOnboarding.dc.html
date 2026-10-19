@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Claim your developer page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input::placeholder{color:currentColor;opacity:.62}
+@keyframes plRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes plFlip { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.98); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.98); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 620ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  .flip { animation: plFlip 520ms cubic-bezier(.22,1,.36,1) both; }
+  .drift { animation: plDrift 22s cubic-bezier(.33,1,.68,1) infinite alternate; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 24%; }
+    .rv1 { animation-range: entry 8% cover 30%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 7300px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <span style="font-size: 17px; font-weight: 600">Developer workspace <span style="font-weight: 400; color: {{t.ink2}}">· Claim your page</span></span>
+      <nav aria-label="Help" style="margin-left: auto; display: flex; align-items: center; gap: 8px 20px; flex-wrap: wrap">
+        <a href="#help" class="lk" style="font-size: 17px; font-weight: 500; color: {{t.ink}}; text-decoration: none">Help</a>
+        <a href="#charter" class="lk" style="font-size: 17px; font-weight: 500; color: {{t.ink}}; text-decoration: none">Developer Charter</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <a href="#claim" class="press" style="height: 44px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font-size: 17px; font-weight: 600; text-decoration: none; white-space: nowrap">{{headerAction}}</a>
+      </div>
+    </div>
+  </header>
+
+  <div id="top" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 144px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
+
+    <main style="flex: 1 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 104px">
+
+      <section aria-labelledby="ob-h" style="display: flex; flex-direction: column; gap: 22px">
+        <h1 id="ob-h" class="rise" style="margin: 0; max-width: 20ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(38px, 4vw, 52px); line-height: 1; letter-spacing: -0.04em">Who answers for Ashgrove on Plinth?</h1>
+        <p class="rise rise1" style="margin: 0; font-size: 17px; color: {{t.ink2}}">Notice sent 16 Oct 2026 · first public page on 30 Oct 2026 · Ashgrove Meadows, Phase 1 · RERA GGM/918/650/2026/41</p>
+        <div class="rise rise2" style="display: flex; flex-wrap: wrap; gap: 24px 40px; align-items: flex-end">
+          <p style="margin: 0; display: flex; align-items: baseline; gap: 12px"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 96px; line-height: 0.82; letter-spacing: -0.05em">12</span><span style="max-width: 13ch; font-size: 19px; line-height: 1.35; font-weight: 600">days until your page goes public</span></p>
+          <p style="flex: 1 1 320px; margin: 0; max-width: 46ch; font-size: 21px; line-height: 1.45">Claim it now so the right people can correct facts, reply and receive buyers. It is free, and it takes about 10 minutes. Signatory checks finish within 2 working days.</p>
+        </div>
+        <ol aria-label="Steps" class="rise rise3" style="margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{steps}}" as="sp" hint-placeholder-count="6">
+            <li><a href="{{sp.href}}" aria-current="{{sp.current}}" class="press" style="{{sp.style}}"><span aria-hidden="true" style="{{sp.mark}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>{{sp.label}}<span class="sr">{{sp.sr}}</span></a></li>
+          </sc-for>
+        </ol>
+        <div role="note" style="display: flex; gap: 18px; align-items: flex-start; padding: 26px 30px; border-radius: 8px; background: {{t.slab}}; color: {{t.onSlab}}">
+          <svg width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M8 1.5l5 2v4c0 3.2-2.1 5.6-5 7-2.9-1.4-5-3.8-5-7v-4z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path><path d="M5.6 8l1.7 1.7L10.6 6.4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <p style="margin: 0; max-width: 60ch; font-size: 19px; line-height: 1.5"><strong>Free, forever. Payments never affect scores.</strong> <span style="color: {{t.onSlab2}}">No developer pays us. Ever. Claiming changes who can answer for Ashgrove, never what the records say.</span></p>
+        </div>
+      </section>
+
+      <section id="notice" aria-labelledby="nt-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="nt-h" class="rv" style="{{u.h2}}">What did we send you?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">The same notice went three ways on 16 Oct 2026, to the contacts on your HARERA registration and MCA filing. Every developer gets 14 days before its first page goes public.</p>
+        </div>
+        <div role="group" aria-label="Show the notice as" style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{channels}}" as="ch" hint-placeholder-count="3">
+            <button type="button" class="press" aria-pressed="{{ch.on}}" onClick="{{ch.pick}}" style="{{ch.style}}">{{ch.label}}</button>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+          <article aria-label="{{letterAria}}" class="rv rv1" style="flex: 1 1 420px; min-width: 0; padding: 32px 34px; box-sizing: border-box; background: {{t.paper}}; color: {{t.ink}}; display: flex; flex-direction: column; gap: 14px">
+            <sc-if value="{{isEmail}}" hint-placeholder-val="{{true}}">
+              <dl class="flip" style="margin: 0 0 6px; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 4px 12px; font-size: 15px; line-height: 1.45">
+                <dt style="color: {{t.ink2}}">From</dt><dd style="margin: 0">Plinth Developer Desk &lt;developers@plinth.in&gt;</dd>
+                <dt style="color: {{t.ink2}}">To</dt><dd style="margin: 0">The email on your HARERA registration, i•••@ashgrove-realty.example</dd>
+                <dt style="color: {{t.ink2}}">Sent</dt><dd style="margin: 0">Fri 16 Oct 2026, 09:02</dd>
+                <dt style="color: {{t.ink2}}">Subject</dt><dd style="margin: 0; font-weight: 700">Before we publish: Ashgrove Meadows, Phase 1 goes public on 30 Oct 2026</dd>
+              </dl>
+            </sc-if>
+            <sc-if value="{{isLetter}}" hint-placeholder-val="{{false}}">
+              <div class="flip" style="margin: 0 0 6px; display: flex; flex-direction: column; gap: 2px; font-size: 15px; line-height: 1.45">
+                <span style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap"><strong>Plinth</strong><span>16 Oct 2026 · ref. S1/2026/0412</span></span>
+                <span>By registered post</span>
+                <span style="padding-top: 8px">The Board of Directors, Ashgrove Realty Pvt Ltd</span>
+                <span>Registered office, as filed with MCA</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{isWa}}" hint-placeholder-val="{{false}}">
+              <div class="flip" style="display: flex; flex-direction: column; gap: 10px; max-width: 380px">
+                <span style="font-size: 15px; color: {{t.ink2}}">WhatsApp utility message to the number on your HARERA registration · Fri 16 Oct 2026, 09:03</span>
+                <div style="padding: 12px 14px; border-radius: 4px 16px 16px 16px; background: {{t.track}}; font-size: 16px; line-height: 1.5">
+                  <p style="margin: 0"><strong>Notice before publication.</strong> On 30 Oct 2026 Plinth will publish public-record pages for Ashgrove Meadows, Phase 1 (RERA GGM/918/650/2026/41) and Ashgrove Realty.</p>
+                  <p style="margin: 8px 0 0">Claim your page free before then: plinth.in/claim · code ASH-7Q4K-2M. The full notice is in your email and by registered post.</p>
+                </div>
+                <span style="font-size: 15px">Buttons: “Claim the page” · “Read the full notice”</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{notWa}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-direction: column; gap: 14px; font-size: 17px; line-height: 1.55">
+                <p style="margin: 0">Dear Directors,</p>
+                <p style="margin: 0">On <strong>30 Oct 2026</strong>, Plinth will publish public-record pages for <strong>Ashgrove Meadows, Phase 1</strong> (RERA GGM/918/650/2026/41) and for Ashgrove Realty as a developer. We are telling you 14 days ahead so you can check them first.</p>
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <p style="margin: 0; font-weight: 700">What goes public, each fact with its source</p>
+                  <ul style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 2px">
+                    <li>Registration date and original completion date</li>
+                    <li>Each progress report, and whether it was filed on time</li>
+                    <li>HARERA complaints and orders</li>
+                    <li>Licence, approval and OC status</li>
+                    <li>Companies linked to Ashgrove in MCA filings</li>
+                  </ul>
+                </div>
+                <p style="margin: 0"><strong>No band yet.</strong> A project registered less than 6 months ago shows as “Not scored”. Before any band is first shown or changes, you hear privately first.</p>
+                <p style="margin: 0"><strong>Before 30 Oct you can</strong> claim your page, correct any fact in 2 working days, add a public reply, and add your price list and plans, labelled as yours.</p>
+                <p style="margin: 0"><strong>We never</strong> take money from developers, sell a better place in search, or show anyone a score early.</p>
+                <p style="margin: 0; padding: 12px 16px; border-radius: 8px; background: {{t.track}}; font-weight: 600">Claim free at plinth.in/claim · claim code ASH-7Q4K-2M · valid for 30 days</p>
+                <p style="margin: 0">Plinth Developer Desk</p>
+              </div>
+            </sc-if>
+          </article>
+          <div class="rv rv1" style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+            <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">Did it reach you?</h3>
+            <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px">
+              <sc-for list="{{deliveries}}" as="dl" hint-placeholder-count="3">
+                <li style="display: flex; gap: 12px; align-items: flex-start">
+                  <span aria-hidden="true" style="{{dl.mark}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                  <span style="display: flex; flex-direction: column; min-width: 0"><span style="font-weight: 600">{{dl.what}}</span><span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{dl.when}}</span></span>
+                </li>
+              </sc-for>
+            </ul>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5">We keep each delivery receipt as a record that you were told. A Hindi copy is available on request.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="claim" aria-labelledby="cl-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="cl-h" class="rv" style="{{u.h2}}">Is this your company?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 60ch; font-size: 19px">Use the claim code from the notice and your company email. We match both to the HARERA registration.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+          <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+            <label for="code-in" style="font-size: 17px; font-weight: 600">Claim code</label>
+            <input id="code-in" type="text" value="{{code}}" onChange="{{onCode}}" placeholder="As printed on the notice" aria-describedby="claim-help" style="{{u.input}}">
+          </div>
+          <div style="flex: 2 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+            <label for="mail-in" style="font-size: 17px; font-weight: 600">Your work email</label>
+            <input id="mail-in" type="email" value="{{email}}" onChange="{{onEmail}}" placeholder="name@yourcompany" aria-describedby="claim-help" style="{{u.input}}">
+          </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center">
+          <button type="button" class="press" onClick="{{findCompany}}" aria-disabled="{{findDisabled}}" style="{{findStyle}}">{{findLabel}}</button>
+          <span id="claim-help" aria-live="polite" style="flex: 1 1 280px; font-size: 17px; line-height: 1.45">{{claimHelp}}</span>
+        </div>
+        <sc-if value="{{showFound}}" hint-placeholder-val="{{false}}">
+          <div class="rise" style="border-radius: 8px; background: {{t.track}}; padding: 26px 28px; display: flex; flex-direction: column; gap: 14px">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; align-items: flex-start">
+              <div style="display: flex; flex-direction: column; min-width: 0">
+                <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">Ashgrove Realty Pvt Ltd</strong>
+                <span style="font-size: 15px; color: {{t.ink2}}">Promoter on HARERA for 1 project in Gurugram</span>
+              </div>
+              <span style="{{u.recPill}}">Matched to HARERA</span>
+            </div>
+            <p style="margin: 0; font-size: 17px">Ashgrove Meadows, Phase 1 · Sector 79, New Gurugram · RERA GGM/918/650/2026/41 · registered 7 Oct 2026 · original completion Sep 2031.</p>
+            <sc-if value="{{notClaimed}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center">
+                <button type="button" class="press" onClick="{{claimIt}}" style="height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Yes, claim this company</button>
+                <a href="#not-us" class="lk" style="font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">This isn’t our company</a>
+              </div>
+            </sc-if>
+            <sc-if value="{{isClaimed}}" hint-placeholder-val="{{false}}">
+              <p role="status" class="rise" style="margin: 0; display: flex; gap: 10px; align-items: center; font-weight: 600"><svg width="18" height="18" viewBox="0 0 14 14" aria-hidden="true" style="flex: none"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>Claim started by Sanjana Malik at 11:04. Next, show us you can sign for Ashgrove.</p>
+            </sc-if>
+          </div>
+        </sc-if>
+        <p style="margin: 0; max-width: 64ch; font-size: 15px; color: {{t.ink2}}">If a check fails, we say which one and why. Lost the code? We send a new one to the email on your HARERA registration, never to an address you type here.</p>
+      </section>
+
+      <section id="signatory" aria-labelledby="sg-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="sg-h" class="rv" style="{{u.h2}}">Can you sign for Ashgrove?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">Three checks, so only someone authorised can correct facts or reply in Ashgrove’s name. Watch your public line on the right change as each one passes.</p>
+        </div>
+        <sc-if value="{{sigLocked}}" hint-placeholder-val="{{false}}">
+          <p style="margin: 0; padding: 14px 18px; border-radius: 8px; background: {{t.track}}; font-size: 17px">Claim the company above first. These checks open once it is matched.</p>
+        </sc-if>
+        <ol aria-label="Signatory checks" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+          <li style="{{chk.mail.row}}">
+            <span aria-hidden="true" style="{{chk.mail.mark}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+              <div style="display: flex; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap"><span style="font-size: 19px; font-weight: 700">Company-domain email</span><span aria-live="polite" style="font-size: 15px; font-weight: 600">{{chk.mail.state}}</span></div>
+              <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{chk.mail.sub}}</span>
+              <sc-if value="{{showMailInput}}" hint-placeholder-val="{{false}}">
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end">
+                  <div style="flex: 0 1 220px; display: flex; flex-direction: column; gap: 6px">
+                    <label for="otp-in" style="font-size: 15px; font-weight: 600">6-digit code from the email</label>
+                    <input id="otp-in" type="text" inputmode="numeric" maxlength="6" value="{{otp}}" onChange="{{onOtp}}" style="{{u.input}}">
+                  </div>
+                  <button type="button" class="press" onClick="{{confirmOtp}}" aria-disabled="{{otpDisabled}}" style="{{otpStyle}}">Confirm the code</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{showSendMail}}" hint-placeholder-val="{{true}}">
+                <button type="button" class="press" onClick="{{sendMail}}" aria-disabled="{{sigLockedStr}}" style="{{u.secBtn}}">Send me the code</button>
+              </sc-if>
+            </div>
+          </li>
+          <li style="{{chk.board.row}}">
+            <span aria-hidden="true" style="{{chk.board.mark}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+              <div style="display: flex; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap"><span style="font-size: 19px; font-weight: 700">Board authorisation</span><span aria-live="polite" style="font-size: 15px; font-weight: 600">{{chk.board.state}}</span></div>
+              <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{chk.board.sub}}</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center">
+                <button type="button" class="press" onClick="{{toggleBoard}}" aria-pressed="{{boardOnStr}}" aria-disabled="{{sigLockedStr}}" style="{{boardBtn}}"><svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 2h6l3 3v11H5zM8 9h4M8 12h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{boardLabel}}</button>
+                <a href="#template" class="lk" style="font-size: 15px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Download our one-page template</a>
+              </div>
+            </div>
+          </li>
+          <li style="{{chk.harera.row}}">
+            <span aria-hidden="true" style="{{chk.harera.mark}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+              <div style="display: flex; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap"><span style="font-size: 19px; font-weight: 700">HARERA contact match</span><span aria-live="polite" style="font-size: 15px; font-weight: 600">{{chk.harera.state}}</span></div>
+              <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{chk.harera.sub}}</span>
+              <sc-if value="{{showMatch}}" hint-placeholder-val="{{false}}">
+                <div role="table" aria-label="HARERA contact match" class="rise" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden; font-size: 15px">
+                  <div role="row" style="{{u.mRow}}; color: {{t.ink2}}; background: {{t.track}}"><span role="columnheader">Detail</span><span role="columnheader">On HARERA</span><span role="columnheader">You gave</span><span role="columnheader">Result</span></div>
+                  <div role="row" style="{{u.mRow}}"><span role="cell">Email domain</span><span role="cell">ashgrove-realty.example</span><span role="cell">{{emailDomain}}</span><span role="cell" style="font-weight: 700">{{domainResult}}</span></div>
+                  <div role="row" style="{{u.mRow}}; border-top: 1px solid {{t.line}}"><span role="cell">Promoter</span><span role="cell">Ashgrove Realty Pvt Ltd</span><span role="cell">Ashgrove Realty Pvt Ltd</span><span role="cell" style="font-weight: 700">Match</span></div>
+                  <div role="row" style="{{u.mRow}}; border-top: 1px solid {{t.line}}"><span role="cell">Phone</span><span role="cell">+91 124 •••• 4410</span><span role="cell">Not needed</span><span role="cell" style="color: {{t.ink2}}">Used only if the email fails</span></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{showRunMatch}}" hint-placeholder-val="{{true}}">
+                <button type="button" class="press" onClick="{{runMatch}}" aria-disabled="{{matchDisabled}}" style="{{matchBtn}}">Run the match</button>
+              </sc-if>
+            </div>
+          </li>
+        </ol>
+        <p aria-live="polite" style="margin: 0; font-size: 19px; line-height: 1.45; font-weight: 600">{{sigSummary}}</p>
+      </section>
+
+      <section id="companies" aria-labelledby="co-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="co-h" class="rv" style="{{u.h2}}">Which companies are part of Ashgrove?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">We link companies from MCA filings. Tell us where we are wrong; a link you dispute is checked again within 15 working days and shown as disputed meanwhile.</p>
+        </div>
+        <div role="table" aria-label="Linked companies" class="rv rv1" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden">
+          <div role="row" style="{{u.coRow}}; padding-top: 12px; padding-bottom: 12px; font-size: 15px; color: {{t.ink2}}; background: {{t.track}}"><span role="columnheader">Company</span><span role="columnheader">Why we link it</span><span role="columnheader">Your answer</span></div>
+          <sc-for list="{{links}}" as="lnk" hint-placeholder-count="3">
+            <div role="row" style="{{lnk.rowStyle}}">
+              <span role="cell" style="display: flex; flex-direction: column; min-width: 0"><span style="font-weight: 600">{{lnk.name}}</span><span style="font-size: 14px; color: {{t.ink2}}">{{lnk.role}}</span></span>
+              <span role="cell" style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start"><span style="font-size: 15px; line-height: 1.45">{{lnk.why}}</span><sc-if value="{{lnk.commonOnly}}" hint-placeholder-val="{{false}}"><span style="{{u.claimPill}}">Common directors only</span></sc-if></span>
+              <span role="cell" style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start">
+                <sc-if value="{{lnk.locked}}" hint-placeholder-val="{{false}}"><span style="font-size: 15px; font-weight: 600">Promoter on HARERA</span></sc-if>
+                <sc-if value="{{lnk.open}}" hint-placeholder-val="{{true}}">
+                  <span role="radiogroup" aria-label="{{lnk.aria}}" style="display: flex; flex-wrap: wrap; gap: 6px">
+                    <button type="button" role="radio" class="press" aria-checked="{{lnk.yesOn}}" onClick="{{lnk.yes}}" style="{{lnk.yesStyle}}">Ours</button>
+                    <button type="button" role="radio" class="press" aria-checked="{{lnk.noOn}}" onClick="{{lnk.no}}" style="{{lnk.noStyle}}">Not part of the group</button>
+                  </span>
+                  <span style="font-size: 14px; line-height: 1.4; color: {{t.ink2}}">{{lnk.note}}</span>
+                </sc-if>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section id="team" aria-labelledby="tm-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="tm-h" class="rv" style="{{u.h2}}">Who else should act for Ashgrove?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">Five roles, each with only what it needs. Invites go out once you are a verified signatory, and every action is logged with the person who took it.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+          <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <ul aria-label="People invited" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
+              <li style="display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 8px; background: {{t.track}}">
+                <span style="display: flex; flex-direction: column; min-width: 0"><span style="font-weight: 600">Sanjana Malik · you</span><span style="font-size: 14px; color: {{t.ink2}}">Admin · authorised signatory, once verified</span></span>
+              </li>
+              <sc-for list="{{invites}}" as="iv" hint-placeholder-count="2">
+                <li class="rise" style="display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 8px; background: {{t.track}}">
+                  <span style="display: flex; flex-direction: column; min-width: 0"><span style="font-weight: 600">{{iv.name}}</span><span style="font-size: 14px; color: {{t.ink2}}; overflow-wrap: anywhere">{{iv.role}} · {{iv.email}} · {{iv.status}}</span></span>
+                  <button type="button" class="press" onClick="{{iv.remove}}" aria-label="{{iv.removeAria}}" style="flex: none; width: 44px; height: 44px; border: 0; border-radius: 999px; background: {{t.panelSolid}}; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button>
+                </li>
+              </sc-for>
+            </ul>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px">
+              <div style="flex: 1 1 180px; display: flex; flex-direction: column; gap: 6px"><label for="nm-in" style="font-size: 15px; font-weight: 600">Name</label><input id="nm-in" type="text" value="{{newName}}" onChange="{{onNewName}}" style="{{u.input}}"></div>
+              <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px"><label for="em-in" style="font-size: 15px; font-weight: 600">Company email</label><input id="em-in" type="email" value="{{newEmail}}" onChange="{{onNewEmail}}" style="{{u.input}}"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span id="role-l" style="font-size: 15px; font-weight: 600">Role</span>
+              <div role="radiogroup" aria-labelledby="role-l" style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{roleOpts}}" as="ro" hint-placeholder-count="5"><button type="button" role="radio" class="press" aria-checked="{{ro.on}}" onClick="{{ro.pick}}" style="{{ro.style}}">{{ro.name}}</button></sc-for>
+              </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center">
+              <button type="button" class="press" onClick="{{addInvite}}" aria-disabled="{{addDisabled}}" style="{{addStyle}}">Add to the list</button>
+              <button type="button" class="press" onClick="{{sendInvites}}" aria-disabled="{{sendDisabled}}" style="{{sendStyle}}">{{sendLabel}}</button>
+            </div>
+            <span aria-live="polite" style="font-size: 15px; line-height: 1.45">{{inviteHelp}}</span>
+          </div>
+          <dl class="rv rv1" style="flex: 1 1 300px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 14px">
+            <sc-for list="{{roleDefs}}" as="rd" hint-placeholder-count="5">
+              <div style="{{rd.style}}"><dt style="font-weight: 700">{{rd.name}}</dt><dd style="margin: 0; font-size: 15px; line-height: 1.45">{{rd.can}}</dd></div>
+            </sc-for>
+          </dl>
+        </div>
+      </section>
+
+      <section id="first-week" aria-labelledby="fw-h" style="display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 96px">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 24px; flex-wrap: wrap">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <h2 id="fw-h" class="rv" style="{{u.h2}}">What should you do in your first week?</h2>
+            <p class="rv rv1" style="margin: 0; max-width: 60ch; font-size: 19px">Most of this pays off for buyers who ask about you. None of it changes a score.</p>
+          </div>
+          <span aria-live="polite" style="font-size: 19px; font-weight: 700">{{weekCount}}</span>
+        </div>
+        <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px">
+          <sc-for list="{{week}}" as="wk" hint-placeholder-count="7">
+            <li>
+              <label style="{{wk.style}}">
+                <input type="checkbox" checked="{{wk.on}}" onChange="{{wk.toggle}}" style="width: 22px; height: 22px; margin: 3px 0 0; accent-color: #2F8F6A; cursor: pointer; flex: none">
+                <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+                  <span style="font-size: 17px; font-weight: 600; line-height: 1.4">{{wk.title}}</span>
+                  <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{wk.sub}}</span>
+                </span>
+                <span style="margin-left: auto; flex: none; font-size: 15px; font-weight: 600; white-space: nowrap">{{wk.when}}</span>
+              </label>
+            </li>
+          </sc-for>
+        </ul>
+      </section>
+
+      <section id="not-claimed" aria-labelledby="nc-h" style="display: flex; flex-wrap: wrap; gap: 24px 48px; align-items: flex-start; scroll-margin-top: 96px">
+        <h2 id="nc-h" class="rv" style="{{u.h2}}; flex: 1 1 260px">What if you don’t claim?</h2>
+        <div class="rv rv1" style="flex: 2 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+          <p style="margin: 0; font-size: 19px; line-height: 1.5">Your pages still go public on 30 Oct 2026, built from the same public records. They carry one neutral line, and it changes nothing in any score:</p>
+          <p style="margin: 0; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 2px 16px; border-radius: 999px; background: {{t.track}}; font-size: 16px; font-weight: 600"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12v8H2zM2 4l6 5 6-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>Invited 16 Oct 2026 · not yet claimed</p>
+          <p style="margin: 0; font-size: 17px">We never call a developer “not cooperating”. Claim any time and the line goes the same day.</p>
+        </div>
+      </section>
+    </main>
+
+    <aside aria-labelledby="pv-h" class="rv rv1" style="flex: 0 1 360px; min-width: 0; position: sticky; top: 104px; border-radius: 8px; background: {{t.track}}; padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+      <!-- Signature: your public line, live. Every check you pass changes what buyers will read on 30 Oct 2026. -->
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap">
+        <h2 id="pv-h" style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600; line-height: 1.3"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8 12.1 12.5 8 12.5 1.5 8 1.5 8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path><circle cx="8" cy="8" r="2" fill="currentColor"></circle></svg>Your page on 30 Oct 2026</h2>
+        <span style="{{u.claimPill}}">Public in 12 days</span>
+      </div>
+      <div data-ui="developer-page-preview" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden; display: flex; flex-direction: column">
+        <div style="position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="heroAshgrove" src="/_blob/845f68e561dfeace0e220e8c90b8bde3" alt="Illustrative image: a residential site at excavation stage behind a plain hoarding, New Gurugram" class="drift" style="position: absolute; inset: 0; background: #E7E3DA; object-fit: cover; display: block">
+          <span style="position: absolute; left: 10px; bottom: 10px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+        </div>
+        <div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.05; letter-spacing: -0.03em">Ashgrove Realty</strong>
+            <span style="font-size: 15px; color: {{t.ink2}}">New to Gurugram RERA · 1 project · {{groupLine}}</span>
+          </div>
+          <span aria-live="polite" class="flip" style="{{publicLine.style}}"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style="flex: none"><path d="{{publicLine.icon}}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{publicLine.text}}</span>
+          <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 4px">
+            <span style="font-size: 15px; font-weight: 600">Ashgrove Meadows, Phase 1 · Sector 79</span>
+            <span style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+              <span style="{{notChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{notMeter}}" as="nm" hint-placeholder-count="5"><span style="{{nm.style}}"></span></sc-for></span>Not scored</span>
+              <span style="font-size: 14px; color: {{t.ink2}}">Registered 7 Oct 2026</span>
+            </span>
+            <span style="font-size: 14px; line-height: 1.45">Registered less than 6 months ago. Facts show now, each with its source; a band comes later.</span>
+          </div>
+          <span style="font-size: 14px; line-height: 1.45; color: {{t.ink2}}">{{replyLine}}</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 15px; font-weight: 700">Only you see this</span>
+        <ul aria-label="Your progress" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
+          <sc-for list="{{progress}}" as="pg" hint-placeholder-count="6">
+            <li style="display: flex; gap: 10px; align-items: center; font-size: 15px; line-height: 1.35"><span aria-hidden="true" style="{{pg.mark}}"><svg width="10" height="10" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span>{{pg.text}}</span><span class="sr">{{pg.sr}}</span></li>
+          </sc-for>
+        </ul>
+      </div>
+      <p aria-live="polite" style="margin: 0; font-size: 17px; line-height: 1.45; font-weight: 600">{{pvCaption}}</p>
+      <p style="margin: 0; font-size: 15px; line-height: 1.5">Buyers read the same records either way. Claiming changes who can answer for Ashgrove, not the score.</p>
+    </aside>
+  </div>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 112px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">Your page will stand on HARERA registrations and progress reports, DTCP licences and OC orders, and MCA filings. Claiming it is free and identical for every developer. Our opinion, based on public records. Not a credit rating. Not issued by any RERA.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#charter" class="lk" style="color: {{t.onSlab}}">Developer Charter</a>
+          <a href="#methodology" class="lk" style="color: {{t.onSlab}}">Methodology v1.2</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#grievance" class="lk" style="color: {{t.onSlab}}">Legal notices and grievances</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span>Works on a phone too: open the link in the WhatsApp notice</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"$preview":{"width":1280,"height":7300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      themePick: null, channel: 'email',
+      code: 'ASH-7Q4K-2M', email: 'sanjana.malik@ashgrove-realty.example', found: false, claimed: false,
+      mailSent: false, otp: '', mailOk: false, board: false, matchRun: false,
+      agr: '', llp: 'yes',
+      invites: [
+        {name: 'Rahul Verma', email: 'rahul.verma@ashgrove-realty.example', role: 'Sales'},
+        {name: 'Priya Nair', email: 'priya.nair@ashgrove-realty.example', role: 'Marketing'}
+      ],
+      newName: 'Imran Qureshi', newEmail: 'imran.qureshi@ashgrove-realty.example', newRole: 'Site', invitesSent: false,
+      wk: {facts: false, price: false, inbox: false, slots: false, wa: false, evidence: false, qr: false}
+    };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var T = night ? {
+      bg: '#0B1411', panelSolid: '#16221D', paper: '#16221D', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)', photo: '#1B2A24',
+      ink: '#EEF3F0', ink2: '#B9C6C0', accent: '#6EE7B7', onAccent: '#052E1F', claimBg: '#1D2621',
+      emptyBorder: '#7D828A', notScored: '#7D828A', disabledBg: 'rgba(255,255,255,0.10)', disabledFg: '#B9C6C0',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', panelSolid: '#FFFFFF', paper: '#FFFFFF', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED', photo: '#E7E3DA',
+      ink: '#1B1A17', ink2: '#3F3C36', accent: '#1D5A44', onAccent: '#FFFFFF', claimBg: '#F1ECE2',
+      emptyBorder: '#8C9199', notScored: '#8C9199', disabledBg: '#EEEBE4', disabledFg: '#3F3C36',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var grid = function (cols) { return 'display:grid;grid-template-columns:' + cols + ';gap:14px;padding:14px 18px;align-items:start'; };
+    var pillBase = 'display:inline-flex;align-items:center;min-height:28px;padding:2px 12px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:700;line-height:1.3;';
+    var U = {
+      h2: "margin:0;font-family:'Bricolage Grotesque', system-ui, sans-serif;font-weight:800;font-size:clamp(34px, 3.6vw, 44px);line-height:1.04;letter-spacing:-0.03em",
+      input: 'height:48px;width:100%;padding:0 18px;border-radius:999px;border:1px solid ' + T.lineStrong + ';background:' + T.panelSolid + ';color:' + T.ink + ';font:inherit;font-size:17px;box-sizing:border-box',
+      recPill: pillBase + 'background:' + T.ink + ';color:' + T.bg,
+      claimPill: pillBase + 'background:' + T.claimBg + ';color:' + T.ink,
+      secBtn: 'align-self:flex-start;height:48px;padding:0 20px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;box-sizing:border-box;cursor:pointer;background:' + T.panelSolid + ';color:' + T.ink,
+      mRow: grid('minmax(0, 0.9fr) minmax(0, 1.3fr) minmax(0, 1.3fr) minmax(0, 1fr)'),
+      coRow: grid('minmax(0, 1.3fr) minmax(0, 1.6fr) minmax(0, 1.5fr)')
+    };
+    function pillBtn(on, dis) {
+      return 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;box-sizing:border-box;transition:background-color 180ms ease, color 180ms ease;' +
+        (dis ? 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';' : 'cursor:pointer;background:' + (on ? T.ink : T.panelSolid) + ';color:' + (on ? T.bg : T.ink) + ';');
+    }
+    function primary(dis) {
+      return 'height:52px;padding:0 24px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;box-sizing:border-box;' + (dis ? 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';' : 'cursor:pointer;background:' + T.accent + ';color:' + T.onAccent + ';');
+    }
+    function quiet(dis) {
+      return 'height:52px;padding:0 22px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;box-sizing:border-box;' + (dis ? 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';' : 'cursor:pointer;background:' + T.ink + ';color:' + T.bg + ';');
+    }
+    // Step marks: a tick when done, a ring when it's your turn, a tone dot when not yet. No numbers.
+    function mark(done, active, size) {
+      var z = size || 24;
+      return 'flex:none;width:' + z + 'px;height:' + z + 'px;border-radius:50%;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;transition:background-color 220ms ease;' +
+        (done ? 'background:' + T.ink + ';color:' + T.bg + ';' : (active ? 'border:2px solid ' + T.ink + ';color:transparent;' : 'background:' + T.panelSolid + ';color:transparent;'));
+    }
+
+    // Claim: the code and the email domain must both match the HARERA registration.
+    var CODE = 'ASH7Q4K2M', DOMAIN = 'ashgrove-realty.example';
+    var codeNorm = String(s.code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    var emailTrim = String(s.email || '').trim().toLowerCase();
+    var at = emailTrim.lastIndexOf('@');
+    var domain = at > 0 ? emailTrim.slice(at + 1) : '';
+    var FREE = ['gmail.com', 'yahoo.com', 'yahoo.co.in', 'outlook.com', 'hotmail.com', 'rediffmail.com', 'icloud.com'];
+    var claimProblem = '';
+    if (!codeNorm) claimProblem = 'Enter the claim code from the notice.';
+    else if (codeNorm !== CODE) claimProblem = 'That code doesn’t match a notice we sent. It is on the notice, after “claim code”, and lasts 30 days.';
+    else if (at < 1 || domain.indexOf('.') < 1) claimProblem = 'Enter your work email.';
+    else if (FREE.indexOf(domain) >= 0) claimProblem = 'Use your company email. We can’t tie a ' + domain + ' address to Ashgrove Realty.';
+    else if (domain !== DOMAIN) claimProblem = 'This email’s domain, ' + domain + ', isn’t the one on Ashgrove’s HARERA registration. Use an ashgrove-realty.example address.';
+    var canFind = !claimProblem;
+    var found = !!s.found && canFind;
+    var claimed = !!s.claimed && found;
+
+    // Signatory checks.
+    var otpTrim = String(s.otp || '').replace(/\D/g, '');
+    var mailOk = claimed && !!s.mailOk;
+    var boardOk = claimed && !!s.board;
+    var matchOk = claimed && !!s.matchRun && mailOk;
+    var verified = mailOk && boardOk && matchOk;
+    var checksDone = (mailOk ? 1 : 0) + (boardOk ? 1 : 0) + (matchOk ? 1 : 0);
+    function rowStyle(done, active) {
+      return 'display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-radius:8px;transition:background-color 260ms ease, opacity 260ms ease;background:' + (done ? T.track : (active ? T.claimBg : T.track)) + ';opacity:' + (claimed ? 1 : 0.62);
+    }
+    var chk = {
+      mail: {
+        row: rowStyle(mailOk, claimed && !mailOk), mark: mark(mailOk, claimed && !mailOk),
+        state: mailOk ? 'Verified · 11:06' : (s.mailSent && claimed ? 'Code sent · 11:05' : 'Not started'),
+        sub: mailOk ? 'sanjana.malik@ashgrove-realty.example belongs to the domain on Ashgrove’s HARERA registration.' : 'We send a one-time code to ' + (emailTrim || 'your work email') + '. It proves you can read mail at Ashgrove’s domain.'
+      },
+      board: {
+        row: rowStyle(boardOk, claimed && mailOk && !boardOk), mark: mark(boardOk, claimed && mailOk && !boardOk),
+        state: boardOk ? 'Matched to MCA · 11:08' : 'Not started',
+        sub: boardOk ? 'Board resolution of 17 Oct 2026, signed by Kunal Bhatia and Ritu Sehgal. Both are directors on MCA. Unclear signatures go to a person, who decides within 2 working days.' : 'A board resolution or authority letter naming you, signed by two directors listed on MCA. If a signature doesn’t match, we tell you whose.'
+      },
+      harera: {
+        row: rowStyle(matchOk, claimed && boardOk && !matchOk), mark: mark(matchOk, claimed && boardOk && !matchOk),
+        state: matchOk ? 'Matched · 11:09' : (s.matchRun && !mailOk ? 'Waiting for the email check' : 'Not started'),
+        sub: matchOk ? 'Your email domain and company match the promoter contact HARERA lists. We did not need to call.' : 'We compare what you gave with the promoter contact HARERA lists. If they differ, we call the number HARERA has, never one you type.'
+      }
+    };
+    var sigSummary = !claimed ? 'Claim the company to start the checks.' : (verified ? 'Verified signatory. Ashgrove’s page will say so from 30 Oct 2026.' : checksDone + ' of 3 checks passed. Buyers would still see “not yet claimed”.');
+
+    // Group map.
+    var LINKS = [
+      {key: 'parent', name: 'Ashgrove Realty Pvt Ltd', role: 'Group parent', why: 'Promoter of Ashgrove Meadows, Phase 1 on HARERA', commonOnly: false, locked: true},
+      {key: 'llp', name: 'Ashgrove Meadows LLP', role: 'Project company', why: 'Ashgrove Realty is a designated partner (MCA, LLP filing)', commonOnly: false, locked: false},
+      {key: 'agr', name: 'AGR Infraprojects Pvt Ltd', role: 'Construction company', why: '1 common director, Kunal Bhatia. No shareholding.', commonOnly: true, locked: false}
+    ];
+    var disputedLinks = 0, linksConfirmed = true;
+    var links = LINKS.map(function (x, i) {
+      var v = x.locked ? 'yes' : (s[x.key] || '');
+      if (v === 'no') disputedLinks++;
+      if (!v) linksConfirmed = false;
+      var note = v === 'no' ? 'We check MCA again within 15 working days. Until then buyers see “linked by common directors only · disputed by the developer”.' : (v === 'yes' ? 'Shown as part of the group.' : 'Not answered yet. Until you answer, we show the link as we found it.');
+      return {name: x.name, role: x.role, why: x.why, commonOnly: x.commonOnly, locked: x.locked, open: !x.locked,
+        aria: 'Is ' + x.name + ' part of Ashgrove?',
+        yesOn: v === 'yes' ? 'true' : 'false', noOn: v === 'no' ? 'true' : 'false', note: note,
+        yes: function () { var o = {}; o[x.key] = 'yes'; self.setState(o); },
+        no: function () { var o = {}; o[x.key] = 'no'; self.setState(o); },
+        yesStyle: pillBtn(v === 'yes', false), noStyle: pillBtn(v === 'no', false),
+        rowStyle: U.coRow + ';' + (i > 0 ? 'border-top:1px solid ' + T.line + ';' : '')};
+    });
+
+    // Team.
+    var ROLES = [
+      {name: 'Admin', can: 'Everything, including public replies, disputes and the team. Only verified signatories.'},
+      {name: 'Sales', can: 'Enquiries, visits and the CRM hand-off.'},
+      {name: 'Compliance', can: 'Notices, clerical fixes, disputes and evidence.'},
+      {name: 'Marketing', can: 'Price lists, plans and the Live Record kit.'},
+      {name: 'Site', can: 'Visit check-in and site photos, from a phone.'}
+    ];
+    var invites = (s.invites || []).map(function (x, i) {
+      return {name: x.name, email: x.email, role: x.role, status: s.invitesSent ? 'invite sent 11:12' : 'not sent yet',
+        removeAria: 'Remove ' + x.name,
+        remove: function () { var l = (self.state.invites || []).slice(); l.splice(i, 1); self.setState({invites: l}); }};
+    });
+    var nn = String(s.newName || '').trim(), ne = String(s.newEmail || '').trim().toLowerCase();
+    var neDomainOk = ne.slice(ne.lastIndexOf('@') + 1) === DOMAIN && ne.indexOf('@') > 0;
+    var canAdd = !!nn && neDomainOk && invites.length < 8;
+    var roleOpts = ROLES.map(function (r) {
+      var on = s.newRole === r.name;
+      return {name: r.name, on: on ? 'true' : 'false', pick: function () { self.setState({newRole: r.name}); }, style: pillBtn(on, false).replace('background:' + T.panelSolid, 'background:' + T.track)};
+    });
+    var roleDefs = ROLES.map(function (r) {
+      var lit = r.name === s.newRole;
+      return {name: r.name, can: r.can, style: 'display:flex;flex-direction:column;gap:2px;padding:10px 14px;border-radius:8px;transition:background-color 200ms ease;background:' + (lit ? T.track : 'transparent')};
+    });
+    var canSend = verified && invites.length > 0 && !s.invitesSent;
+    var inviteHelp = s.invitesSent ? invites.length + (invites.length === 1 ? ' invite' : ' invites') + ' sent. Each person signs in with their own ashgrove-realty.example address.' :
+      (!verified ? 'Invites go out once your three signatory checks pass.' : (invites.length ? 'Ready to send ' + invites.length + (invites.length === 1 ? ' invite.' : ' invites.') : 'Add at least one person.'));
+    var addHelpBad = (nn || ne) && !neDomainOk;
+
+    // First week.
+    var WEEK = [
+      {key: 'facts', title: 'Check the facts we will publish on 30 Oct', sub: 'Open the preview. A clerical error is fixed in 2 working days, even before publication.', when: 'By 28 Oct'},
+      {key: 'price', title: 'Add your official price list and floor plans', sub: 'Shown as “From the developer · not verified”, dated, with every version kept.', when: 'Any time'},
+      {key: 'inbox', title: 'Choose who receives enquiries, and your CRM email', sub: 'Consented buyers only. No fee per enquiry and no brokerage.', when: 'Before 30 Oct'},
+      {key: 'slots', title: 'Open visit slots for your sales gallery', sub: 'Buyers book a slot and bring a visit code your site team checks in.', when: 'Before 30 Oct'},
+      {key: 'wa', title: 'Pick who gets WhatsApp alerts', sub: 'Notices to Admin and Compliance, enquiries to Sales. Utility alerts only.', when: 'Any time'},
+      {key: 'evidence', title: 'Add evidence you want buyers to see', sub: 'Escrow certificates, approvals, funding letters. Shown as yours; never moves a score alone.', when: 'Any time'},
+      {key: 'qr', title: 'Order the Live Record QR for your hoarding', sub: 'It opens the live record. A band is never printed on it.', when: 'From 30 Oct'}
+    ];
+    var wkState = s.wk || {};
+    var weekDone = 0;
+    var week = WEEK.map(function (x) {
+      var on = !!wkState[x.key];
+      if (on) weekDone++;
+      return {title: x.title, sub: x.sub, when: x.when, on: on,
+        toggle: function () { var w = {}; var cur = self.state.wk || {}; for (var k in cur) w[k] = cur[k]; w[x.key] = !w[x.key]; self.setState({wk: w}); },
+        style: 'display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:8px;cursor:pointer;transition:background-color 200ms ease;background:' + (on ? T.track : 'transparent')};
+    });
+
+    // Signature: the public line buyers will read, live.
+    var publicLine;
+    if (verified) publicLine = {text: 'Claimed · verified signatory', icon: 'M3 8.5l3.2 3L13 4.5', style: 'align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:2px 16px;border-radius:999px;box-sizing:border-box;font-size:16px;font-weight:600;transition:background-color 260ms ease, color 260ms ease;background:' + T.ink + ';color:' + T.bg};
+    else publicLine = {text: 'Invited 16 Oct 2026 · not yet claimed', icon: 'M2 4h12v8H2zM2 4l6 5 6-5', style: 'align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:2px 16px;border-radius:999px;box-sizing:border-box;font-size:16px;font-weight:600;transition:background-color 260ms ease, color 260ms ease;background:' + T.track + ';color:' + T.ink};
+    var groupLine = disputedLinks ? '3 linked companies, ' + disputedLinks + ' disputed by the developer' : '3 linked companies (MCA)';
+    var replyLine = verified ? 'Replies and corrections come from Ashgrove’s verified account.' : 'No reply yet. Only a verified signatory can reply in Ashgrove’s name.';
+    var PROG = [
+      {text: 'Notice received', done: true},
+      {text: claimed ? 'Company claimed' : 'Claim the company', done: claimed},
+      {text: 'Signatory checks: ' + checksDone + ' of 3', done: verified},
+      {text: linksConfirmed ? 'Group map confirmed' : 'Confirm the group map', done: linksConfirmed},
+      {text: s.invitesSent ? 'Team invited' : 'Invite your team', done: !!s.invitesSent},
+      {text: 'First week: ' + weekDone + ' of 7', done: weekDone === 7}
+    ];
+    var progress = PROG.map(function (p) { return {text: p.text, sr: p.done ? ' (done)' : ' (to do)', mark: mark(p.done, false, 18)}; });
+    var pvCaption = verified ? 'Buyers will read “Claimed · verified signatory” from 30 Oct 2026.' : (claimed ? 'Claim started, but buyers would still read “not yet claimed” until all three checks pass.' : 'Today buyers would read “Invited 16 Oct 2026 · not yet claimed”.');
+
+    var STEPS = [
+      {key: 'notice', label: 'Notice', href: '#notice', done: true},
+      {key: 'claim', label: 'Claim', href: '#claim', done: claimed},
+      {key: 'signatory', label: 'Signatory', href: '#signatory', done: verified},
+      {key: 'companies', label: 'Companies', href: '#companies', done: linksConfirmed},
+      {key: 'team', label: 'Team', href: '#team', done: !!s.invitesSent},
+      {key: 'week', label: 'First week', href: '#first-week', done: weekDone === 7}
+    ];
+    var curIdx = -1;
+    STEPS.forEach(function (x, i) { if (curIdx < 0 && !x.done) curIdx = i; });
+    var steps = STEPS.map(function (x, i) {
+      var cur = i === curIdx;
+      return {label: x.label, href: x.href, current: cur ? 'step' : 'false', sr: x.done ? ', done' : (cur ? ', your next step' : ''),
+        mark: mark(x.done, cur, 20),
+        style: 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 10px;border-radius:999px;box-sizing:border-box;text-decoration:none;font-size:15px;font-weight:600;color:' + T.ink + ';background:' + (cur ? T.claimBg : T.track)};
+    });
+
+    var CH = [{key: 'email', label: 'Email'}, {key: 'letter', label: 'Registered post'}, {key: 'whatsapp', label: 'WhatsApp'}];
+    var channel = s.channel === 'letter' || s.channel === 'whatsapp' ? s.channel : 'email';
+    var channels = CH.map(function (c) {
+      var on = c.key === channel;
+      return {label: c.label, on: on ? 'true' : 'false', pick: function () { self.setState({channel: c.key}); }, style: pillBtn(on, false).replace('background:' + T.panelSolid, 'background:' + T.track)};
+    });
+    var deliveries = [
+      {what: 'Email to the address on your HARERA registration', when: 'Delivered Fri 16 Oct 2026, 09:02'},
+      {what: 'WhatsApp to the number on your HARERA registration', when: 'Delivered Fri 16 Oct 2026, 09:03 · read 16 Oct, 17:40'},
+      {what: 'Registered post to your MCA registered office', when: 'Delivered Sat 17 Oct 2026 · India Post receipt kept'}
+    ].map(function (d) { return {what: d.what, when: d.when, mark: mark(true, false, 22)}; });
+
+    var notChip = 'display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:15px;font-weight:600;border:0;background:' + T.track + ';color:' + T.ink;
+    var notMeter = [1, 2, 3, 4, 5].map(function () { return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;border:1px solid ' + T.notScored + ';'}; });
+
+    var otpOk = otpTrim.length === 6;
+    var matchReady = claimed && mailOk && boardOk;
+    return {
+      t: T, u: U,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      headerAction: verified ? 'Open your workspace' : 'Claim your page',
+      steps: steps,
+      channels: channels, isEmail: channel === 'email', isLetter: channel === 'letter', isWa: channel === 'whatsapp', notWa: channel !== 'whatsapp',
+      letterAria: channel === 'email' ? 'The notice, as emailed' : (channel === 'letter' ? 'The notice, as sent by registered post' : 'The notice, as sent on WhatsApp'),
+      deliveries: deliveries,
+      code: s.code, email: s.email,
+      onCode: function (e) { self.setState({code: e.target.value, found: false, claimed: false, mailSent: false, mailOk: false, otp: '', board: false, matchRun: false, invitesSent: false}); },
+      onEmail: function (e) { self.setState({email: e.target.value, found: false, claimed: false, mailSent: false, mailOk: false, otp: '', board: false, matchRun: false, invitesSent: false}); },
+      findCompany: function () { if (canFind) self.setState({found: true}); },
+      findDisabled: canFind ? 'false' : 'true', findStyle: quiet(!canFind),
+      findLabel: found ? 'Found on HARERA' : 'Find my company',
+      claimHelp: claimProblem || (found ? (claimed ? 'Claimed. Your signatory checks are open below.' : 'Found. Check the details, then claim.') : 'Both match the notice. Find your company to continue.'),
+      showFound: found, notClaimed: !claimed, isClaimed: claimed,
+      claimIt: function () { if (self.state.found) self.setState({claimed: true}); },
+      sigLocked: !claimed, sigLockedStr: claimed ? 'false' : 'true',
+      chk: chk,
+      showSendMail: !(claimed && s.mailSent), showMailInput: claimed && !!s.mailSent && !mailOk,
+      sendMail: function () { if (self.state.claimed) self.setState({mailSent: true}); },
+      otp: s.otp, onOtp: function (e) { self.setState({otp: e.target.value}); },
+      otpDisabled: otpOk ? 'false' : 'true', otpStyle: quiet(!otpOk),
+      confirmOtp: function () { if (String(self.state.otp || '').replace(/\D/g, '').length === 6) self.setState({mailOk: true}); },
+      boardOnStr: s.board ? 'true' : 'false',
+      boardLabel: s.board ? 'Board-resolution-17-Oct-2026.pdf · remove' : 'Attach the board resolution',
+      boardBtn: 'align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 20px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;box-sizing:border-box;' + (claimed ? 'cursor:pointer;background:' + (s.board ? T.ink : T.panelSolid) + ';color:' + (s.board ? T.bg : T.ink) + ';' : 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';'),
+      toggleBoard: function () { if (self.state.claimed) self.setState({board: !self.state.board}); },
+      showMatch: claimed && !!s.matchRun, showRunMatch: !(claimed && s.matchRun && mailOk),
+      matchDisabled: matchReady ? 'false' : 'true',
+      matchBtn: U.secBtn.replace('background:' + T.panelSolid, 'background:' + (matchReady ? T.ink : T.disabledBg)).replace('color:' + T.ink, 'color:' + (matchReady ? T.bg : T.disabledFg)).replace('cursor:pointer', matchReady ? 'cursor:pointer' : 'cursor:not-allowed'),
+      runMatch: function () { if (self.state.claimed && self.state.mailOk && self.state.board) self.setState({matchRun: true}); },
+      emailDomain: domain || 'Not given', domainResult: domain === DOMAIN ? 'Match' : 'No match',
+      sigSummary: sigSummary,
+      links: links,
+      invites: invites, roleOpts: roleOpts, roleDefs: roleDefs,
+      newName: s.newName, newEmail: s.newEmail,
+      onNewName: function (e) { self.setState({newName: e.target.value}); },
+      onNewEmail: function (e) { self.setState({newEmail: e.target.value}); },
+      addDisabled: canAdd ? 'false' : 'true',
+      addStyle: 'height:48px;padding:0 20px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;box-sizing:border-box;' + (canAdd ? 'cursor:pointer;background:' + T.track + ';color:' + T.ink + ';' : 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';'),
+      addInvite: function () {
+        var st = self.state;
+        var n = String(st.newName || '').trim(), m = String(st.newEmail || '').trim().toLowerCase();
+        if (!n || m.slice(m.lastIndexOf('@') + 1) !== DOMAIN || m.indexOf('@') < 1) return;
+        var l = (st.invites || []).slice();
+        l.push({name: n, email: m, role: st.newRole || 'Sales'});
+        self.setState({invites: l, newName: '', newEmail: '', invitesSent: false});
+      },
+      sendDisabled: canSend ? 'false' : 'true', sendStyle: primary(!canSend),
+      sendLabel: s.invitesSent ? 'Invites sent' : 'Send ' + invites.length + (invites.length === 1 ? ' invite' : ' invites'),
+      sendInvites: function () { if (canSend) self.setState({invitesSent: true}); },
+      inviteHelp: addHelpBad ? 'Invites go only to ashgrove-realty.example addresses, so every person is tied to the company. ' + inviteHelp : inviteHelp,
+      week: week, weekCount: weekDone + ' of 7 done',
+      notChip: notChip, notMeter: notMeter,
+      publicLine: publicLine, groupLine: groupLine, replyLine: replyLine,
+      progress: progress, pvCaption: pvCaption
+    };
+  }
+}
+</script>
+</body>
+</html>

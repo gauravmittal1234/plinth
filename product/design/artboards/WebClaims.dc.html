@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Claims vs records: Is the brochure telling the truth?</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plRow { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+  .row:hover { background-color: rgba(127,120,105,0.09); }
+}
+.row { background-color: transparent; }
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rowin { animation: plRow 520ms cubic-bezier(.22,1,.36,1) both; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: {{rootMin}}px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
+        <a href="#cost" class="lk" style="color: {{t.ink}}; text-decoration: none">Cost sheet</a>
+        <a href="#claims" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Claims</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer; display: inline-flex; align-items: center; justify-content: center">
+          <sc-if value="{{night}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.5" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M10 1.8v2.2M10 16v2.2M1.8 10H4M16 10h2.2M4.2 4.2l1.6 1.6M14.2 14.2l1.6 1.6M4.2 15.8l1.6-1.6M14.2 5.8l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+          <sc-if value="{{day}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.6A6.5 6.5 0 0 1 7.4 4a6.5 6.5 0 1 0 8.6 8.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg></sc-if>
+        </button>
+        <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{followLabel}}</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" style="flex: none; display: flex; flex-direction: column">
+    <nav aria-label="Claims check steps" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 32px 32px 0; box-sizing: border-box">
+      <ol style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 28px">
+        <sc-for list="{{steps}}" as="st" hint-placeholder-count="3">
+          <li><button type="button" class="press" onClick="{{st.go}}" aria-current="{{st.current}}" style="{{st.btnStyle}}"><sc-if value="{{st.done}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{st.label}}</button></li>
+        </sc-for>
+      </ol>
+    </nav>
+
+    <sc-if value="{{isDrop}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="drop-h" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 48px 32px 160px; box-sizing: border-box; display: flex; flex-direction: column; gap: 44px">
+        <h1 id="drop-h" class="rise" style="{{u.h1}}">Is the brochure telling the truth?</h1>
+        <div style="display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+          <div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+            <p class="rise rise1" style="{{u.lead}}; max-width: 38ch">Add anything a developer or broker gave you. We put every claim in it beside what the public records show, with a source for each.</p>
+            <div class="rise rise2" style="box-sizing: border-box; border-radius: 8px; background: {{t.track}}; padding: 40px 36px; display: flex; flex-direction: column; align-items: flex-start; gap: 16px">
+              <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">Drop a brochure, flyer, cost sheet or screenshot</p>
+              <p style="margin: 0">A PDF or a photo, up to 20 MB. A WhatsApp forward works as it is.</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 6px">
+                <button type="button" class="press" onClick="{{chooseFile}}" style="{{u.primary}}">Choose a file</button>
+                <button type="button" class="press" onClick="{{chooseFile}}" style="{{u.secondaryOnBand}}">
+                  <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6.5h3l1.5-2h5L14 6.5h3v9H3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path><circle cx="10" cy="11" r="3" fill="none" stroke="currentColor" stroke-width="1.6"></circle></svg>Take a photo
+                </button>
+              </div>
+              <div style="width: 100%; display: flex; flex-direction: column; gap: 8px; padding-top: 14px">
+                <label for="cl-link" style="font-size: 17px; font-weight: 600">Or paste a link to an ad or a listing</label>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                  <input id="cl-link" type="url" inputmode="url" autocomplete="off" value="{{link}}" onChange="{{onLink}}" placeholder="https://" style="flex: 1 1 260px; min-width: 0; height: 56px; padding: 0 22px; box-sizing: border-box; border: 1px solid {{t.lineStrong}}; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 19px">
+                  <button type="button" class="press" onClick="{{checkLink}}" style="{{u.secondaryOnBand}}">Check the link</button>
+                </div>
+                <sc-if value="{{hasLinkNote}}" hint-placeholder-val="{{false}}">
+                  <p role="status" style="margin: 0; font-size: 17px">{{linkNote}}</p>
+                </sc-if>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 4px">
+              <p style="margin: 0; display: inline-flex; align-items: flex-start; gap: 8px; font-size: 17px">
+                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="flex: none; margin-top: 4px"><rect x="3.5" y="8" width="11" height="7.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M6 8V5.8a3 3 0 0 1 6 0V8" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg>
+                <span>Private to you. We never send your file to the developer or the broker. We hide any phone number on it, and delete it after 30 days unless you save it.</span>
+              </p>
+              <p style="margin: 0; font-size: 17px; color: {{t.ink2}}">Prefer WhatsApp? Forward it to Plinth and get the same check there.</p>
+            </div>
+          </div>
+          <div class="rise rise2" style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+            <div style="position: relative; width: 100%; aspect-ratio: 896 / 1200; overflow: hidden; background: {{t.photo}}">
+              <img data-slot="brokerFlyer" src="/_blob/023b51857001b445b116f446985c7d2f" alt="Illustrative image: a broker flyer for Aurelia Heights, Phase 2. It says Possession Dec 2026, Structure up to 12th floor, Only 20 flats left, 11,999 rupees a sq ft all-inclusive, 3 BHK 2,000 sq ft and a 40,000 sq ft clubhouse, with its RERA number in the fine print" style="position: absolute; inset: 0; width: 100%; height: 100%; background: #E7E3DA; border-radius: 0; object-fit: cover; display: block">
+              <div aria-hidden="true" style="position: absolute; inset: 0; container-type: inline-size; pointer-events: none"><sc-for list="{{flyerType}}" as="ft" hint-placeholder-count="15"><span style="{{ft.style}}">{{ft.text}}</span></sc-for></div>
+              <button type="button" class="press" onClick="{{trySample}}" aria-label="Check the sample: a broker flyer for Aurelia Heights, Phase 2" style="position: absolute; inset: 0; padding: 0; border: 0; border-radius: 0; background: transparent; cursor: pointer"></button>
+              <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px; pointer-events: none">Illustrative image</span>
+            </div>
+            <p style="margin: 0; font-size: 17px; line-height: 1.5">The sample: a broker flyer for Aurelia Heights, Phase 2, as it arrives on WhatsApp.</p>
+            <button type="button" onClick="{{trySample}}" style="{{u.tertiary}}">Check the sample flyer</button>
+          </div>
+        </div>
+        <p class="rise rise2" style="margin: 0; max-width: 62ch; font-size: 17px; line-height: 1.55">We check possession and completion dates, prices and "all-inclusive" totals, carpet and super area, RERA numbers, "ready to move" and OC claims, and "only a few left".</p>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isCheck}}" hint-placeholder-val="{{true}}">
+      <section aria-labelledby="chk-h" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 144px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+        <h1 id="chk-h" class="rise" style="{{u.h1}}">Is the brochure telling the truth?</h1>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 32px 72px; align-items: flex-end; justify-content: space-between">
+          <div class="rise rise1" style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <p aria-hidden="true" style="margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 22px">
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(88px, 11vw, 152px); line-height: 0.9; letter-spacing: -0.05em; white-space: nowrap">{{bigNum}}</span>
+              <span style="max-width: 16ch; font-size: 22px; line-height: 1.35">{{bigText}}</span>
+            </p>
+            <p class="sr" role="status" aria-live="polite">{{statusSentence}}</p>
+            <sc-if value="{{showStrip}}" hint-placeholder-val="{{true}}">
+              <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(7, minmax(0, 52px)); gap: 6px">
+                <sc-for list="{{strip}}" as="sg" hint-placeholder-count="7"><span style="{{sg.style}}"></span></sc-for>
+              </span>
+            </sc-if>
+            <p style="margin: 0; max-width: 52ch; font-size: 19px; line-height: 1.5">{{breakdown}}</p>
+          </div>
+          <div class="rise rise2" style="flex: 0 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <p style="margin: 0; font-size: 17px; line-height: 1.55">{{metaA}}<br>{{metaB}}</p>
+            <sc-if value="{{isDone}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-wrap: wrap; gap: 12px">
+                <button type="button" class="press" onClick="{{toggleShare}}" aria-expanded="{{shareExp}}" style="{{u.primary}}">
+                  <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="15" cy="5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="15" cy="15" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7 9l6-3M7 11l6 3" fill="none" stroke="currentColor" stroke-width="1.6"></path></svg>Share with family
+                </button>
+                <button type="button" class="press" onClick="{{toggleSave}}" aria-pressed="{{savedPressed}}" style="{{u.secondary}}">{{saveLabel}}</button>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 4px 24px">
+                <button type="button" onClick="{{replay}}" style="{{u.tertiarySm}}">Replay the check</button>
+                <button type="button" onClick="{{checkAnother}}" style="{{u.tertiarySm}}">Check another file</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{isBusy}}" hint-placeholder-val="{{false}}">
+              <div role="progressbar" aria-label="Check progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{progPct}}" style="width: 100%; height: 8px; border-radius: 4px; background: {{t.track}}; overflow: hidden">
+                <span style="{{progBar}}"></span>
+              </div>
+              <p style="margin: 0; font-size: 17px">{{progText}}</p>
+            </sc-if>
+          </div>
+        </div>
+
+        <sc-if value="{{shareOpen}}" hint-placeholder-val="{{false}}">
+          <div style="max-width: 720px; box-sizing: border-box; border-radius: 8px; padding: 28px; display: flex; flex-direction: column; gap: 14px; background: {{t.track}}">
+            <p style="margin: 0; font-size: 17px; font-weight: 600">What your family will see</p>
+            <div style="border-radius: 6px; padding: 18px 20px; background: {{t.panelSolid}}; font-size: 17px; line-height: 1.55">
+              <strong>Broker flyer · Aurelia Heights, Phase 2</strong><br>
+              {{shareText}}<br>
+              <span style="text-decoration: underline">Every claim, with its source, on Plinth</span>
+            </div>
+            <p style="margin: 0; font-size: 17px">Only this summary is shared. The flyer stays private, and the broker's number is never in it.</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px">
+              <button type="button" class="press" onClick="{{sendWa}}" style="{{u.secondarySm}}">
+                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 14.5l1-3A6 6 0 1 1 6.5 14z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>{{waLabel}}
+              </button>
+              <button type="button" class="press" onClick="{{copyLink}}" style="{{u.secondarySm}}">
+                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7.5 10.5l3-3M6 8.5l-1.8 1.8a2.5 2.5 0 0 0 3.5 3.5L9.5 12M12 9.5l1.8-1.8a2.5 2.5 0 0 0-3.5-3.5L8.5 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>{{copyLabel}}
+              </button>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{saved}}" hint-placeholder-val="{{false}}">
+          <p role="status" style="margin: -16px 0 0; font-size: 17px">Saved. It sits on the Aurelia Heights, Phase 2 page, next to the project's records.</p>
+        </sc-if>
+
+        <div id="claims" style="display: flex; flex-wrap: wrap; gap: 48px 56px; align-items: flex-start">
+          <div style="flex: 0 1 440px; min-width: 0; position: sticky; top: 96px; display: flex; flex-direction: column; gap: 12px">
+            <div role="group" aria-label="{{docLabel}}" style="position: relative; width: 100%; aspect-ratio: 896 / 1200; overflow: hidden; background: {{t.photo}}">
+              <sc-if value="{{docFlyer}}" hint-placeholder-val="{{true}}">
+                <img data-slot="brokerFlyer" src="/_blob/023b51857001b445b116f446985c7d2f" alt="The broker flyer you added: a promotional flyer for Aurelia Heights, Phase 2" style="{{docImgStyle}}">
+                <div aria-hidden="true" style="{{flyerWrap}}"><sc-for list="{{flyerType}}" as="ft" hint-placeholder-count="15"><span style="{{ft.style}}">{{ft.text}}</span></sc-for></div>
+              </sc-if>
+              <sc-if value="{{docPage}}" hint-placeholder-val="{{false}}">
+                <img data-slot="roomMinimal" src="/_blob/e1a0cb38dadcfa3321ba3cc1854b53bc" alt="The brochure page you added: a furnished living room, with no figures on it" style="position: absolute; inset: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block">
+              </sc-if>
+              <sc-for list="{{marks}}" as="m" hint-placeholder-count="7">
+                <button type="button" onClick="{{m.pick}}" aria-label="{{m.aria}}" aria-pressed="{{m.on}}" tabindex="{{m.tab}}" style="{{m.style}}">
+                  <span aria-hidden="true" style="{{m.washStyle}}"></span>
+                  <span aria-hidden="true" style="{{m.litStyle}}"></span>
+                  <span aria-hidden="true" style="{{m.tagStyle}}">
+                    <sc-if value="{{m.isD}}" hint-placeholder-val="{{true}}"><svg width="13" height="13" viewBox="0 0 14 14"><path d="M2.5 5.2h9M2.5 8.8h9M9.6 2.2L4.4 11.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+                    <sc-if value="{{m.isM}}" hint-placeholder-val="{{false}}"><svg width="13" height="13" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                    <sc-if value="{{m.isN}}" hint-placeholder-val="{{false}}"><svg width="13" height="13" viewBox="0 0 14 14"><circle cx="6" cy="6" r="3.8" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M8.8 8.8l3.2 3.2M4.3 6h3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></sc-if>
+                    <sc-if value="{{m.isC}}" hint-placeholder-val="{{false}}"><svg width="13" height="13" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7 4.3V7l2 1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                    {{m.tag}}
+                  </span>
+                </button>
+              </sc-for>
+              <span aria-hidden="true" style="{{scanWrap}}"><span style="display: block; height: 3px; background: #6EE7B7"></span></span>
+              <span style="position: absolute; right: 10px; top: 10px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+            </div>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">{{docCaption}}</p>
+          </div>
+
+          <div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+
+            <sc-if value="{{showReadNote}}" hint-placeholder-val="{{false}}">
+              <p style="margin: 0; padding: 16px; font-size: 19px; line-height: 1.5">Reading every line. Each claim appears here as we find it, then lights up on the flyer as it's checked.</p>
+            </sc-if>
+            <sc-if value="{{showConfirm}}" hint-placeholder-val="{{false}}">
+              <div class="rowin" style="box-sizing: border-box; padding: 30px 32px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 18px; margin-bottom: 14px">
+                <sc-if value="{{confirmAsk}}" hint-placeholder-val="{{true}}">
+                  <div style="display: flex; flex-wrap: wrap; gap: 18px 22px; align-items: center">
+                    <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2: the towers" style="flex: none; width: 104px; height: 104px; background: #E7E3DA; object-fit: cover; display: block">
+                    <div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+                      <h2 id="cf-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">Is this Aurelia Heights, Phase 2?</h2>
+                      <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 17px">Northfield Estates · Sector 37D
+                        <span role="img" aria-label="{{chip.sr}}" style="{{chip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{chip.meter}}" as="cm" hint-placeholder-count="5"><span style="{{cm.style}}"></span></sc-for></span><span aria-hidden="true">{{chip.name}}</span></span>
+                      </span>
+                    </div>
+                  </div>
+                  <p style="margin: 0; font-size: 17px; line-height: 1.55">We matched the RERA number on the flyer, GGM/673/405/2022/117. Each claim is checked against one project's records, so tell us if it's the right one.</p>
+                  <div style="display: flex; flex-wrap: wrap; gap: 12px">
+                    <button type="button" class="press" onClick="{{confirmYes}}" style="{{u.primary}}">Yes, check it</button>
+                    <button type="button" class="press" onClick="{{confirmNo}}" style="{{u.secondaryOnBand}}">No, pick the project</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{confirmPick}}" hint-placeholder-val="{{false}}">
+                  <h2 id="pk-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">Which project is this flyer for?</h2>
+                  <p style="margin: 0; font-size: 17px; line-height: 1.55">{{pickBody}}</p>
+                  <div role="radiogroup" aria-labelledby="pk-h" style="display: flex; flex-direction: column; gap: 4px">
+                    <sc-for list="{{picks}}" as="pk" hint-placeholder-count="2">
+                      <button type="button" class="press" role="radio" aria-checked="{{pk.on}}" onClick="{{pk.pick}}" style="{{pk.style}}">
+                        <span aria-hidden="true" style="{{pk.ring}}"><span style="{{pk.dot}}"></span></span>
+                        <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><strong style="font-weight: 600">{{pk.name}}</strong><span style="font-size: 15px; color: {{t.ink2}}">{{pk.where}}</span></span>
+                      </button>
+                    </sc-for>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 6px">
+                    <label for="pk-q" style="font-size: 17px; font-weight: 600">Or search for another project</label>
+                    <input id="pk-q" type="text" autocomplete="off" value="{{query}}" onChange="{{onQuery}}" placeholder="Project, developer or RERA number" style="height: 52px; padding: 0 20px; box-sizing: border-box; border: 1px solid {{t.lineStrong}}; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px">
+                  </div>
+                  <sc-if value="{{hasPickNote}}" hint-placeholder-val="{{false}}">
+                    <p role="status" style="margin: 0; font-size: 17px">{{pickNote}}</p>
+                  </sc-if>
+                  <button type="button" class="press" onClick="{{confirmPicked}}" style="{{u.primary}}; align-self: flex-start">{{pickCta}}</button>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{showEdge}}" hint-placeholder-val="{{false}}">
+              <div class="rowin" style="box-sizing: border-box; padding: 36px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 18px">
+                <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">{{edge.title}}</h2>
+                <p style="margin: 0">{{edge.body}}</p>
+                <sc-if value="{{edge.hasList}}" hint-placeholder-val="{{false}}">
+                  <ul style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 4px; font-size: 17px">
+                    <sc-for list="{{edge.list}}" as="li" hint-placeholder-count="6"><li>{{li.text}}</li></sc-for>
+                  </ul>
+                </sc-if>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 4px">
+                  <button type="button" class="press" onClick="{{edgePrimary}}" style="{{u.primary}}">{{edge.primary}}</button>
+                  <button type="button" class="press" onClick="{{edgeSecondary}}" style="{{u.secondaryOnBand}}">{{edge.secondary}}</button>
+                </div>
+                <sc-if value="{{edgeSent}}" hint-placeholder-val="{{false}}">
+                  <p role="status" style="margin: 0; font-size: 17px">{{edge.sentNote}}</p>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{showLedger}}" hint-placeholder-val="{{true}}">
+              <div aria-hidden="true" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 4px 24px; padding: 0 16px; font-size: 17px; font-weight: 600">
+                <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg>{{saysLabel}}</span>
+                <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="14" height="16" viewBox="0 0 12 14"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>Records show</span>
+              </div>
+              <ol aria-label="Claims on the flyer, top to bottom" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+                <sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+                  <li class="rowin" style="{{r.liStyle}}">
+                    <button type="button" class="row" onClick="{{r.toggle}}" aria-expanded="{{r.exp}}" aria-controls="{{r.evId}}" style="{{r.btnStyle}}">
+                      <span style="{{r.quoteStyle}}"><span class="sr">{{saysLabel}}: </span>“{{r.quote}}”</span>
+                      <span style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0">
+                        <sc-if value="{{r.checked}}" hint-placeholder-val="{{true}}">
+                          <span style="{{r.chipStyle}}">
+                            <sc-if value="{{r.isD}}" hint-placeholder-val="{{true}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 5.2h9M2.5 8.8h9M9.6 2.2L4.4 11.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+                            <sc-if value="{{r.isM}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                            <sc-if value="{{r.isN}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="3.8" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M8.8 8.8l3.2 3.2M4.3 6h3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></sc-if>
+                            <sc-if value="{{r.isC}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7 4.3V7l2 1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                            {{r.v}}
+                          </span>
+                          <span style="font-size: 17px; line-height: 1.55"><span class="sr">Records show: </span>{{r.rec}}</span>
+                          <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px">{{r.evLabel}}<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style="{{r.chev}}"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                        </sc-if>
+                        <sc-if value="{{r.checking}}" hint-placeholder-val="{{false}}">
+                          <span style="font-size: 17px; line-height: 1.55">Checking against {{r.against}}</span>
+                          <span aria-hidden="true" style="display: block; width: 160px; height: 6px; border-radius: 3px; background: {{t.track}}; overflow: hidden"><span style="{{checkBar}}"></span></span>
+                        </sc-if>
+                        <sc-if value="{{r.waiting}}" hint-placeholder-val="{{false}}">
+                          <span style="font-size: 17px; line-height: 1.55; color: {{t.ink2}}">Found. Waiting to check.</span>
+                        </sc-if>
+                      </span>
+                    </button>
+                    <sc-if value="{{r.open}}" hint-placeholder-val="{{false}}">
+                      <div id="{{r.evId}}" style="padding: 0 16px 26px; display: flex; flex-direction: column; gap: 14px; font-size: 17px; line-height: 1.55">
+                        <p style="margin: 0"><strong>How we checked.</strong> {{r.how}}</p>
+                        <blockquote style="margin: 0; padding: 14px 18px; border-radius: 8px; background: {{t.track}}">{{r.extract}}</blockquote>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                          <sc-for list="{{r.chips}}" as="c" hint-placeholder-count="2">
+                            <a href="#source" class="press" aria-label="{{c.aria}}" style="{{u.chip}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{c.label}}</a>
+                          </sc-for>
+                        </div>
+                        <sc-if value="{{r.hasDev}}" hint-placeholder-val="{{false}}">
+                          <div style="padding: 14px 18px; border-radius: 8px; background: {{t.claimBg}}"><span style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: {{t.ink2}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg>Developer says · not yet verified · {{r.devDate}}</span>“{{r.dev}}”</div>
+                        </sc-if>
+                        <p style="margin: 0"><strong>{{r.askLabel}}</strong> {{r.ask}}</p>
+                        <a href="#report" class="lk" style="align-self: flex-start; color: {{t.ink}}; font-size: 15px; font-weight: 600; text-underline-offset: 4px">Report an error in this row</a>
+                      </div>
+                    </sc-if>
+                  </li>
+                </sc-for>
+              </ol>
+              <p style="margin: 8px 0 0; padding: 0 16px; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Claims read by AI, then checked by a second AI reader. Each verdict comes from a rule that compares the claim with its record; no AI decides it. Our reading of public records, not legal advice. We never certify title.</p>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{showMore}}" hint-placeholder-val="{{true}}">
+      <section aria-labelledby="ask-h" style="background: {{t.band}}; padding: 144px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 56px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+            <h2 id="ask-h" class="rv" style="{{u.h2}}; max-width: 560px">What should I ask the broker?</h2>
+            <p class="rv rv1" style="{{u.lead}}; flex: 0 1 480px">{{askLead}}</p>
+          </div>
+          <ol class="rv rv1" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 40px; max-width: 920px">
+            <sc-for list="{{asks}}" as="q" hint-placeholder-count="4">
+              <li style="display: flex; flex-direction: column; gap: 8px">
+                <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.18; letter-spacing: -0.025em">{{q.q}}</p>
+                <p style="margin: 0; font-size: 17px; line-height: 1.5">{{q.why}}</p>
+              </li>
+            </sc-for>
+          </ol>
+          <div class="rv rv2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px">
+            <button type="button" class="press" onClick="{{copyAsks}}" style="{{u.secondaryOnBand}}">{{copyAsksLabel}}</button>
+            <button type="button" class="press" onClick="{{sendAsks}}" style="{{u.secondaryOnBand}}">{{sendAsksLabel}}</button>
+            <span style="font-size: 15px; color: {{t.ink2}}">Get every answer written into your agreement for sale.</span>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="src-h" style="background: {{t.bg}}; padding: 144px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+          <div class="rv" style="flex: 1 1 400px; min-width: 0; position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: {{t.photo}}">
+            <img data-slot="filingsStack" src="/_blob/f31937b65431d7097f6b6e30c0b0d403" alt="Illustrative image: a tall stack of printed filings on a windowsill desk" style="position: absolute; inset: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block">
+            <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+          </div>
+          <div style="flex: 1.3 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 26px">
+            <h2 id="src-h" class="rv" style="{{u.h2}}">Where do the answers come from?</h2>
+            <p class="rv rv1" style="{{u.lead}}; max-width: 40ch">From public filings, and from the developer's own papers, each read on a date we show. Nobody can pay to change a verdict.</p>
+            <dl class="rv rv1" style="margin: 0; display: flex; flex-direction: column; gap: 18px">
+              <sc-for list="{{legend}}" as="lg" hint-placeholder-count="4">
+                <div style="display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: 6px 20px; align-items: start">
+                  <dt style="{{lg.chipStyle}}">
+                    <sc-if value="{{lg.isD}}" hint-placeholder-val="{{true}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 5.2h9M2.5 8.8h9M9.6 2.2L4.4 11.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+                    <sc-if value="{{lg.isM}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                    <sc-if value="{{lg.isN}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="3.8" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M8.8 8.8l3.2 3.2M4.3 6h3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></sc-if>
+                    <sc-if value="{{lg.isC}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7 4.3V7l2 1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                    {{lg.name}}
+                  </dt>
+                  <dd style="margin: 0; font-size: 19px; line-height: 1.5">{{lg.text}}</dd>
+                </div>
+              </sc-for>
+            </dl>
+            <p class="rv rv2" style="margin: 0; max-width: 56ch">AI reads the claims from your file, and a second AI reader checks the first. Rules, not AI, compare each claim with its record. A person reviews any reading we're unsure of.</p>
+            <button type="button" onClick="{{toggleSrc}}" aria-expanded="{{srcExp}}" aria-controls="src-list" style="{{u.tertiary}}">The 5 records behind this check <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="{{chevSrc}}"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <sc-if value="{{srcOpen}}" hint-placeholder-val="{{false}}">
+              <dl id="src-list" style="margin: 0; display: flex; flex-direction: column; gap: 14px; font-size: 17px; line-height: 1.5">
+                <sc-for list="{{sources}}" as="so" hint-placeholder-count="5">
+                  <div style="display: flex; flex-direction: column; gap: 2px; padding: 16px 20px; border-radius: 8px; background: {{t.track}}">
+                    <dt style="font-weight: 600">{{so.name}}</dt>
+                    <dd style="margin: 0">{{so.text}}</dd>
+                  </div>
+                </sc-for>
+              </dl>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="any-h" style="position: relative; min-height: 680px; overflow: hidden; background: {{t.photo}}; display: flex; align-items: flex-end; container-type: inline-size">
+        <div style="position: absolute; left: 50%; height: max(124.14cqw, 100%); aspect-ratio: 928 / 1152; top: calc((100% - max(124.14cqw, 100%)) * 0.56); transform: translateX(-50%)">
+          <div class="drift" style="position: absolute; inset: 0; transform-origin: 38% 60%">
+            <img data-slot="hoardingClaim" src="/_blob/3c7757ac9408c879276b6d26d70432cd" alt="Illustrative image: a construction-site hoarding in front of a tower under construction. It says Possession Dec 2026 and 3 BHK from 2.35 crore, with its RERA number" style="position: absolute; inset: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block">
+            <div aria-hidden="true" style="position: absolute; inset: 0; container-type: inline-size; pointer-events: none">
+              <span style="{{hoardCover}}"></span>
+              <sc-for list="{{hoardType}}" as="ht" hint-placeholder-count="5"><span style="{{ht.style}}">{{ht.text}}</span></sc-for>
+            </div>
+          </div>
+        </div>
+        <div aria-hidden="true" style="position: absolute; top: 0; right: 0; bottom: 0; width: 50%; background: linear-gradient(90deg, rgba(12,14,13,0), rgba(12,14,13,0.8) 42%)"></div>
+        <span style="position: absolute; left: 16px; top: 16px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+        <div style="position: relative; width: 100%; max-width: 1264px; margin: 0 auto; padding: 120px 32px 96px; box-sizing: border-box; color: #FFFFFF; display: flex; justify-content: flex-end">
+          <div style="flex: 0 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+            <h2 id="any-h" class="rv" style="{{u.h2}}; color: #FFFFFF">Saw a claim on a hoarding?</h2>
+            <p class="rv rv1" style="margin: 0; font-size: 22px; line-height: 1.45; color: #FFFFFF">Photograph it in the Plinth app, or forward a broker's flyer or voice note on WhatsApp. Every claim comes back beside its record.</p>
+            <div class="rv rv1" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px">
+              <a href="#whatsapp" class="press" style="display: inline-flex; align-items: center; gap: 10px; height: 56px; padding: 0 28px; box-sizing: border-box; border-radius: 999px; background: #FFFFFF; color: #1B1A17; font-size: 19px; font-weight: 600; text-decoration: none">
+                <svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 14.5l1-3A6 6 0 1 1 6.5 14z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>Forward on WhatsApp
+              </a>
+              <a href="#app" class="lk" style="color: #FFFFFF; font-size: 19px; font-weight: 600; text-underline-offset: 5px">Install the Android app</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="max-width: 1264px; width: 100%; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 56ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">This check stands on HARERA's registration and quarterly filings for Aurelia Heights, Phase 2, the developer's cost sheet of 2 Oct 2026, and Haryana tax rules, Oct 2026. Checked 18 Oct 2026. Our reading of public records, not legal advice. We never certify title.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report an error</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#delete" class="lk" style="color: {{t.onSlab}}">Delete my file</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span>Records as of 14 Oct 2026 · HARERA synced 2 hours ago</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"step":{"editor":"enum","options":["Result","Drop","Reading"],"default":"Result"},"case":{"editor":"enum","options":["Flyer","Which project?","No claims found","Unreadable file"],"default":"Flyer"},"$preview":{"width":1280,"height":5900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = this.initFor(props);
+  }
+  pkey(p) {
+    p = p || this.props || {};
+    return (p.step || 'Result') + '|' + this.caseOf(p);
+  }
+  caseOf(p) {
+    p = p || this.props || {};
+    var c = String(p['case'] || 'Flyer');
+    if (c === 'Unreadable file') return 'unreadable';
+    if (c === 'No claims found') return 'noclaims';
+    if (c === 'Which project?') return 'pick';
+    return 'flyer';
+  }
+  initFor(p) {
+    p = p || {};
+    var step = p.step || 'Result';
+    var cs = this.caseOf(p);
+    var edge = cs === 'noclaims' || cs === 'unreadable';
+    var phase = step === 'Drop' ? 'drop' : (step === 'Reading' ? 'reading' : (edge ? 'edge' : 'done'));
+    var n = phase === 'done' ? 7 : 0;
+    return {
+      pk: this.pkey(p), phase: phase, found: n, checked: n, sub: 0, scanK: 0,
+      open: phase === 'done' ? 'poss' : null, sel: null,
+      picking: cs === 'pick', pick: 'p2', query: '', pickNote: '',
+      share: false, saved: false, copied: false, sent: false,
+      askCopied: false, askSent: false, srcOpen: false, edgeSent: false,
+      link: '', linkNote: '', following: false, themeOv: null, themeFrom: null
+    };
+  }
+  set(patch) {
+    var base = this.state && this.state.pk === this.pkey() ? {} : this.initFor(this.props);
+    for (var k in patch) base[k] = patch[k];
+    base.pk = this.pkey();
+    this.setState(base);
+  }
+  st() {
+    var s = this.state || {};
+    return s.pk === this.pkey() ? s : this.initFor(this.props);
+  }
+  componentDidMount() {
+    try { this._rm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { this._rm = false; }
+    if (this.st().phase === 'reading') this.startReading();
+  }
+  componentWillUnmount() { this.stop(); }
+  stop() { clearInterval(this._t); clearTimeout(this._d); }
+  startReading() {
+    var self = this;
+    this.stop();
+    var cs = this.caseOf();
+    var total = (cs === 'noclaims' || cs === 'unreadable') ? 0 : 7;
+    this.set({phase: 'reading', found: 0, checked: 0, sub: 0, scanK: 0, open: null, sel: null, share: false, picking: cs === 'pick', pickNote: '', edgeSent: false});
+    this._t = setInterval(function () {
+      var s = self.state;
+      if (total && s.found < total) { self.setState({found: s.found + 1}); return; }
+      if (!total && s.scanK < 7) { self.setState({scanK: s.scanK + 1}); return; }
+      clearInterval(self._t);
+      self._d = setTimeout(function () { self.setState({phase: total ? 'confirm' : 'edge'}); }, self._rm ? 0 : 380);
+    }, this._rm ? 40 : 420);
+  }
+  startChecking() {
+    var self = this;
+    this.stop();
+    this.set({phase: 'checking', found: 7, checked: 0, sub: 0, open: null, sel: null, share: false});
+    this._t = setInterval(function () {
+      var s = self.state;
+      if (s.sub === 0) { self.setState({sub: 1}); return; }
+      var nc = s.checked + 1;
+      self.setState({checked: nc, sub: 0});
+      if (nc >= 7) {
+        clearInterval(self._t);
+        self._d = setTimeout(function () { self.setState({phase: 'done'}); }, self._rm ? 0 : 520);
+      }
+    }, this._rm ? 30 : 360);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.st();
+    var cs = this.caseOf();
+    var tw = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var night = ((s.themeOv && s.themeFrom === tw) ? s.themeOv : tw) === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', panelSolid: '#16221D', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claimBg: '#1D2621', emptyBorder: '#7D828A', segOff: 'transparent',
+      band: '#101B17', slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0',
+      vMatch: 'rgba(255,255,255,0.15)', vNone: '#2A3530', vCant: 'rgba(255,255,255,0.09)',
+      sMatch: '#6F8F82', sNone: 'rgba(255,255,255,0.30)',
+      hatch: 'repeating-linear-gradient(45deg, rgba(185,198,192,0.34) 0 1.5px, transparent 1.5px 7px)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', panelSolid: '#FFFFFF', photo: '#E7E3DA',
+      line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claimBg: '#F1ECE2', emptyBorder: '#8C9199', segOff: '#FFFFFF',
+      band: '#F4F2ED', slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0',
+      vMatch: '#E2DED4', vNone: '#EADFCB', vCant: '#EEEAE2',
+      sMatch: '#8A847A', sNone: '#C9C4B9',
+      hatch: 'repeating-linear-gradient(45deg, rgba(63,60,54,0.30) 0 1.5px, transparent 1.5px 7px)'
+    };
+    var disp = "font-family:'Bricolage Grotesque', system-ui, sans-serif;font-weight:800;";
+    var U = {
+      h1: 'margin:0;' + disp + 'font-size:clamp(44px, 7vw, 88px);line-height:0.96;letter-spacing:-0.045em;max-width:880px',
+      h2: 'margin:0;' + disp + 'font-size:clamp(40px, 5vw, 64px);line-height:1;letter-spacing:-0.035em',
+      lead: 'margin:0;font-size:22px;line-height:1.45;color:' + T.ink,
+      primary: 'display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 30px;border:0;border-radius:999px;background:' + T.accent + ';color:' + T.onAccent + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer',
+      secondary: 'display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 26px;border:0;border-radius:999px;background:' + T.track + ';color:' + T.ink + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer',
+      secondaryOnBand: 'display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 26px;border:0;border-radius:999px;background:' + T.panelSolid + ';color:' + T.ink + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer',
+      secondarySm: 'display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;border:0;border-radius:999px;background:' + T.panelSolid + ';color:' + T.ink + ';font:inherit;font-size:17px;font-weight:600;cursor:pointer',
+      tertiary: 'display:inline-flex;align-items:center;gap:8px;align-self:flex-start;min-height:44px;padding:0;border:0;background:transparent;color:' + T.ink + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:5px',
+      tertiarySm: 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:transparent;color:' + T.ink + ';font:inherit;font-size:17px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:5px',
+      chip: 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 14px;border-radius:999px;background:' + T.track + ';font-size:14px;color:' + T.ink + ';text-decoration:none;white-space:nowrap',
+      chipOnBand: 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 14px;border-radius:999px;background:' + T.panelSolid + ';font-size:14px;color:' + T.ink + ';text-decoration:none;white-space:nowrap'
+    };
+
+    // Borderless risk chip (DESIGN §0), copied from AppScan.
+    var BI = {Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillD: '#3A2210'}};
+    var bandInk = night ? BI.Elevated.dark : BI.Elevated.light;
+    var chip = {
+      name: 'Elevated', sr: 'Delivery risk: Elevated, step 3 of 5, low confidence',
+      style: 'display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:600;line-height:1;white-space:nowrap;background:' + (night ? BI.Elevated.fillD : BI.Elevated.fill) + ';color:' + T.ink,
+      meter: [1, 2, 3, 4, 5].map(function (j) {
+        return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= 3 ? 'background:' + bandInk : 'background:' + T.segOff + ';border:1px solid ' + T.emptyBorder)};
+      })
+    };
+
+    // The seven claims on the sample flyer, top to bottom. Regions are % of the flyer image.
+    var CL = [
+      {id: 'poss', quote: 'Possession Dec 2026', v: 'Differs', x: 8.59, y: 11.25, w: 57.25, h: 4.83, a: 'out-r', against: 'the HARERA registration',
+        rec: 'Original completion is Dec 2027 on the HARERA registration, with no extensions. 41% is built.',
+        how: 'We compared the date on the flyer with the completion date Northfield Estates registered with HARERA, then with its latest quarterly progress report.',
+        extract: '“Proposed date of completion: Dec 2027.” HARERA registration, Aurelia Heights, Phase 2',
+        chips: ['HARERA registration · Dec 2022', 'HARERA QPR · Apr–Jun 2026'],
+        ask: 'Which completion date will be written in my agreement for sale?',
+        why: 'The flyer says possession Dec 2026. HARERA shows completion Dec 2027, with 41% built.'},
+      {id: 'slab', quote: 'Structure up to 12th floor', v: "Can't check", x: 8.3, y: 18, w: 57, h: 3.8, a: 'below-l', against: 'the latest progress report',
+        rec: 'The last filing, Apr–Jun 2026, shows Tower A at slab 9. The Jul–Sep QPR was due 15 Oct and is not on HARERA yet.',
+        how: "Floor-by-floor progress comes from the quarterly progress report. The newest one isn't public yet, so today's floor can't be checked.",
+        extract: '“Tower A: up to slab 9.” HARERA QPR, Apr–Jun 2026, filed 15 Jul 2026',
+        chips: ['HARERA QPR · Apr–Jun 2026', 'HARERA QPR register · 18 Oct 2026'],
+        dev: 'The Jul–Sep 2026 QPR was filed on 12 Oct 2026.', devDate: '15 Oct 2026',
+        ask: 'Which slab is Tower A at today? When will the Jul–Sep QPR be on HARERA?'},
+      {id: 'left', quote: 'Only 20 flats left', v: 'Differs', x: 72.2, y: 18, w: 23.4, h: 17.6, a: 'below-c', round: true, against: 'the latest progress report',
+        rec: '72% of 500 units were booked at the last filing, Apr–Jun 2026. That leaves about 140 unbooked.',
+        how: "We compared the flyer with the units booked in the developer's latest quarterly filing. Sales since 30 Jun 2026 aren't public yet.",
+        extract: '“Units booked: 72%.” HARERA QPR, Apr–Jun 2026, page 3',
+        chips: ['HARERA QPR · Apr–Jun 2026'],
+        ask: 'How many 3 BHK homes are unbooked today? Can I see the unit list?',
+        why: 'The flyer says only 20 are left. The last filing shows about 140 unbooked.'},
+      {id: 'price', quote: '₹11,999/sq ft all-inclusive', v: 'Differs', x: 8.7, y: 60.17, w: 41.2, h: 5.92, a: 'below-l', against: 'the cost sheet and tax rules',
+        rec: "All-in comes to ₹18,900 per sq ft carpet: the developer's cost sheet of 2 Oct 2026, plus GST, stamp duty and registration.",
+        how: "We added every charge on the developer's own cost sheet, then GST, stamp duty and registration under Haryana rules. ₹11,999 is close to the base price alone, ₹11,750 per sq ft super, and the flyer's own fine print says stamp duty and registration are extra.",
+        extract: '“Basic sale price ₹2,35,00,000. PLC ₹2,90,000. Club ₹1,50,000. Parking ₹3,50,000. IFMS ₹1,30,000.” Cost sheet, 2 Oct 2026',
+        chips: ['Developer cost sheet · 2 Oct 2026', 'Plinth cost rules v2026.10'],
+        ask: 'What is the all-in price per sq ft carpet, with GST, stamp duty and every charge, in writing?',
+        why: 'The flyer says ₹11,999 a sq ft, all-inclusive. The cost sheet comes to ₹18,900 a sq ft carpet, all-in.'},
+      {id: 'area', quote: '3 BHK · 2,000 sq ft', v: 'Differs', x: 59.2, y: 61.2, w: 32.5, h: 3.85, a: 'below-l', against: 'the HARERA registration',
+        rec: 'The 3 BHK is 1,450 sq ft carpet, as registered. 2,000 sq ft is its super area, 38% more.',
+        how: 'We compared the area on the flyer with the carpet area registered with HARERA. Super area adds your share of walls, lifts and lobbies.',
+        extract: '“3 BHK, carpet area 1,450 sq ft.” HARERA registration, unit sizes',
+        chips: ['HARERA registration · unit sizes', 'Developer cost sheet · 2 Oct 2026'],
+        ask: 'Is 2,000 sq ft the carpet area or the super area?',
+        why: 'The flyer says 2,000 sq ft. The registered carpet area is 1,450 sq ft.'},
+      {id: 'club', quote: '40,000 sq ft clubhouse', v: 'Not in records', x: 73.5, y: 71.2, w: 20.8, h: 14.8, a: 'in-mr', against: 'every filing for Phase 2',
+        rec: "No filing we read gives the clubhouse's size. The approved building plan may.",
+        how: 'We searched the HARERA registration and every quarterly progress report for Phase 2. None gives a clubhouse size.',
+        extract: 'No clubhouse area in the HARERA registration or in the QPRs, Jun 2023 to Jun 2026.',
+        chips: ['Searched HARERA · 14 Oct 2026'],
+        ask: 'Can I see the approved building plan that shows the clubhouse?'},
+      {id: 'rera', quote: 'RERA GGM/673/405/2022/117', v: 'Matches', x: 4.4, y: 90.6, w: 68.4, h: 2.6, a: 'in-r', against: 'the HARERA register',
+        rec: 'Registered with HARERA in Dec 2022, by Northfield Estates, for Aurelia Heights, Phase 2.',
+        how: "We looked the number up on HARERA. It belongs to this project and this developer.",
+        extract: '“GGM/673/405/2022/117 · Aurelia Heights, Phase 2 · Northfield Estates.” HARERA register',
+        chips: ['HARERA registration · Dec 2022'],
+        askLabel: 'Worth knowing.',
+        ask: "A matching RERA number shows the project is registered. It doesn't make the other claims true."}
+    ];
+    if (cs === 'pick') {
+      CL[6] = {id: 'rera', quote: 'RERA number, blurred', v: "Can't check", x: 4.4, y: 90.6, w: 68.4, h: 2.6, a: 'in-r', against: 'the HARERA register',
+        rec: 'The number on the flyer is too blurred to read. You picked Aurelia Heights, Phase 2: its number is GGM/673/405/2022/117.',
+        how: "We couldn't read the number, so we checked the other claims against the project you picked.",
+        extract: 'Blurred text in the fine print at the foot of the flyer.',
+        chips: ['HARERA registration · Dec 2022'],
+        ask: 'Ask for the RERA number in writing, then check it here.'};
+    }
+    var TOTAL = CL.length;
+
+    var VT = {
+      'Differs': {bg: T.ink, fg: T.bg, tag: 'background:#1B1A17;color:#FFFFFF', seg: 'background:' + T.ink},
+      'Matches': {bg: T.vMatch, fg: T.ink, tag: 'background:#FFFFFF;color:#1B1A17', seg: 'background:' + T.sMatch},
+      'Not in records': {bg: T.vNone, fg: T.ink, tag: 'background:#F1ECE2;color:#1B1A17', seg: 'background:' + T.sNone},
+      "Can't check": {bg: T.hatch + ',' + T.vCant, fg: T.ink, tag: 'background:repeating-linear-gradient(45deg, rgba(63,60,54,0.22) 0 1.5px, transparent 1.5px 7px), #FFFFFF;color:#1B1A17', seg: 'background:' + T.hatch + ',' + T.track}
+    };
+    function vchip(v) {
+      var t = VT[v];
+      return 'display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 13px 0 11px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:600;line-height:1;white-space:nowrap;background:' + t.bg + ';color:' + t.fg;
+    }
+    function flags(v) { return {isD: v === 'Differs', isM: v === 'Matches', isN: v === 'Not in records', isC: v === "Can't check"}; }
+
+    var phase = s.phase;
+    var isFlyerCase = cs === 'flyer' || cs === 'pick';
+    var edgeCase = !isFlyerCase;
+    var found = Math.max(0, Math.min(TOTAL, s.found || 0));
+    var checked = Math.max(0, Math.min(TOTAL, s.checked || 0));
+    var isDone = phase === 'done';
+    var checkingNow = phase === 'checking';
+    function isChecked(i) { return isDone || i < checked; }
+    function isCheckingRow(i) { return checkingNow && i === checked && s.sub === 1; }
+
+    var D = 0, M = 0, N = 0, C = 0, dSoFar = 0;
+    CL.forEach(function (c, i) {
+      if (c.v === 'Differs') D++; else if (c.v === 'Matches') M++; else if (c.v === 'Not in records') N++; else C++;
+      if (isChecked(i) && c.v === 'Differs') dSoFar++;
+    });
+
+    // Type set on the generated images' placeholder bars. Flyer image 896x1200, hoarding image 928x1152.
+    // Positions are % of the image (measured from its pixels); sizes are cqw of the image's width, so the type scales with every thumbnail.
+    function typeItem(d) {
+      var st = 'position:absolute;left:' + d.x + '%;top:' + d.y + '%;width:' + d.w + '%;height:' + d.h + '%;box-sizing:border-box;display:flex;align-items:center;justify-content:' + (d.center ? 'center' : 'flex-start') + ';padding-left:' + (d.pl || 0) + 'cqw;font-family:Mukta, system-ui, sans-serif;font-weight:' + (d.fw || 700) + ';font-size:' + d.fs + 'cqw;line-height:1;letter-spacing:' + (d.ls || '0') + ';white-space:nowrap;color:' + d.c + ';';
+      if (d.bg) st += 'background:' + d.bg + ';';
+      if (d.r) st += 'border-radius:' + d.r + ';';
+      if (d.sk) st += 'transform:skewY(' + d.sk + 'deg);transform-origin:0 50%;';
+      if (d.blur) st += 'filter:blur(' + d.blur + ');';
+      if (d.o) st += 'opacity:' + d.o + ';';
+      return {text: d.t, style: st};
+    }
+    var NAVY = '#142957', PAPER = '#F9F9F9', CREAM = '#F1EEE5', FINE = '#3F3C36';
+    var flyerType = [
+      {t: 'AURELIA HEIGHTS · PHASE 2', x: 8.59, y: 5.08, w: 77.12, h: 4.83, fs: 4, c: '#FFFFFF', bg: NAVY, r: '1.4cqw', pl: 2.4, ls: '0.03em'},
+      {t: 'POSSESSION DEC 2026', x: 8.59, y: 11.25, w: 57.25, h: 4.83, fs: 4, c: '#E9C46A', bg: NAVY, r: '1.4cqw', pl: 2.4, ls: '0.03em'},
+      {t: 'Structure up to 12th floor', x: 8.3, y: 18.3, w: 57, h: 3.2, fs: 2.5, c: NAVY, bg: PAPER, pl: 0.3},
+      {t: 'ONLY 20', x: 72.21, y: 21.7, w: 23.44, h: 5.2, fs: 4.6, c: NAVY, center: true},
+      {t: 'FLATS LEFT', x: 72.21, y: 27.1, w: 23.44, h: 3.4, fs: 2.8, c: NAVY, center: true, ls: '0.04em'},
+      {t: '₹11,999/sq ft', x: 8.71, y: 60.6, w: 41.18, h: 3.4, fs: 4.3, c: NAVY, pl: 2.6},
+      {t: 'ALL-INCLUSIVE*', x: 8.71, y: 63.9, w: 41.18, h: 1.9, fs: 1.7, c: NAVY, pl: 2.7, ls: '0.16em'},
+      {t: '3 BHK · 2,000 SQ FT', x: 59.2, y: 61.45, w: 32.5, h: 3.35, fs: 2.3, c: NAVY, bg: CREAM, r: '999px', center: true},
+      {t: 'Infinity pool', x: 8.39, y: 83.72, w: 15.69, h: 1.98, fs: 1.9, c: NAVY, bg: PAPER, center: true, fw: 600},
+      {t: 'Gym', x: 30.94, y: 83.72, w: 15.69, h: 1.98, fs: 1.9, c: NAVY, bg: PAPER, center: true, fw: 600},
+      {t: 'Central park', x: 53.48, y: 83.72, w: 15.69, h: 1.98, fs: 1.9, c: NAVY, bg: PAPER, center: true, fw: 600},
+      {t: '40,000 sq ft clubhouse', x: 76.03, y: 83.72, w: 15.69, h: 1.98, fs: 1.9, c: NAVY, bg: PAPER, center: true, fw: 600},
+      {t: 'RERA No. GGM/673/405/2022/117', x: 4.38, y: 90.88, w: 68.37, h: 1.98, fs: 1.75, c: FINE, bg: CREAM, fw: 600, pl: 0.2, blur: cs === 'pick' ? '0.32cqw' : 0},
+      {t: '*Images are artistic impressions. Conditions apply.', x: 4.38, y: 93.38, w: 68.37, h: 1.9, fs: 1.75, c: FINE, bg: CREAM, fw: 600, pl: 0.2},
+      {t: 'Stamp duty and registration extra.', x: 4.38, y: 95.8, w: 45.82, h: 1.9, fs: 1.75, c: FINE, bg: CREAM, fw: 600, pl: 0.2}
+    ].map(typeItem);
+    var hoardCover = 'position:absolute;left:21.88%;top:45.92%;width:34.05%;height:25.43%;clip-path:polygon(0 30.04%, 100% 0, 100% 100%, 0 89.42%);background:#232A38';
+    var hoardType = [
+      {t: 'AURELIA HEIGHTS · PHASE 2', x: 23.92, y: 53.63, w: 30, h: 1.77, fs: 1.83, c: '#C9A65A', ls: '0.06em', sk: -13.4, o: 0.95},
+      {t: 'POSSESSION', x: 23.92, y: 55.69, w: 30, h: 3.54, fs: 3.66, c: '#ECE7DA', sk: -9.6, o: 0.95},
+      {t: 'DEC 2026', x: 23.92, y: 58.85, w: 30, h: 5.21, fs: 5.39, c: '#D4AE5E', sk: -4.5, o: 0.95},
+      {t: '3 BHK FROM ₹2.35 CR*', x: 23.92, y: 64.29, w: 30, h: 1.98, fs: 2.05, c: '#ECE7DA', sk: 0.7, o: 0.95},
+      {t: 'RERA No. GGM/673/405/2022/117', x: 23.92, y: 66.89, w: 30, h: 1.3, fs: 1.35, c: '#CFC8B8', fw: 600, sk: 3.7, o: 0.95}
+    ].map(typeItem);
+    // Where a verdict tag sits relative to its claim box, so tags never cover the claim's own type.
+    function tagPos(a) {
+      if (a === 'out-r') return {pos: 'left:calc(100% + 6px);top:50%;', tr: 'translateY(-50%)'};
+      if (a === 'out-rt') return {pos: 'left:calc(100% + 6px);top:0;', tr: 'translateY(-30%)'};
+      if (a === 'below-l') return {pos: 'left:0;top:calc(100% + 4px);', tr: 'translateY(0)'};
+      if (a === 'in-b') return {pos: 'left:50%;bottom:6px;', tr: 'translateX(-50%)'};
+      if (a === 'in-mid') return {pos: 'left:50%;top:50%;', tr: 'translate(-50%, -50%)'};
+      if (a === 'in-mr') return {pos: 'right:2px;top:50%;', tr: 'translateY(-50%)'};
+      if (a === 'below-c') return {pos: 'left:50%;top:calc(100% + 2px);', tr: 'translateX(-50%)'};
+      return {pos: 'right:6px;top:50%;', tr: 'translateY(-50%)'};
+    }
+
+    // Doc marks: the claims "light up" (a mint highlighter sweep) as each one is checked.
+    var selId = isDone ? (s.sel || null) : null;
+    var marks = isFlyerCase && phase !== 'drop' ? CL.map(function (c, i) {
+      var vis = i < found;
+      var lit = vis && isChecked(i);
+      var cur = isCheckingRow(i);
+      var on = selId === c.id;
+      var dim = !!selId && !on;
+      var f = flags(c.v);
+      return {
+        isD: f.isD, isM: f.isM, isN: f.isN, isC: f.isC,
+        tag: c.v, on: on ? 'true' : 'false', tab: vis ? '0' : '-1',
+        aria: 'Flyer claim: ' + c.quote + '. ' + (lit ? c.v + '. Open the evidence.' : 'Not checked yet.'),
+        pick: function () { if (!vis) return; self.set({sel: c.id, open: c.id}); },
+        style: 'position:absolute;left:' + c.x + '%;top:' + c.y + '%;width:' + c.w + '%;height:' + c.h + '%;padding:0;border:0;border-radius:' + (c.round ? '50%' : '4px') + ';background:transparent;cursor:' + (vis ? 'pointer' : 'default') + ';display:block;transition:opacity .3s ease;opacity:' + (vis ? (dim ? 0.38 : 1) : 0) + ';pointer-events:' + (vis ? 'auto' : 'none'),
+        washStyle: 'position:absolute;inset:0;border-radius:' + (c.round ? '50%' : '4px') + ';background:' + (cur ? 'rgba(110,231,183,0.34)' : 'rgba(255,255,255,0.40)') + ';opacity:' + (vis && !lit ? 1 : 0) + ';transition:opacity .3s ease,background-color .3s ease',
+        litStyle: 'position:absolute;inset:0;border-radius:' + (c.round ? '50%' : '4px') + ';background:rgba(110,231,183,' + (on ? '0.86' : '0.62') + ');mix-blend-mode:multiply;transform-origin:0 50%;transform:scaleX(' + (lit ? 1 : 0) + ');transition:transform .6s cubic-bezier(.22,1,.36,1),background-color .3s ease',
+        tagStyle: 'position:absolute;' + tagPos(c.a).pos + 'display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px 0 8px;border-radius:999px;box-sizing:border-box;font-family:Mukta, system-ui, sans-serif;font-size:13px;font-weight:600;line-height:1;white-space:nowrap;' + VT[c.v].tag + ';transform:' + tagPos(c.a).tr + ' scale(' + (lit ? 1 : 0.6) + ');transform-origin:0 50%;opacity:' + (lit ? 1 : 0) + ';transition:transform .35s cubic-bezier(.22,1,.36,1) .3s,opacity .25s ease .3s'
+      };
+    }) : [];
+
+    var scanY = 2, scanOn = phase === 'reading';
+    if (isFlyerCase) { scanY = found === 0 ? 2 : Math.min(98, CL[found - 1].y + CL[found - 1].h); }
+    else { scanY = Math.min(98, 2 + (s.scanK || 0) * 14); }
+
+    var strip = CL.map(function (c, i) {
+      var st = 'display:block;height:14px;border-radius:3px;transition:background-color .35s ease;';
+      if (isChecked(i)) st += VT[c.v].seg;
+      else if (isCheckingRow(i)) st += 'background:' + T.accent;
+      else st += 'background:' + T.track;
+      return {style: st};
+    });
+
+    var rows = isFlyerCase ? CL.slice(0, found).map(function (c, i) {
+      var chk = isChecked(i), cur = isCheckingRow(i), open = isDone && s.open === c.id;
+      var f = flags(c.v);
+      return {
+        quote: c.quote, v: c.v, rec: c.rec, against: c.against, how: c.how, extract: c.extract,
+        isD: f.isD, isM: f.isM, isN: f.isN, isC: f.isC,
+        checked: chk, checking: !chk && cur, waiting: !chk && !cur,
+        open: open, exp: open ? 'true' : 'false', evId: 'ev-' + c.id,
+        evLabel: open ? 'Hide the evidence' : 'See the evidence',
+        chev: 'transition:transform .2s ease;transform:rotate(' + (open ? 180 : 0) + 'deg)',
+        chips: c.chips.map(function (l) { return {label: l, aria: 'Source: ' + l + '. Open the record.'}; }),
+        hasDev: !!c.dev, dev: c.dev || '', devDate: c.devDate || '',
+        askLabel: c.askLabel || 'Ask the broker.', ask: c.ask,
+        chipStyle: vchip(c.v),
+        toggle: function () { if (!self.st().phase || self.st().phase !== 'done') return; var o = self.st().open === c.id; self.set({open: o ? null : c.id, sel: o ? null : c.id}); },
+        liStyle: 'border-radius:8px;transition:background-color .25s ease;background:' + (open ? T.panelSolid : 'transparent'),
+        btnStyle: 'display:grid;grid-template-columns:repeat(auto-fit, minmax(min(240px, 100%), 1fr));gap:12px 24px;align-items:start;width:100%;box-sizing:border-box;padding:16px;border:0;border-radius:8px;text-align:left;font:inherit;color:inherit;transition:background-color .2s ease;cursor:' + (isDone ? 'pointer' : 'default'),
+        quoteStyle: 'display:block;padding:14px 16px;border-radius:8px;background:' + T.claimBg + ';' + disp + 'font-size:22px;line-height:1.18;letter-spacing:-0.02em;color:' + T.ink
+      };
+    }) : [];
+
+    // Summary numbers per phase.
+    var bigNum = '0', bigText = '', statusSentence = '', breakdown = '', metaA = '', metaB = '';
+    var parts = [];
+    if (M) parts.push(M + (M === 1 ? ' matches' : ' match'));
+    if (N) parts.push(N + (N === 1 ? " isn't in any record we read" : " aren't in any record we read"));
+    if (C) parts.push(cs === 'flyer' ? C + " can't be checked until the Jul–Sep QPR is filed" : C + " can't be checked yet");
+    if (phase === 'reading') {
+      bigNum = String(found);
+      bigText = (found === 1 ? 'claim' : 'claims') + ' found. Still reading.';
+      breakdown = 'Reading top to bottom. Usually under 30 seconds.';
+      statusSentence = 'Reading the file. ' + found + ' claims found so far.';
+      metaA = isFlyerCase || cs === 'unreadable' ? 'Broker flyer · 1 page · added 18 Oct 2026' : 'Brochure page · added 18 Oct 2026';
+      metaB = "You can leave this page. We'll keep reading.";
+    } else if (phase === 'confirm') {
+      bigNum = String(TOTAL); bigText = 'claims found. Which project is it?';
+      breakdown = 'Before we check, confirm the project. Every claim is checked against its records.';
+      statusSentence = TOTAL + ' claims found. Confirm the project to check them.';
+      metaA = 'Broker flyer · 1 page · added 18 Oct 2026'; metaB = 'Nothing is checked until you confirm.';
+    } else if (phase === 'checking') {
+      bigNum = checked + ' of ' + TOTAL; bigText = 'claims checked. ' + dSoFar + (dSoFar === 1 ? ' differs' : ' differ') + ' so far.';
+      breakdown = 'Each claim is checked against its own record, top to bottom.';
+      statusSentence = checked + ' of ' + TOTAL + ' claims checked. ' + dSoFar + ' differ from the records so far.';
+      metaA = 'Broker flyer · forwarded 18 Oct 2026'; metaB = 'Checking against Aurelia Heights, Phase 2 · records as of 14 Oct 2026';
+    } else if (phase === 'edge') {
+      bigNum = '0';
+      bigText = cs === 'unreadable' ? 'claims read. The photo is too blurred.' : 'claims we can check on this page.';
+      breakdown = cs === 'unreadable' ? 'Nothing was checked, and nothing was saved.' : 'Nothing here can be compared with a record.';
+      statusSentence = cs === 'unreadable' ? "We couldn't read this file." : 'No checkable claims on this page.';
+      metaA = cs === 'unreadable' ? 'Photo of a flyer · 1 page · added 18 Oct 2026' : 'Brochure page 6 of 32 · added 18 Oct 2026';
+      metaB = 'Private to you. Deleted after 30 days.';
+    } else {
+      bigNum = D + ' of ' + TOTAL; bigText = 'claims differ from the records.';
+      breakdown = parts.join('. ') + '.';
+      statusSentence = D + ' of ' + TOTAL + ' claims differ from the records. ' + breakdown;
+      metaA = 'Broker flyer · forwarded 18 Oct 2026';
+      metaB = 'Checked against Aurelia Heights, Phase 2 · RERA GGM/673/405/2022/117 · records as of 14 Oct 2026';
+    }
+    var busy = phase === 'reading' || phase === 'checking' || phase === 'confirm';
+    var progPct = phase === 'reading' ? Math.round((isFlyerCase ? found / TOTAL : (s.scanK || 0) / 7) * 40) : (phase === 'confirm' ? 45 : (phase === 'checking' ? 50 + Math.round(checked / TOTAL * 50) : 100));
+    var progText = phase === 'reading' ? 'Reading the file · read by AI' : (phase === 'confirm' ? 'Waiting for you to confirm the project' : 'Checking ' + Math.min(TOTAL, checked + 1) + ' of ' + TOTAL + ' against the records');
+
+    // Edge states.
+    var EDGE = {
+      noclaims: {title: 'Nothing here we can check.', body: 'We read the whole page. It has pictures and amenity names, but no date, price, area or RERA number to compare with the records.',
+        hasList: true, list: [{text: 'Possession and completion dates'}, {text: 'Prices and "all-inclusive" totals'}, {text: 'Carpet and super area'}, {text: 'RERA numbers'}, {text: '"Ready to move" and OC claims'}, {text: '"Sold out" and "only a few left"'}],
+        primary: 'Try another page', secondary: 'Ask about this project', sentNote: 'Opening Ask with Aurelia Heights, Phase 2.'},
+      unreadable: {title: "We couldn't read this photo.", body: 'The small print is too blurred to read. Try again flat on a table, in daylight, with the whole page in the frame. A PDF with a password can\'t be opened; a screenshot of it works.',
+        hasList: false, list: [], primary: 'Try another photo', secondary: 'Ask a person to read it', sentNote: "Sent to our team. A person will read it and reply on this page, usually the same day."}
+    };
+    var edge = EDGE[cs] || EDGE.noclaims;
+
+    // Project picker.
+    var P = [
+      {k: 'p2', name: 'Aurelia Heights, Phase 2', where: 'Northfield Estates · Sector 37D · under construction · RERA GGM/673/405/2022/117', key: 'aurelia heights phase 2 northfield estates sector 37d ggm/673/405/2022/117'},
+      {k: 'p1', name: 'Aurelia Heights, Phase 1', where: 'Northfield Estates · Sector 37D · finished', key: 'aurelia heights phase 1 northfield estates sector 37d'},
+      {k: 'kp', name: 'Kestrel Park', where: 'Orbis Land · Sector 113', key: 'kestrel park orbis land sector 113'},
+      {k: 'sg', name: 'Sapphire Grove, Phase 1', where: 'Meridian Habitat · Sector 106', key: 'sapphire grove phase 1 meridian habitat sector 106'},
+      {k: 'ct', name: 'Coral Towers', where: 'Vantage Buildcon · Sector 89', key: 'coral towers vantage buildcon sector 89'},
+      {k: 'lr', name: 'Laurel Residency', where: 'Elmstone Developers · Sector 92', key: 'laurel residency elmstone developers sector 92'},
+      {k: 'je', name: 'Juniper Enclave', where: 'Halcyon Homes · Sector 102', key: 'juniper enclave halcyon homes sector 102'}
+    ];
+    var qy = String(s.query || '').trim().toLowerCase();
+    var pickList = qy ? P.filter(function (p) { return p.key.indexOf(qy) >= 0; }).slice(0, 4) : P.slice(0, 2);
+    var picks = pickList.map(function (p) {
+      var on = s.pick === p.k;
+      return {
+        name: p.name, where: p.where, on: on ? 'true' : 'false',
+        pick: function () { self.set({pick: p.k, pickNote: ''}); },
+        style: 'display:flex;align-items:center;gap:16px;width:100%;text-align:left;padding:14px 18px;border:0;border-radius:8px;box-sizing:border-box;font:inherit;font-size:17px;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.panelSolid : 'transparent'),
+        ring: 'flex:none;width:24px;height:24px;border-radius:50%;box-sizing:border-box;border:2px solid ' + (on ? T.ink : T.lineStrong) + ';display:inline-flex;align-items:center;justify-content:center',
+        dot: 'width:12px;height:12px;border-radius:50%;background:' + (on ? T.ink : 'transparent')
+      };
+    });
+    var pickName = (P.filter(function (p) { return p.k === s.pick; })[0] || P[0]).name;
+
+    var asks = CL.filter(function (c) { return c.v === 'Differs'; }).map(function (c) { return {q: c.ask, why: c.why}; });
+    var legend = [
+      {name: 'Differs', text: 'The record says something else. We show both, side by side.'},
+      {name: 'Matches', text: "The record says the same. It doesn't make the other claims true."},
+      {name: 'Not in records', text: 'No filing we read covers it. Ask for it in writing.'},
+      {name: "Can't check", text: "The record isn't public yet, or the claim is about the future."}
+    ].map(function (l) { var f = flags(l.name); return {name: l.name, text: l.text, isD: f.isD, isM: f.isM, isN: f.isN, isC: f.isC, chipStyle: vchip(l.name) + ';margin:0;justify-self:start'}; });
+    var sources = [
+      {name: 'HARERA registration', text: 'Aurelia Heights, Phase 2, registered Dec 2022: the completion date, carpet areas and the developer. Read 14 Oct 2026.'},
+      {name: 'HARERA quarterly progress report, Apr–Jun 2026', text: 'Filed 15 Jul 2026, on time: 72% booked, 41% built, Tower A at slab 9.'},
+      {name: 'HARERA QPR register', text: 'The Jul–Sep 2026 report was due 15 Oct 2026. It is not on HARERA as of 18 Oct 2026.'},
+      {name: 'Developer cost sheet, 2 Oct 2026', text: 'Shared by Northfield Estates. Not a public filing; we show it as the developer gave it.'},
+      {name: 'Plinth cost rules v2026.10', text: 'GST, stamp duty and registration under Haryana rules, reviewed by a chartered accountant.'}
+    ];
+
+    var stepNames = ['Add a file', 'Reading', 'Claims vs records'];
+    var stepIdx = phase === 'drop' ? 0 : (isDone ? 2 : 1);
+    var steps = stepNames.map(function (n, i) {
+      var done = i < stepIdx, cur = i === stepIdx;
+      return {
+        label: n, done: done, current: cur ? 'step' : 'false',
+        go: function () {
+          if (i === 0) { self.stop(); self.set({phase: 'drop', found: 0, checked: 0, open: null, sel: null, share: false}); }
+          else if (i === 1) self.startReading();
+          else { self.stop(); if (edgeCase) self.set({phase: 'edge'}); else self.set({phase: 'done', found: TOTAL, checked: TOTAL}); }
+        },
+        btnStyle: 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:transparent;color:' + (cur || done ? T.ink : T.ink2) + ';font:inherit;font-size:17px;font-weight:' + (cur ? 700 : 500) + ';cursor:pointer;' + (cur ? 'text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:8px' : 'text-decoration:none')
+      };
+    });
+
+    var docFlyer = isFlyerCase || cs === 'unreadable';
+    var showMore = isDone && isFlyerCase;
+    var dLabel = isFlyerCase ? 'The flyer you added, with ' + Math.min(found, TOTAL) + ' claims marked. Pick one to open its evidence.' : (cs === 'unreadable' ? 'The photo you added. It is too blurred to read.' : 'The brochure page you added. No claims were found on it.');
+    var shareText = D + ' of ' + TOTAL + ' claims differ from the records. Possession: the flyer says Dec 2026; HARERA shows Dec 2027. Price: the flyer says ₹11,999 a sq ft all-inclusive; the cost sheet comes to ₹18,900 a sq ft carpet, all-in.';
+
+    return {
+      t: T, u: U, chip: chip,
+      rootMin: showMore ? 5900 : 2000,
+      night: night, day: !night,
+      themeLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.set({themeOv: night ? 'Day' : 'Night', themeFrom: tw}); },
+      toggleFollow: function () { self.set({following: !self.st().following}); },
+      followLabel: s.following ? 'Following' : 'Follow project',
+      followingStr: s.following ? 'true' : 'false',
+      steps: steps,
+
+      isDrop: phase === 'drop', isCheck: phase !== 'drop',
+      link: s.link, onLink: function (e) { self.set({link: e.target.value, linkNote: ''}); },
+      hasLinkNote: !!s.linkNote, linkNote: s.linkNote,
+      checkLink: function () { if (!String(self.st().link || '').trim()) { self.set({linkNote: 'Paste a link first. It can be a listing, an ad or a PDF.'}); return; } self.startReading(); },
+      chooseFile: function () { self.startReading(); },
+      trySample: function () { self.startReading(); },
+
+      bigNum: bigNum, bigText: bigText, statusSentence: statusSentence, breakdown: breakdown,
+      showStrip: isFlyerCase, strip: strip,
+      metaA: metaA, metaB: metaB,
+      isDone: isDone && isFlyerCase, isBusy: busy,
+      progPct: progPct, progText: progText,
+      progBar: 'display:block;height:100%;width:100%;border-radius:4px;background:' + T.accent + ';transform-origin:0 50%;transform:scaleX(' + (progPct / 100) + ');transition:transform .4s ease',
+      checkBar: 'display:block;height:100%;width:100%;border-radius:3px;background:' + T.accent + ';transform-origin:0 50%;transform:scaleX(.6);transition:transform .36s ease',
+
+      toggleShare: function () { self.set({share: !self.st().share, copied: false, sent: false}); },
+      shareExp: s.share ? 'true' : 'false', shareOpen: !!s.share && isDone, shareText: shareText,
+      sendWa: function () { self.set({sent: true}); }, waLabel: s.sent ? 'Opening WhatsApp' : 'Send on WhatsApp',
+      copyLink: function () { self.set({copied: true}); }, copyLabel: s.copied ? 'Link copied' : 'Copy link',
+      toggleSave: function () { self.set({saved: !self.st().saved}); },
+      saved: !!s.saved && isDone, savedPressed: s.saved ? 'true' : 'false', saveLabel: s.saved ? 'Saved to project' : 'Save to project',
+      replay: function () { self.startChecking(); },
+      checkAnother: function () { self.stop(); self.set({phase: 'drop', found: 0, checked: 0, open: null, sel: null, share: false}); },
+
+      docFlyer: docFlyer, docPage: !docFlyer, docLabel: dLabel,
+      docImgStyle: 'position:absolute;inset:0;width:100%;height:100%;background:#E7E3DA;border-radius:0;object-fit:cover;display:block;' + (cs === 'unreadable' ? 'filter:blur(6px);transform:scale(1.06)' : ''),
+      flyerWrap: 'position:absolute;inset:0;container-type:inline-size;pointer-events:none;' + (cs === 'unreadable' ? 'filter:blur(6px);transform:scale(1.06)' : ''),
+      flyerType: flyerType, hoardType: hoardType, hoardCover: hoardCover,
+      docCaption: isFlyerCase ? "Your file · broker flyer, 1 page · we hide any phone number on it in our copy" : (cs === 'unreadable' ? 'Your file · photo, 1 page' : 'Your file · brochure page 6 of 32'),
+      marks: marks,
+      scanWrap: 'position:absolute;left:0;right:0;top:0;height:100%;pointer-events:none;transform:translateY(' + scanY + '%);opacity:' + (scanOn ? 1 : 0) + ';transition:transform .4s ease,opacity .3s ease',
+
+      showConfirm: phase === 'confirm' && isFlyerCase,
+      confirmAsk: !s.picking, confirmPick: !!s.picking,
+      confirmYes: function () { self.startChecking(); },
+      confirmNo: function () { self.set({picking: true, pick: 'p2'}); },
+      pickBody: cs === 'pick' ? 'The RERA number on the flyer is too blurred to read. It names Aurelia Heights, and 2 projects have that name.' : "Pick the project, and we'll check every claim against its records.",
+      picks: picks, query: s.query,
+      onQuery: function (e) { self.set({query: e.target.value}); },
+      hasPickNote: !!s.pickNote, pickNote: s.pickNote,
+      pickCta: 'Check against ' + pickName,
+      confirmPicked: function () {
+        if (self.st().pick !== 'p2') { self.set({pickNote: 'In this prototype, only Aurelia Heights, Phase 2 has a sample check.'}); return; }
+        self.startChecking();
+      },
+
+      showEdge: phase === 'edge' && edgeCase, edge: edge, edgeSent: !!s.edgeSent,
+      edgePrimary: function () { self.stop(); self.set({phase: 'drop', found: 0, checked: 0, edgeSent: false}); },
+      edgeSecondary: function () { self.set({edgeSent: true}); },
+
+      showLedger: isFlyerCase,
+      showReadNote: phase === 'reading' && found === 0,
+      saysLabel: 'Flyer says',
+      rows: rows,
+
+      showMore: showMore,
+      askLead: D + ' claims differ from the records. Ask about each one, and get the answers in writing.',
+      asks: asks,
+      copyAsks: function () { self.set({askCopied: true}); }, copyAsksLabel: s.askCopied ? 'Questions copied' : 'Copy the ' + asks.length + ' questions',
+      sendAsks: function () { self.set({askSent: true}); }, sendAsksLabel: s.askSent ? 'Sent to your WhatsApp' : 'Send them to my WhatsApp',
+      legend: legend, sources: sources,
+      toggleSrc: function () { self.set({srcOpen: !self.st().srcOpen}); },
+      srcOpen: !!s.srcOpen, srcExp: s.srcOpen ? 'true' : 'false',
+      chevSrc: 'transition:transform .2s ease;transform:rotate(' + (s.srcOpen ? 180 : 0) + 'deg)'
+    };
+  }
+}
+</script>
+</body>
+</html>

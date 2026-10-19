@@ -1,0 +1,12 @@
+[
+  {
+    "slot": "heroHeron",
+    "aspect": "16:9",
+    "prompt": "Documentary photograph of a freshly levelled, fenced plot of land in Sector 104, Gurugram, India, before any building has started: bare compacted earth, a few survey pegs with orange tape, a parked yellow excavator at the far edge, and a tall plain site hoarding along the boundary carrying a small blank white board where a RERA number would go. Low mid-rise apartment towers stand in the hazy distance, and an elevated expressway runs across the far background. Early morning light with light winter haze, calm and matter-of-fact, wide landscape crop with the open ground filling the lower half so a title can sit over it. Hoarding and board are blank: no text, no logos, no signage, no readable words. Used as the hero picture of a just-registered, not-yet-scored project page on Plinth."
+  },
+  {
+    "slot": "receiptDesk",
+    "aspect": "4:5",
+    "prompt": "Close-up documentary photograph, slightly overhead, of a printed payment receipt with a round rubber-stamp impression and a cheque-book counterfoil lying on a plain teak dining table in an Indian home, next to a smartphone with its screen off, a ballpoint pen and a steel paper clip. Soft late-morning window light from the left, shallow depth of field, calm and careful mood. All printed and handwritten text is soft and illegible; the stamp is a plain ring with no readable words. No logos, no bank names, no brand marks, no faces. Portrait crop with the receipt in the centre two thirds. Used beside the 'Keep the receipt' step of Plinth's Before you pay check."
+  }
+]

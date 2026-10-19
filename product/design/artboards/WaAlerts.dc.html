@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WhatsApp alerts and visits</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pl-step{from{transform:scaleX(0)}to{transform:none}}
+.pl-rise{animation:pl-rise .6s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1)}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="width: 1400px; height: 1600px; overflow: hidden; box-sizing: border-box; padding: 24px 32px; display: flex; flex-direction: column; gap: 24px; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 16px; line-height: 22px; font-variant-numeric: tabular-nums lining-nums">
+
+  <div style="flex: none; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px">
+    <div>
+      <h1 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 32px; letter-spacing: -0.02em">WhatsApp: alerts, site visits, agents and login codes</h1>
+      <p style="margin: 0; font-size: 14px; line-height: 20px; color: {{t.muted}}">Illustrative frames. The chat chrome is generic; our content, button labels and limits are real.</p>
+    </div>
+    <button type="button" class="pl-press" onClick="{{startOver}}" style="flex: none; height: 40px; padding: 0 18px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Start over</button>
+  </div>
+
+    <section aria-labelledby="b-h" style="flex: none">
+      <h2 id="b-h" style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 600">Can I see the site before I decide?</h2>
+      <p style="margin: 2px 0 8px; font-size: 13px; line-height: 18px; color: {{t.muted}}">WhatsApp Flow · 4 screens, one task each · opened from the “Book a site visit” button in the chat · prototype: on screen 3, add agent number 1187 (found) or 1817 (not found)</p>
+      <div style="display: flex; gap: 20px">
+
+        <div style="width: 304px; height: 814px; box-sizing: border-box; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; background: {{t.behind}}">
+          <div style="flex: none; height: 26px; padding: 0 16px; display: flex; align-items: center; font-size: 13px; line-height: 16px; color: {{t.muted}}; background: {{t.bg}}">WhatsApp Flow (illustrative) · 1 of 4</div>
+          <div aria-hidden="true" style="flex: none; height: 24px"></div>
+          <div role="dialog" aria-labelledby="f1-h" style="flex: 1; min-height: 0; display: flex; flex-direction: column; background: {{t.sheet}}; border-radius: 20px 20px 0 0">
+            <div style="flex: none; height: 52px; padding: 0 12px 0 4px; display: flex; align-items: center; gap: 4px; border-bottom: 1px solid {{t.line}}">
+              <button type="button" class="pl-press" aria-label="Close" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>
+              <span id="f1-h" style="flex: 1; font-weight: 600">Book a site visit</span>
+              <span style="font-size: 13px; color: {{t.muted}}">1 of 4</span>
+            </div>
+            <div style="flex: 1; min-height: 0; padding: 16px; display: flex; flex-direction: column">
+              <p style="margin: 0; font-weight: 600">Aurelia Heights, Phase 2</p>
+              <p style="margin: 0; font-size: 14px; line-height: 20px; color: {{t.muted}}">Sales gallery · Sector 37D, Gurugram</p>
+              <h3 style="margin: 20px 0 8px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; line-height: 28px; letter-spacing: -0.02em">Which day suits you?</h3>
+              <div role="group" aria-label="Visit date">
+                <div style="display: flex; align-items: center; justify-content: space-between">
+                  <button type="button" class="pl-press" onClick="{{prevMonth}}" aria-label="Previous month" aria-disabled="{{prevOff}}" style="{{prevStyle}}"><svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+                  <span aria-live="polite" style="font-weight: 600">{{monthLabel}}</span>
+                  <button type="button" class="pl-press" onClick="{{nextMonth}}" aria-label="Next month" aria-disabled="{{nextOff}}" style="{{nextStyle}}"><svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true"><path d="M8 4l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+                </div>
+                <div aria-hidden="true" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 13px; line-height: 18px; color: {{t.muted}}; margin: 2px 0 4px">
+                  <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 2px; justify-items: center">
+                  <sc-for list="{{days}}" as="d" hint-placeholder-count="35">
+                    <button type="button" class="pl-press" onClick="{{d.pick}}" aria-label="{{d.aria}}" aria-pressed="{{d.sel}}" aria-disabled="{{d.off}}" style="{{d.style}}">{{d.label}}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <p style="margin: 12px 0 0; font-size: 14px; line-height: 20px; color: {{t.muted}}">Open from tomorrow to 17 Nov 2026.</p>
+              <p aria-live="polite" style="margin: 4px 0 0; font-weight: 600">Selected: {{dateLong}}</p>
+            </div>
+            <div style="flex: none; padding: 12px 16px 16px; border-top: 1px solid {{t.line}}">
+              <button type="button" class="pl-press" style="height: 48px; width: 100%; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-weight: 600; cursor: pointer">Choose a time</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 304px; height: 814px; box-sizing: border-box; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; background: {{t.behind}}">
+          <div style="flex: none; height: 26px; padding: 0 16px; display: flex; align-items: center; font-size: 13px; line-height: 16px; color: {{t.muted}}; background: {{t.bg}}">WhatsApp Flow (illustrative) · 2 of 4</div>
+          <div aria-hidden="true" style="flex: none; height: 24px"></div>
+          <div role="dialog" aria-labelledby="f2-h" style="flex: 1; min-height: 0; display: flex; flex-direction: column; background: {{t.sheet}}; border-radius: 20px 20px 0 0">
+            <div style="flex: none; height: 52px; padding: 0 12px 0 4px; display: flex; align-items: center; gap: 4px; border-bottom: 1px solid {{t.line}}">
+              <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+              <span id="f2-h" style="flex: 1; font-weight: 600">Book a site visit</span>
+              <span style="font-size: 13px; color: {{t.muted}}">2 of 4</span>
+            </div>
+            <div style="flex: 1; min-height: 0; padding: 16px; display: flex; flex-direction: column">
+              <p style="margin: 0; font-size: 14px; line-height: 20px; color: {{t.muted}}">{{dateLong}} · sales gallery</p>
+              <h3 style="margin: 8px 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; line-height: 28px; letter-spacing: -0.02em">What time suits you?</h3>
+              <p id="time-l" style="margin: 0 0 8px; font-size: 14px; line-height: 20px; font-weight: 600">Time</p>
+              <div role="radiogroup" aria-labelledby="time-l" style="display: flex; flex-direction: column; gap: 8px">
+                <sc-for list="{{slots}}" as="sl" hint-placeholder-count="5">
+                  <button type="button" class="pl-press" role="radio" aria-checked="{{sl.on}}" aria-disabled="{{sl.off}}" onClick="{{sl.pick}}" style="{{sl.style}}">
+                    <span aria-hidden="true" style="{{sl.dot}}"></span>
+                    <span style="flex: 1">{{sl.label}}</span>
+                    <span style="font-size: 13px; color: {{t.muted}}">{{sl.note}}</span>
+                  </button>
+                </sc-for>
+              </div>
+              <p id="vis-l" style="margin: 20px 0 8px; font-size: 14px; line-height: 20px; font-weight: 600">How many visitors?</p>
+              <div role="radiogroup" aria-labelledby="vis-l" style="display: flex; gap: 4px; padding: 3px; border-radius: 999px; background: {{t.track}}">
+                <sc-for list="{{visitorOpts}}" as="v" hint-placeholder-count="3">
+                  <button type="button" class="pl-press" role="radio" aria-checked="{{v.on}}" onClick="{{v.pick}}" style="{{v.style}}">{{v.label}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="flex: none; padding: 12px 16px 16px; border-top: 1px solid {{t.line}}">
+              <button type="button" class="pl-press" style="height: 48px; width: 100%; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-weight: 600; cursor: pointer">Continue</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 304px; height: 814px; box-sizing: border-box; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; background: {{t.behind}}">
+          <div style="flex: none; height: 26px; padding: 0 16px; display: flex; align-items: center; font-size: 13px; line-height: 16px; color: {{t.muted}}; background: {{t.bg}}">WhatsApp Flow (illustrative) · 3 of 4</div>
+          <div aria-hidden="true" style="flex: none; height: 24px"></div>
+          <div role="dialog" aria-labelledby="f3-h" style="flex: 1; min-height: 0; display: flex; flex-direction: column; background: {{t.sheet}}; border-radius: 20px 20px 0 0">
+            <div style="flex: none; height: 52px; padding: 0 12px 0 4px; display: flex; align-items: center; gap: 4px; border-bottom: 1px solid {{t.line}}">
+              <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+              <span id="f3-h" style="flex: 1; font-weight: 600">Book a site visit</span>
+              <span style="font-size: 13px; color: {{t.muted}}">3 of 4</span>
+            </div>
+            <div style="flex: 1; min-height: 0; overflow: hidden; padding: 16px; display: flex; flex-direction: column">
+              <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; line-height: 28px; letter-spacing: -0.02em">Working with an agent?</h3>
+              <p style="margin: 6px 0 0; font-size: 15px; line-height: 20px; color: {{t.ink2}}">Name them and the site office records them as your agent of record. Either answer is fine; we earn nothing from this visit.</p>
+              <div role="radiogroup" aria-labelledby="f3-h" style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px">
+                <sc-for list="{{agentOpts}}" as="ag" hint-placeholder-count="3">
+                  <button type="button" class="pl-press" role="radio" aria-checked="{{ag.on}}" onClick="{{ag.pick}}" style="{{ag.style}}">
+                    <span aria-hidden="true" style="{{ag.dot}}"></span>
+                    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 19px"><span style="font-weight: 600">{{ag.label}}</span><span style="font-size: 13px; line-height: 17px; color: {{t.muted}}">{{ag.sub}}</span></span>
+                  </button>
+                </sc-for>
+              </div>
+              <sc-if value="{{agentAdd}}" hint-placeholder-val="{{false}}">
+                <label for="agnum" style="margin: 12px 0 6px; font-size: 14px; line-height: 20px; font-weight: 600">Their HARERA agent number</label>
+                <div style="display: flex; gap: 6px">
+                  <input id="agnum" type="text" autocomplete="off" spellcheck="false" value="{{agentNum}}" onChange="{{onAgentNum}}" placeholder="RC/REA/HARERA/GGM/…" style="flex: 1; min-width: 0; height: 44px; box-sizing: border-box; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.sheet}}; color: {{t.ink}}; font: inherit; font-size: 15px">
+                  <button type="button" class="pl-press" onClick="{{checkAgent}}" style="flex: none; height: 44px; padding: 0 14px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Check</button>
+                </div>
+                <div aria-live="polite" style="margin-top: 8px">
+                  <sc-if value="{{agentChecking}}" hint-placeholder-val="{{false}}"><p style="margin: 0; font-size: 14px; line-height: 20px">Checking HARERA’s register…</p></sc-if>
+                  <sc-if value="{{agentShort}}" hint-placeholder-val="{{false}}"><p style="margin: 0; font-size: 14px; line-height: 20px; color: {{t.muted}}">Type the number from their certificate or visiting card.</p></sc-if>
+                  <sc-if value="{{agentFound}}" hint-placeholder-val="{{false}}">
+                    <p style="margin: 0; padding: 10px 12px; border-radius: 12px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; font-size: 14px; line-height: 19px"><strong style="color: {{t.ink}}">Kabir Malhotra</strong> · on HARERA’s register, valid until 14 Mar 2029 · RC/REA/HARERA/GGM/2024/1187</p>
+                  </sc-if>
+                  <sc-if value="{{agentMissing}}" hint-placeholder-val="{{false}}">
+                    <p style="margin: 0; padding: 10px 12px; border-radius: 12px; background: {{t.track}}; font-size: 14px; line-height: 19px">No HARERA agent with this number in the register we read on 14 Oct 2026. Check it with them, or choose No agent.</p>
+                  </sc-if>
+                </div>
+              </sc-if>
+              <p aria-live="polite" style="margin: 14px 0 0; padding: 10px 12px; border-radius: 14px; background: {{t.track}}; display: flex; gap: 8px; font-size: 14px; line-height: 19px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 2px"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"></circle><path d="M8 7.2v4M8 4.9v.1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span>{{capNote}}</span></p>
+            </div>
+            <div style="flex: none; padding: 12px 16px 16px; border-top: 1px solid {{t.line}}; display: flex; flex-direction: column; gap: 6px">
+              <sc-if value="{{agentErrShow}}" hint-placeholder-val="{{false}}">
+                <p role="alert" style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 600">{{agentErrText}}</p>
+              </sc-if>
+              <button type="button" class="pl-press" onClick="{{agentContinue}}" aria-disabled="{{agentOffAria}}" style="{{agentContinueStyle}}">Continue</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 304px; height: 814px; box-sizing: border-box; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; background: {{t.behind}}">
+          <sc-if value="{{notBooked}}" hint-placeholder-val="{{true}}">
+            <div style="flex: none; height: 26px; padding: 0 16px; display: flex; align-items: center; font-size: 13px; line-height: 16px; color: {{t.muted}}; background: {{t.bg}}">WhatsApp Flow (illustrative) · 4 of 4</div>
+            <div aria-hidden="true" style="flex: none; height: 24px"></div>
+            <div role="dialog" aria-labelledby="f4-h" style="flex: 1; min-height: 0; display: flex; flex-direction: column; background: {{t.sheet}}; border-radius: 20px 20px 0 0">
+              <div style="flex: none; height: 52px; padding: 0 12px 0 4px; display: flex; align-items: center; gap: 4px; border-bottom: 1px solid {{t.line}}">
+                <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+                <span id="f4-h" style="flex: 1; font-weight: 600">Book a site visit</span>
+                <span style="font-size: 13px; color: {{t.muted}}">4 of 4</span>
+              </div>
+              <div style="flex: 1; min-height: 0; padding: 16px; display: flex; flex-direction: column">
+                <h3 style="margin: 0 0 12px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; line-height: 28px; letter-spacing: -0.02em">Ready to book?</h3>
+                <div style="padding: 12px 14px; border-radius: 16px; background: {{t.track}}">
+                  <dl style="margin: 0; display: grid; grid-template-columns: 64px 1fr; gap: 8px 10px; font-size: 15px; line-height: 20px">
+                    <dt style="font-size: 13px; color: {{t.muted}}">When</dt><dd style="margin: 0">{{dateLong}}, {{slotLabel}}</dd>
+                    <dt style="font-size: 13px; color: {{t.muted}}">Where</dt><dd style="margin: 0">Aurelia Heights, Phase 2 sales gallery</dd>
+                    <dt style="font-size: 13px; color: {{t.muted}}">Visitors</dt><dd style="margin: 0">{{visitors}}</dd>
+                    <dt style="font-size: 13px; color: {{t.muted}}">Agent</dt><dd style="margin: 0">{{agentRow}}</dd>
+                  </dl>
+                  <p style="margin: 12px 0 0; display: flex; gap: 6px; font-size: 13px; line-height: 18px; color: {{t.ink2}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="{{t.accentText}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>RERA GGM/673/405/2022/117 · checked 14 Oct 2026</span></p>
+                  <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.ink2}}">Uses none of your 3 contact slots. The site office gets your first name and visit code, not your number.</p>
+                </div>
+                <label for="fname" style="margin: 14px 0 6px; font-size: 14px; line-height: 20px; font-weight: 600">First name</label>
+                <input id="fname" type="text" autocomplete="given-name" placeholder="First name only" value="{{firstName}}" onChange="{{onName}}" style="height: 48px; box-sizing: border-box; padding: 0 16px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.sheet}}; color: {{t.ink}}; font: inherit">
+                <p style="margin: 14px 0 0; padding: 10px 12px; border-radius: 14px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; display: flex; gap: 8px; font-size: 15px; line-height: 20px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 2px"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>Your number is never shared without your tap. The site team sees only your first name.</span></p>
+                <button type="button" class="pl-press" role="checkbox" aria-checked="{{optInAria}}" onClick="{{toggleOptIn}}" style="margin-top: 14px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; display: flex; gap: 12px; align-items: flex-start; text-align: left; font: inherit; font-size: 15px; line-height: 20px; cursor: pointer">
+                  <span aria-hidden="true" style="{{boxStyle}}"><sc-if value="{{optIn}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></span>
+                  <span>{{consentText}}</span>
+                </button>
+                <sc-if value="{{showErr}}" hint-placeholder-val="{{false}}">
+                  <p role="alert" style="margin: 10px 0 0; font-size: 14px; line-height: 20px; font-weight: 600; color: {{t.ink}}">{{confirmErr}}</p>
+                </sc-if>
+              </div>
+              <div style="flex: none; padding: 12px 16px 14px; border-top: 1px solid {{t.line}}; display: flex; flex-direction: column; gap: 6px">
+                <button type="button" class="pl-press" onClick="{{confirm}}" style="height: 48px; width: 100%; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-weight: 600; cursor: pointer">Confirm booking</button>
+                <span style="text-align: center; font-size: 13px; line-height: 18px; color: {{t.muted}}">Change or cancel anytime from the chat.</span>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{booked}}" hint-placeholder-val="{{false}}">
+            <div style="flex: none; height: 26px; padding: 0 16px; display: flex; align-items: center; font-size: 13px; line-height: 16px; color: {{t.muted}}; background: {{t.bg}}">WhatsApp conversation (illustrative) · after booking</div>
+            <div style="flex: none; height: 52px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
+              <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+              <svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="{{t.accent}}"></circle><path d="M11 24h14M13.5 24v-8h9v8" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 4px">
+                <span style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600">Plinth<svg width="15" height="15" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                <span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">Business account</span>
+              </div>
+            </div>
+            <div role="log" aria-label="Conversation with Plinth" style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 10px 10px 14px; background: {{t.chatBg}}">
+              <div class="pl-rise" style="align-self: flex-end; max-width: 240px; padding: 8px 12px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">Booking details sent<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:15 am</span></div>
+              <div style="align-self: flex-start; width: 270px; display: flex; flex-direction: column; gap: 4px">
+                <div class="pl-rise" style="padding: 4px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">
+                  <div role="img" aria-label="{{passLabel}}" style="width: 262px; height: 366px; box-sizing: border-box; border-radius: 12px; background: #FFFFFF; color: #1B1A17; display: flex; flex-direction: column; overflow: hidden">
+                    <div style="position: relative; flex: none; height: 100px; overflow: hidden; background: #E7E3DA">
+                      <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2: the entrance court and towers at dusk" style="position: absolute; left: 0; top: 0; width: 262px; height: 100px; background: #E7E3DA; object-fit: cover; object-position: 50% 78%; display: block">
+                      <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 32px; background: linear-gradient(rgba(12,14,13,0.5), rgba(12,14,13,0))"></div>
+                      <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: linear-gradient(rgba(12,14,13,0), rgba(12,14,13,0.76))"></div>
+                      <span style="position: absolute; top: 6px; right: 10px; font-size: 13px; line-height: 16px; color: #FFFFFF">Illustrative image</span>
+                      <div style="position: absolute; left: 14px; right: 12px; bottom: 7px; display: flex; flex-direction: column; color: #FFFFFF">
+                        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 17px; line-height: 20px; letter-spacing: -0.02em">Aurelia Heights, Phase 2</span>
+                        <span style="font-size: 13px; line-height: 16px">Sales gallery · Sector 37D, Gurugram</span>
+                      </div>
+                    </div>
+                    <div style="flex: 1; min-height: 0; padding: 12px 14px; display: flex; flex-direction: column">
+                      <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 40px; line-height: 38px; letter-spacing: -0.045em">{{dateShort}}</p>
+                      <span style="margin-top: 4px; font-size: 15px; line-height: 19px">{{slotLabel}} · {{visitorsLabel}}</span>
+                      <p style="margin: 12px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 30px; letter-spacing: 0.02em">4821</p>
+                      <span style="margin-top: 2px; font-size: 13px; line-height: 16px; color: #3F3C36">Your visit code. Show it at the sales gallery instead of your number.</span>
+                      <span style="margin-top: 6px; font-size: 13px; line-height: 16px; font-weight: 700; color: #1B1A17">{{passAgent}}</span>
+                      <div style="margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+                        <div style="min-width: 0; display: flex; flex-direction: column; font-size: 13px; line-height: 16px; color: #3F3C36">
+                          <span style="display: inline-flex; align-items: center; gap: 6px; margin-bottom: 2px"><svg width="16" height="16" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="#1D5A44"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 15px; line-height: 18px; letter-spacing: -0.02em; color: #1B1A17">Plinth</span></span>
+                          <span style="font-weight: 700; color: #1B1A17">No developer pays us. Ever.</span>
+                          <span>Booked 18 Oct 2026</span>
+                          <span>Never shared without your tap</span>
+                        </div>
+                        <div style="flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px">
+                          <svg width="56" height="56" viewBox="0 0 25 25" aria-hidden="true"><rect width="25" height="25" fill="#FFFFFF"></rect><path d="{{qrP}}" fill="#1B1A17"></path></svg>
+                          <span style="font-size: 13px; line-height: 16px; font-weight: 600">Visit code</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="padding: 8px 8px 2px">
+                    <p style="margin: 0">Visit booked: <strong>Aurelia Heights, Phase 2</strong>, {{dateLong}}, {{slotStart}}.</p>
+                    <p style="margin: 6px 0 0">Show code <strong>4821</strong> at the sales gallery instead of your number.</p>
+                    <p style="margin: 6px 0 0">{{bubbleAgent}}</p>
+                    <p style="margin: 6px 0 0">We'll remind you the day before and 2 hours before.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:15 am</span></p>
+                  </div>
+                </div>
+                <button type="button" class="pl-press" style="height: 44px; width: 100%; border: 0; border-radius: 999px; background: {{t.bubbleIn}}; color: {{t.accentText}}; display: flex; align-items: center; justify-content: center; gap: 8px; font: inherit; font-weight: 600; cursor: pointer"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Reschedule</button>
+                <button type="button" class="pl-press" style="height: 44px; width: 100%; border: 0; border-radius: 999px; background: {{t.bubbleIn}}; color: {{t.accentText}}; display: flex; align-items: center; justify-content: center; gap: 8px; font: inherit; font-weight: 600; cursor: pointer"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Cancel visit</button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+      </div>
+    </section>
+
+  <div style="flex: none; display: flex; gap: 40px; align-items: flex-start">
+      <section aria-labelledby="a-h" style="flex: none; width: 344px">
+        <h2 id="a-h" style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 600">What changed on a project I follow?</h2>
+        <p style="margin: 2px 0 8px; font-size: 13px; line-height: 18px; color: {{t.muted}}">Utility template · image header, quick replies only (desktop-safe)</p>
+        <div style="width: 344px; height: 510px; box-sizing: border-box; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; background: {{t.chatBg}}">
+          <div style="flex: none; height: 26px; padding: 0 16px; display: flex; align-items: center; font-size: 13px; line-height: 16px; color: {{t.muted}}; background: {{t.bg}}">WhatsApp conversation (illustrative)</div>
+          <div style="flex: none; height: 52px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
+            <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="{{t.accent}}"></circle><path d="M11 24h14M13.5 24v-8h9v8" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 4px">
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600">Plinth<svg width="15" height="15" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">Business account</span>
+            </div>
+          </div>
+          <div role="log" aria-label="Conversation with Plinth" style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 10px 12px 12px">
+            <div style="align-self: flex-start; width: 290px; display: flex; flex-direction: column; gap: 4px">
+              <div class="pl-rise" style="padding: 4px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+                <div role="img" aria-label="Alert image. Aurelia Heights, Phase 2. Delivery risk Elevated, step 3 of 5, low confidence. Was Moderate until 2 Oct 2026. Plinth. QR code: the live card." style="width: 282px; height: 148px; box-sizing: border-box; border-radius: 12px; background: #FBE6D8; color: #1B1A17; padding: 12px 14px; display: flex; flex-direction: column; overflow: hidden">
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+                    <span style="font-size: 14px; line-height: 18px; font-weight: 600">Aurelia Heights, Phase 2</span>
+                    <span style="display: inline-flex; align-items: center; gap: 5px"><svg width="16" height="16" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="#1D5A44"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 14px; line-height: 18px; letter-spacing: -0.02em">Plinth</span></span>
+                  </div>
+                  <div style="flex: 1; min-height: 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+                    <div style="min-width: 0; display: flex; flex-direction: column">
+                      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 44px; line-height: 40px; letter-spacing: -0.045em; color: #A9480C">Elevated</span>
+                      <span style="display: grid; grid-template-columns: repeat(5, 30px); gap: 4px; margin-top: 8px">
+                        <sc-for list="{{alertMeter}}" as="m" hint-placeholder-count="5"><span style="{{m.style}}"></span></sc-for>
+                      </span>
+                      <span style="margin-top: 6px; font-size: 13px; line-height: 16px; color: #3F3C36">Delivery risk, low confidence</span>
+                      <span style="font-size: 13px; line-height: 16px; color: #3F3C36">Was Moderate until 2 Oct 2026</span>
+                    </div>
+                    <svg width="48" height="48" viewBox="0 0 25 25" aria-hidden="true" style="flex: none"><rect width="25" height="25" fill="#FFFFFF"></rect><path d="{{qrA}}" fill="#1B1A17"></path></svg>
+                  </div>
+                </div>
+                <div style="padding: 8px 8px 2px">
+                  <p style="margin: 0"><strong>Aurelia Heights Ph 2</strong>: delivery risk moved from Moderate to <strong>Elevated</strong> on 2 Oct 2026. Trigger: new records, the Apr–Jun 2026 QPR (72% sold, 41% built) and new HARERA complaint orders.</p>
+                  <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">You follow this project. Reply STOP to stop.<span style="float: right; margin-left: 12px">9:02 am</span></p>
+                </div>
+              </div>
+              <div role="group" aria-label="Quick replies" style="display: flex; flex-direction: column; gap: 4px">
+                <sc-for list="{{alertReplies}}" as="r" hint-placeholder-count="2">
+                  <button type="button" class="pl-press" onClick="{{r.pick}}" aria-pressed="{{r.on}}" style="{{r.style}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{r.label}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <sc-if value="{{alertTurn}}" hint-placeholder-val="{{false}}">
+              <div class="pl-rise" style="align-self: flex-end; max-width: 260px; margin-top: 6px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+                <div style="padding: 5px 10px; border-radius: 12px; background: {{t.quoteBg}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">Project alert · Aurelia Heights Ph 2</div>
+                <div style="padding: 4px 8px 0">{{alertLabel}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:05 am</span></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{alertWhy}}" hint-placeholder-val="{{false}}">
+              <div class="pl-rise" style="align-self: flex-start; width: 290px; display: flex; flex-direction: column; gap: 4px; animation-delay: 90ms">
+                <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}"><strong>Why Elevated now?</strong> New records: 72% of units are sold but 41% is built (HARERA QPR, Apr–Jun 2026), and new complaint orders went against the promoter. The developer had a heads-up 48 hours earlier and can reply publicly.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:05 am</span></div>
+                <a href="#full-card" class="pl-press" style="height: 44px; border-radius: 999px; background: {{t.bubbleIn}}; color: {{t.accentText}}; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; text-decoration: none"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Open full card</a>
+              </div>
+            </sc-if>
+            <sc-if value="{{alertStop}}" hint-placeholder-val="{{false}}">
+              <div class="pl-rise" style="align-self: flex-start; max-width: 290px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">Stopped. You won't get alerts for Aurelia Heights, Phase 2. Follow again anytime from its card.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:05 am</span></div>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+      <section aria-labelledby="c-h" style="flex: none; width: 344px">
+        <h2 id="c-h" style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 600">How do I log in?</h2>
+        <p style="margin: 2px 0 8px; font-size: 13px; line-height: 18px; color: {{t.muted}}">Authentication template · wording fixed by WhatsApp</p>
+        <div style="width: 344px; height: 234px; box-sizing: border-box; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; background: {{t.chatBg}}">
+          <div style="flex: none; height: 26px; padding: 0 16px; display: flex; align-items: center; font-size: 13px; line-height: 16px; color: {{t.muted}}; background: {{t.bg}}">WhatsApp conversation (illustrative)</div>
+          <div style="flex: none; height: 52px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
+            <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="{{t.accent}}"></circle><path d="M11 24h14M13.5 24v-8h9v8" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 4px">
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600">Plinth<svg width="15" height="15" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">Business account</span>
+            </div>
+          </div>
+          <div role="log" aria-label="Conversation with Plinth" style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px 12px 12px">
+            <div style="align-self: flex-start; width: 290px; display: flex; flex-direction: column; gap: 4px">
+              <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+                <p style="margin: 0"><strong>482193</strong> is your verification code. For your security, do not share this code.</p>
+                <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">This code expires in 10 minutes.<span style="float: right; margin-left: 12px">11:15 am</span></p>
+              </div>
+              <button type="button" class="pl-press" onClick="{{copyCode}}" aria-live="polite" style="height: 44px; width: 100%; border: 0; border-radius: 999px; background: {{t.bubbleIn}}; color: {{t.accentText}}; display: flex; align-items: center; justify-content: center; gap: 8px; font: inherit; font-weight: 600; cursor: pointer">
+                <sc-if value="{{notCopied}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"></rect><path d="M10.5 3.5V3A1.5 1.5 0 0 0 9 1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></sc-if>
+                <sc-if value="{{copied}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{copyLabel}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section aria-labelledby="d-h" style="flex: 1; min-width: 0">
+        <h2 id="d-h" style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 600">What does the site office get?</h2>
+        <p style="margin: 2px 0 8px; font-size: 13px; line-height: 18px; color: {{t.muted}}">Utility template to Northfield Estates’ sales desk; the same record lands in their Plinth inbox</p>
+        <div style="height: 510px; box-sizing: border-box; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; background: {{t.chatBg}}">
+          <div style="flex: none; height: 26px; padding: 0 16px; display: flex; align-items: center; font-size: 13px; line-height: 16px; color: {{t.muted}}; background: {{t.bg}}">WhatsApp conversation (illustrative) · Northfield Estates’ sales desk</div>
+          <div style="flex: none; height: 52px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
+            <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="{{t.accent}}"></circle><path d="M11 24h14M13.5 24v-8h9v8" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 4px">
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600">Plinth<svg width="15" height="15" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">Business account · visit notices</span>
+            </div>
+          </div>
+          <div role="log" aria-label="Notices to the site office" style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 10px 14px 14px">
+            <sc-if value="{{notBooked}}" hint-placeholder-val="{{true}}">
+              <p style="align-self: center; max-width: 360px; margin: 0 0 8px; padding: 6px 14px; border-radius: 10px; background: {{t.bg}}; font-size: 14px; line-height: 20px; color: {{t.ink2}}; text-align: center">Nothing is sent until the buyer taps Confirm booking. Then this notice arrives, with only what the buyer agreed to share.</p>
+            </sc-if>
+            <sc-if value="{{booked}}" hint-placeholder-val="{{false}}">
+              <div class="pl-rise" style="align-self: flex-start; width: min(460px, 100%); display: flex; flex-direction: column; gap: 4px">
+                <div style="padding: 10px 14px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+                  <p style="margin: 0"><strong>New site visit through Plinth</strong> · Aurelia Heights, Phase 2 sales gallery</p>
+                  <dl style="margin: 8px 0 0; display: grid; grid-template-columns: 116px 1fr; gap: 4px 10px; font-size: 15px; line-height: 20px">
+                    <dt style="color: {{t.muted}}">When</dt><dd style="margin: 0">{{dateLong}}, {{slotLabel}}</dd>
+                    <dt style="color: {{t.muted}}">Visitor</dt><dd style="margin: 0">{{officeName}} · {{visitorsLabel}}</dd>
+                    <dt style="color: {{t.muted}}">Visit code</dt><dd style="margin: 0; font-weight: 700">4821</dd>
+                    <dt style="color: {{t.muted}}">Agent of record</dt><dd style="margin: 0; font-weight: 600">{{officeAgent}}</dd>
+                  </dl>
+                  <p style="margin: 8px 0 0; font-size: 14px; line-height: 19px; color: {{t.ink2}}">Plinth is not a channel partner and is never this buyer’s source. No fee or brokerage is owed to Plinth. The buyer’s number is not shared.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:15 am</span></p>
+                </div>
+                <a href="#dev-inbox" class="pl-press" style="height: 44px; border-radius: 999px; background: {{t.bubbleIn}}; color: {{t.accentText}}; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; text-decoration: none"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Open in your Plinth inbox</a>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"$preview":{"width":1400,"height":1600}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {alert: null, month: 0, selM: 0, selD: 24, slot: 1, visitors: '2', agent: '', agentNum: '', agentCheck: 'idle', agentErr: false, name: '', optIn: false, err: false, booked: false, copied: false};
+  }
+  componentWillUnmount() {
+    clearTimeout(this._c); clearTimeout(this._a);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var night = (this.props.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', chatBg: '#111C17', headerBg: '#121C18', bubbleIn: '#17221E', bubbleOut: '#173A2D', sheet: '#121C18', behind: '#060B09',
+      track: 'rgba(255,255,255,0.07)', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', frameLine: 'rgba(255,255,255,0.16)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', faint: '#5F6E68',
+      accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7', accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      quoteBg: 'rgba(110,231,183,0.10)', pressed: '#1C2E27', segOn: 'rgba(255,255,255,0.14)'
+    } : {
+      bg: '#FBFAF7', chatBg: '#EEEBE4', headerBg: '#FFFFFF', bubbleIn: '#FFFFFF', bubbleOut: '#DCEBE2', sheet: '#FFFFFF', behind: '#8F8D88',
+      track: '#F4F2ED', line: '#E7E3DA', lineStrong: '#C9C4B9', frameLine: '#DCD8CF',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', faint: '#9A958B',
+      accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44', accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      quoteBg: 'rgba(29,90,68,0.08)', pressed: '#E9F1EC', segOn: '#FFFFFF'
+    };
+
+    // Illustrative QR (21 modules, 2-module quiet zone): finder patterns, timing, seeded fill.
+    function makeQr(seed) {
+      var n = 21, g = [], y, x;
+      function rnd() { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+      for (y = 0; y < n; y++) { g.push([]); for (x = 0; x < n; x++) g[y].push(-1); }
+      function finder(ox, oy) {
+        for (var dy = -1; dy <= 7; dy++) for (var dx = -1; dx <= 7; dx++) {
+          var xx = ox + dx, yy = oy + dy;
+          if (xx < 0 || yy < 0 || xx >= n || yy >= n) continue;
+          var ring = Math.max(Math.abs(dx - 3), Math.abs(dy - 3));
+          g[yy][xx] = (ring === 3 || ring <= 1) ? 1 : 0;
+        }
+      }
+      finder(0, 0); finder(14, 0); finder(0, 14);
+      for (var q = 8; q < 13; q++) { g[6][q] = q % 2 === 0 ? 1 : 0; g[q][6] = q % 2 === 0 ? 1 : 0; }
+      var d = '';
+      for (y = 0; y < n; y++) for (x = 0; x < n; x++) {
+        var v = g[y][x];
+        if (v === -1) v = rnd() < 0.48 ? 1 : 0;
+        if (v === 1) d += 'M' + (x + 2) + ' ' + (y + 2) + 'h1v1h-1z';
+      }
+      return d;
+    }
+    // Alert header image: the meter steps from Moderate (2) to Elevated (3). Segment 3 fills in once; reduced motion shows it filled.
+    var alertMeter = [1, 2, 3, 4, 5].map(function (j) {
+      var base = 'display:block;width:30px;height:10px;border-radius:2px;box-sizing:border-box;';
+      if (j < 3) return {style: base + 'background:#A9480C'};
+      if (j === 3) return {style: base + 'background:#A9480C;transform-origin:0 50%;animation:pl-step .7s cubic-bezier(.22,1,.36,1) .6s both'};
+      return {style: base + 'background:#FFFFFF;border:1px solid #8C9199'};
+    });
+
+    function replyStyle(on) {
+      return 'height:44px;width:100%;border:0;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;color:' + T.accentText + ';background:' + (on ? T.pressed : T.bubbleIn) + ';';
+    }
+    var alertReplies = [{key: 'why', label: 'See why'}, {key: 'stop', label: 'Stop alerts'}].map(function (r) {
+      var on = s.alert === r.key;
+      return {label: r.label, on: on ? 'true' : 'false', style: replyStyle(on), pick: function () { self.setState({alert: r.key}); }};
+    });
+
+    // Calendar: bookable from tomorrow (19 Oct 2026) to +30 days (17 Nov 2026). Weeks start on Monday.
+    var months = [
+      {y: 2026, m: 9, label: 'October 2026', long: 'October', short: 'Oct', min: 19, max: 31},
+      {y: 2026, m: 10, label: 'November 2026', long: 'November', short: 'Nov', min: 1, max: 17}
+    ];
+    var wkLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var wkShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var md = months[s.month] || months[0];
+    var lead = (new Date(md.y, md.m, 1).getDay() + 6) % 7;
+    var count = new Date(md.y, md.m + 1, 0).getDate();
+    var days = [];
+    var k;
+    for (k = 0; k < lead; k++) days.push({label: '', aria: 'Empty', sel: 'false', off: 'true', style: 'visibility:hidden;width:36px;height:36px', pick: function () {}});
+    for (k = 1; k <= count; k++) {
+      (function (d) {
+        var en = d >= md.min && d <= md.max;
+        var sel = s.selM === s.month && s.selD === d;
+        var today = s.month === 0 && d === 18;
+        var wd = new Date(md.y, md.m, d).getDay();
+        days.push({
+          label: String(d),
+          aria: wkLong[wd] + ' ' + d + ' ' + md.long + ' 2026' + (en ? '' : (today ? ', today, not available' : ', not available')),
+          sel: sel ? 'true' : 'false', off: en ? 'false' : 'true',
+          style: 'width:36px;height:36px;border-radius:50%;border:0;padding:0;font:inherit;font-size:15px;line-height:36px;cursor:' + (en ? 'pointer' : 'default') + ';background:' + (sel ? T.accent : 'transparent') + ';color:' + (sel ? T.onAccent : (en ? T.ink : T.faint)) + ';font-weight:' + (sel ? 700 : 400) + (today ? ';box-shadow:inset 0 0 0 1px ' + T.lineStrong : ''),
+          pick: function () { if (en) self.setState({selM: s.month, selD: d}); }
+        });
+      })(k);
+    }
+    while (days.length % 7 !== 0) days.push({label: '', aria: 'Empty', sel: 'false', off: 'true', style: 'visibility:hidden;width:36px;height:36px', pick: function () {}});
+    function navStyle(off) {
+      return 'width:44px;height:44px;border:0;border-radius:999px;background:transparent;display:inline-flex;align-items:center;justify-content:center;cursor:' + (off ? 'default' : 'pointer') + ';color:' + (off ? T.faint : T.ink);
+    }
+    var selMonth = months[s.selM] || months[0];
+    var selDate = new Date(selMonth.y, selMonth.m, s.selD);
+    var dateLong = wkShort[selDate.getDay()] + ' ' + s.selD + ' ' + selMonth.short + ' 2026';
+    var dateShort = wkShort[selDate.getDay()] + ' ' + s.selD + ' ' + selMonth.short;
+    var visitorsLabel = s.visitors === '1' ? '1 visitor' : s.visitors + ' visitors';
+
+    var slotDefs = [
+      {label: '10:00–11:00 am', start: '10:00 am'},
+      {label: '11:00 am–12:00 pm', start: '11:00 am'},
+      {label: '12:00–1:00 pm', start: '12:00 pm'},
+      {label: '3:00–4:00 pm', start: '3:00 pm'},
+      {label: '4:00–5:00 pm', start: '4:00 pm', full: true}
+    ];
+    var slots = slotDefs.map(function (x, i) {
+      var on = s.slot === i;
+      return {
+        label: x.label, note: x.full ? 'Full' : '', on: on ? 'true' : 'false', off: x.full ? 'true' : 'false',
+        pick: function () { if (!x.full) self.setState({slot: i}); },
+        style: 'min-height:48px;width:100%;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:0 14px;border-radius:14px;font:inherit;font-size:16px;text-align:left;cursor:' + (x.full ? 'default' : 'pointer') + ';border:' + (on ? '1.5px solid ' + T.accent : '1px solid ' + T.line) + ';background:' + (on ? T.accentSoft : 'transparent') + ';color:' + (x.full ? T.faint : T.ink),
+        dot: 'flex:none;width:20px;height:20px;border-radius:50%;box-sizing:border-box;' + (on ? 'border:6px solid ' + T.accent : 'border:2px solid ' + (x.full ? T.faint : T.muted))
+      };
+    });
+    var slot = slotDefs[s.slot] || slotDefs[1];
+    var visitorOpts = ['1', '2', '3–4'].map(function (v) {
+      var on = s.visitors === v;
+      return {
+        label: v, on: on ? 'true' : 'false',
+        pick: function () { self.setState({visitors: v}); },
+        style: 'flex:1;height:44px;border:0;border-radius:999px;font:inherit;font-size:16px;cursor:pointer;color:' + T.ink + ';font-weight:' + (on ? 600 : 400) + ';background:' + (on ? T.segOn : 'transparent') + (on && !night ? ';box-shadow:inset 0 0 0 1px ' + T.line : '')
+      };
+    });
+
+    // Screen 3: "Working with an agent?" (BG-02). No option is preselected, so Plinth doesn't nudge either way.
+    // Fictional register extract; the lookup is a Flow data_exchange call when the buyer taps Check.
+    var AGENTS = {
+      larkspur: {name: 'Larkspur Realty', reg: 'RC/REA/HARERA/GGM/2023/487'},
+      kabir: {name: 'Kabir Malhotra', reg: 'RC/REA/HARERA/GGM/2024/1187'}
+    };
+    var agentKey = s.agent || '';
+    var agentCheck = s.agentCheck || 'idle';
+    var agentRec = agentKey === 'larkspur' ? AGENTS.larkspur : (agentKey === 'add' && agentCheck === 'found' ? AGENTS.kabir : null);
+    var agentReady = agentKey === 'larkspur' || agentKey === 'none' || (agentKey === 'add' && agentCheck === 'found');
+    var agentDefs = [
+      {key: 'larkspur', label: 'Larkspur Realty', sub: 'Your agent for Kestrel Park · HARERA-registered'},
+      {key: 'add', label: 'Another agent', sub: 'Add them by HARERA agent number'},
+      {key: 'none', label: 'No agent', sub: 'Book as a direct visitor'}
+    ];
+    var agentOpts = agentDefs.map(function (a) {
+      var on = agentKey === a.key;
+      return {
+        label: a.label, sub: a.sub, on: on ? 'true' : 'false',
+        pick: function () { self.setState({agent: a.key, agentErr: false, err: false}); },
+        style: 'min-height:56px;width:100%;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:6px 14px;border-radius:14px;font:inherit;font-size:16px;text-align:left;cursor:pointer;color:' + T.ink + ';border:' + (on ? '1.5px solid ' + T.accent : '1px solid ' + T.line) + ';background:' + (on ? T.accentSoft : 'transparent'),
+        dot: 'flex:none;width:20px;height:20px;border-radius:50%;box-sizing:border-box;' + (on ? 'border:6px solid ' + T.accent : 'border:2px solid ' + T.muted)
+      };
+    });
+    function lookupAgent(v) {
+      var n = String(v || '').toUpperCase().replace(/\s+/g, '');
+      if (n.length < 4) return 'short';
+      return (n === AGENTS.kabir.reg || n === '1187' || n === '2024/1187') ? 'found' : 'missing';
+    }
+    var capNote = agentKey === 'larkspur' ? 'Larkspur already holds your one agent slot, and it covers every listing they show you. No one new can reach you.' :
+      (agentKey === 'add' ? 'Naming an agent shares nothing and uses no slot. Your cap counts only people who can reach you; if you later tap to let them, that needs a free slot. Your next opens 11 Nov 2026.' :
+      (agentKey === 'none' ? 'No one new can reach you. Your cap counts only people who can contact you, and the site office gets your first name and code, not your number.' :
+      'Your cap counts only people who can reach you: at most 3 new ones in 30 days. One agent you choose covers every listing they show you.'));
+    var agentErrText = !agentKey ? 'Pick one to go on. “No agent” is a fine answer.' : 'Check their number first, or pick No agent.';
+
+    var name = s.name || '';
+    var ready = !!s.optIn && name.trim().length > 0 && agentReady;
+    var confirmErr = !agentReady ? 'Answer “Working with an agent?” on screen 3 first.' : 'Add your first name and tick the box to book.';
+    var passAgent = agentRec ? 'Agent of record: ' + agentRec.name : 'No agent of record';
+
+    return {
+      t: T,
+      alertReplies: alertReplies,
+      alertTurn: !!s.alert, alertWhy: s.alert === 'why', alertStop: s.alert === 'stop',
+      alertLabel: s.alert === 'stop' ? 'Stop alerts' : 'See why',
+      monthLabel: md.label, days: days,
+      prevOff: s.month === 0 ? 'true' : 'false', nextOff: s.month === 1 ? 'true' : 'false',
+      prevStyle: navStyle(s.month === 0), nextStyle: navStyle(s.month === 1),
+      prevMonth: function () { if (s.month === 1) self.setState({month: 0}); },
+      nextMonth: function () { if (s.month === 0) self.setState({month: 1}); },
+      dateLong: dateLong,
+      slots: slots, slotLabel: slot.label, slotStart: slot.start,
+      dateShort: dateShort, visitorsLabel: visitorsLabel,
+      qrA: makeQr(7), qrP: makeQr(29),
+      alertMeter: alertMeter,
+      passLabel: 'Visit pass image. Aurelia Heights, Phase 2, sales gallery, Sector 37D, Gurugram (illustrative image). ' + dateLong + ', ' + slot.label + ', ' + visitorsLabel + '. Visit code 4821: show it at the sales gallery instead of your number. ' + passAgent + '. Plinth. No developer pays us. Ever. Booked 18 Oct 2026. Your number is never shared without your tap. QR code: the visit code.',
+      agentOpts: agentOpts, agentAdd: agentKey === 'add',
+      agentNum: s.agentNum || '',
+      onAgentNum: function (e) { clearTimeout(self._a); self.setState({agentNum: e.target.value, agentCheck: 'idle', agentErr: false}); },
+      checkAgent: function () {
+        clearTimeout(self._a);
+        var r = lookupAgent(self.state.agentNum);
+        if (r === 'short') { self.setState({agentCheck: 'short'}); return; }
+        self.setState({agentCheck: 'checking', agentErr: false});
+        self._a = setTimeout(function () { self.setState({agentCheck: r}); }, 700);
+      },
+      agentChecking: agentCheck === 'checking', agentShort: agentCheck === 'short', agentFound: agentCheck === 'found', agentMissing: agentCheck === 'missing',
+      capNote: capNote,
+      agentErrShow: !!s.agentErr && !agentReady, agentErrText: agentErrText,
+      agentOffAria: agentReady ? 'false' : 'true',
+      agentContinueStyle: 'height:48px;width:100%;border:0;border-radius:999px;font:inherit;font-weight:600;cursor:pointer;background:' + (agentReady ? T.accent : T.track) + ';color:' + (agentReady ? T.onAccent : T.ink2),
+      agentContinue: function () { if (!agentReady) self.setState({agentErr: true}); },
+      agentRow: agentRec ? agentRec.name + ' (agent of record)' : (agentKey === 'none' ? 'None · direct visitor' : 'Not answered yet'),
+      consentText: agentRec ? 'Share my first name, visit time and agent of record with Northfield Estates’ site office for this visit only.' : 'Share my first name and visit time with Northfield Estates’ site office for this visit only.',
+      confirmErr: confirmErr,
+      passAgent: passAgent,
+      bubbleAgent: agentRec ? 'Agent of record: ' + agentRec.name + '. The site office has it with your booking.' : 'No agent of record: you’re booked as a direct visitor. Plinth is never listed as your source.',
+      officeName: name.trim() || 'First name',
+      officeAgent: agentRec ? agentRec.name + ' · HARERA ' + agentRec.reg + ', checked 18 Oct 2026' : 'None. A direct visitor; no channel partner named.',
+      visitorOpts: visitorOpts, visitors: s.visitors,
+      firstName: name,
+      onName: function (e) { self.setState({name: e.target.value, err: false}); },
+      optIn: !!s.optIn, optInAria: s.optIn ? 'true' : 'false',
+      toggleOptIn: function () { self.setState({optIn: !s.optIn, err: false}); },
+      boxStyle: 'flex:none;width:22px;height:22px;margin-top:-1px;border-radius:6px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;' + (s.optIn ? 'background:' + T.accent + ';border:2px solid ' + T.accent : 'border:2px solid ' + T.muted),
+      showErr: !!s.err && !ready,
+      confirm: function () { if (ready) self.setState({booked: true, err: false}); else self.setState({err: true}); },
+      notBooked: !s.booked, booked: !!s.booked,
+      copied: !!s.copied, notCopied: !s.copied, copyLabel: s.copied ? 'Copied' : 'Copy code',
+      copyCode: function () {
+        clearTimeout(self._c);
+        self.setState({copied: true});
+        self._c = setTimeout(function () { self.setState({copied: false}); }, 1600);
+      },
+      startOver: function () {
+        clearTimeout(self._c); clearTimeout(self._a);
+        self.setState({alert: null, month: 0, selM: 0, selD: 24, slot: 1, visitors: '2', agent: '', agentNum: '', agentCheck: 'idle', agentErr: false, name: '', optIn: false, err: false, booked: false, copied: false});
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

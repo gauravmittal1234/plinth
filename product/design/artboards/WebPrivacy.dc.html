@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Privacy centre</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes plRise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 700ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 5550px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
+        <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
+        <a href="#following" class="lk" style="color: {{t.ink}}; text-decoration: none">Following</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask Plinth</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <a href="#account" aria-current="page" class="press" aria-label="Your account: privacy centre" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}">
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M3.8 17c.9-3 3.3-4.6 6.2-4.6s5.3 1.6 6.2 4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+        </a>
+        <a href="#data" class="press" style="height: 44px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font-size: 17px; font-weight: 600; text-decoration: none; white-space: nowrap">Download my data</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section id="log" aria-labelledby="pc-h" style="background: {{t.bg}}; padding: 56px 0 128px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 56px 72px">
+        <div style="flex: 1 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+          <h1 id="pc-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 6.4vw, 88px); line-height: 0.94; letter-spacing: -0.045em">Who has my number?</h1>
+          <p class="rise rise1" style="margin: 0; max-width: 36ch; font-size: 22px; line-height: 1.45">Your number is never shared without your tap. You choose who can reach you and why, and you can take it back anytime.</p>
+          <p class="rise rise2" style="margin: 0; display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 15px; color: {{t.ink2}}"><a href="#account" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Your account</a><span aria-hidden="true">/</span><span>Privacy centre</span><span aria-hidden="true">·</span><span>Your number ends in 4721 and is never shared without your tap</span><span aria-hidden="true">·</span><a href="#hindi" lang="hi" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">हिन्दी में पढ़ें</a></p>
+
+          <div style="display: flex; flex-direction: column; gap: 18px; padding-top: 40px">
+            <h2 id="log-h" class="rv" style="{{u.h2}}">Who has it, and why?</h2>
+            <p class="rv rv1" style="margin: 0; max-width: 46ch; font-size: 19px">Every share needed your tap. Each one has a purpose, a date and a consent reference.</p>
+            <div role="tablist" aria-label="Filter the list" style="align-self: flex-start; display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.track}}">
+              <sc-for list="{{filters}}" as="fl" hint-placeholder-count="3">
+                <button type="button" role="tab" class="press" aria-selected="{{fl.on}}" aria-controls="party-list" onClick="{{fl.pick}}" style="{{fl.style}}">{{fl.name}}</button>
+              </sc-for>
+            </div>
+            <div id="party-list" role="tabpanel" aria-label="People who had your number">
+              <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+                <sc-for list="{{parties}}" as="pa" hint-placeholder-count="4">
+                  <li style="{{pa.rowStyle}}">
+                    <span aria-hidden="true" style="{{pa.avatar}}">{{pa.initials}}</span>
+                    <div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                      <strong style="font-size: 21px; line-height: 1.3">{{pa.name}}</strong>
+                      <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{pa.type}}</span>
+                      <span style="font-size: 19px; line-height: 1.45; padding-top: 6px">{{pa.purpose}}</span>
+                      <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{pa.meta}}</span>
+                      <sc-if value="{{pa.isPlain}}" hint-placeholder-val="{{true}}">
+                        <span style="{{pa.statusStyle}}"><span aria-hidden="true" style="{{pa.statusDot}}"></span>{{pa.status}}</span>
+                      </sc-if>
+                      <sc-if value="{{pa.isRevoked}}" hint-placeholder-val="{{false}}">
+                        <span role="status" class="rise" style="{{pa.statusStyle}}"><span aria-hidden="true" style="{{pa.statusDot}}"></span>{{pa.status}}</span>
+                      </sc-if>
+                    </div>
+                    <div style="flex: none; display: flex; align-items: center; align-self: center">
+                      <sc-if value="{{pa.canRenew}}" hint-placeholder-val="{{false}}">
+                        <button type="button" class="press" onClick="{{pa.renew}}" aria-label="{{pa.renewLabel}}" style="height: 48px; margin-right: 10px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.bg}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; white-space: nowrap">Renew 30 days</button>
+                      </sc-if>
+                      <sc-if value="{{pa.canRevoke}}" hint-placeholder-val="{{true}}">
+                        <button type="button" class="press" onClick="{{pa.revoke}}" aria-label="{{pa.revokeLabel}}" style="height: 48px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Revoke</button>
+                      </sc-if>
+                      <sc-if value="{{pa.canUndo}}" hint-placeholder-val="{{false}}">
+                        <button type="button" class="press" onClick="{{pa.undo}}" aria-label="{{pa.undoLabel}}" style="min-height: 44px; padding: 0 8px; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">Undo</button>
+                      </sc-if>
+                    </div>
+                  </li>
+                </sc-for>
+              </ul>
+              <p style="margin: 16px 0 0; font-size: 17px; line-height: 1.5; color: {{t.ink}}">Not counted: Northfield Estates site office holds a relay number for your Aurelia Heights visit, Sat 24 Oct, 11 am (consent C-1018-11). They see your first name, not your number.</p>
+            </div>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">No more than 3 new parties can reach you in any 30 days, and only parties who can contact you count. Only one agent per property. Your next free slot opens 11 Nov 2026.</p>
+          </div>
+        </div>
+
+        <aside aria-labelledby="reach-h" class="rise rise2" style="flex: 1 1 400px; min-width: 0; position: sticky; top: 104px; border-radius: 8px; background: {{t.slab}}; color: {{t.onSlab}}; padding: 36px 36px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+          <h2 id="reach-h" style="margin: 0; font-size: 19px; font-weight: 600; line-height: 1.4">Who can reach you right now</h2>
+          <div style="display: flex; align-items: flex-end; gap: 18px">
+            <span aria-hidden="true" style="position: relative; display: block; flex: none; height: 148px; overflow: hidden; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 160px; line-height: 148px; letter-spacing: -0.05em">
+              <span style="{{odoStrip}}"><span style="display: block; height: 148px">0</span><span style="display: block; height: 148px">1</span><span style="display: block; height: 148px">2</span><span style="display: block; height: 148px">3</span><span style="display: block; height: 148px">4</span></span>
+            </span>
+            <p aria-live="polite" style="margin: 0 0 14px; max-width: 12ch; font-size: 22px; line-height: 1.3"><span class="sr">{{activeCount}} </span>{{reachWords}}</p>
+          </div>
+          <ul aria-label="Everyone who has had your relay number" style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 14px 12px">
+            <sc-for list="{{tokens}}" as="tk" hint-placeholder-count="4">
+              <li style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 72px">
+                <span aria-hidden="true" style="{{tk.disc}}">{{tk.initials}}</span>
+                <span style="{{tk.labelStyle}}">{{tk.short}}<span class="sr">{{tk.srState}}</span></span>
+              </li>
+            </sc-for>
+          </ul>
+          <p aria-live="polite" style="margin: 0; font-size: 17px; line-height: 1.5">{{reachNote}}</p>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span aria-hidden="true" style="display: flex; gap: 4px">
+              <sc-for list="{{slots}}" as="sl" hint-placeholder-count="3"><span style="{{sl}}"></span></sc-for>
+            </span>
+            <span style="font-size: 15px; color: {{t.onSlab2}}">New contacts in the last 30 days: 3 of 3. Next free slot: 11 Nov 2026.</span>
+          </div>
+          <div role="note" style="display: flex; gap: 14px; align-items: flex-start; padding-top: 4px">
+            <svg width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M8 1.5l5 2v4c0 3.2-2.1 5.6-5 7-2.9-1.4-5-3.8-5-7v-4z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path><path d="M5.6 8l1.7 1.7L10.6 6.4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.15; letter-spacing: -0.025em">We never sell your number.</p>
+              <p style="margin: 0; font-size: 16px; line-height: 1.5; color: {{t.onSlab2}}">Not to agents, lenders, developers or anyone else. Others see a relay number unless you tap to share yours.</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="consent" aria-labelledby="consent-h" style="background: {{t.track}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+        <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="consent-h" class="rv" style="{{u.h2}}; max-width: 14ch">What else can Plinth do?</h2>
+          <p class="rv rv1" style="margin: 0; font-size: 22px; line-height: 1.45">With your data, only what you switch on. Each switch covers one purpose, and all of them start off. Switching off is as easy as switching on.</p>
+          <p class="rv rv2" style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">A few things need no switch, because the service can’t run without them. These are signing you in, keeping your account secure and keeping records the law requires.</p>
+        </div>
+        <ul class="rv rv1" style="flex: 1 1 560px; min-width: 0; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{consents}}" as="cs" hint-placeholder-count="5">
+            <li style="{{cs.rowStyle}}">
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <span id="{{cs.id}}" style="font-size: 19px; line-height: 1.4; font-weight: 600">{{cs.title}}</span>
+                <span id="{{cs.descId}}" style="font-size: 17px; line-height: 1.5">{{cs.desc}}</span>
+                <span aria-live="polite" style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{cs.status}}</span>
+              </div>
+              <button type="button" role="switch" aria-checked="{{cs.on}}" aria-labelledby="{{cs.id}}" aria-describedby="{{cs.descId}}" onClick="{{cs.toggle}}" style="flex: none; width: 60px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="{{cs.track}}"><span style="{{cs.knob}}"></span></span></button>
+            </li>
+          </sc-for>
+        </ul>
+      </div>
+    </section>
+
+    <section id="masked" aria-labelledby="masked-h" style="background: {{t.bg}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; flex-direction: row-reverse; gap: 48px 72px; align-items: center">
+        <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="masked-h" class="rv" style="{{u.h2}}; max-width: 15ch">How is my number masked?</h2>
+          <p class="rv rv1" style="margin: 0; font-size: 22px; line-height: 1.45">Calls and WhatsApp messages pass through a relay number. The other side never sees yours unless you tap to share it.</p>
+          <ol class="rv rv2" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px">
+            <li style="font-size: 19px; line-height: 1.5"><strong>You choose.</strong> You tap Contact and choose who may reach you, for one purpose.</li>
+            <li style="font-size: 19px; line-height: 1.5"><strong>We relay.</strong> We connect you through a relay number. Your own number is never shared without your tap; after a confirmed visit you can tap Share my number.</li>
+            <li style="font-size: 19px; line-height: 1.5"><strong>It ends.</strong> The relay stays alive while a deal is active, and ends 30 days after your last message unless you renew. A deal is active from your first visit to registration. You can end any relay sooner by revoking it.</li>
+          </ol>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 560px; min-width: 0; border-radius: 8px; background: {{t.track}}; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+          <div role="tablist" aria-label="Whose view" style="align-self: flex-start; display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.panelSolid}}">
+            <sc-for list="{{views}}" as="vw" hint-placeholder-count="2">
+              <button type="button" role="tab" class="press" aria-selected="{{vw.on}}" aria-controls="call-card" onClick="{{vw.pick}}" style="{{vw.style}}">{{vw.name}}</button>
+            </sc-for>
+          </div>
+          <div id="call-card" role="tabpanel" aria-live="polite" data-ui="incoming-call" style="border-radius: 8px; background: {{t.panelSolid}}; padding: 28px; display: flex; gap: 18px; align-items: flex-start">
+            <span aria-hidden="true" style="flex: none; width: 56px; height: 56px; border-radius: 50%; background: {{t.track}}; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 18 18"><path d="M5 2.5h2l1 3-1.5 1a8 8 0 003.5 3.5l1-1.5 3 1v2a1.5 1.5 0 01-1.5 1.5A10.5 10.5 0 013.5 4 1.5 1.5 0 015 2.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 15px; color: {{t.ink2}}">{{callLabel}}</span>
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.15; letter-spacing: -0.025em">{{callName}}</span>
+              <span style="font-size: 19px; line-height: 1.5">{{callLine1}}</span>
+              <span style="{{callLine2Style}}">{{callLine2}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="data" aria-labelledby="data-h" style="background: {{t.track}}; padding: 120px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="data-h" class="rv" style="{{u.h2}}; max-width: 20ch">Can I take my data, or delete it?</h2>
+          <p class="rv rv1" style="margin: 0; flex: 0 1 460px; font-size: 22px; line-height: 1.45">Yes, both, at any time. Neither needs an email or a phone call.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+          <div class="rv rv1" style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.15; letter-spacing: -0.025em">Download my data</span>
+            <span style="font-size: 19px; line-height: 1.5">Saved projects, alerts, saved cost sheets, questions to Ask Plinth, consent history and who had your number. One ZIP with a PDF and a JSON file, ready within 24 hours.</span>
+            <sc-if value="{{dlIdle}}" hint-placeholder-val="{{true}}">
+              <button type="button" class="press" onClick="{{startDl}}" style="align-self: flex-start; height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Prepare download</button>
+            </sc-if>
+            <sc-if value="{{dlBusy}}" hint-placeholder-val="{{false}}">
+              <div role="status" style="display: flex; flex-direction: column; gap: 8px; font-size: 17px">
+                <span>Preparing your file…</span>
+                <span aria-hidden="true" style="display: block; height: 8px; border-radius: 4px; background: {{t.panelSolid}}; overflow: hidden"><span style="{{dlBar}}"></span></span>
+              </div>
+            </sc-if>
+            <sc-if value="{{dlReady}}" hint-placeholder-val="{{false}}">
+              <div role="status" class="rise" style="display: flex; gap: 12px 16px; align-items: center; flex-wrap: wrap; padding: 18px 20px; border-radius: 8px; background: {{t.panelSolid}}">
+                <svg width="20" height="20" viewBox="0 0 14 14" aria-hidden="true" style="flex: none"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span style="flex: 1 1 260px; min-width: 0; font-size: 17px; line-height: 1.45">Ready: plinth-my-data-18-Oct-2026.zip · JSON and PDF · 1.3 MB. The link works for 7 days, only when you’re signed in.</span>
+                <a href="#download" class="press" style="flex: none; display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 20px; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; text-decoration: none; font-size: 17px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3v9M5 8l4 4 4-4M3 15h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>Download</a>
+              </div>
+            </sc-if>
+          </div>
+
+          <div class="rv rv2" style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <sc-if value="{{delIdle}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-direction: column; gap: 16px">
+                <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.15; letter-spacing: -0.025em">Delete my account</span>
+                <span style="font-size: 19px; line-height: 1.5">We close it now and erase your data within 30 days. Every party loses your relay number at once.</span>
+                <button type="button" class="press" onClick="{{askDelete}}" style="align-self: flex-start; height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Delete my account</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{delConfirm}}" hint-placeholder-val="{{false}}">
+              <div role="group" aria-labelledby="del-h" class="rise" style="display: flex; flex-direction: column; gap: 14px; padding: 24px 26px; border-radius: 8px; background: {{t.panelSolid}}">
+                <span id="del-h" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.15; letter-spacing: -0.025em">Delete your account?</span>
+                <ul style="margin: 0; padding: 0 0 0 20px; display: flex; flex-direction: column; gap: 4px; font-size: 17px; line-height: 1.5">
+                  <li>Your account closes today. Every party loses access to your relay number at once.</li>
+                  <li>We erase your profile, saved projects, alerts and AI chats by 17 Nov 2026.</li>
+                  <li>We keep consent records and any invoices only as long as the law requires.</li>
+                </ul>
+                <button type="button" role="checkbox" aria-checked="{{ack}}" onClick="{{toggleAck}}" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; cursor: pointer; text-align: left">
+                  <span aria-hidden="true" style="{{ackBox}}"><svg width="14" height="14" viewBox="0 0 14 14" style="{{ackTick}}"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                  I understand this can’t be undone after 17 Nov 2026
+                </button>
+                <div style="display: flex; gap: 12px 20px; align-items: center; flex-wrap: wrap">
+                  <button type="button" class="press" onClick="{{confirmDelete}}" aria-disabled="{{ackMissing}}" style="{{deleteBtn}}">Yes, delete my account</button>
+                  <button type="button" class="press" onClick="{{cancelDelete}}" style="height: 48px; padding: 0 8px; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">Cancel</button>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{delDone}}" hint-placeholder-val="{{false}}">
+              <div role="status" class="rise" style="display: flex; flex-direction: column; gap: 10px">
+                <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.15; letter-spacing: -0.025em">Deletion scheduled · 18 Oct 2026</span>
+                <span style="font-size: 19px; line-height: 1.5">Your account is closed and no one can reach you through Plinth. Everything is erased by 17 Nov 2026. A confirmation is in your email.</span>
+                <button type="button" class="press" onClick="{{restore}}" style="align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">Changed your mind? Restore my account</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="help" aria-labelledby="help-h" style="background: {{t.bg}}; padding: 120px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="help-h" class="rv" style="{{u.h2}}; max-width: 22ch">Who do I contact if something goes wrong?</h2>
+          <div class="rv rv1" style="flex: 0 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+            <p style="margin: 0; font-size: 22px; line-height: 1.45">Our Grievance Officer, Plinth. Gurugram, Haryana. Write in English or Hindi.</p>
+            <a href="#grievance-form" class="press" style="align-self: flex-start; display: inline-flex; align-items: center; height: 52px; padding: 0 24px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; text-decoration: none; font-size: 17px; font-weight: 600; box-sizing: border-box">Raise a grievance</a>
+          </div>
+        </div>
+        <dl class="rv rv1" style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 32px 56px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <dt style="font-size: 19px">We acknowledge</dt>
+            <dd style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 56px; line-height: 1; letter-spacing: -0.04em">Within 24 hours</dd>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <dt style="font-size: 19px">We resolve</dt>
+            <dd style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 56px; line-height: 1; letter-spacing: -0.04em">Within 7 days</dd>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <dt style="font-size: 19px">Still not satisfied</dt>
+            <dd style="margin: 0; font-size: 22px; line-height: 1.4; padding-top: 4px">You can complain to the Data Protection Board of India.</dd>
+          </div>
+        </dl>
+        <p style="margin: 0; max-width: 70ch; font-size: 19px">Your rights: see what we hold, correct it, erase it, withdraw consent, and name someone to act for you.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 16ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">We never sell your number. No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">Privacy notice v1.0 · updated 18 Oct 2026 · written to follow India’s Digital Personal Data Protection Act, 2023. Every share on this page stands on a consent record with its own reference.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#notice" class="lk" style="color: {{t.onSlab}}">Read the full notice</a>
+          <a href="#hindi" lang="hi" class="lk" style="color: {{t.onSlab}}">हिन्दी</a>
+          <a href="#method" class="lk" style="color: {{t.onSlab}}">Methodology v1.2</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report an error</a>
+        </nav>
+        <span>{{footerReach}}</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"$preview":{"width":1280,"height":5550}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {themePick: null, rv0: false, rv1: false, rv2: false, filter: 'all', c0: false, c1: false, c2: false, c3: false, c4: false, view: 'you', dl: 'idle', pct: 0, del: 'idle', ack: false};
+  }
+  componentWillUnmount() {
+    clearInterval(this._dl);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', panelSolid: '#16221D', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      switchOff: '#5A6B64', knobOff: '#EEF3F0', disabledBg: 'rgba(255,255,255,0.10)', disabledFg: '#B9C6C0',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0', slabDim: 'rgba(238,243,240,0.12)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', panelSolid: '#FFFFFF', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      switchOff: '#8C9199', knobOff: '#FFFFFF', disabledBg: '#EEEBE4', disabledFg: '#3F3C36',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0', slabDim: 'rgba(251,250,247,0.14)'
+    };
+    var U = {
+      h2: "margin:0;font-family:'Bricolage Grotesque', system-ui, sans-serif;font-weight:800;font-size:clamp(40px, 4.8vw, 60px);line-height:1;letter-spacing:-0.035em"
+    };
+    function segStyle(on) {
+      return 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;box-sizing:border-box;color:' + T.ink + ';background:' + (on ? T.panelSolid : 'transparent');
+    }
+
+    var P = [
+      // Identical to DESIGN §5b "Who has my number" and to AppYou.
+      {name: 'Orbis Land site office', short: 'Orbis Land', initials: 'OL', type: 'Developer · pays us nothing', purpose: 'Kestrel Park site visit', shared: '12 Oct 2026', until: '11 Nov 2026', ref: 'C-1012-04'},
+      {name: 'Larkspur Realty', short: 'Larkspur', initials: 'LR', type: 'Agent · paid by the developer or you, never by Plinth', purpose: 'Your agent of record for Kestrel Park. You added them, and shared your number by your tap after the visit.', shared: '12 Oct 2026', until: '', ref: 'C-1012-05', deal: true},
+      {name: 'Meridian Habitat site office', short: 'Meridian site office', initials: 'MH', type: 'Developer · pays us nothing', purpose: 'Sapphire Grove Ph 1 site visit', shared: '15 Oct 2026', until: '14 Nov 2026', ref: 'C-1015-02'},
+      {name: 'Meridian Habitat sales office', short: 'Meridian', initials: 'MH', type: 'Developer · pays us nothing', purpose: 'Price list, Sep 2026', shared: '2 Sep 2026', until: '', ref: 'C-0902-01', ended: 'Ended 2 Oct 2026 · 30 days after your last message'}
+    ];
+    var revoked = [!!s.rv0, !!s.rv1, !!s.rv2, false];
+    var renewed = [!!s.rn0, false, !!s.rn2, false];
+    var active = 0, ended = 0;
+    var activeNames = [], revokedNames = [];
+    P.forEach(function (x, i) {
+      if (!x.ended && !revoked[i]) { active++; activeNames.push(x.name); } else ended++;
+      if (!x.ended && revoked[i]) revokedNames.push(x.name);
+    });
+    function joinNames(a) { return a.length <= 1 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+    var filter = s.filter || 'all';
+    var parties = [];
+    P.forEach(function (x, i) {
+      var isActive = !x.ended && !revoked[i];
+      if (filter === 'active' && !isActive) return;
+      if (filter === 'ended' && isActive) return;
+      var key = 'rv' + i;
+      var isRev = !x.ended && revoked[i];
+      var status, dot, weight;
+      if (x.ended) { status = x.ended; dot = 'border:1.5px solid ' + T.ink2 + ';'; weight = 500; }
+      else if (isRev) { status = x.deal ? 'Revoked today, 18 Oct 2026 · relay stopped. They still have the number you shared; ask them to delete it.' : 'Revoked today, 18 Oct 2026 · relay stopped'; dot = 'background:transparent;border:2px solid ' + T.ink + ';'; weight = 700; }
+      else { status = x.deal ? 'Can reach you while your Kestrel Park deal is active · your number, shared by your tap' : (renewed[i] ? 'Can reach you until 17 Nov 2026 · via relay · renewed today' : 'Can reach you until ' + x.until + ' · via relay, 30 days after your last message'); dot = 'background:' + T.ink + ';'; weight = 500; }
+      parties.push({
+        name: x.name, initials: x.initials, type: x.type, purpose: x.purpose,
+        meta: 'Shared ' + x.shared + ' · consent ref. ' + x.ref,
+        status: status, isRevoked: isRev, isPlain: !isRev,
+        statusStyle: 'display:inline-flex;align-items:center;gap:8px;font-size:15px;line-height:1.45;margin-top:4px;font-weight:' + weight + ';color:' + (isActive || isRev ? T.ink : T.ink2),
+        statusDot: 'flex:none;display:inline-block;width:9px;height:9px;border-radius:50%;box-sizing:border-box;' + dot,
+        canRevoke: isActive, canUndo: isRev,
+        canRenew: isActive && !x.deal && !!x.until && !renewed[i],
+        renewLabel: 'Keep the relay with ' + x.name + ' for 30 more days',
+        renew: function () { var o = {}; o['rn' + i] = true; self.setState(o); },
+        revokeLabel: 'Revoke ' + x.name + '’s access to your number',
+        undoLabel: 'Undo revoking ' + x.name,
+        revoke: function () { var o = {}; o[key] = true; self.setState(o); },
+        undo: function () { var o = {}; o[key] = false; self.setState(o); },
+        rowStyle: 'display:flex;gap:18px;align-items:flex-start;padding:22px 24px;border-radius:8px;transition:background-color 300ms ease;background:' + (isActive ? T.track : 'transparent'),
+        avatar: 'flex:none;width:48px;height:48px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;transition:background-color 300ms ease, color 300ms ease;background:' + (isActive ? T.ink : T.track) + ';color:' + (isActive ? T.bg : T.ink2)
+      });
+    });
+    var filters = [
+      {key: 'all', name: 'All (4)'},
+      {key: 'active', name: 'Can reach you (' + active + ')'},
+      {key: 'ended', name: 'Ended (' + ended + ')'}
+    ].map(function (x) {
+      var on = x.key === filter;
+      return {name: x.name, on: on ? 'true' : 'false', pick: function () { self.setState({filter: x.key}); }, style: segStyle(on)};
+    });
+
+    // Signature: "who can reach you" counts down as you revoke. The digit strip rolls; the party discs step back.
+    var tokens = P.map(function (x, i) {
+      var isActive = !x.ended && !revoked[i];
+      var isRev = !x.ended && revoked[i];
+      return {
+        initials: x.initials, short: x.short,
+        srState: isActive ? ', can reach you' : (isRev ? ', revoked today' : ', ended'),
+        disc: 'display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;box-sizing:border-box;font-size:19px;font-weight:700;transition:transform 480ms cubic-bezier(.22,1,.36,1), opacity 320ms ease, background-color 320ms ease;' + (isActive ? 'background:' + T.onSlab + ';color:' + T.slab + ';opacity:1;transform:none' : 'background:' + T.slabDim + ';color:' + T.onSlab2 + ';opacity:' + (isRev ? 0.7 : 0.55) + ';transform:scale(.78)'),
+        labelStyle: 'font-size:14px;line-height:1.3;text-align:center;color:' + (isActive ? T.onSlab : T.onSlab2) + (isRev ? ';text-decoration:line-through' : '')
+      };
+    });
+    var reachNote = active === 0 ? 'No one can reach you through Plinth now.' : joinNames(activeNames) + (active === 1 ? ' can reach you, for one purpose.' : ', each for one purpose.') + ' Only Larkspur Realty has your own number, because you tapped to share it.';
+    if (revokedNames.length) reachNote += ' You revoked ' + joinNames(revokedNames) + ' today; ' + (revokedNames.length === 1 ? 'their relay' : 'their relays') + ' stopped at once.';
+    var slots = [0, 1, 2].map(function () { return 'display:block;flex:1;height:8px;border-radius:4px;background:' + T.onSlab; });
+
+    var C = [
+      {title: 'WhatsApp alerts for projects I follow', desc: 'New QPRs, band changes and HARERA orders for projects you follow. Nothing promotional.'},
+      {title: 'Let one partner lender call me about a home loan', desc: 'Loan checks arrive in 2027. Until then this stays off and no lender gets your details. When it starts: one lender at a time, through your masked number, and we show any fee they pay us.'},
+      {title: 'Use my saved searches to suggest projects', desc: 'Suggestions use only what you do on Plinth. Never commission or any payment.'},
+      {title: 'Use my questions to Ask Plinth to improve answers', desc: 'We remove your name and number before anyone reviews them.'},
+      {title: 'Monthly Gurugram market note by email', desc: 'One email a month. Unsubscribe in one tap.'}
+    ];
+    var consents = C.map(function (x, i) {
+      var key = 'c' + i, on = !!s[key];
+      return {
+        id: 'consent-t' + i, descId: 'consent-d' + i, title: x.title, desc: x.desc, on: on ? 'true' : 'false',
+        status: on ? 'On since 18 Oct 2026 · consent ref. C-1018-0' + (1 + i) : 'Off · we don’t do this',
+        toggle: function () { var o = {}; o[key] = !self.state[key]; self.setState(o); },
+        track: 'position:relative;display:block;width:52px;height:32px;border-radius:999px;transition:background-color 200ms ease;background:' + (on ? T.ink : T.switchOff),
+        knob: 'position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:' + (on ? T.bg : T.knobOff) + ';transform:translateX(' + (on ? 20 : 0) + 'px);transition:transform 200ms cubic-bezier(.22,1,.36,1)',
+        rowStyle: 'display:flex;gap:20px;align-items:center;padding:20px 24px;border-radius:8px;transition:background-color 200ms ease;background:' + (on ? T.panelSolid : 'transparent')
+      };
+    });
+
+    var view = s.view === 'them' ? 'them' : 'you';
+    var views = [{key: 'you', name: 'What you see'}, {key: 'them', name: 'What they see'}].map(function (x) {
+      var on = x.key === view;
+      return {name: x.name, on: on ? 'true' : 'false', pick: function () { self.setState({view: x.key}); }, style: 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;box-sizing:border-box;background:' + (on ? T.ink : 'transparent') + ';color:' + (on ? T.bg : T.ink)};
+    });
+    var stopped = !!s.rv0;
+    var call = view === 'you' ? {
+      label: 'Incoming call on your phone', name: 'Orbis Land site office',
+      l1: 'Developer · via your Plinth relay', l2: stopped ? 'You revoked this today. Their calls no longer reach you.' : 'About: your site visit to Kestrel Park'
+    } : {
+      label: 'What the site office sees', name: 'Plinth buyer',
+      l1: '+91 80 •••• 3190 · Plinth relay number', l2: stopped ? 'This relay no longer connects. Revoked 18 Oct 2026.' : 'About: site visit, Kestrel Park · consent ref. C-1012-04'
+    };
+
+    var dl = s.dl || 'idle';
+    var del = s.del || 'idle';
+
+    return {
+      t: T, u: U,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      activeCount: String(active),
+      reachWords: active === 0 ? 'parties can reach you now' : (active === 1 ? 'party can reach you now' : 'parties can reach you now'),
+      odoStrip: 'display:block;transform:translateY(' + (-148 * active) + 'px);transition:transform 700ms cubic-bezier(.22,1,.36,1)',
+      tokens: tokens, reachNote: reachNote, slots: slots,
+      footerReach: active + (active === 1 ? ' party can' : ' parties can') + ' reach you now',
+      filters: filters, parties: parties,
+      consents: consents,
+      views: views, callLabel: call.label, callName: call.name, callLine1: call.l1, callLine2: call.l2,
+      callLine2Style: 'font-size:17px;line-height:1.5;' + (stopped ? 'font-weight:700;color:' + T.ink : 'color:' + T.ink2),
+      dlIdle: dl === 'idle', dlBusy: dl === 'busy', dlReady: dl === 'ready',
+      dlBar: 'display:block;height:100%;width:100%;border-radius:4px;background:' + T.ink + ';transform-origin:left center;transform:scaleX(' + ((s.pct || 0) / 100) + ');transition:transform .12s linear',
+      startDl: function () {
+        clearInterval(self._dl);
+        self.setState({dl: 'busy', pct: 0});
+        self._dl = setInterval(function () {
+          var p = (self.state.pct || 0) + 10;
+          if (p >= 100) { clearInterval(self._dl); self.setState({pct: 100, dl: 'ready'}); }
+          else self.setState({pct: p});
+        }, 130);
+      },
+      delIdle: del === 'idle', delConfirm: del === 'confirm', delDone: del === 'done',
+      askDelete: function () { self.setState({del: 'confirm', ack: false}); },
+      cancelDelete: function () { self.setState({del: 'idle', ack: false}); },
+      ack: s.ack ? 'true' : 'false', ackMissing: !s.ack,
+      toggleAck: function () { self.setState({ack: !self.state.ack}); },
+      ackBox: 'flex:none;width:24px;height:24px;border-radius:6px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;' + (s.ack ? 'background:' + T.ink + ';color:' + T.bg + ';border:2px solid ' + T.ink + ';' : 'background:transparent;color:transparent;border:2px solid ' + T.ink2 + ';'),
+      ackTick: s.ack ? 'display:block' : 'display:none',
+      deleteBtn: 'height:52px;padding:0 24px;border-radius:999px;border:0;font:inherit;font-size:17px;font-weight:600;box-sizing:border-box;' + (s.ack ? 'cursor:pointer;background:' + T.ink + ';color:' + T.bg + ';' : 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';'),
+      confirmDelete: function () { if (self.state.ack) self.setState({del: 'done', rv0: true, rv1: true, rv2: true}); },
+      restore: function () { self.setState({del: 'idle', ack: false}); }
+    };
+  }
+}
+</script>
+</body>
+</html>

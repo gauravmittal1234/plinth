@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth app: Claims vs records</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hs{scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pl-sheet{from{opacity:.4;transform:translateY(56px)}to{opacity:1;transform:none}}
+.pl-rise{animation:pl-rise .72s cubic-bezier(.22,1,.36,1) both}
+.pl-sheet{animation:pl-sheet .4s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums">
+
+  <sc-if value="{{isShare}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 0; top: 0; width: 390px; height: 844px; background: #0E1110; color: #FFFFFF">
+      <p style="position: absolute; left: 16px; right: 16px; top: 16px; margin: 0; font-size: 13px; line-height: 16px; color: #CFCAC0">Your chat or gallery app (illustrative)</p>
+      <div style="position: absolute; left: 4px; right: 12px; top: 40px; height: 56px; display: flex; align-items: center; gap: 6px">
+        <span aria-hidden="true" style="width: 48px; height: 48px; display: grid; place-items: center"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M14 4l-7 7 7 7" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+        <span style="display: flex; flex-direction: column"><span style="font-size: 17px; line-height: 22px; font-weight: 600">broker-flyer.jpg</span><span style="font-size: 13px; line-height: 16px; color: #CFCAC0">Forwarded to you · 18 Oct 2026</span></span>
+      </div>
+      <div style="position: absolute; left: 46px; top: 108px; width: 299px; height: 400px; overflow: hidden; background: #E7E3DA">
+        <img data-slot="brokerFlyer" src="/_blob/023b51857001b445b116f446985c7d2f" alt="A broker flyer for Aurelia Heights, Phase 2, open in another app. It says Possession Dec 2026, Only 20 flats left and 11,999 rupees a sq ft all-inclusive (illustrative image)" style="position: absolute; left: 0; top: 0; width: 299px; height: 400px; background: #E7E3DA; object-fit: cover; display: block">
+        <div aria-hidden="true" style="position: absolute; inset: 0; container-type: inline-size; pointer-events: none"><sc-for list="{{flyerType}}" as="ft" hint-placeholder-count="15"><span style="{{ft.style}}">{{ft.text}}</span></sc-for></div>
+      </div>
+      <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 844px; background: rgba(0,0,0,0.44)"></div>
+    </div>
+    <section role="dialog" aria-modal="true" aria-labelledby="ss-h" class="pl-sheet" style="position: absolute; left: 0; right: 0; bottom: 0; height: 330px; box-sizing: border-box; padding: 10px 16px 20px; background: {{t.sheet}}; color: {{t.ink}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; display: flex; flex-direction: column; gap: 14px">
+      <div aria-hidden="true" style="align-self: center; width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 0 4px">
+        <div style="position: relative; flex: none; width: 44px; height: 59px; overflow: hidden; background: #E7E3DA">
+          <img data-slot="brokerFlyer" src="/_blob/023b51857001b445b116f446985c7d2f" alt="Preview of the image being shared" style="position: absolute; left: 0; top: 0; width: 44px; height: 59px; background: #E7E3DA; object-fit: cover; display: block">
+        </div>
+        <div style="display: flex; flex-direction: column"><h2 id="ss-h" style="margin: 0; font-size: 17px; line-height: 22px; font-weight: 600">Share image</h2><span style="font-size: 14px; line-height: 20px; color: {{t.ink2}}">broker-flyer.jpg · 412 kB</span></div>
+      </div>
+      <div role="group" aria-label="Share to" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px">
+        <sc-for list="{{targets}}" as="tg" hint-placeholder-count="4">
+          <button type="button" class="pl-press" onClick="{{tg.pick}}" aria-label="{{tg.aria}}" style="{{tg.style}}">
+            <span aria-hidden="true" style="{{tg.iconStyle}}">
+              <sc-if value="{{tg.isPlinth}}" hint-placeholder-val="{{true}}"><svg width="30" height="30" viewBox="0 0 28 28"><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2.2"></path></svg></sc-if>
+              <sc-if value="{{tg.isMsg}}" hint-placeholder-val="{{false}}"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg></sc-if>
+              <sc-if value="{{tg.isFiles}}" hint-placeholder-val="{{false}}"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3.5 6.5h6l2 2h9v10h-17z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg></sc-if>
+              <sc-if value="{{tg.isCopy}}" hint-placeholder-val="{{false}}"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect><path d="M5 15V5.5A1.5 1.5 0 0 1 6.5 4H15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></sc-if>
+            </span>
+            <span style="font-size: 13px; line-height: 16px; font-weight: 600">{{tg.name}}</span>
+            <span style="font-size: 13px; line-height: 16px; color: {{t.ink2}}">{{tg.sub}}</span>
+          </button>
+        </sc-for>
+      </div>
+      <p aria-live="polite" style="margin: 0; padding: 0 4px; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{shareNote}}</p>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{isCamera}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 0; top: 0; width: 390px; height: 640px; overflow: hidden; background: #1B2A24">
+      <div style="position: absolute; left: 50%; top: 0; height: 640px; aspect-ratio: 928 / 1152; transform: translateX(-50%)">
+        <img data-slot="hoardingClaim" src="/_blob/3c7757ac9408c879276b6d26d70432cd" alt="Live camera view of a construction-site hoarding in front of a tower under construction. It says Possession Dec 2026 and 3 BHK from 2.35 crore (illustrative image)" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block">
+        <div aria-hidden="true" style="position: absolute; inset: 0; container-type: inline-size; pointer-events: none"><span style="{{hoardCover}}"></span><sc-for list="{{hoardType}}" as="ht" hint-placeholder-count="5"><span style="{{ht.style}}">{{ht.text}}</span></sc-for></div>
+      </div>
+      <svg width="390" height="640" viewBox="0 0 390 640" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+        <path fill-rule="evenodd" fill="#080C0A" fill-opacity="0.58" d="M0 0H390V640H0Z M44 250H346A24 24 0 0 1 370 274V454A24 24 0 0 1 346 478H44A24 24 0 0 1 20 454V274A24 24 0 0 1 44 250Z"></path>
+      </svg>
+      <div aria-hidden="true" style="{{frameStyle}}">
+        <sc-for list="{{corners}}" as="c" hint-placeholder-count="4"><span style="{{c.style}}"></span></sc-for>
+      </div>
+      <p aria-live="polite" style="position: absolute; left: 24px; right: 24px; top: 492px; margin: 0; text-align: center; color: #FFFFFF; font-size: 17px; font-weight: 500; line-height: 1.4">Fit the hoarding's words inside the frame</p>
+    </div>
+    <div style="position: absolute; left: 12px; right: 12px; top: 40px; height: 48px; display: flex; align-items: center; gap: 12px; color: #FFFFFF">
+      <a href="#explore" class="pl-press" aria-label="Close camera" style="width: 48px; height: 48px; flex: none; border-radius: 999px; background: #111D19; color: #FFFFFF; display: grid; place-items: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+      </a>
+      <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 21px; letter-spacing: -0.03em; line-height: 1.1">Check a claim</span>
+        <span style="font-size: 13px; line-height: 1.3; color: #FFFFFF">Illustrative image</span>
+      </span>
+      <button type="button" class="pl-press" onClick="{{toggleTorch}}" aria-label="Torch" aria-pressed="{{torchAria}}" style="{{torchBtn}}">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L5.5 13.5h5.5L10 21l8-11h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+      </button>
+    </div>
+    <p style="position: absolute; left: 16px; right: 16px; top: 104px; margin: 0; display: flex; align-items: flex-start; gap: 8px; color: #FFFFFF; font-size: 15px; line-height: 1.45">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"></rect><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg>
+      <span>The camera is on only while you check. The photo is deleted after 30 days.</span>
+    </p>
+    <nav aria-label="Camera mode" style="position: absolute; left: 0; right: 0; top: 568px; display: flex; justify-content: center; gap: 6px">
+      <a href="#scan-qr" class="pl-press" style="{{modeOff}}">RERA QR</a>
+      <a href="#scan-where" class="pl-press" style="{{modeOff}}">Where am I?</a>
+      <span aria-current="page" style="{{modeOn}}">Check claims</span>
+    </nav>
+    <div style="position: absolute; left: 0; right: 0; top: 640px; bottom: 0; box-sizing: border-box; padding: 20px 16px 18px; background: {{t.bg}}; display: flex; flex-direction: column; align-items: center; gap: 12px">
+      <div style="width: 100%; display: flex; align-items: center; justify-content: space-between">
+        <button type="button" class="pl-press" onClick="{{shoot}}" aria-label="Choose a photo of a hoarding or flyer from your gallery" style="width: 52px; height: 52px; flex: none; border-radius: 999px; border: 0; background: {{t.track}}; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"></rect><circle cx="9" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+        </button>
+        <button type="button" class="pl-press" onClick="{{shoot}}" aria-label="Take photo" style="width: 76px; height: 76px; flex: none; border-radius: 999px; border: 0; background: {{t.accent}}; display: grid; place-items: center; cursor: pointer">
+          <span aria-hidden="true" style="width: 58px; height: 58px; border-radius: 999px; background: {{t.shutterIn}}"></span>
+        </button>
+        <span aria-hidden="true" style="width: 52px; height: 52px"></span>
+      </div>
+      <p style="margin: 0; font-size: 15px; line-height: 1.45; text-align: center; color: {{t.ink2}}">Or share a flyer from any app: tap Share, then Plinth.</p>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isWork}}" hint-placeholder-val="{{true}}">
+    <div style="position: absolute; left: 0; right: 0; top: 0; height: 104px; z-index: 5; background: {{t.bg}}">
+      <div style="position: absolute; left: 4px; right: 4px; top: 48px; height: 56px; display: flex; align-items: center; gap: 4px">
+        <button type="button" class="pl-press" onClick="{{close}}" aria-label="Close and go back" style="width: 48px; height: 48px; flex: none; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+        </button>
+        <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+          <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 21px; letter-spacing: -0.03em; line-height: 1.15">{{barTitle}}</span>
+          <span style="font-size: 13px; line-height: 1.3; color: {{t.ink2}}">{{barSub}}</span>
+        </span>
+        <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+          <button type="button" class="pl-press" aria-label="More: report an error, delete this file" style="width: 48px; height: 48px; flex: none; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer">
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="5" r="1.7" fill="currentColor"></circle><circle cx="11" cy="11" r="1.7" fill="currentColor"></circle><circle cx="11" cy="17" r="1.7" fill="currentColor"></circle></svg>
+          </button>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isReading}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 0; right: 0; top: 104px; height: 392px; background: {{t.track}}">
+      <div role="group" aria-label="{{docLabel}}" style="{{docBoxRead}}">
+        <sc-if value="{{isFlyer}}" hint-placeholder-val="{{true}}"><img data-slot="brokerFlyer" src="/_blob/023b51857001b445b116f446985c7d2f" alt="The broker flyer you shared (illustrative image)" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block"><div aria-hidden="true" style="position: absolute; inset: 0; container-type: inline-size; pointer-events: none"><sc-for list="{{flyerType}}" as="ft" hint-placeholder-count="15"><span style="{{ft.style}}">{{ft.text}}</span></sc-for></div></sc-if>
+        <sc-if value="{{isHoarding}}" hint-placeholder-val="{{false}}"><img data-slot="hoardingClaim" src="/_blob/3c7757ac9408c879276b6d26d70432cd" alt="Your photo of the hoarding (illustrative image)" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block"><div aria-hidden="true" style="position: absolute; inset: 0; container-type: inline-size; pointer-events: none"><span style="{{hoardCover}}"></span><sc-for list="{{hoardType}}" as="ht" hint-placeholder-count="5"><span style="{{ht.style}}">{{ht.text}}</span></sc-for></div></sc-if>
+        <sc-for list="{{marks}}" as="m" hint-placeholder-count="7">
+          <button type="button" onClick="{{m.pick}}" aria-label="{{m.aria}}" tabindex="{{m.tab}}" style="{{m.style}}">
+            <span aria-hidden="true" style="{{m.washStyle}}"></span>
+            <span aria-hidden="true" style="{{m.litStyle}}"></span>
+            <span aria-hidden="true" style="{{m.tagStyle}}">{{m.tag}}</span>
+          </button>
+        </sc-for>
+        <span aria-hidden="true" style="{{scanWrap}}"><span style="display: block; height: 3px; background: #6EE7B7"></span></span>
+      </div>
+    </div>
+    <div style="position: absolute; left: 16px; right: 16px; top: 512px; display: flex; flex-direction: column; gap: 12px">
+      <sc-if value="{{notPicking}}" hint-placeholder-val="{{true}}">
+        <p aria-hidden="true" style="margin: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 12px">
+          <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 48px; line-height: 1; letter-spacing: -0.045em; white-space: nowrap">{{bigNum}}</span>
+          <span style="font-size: 17px; line-height: 1.35">{{bigText}}</span>
+        </p>
+        <span aria-hidden="true" style="{{stripGrid}}"><sc-for list="{{strip}}" as="sg" hint-placeholder-count="7"><span style="{{sg.style}}"></span></sc-for></span>
+      </sc-if>
+      <p class="sr" role="status" aria-live="polite">{{statusSentence}}</p>
+      <sc-if value="{{showConfirm}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="padding: 16px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; gap: 12px; align-items: center">
+            <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2: the towers" style="flex: none; width: 56px; height: 56px; background: #E7E3DA; object-fit: cover; display: block">
+            <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+              <h2 id="acf-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.1; letter-spacing: -0.025em">Is this Aurelia Heights, Phase 2?</h2>
+              <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{confirmFrom}}</span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <button type="button" class="pl-press" onClick="{{confirmNo}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Pick another</button>
+            <button type="button" class="pl-press" onClick="{{confirmYes}}" style="flex: 1.3 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Yes, check it</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{showPick}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="padding: 16px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 10px">
+          <h2 id="apk-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.1; letter-spacing: -0.025em">Which project is it?</h2>
+          <label for="apk-q" class="sr">Search by project, developer or RERA number</label>
+          <input id="apk-q" type="text" autocomplete="off" value="{{query}}" onChange="{{onQuery}}" placeholder="Project, developer or RERA number" style="height: 48px; padding: 0 18px; box-sizing: border-box; border: 1px solid {{t.lineStrong}}; border-radius: 999px; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px">
+          <div role="radiogroup" aria-labelledby="apk-h" style="display: flex; flex-direction: column; gap: 2px">
+            <sc-for list="{{picks}}" as="pk" hint-placeholder-count="2">
+              <button type="button" class="pl-press" role="radio" aria-checked="{{pk.on}}" onClick="{{pk.pick}}" style="{{pk.style}}">
+                <span aria-hidden="true" style="{{pk.ring}}"><span style="{{pk.dot}}"></span></span>
+                <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><strong style="font-size: 16px; line-height: 1.3; font-weight: 600">{{pk.name}}</strong><span style="font-size: 14px; line-height: 1.35; color: {{t.ink2}}">{{pk.where}}</span></span>
+              </button>
+            </sc-for>
+          </div>
+          <sc-if value="{{hasPickNote}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 0; font-size: 15px; line-height: 1.4">{{pickNote}}</p></sc-if>
+          <button type="button" class="pl-press" onClick="{{confirmPicked}}" style="height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Check against this one</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{showReadNote}}" hint-placeholder-val="{{true}}">
+        <p style="margin: 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{readNote}}</p>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+    <div class="hs" style="position: absolute; left: 0; right: 0; top: 104px; bottom: 88px; overflow-y: auto">
+      <div class="pl-rise" style="padding: 4px 16px 0; display: flex; flex-direction: column; gap: 10px">
+        <p aria-hidden="true" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 64px; line-height: 0.95; letter-spacing: -0.05em">{{bigNum}}</p>
+        <p aria-hidden="true" style="margin: 0; font-size: 19px; line-height: 1.35">{{bigText}}</p>
+        <p class="sr" role="status">{{statusSentence}}</p>
+        <span aria-hidden="true" style="{{stripGrid}}"><sc-for list="{{strip}}" as="sg" hint-placeholder-count="7"><span style="{{sg.style}}"></span></sc-for></span>
+        <p style="margin: 2px 0 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">{{meta}}</p>
+      </div>
+      <a href="#project" class="pl-press" style="margin: 16px 16px 0; display: flex; align-items: center; gap: 12px; min-height: 56px; color: {{t.ink}}; text-decoration: none">
+        <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="" style="flex: none; width: 52px; height: 52px; background: #E7E3DA; object-fit: cover; display: block">
+        <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><strong style="font-size: 17px; line-height: 1.3; font-weight: 600">Aurelia Heights, Phase 2</strong><span style="font-size: 15px; line-height: 1.35; color: {{t.ink2}}">Northfield Estates · Sector 37D</span></span>
+        <span role="img" aria-label="{{chip.sr}}" style="{{chip.style}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{chip.meter}}" as="cm" hint-placeholder-count="5"><span style="{{cm.style}}"></span></sc-for></span><span aria-hidden="true">{{chip.name}}</span></span>
+      </a>
+      <div style="margin-top: 20px; padding: 16px 0 12px; background: {{t.track}}; display: flex; flex-direction: column; align-items: center; gap: 10px">
+        <div role="group" aria-label="{{docLabel}}" style="{{docBoxResult}}">
+          <sc-if value="{{isFlyer}}" hint-placeholder-val="{{true}}"><img data-slot="brokerFlyer" src="/_blob/023b51857001b445b116f446985c7d2f" alt="The broker flyer you shared (illustrative image)" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block"><div aria-hidden="true" style="position: absolute; inset: 0; container-type: inline-size; pointer-events: none"><sc-for list="{{flyerType}}" as="ft" hint-placeholder-count="15"><span style="{{ft.style}}">{{ft.text}}</span></sc-for></div></sc-if>
+          <sc-if value="{{isHoarding}}" hint-placeholder-val="{{false}}"><img data-slot="hoardingClaim" src="/_blob/3c7757ac9408c879276b6d26d70432cd" alt="Your photo of the hoarding (illustrative image)" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block"><div aria-hidden="true" style="position: absolute; inset: 0; container-type: inline-size; pointer-events: none"><span style="{{hoardCover}}"></span><sc-for list="{{hoardType}}" as="ht" hint-placeholder-count="5"><span style="{{ht.style}}">{{ht.text}}</span></sc-for></div></sc-if>
+          <sc-for list="{{marks}}" as="m" hint-placeholder-count="7">
+            <button type="button" onClick="{{m.pick}}" aria-label="{{m.aria}}" tabindex="{{m.tab}}" style="{{m.style}}">
+              <span aria-hidden="true" style="{{m.washStyle}}"></span>
+              <span aria-hidden="true" style="{{m.litStyle}}"></span>
+              <span aria-hidden="true" style="{{m.tagStyle}}">{{m.tag}}</span>
+            </button>
+          </sc-for>
+        </div>
+        <p style="margin: 0; font-size: 14px; line-height: 1.4; color: {{t.ink2}}">Illustrative image · tap a claim to see its record</p>
+      </div>
+      <h2 style="margin: 32px 16px 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.1; letter-spacing: -0.03em">What do the records show?</h2>
+      <p style="margin: 8px 16px 14px; font-size: 17px; line-height: 1.5">{{breakdown}}</p>
+      <ol aria-label="{{listLabel}}" style="list-style: none; margin: 0; padding: 0 16px; display: flex; flex-direction: column; gap: 4px">
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+          <li>
+            <button type="button" class="pl-press" onClick="{{r.open}}" aria-haspopup="dialog" style="display: flex; align-items: center; gap: 12px; width: 100%; min-height: 76px; box-sizing: border-box; padding: 12px 14px; border: 0; border-radius: 8px; background: {{t.track}}; text-align: left; font: inherit; color: {{t.ink}}; cursor: pointer">
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 17px; line-height: 1.35; font-weight: 600"><span class="sr">{{saysLabel}}: </span>“{{r.quote}}”</span>
+                <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{r.recShort}}</span>
+              </span>
+              <span style="{{r.chipStyle}}">
+                <sc-if value="{{r.isD}}" hint-placeholder-val="{{true}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 5.2h9M2.5 8.8h9M9.6 2.2L4.4 11.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+                <sc-if value="{{r.isM}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                <sc-if value="{{r.isN}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="3.8" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M8.8 8.8l3.2 3.2M4.3 6h3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></sc-if>
+                <sc-if value="{{r.isC}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7 4.3V7l2 1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                {{r.v}}
+              </span>
+            </button>
+          </li>
+        </sc-for>
+      </ol>
+      <p style="margin: 24px 16px 28px; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Claims read by AI. Each verdict comes from a rule that compares the claim with its record. Our reading of public records, not legal advice. We never certify title. No developer pays us. Ever. <a href="#report" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Report an error</a></p>
+    </div>
+
+    <div style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 6; height: 88px; box-sizing: border-box; display: flex; gap: 10px; padding: 14px 16px 22px; background: {{t.nav}}">
+      <button type="button" class="pl-press" onClick="{{openShare}}" aria-haspopup="dialog" style="flex: 1.4 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px">
+        <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="15" cy="5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="15" cy="15" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7 9l6-3M7 11l6 3" fill="none" stroke="currentColor" stroke-width="1.6"></path></svg>Share with family
+      </button>
+      <button type="button" class="pl-press" onClick="{{toggleFollow}}" aria-pressed="{{followAria}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{followLabel}}</button>
+    </div>
+
+    <div aria-hidden="true" onClick="{{closeSheets}}" style="{{scrimStyle}}"></div>
+
+    <section role="dialog" aria-modal="true" aria-labelledby="cs-h" style="{{claimSheet}}">
+      <div aria-hidden="true" style="position: absolute; left: 50%; top: 10px; width: 32px; height: 4px; margin-left: -16px; border-radius: 2px; background: {{t.lineStrong}}"></div>
+      <div class="hs" style="position: absolute; left: 0; right: 0; top: 20px; bottom: 88px; overflow-y: auto; padding: 0 20px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+          <span style="{{sc.chipStyle}}">
+            <sc-if value="{{sc.isD}}" hint-placeholder-val="{{true}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 5.2h9M2.5 8.8h9M9.6 2.2L4.4 11.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+            <sc-if value="{{sc.isM}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+            <sc-if value="{{sc.isN}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="3.8" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M8.8 8.8l3.2 3.2M4.3 6h3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></sc-if>
+            <sc-if value="{{sc.isC}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7 4.3V7l2 1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+            {{sc.v}}
+          </span>
+          <button type="button" class="pl-press" onClick="{{closeSheets}}" aria-label="Close this claim" style="width: 48px; height: 48px; margin-right: -12px; flex: none; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer">
+            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+          </button>
+        </div>
+        <div style="padding: 16px; border-radius: 8px; background: {{t.claimBg}}">
+          <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 1.4; font-weight: 600; color: {{t.ink2}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg>{{saysLabel}} · {{saysMeta}}</span>
+          <h2 id="cs-h" style="margin: 6px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.12; letter-spacing: -0.025em">“{{sc.quote}}”</h2>
+        </div>
+        <div>
+          <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 1.4; font-weight: 600; color: {{t.ink2}}"><svg width="14" height="16" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{sc.recLabel}}</span>
+          <p style="margin: 6px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -0.04em">{{sc.big}}</p>
+          <p style="margin: 4px 0 0; font-size: 17px; line-height: 1.45">{{sc.bigSub}}</p>
+          <p style="margin: 12px 0 0; font-size: 17px; line-height: 1.55">{{sc.rec}}</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{sc.chips}}" as="c" hint-placeholder-count="2">
+            <a href="#source" class="pl-press" aria-label="{{c.aria}}" style="display: inline-flex; align-items: center; min-height: 48px; text-decoration: none; color: {{t.ink}}"><span style="display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px 0 12px; border-radius: 999px; background: {{t.track}}; font-size: 14px; white-space: nowrap"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{c.label}}</span></a>
+          </sc-for>
+        </div>
+        <sc-if value="{{sc.hasDev}}" hint-placeholder-val="{{false}}">
+          <div style="padding: 14px 16px; border-radius: 8px; background: {{t.claimBg}}; font-size: 16px; line-height: 1.5"><span style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: {{t.ink2}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg>Developer says · not yet verified · {{sc.devDate}}</span>“{{sc.dev}}”</div>
+        </sc-if>
+        <p style="margin: 0; font-size: 17px; line-height: 1.55"><strong>{{sc.askLabel}}</strong> {{sc.ask}}</p>
+        <sc-if value="{{sc.canCopy}}" hint-placeholder-val="{{true}}">
+          <button type="button" class="pl-press" onClick="{{copyAsk}}" style="align-self: flex-start; min-height: 48px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; cursor: pointer">{{copyAskLabel}}</button>
+        </sc-if>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Read by AI from your {{docWord}}. The verdict comes from a rule, not from AI. <a href="#report" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Report an error</a></p>
+      </div>
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 88px; box-sizing: border-box; display: flex; gap: 10px; padding: 14px 16px 22px; background: {{t.sheet}}">
+        <button type="button" class="pl-press" onClick="{{prevClaim}}" aria-label="{{prevAria}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Previous</button>
+        <button type="button" class="pl-press" onClick="{{nextClaim}}" aria-label="{{nextAria}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Next claim</button>
+      </div>
+    </section>
+
+    <section role="dialog" aria-modal="true" aria-labelledby="fam-h" style="{{shareSheet}}">
+      <div aria-hidden="true" style="align-self: center; width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+        <h2 id="fam-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.1; letter-spacing: -0.03em">Share with family</h2>
+        <button type="button" class="pl-press" onClick="{{closeSheets}}" aria-label="Close sharing" style="width: 48px; height: 48px; margin-right: -12px; flex: none; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+        </button>
+      </div>
+      <div style="padding: 14px 16px; border-radius: 8px; background: {{t.track}}; font-size: 16px; line-height: 1.5"><strong>{{shareHead}}</strong><br>{{shareText}}<br><span style="text-decoration: underline">Every claim, with its source, on Plinth</span></div>
+      <p style="margin: 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Only this summary is shared. Your {{docWord}} stays private, and the broker's number is never in it.</p>
+      <div style="display: flex; gap: 10px">
+        <button type="button" class="pl-press" onClick="{{sendWa}}" style="flex: 1.3 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{waLabel}}</button>
+        <button type="button" class="pl-press" onClick="{{copyLink}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{copyLabel}}</button>
+      </div>
+    </section>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"entry":{"editor":"enum","options":["Share sheet","Camera"],"default":"Share sheet"},"screen":{"editor":"enum","options":["Result","Entry","Reading"],"default":"Result"},"sheet":{"editor":"enum","options":["Closed","Open"],"default":"Closed"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = this.initFor(props);
+  }
+  pkey(p) { p = p || this.props || {}; return (p.entry || 'Share sheet') + '|' + (p.screen || 'Result') + '|' + (p.sheet || 'Closed'); }
+  initFor(p) {
+    p = p || {};
+    var src = p.entry === 'Camera' ? 'hoarding' : 'flyer';
+    var scr = p.screen === 'Entry' ? 'entry' : (p.screen === 'Reading' ? 'reading' : 'result');
+    var n = src === 'hoarding' ? 3 : 7;
+    var done = scr === 'result';
+    return {
+      pk: this.pkey(p), src: src, screen: scr, phase: done ? 'done' : 'reading',
+      found: done ? n : 0, checked: done ? n : 0, sub: 0,
+      sheetId: done && p.sheet === 'Open' ? (src === 'hoarding' ? 'hposs' : 'poss') : null,
+      shareOpen: false, picking: false, pick: 'p2', query: '', pickNote: '',
+      following: false, torch: false, copied: false, sent: false, askCopied: false, shareNote: ''
+    };
+  }
+  set(patch) {
+    var base = this.state && this.state.pk === this.pkey() ? {} : this.initFor(this.props);
+    for (var k in patch) base[k] = patch[k];
+    base.pk = this.pkey();
+    this.setState(base);
+  }
+  st() { var s = this.state || {}; return s.pk === this.pkey() ? s : this.initFor(this.props); }
+  componentDidMount() {
+    try { this._rm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { this._rm = false; }
+    if (this.st().screen === 'reading') this.startReading(this.st().src);
+  }
+  componentWillUnmount() { this.stop(); }
+  stop() { clearInterval(this._t); clearTimeout(this._d); }
+  total(src) { return src === 'hoarding' ? 3 : 7; }
+  startReading(src) {
+    var self = this;
+    this.stop();
+    var n = this.total(src);
+    this.set({src: src, screen: 'reading', phase: 'reading', found: 0, checked: 0, sub: 0, sheetId: null, shareOpen: false, picking: false, pickNote: ''});
+    this._t = setInterval(function () {
+      var s = self.state;
+      if (s.found < n) { self.setState({found: s.found + 1}); return; }
+      clearInterval(self._t);
+      self._d = setTimeout(function () { self.setState({phase: 'confirm'}); }, self._rm ? 0 : 360);
+    }, this._rm ? 40 : 440);
+  }
+  startChecking() {
+    var self = this;
+    this.stop();
+    var n = this.total(this.st().src);
+    this.set({phase: 'checking', found: n, checked: 0, sub: 0, picking: false});
+    this._t = setInterval(function () {
+      var s = self.state;
+      if (s.sub === 0) { self.setState({sub: 1}); return; }
+      var nc = s.checked + 1;
+      self.setState({checked: nc, sub: 0});
+      if (nc >= n) {
+        clearInterval(self._t);
+        self._d = setTimeout(function () { self.setState({phase: 'done', screen: 'result'}); }, self._rm ? 0 : 900);
+      }
+    }, this._rm ? 30 : 340);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.st();
+    var night = (this.props.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', sheet: '#111C18', panelSolid: '#16221D', track: 'rgba(255,255,255,0.07)',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claimBg: '#1D2621', emptyBorder: '#7D828A', segOff: 'transparent',
+      nav: '#121D19', shadow: '0 8px 24px rgba(0,0,0,0.45)', shutterIn: '#0B1411',
+      vMatch: 'rgba(255,255,255,0.15)', vNone: '#2A3530', vCant: 'rgba(255,255,255,0.09)', sMatch: '#6F8F82', sNone: 'rgba(255,255,255,0.30)',
+      hatch: 'repeating-linear-gradient(45deg, rgba(185,198,192,0.34) 0 1.5px, transparent 1.5px 7px)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', sheet: '#FFFFFF', panelSolid: '#FFFFFF', track: '#F4F2ED',
+      line: '#E7E3DA', lineStrong: '#C9C4B9',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claimBg: '#F1ECE2', emptyBorder: '#8C9199', segOff: '#FFFFFF',
+      nav: '#EFECE5', shadow: '0 8px 24px rgba(27,26,23,.12)', shutterIn: '#FFFFFF',
+      vMatch: '#E2DED4', vNone: '#EADFCB', vCant: '#EEEAE2', sMatch: '#8A847A', sNone: '#C9C4B9',
+      hatch: 'repeating-linear-gradient(45deg, rgba(63,60,54,0.30) 0 1.5px, transparent 1.5px 7px)'
+    };
+
+    var bandInk = night ? '#F08A4B' : '#A9480C';
+    var chip = {
+      name: 'Elevated', sr: 'Delivery risk: Elevated, step 3 of 5, low confidence',
+      style: 'flex:none;display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:600;line-height:1;white-space:nowrap;background:' + (night ? '#3A2210' : '#FBE6D8') + ';color:' + T.ink,
+      meter: [1, 2, 3, 4, 5].map(function (j) {
+        return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= 3 ? 'background:' + bandInk : 'background:' + T.segOff + ';border:1px solid ' + T.emptyBorder)};
+      })
+    };
+
+    var FLYER = [
+      {id: 'poss', quote: 'Possession Dec 2026', v: 'Differs', x: 8.59, y: 11.25, w: 57.25, h: 4.83, a: 'out-r', big: 'Dec 2027', bigSub: 'Original completion date on the HARERA registration.', recShort: 'Records: completion Dec 2027',
+        rec: 'No extensions so far. 41% is built, with 77% of the promised time used.', chips: ['HARERA registration · Dec 2022', 'HARERA QPR · Apr–Jun 2026'],
+        ask: 'Which completion date will be written in my agreement for sale?'},
+      {id: 'slab', quote: 'Structure up to 12th floor', v: "Can't check", x: 8.3, y: 18, w: 57, h: 3.8, a: 'below-l', big: 'Slab 9', bigSub: 'Tower A at the last filing, Apr–Jun 2026.', recShort: 'Records: slab 9; the next QPR is not filed',
+        rec: 'The Jul–Sep QPR was due 15 Oct and is not on HARERA yet, so today’s floor can’t be checked.', chips: ['HARERA QPR · Apr–Jun 2026', 'HARERA QPR register · 18 Oct 2026'],
+        dev: 'The Jul–Sep 2026 QPR was filed on 12 Oct 2026.', devDate: '15 Oct 2026',
+        ask: 'Which slab is Tower A at today? When will the Jul–Sep QPR be on HARERA?'},
+      {id: 'left', quote: 'Only 20 flats left', v: 'Differs', x: 72.2, y: 18, w: 23.4, h: 17.6, a: 'below-c', round: true, big: 'About 140', bigSub: 'Units not booked at the last filing, Apr–Jun 2026.', recShort: 'Records: about 140 unbooked',
+        rec: '72% of 500 units were booked. Sales since 30 Jun 2026 are not public yet.', chips: ['HARERA QPR · Apr–Jun 2026'],
+        ask: 'How many 3 BHK homes are unbooked today? Can I see the unit list?'},
+      {id: 'price', quote: '₹11,999/sq ft all-inclusive', v: 'Differs', x: 8.7, y: 60.17, w: 41.2, h: 5.92, a: 'below-l', big: '₹18,900', bigSub: 'A sq ft of carpet, all-in.', recShort: 'Records: ₹18,900/sq ft carpet, all-in',
+        rec: "From the developer's cost sheet of 2 Oct 2026, plus GST, stamp duty and registration. ₹11,999 is close to its base price alone, ₹11,750 a sq ft super, and the flyer's own fine print says stamp duty and registration are extra.", chips: ['Developer cost sheet · 2 Oct 2026', 'Plinth cost rules v2026.10'],
+        ask: 'What is the all-in price per sq ft carpet, with every charge, in writing?'},
+      {id: 'area', quote: '3 BHK · 2,000 sq ft', v: 'Differs', x: 59.2, y: 61.2, w: 32.5, h: 3.85, a: 'below-l', big: '1,450 sq ft', bigSub: 'Carpet area of the 3 BHK, as registered.', recShort: 'Records: 1,450 sq ft carpet',
+        rec: '2,000 sq ft is the super area, 38% more. It adds your share of walls, lifts and lobbies.', chips: ['HARERA registration · unit sizes'],
+        ask: 'Is 2,000 sq ft the carpet area or the super area?'},
+      {id: 'club', quote: '40,000 sq ft clubhouse', v: 'Not in records', x: 73.5, y: 71.2, w: 20.8, h: 14.8, a: 'in-mr', big: 'No record', bigSub: 'of the clubhouse size in any filing we read.', recShort: 'Records: no clubhouse size',
+        rec: 'We searched the HARERA registration and every quarterly report for Phase 2. The approved building plan may show it.', chips: ['Searched HARERA · 14 Oct 2026'],
+        ask: 'Can I see the approved building plan that shows the clubhouse?'},
+      {id: 'rera', quote: 'RERA GGM/673/405/2022/117', v: 'Matches', x: 4.4, y: 90.6, w: 68.4, h: 2.6, a: 'in-r', big: 'Registered', bigSub: 'To Northfield Estates for this project, Dec 2022.', recShort: 'Records: registered, Dec 2022',
+        rec: 'The number belongs to Aurelia Heights, Phase 2.', chips: ['HARERA registration · Dec 2022'],
+        askLabel: 'Worth knowing.', ask: "A matching RERA number shows the project is registered. It doesn't make the other claims true.", noCopy: true}
+    ];
+    var HOARD = [
+      {id: 'hposs', quote: 'Possession Dec 2026', v: 'Differs', x: 23.92, y: 55.99, w: 24.03, h: 7.64, sk: -7, a: 'out-rt', big: 'Dec 2027', bigSub: 'Original completion date on the HARERA registration.', recShort: 'Records: completion Dec 2027',
+        rec: 'No extensions so far. 41% is built, with 77% of the promised time used.', chips: ['HARERA registration · Dec 2022', 'HARERA QPR · Apr–Jun 2026'],
+        ask: 'Which completion date will be written in my agreement for sale?'},
+      {id: 'hprice', quote: '3 BHK from ₹2.35 Cr', v: 'Matches', x: 23.92, y: 64.24, w: 24.6, h: 2.08, sk: 0.7, a: 'out-r', big: '₹2.35 Cr', bigSub: "3 BHK base price on the developer's price list, 2 Oct 2026.", recShort: "Developer's price list: ₹2.35 Cr", recLabel: 'Price list shows',
+        rec: 'That is the base price. With charges, GST and stamp duty, the all-in is ₹2.74 Cr.', chips: ['Developer price list · 2 Oct 2026', 'Plinth cost rules v2026.10'],
+        askLabel: 'Worth knowing.', ask: 'Ask for the all-in price in writing: ₹2.74 Cr by our sum.', noCopy: true},
+      {id: 'hrera', quote: 'RERA GGM/673/405/2022/117', v: 'Matches', x: 23.92, y: 66.6, w: 19.8, h: 1.9, sk: 3.7, a: 'below-l', big: 'Registered', bigSub: 'To Northfield Estates for this project, Dec 2022.', recShort: 'Records: registered, Dec 2022',
+        rec: 'The number belongs to Aurelia Heights, Phase 2.', chips: ['HARERA registration · Dec 2022'],
+        askLabel: 'Worth knowing.', ask: "A matching RERA number shows the project is registered. It doesn't make other claims true.", noCopy: true}
+    ];
+    // Type set on the generated images' placeholder bars. Flyer image 896x1200, hoarding image 928x1152.
+    // Positions are % of the image (measured from its pixels); sizes are cqw of the image's width, so the type scales with every thumbnail.
+    function typeItem(d) {
+      var st = 'position:absolute;left:' + d.x + '%;top:' + d.y + '%;width:' + d.w + '%;height:' + d.h + '%;box-sizing:border-box;display:flex;align-items:center;justify-content:' + (d.center ? 'center' : 'flex-start') + ';padding-left:' + (d.pl || 0) + 'cqw;font-family:Mukta, system-ui, sans-serif;font-weight:' + (d.fw || 700) + ';font-size:' + d.fs + 'cqw;line-height:1;letter-spacing:' + (d.ls || '0') + ';white-space:nowrap;color:' + d.c + ';';
+      if (d.bg) st += 'background:' + d.bg + ';';
+      if (d.r) st += 'border-radius:' + d.r + ';';
+      if (d.sk) st += 'transform:skewY(' + d.sk + 'deg);transform-origin:0 50%;';
+      if (d.blur) st += 'filter:blur(' + d.blur + ');';
+      if (d.o) st += 'opacity:' + d.o + ';';
+      return {text: d.t, style: st};
+    }
+    var NAVY = '#142957', PAPER = '#F9F9F9', CREAM = '#F1EEE5', FINE = '#3F3C36';
+    var flyerType = [
+      {t: 'AURELIA HEIGHTS · PHASE 2', x: 8.59, y: 5.08, w: 77.12, h: 4.83, fs: 4, c: '#FFFFFF', bg: NAVY, r: '1.4cqw', pl: 2.4, ls: '0.03em'},
+      {t: 'POSSESSION DEC 2026', x: 8.59, y: 11.25, w: 57.25, h: 4.83, fs: 4, c: '#E9C46A', bg: NAVY, r: '1.4cqw', pl: 2.4, ls: '0.03em'},
+      {t: 'Structure up to 12th floor', x: 8.3, y: 18.3, w: 57, h: 3.2, fs: 2.5, c: NAVY, bg: PAPER, pl: 0.3},
+      {t: 'ONLY 20', x: 72.21, y: 21.7, w: 23.44, h: 5.2, fs: 4.6, c: NAVY, center: true},
+      {t: 'FLATS LEFT', x: 72.21, y: 27.1, w: 23.44, h: 3.4, fs: 2.8, c: NAVY, center: true, ls: '0.04em'},
+      {t: '₹11,999/sq ft', x: 8.71, y: 60.6, w: 41.18, h: 3.4, fs: 4.3, c: NAVY, pl: 2.6},
+      {t: 'ALL-INCLUSIVE*', x: 8.71, y: 63.9, w: 41.18, h: 1.9, fs: 1.7, c: NAVY, pl: 2.7, ls: '0.16em'},
+      {t: '3 BHK · 2,000 SQ FT', x: 59.2, y: 61.45, w: 32.5, h: 3.35, fs: 2.3, c: NAVY, bg: CREAM, r: '999px', center: true},
+      {t: 'Infinity pool', x: 8.39, y: 83.72, w: 15.69, h: 1.98, fs: 1.9, c: NAVY, bg: PAPER, center: true, fw: 600},
+      {t: 'Gym', x: 30.94, y: 83.72, w: 15.69, h: 1.98, fs: 1.9, c: NAVY, bg: PAPER, center: true, fw: 600},
+      {t: 'Central park', x: 53.48, y: 83.72, w: 15.69, h: 1.98, fs: 1.9, c: NAVY, bg: PAPER, center: true, fw: 600},
+      {t: '40,000 sq ft clubhouse', x: 76.03, y: 83.72, w: 15.69, h: 1.98, fs: 1.9, c: NAVY, bg: PAPER, center: true, fw: 600},
+      {t: 'RERA No. GGM/673/405/2022/117', x: 4.38, y: 90.88, w: 68.37, h: 1.98, fs: 1.75, c: FINE, bg: CREAM, fw: 600, pl: 0.2, blur: 0},
+      {t: '*Images are artistic impressions. Conditions apply.', x: 4.38, y: 93.38, w: 68.37, h: 1.9, fs: 1.75, c: FINE, bg: CREAM, fw: 600, pl: 0.2},
+      {t: 'Stamp duty and registration extra.', x: 4.38, y: 95.8, w: 45.82, h: 1.9, fs: 1.75, c: FINE, bg: CREAM, fw: 600, pl: 0.2}
+    ].map(typeItem);
+    var hoardCover = 'position:absolute;left:21.88%;top:45.92%;width:34.05%;height:25.43%;clip-path:polygon(0 30.04%, 100% 0, 100% 100%, 0 89.42%);background:#232A38';
+    var hoardType = [
+      {t: 'AURELIA HEIGHTS · PHASE 2', x: 23.92, y: 53.63, w: 30, h: 1.77, fs: 1.83, c: '#C9A65A', ls: '0.06em', sk: -13.4, o: 0.95},
+      {t: 'POSSESSION', x: 23.92, y: 55.69, w: 30, h: 3.54, fs: 3.66, c: '#ECE7DA', sk: -9.6, o: 0.95},
+      {t: 'DEC 2026', x: 23.92, y: 58.85, w: 30, h: 5.21, fs: 5.39, c: '#D4AE5E', sk: -4.5, o: 0.95},
+      {t: '3 BHK FROM ₹2.35 CR*', x: 23.92, y: 64.29, w: 30, h: 1.98, fs: 2.05, c: '#ECE7DA', sk: 0.7, o: 0.95},
+      {t: 'RERA No. GGM/673/405/2022/117', x: 23.92, y: 66.89, w: 30, h: 1.3, fs: 1.35, c: '#CFC8B8', fw: 600, sk: 3.7, o: 0.95}
+    ].map(typeItem);
+    // Where a verdict tag sits relative to its claim box, so tags never cover the claim's own type.
+    function tagPos(a) {
+      if (a === 'out-r') return {pos: 'left:calc(100% + 6px);top:50%;', tr: 'translateY(-50%)'};
+      if (a === 'out-rt') return {pos: 'left:calc(100% + 6px);top:0;', tr: 'translateY(-30%)'};
+      if (a === 'below-l') return {pos: 'left:0;top:calc(100% + 4px);', tr: 'translateY(0)'};
+      if (a === 'in-b') return {pos: 'left:50%;bottom:6px;', tr: 'translateX(-50%)'};
+      if (a === 'in-mid') return {pos: 'left:50%;top:50%;', tr: 'translate(-50%, -50%)'};
+      if (a === 'in-mr') return {pos: 'right:2px;top:50%;', tr: 'translateY(-50%)'};
+      if (a === 'below-c') return {pos: 'left:50%;top:calc(100% + 2px);', tr: 'translateX(-50%)'};
+      return {pos: 'right:6px;top:50%;', tr: 'translateY(-50%)'};
+    }
+
+    var hoarding = s.src === 'hoarding';
+    var CL = hoarding ? HOARD : FLYER;
+    var N = CL.length;
+
+    var VT = {
+      'Differs': {bg: T.ink, fg: T.bg, tag: 'background:#1B1A17;color:#FFFFFF', seg: 'background:' + T.ink},
+      'Matches': {bg: T.vMatch, fg: T.ink, tag: 'background:#FFFFFF;color:#1B1A17', seg: 'background:' + T.sMatch},
+      'Not in records': {bg: T.vNone, fg: T.ink, tag: 'background:#F1ECE2;color:#1B1A17', seg: 'background:' + T.sNone},
+      "Can't check": {bg: T.hatch + ',' + T.vCant, fg: T.ink, tag: 'background:repeating-linear-gradient(45deg, rgba(63,60,54,0.22) 0 1.5px, transparent 1.5px 7px), #FFFFFF;color:#1B1A17', seg: 'background:' + T.hatch + ',' + T.track}
+    };
+    function vchip(v) {
+      var t = VT[v];
+      return 'flex:none;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:600;line-height:1;white-space:nowrap;background:' + t.bg + ';color:' + t.fg;
+    }
+    function flags(v) { return {isD: v === 'Differs', isM: v === 'Matches', isN: v === 'Not in records', isC: v === "Can't check"}; }
+
+    var ph = s.phase;
+    var found = Math.max(0, Math.min(N, s.found || 0));
+    var checked = Math.max(0, Math.min(N, s.checked || 0));
+    var done = ph === 'done';
+    function isChecked(i) { return done || i < checked; }
+    function isCur(i) { return ph === 'checking' && i === checked && s.sub === 1; }
+    var D = 0, M = 0, NR = 0, C = 0, dSoFar = 0;
+    CL.forEach(function (c, i) {
+      if (c.v === 'Differs') D++; else if (c.v === 'Matches') M++; else if (c.v === 'Not in records') NR++; else C++;
+      if (isChecked(i) && c.v === 'Differs') dSoFar++;
+    });
+
+    var marks = CL.map(function (c, i) {
+      var vis = i < found, lit = vis && isChecked(i), cur = isCur(i);
+      var on = s.sheetId === c.id;
+      return {
+        tag: c.v, tab: vis ? '0' : '-1',
+        aria: 'Claim: ' + c.quote + '. ' + (lit ? c.v + '. Open its record.' : 'Not checked yet.'),
+        pick: function () { if (!lit || self.st().screen !== 'result') return; self.set({sheetId: c.id, shareOpen: false}); },
+        style: 'position:absolute;left:' + c.x + '%;top:' + c.y + '%;width:' + c.w + '%;height:' + c.h + '%;padding:0;border:0;border-radius:' + (c.round ? '50%' : '3px') + ';background:transparent;display:block;cursor:pointer;' + (c.sk ? 'transform:skewY(' + c.sk + 'deg);transform-origin:0 50%;' : '') + 'transition:opacity .3s ease;opacity:' + (vis ? 1 : 0) + ';pointer-events:' + (vis ? 'auto' : 'none'),
+        washStyle: 'position:absolute;inset:0;border-radius:' + (c.round ? '50%' : '3px') + ';background:' + (cur ? 'rgba(110,231,183,0.34)' : 'rgba(255,255,255,0.40)') + ';opacity:' + (vis && !lit ? 1 : 0) + ';transition:opacity .3s ease',
+        litStyle: 'position:absolute;inset:0;border-radius:' + (c.round ? '50%' : '3px') + ';background:rgba(110,231,183,' + (on ? '0.86' : '0.62') + ');mix-blend-mode:multiply;transform-origin:0 50%;transform:scaleX(' + (lit ? 1 : 0) + ');transition:transform .6s cubic-bezier(.22,1,.36,1)',
+        tagStyle: 'position:absolute;' + tagPos(c.a).pos + 'display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;box-sizing:border-box;font-family:Mukta, system-ui, sans-serif;font-size:13px;font-weight:600;line-height:1;white-space:nowrap;' + VT[c.v].tag + ';transform:' + tagPos(c.a).tr + ' scale(' + (lit ? 1 : 0.6) + ')' + (c.sk ? ' skewY(' + (-c.sk) + 'deg)' : '') + ';transform-origin:0 50%;opacity:' + (lit ? 1 : 0) + ';transition:transform .35s cubic-bezier(.22,1,.36,1) .3s,opacity .25s ease .3s'
+      };
+    });
+    var strip = CL.map(function (c, i) {
+      var st = 'display:block;height:10px;border-radius:3px;transition:background-color .35s ease;';
+      if (isChecked(i)) st += VT[c.v].seg; else if (isCur(i)) st += 'background:' + T.accent; else st += 'background:' + T.track;
+      return {style: st};
+    });
+    var scanY = found === 0 ? 2 : Math.min(98, CL[found - 1].y + CL[found - 1].h);
+
+    var rows = CL.map(function (c) {
+      var f = flags(c.v);
+      return {quote: c.quote, recShort: c.recShort, v: c.v, isD: f.isD, isM: f.isM, isN: f.isN, isC: f.isC, chipStyle: vchip(c.v),
+        open: function () { self.set({sheetId: c.id, shareOpen: false}); }};
+    });
+    var idx = 0;
+    CL.forEach(function (c, i) { if (c.id === s.sheetId) idx = i; });
+    var c0 = CL[idx];
+    var f0 = flags(c0.v);
+    var sc = {
+      quote: c0.quote, v: c0.v, big: c0.big, bigSub: c0.bigSub, rec: c0.rec, recLabel: c0.recLabel || 'Records show',
+      isD: f0.isD, isM: f0.isM, isN: f0.isN, isC: f0.isC, chipStyle: vchip(c0.v),
+      chips: c0.chips.map(function (l) { return {label: l, aria: 'Source: ' + l + '. Open the record.'}; }),
+      hasDev: !!c0.dev, dev: c0.dev || '', devDate: c0.devDate || '',
+      askLabel: c0.askLabel || 'Ask the broker.', ask: c0.ask, canCopy: !c0.noCopy
+    };
+    var sheetOpen = !!s.sheetId && s.screen === 'result';
+    var shareOpen = !!s.shareOpen && s.screen === 'result';
+    function sheetStyle(open, geom) {
+      return 'position:absolute;left:0;right:0;bottom:0;z-index:11;' + geom + 'box-sizing:border-box;background:' + T.sheet + ';color:' + T.ink + ';border-radius:28px 28px 0 0;box-shadow:' + T.shadow + ';transform:translateY(' + (open ? '0' : '105%') + ');visibility:' + (open ? 'visible' : 'hidden') + ';transition:' + (open ? 'transform .4s cubic-bezier(.22,1,.36,1), visibility 0s' : 'transform .26s cubic-bezier(.76,0,.24,1), visibility 0s linear .26s');
+    }
+
+    // Project picker (when the buyer taps Pick another).
+    var P = [
+      {k: 'p2', name: 'Aurelia Heights, Phase 2', where: 'Northfield Estates · Sector 37D', key: 'aurelia heights phase 2 northfield estates sector 37d ggm/673/405/2022/117'},
+      {k: 'p1', name: 'Aurelia Heights, Phase 1', where: 'Northfield Estates · Sector 37D · finished', key: 'aurelia heights phase 1 northfield estates sector 37d'},
+      {k: 'kp', name: 'Kestrel Park', where: 'Orbis Land · Sector 113', key: 'kestrel park orbis land sector 113'},
+      {k: 'sg', name: 'Sapphire Grove, Phase 1', where: 'Meridian Habitat · Sector 106', key: 'sapphire grove phase 1 meridian habitat sector 106'},
+      {k: 'ct', name: 'Coral Towers', where: 'Vantage Buildcon · Sector 89', key: 'coral towers vantage buildcon sector 89'}
+    ];
+    var qy = String(s.query || '').trim().toLowerCase();
+    var pickList = qy ? P.filter(function (p) { return p.key.indexOf(qy) >= 0; }).slice(0, 2) : P.slice(0, 2);
+    var picks = pickList.map(function (p) {
+      var on = s.pick === p.k;
+      return {name: p.name, where: p.where, on: on ? 'true' : 'false',
+        pick: function () { self.set({pick: p.k, pickNote: ''}); },
+        style: 'display:flex;align-items:center;gap:12px;width:100%;min-height:52px;text-align:left;padding:8px 12px;border:0;border-radius:8px;box-sizing:border-box;font:inherit;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.panelSolid : 'transparent'),
+        ring: 'flex:none;width:22px;height:22px;border-radius:50%;box-sizing:border-box;border:2px solid ' + (on ? T.ink : T.lineStrong) + ';display:inline-flex;align-items:center;justify-content:center',
+        dot: 'width:10px;height:10px;border-radius:50%;background:' + (on ? T.ink : 'transparent')};
+    });
+
+    var docW = hoarding ? 'hoarding' : 'flyer';
+    var bigNum = '0', bigText = '', status = '';
+    if (ph === 'reading') { bigNum = String(found); bigText = (found === 1 ? 'claim' : 'claims') + ' found. Still reading.'; status = 'Reading the ' + docW + '. ' + found + ' claims found.'; }
+    else if (ph === 'confirm') { bigNum = String(N); bigText = 'claims found. Which project is it?'; status = N + ' claims found. Confirm the project to check them.'; }
+    else if (ph === 'checking') { bigNum = checked + ' of ' + N; bigText = 'checked. ' + dSoFar + (dSoFar === 1 ? ' differs' : ' differ') + ' so far.'; status = checked + ' of ' + N + ' claims checked. ' + dSoFar + ' differ so far.'; }
+    else { bigNum = D + ' of ' + N; bigText = (D === 1 ? 'claim differs' : 'claims differ') + ' from the records.'; status = D + ' of ' + N + ' claims differ from the records.'; }
+    var parts = [];
+    if (M) parts.push(M + (M === 1 ? ' matches' : ' match'));
+    if (NR) parts.push(NR + " isn't in any record we read");
+    if (C) parts.push(C + " can't be checked until the Jul–Sep QPR is filed");
+    var meta = (hoarding ? 'Your photo of a hoarding · Sector 37D · 18 Oct 2026' : 'Broker flyer · shared 18 Oct 2026') + ' · records as of 14 Oct 2026';
+    var breakdown = D + (D === 1 ? ' differs. ' : ' differ. ') + parts.join('. ') + '. Tap one for its record and its source.';
+
+    var isEntry = s.screen === 'entry';
+    var isReading = s.screen === 'reading';
+    var isResult = s.screen === 'result';
+    var corner = '#FFFFFF';
+    var corners = [
+      'left:0;top:0;border-left:4px solid ' + corner + ';border-top:4px solid ' + corner + ';border-top-left-radius:24px;',
+      'right:0;top:0;border-right:4px solid ' + corner + ';border-top:4px solid ' + corner + ';border-top-right-radius:24px;',
+      'left:0;bottom:0;border-left:4px solid ' + corner + ';border-bottom:4px solid ' + corner + ';border-bottom-left-radius:24px;',
+      'right:0;bottom:0;border-right:4px solid ' + corner + ';border-bottom:4px solid ' + corner + ';border-bottom-right-radius:24px;'
+    ].map(function (d) { return {style: 'position:absolute;width:44px;height:44px;box-sizing:border-box;' + d}; });
+    var modeBase = 'height:44px;padding:0 15px;border-radius:999px;display:inline-flex;align-items:center;font-size:15px;font-weight:600;white-space:nowrap;text-decoration:none;';
+    var targetsDef = [
+      {k: 'plinth', name: 'Plinth', sub: 'Check claims'},
+      {k: 'msg', name: 'Messages', sub: 'App'},
+      {k: 'files', name: 'Files', sub: 'App'},
+      {k: 'copy', name: 'Copy', sub: 'Image'}
+    ];
+    var targets = targetsDef.map(function (tg) {
+      var pl = tg.k === 'plinth';
+      return {
+        name: tg.name, sub: tg.sub, isPlinth: pl, isMsg: tg.k === 'msg', isFiles: tg.k === 'files', isCopy: tg.k === 'copy',
+        aria: pl ? 'Share to Plinth: check the claims on this image' : 'Share to ' + tg.name,
+        pick: function () { if (pl) self.startReading('flyer'); else self.set({shareNote: 'Prototype: only Plinth is wired here.'}); },
+        style: 'display:flex;flex-direction:column;align-items:center;gap:4px;min-height:112px;padding:10px 0 8px;border:0;border-radius:16px;font:inherit;color:' + T.ink + ';cursor:pointer;background:' + (pl ? T.track : 'transparent'),
+        iconStyle: 'width:56px;height:56px;border-radius:999px;display:grid;place-items:center;margin-bottom:4px;' + (pl ? 'background:' + T.accent + ';color:' + T.onAccent : 'background:' + T.track + ';color:' + T.ink)
+      };
+    });
+
+    var share = {
+      head: hoarding ? 'Hoarding at Aurelia Heights, Phase 2' : 'Broker flyer · Aurelia Heights, Phase 2',
+      text: hoarding ? '1 of 3 claims differs from the records. Possession: the hoarding says Dec 2026; HARERA shows Dec 2027.' : '4 of 7 claims differ from the records. Possession: the flyer says Dec 2026; HARERA shows Dec 2027. Price: the flyer says ₹11,999 a sq ft all-inclusive; the cost sheet comes to ₹18,900 a sq ft carpet, all-in.'
+    };
+
+    return {
+      t: T, chip: chip, flyerType: flyerType, hoardType: hoardType, hoardCover: hoardCover,
+      isShare: isEntry && !hoarding, isCamera: isEntry && hoarding,
+      isWork: !isEntry, isReading: isReading, isResult: isResult,
+      targets: targets, shareNote: s.shareNote || 'Plinth shows up whenever you share an image, a PDF or a link.',
+      frameStyle: 'position:absolute;left:20px;top:250px;width:350px;height:228px',
+      corners: corners,
+      modeOff: modeBase + 'background:#111D19;color:#FFFFFF',
+      modeOn: modeBase + 'background:#FFFFFF;color:#1B1A17',
+      toggleTorch: function () { self.set({torch: !self.st().torch}); },
+      torchAria: s.torch ? 'true' : 'false',
+      torchBtn: 'width:48px;height:48px;flex:none;border:0;border-radius:999px;display:grid;place-items:center;cursor:pointer;' + (s.torch ? 'background:#FFFFFF;color:#1B1A17;' : 'background:#111D19;color:#FFFFFF;'),
+      shoot: function () { self.startReading('hoarding'); },
+
+      barTitle: isResult ? 'Claims vs records' : (hoarding ? 'Checking the hoarding' : 'Checking the flyer'),
+      barSub: isResult ? (hoarding ? 'Your photo · checked 18 Oct 2026' : 'Broker flyer · checked 18 Oct 2026') : 'Read by AI · usually under 30 seconds',
+      close: function () { self.stop(); self.set({screen: 'entry', phase: 'reading', found: 0, checked: 0, sheetId: null, shareOpen: false}); },
+      isFlyer: !hoarding, isHoarding: hoarding, docWord: docW,
+      docLabel: (hoarding ? 'Your photo of the hoarding' : 'The flyer you shared') + ', with ' + found + ' claims marked.',
+      docBoxRead: 'position:absolute;top:' + (hoarding ? 17 : 16) + 'px;left:' + (hoarding ? 51 : 61) + 'px;width:' + (hoarding ? 288 : 268) + 'px;height:' + (hoarding ? 358 : 359) + 'px;overflow:hidden;background:#E7E3DA',
+      docBoxResult: 'position:relative;flex:none;width:' + (hoarding ? 256 : 240) + 'px;height:' + (hoarding ? 318 : 321) + 'px;overflow:hidden;background:#E7E3DA',
+      marks: marks, strip: strip,
+      stripGrid: 'display:grid;grid-template-columns:repeat(' + N + ', 1fr);gap:5px',
+      scanWrap: 'position:absolute;left:0;right:0;top:0;height:100%;pointer-events:none;transform:translateY(' + scanY + '%);opacity:' + (ph === 'reading' ? 1 : 0) + ';transition:transform .4s ease,opacity .3s ease',
+      bigNum: bigNum, bigText: bigText, statusSentence: status, meta: meta, breakdown: breakdown,
+      notPicking: !s.picking,
+      showConfirm: ph === 'confirm' && !s.picking, showPick: ph === 'confirm' && !!s.picking,
+      confirmFrom: 'From the RERA number on the ' + docW + '.',
+      confirmYes: function () { self.startChecking(); },
+      confirmNo: function () { self.set({picking: true, pick: 'p2', query: ''}); },
+      picks: picks, query: s.query, onQuery: function (e) { self.set({query: e.target.value}); },
+      hasPickNote: !!s.pickNote, pickNote: s.pickNote,
+      confirmPicked: function () { if (self.st().pick !== 'p2') { self.set({pickNote: 'In this prototype, only Aurelia Heights, Phase 2 has a sample check.'}); return; } self.startChecking(); },
+      showReadNote: ph === 'reading' || ph === 'checking',
+      readNote: ph === 'reading' ? 'Reading every line. Then we ask which project it is, before checking anything.' : 'Each claim lights up on the ' + docW + ' as it is checked against its record.',
+
+      rows: rows, listLabel: 'Claims on the ' + docW + ', top to bottom', saysLabel: hoarding ? 'Hoarding says' : 'Flyer says',
+      saysMeta: hoarding ? 'your photo, 18 Oct 2026' : 'broker flyer, 18 Oct 2026',
+      sc: sc,
+      scrimStyle: 'position:absolute;left:0;top:0;width:390px;height:844px;z-index:10;background:rgba(8,12,10,0.48);transition:opacity .3s;opacity:' + (sheetOpen || shareOpen ? 1 : 0) + ';pointer-events:' + (sheetOpen || shareOpen ? 'auto' : 'none'),
+      claimSheet: sheetStyle(sheetOpen, 'top:150px;'),
+      shareSheet: sheetStyle(shareOpen, 'padding:10px 20px 28px;display:flex;flex-direction:column;gap:14px;'),
+      closeSheets: function () { self.set({sheetId: null, shareOpen: false}); },
+      prevClaim: function () { self.set({sheetId: CL[(idx - 1 + N) % N].id}); },
+      nextClaim: function () { self.set({sheetId: CL[(idx + 1) % N].id}); },
+      prevAria: 'Previous claim: ' + CL[(idx - 1 + N) % N].quote,
+      nextAria: 'Next claim: ' + CL[(idx + 1) % N].quote,
+      copyAsk: function () { self.set({askCopied: true}); }, copyAskLabel: s.askCopied ? 'Question copied' : 'Copy the question',
+      openShare: function () { self.set({shareOpen: true, sheetId: null, copied: false, sent: false}); },
+      shareHead: share.head, shareText: share.text,
+      sendWa: function () { self.set({sent: true}); }, waLabel: s.sent ? 'Opening WhatsApp' : 'Send on WhatsApp',
+      copyLink: function () { self.set({copied: true}); }, copyLabel: s.copied ? 'Link copied' : 'Copy link',
+      toggleFollow: function () { self.set({following: !self.st().following}); },
+      followAria: s.following ? 'true' : 'false', followLabel: s.following ? 'Following' : 'Follow'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Enquiries and visits · Workspace</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input::placeholder{color:currentColor;opacity:.62}
+@keyframes plRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.98); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.98); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 620ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  .drift { animation: plDrift 26s cubic-bezier(.33,1,.68,1) infinite alternate; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 24%; }
+    .rv1 { animation-range: entry 8% cover 30%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 4400px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px">
+      <a href="#overview" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <span style="font-size: 17px; font-weight: 600">Northfield Estates <span style="font-weight: 400; color: {{t.ink2}}">· Workspace</span></span>
+      <nav aria-label="Account" style="margin-left: auto; display: flex; align-items: center; gap: 8px 20px; flex-wrap: wrap">
+        <a href="#help" class="lk" style="font-size: 17px; font-weight: 500; color: {{t.ink}}; text-decoration: none">Help</a>
+        <span style="display: inline-flex; align-items: center; gap: 10px; padding: 4px 16px 4px 4px; border-radius: 999px; background: {{t.track}}">
+          <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: {{t.panelSolid}}; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700">VS</span>
+          <span style="display: flex; flex-direction: column; line-height: 1.25"><span style="font-size: 15px; font-weight: 600">Vikram Sethi</span><span style="font-size: 14px; color: {{t.ink2}}">Sales</span></span>
+        </span>
+        <button type="button" class="press" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 500; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">Sign out</button>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <a href="#crm" class="press" style="height: 44px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font-size: 17px; font-weight: 600; text-decoration: none; white-space: nowrap">Send to your CRM</a>
+      </div>
+    </div>
+  </header>
+
+  <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 144px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
+
+    <nav aria-label="Workspace" style="flex: 0 0 220px; position: sticky; top: 104px; display: flex; flex-direction: column; gap: 4px">
+      <sc-for list="{{nav}}" as="nv" hint-placeholder-count="6">
+        <a href="{{nv.href}}" aria-current="{{nv.current}}" class="press" style="{{nv.style}}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="flex: none"><path d="{{nv.icon}}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg><span style="flex: 1">{{nv.label}}</span><sc-if value="{{nv.hasBadge}}" hint-placeholder-val="{{false}}"><span style="{{nv.badgeStyle}}">{{nv.badge}}<span class="sr">{{nv.badgeSr}}</span></span></sc-if></a>
+      </sc-for>
+      <div style="margin-top: 32px; padding: 0 14px; display: flex; flex-direction: column; gap: 10px; font-size: 15px">
+        <p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 600">Free, forever. Payments never affect scores.</p>
+        <a href="#charter" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Developer Charter</a>
+        <a href="#channel-partners" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Plinth and channel partners</a>
+      </div>
+    </nav>
+
+    <main style="flex: 1 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 104px">
+
+      <section id="enquiries" aria-labelledby="in-h" style="display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <h1 id="in-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(38px, 4vw, 52px); line-height: 1; letter-spacing: -0.04em">Which buyers asked to hear from you?</h1>
+          <p class="rise rise1" style="margin: 0; font-size: 17px; color: {{t.ink2}}">{{metaLine}}</p>
+          <p class="rise rise2" style="margin: 0; display: flex; gap: 12px; align-items: flex-start; max-width: 70ch; padding: 16px 20px; border-radius: 8px; background: {{t.track}}; font-size: 17px"><svg width="20" height="20" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M8 1.5l5 2v4c0 3.2-2.1 5.6-5 7-2.9-1.4-5-3.8-5-7v-4z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg><span>Every record here was shared by the buyer’s own tap. It costs you nothing, owes no brokerage, and works the same for every developer. Plinth never registers itself as a lead source or channel partner.</span></p>
+        </div>
+
+        <div class="rise rise3" role="radiogroup" aria-label="Show" style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{filters}}" as="fl" hint-placeholder-count="4">
+            <button type="button" role="radio" class="press" aria-checked="{{fl.on}}" onClick="{{fl.pick}}" style="{{fl.style}}">{{fl.label}}</button>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+          <ul aria-label="Records" style="flex: 0 1 300px; min-width: 260px; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px">
+            <sc-for list="{{rows}}" as="rw" hint-placeholder-count="7">
+              <li>
+                <button type="button" class="press" aria-pressed="{{rw.on}}" onClick="{{rw.pick}}" style="{{rw.style}}">
+                  <span style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px"><span style="font-size: 17px; font-weight: 700">{{rw.name}}</span><span style="font-size: 14px; color: {{t.ink2}}">{{rw.whenShort}}</span></span>
+                  <span style="font-size: 15px; line-height: 1.4">{{rw.listLine}}</span>
+                  <span style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap"><span style="font-size: 14px; color: {{t.ink2}}">{{rw.projectShort}}</span><span style="{{rw.tagStyle}}">{{rw.tag}}</span></span>
+                </button>
+              </li>
+            </sc-for>
+          </ul>
+
+          <article aria-labelledby="det-h" class="rv" style="flex: 1 1 400px; min-width: 0; border-radius: 8px; background: {{t.track}}; padding: 28px 30px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <h2 id="det-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">{{sel.headline}}</h2>
+              <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">{{sel.project}} · {{sel.whenLine}}</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <h3 style="margin: 0; font-size: 17px; font-weight: 700">Buyer brief, shared by {{sel.name}}</h3>
+              <dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 8px">
+                <sc-for list="{{sel.brief}}" as="bf" hint-placeholder-count="4">
+                  <div style="border-radius: 8px; background: {{t.panelSolid}}; padding: 10px 14px; display: flex; flex-direction: column; gap: 2px">
+                    <dt style="font-size: 14px; color: {{t.ink2}}">{{bf.k}}</dt>
+                    <dd style="margin: 0; font-size: 17px; font-weight: 600; line-height: 1.35">{{bf.v}}</dd>
+                  </div>
+                </sc-for>
+              </dl>
+              <p style="margin: 0; font-size: 14px; color: {{t.ink2}}">The buyer chose which fields to share. Anything marked “Not shared” stays private.</p>
+            </div>
+
+            <sc-if value="{{sel.hasQuestions}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <h3 style="margin: 0; font-size: 17px; font-weight: 700">What {{sel.name}} asked</h3>
+                <ul style="margin: 0; padding: 0 0 0 20px; display: flex; flex-direction: column; gap: 4px; font-size: 17px">
+                  <sc-for list="{{sel.questions}}" as="qq" hint-placeholder-count="3"><li>{{qq}}</li></sc-for>
+                </ul>
+              </div>
+            </sc-if>
+
+            <div style="display: flex; gap: 12px; align-items: flex-start">
+              <svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M9 8.5a3 3 0 100-6 3 3 0 000 6zM3 16c0-3 2.7-5 6-5s6 2 6 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 17px; font-weight: 700">{{sel.agentTitle}}</span>
+                <span style="font-size: 15px; line-height: 1.45">{{sel.agentSub}}</span>
+                <span style="font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Plinth is never the lead source or a channel partner, and takes no share of any commission.</span>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; align-items: flex-start">
+              <svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M4 2.5h3l1.2 3.5-1.8 1.2a9 9 0 004.4 4.4l1.2-1.8 3.5 1.2v3a1.5 1.5 0 01-1.6 1.5A13 13 0 012.5 4.1 1.5 1.5 0 014 2.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 17px; font-weight: 700">{{sel.contactTitle}}</span>
+                <span style="font-size: 15px; line-height: 1.45">{{sel.contactSub}}</span>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center">
+              <a href="{{sel.primaryHref}}" class="press" onClick="{{sel.primaryAct}}" style="display: inline-flex; align-items: center; height: 52px; padding: 0 24px; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font-size: 17px; font-weight: 600; text-decoration: none; box-sizing: border-box">{{sel.primaryLabel}}</a>
+              <sc-if value="{{sel.canMark}}" hint-placeholder-val="{{true}}">
+                <button type="button" class="press" onClick="{{sel.mark}}" style="height: 48px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Mark as replied</button>
+              </sc-if>
+              <button type="button" class="press" onClick="{{sel.send}}" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">{{sel.sendLabel}}</button>
+            </div>
+            <p aria-live="polite" style="margin: 0; min-height: 24px; font-size: 15px; font-weight: 600">{{sel.actNote}}</p>
+
+            <p style="margin: 0; display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 8px; background: {{t.panelSolid}}; font-size: 15px; line-height: 1.45"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 3px"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 015 0v2" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>{{sel.consentLine}}</span></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="visits" aria-labelledby="vi-h" style="display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="vi-h" class="rv" style="{{u.h2}}">When are buyers coming to the site?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">Set slots for each site office. Buyers book through Plinth and show a 4-digit code instead of their phone number.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+
+          <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+            <h3 style="margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3">Aurelia Heights, Phase 2 · sales gallery, Sector 37D</h3>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Week of 19 Oct 2026 · up to 3 bookings per slot · tap a slot to open or close it</p>
+            <div role="table" aria-label="Visit slots this week" style="display: flex; flex-direction: column; gap: 6px">
+              <div role="row" style="display: grid; grid-template-columns: minmax(78px, 0.9fr) repeat(4, minmax(0, 1fr)); gap: 6px; font-size: 14px; color: {{t.ink2}}">
+                <span role="columnheader">Day</span><span role="columnheader">11 am</span><span role="columnheader">1 pm</span><span role="columnheader">3 pm</span><span role="columnheader">5 pm</span>
+              </div>
+              <sc-for list="{{slotRows}}" as="sr" hint-placeholder-count="7">
+                <div role="row" style="display: grid; grid-template-columns: minmax(78px, 0.9fr) repeat(4, minmax(0, 1fr)); gap: 6px; align-items: stretch">
+                  <span role="rowheader" style="display: flex; align-items: center; font-size: 15px; font-weight: 600">{{sr.day}}</span>
+                  <sc-for list="{{sr.cells}}" as="sc" hint-placeholder-count="4">
+                    <span role="cell" style="display: flex"><button type="button" class="press" onClick="{{sc.toggle}}" aria-label="{{sc.aria}}" style="{{sc.style}}"><span style="font-weight: 700">{{sc.top}}</span><span style="font-size: 13px">{{sc.sub}}</span></button></span>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+            <p aria-live="polite" style="margin: 0; min-height: 26px; font-size: 15px; font-weight: 600">{{slotMsg}}</p>
+            <p style="margin: 0; font-size: 17px">{{slotSummary}}</p>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Cedar Walk, Phase 2 site office: 1 visit, Sun 25 Oct 2026, 4 pm (Nisha, code 3376). Buyers can reschedule up to 2 hours before a slot; no-shows are logged privately.</p>
+          </div>
+
+          <div id="checkin" class="rv rv1" style="flex: 0 1 380px; min-width: 300px; scroll-margin-top: 96px; border-radius: 8px; background: {{t.track}}; padding: 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+            <p style="margin: 0; font-size: 15px; font-weight: 600">Site office check-in · phone page preview for Sat 24 Oct 2026</p>
+            <div style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden; display: flex; flex-direction: column">
+              <div style="position: relative; height: 150px; overflow: hidden; background: {{t.photo}}">
+                <img data-slot="salesGallery" class="drift" src="/_blob/5fb6202e7c5c795906c6ae2cb14ac821" alt="Empty sales gallery with a model of the towers" style="width: 100%; height: 100%; object-fit: cover; display: block">
+                <span style="position: absolute; left: 10px; bottom: 10px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+              </div>
+              <div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 12px">
+                <div style="display: flex; flex-direction: column; gap: 2px">
+                  <span style="font-size: 19px; font-weight: 700; line-height: 1.3">Who’s here for a visit?</span>
+                  <span style="font-size: 14px; color: {{t.ink2}}">Aurelia Heights, Phase 2 sales gallery · Pradeep Yadav, Site</span>
+                </div>
+                <label for="code-in" style="font-size: 15px; font-weight: 600">Visit code from the buyer’s pass</label>
+                <div style="display: flex; gap: 8px">
+                  <input id="code-in" type="text" inputmode="numeric" maxlength="4" autocomplete="off" value="{{code}}" onChange="{{onCode}}" placeholder="4 digits" style="flex: 1; min-width: 0; height: 56px; padding: 0 18px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 26px; font-weight: 700; letter-spacing: 0.24em; box-sizing: border-box">
+                  <button type="button" class="press" onClick="{{findVisit}}" aria-disabled="{{findDisabled}}" style="{{findStyle}}">Find</button>
+                </div>
+                <span style="font-size: 14px; color: {{t.ink2}}">Preview: Rohan’s pass shows 4821.</span>
+
+                <sc-if value="{{ckFound}}" hint-placeholder-val="{{false}}">
+                  <div role="status" class="rise" style="border-radius: 8px; background: {{t.track}}; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+                    <span style="display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.02em">{{ck.name}}</span><span style="font-size: 15px; font-weight: 600">{{ck.slot}}</span></span>
+                    <span style="font-size: 15px; line-height: 1.45">{{ck.detail}}</span>
+                    <span style="font-size: 15px; line-height: 1.45">{{ck.agent}}</span>
+                    <sc-if value="{{ckNotIn}}" hint-placeholder-val="{{true}}">
+                      <button type="button" class="press" onClick="{{confirmArrival}}" style="height: 52px; padding: 0 22px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Confirm arrival</button>
+                    </sc-if>
+                    <sc-if value="{{ckIn}}" hint-placeholder-val="{{false}}">
+                      <div class="rise" style="display: flex; flex-direction: column; gap: 6px">
+                        <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 700"><svg width="18" height="18" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>Checked in at 10:56</span>
+                        <span style="font-size: 15px; line-height: 1.45">{{ck.after}}</span>
+                        <button type="button" class="press" onClick="{{undoArrival}}" style="align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; cursor: pointer">Undo check-in</button>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ckMiss}}" hint-placeholder-val="{{false}}">
+                  <div role="status" class="rise" style="border-radius: 8px; background: {{t.track}}; padding: 16px; display: flex; flex-direction: column; gap: 6px">
+                    <span style="font-size: 17px; font-weight: 700">{{missTitle}}</span>
+                    <span style="font-size: 15px; line-height: 1.45">{{missText}}</span>
+                  </div>
+                </sc-if>
+                <span style="font-size: 14px; color: {{t.ink2}}">Works in any phone browser. No app, and no buyer number on this screen.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="crm" aria-labelledby="cr-h" style="display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 96px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="cr-h" class="rv" style="{{u.h2}}">How do records reach your CRM?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px">Three routes, identical for every developer. No paid integrations, no tiers and no fee per record.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+          <div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+            <div role="radiogroup" aria-label="Route" style="display: flex; flex-direction: column; gap: 4px">
+              <sc-for list="{{routes}}" as="ro" hint-placeholder-count="3">
+                <button type="button" role="radio" class="press" aria-checked="{{ro.on}}" aria-disabled="{{ro.disabled}}" onClick="{{ro.pick}}" style="{{ro.style}}">
+                  <span aria-hidden="true" style="{{ro.radio}}"></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <span style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap"><span style="font-size: 17px; font-weight: 700">{{ro.name}}</span><span style="font-size: 14px; font-weight: 600">{{ro.tag}}</span></span>
+                    <span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{ro.sub}}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+            <sc-if value="{{isEmail}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label for="mail-in" style="font-size: 17px; font-weight: 600">Send each new record to</label>
+                <input id="mail-in" type="email" value="{{mail}}" onChange="{{onMail}}" style="height: 48px; padding: 0 18px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; box-sizing: border-box; width: 100%">
+                <button type="button" class="press" onClick="{{sendTest}}" style="align-self: flex-start; height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Send a test record</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{isCsv}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+                <button type="button" class="press" onClick="{{downloadCsv}}" style="height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Download CSV · 7 records</button>
+                <span style="font-size: 15px; color: {{t.ink2}}">UTF-8, one row per record, the columns shown here.</span>
+              </div>
+            </sc-if>
+            <p aria-live="polite" style="margin: 0; min-height: 26px; font-size: 15px; font-weight: 600">{{crmNote}}</p>
+            <p style="margin: 0; font-size: 17px; line-height: 1.55">A phone number appears only when the buyer tapped to share it. Every row carries its consent reference. If a buyer withdraws consent, we email you a request to delete that row within 24 hours.</p>
+          </div>
+
+          <div class="rv rv1" style="flex: 1 1 400px; min-width: 0; border-radius: 8px; background: {{t.track}}; padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+            <p style="margin: 0; font-size: 17px; font-weight: 600">What your CRM receives, two sample rows</p>
+            <div role="table" aria-label="CSV columns with two sample records" style="border-radius: 8px; background: {{t.panelSolid}}; overflow: hidden; font-size: 14px; line-height: 1.4">
+              <div role="row" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1.2fr); gap: 12px; padding: 10px 14px; background: {{t.ink}}; color: {{t.bg}}; font-weight: 700">
+                <span role="columnheader">Column</span><span role="columnheader">Ishita</span><span role="columnheader">Kabir</span>
+              </div>
+              <sc-for list="{{csvRows}}" as="cv" hint-placeholder-count="12">
+                <div role="row" style="{{cv.style}}">
+                  <span role="rowheader" style="font-weight: 600; overflow-wrap: anywhere">{{cv.col}}</span>
+                  <span role="cell" style="overflow-wrap: anywhere">{{cv.a}}</span>
+                  <span role="cell" style="overflow-wrap: anywhere">{{cv.b}}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 112px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">Every enquiry and visit on this page stands on a consent record the buyer gave, for one purpose. We never sell buyers to anyone, and nothing here changes a score, a ranking or what our AI says.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#charter" class="lk" style="color: {{t.onSlab}}">Developer Charter</a>
+          <a href="#channel-partners" class="lk" style="color: {{t.onSlab}}">Plinth and channel partners</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy and consent</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+        </nav>
+        <span>Plinth Developer workspace · free, forever</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"$preview":{"width":1280,"height":4400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      themePick: null, filter: 'all', selKey: 'ishita', replied: {}, sent: {}, copied: false,
+      slotOpen: {}, slotMsg: '',
+      code: '', lookup: '', checkedIn: false,
+      route: 'email', mail: 'crm-intake@northfield-estates.example', crmNote: ''
+    };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', panelSolid: '#16221D', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)', photo: '#1B2A24',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', claimBg: '#1D2621',
+      disabledBg: 'rgba(255,255,255,0.10)', disabledFg: '#B9C6C0', slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', panelSolid: '#FFFFFF', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED', photo: '#E7E3DA',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', claimBg: '#F1ECE2',
+      disabledBg: '#EEEBE4', disabledFg: '#3F3C36', slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var U = {
+      h2: "margin:0;font-family:'Bricolage Grotesque', system-ui, sans-serif;font-weight:800;font-size:clamp(34px, 3.6vw, 44px);line-height:1.04;letter-spacing:-0.03em"
+    };
+    function pillBtn(on) {
+      return 'min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;box-sizing:border-box;transition:background-color 180ms ease, color 180ms ease;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.bg : T.ink);
+    }
+    function radioDot(on) {
+      return 'flex:none;width:20px;height:20px;margin-top:3px;border-radius:50%;box-sizing:border-box;' + (on ? 'border:6px solid ' + T.ink : 'border:2px solid ' + T.ink2);
+    }
+
+    var NAV = [
+      {key: 'overview', label: 'Overview', href: '#overview', icon: 'M3 8l6-5 6 5v7H3z'},
+      {key: 'inbox', label: 'Enquiries & visits', href: '#enquiries', icon: 'M2.5 10.5L4.5 4h9l2 6.5V15h-13zM2.5 10.5h4l1 2h3l1-2h4', badge: '3', badgeSr: ' need a reply'},
+      {key: 'facts', label: 'Projects & facts', href: '#facts', icon: 'M4 16V3h7v13M11 7h3v9M2 16h14'},
+      {key: 'live', label: 'Live Record', href: '#live-record', icon: 'M3 3h4v4H3zM11 3h4v4h-4zM3 11h4v4H3zM11 11h1.5M14.5 11v1.5M11 14.5h4'},
+      {key: 'evidence', label: 'Evidence & disputes', href: '#evidence', icon: 'M5 2h6l3 3v11H5zM8 9h4M8 12h4', badge: '1', badgeSr: ' notice'},
+      {key: 'team', label: 'Team', href: '#team', icon: 'M6.5 8.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM2 15c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4M12 4a2.2 2.2 0 010 4.3M13.5 11c1.6.4 2.5 1.8 2.5 4'}
+    ];
+    var replied = s.replied || {};
+    var sent = s.sent || {};
+
+    var REC = [
+      {key: 'rohan', name: 'Rohan', type: 'visit', project: 'Aurelia Heights, Phase 2', headline: 'Rohan booked a site visit', listLine: 'Visit · Sat 24 Oct, 11 am · code 4821', when: '18 Oct 2026, 09:15', whenShort: '18 Oct', status: 'booked',
+        brief: [['Visit', 'Sat 24 Oct 2026, 11 am, sales gallery'], ['Visitors', '2'], ['Visit code', '4821'], ['Configuration', '3 BHK'], ['Budget, all-in', '₹2.5–2.8 Cr'], ['Timeline', 'Buying in 6–12 months'], ['Home loan', 'Not shared']],
+        questions: ['Can I see the HARERA receipt for the Jul–Sep 2026 QPR?', 'Which charges on the cost sheet are optional?'],
+        agent: '', contact: 'code', code: '4821', consent: 'C-1018-11', purpose: 'share Rohan’s first name, visit time and the questions he chooses to send ahead with Northfield Estates’ site office for this visit', given: '18 Oct 2026, 09:15'},
+      {key: 'ishita', name: 'Ishita', type: 'enquiry', project: 'Aurelia Heights, Phase 2', headline: 'Ishita asked for the official price list', listLine: 'Asked for the official price list', when: '17 Oct 2026, 19:42', whenShort: '17 Oct', status: 'reply',
+        brief: [['Configuration', '3 BHK'], ['Budget, all-in', '₹2.6–2.9 Cr'], ['Timeline', 'Buying in 3–6 months'], ['Home loan', 'Eligibility checked, lender not shared']],
+        questions: ['Is the price list dated after 2 Oct 2026?', 'Is PLC negotiable for park-facing units?', 'When will Tower A reach slab 12?'],
+        agent: 'Larkspur Realty', agentWhen: '17 Oct 2026', contact: 'relay', consent: 'C-1017-06', purpose: 'send the official price list for Aurelia Heights, Phase 2', given: '17 Oct 2026, 19:42'},
+      {key: 'nisha', name: 'Nisha', type: 'visit', project: 'Cedar Walk, Phase 2', headline: 'Nisha booked a site visit', listLine: 'Visit · Sun 25 Oct, 4 pm · code 3376', when: '17 Oct 2026, 12:40', whenShort: '17 Oct', status: 'booked',
+        brief: [['Visit', 'Sun 25 Oct 2026, 4 pm, Cedar Walk site office'], ['Visitors', '1'], ['Visit code', '3376'], ['Configuration', '3 BHK'], ['Budget, all-in', '₹1.9–2.2 Cr'], ['Timeline', 'Buying in 3–6 months'], ['Home loan', 'Will need a loan']],
+        questions: ['Is the club charge optional?'],
+        agent: 'Bluegate Homes', agentWhen: '17 Oct 2026', contact: 'code', code: '3376', consent: 'C-1017-05', purpose: 'share Nisha’s first name and visit time with Northfield Estates’ Cedar Walk site office for this visit', given: '17 Oct 2026, 12:40'},
+      {key: 'aman', name: 'Aman', type: 'visit', project: 'Aurelia Heights, Phase 2', headline: 'Aman booked a site visit', listLine: 'Visit · Sat 24 Oct, 3 pm · code 5190', when: '17 Oct 2026, 08:58', whenShort: '17 Oct', status: 'booked',
+        brief: [['Visit', 'Sat 24 Oct 2026, 3 pm, sales gallery'], ['Visitors', '3'], ['Visit code', '5190'], ['Configuration', '3 BHK'], ['Budget, all-in', '₹2.6–2.9 Cr'], ['Timeline', 'Buying in 6–12 months'], ['Home loan', 'Eligibility checked']],
+        questions: [],
+        agent: '', contact: 'code', code: '5190', consent: 'C-1017-03', purpose: 'share Aman’s first name and visit time with Northfield Estates’ site office for this visit', given: '17 Oct 2026, 08:58'},
+      {key: 'farah', name: 'Farah', type: 'enquiry', project: 'Cedar Walk, Phase 2', headline: 'Farah asked about the payment plan', listLine: 'Payment plan questions', when: '16 Oct 2026, 18:20', whenShort: '16 Oct', status: 'reply',
+        brief: [['Configuration', '3 BHK'], ['Budget, all-in', '₹2.0–2.3 Cr'], ['Timeline', 'Buying in 3–6 months'], ['Home loan', 'Will need a loan']],
+        questions: ['Is there a possession-linked plan?', 'What is due before the agreement is registered?'],
+        agent: '', contact: 'relay', consent: 'C-1016-04', purpose: 'answer payment-plan questions about Cedar Walk, Phase 2', given: '16 Oct 2026, 18:20'},
+      {key: 'kabir', name: 'Kabir', type: 'visit', project: 'Aurelia Heights, Phase 2', headline: 'Kabir shared a number after the visit', listLine: 'Visited 16 Oct · shared a number', when: '16 Oct 2026, 13:05', whenShort: '16 Oct', status: 'reply',
+        brief: [['Visit', 'Fri 16 Oct 2026, 11 am, checked in 10:52'], ['Visitors', '1'], ['Configuration', '4 BHK'], ['Budget, all-in', '₹3.6–4.0 Cr'], ['Timeline', 'Buying within 3 months'], ['Home loan', 'Self-funded']],
+        questions: ['Can I see the 4 BHK floor plan with dimensions?', 'Which tower still has 4 BHK units?'],
+        agent: '', contact: 'shared', phone: '+91 90000 12412', consent: 'C-1016-08', purpose: 'let Northfield Estates call Kabir about Aurelia Heights, Phase 2', given: '16 Oct 2026, 13:05'},
+      {key: 'dev', name: 'Dev', type: 'enquiry', project: 'Aurelia Heights, Phase 2', headline: 'Dev asked about 4 BHK availability', listLine: '4 BHK availability', when: '15 Oct 2026, 21:03', whenShort: '15 Oct', status: 'replied', repliedOn: '16 Oct',
+        brief: [['Configuration', '4 BHK'], ['Budget, all-in', 'Not shared'], ['Timeline', 'Just looking'], ['Home loan', 'Not shared']],
+        questions: ['How many 4 BHK units are left?'],
+        agent: '', contact: 'relay', consent: 'C-1015-07', purpose: 'answer a question about 4 BHK availability at Aurelia Heights, Phase 2', given: '15 Oct 2026, 21:03'}
+    ];
+    function statusOf(r) { return replied[r.key] ? 'replied' : r.status; }
+    var needCount = REC.filter(function (r) { return statusOf(r) === 'reply'; }).length;
+    var nav = NAV.map(function (x) {
+      var on = x.key === 'inbox';
+      var badge = x.key === 'inbox' ? String(needCount) : (x.badge || '');
+      return {label: x.label, href: x.href, icon: x.icon, current: on ? 'page' : 'false', hasBadge: !!badge && badge !== '0', badge: badge, badgeSr: x.badgeSr || '',
+        badgeStyle: 'min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:' + T.ink + ';color:' + T.bg + ';font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box',
+        style: 'display:flex;align-items:center;gap:12px;min-height:44px;padding:0 14px;border-radius:8px;color:' + T.ink + ';text-decoration:none;font-weight:' + (on ? '600' : '500') + ';background:' + (on ? T.track : 'transparent')};
+    });
+
+    var FILTERS = [
+      {key: 'all', label: 'All · ' + REC.length},
+      {key: 'enquiry', label: 'Enquiries · ' + REC.filter(function (r) { return r.type === 'enquiry'; }).length},
+      {key: 'visit', label: 'Visits · ' + REC.filter(function (r) { return r.type === 'visit'; }).length},
+      {key: 'reply', label: 'Needs a reply · ' + needCount}
+    ];
+    var filter = s.filter || 'all';
+    var filters = FILTERS.map(function (f) {
+      var on = f.key === filter;
+      return {label: f.label, on: on ? 'true' : 'false', style: pillBtn(on), pick: function () { self.setState({filter: f.key}); }};
+    });
+    var shown = REC.filter(function (r) {
+      if (filter === 'all') return true;
+      if (filter === 'reply') return statusOf(r) === 'reply';
+      return r.type === filter;
+    });
+    var selKey = s.selKey;
+    if (!shown.some(function (r) { return r.key === selKey; })) selKey = shown.length ? shown[0].key : REC[0].key;
+    function tagFor(r) {
+      var st = statusOf(r);
+      var b = 'display:inline-flex;align-items:center;min-height:26px;padding:1px 10px;border-radius:999px;box-sizing:border-box;font-size:13px;font-weight:700;white-space:nowrap;';
+      if (st === 'reply') return {tag: 'Needs a reply', style: b + 'background:' + T.ink + ';color:' + T.bg + ';'};
+      if (st === 'booked') return {tag: 'Visit booked', style: b + 'background:' + T.panelSolid + ';color:' + T.ink + ';'};
+      return {tag: 'Replied ' + (replied[r.key] ? '18 Oct' : (r.repliedOn || '')), style: b + 'background:transparent;color:' + T.ink2 + ';padding:1px 0;'};
+    }
+    var rows = shown.map(function (r) {
+      var on = r.key === selKey;
+      var tg = tagFor(r);
+      return {name: r.name, whenShort: r.whenShort, listLine: r.listLine, projectShort: r.project.replace(', Phase 2', ' Ph 2'), tag: tg.tag, tagStyle: tg.style, on: on ? 'true' : 'false',
+        pick: function () { self.setState({selKey: r.key, copied: false}); },
+        style: 'width:100%;display:flex;flex-direction:column;gap:3px;padding:12px 14px;border:0;border-radius:8px;box-sizing:border-box;cursor:pointer;font:inherit;text-align:left;color:' + T.ink + ';transition:background-color 200ms ease;background:' + (on ? T.track : 'transparent')};
+    });
+
+    var r = REC.filter(function (x) { return x.key === selKey; })[0] || REC[0];
+    var st = statusOf(r);
+    var contactTitle, contactSub, primaryLabel, primaryHref;
+    if (r.contact === 'relay') {
+      contactTitle = 'Reply through the Plinth relay';
+      contactSub = r.name + '’s number stays hidden. The relay stays open while this enquiry is active, and ' + r.name + ' can close it at any time.';
+      primaryLabel = 'Reply through the relay'; primaryHref = '#relay';
+    } else if (r.contact === 'shared') {
+      contactTitle = r.phone;
+      contactSub = r.name + ' tapped to share this number after the visit, on ' + r.given + '. Use it only for this project.';
+      primaryLabel = s.copied ? 'Number copied' : 'Copy number'; primaryHref = '#copy';
+    } else {
+      contactTitle = 'No phone number. Visit code ' + r.code;
+      contactSub = r.name + ' shows the code at the site office. After a confirmed visit, ' + r.name + ' can choose to share a number with you.';
+      primaryLabel = 'Open site check-in'; primaryHref = '#checkin';
+    }
+    var actNote = '';
+    if (sent[r.key]) actNote = 'Sent to ' + (s.mail || 'your CRM address') + ' · 18 Oct 2026, 11:32';
+    if (r.contact === 'shared' && s.copied) actNote = 'Number copied. It stays in your CRM only with this consent reference.';
+    var sel = {
+      name: r.name, headline: r.headline, project: r.project,
+      whenLine: (r.type === 'visit' ? 'booked ' : 'received ') + r.when + ' · via Plinth',
+      brief: r.brief.map(function (b) { return {k: b[0], v: b[1]}; }),
+      hasQuestions: r.questions.length > 0, questions: r.questions,
+      agentTitle: r.agent ? 'Agent of record: ' + r.agent : 'No agent of record',
+      agentSub: r.agent ? 'Named by ' + r.name + ' on ' + r.agentWhen + '. HARERA agent registration checked. Any commission is between you and the agent.' : r.name + ' did not name an agent and came to you directly.',
+      contactTitle: contactTitle, contactSub: contactSub,
+      primaryLabel: primaryLabel, primaryHref: primaryHref,
+      primaryAct: function () { if (r.contact === 'shared') self.setState({copied: true}); },
+      canMark: st === 'reply',
+      mark: function () { var o = Object.assign({}, self.state.replied || {}); o[r.key] = true; self.setState({replied: o}); },
+      sendLabel: sent[r.key] ? 'Sent to CRM' : 'Send to CRM',
+      send: function () { var o = Object.assign({}, self.state.sent || {}); o[r.key] = true; self.setState({sent: o}); },
+      actNote: actNote,
+      consentLine: 'Consent ' + r.consent + ' · purpose: ' + r.purpose + ' · given ' + r.given + ' · ' + r.name + ' can withdraw it at any time · Digital Personal Data Protection Act, 2023.'
+    };
+
+    // Visit slots: one site office, one week. Booked slots can't be closed.
+    var DAYS = ['Mon 19', 'Tue 20', 'Wed 21', 'Thu 22', 'Fri 23', 'Sat 24', 'Sun 25'];
+    var TIMES = ['11 am', '1 pm', '3 pm', '5 pm'];
+    var BOOKED = {'Sat 24|11 am': {n: 1, who: 'Rohan, 2 visitors'}, 'Sat 24|3 pm': {n: 1, who: 'Aman, 3 visitors'}};
+    var slotOpen = s.slotOpen || {};
+    var openCount = 0;
+    var slotRows = DAYS.map(function (d, di) {
+      var weekend = di >= 5;
+      return {day: d + ' Oct', cells: TIMES.map(function (tm, ti) {
+        var key = d + '|' + tm;
+        var bk = BOOKED[key];
+        var defOpen = weekend || ti === 0 || ti === 2;
+        var open = bk ? true : (key in slotOpen ? slotOpen[key] : defOpen);
+        if (open) openCount++;
+        var bg = bk ? T.ink : (open ? T.track : 'transparent');
+        var fg = bk ? T.bg : (open ? T.ink : T.ink2);
+        return {
+          top: bk ? bk.n + ' of 3' : (open ? 'Open' : 'Closed'), sub: bk ? 'booked' : (open ? '0 of 3' : 'tap to open'),
+          aria: d + ' Oct, ' + tm + ': ' + (bk ? bk.n + ' of 3 booked, ' + bk.who : (open ? 'open, no bookings. Tap to close.' : 'closed. Tap to open.')),
+          style: 'flex:1;min-height:52px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:0;padding:6px 10px;border:0;border-radius:8px;box-sizing:border-box;font:inherit;font-size:14px;line-height:1.25;text-align:left;cursor:pointer;transition:background-color 200ms ease, color 200ms ease;background:' + bg + ';color:' + fg,
+          toggle: function () {
+            if (bk) { self.setState({slotMsg: d + ' Oct, ' + tm + ' has a booking (' + bk.who + '). Reschedule it with the buyer before closing the slot.'}); return; }
+            var o = Object.assign({}, self.state.slotOpen || {});
+            o[key] = !open;
+            self.setState({slotOpen: o, slotMsg: d + ' Oct, ' + tm + (open ? ' closed.' : ' opened for up to 3 bookings.')});
+          }
+        };
+      })};
+    });
+
+    // Signature: the site-office check-in by visit code.
+    var CODES = {
+      '4821': {name: 'Rohan', slot: '11 am', detail: '2 visitors · booked 18 Oct 2026 through Plinth · 3 BHK', agent: 'No agent of record. Rohan came to you directly.', after: 'After the visit, Rohan can choose to share a phone number from the visit pass. Plinth won’t ask on your behalf.'},
+      '5190': {name: 'Aman', slot: '3 pm', detail: '3 visitors · booked 17 Oct 2026 through Plinth · 3 BHK · arriving before the 3 pm slot', agent: 'No agent of record. Aman came to you directly.', after: 'After the visit, Aman can choose to share a phone number from the visit pass. Plinth won’t ask on your behalf.'}
+    };
+    var code = String(s.code || '').replace(/\D/g, '').slice(0, 4);
+    var found = s.lookup && CODES[s.lookup] ? CODES[s.lookup] : null;
+    var miss = !!s.lookup && !found;
+    var missTitle = '', missText = '';
+    if (miss) {
+      if (s.lookup === '3376') { missTitle = 'This code is for another site office'; missText = 'Code 3376 is a visit to the Cedar Walk, Phase 2 site office on Sun 25 Oct 2026, 4 pm.'; }
+      else { missTitle = 'No visit with code ' + s.lookup + ' here today'; missText = 'Check the digits with the buyer, or welcome them as a walk-in. Walk-ins are yours; nothing is logged with Plinth.'; }
+    }
+    var findReady = code.length === 4;
+
+    var ROUTES = [
+      {key: 'email', name: 'Email each new record', tag: 'Available', sub: 'One plain-text email per record, in a fixed format that CRM email-to-lead parsers can read.'},
+      {key: 'csv', name: 'Download CSV', tag: 'Available', sub: 'All records, or only the new ones since your last download.'},
+      {key: 'hook', name: 'Signed webhook', tag: 'Coming in R2', sub: 'A signed POST per record with a published schema. The same for every developer.'}
+    ];
+    var route = s.route || 'email';
+    var routes = ROUTES.map(function (x) {
+      var on = x.key === route, dis = x.key === 'hook';
+      return {name: x.name, tag: x.tag, sub: x.sub, on: on ? 'true' : 'false', disabled: dis ? 'true' : 'false', radio: radioDot(on),
+        pick: function () { if (!dis) self.setState({route: x.key, crmNote: ''}); },
+        style: 'width:100%;display:flex;align-items:flex-start;gap:14px;padding:12px 14px;border:0;border-radius:8px;box-sizing:border-box;font:inherit;text-align:left;transition:background-color 200ms ease;cursor:' + (dis ? 'not-allowed' : 'pointer') + ';color:' + (dis ? T.ink2 : T.ink) + ';background:' + (on ? T.track : 'transparent')};
+    });
+    var CSV = [
+      ['first_name', 'Ishita', 'Kabir'],
+      ['project', 'Aurelia Heights, Phase 2', 'Aurelia Heights, Phase 2'],
+      ['purpose', 'Official price list', 'Call after visit'],
+      ['configuration', '3 BHK', '4 BHK'],
+      ['budget_all_in', '₹2.6–2.9 Cr', '₹3.6–4.0 Cr'],
+      ['timeline', '3–6 months', 'Within 3 months'],
+      ['home_loan', 'Eligibility checked', 'Self-funded'],
+      ['questions', '3 (in full)', '2 (in full)'],
+      ['agent_of_record', 'Larkspur Realty', 'None'],
+      ['contact', 'Plinth relay only', '+91 90000 12412 (shared by buyer)'],
+      ['consent_ref', 'C-1017-06', 'C-1016-08'],
+      ['consent_status', 'Active', 'Active']
+    ];
+    var csvRows = CSV.map(function (c, i) {
+      return {col: c[0], a: c[1], b: c[2], style: 'display:grid;grid-template-columns:minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1.2fr);gap:12px;padding:9px 14px;' + (i > 0 ? 'border-top:1px solid ' + T.line + ';' : '')};
+    });
+
+    return {
+      t: T, u: U, nav: nav,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      metaLine: '7 this week across 2 projects · ' + needCount + (needCount === 1 ? ' needs' : ' need') + ' a reply · updated 18 Oct 2026, 11:30',
+      filters: filters, rows: rows, sel: sel,
+      slotRows: slotRows, slotMsg: s.slotMsg || '',
+      slotSummary: openCount + ' slots open this week · 2 visits booked (Rohan and Aman, Sat 24 Oct)',
+      code: code, onCode: function (e) { self.setState({code: String(e.target.value || '').replace(/\D/g, '').slice(0, 4), lookup: '', checkedIn: false}); },
+      findVisit: function () { var c = String(self.state.code || '').replace(/\D/g, '').slice(0, 4); if (c.length === 4) self.setState({lookup: c, checkedIn: false}); },
+      findDisabled: findReady ? 'false' : 'true',
+      findStyle: 'flex:none;height:56px;padding:0 22px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;box-sizing:border-box;' + (findReady ? 'cursor:pointer;background:' + T.ink + ';color:' + T.bg + ';' : 'cursor:not-allowed;background:' + T.disabledBg + ';color:' + T.disabledFg + ';'),
+      ckFound: !!found, ck: found || {name: '', slot: '', detail: '', agent: '', after: ''},
+      ckIn: !!found && !!s.checkedIn, ckNotIn: !!found && !s.checkedIn,
+      confirmArrival: function () { self.setState({checkedIn: true}); },
+      undoArrival: function () { self.setState({checkedIn: false}); },
+      ckMiss: miss, missTitle: missTitle, missText: missText,
+      routes: routes, isEmail: route === 'email', isCsv: route === 'csv',
+      mail: s.mail, onMail: function (e) { self.setState({mail: e.target.value}); },
+      sendTest: function () { self.setState({crmNote: 'Test record sent to ' + (String(self.state.mail || '').trim() || 'your address') + ' · 18 Oct 2026, 11:31'}); },
+      downloadCsv: function () { self.setState({crmNote: 'northfield-plinth-records-2026-10-18.csv · 7 rows · prepared 18 Oct 2026, 11:32'}); },
+      crmNote: s.crmNote || '',
+      csvRows: csvRows
+    };
+  }
+}
+</script>
+</body>
+</html>

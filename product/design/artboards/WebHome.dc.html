@@ -1,0 +1,1080 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth web: Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input::placeholder{color:currentColor;opacity:.7}
+button,a,.pl-row{transition:transform 140ms cubic-bezier(.22,1,.36,1),filter 180ms ease,background-color 180ms ease,text-decoration-thickness 180ms ease}
+button:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){button:hover{filter:brightness(.93)}.pl-night button:hover{filter:brightness(1.15)}.pl-row:hover{background:rgba(27,26,23,.045)}.pl-night .pl-row:hover{background:rgba(255,255,255,.06)}}
+.pl-line{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+.pl-l{display:block}
+@keyframes plRise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes plLine{from{transform:translateY(106%)}to{transform:none}}
+@keyframes plDrift{from{transform:scale(1)}to{transform:scale(1.04)}}
+@media (prefers-reduced-motion:no-preference){
+.pl-l{animation:plLine 950ms cubic-bezier(.22,1,.36,1) 120ms both}
+.pl-in{animation:plRise 800ms cubic-bezier(.22,1,.36,1) 200ms both}
+.pl-drift{animation:plDrift 26s cubic-bezier(.33,1,.68,1) infinite alternate}
+.pl-d1{animation-delay:200ms}.pl-d2{animation-delay:290ms}.pl-d3{animation-delay:380ms}.pl-d4{animation-delay:470ms}
+@supports (animation-timeline:view()){
+.pl-rv{animation:plRise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+.pl-rv.pl-d1{animation-delay:0s;animation-range:entry 8% entry 63%}.pl-rv.pl-d2{animation-delay:0s;animation-range:entry 16% entry 71%}.pl-rv.pl-d3{animation-delay:0s;animation-range:entry 24% entry 79%}
+}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 5160px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px 28px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 8px 28px; flex-wrap: wrap; font-size: 17px">
+        <a href="#explore" style="text-decoration: none; color: {{t.ink}}; font-weight: 500">Projects</a>
+        <a href="#hero-ask" style="text-decoration: none; color: {{t.ink}}; font-weight: 500">Ask Plinth</a>
+        <a href="#how" style="text-decoration: none; color: {{t.ink}}; font-weight: 500">How it works</a>
+        <a href="#money" style="text-decoration: none; color: {{t.ink}}; font-weight: 500">How we make money</a>
+        <a href="#following" style="text-decoration: none; color: {{t.ink}}; font-weight: 500">Following</a>
+        <span style="display: flex; align-items: center; gap: 10px">
+          <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+            <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+            </sc-if>
+            <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+            </sc-if>
+          </button>
+          <button type="button" style="height: 44px; padding: 0 22px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Sign in</button>
+        </span>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section aria-labelledby="hero-h" style="position: relative; min-height: 880px; overflow: hidden; display: flex; align-items: flex-end; background: {{t.photo}}">
+      <img data-slot="corridorAerial" class="pl-drift" src="/_blob/4ccf6477a2c2bc3db2be04d5a579e1e0" alt="Illustrative image: the Dwarka Expressway skyline at dusk, towers rising beside the expressway" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 62% 40%">
+      <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,14,12,0.10) 0%, rgba(8,14,12,0.30) 38%, rgba(8,14,12,0.86) 100%)"></div>
+      <span style="position: absolute; top: 20px; right: 28px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.92); padding: 4px 12px; border-radius: 999px">Illustrative image</span>
+
+      <div style="position: relative; width: 100%; max-width: 1240px; margin: 0 auto; padding: 140px 28px 64px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 40px 48px; align-items: flex-end; justify-content: space-between">
+        <div style="flex: 1 1 600px; max-width: 720px; min-width: 0; display: flex; flex-direction: column; gap: 24px; color: #FFFFFF">
+          <h1 id="hero-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 112px); line-height: 0.94; letter-spacing: -0.045em">
+            <span class="pl-line"><span class="pl-l">Know before</span></span>
+            <span class="pl-line"><span class="pl-l pl-d1">you book.</span></span>
+          </h1>
+          <p class="pl-in pl-d2" style="margin: 0; font-size: 21px; line-height: 1.45; max-width: 600px">We read every HARERA filing and order for Gurugram. You get the delivery risk and the all-in price, with sources.</p>
+
+          <div class="pl-in pl-d3" style="display: flex; flex-direction: column; gap: 8px">
+            <div style="{{askBarStyle}}">
+              <svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true" style="flex: none"><path d="M9 1.5l1.6 4.2L15 7.3l-4.4 1.6L9 13.2 7.4 8.9 3 7.3l4.4-1.6z" fill="none" stroke="{{t.ink}}" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+              <sc-if value="{{notListening}}" hint-placeholder-val="{{true}}">
+                <label for="hero-ask" class="sr">Type a project or developer to build its risk card, or ask Plinth a question</label>
+                <input id="hero-ask" type="text" value="{{query}}" onChange="{{onQuery}}" onKeyDown="{{onQueryKey}}" placeholder="Type a project, e.g. Kestrel Park, or ask Plinth anything" style="flex: 1; min-width: 0; height: 52px; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 18px">
+              </sc-if>
+              <sc-if value="{{listening}}" hint-placeholder-val="{{false}}">
+                <div aria-live="polite" style="flex: 1; min-width: 0; height: 52px; display: flex; align-items: center; gap: 12px; overflow: hidden">
+                  <span aria-hidden="true" style="display: flex; align-items: center; gap: 3px; height: 28px; flex: none">
+                    <sc-for list="{{wave}}" as="w" hint-placeholder-count="12"><span style="{{w.style}}"></span></sc-for>
+                  </span>
+                  <span style="font-size: 18px; color: {{t.ink}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{heardText}}</span>
+                </div>
+              </sc-if>
+              <button type="button" onClick="{{onMic}}" aria-pressed="{{listening}}" aria-label="{{micLabel}}" style="{{micStyle}}">
+                <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="2.5" width="6" height="10" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"></rect><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v2.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg>
+              </button>
+              <button type="button" onClick="{{onScan}}" style="flex: none; height: 48px; display: inline-flex; align-items: center; gap: 8px; padding: 0 16px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; white-space: nowrap">
+                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2.5 6V3.5a1 1 0 0 1 1-1H6M12 2.5h2.5a1 1 0 0 1 1 1V6M15.5 12v2.5a1 1 0 0 1-1 1H12M6 15.5H3.5a1 1 0 0 1-1-1V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><rect x="5.5" y="5.5" width="3" height="3" fill="currentColor"></rect><rect x="9.5" y="9.5" width="3" height="3" fill="currentColor"></rect><rect x="9.5" y="5.5" width="3" height="3" fill="none" stroke="currentColor" stroke-width="1.2"></rect></svg>
+                Scan a RERA QR
+              </button>
+              <button type="button" onClick="{{onAsk}}" aria-label="Ask Plinth" style="flex: none; width: 52px; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; cursor: pointer; display: inline-flex; align-items: center; justify-content: center">
+                <svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </button>
+            </div>
+            <p style="margin: 0 0 0 24px; min-height: 24px; font-size: 16px; color: rgba(255,255,255,0.9)">{{askHint}}</p>
+          </div>
+
+          <div class="pl-in pl-d4" role="group" aria-label="Example questions" style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{prompts}}" as="pm" hint-placeholder-count="4">
+              <button type="button" onClick="{{pm.pick}}" aria-pressed="{{pm.on}}" style="{{pm.style}}">{{pm.text}}</button>
+            </sc-for>
+          </div>
+
+          <p class="pl-in pl-d4" style="margin: 0; font-size: 19px; line-height: 1.45"><strong style="font-weight: 700">No developer pays us. Ever.</strong> <a href="#money" style="color: #FFFFFF; font-weight: 500; text-decoration: underline">How we make money</a></p>
+        </div>
+
+        <section aria-label="{{panelLabel}}" class="pl-in pl-d3" style="flex: 0 1 430px; min-width: 0; min-height: 560px; border-radius: 8px; background: {{t.bgSolid}}; padding: 28px 28px 24px; display: flex; flex-direction: column; gap: 16px; box-sizing: border-box; color: {{t.ink}}; font-size: 17px; line-height: 1.5">
+
+          <sc-if value="{{modeCard}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 18px">
+              <p class="sr" aria-live="polite">{{cv.srText}}</p>
+              <sc-if value="{{harDown}}" hint-placeholder-val="{{false}}">
+                <p role="status" style="margin: 0; padding: 12px 14px; border-radius: 8px; background: {{t.track}}; font-size: 15px; line-height: 1.45">{{staleLine}}</p>
+              </sc-if>
+              <div style="{{cv.s1}}">
+                <strong style="display: block; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.08; letter-spacing: -0.025em">{{cd.name}}</strong>
+                <span style="font-size: 16px; color: {{t.ink2}}">{{cd.dev}} · {{cd.sector}}</span>
+              </div>
+              <div style="{{cv.s2}}; display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+                <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 18px); gap: 3px"><sc-for list="{{cv.segs}}" as="g" hint-placeholder-count="5"><span style="{{g.style}}"></span></sc-for></span>
+                <span style="{{cv.bandStyle}}"><span class="sr">Delivery risk: </span>{{cv.bandLabel}}</span>
+                <span style="font-size: 15px; line-height: 1.35; color: {{t.ink2}}">{{cd.since}}</span>
+              </div>
+              <p style="{{cv.s3}}; margin: 0; font-size: 18px; line-height: 1.5">{{cd.freq}}</p>
+              <sc-if value="{{cv.hasCert}}" hint-placeholder-val="{{true}}">
+                <p style="{{cv.s3}}; margin: 0; font-size: 16px; line-height: 1.5; color: {{t.ink2}}">{{cv.certText}}</p>
+              </sc-if>
+              <div style="{{cv.s4}}; display: flex; align-items: flex-end; gap: 18px">
+                <span aria-hidden="true" style="flex: none; width: 96px; display: flex; flex-direction: column-reverse; gap: 3px"><sc-for list="{{cv.slabs}}" as="sl" hint-placeholder-count="10"><span style="{{sl.style}}"></span></sc-for></span>
+                <span style="display: flex; flex-direction: column; gap: 2px; font-size: 16px; line-height: 1.45">
+                  <strong style="font-size: 19px">{{cv.builtText}}</strong>
+                  <span style="color: {{t.ink2}}">{{cv.timeText}}</span>
+                  <span style="color: {{t.ink2}}">Original completion {{cd.orig}}</span>
+                </span>
+              </div>
+              <div style="{{cv.s5}}; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap">
+                <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; letter-spacing: -0.02em; line-height: 1.1">{{cd.price}}</strong>
+                <span style="font-size: 16px; color: {{t.ink2}}">{{cd.priceNote}}</span>
+              </div>
+              <sc-if value="{{cv.hasPend}}" hint-placeholder-val="{{true}}">
+                <div style="{{cv.s6}}; display: flex; flex-direction: column; gap: 8px">
+                  <p style="margin: 0; padding: 12px 14px; border-radius: 8px; background: {{t.track}}; font-size: 16px; line-height: 1.45"><strong style="font-weight: 600">Records show:</strong> {{cv.pendText}}</p>
+                  <sc-if value="{{cv.hasClaim}}" hint-placeholder-val="{{true}}">
+                    <p style="margin: 0; padding: 12px 14px; border-radius: 8px; background: {{t.claimBg}}; font-size: 16px; line-height: 1.45; display: flex; gap: 8px; align-items: flex-start"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Developer says · not verified:</strong> {{cv.claimText}}</span></p>
+                  </sc-if>
+                </div>
+              </sc-if>
+              <div style="{{cv.s6}}; display: flex; flex-wrap: wrap; gap: 6px">
+                <sc-for list="{{cv.src}}" as="r" hint-placeholder-count="2">
+                  <a href="#source" style="{{srcChip}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>{{r}}</a>
+                </sc-for>
+              </div>
+              <div style="{{cv.s7}}; display: flex; align-items: center; gap: 18px; flex-wrap: wrap">
+                <button type="button" onClick="{{cv.follow}}" aria-pressed="{{cv.following}}" style="{{cv.followStyle}}">{{cv.followLabel}}</button>
+                <a href="{{cd.href}}" style="font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline">Open the project</a>
+              </div>
+              <p style="margin: 0; font-size: 15px; color: {{t.muted}}">Type any project or developer above, like Kestrel, Coral or Halcyon. The card builds from the records.</p>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{modeAi}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px">
+                <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: {{t.ink2}}">
+                  <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 1.5l1.6 4.2L15 7.3l-4.4 1.6L9 13.2 7.4 8.9 3 7.3l4.4-1.6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>Ask Plinth · checked against our records before showing
+                </span>
+                <button type="button" onClick="{{closePanel}}" aria-label="Close the answer and show the risk card" style="width: 44px; height: 44px; flex: none; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+                  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+                </button>
+              </div>
+              <p style="margin: 0; align-self: flex-end; max-width: 90%; padding: 8px 14px; border-radius: 8px; background: {{t.track}}; font-size: 16px">{{askedText}}</p>
+              <div aria-live="polite" style="display: flex; flex-direction: column; gap: 10px">
+                <span style="font-size: 14px; color: {{t.muted}}">Ask Plinth is an AI. It answers from public records like HARERA and shows its sources.</span>
+                <sc-if value="{{harDown}}" hint-placeholder-val="{{false}}">
+                  <p role="status" style="margin: 0; padding: 12px 14px; border-radius: 8px; background: {{t.track}}; font-size: 15px; line-height: 1.45">{{staleLine}}</p>
+                </sc-if>
+                <p style="margin: 0; font-size: 18px; line-height: 1.5">{{answerText}}</p>
+                <sc-if value="{{showChecks}}" hint-placeholder-val="{{false}}">
+                  <ol style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 12px; font-size: 16px; line-height: 1.45">
+                    <sc-for list="{{checks}}" as="ck" hint-placeholder-count="4">
+                      <li style="padding-left: 4px"><span style="display: block">{{ck.text}}</span><a href="{{ck.href}}" style="display: inline-flex; align-items: center; min-height: 44px; margin-top: 2px; padding: 0 16px; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font-weight: 600; text-decoration: none">{{ck.link}}</a></li>
+                    </sc-for>
+                  </ol>
+                </sc-if>
+                <sc-if value="{{showRequest}}" hint-placeholder-val="{{false}}">
+                  <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start">
+                    <sc-if value="{{notRequested}}" hint-placeholder-val="{{true}}">
+                      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start">
+                      <button type="button" onClick="{{requestIt}}" style="height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Request it</button>
+                      <span style="font-size: 15px; color: {{t.ink2}}">We add any Gurugram project with a RERA number within 14 days, or say why not in writing: no RERA registration, outside Gurugram, or registration lapsed.</span>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{requested}}" hint-placeholder-val="{{false}}">
+                      <p role="status" style="margin: 0; display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 8px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; font-size: 16px; line-height: 1.45"><svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg><span><strong style="font-weight: 700">Requested · R-1018-07.</strong> We'll add it by 1 Nov 2026 or tell you why not.</span></p>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                <sc-if value="{{showWaitlist}}" hint-placeholder-val="{{false}}">
+                  <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start">
+                    <sc-if value="{{notWaitlisted}}" hint-placeholder-val="{{true}}">
+                      <button type="button" onClick="{{joinWaitlist}}" style="height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Join the Noida waitlist</button>
+                    </sc-if>
+                    <sc-if value="{{waitlisted}}" hint-placeholder-val="{{false}}">
+                      <p role="status" style="margin: 0; display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 8px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; font-size: 16px; line-height: 1.45"><svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg><span><strong style="font-weight: 700">On the waitlist.</strong> One WhatsApp message when Noida opens, planned for Jul–Sep 2027. Nothing else.</span></p>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                <sc-if value="{{answerDone}}" hint-placeholder-val="{{true}}">
+                  <div style="display: flex; flex-wrap: wrap; gap: 6px">
+                    <sc-for list="{{answerSources}}" as="r" hint-placeholder-count="3">
+                      <a href="#source" style="{{srcChip}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>{{r}}</a>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+              <sc-if value="{{showCards}}" hint-placeholder-val="{{true}}">
+                <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px">
+                  <sc-for list="{{answerCards}}" as="c" hint-placeholder-count="2">
+                    <li>
+                      <a href="#project" class="pl-row" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; margin: 0 -12px; border-radius: 8px; text-decoration: none; color: {{t.ink}}">
+                        <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+                          <strong style="font-size: 17px; line-height: 1.25">{{c.name}}</strong>
+                          <span style="{{c.chipStyle}}">
+                            <span class="sr">Delivery risk: </span>
+                            <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{c.segs}}" as="g" hint-placeholder-count="5"><span style="{{g.style}}"></span></sc-for></span>{{c.label}}
+                          </span>
+                        </span>
+                        <span style="text-align: right; line-height: 1.2"><strong style="display: block; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 20px">{{c.price}}</strong><span style="font-size: 14px; color: {{t.ink2}}">{{c.priceNote}}</span></span>
+                      </a>
+                    </li>
+                  </sc-for>
+                </ul>
+              </sc-if>
+              <p style="margin: 0; font-size: 16px; color: {{t.ink2}}">Prefer a person? <a href="#adviser" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline">Talk to a Plinth adviser on WhatsApp</a>, paid by you, never by developers. Free to ask, Mon–Sat 10 am–7 pm. Advisers explain records; they don't sell, book or negotiate.</p>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{modeScan}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px">
+                <span style="font-size: 15px; color: {{t.ink2}}">Which project is this?</span>
+                <button type="button" onClick="{{closePanel}}" aria-label="Close the scanner and show the risk card" style="width: 44px; height: 44px; flex: none; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+                  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+                </button>
+              </div>
+              <sc-if value="{{scanAim}}" hint-placeholder-val="{{true}}">
+                <div style="display: flex; flex-direction: column; gap: 14px; align-items: center; text-align: center">
+                  <div aria-hidden="true" style="position: relative; width: 220px; height: 220px; border-radius: 8px; background: {{t.track}}">
+                    <span style="position: absolute; left: 18px; top: 18px; width: 40px; height: 40px; border-left: 3px solid {{t.ink}}; border-top: 3px solid {{t.ink}}"></span>
+                    <span style="position: absolute; right: 18px; top: 18px; width: 40px; height: 40px; border-right: 3px solid {{t.ink}}; border-top: 3px solid {{t.ink}}"></span>
+                    <span style="position: absolute; left: 18px; bottom: 18px; width: 40px; height: 40px; border-left: 3px solid {{t.ink}}; border-bottom: 3px solid {{t.ink}}"></span>
+                    <span style="position: absolute; right: 18px; bottom: 18px; width: 40px; height: 40px; border-right: 3px solid {{t.ink}}; border-bottom: 3px solid {{t.ink}}"></span>
+                    <span style="{{scanLineStyle}}"></span>
+                  </div>
+                  <p style="margin: 0; max-width: 340px">{{scanMsg}}</p>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center">
+                    <button type="button" onClick="{{onScanRead}}" style="height: 48px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Upload a photo</button>
+                    <button type="button" onClick="{{onScanRead}}" style="height: 48px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Use camera</button>
+                  </div>
+                  <p style="margin: 0; font-size: 14px; color: {{t.muted}}">We ask for camera access only when you tap Use camera. Photos are not stored.</p>
+                </div>
+              </sc-if>
+              <sc-if value="{{scanMatched}}" hint-placeholder-val="{{false}}">
+                <div style="display: flex; flex-direction: column; gap: 12px">
+                  <span style="align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: {{t.ink}}; background: {{t.track}}; padding: 4px 12px; border-radius: 999px">
+                    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg>Matched RERA GGM/673/405/2022/117
+                  </span>
+                  <div style="position: relative; height: 150px; overflow: hidden; background: {{t.photo}}">
+                    <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Illustrative image: Aurelia Heights exterior" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+                    <span style="position: absolute; left: 10px; bottom: 10px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.92); padding: 3px 10px; border-radius: 999px">Illustrative image</span>
+                  </div>
+                  <div>
+                    <strong style="display: block; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 26px; letter-spacing: -0.02em; line-height: 1.15">Aurelia Heights, Phase 2</strong>
+                    <span style="font-size: 16px; color: {{t.ink2}}">Northfield Estates · Sector 37D, Dwarka Expressway</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+                    <span style="{{scanChip.chipStyle}}">
+                      <span class="sr">Delivery risk: </span>
+                      <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{scanChip.segs}}" as="g" hint-placeholder-count="5"><span style="{{g.style}}"></span></sc-for></span>{{scanChip.label}}
+                    </span>
+                    <span style="font-size: 16px; color: {{t.ink2}}">41% built · 77% of time used</span>
+                  </div>
+                  <span style="font-size: 16px">₹2.74 Cr all-in · quoted ₹2.35 Cr</span>
+                  <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center">
+                    <button type="button" onClick="{{toggleFollow}}" aria-pressed="{{following}}" style="{{scanFollowStyle}}">{{followLabel}}</button>
+                    <a href="#project" style="color: {{t.ink}}; font-weight: 600; font-size: 17px; text-decoration: underline">Open the project</a>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+        </section>
+      </div>
+    </section>
+
+    <section id="explore" aria-labelledby="ex-h" style="background: {{t.bg}}; padding: 136px 0 120px">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 28px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+        <div style="flex: 0 1 500px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+          <h2 id="ex-h" class="pl-rv" style="{{h2}}">Which projects are on track?</h2>
+          <p class="pl-rv pl-d1" style="{{lead}}">Every under-construction project in Gurugram, scored. Pick a corridor to compare delivery risk, progress and all-in price.</p>
+          <div class="pl-rv pl-d2" role="tablist" aria-label="Corridor" aria-orientation="vertical" style="display: flex; flex-direction: column; gap: 4px">
+            <sc-for list="{{tabs}}" as="b" hint-placeholder-count="3">
+              <button type="button" role="tab" id="{{b.id}}" aria-selected="{{b.on}}" aria-controls="corridor-panel" onClick="{{b.pick}}" style="{{b.style}}">
+                <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.015em">{{b.name}}</span>
+                <span style="{{b.countStyle}}">{{b.count}}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div class="pl-rv pl-d3" style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start; font-size: 16px; line-height: 1.5; color: {{t.ink2}}">
+            <sc-if value="{{notWaitlisted}}" hint-placeholder-val="{{true}}">
+              <p style="margin: 0">Noida and Greater Noida West are planned for Jul–Sep 2027. <button type="button" onClick="{{joinWaitlist}}" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: .2em; cursor: pointer">Join the Noida waitlist</button></p>
+            </sc-if>
+            <sc-if value="{{waitlisted}}" hint-placeholder-val="{{false}}">
+              <p role="status" style="margin: 0; color: {{t.ink}}">On the waitlist. One WhatsApp message when Noida opens, planned for Jul–Sep 2027. Nothing else.</p>
+            </sc-if>
+          </div>
+        </div>
+
+        <div id="corridor-panel" role="tabpanel" aria-labelledby="{{activeTabId}}" style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+            <span style="font-size: 17px"><strong>No paid placement.</strong> {{rankNote}}</span>
+            <div role="group" aria-label="Sort projects" style="display: flex; padding: 3px; border-radius: 999px; background: {{t.track}}">
+              <sc-for list="{{sorts}}" as="so" hint-placeholder-count="2">
+                <button type="button" onClick="{{so.pick}}" aria-pressed="{{so.on}}" style="{{so.style}}">{{so.text}}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="min-height: 560px">
+            <sc-if value="{{hasRows}}" hint-placeholder-val="{{true}}">
+              <ol style="margin: 0 -16px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
+                <sc-for list="{{rows}}" as="p" hint-placeholder-count="4">
+                  <li class="{{p.enter}}">
+                    <a href="{{p.href}}" class="pl-row" style="display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 22px; align-items: start; padding: 16px; border-radius: 8px; text-decoration: none; color: {{t.ink}}">
+                      <span style="display: block; width: 128px; height: 96px; overflow: hidden; background: {{t.photo}}">
+                        <sc-if value="{{p.isKestrel}}" hint-placeholder-val="{{true}}"><img data-slot="heroKestrel" src="/_blob/29ddb4eb8af81bf41e28a3b11bdfd13e" alt="Illustrative image: Kestrel Park exterior" style="width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                        <sc-if value="{{p.isSapphire}}" hint-placeholder-val="{{false}}"><img data-slot="heroSapphire" src="/_blob/834d8de534be36df0eb45c9468dabeb2" alt="Illustrative image: Sapphire Grove exterior" style="width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                        <sc-if value="{{p.isAurelia}}" hint-placeholder-val="{{false}}"><img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Illustrative image: Aurelia Heights exterior" style="width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                        <sc-if value="{{p.isJuniper}}" hint-placeholder-val="{{false}}"><img data-slot="heroJuniper" src="/_blob/dca5839367b61f6d11fb4a0306ea108a" alt="Illustrative image: Juniper Enclave site" style="width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                        <sc-if value="{{p.isCoral}}" hint-placeholder-val="{{false}}"><img data-slot="heroCoral" src="/_blob/76b15081db77011ae5930ad87bcd7272" alt="Illustrative image: Coral Towers exterior" style="width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                        <sc-if value="{{p.isLaurel}}" hint-placeholder-val="{{false}}"><img data-slot="heroLaurel" src="/_blob/d710ca2aa38a585d11eca42df567bbf9" alt="Illustrative image: Laurel Residency site" style="width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+                      </span>
+                      <span style="display: flex; flex-direction: column; gap: 10px; min-width: 0">
+                        <span style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px">
+                          <span style="display: flex; flex-direction: column; min-width: 0">
+                            <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.02em; line-height: 1.15">{{p.name}}</strong>
+                            <span style="font-size: 16px; color: {{t.ink2}}">{{p.dev}} · {{p.sector}}</span>
+                          </span>
+                          <span style="flex: none; display: flex; flex-direction: column; align-items: flex-end; line-height: 1.2">
+                            <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.02em">{{p.price}}</strong>
+                            <span style="font-size: 14px; color: {{t.ink2}}">{{p.priceNote}}</span>
+                          </span>
+                        </span>
+                        <span style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap">
+                          <span style="{{p.chipStyle}}">
+                            <span class="sr">Delivery risk: </span>
+                            <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{p.segs}}" as="g" hint-placeholder-count="5"><span style="{{g.style}}"></span></sc-for></span>
+                            <sc-if value="{{p.flag}}" hint-placeholder-val="{{false}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 11V1.5M2.5 2h6.5l-1.5 2.5L9 7H2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg></sc-if>{{p.label}}
+                            <sc-if value="{{p.hasDots}}" hint-placeholder-val="{{true}}"><span aria-hidden="true" style="display: inline-flex; gap: 2px; margin-left: 2px"><sc-for list="{{p.dots}}" as="o" hint-placeholder-count="2"><span style="{{o.style}}"></span></sc-for></span><span class="sr">, {{p.confText}}</span></sc-if>
+                          </span>
+                          <span style="flex: 1 1 200px; display: flex; align-items: center; gap: 12px; min-width: 0">
+                            <span aria-hidden="true" style="flex: 1; position: relative; display: block; height: 8px; border-radius: 2px; background: {{t.track}}"><span style="{{p.builtStyle}}"></span><span style="{{p.tickStyle}}"></span></span>
+                            <span style="flex: none; font-size: 15px; color: {{t.ink2}}">{{p.barLabel}}</span>
+                          </span>
+                        </span>
+                        <sc-if value="{{p.hasNote}}" hint-placeholder-val="{{false}}"><span style="font-size: 16px">{{p.note}}</span></sc-if>
+                      </span>
+                    </a>
+                  </li>
+                </sc-for>
+              </ol>
+              <p style="margin: 14px 0 0; font-size: 16px; color: {{t.ink2}}">{{rowsNote}}</p>
+            </sc-if>
+            <sc-if value="{{noRows}}" hint-placeholder-val="{{false}}">
+              <div style="min-height: 540px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 18px; padding: 48px; border-radius: 8px; background: {{t.track}}; box-sizing: border-box">
+                <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 18px); gap: 3px"><span style="{{pendSeg}}"></span><span style="{{pendSeg}}"></span><span style="{{pendSeg}}"></span><span style="{{pendSeg}}"></span><span style="{{pendSeg}}"></span></span>
+                <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; letter-spacing: -0.025em; line-height: 1.1">Golf Course Ext Rd is planned for Dec 2026</h3>
+                <p style="margin: 0; max-width: 520px">We publish a band only after we've read every quarterly progress report and order for a project. Tap Notify me and we'll send one message when its scores are live.</p>
+                <button type="button" onClick="{{toggleCorridorFollow}}" aria-pressed="{{corridorFollowing}}" style="height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{corridorFollowLabel}}</button>
+              </div>
+            </sc-if>
+          </div>
+          <a href="#search" style="align-self: flex-start; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline">Open these on the map</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-h" style="background: {{t.track}}; padding: 128px 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px 72px">
+          <h2 id="how-h" class="pl-rv" style="{{h2}}; flex: 1 1 520px; max-width: 640px">How does Plinth know?</h2>
+          <p class="pl-rv pl-d1" style="{{lead}}; flex: 0 1 460px">Records in, reasons out. Every band traces back to filings you can open yourself.</p>
+        </div>
+
+        <div class="pl-rv pl-d2" style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 24px 40px">
+          <ol style="flex: 1 1 640px; margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 24px">
+            <sc-for list="{{stations}}" as="n" hint-placeholder-count="3">
+              <li>
+                <button type="button" onClick="{{n.pick}}" aria-pressed="{{n.on}}" style="{{n.rowStyle}}">
+                  <span aria-hidden="true" style="{{n.slabStyle}}"></span>
+                  <span style="{{n.titleStyle}}">{{n.title}}</span>
+                  <span style="font-size: 16px; line-height: 1.45; color: {{t.ink2}}">{{n.desc}}</span>
+                </button>
+              </li>
+            </sc-for>
+          </ol>
+          <button type="button" onClick="{{onPlay}}" style="flex: none; height: 52px; display: inline-flex; align-items: center; gap: 10px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">
+            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 2l8 5-8 5z" fill="currentColor"></path></svg>{{playLabel}}
+          </button>
+        </div>
+
+        <div class="pl-rv pl-d3" style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+          <div aria-live="polite" style="flex: 1 1 560px; min-width: 0; min-height: 560px; border-radius: 8px; background: {{t.bgSolid}}; padding: 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+            <sc-if value="{{stage0}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-direction: column; gap: 20px">
+                <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; letter-spacing: -0.025em; line-height: 1.1">8 quarterly progress reports, read</h3>
+                <ol aria-label="Quarterly progress reports, oldest at the bottom" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column-reverse; gap: 4px">
+                  <sc-for list="{{tape}}" as="q" hint-placeholder-count="8">
+                    <li style="display: grid; grid-template-columns: 70px minmax(0, 1fr) 96px; gap: 14px; align-items: center">
+                      <span style="font-size: 15px; color: {{t.ink2}}">{{q.label}}</span>
+                      <span aria-hidden="true" style="{{q.barStyle}}"></span>
+                      <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600">
+                        <sc-if value="{{q.late}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.6" fill="none" stroke="currentColor" stroke-width="1.3"></circle><path d="M6 3.4V6l1.8 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg></sc-if>
+                        <sc-if value="{{q.ok}}" hint-placeholder-val="{{true}}"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg></sc-if>{{q.state}}
+                      </span>
+                    </li>
+                  </sc-for>
+                </ol>
+                <p style="margin: 0">3 of 8 were filed late, shown hatched. We keep every report, on time or not.</p>
+                <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 16px">
+                  <sc-for list="{{feeds}}" as="f" hint-placeholder-count="4">
+                    <li style="display: flex; gap: 10px; align-items: center">
+                      <svg width="16" height="16" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path></svg>{{f}}
+                    </li>
+                  </sc-for>
+                </ul>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{stage1}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; gap: 16px">
+                <sc-if value="{{showDial}}" hint-placeholder-val="{{true}}">
+                  <div style="display: flex; flex-direction: column; gap: 14px">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+                      <svg viewBox="0 0 300 172" width="100%" style="max-width: 360px" role="img" aria-label="{{dialLabel}}">
+                        <sc-for list="{{arcs}}" as="a" hint-placeholder-count="5">
+                          <path d="{{a.d}}" fill="none" stroke="{{a.color}}" stroke-width="{{a.w}}" opacity="{{a.op}}"></path>
+                        </sc-for>
+                        <g style="{{needleStyle}}">
+                          <line x1="150" y1="150" x2="150" y2="44" stroke="{{t.ink}}" stroke-width="4" stroke-linecap="round"></line>
+                        </g>
+                        <circle cx="150" cy="150" r="11" fill="{{t.ink}}"></circle>
+                        <circle cx="150" cy="150" r="4" fill="{{t.bgSolid}}"></circle>
+                      </svg>
+                      <div aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); width: 100%; max-width: 360px; font-size: 14px; color: {{t.ink2}}; text-align: center">
+                        <span>Low</span><span>Moderate</span><span>Elevated</span><span>High</span><span>Severe</span>
+                      </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+                      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 48px; letter-spacing: -0.03em; line-height: 1; color: {{bandText}}">Elevated</span>
+                      <span style="font-size: 16px; color: {{t.ink2}}">since 2 Oct 2026 · Moderate before</span>
+                    </div>
+                    <p style="margin: 0">Between <strong>30 and 45 of 100</strong> similar Gurugram projects got their OC more than 12 months after the original RERA date. OC usually comes before keys, often by a few months.</p>
+                    <p style="margin: 0; font-size: 16px; color: {{t.ink2}}">We're less certain about this one: Northfield has only 6 finished RERA projects to learn from, so we show a range, not one number.</p>
+                  </div>
+                </sc-if>
+                <sc-if value="{{showWeights}}" hint-placeholder-val="{{false}}">
+                  <div style="display: flex; flex-direction: column; gap: 14px">
+                    <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; letter-spacing: -0.025em; line-height: 1.1">The published weights</h3>
+                    <sc-for list="{{weights}}" as="k" hint-placeholder-count="5">
+                      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 180px 44px; gap: 12px; align-items: center; font-size: 17px">
+                        <span>{{k.name}}</span>
+                        <span aria-hidden="true" style="display: block; height: 10px; border-radius: 2px; background: {{t.track}}"><span style="{{k.style}}"></span></span>
+                        <span style="text-align: right; font-weight: 700">{{k.w}}%</span>
+                      </div>
+                    </sc-for>
+                    <p style="margin: 0; font-size: 16px">Methodology v1.2. A published scorecard sets every band. No AI sets a score.</p>
+                  </div>
+                </sc-if>
+                <button type="button" onClick="{{toggleWeights}}" aria-expanded="{{showWeights}}" style="align-self: flex-start; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: .2em; cursor: pointer; min-height: 44px">{{weightsLabel}}</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{stage2}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; gap: 16px">
+                <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; letter-spacing: -0.025em; line-height: 1.1">Why Elevated? The first of 4 reasons</h3>
+                <div style="padding: 22px 24px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 12px">
+                  <span style="font-size: 21px; line-height: 1.4">{{reasonText}}</span>
+                  <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+                    <span style="font-size: 15px; font-weight: 600; color: {{t.ink2}}">Records show</span>
+                    <a href="#source" style="{{srcChipOnTrack}}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>HARERA QPR · Apr–Jun 2026</a>
+                  </span>
+                </div>
+                <div style="padding: 22px 24px; border-radius: 8px; background: {{t.claimBg}}; display: flex; flex-direction: column; gap: 8px">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; color: {{t.ink2}}">
+                    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg>Developer says · not yet verified · 15 Oct 2026
+                  </span>
+                  <span>“The Jul–Sep 2026 progress report was filed on 12 Oct 2026.”</span>
+                </div>
+                <a href="#project" style="font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline">See all 4 reasons</a>
+              </div>
+            </sc-if>
+            <p style="margin: auto 0 0; font-size: 15px; color: {{t.ink2}}">Example shown: Aurelia Heights, Phase 2, data as of 14 Oct 2026.</p>
+          </div>
+
+          <figure style="flex: 0 1 380px; min-width: 0; min-height: 560px; margin: 0; position: relative; overflow: hidden; background: {{t.photo}}">
+            <img data-slot="qprDeskTall" src="/_blob/9707492bbd68f660a6e81a0130b467d6" alt="Illustrative image: a printed quarterly progress report on a desk, pages fanned, a pencil beside it" style="position: absolute; inset: 0; background: #E7E3DA; object-fit: cover; display: block">
+            <figcaption style="position: absolute; left: 16px; right: 16px; bottom: 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px">
+              <span style="font-size: 16px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 8px 14px; border-radius: 8px">Every quarter, the developer files what is built, slab by slab. We read every page.</span>
+              <span style="font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 3px 10px; border-radius: 999px">Illustrative image</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="money" aria-labelledby="money-h" style="background: {{t.bg}}; padding: 144px 0 136px">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 72px">
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px">
+          <h2 id="money-h" class="pl-rv" style="{{h2}}">How do we make money?</h2>
+          <p class="pl-rv pl-d1" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(140px, 20vw, 280px); line-height: 0.86; letter-spacing: -0.06em">₹0</p>
+          <p class="pl-rv pl-d2" style="margin: 12px 0 0; max-width: 680px; font-size: 26px; line-height: 1.4">paid to us by developers. They can't buy a better band, an early look or a place in results.</p>
+        </div>
+        <dl class="pl-rv pl-d1" style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 40px 36px">
+          <sc-for list="{{ledger}}" as="l" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <dt style="font-weight: 700; font-size: 18px; line-height: 1.35">{{l.who}}</dt>
+              <dd style="margin: 0; order: -1; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.1; letter-spacing: -0.025em">{{l.price}}</dd>
+              <dd style="margin: 0; font-size: 17px; line-height: 1.45; color: {{t.ink2}}">{{l.what}}</dd>
+            </div>
+          </sc-for>
+        </dl>
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 16px 48px; padding: 28px 32px; border-radius: 8px; background: {{t.track}}">
+          <p style="margin: 0; flex: 1 1 560px; font-size: 18px"><strong>Never for sale:</strong> anything to developers, a better band, an early look, a place in results, or your number. It is never shared without your tap.</p>
+          <a href="#disclosures" style="font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline">Read our full disclosure</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; background: {{t.bg}}; padding-top: 112px">
+    <div style="width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 56px">
+        <p class="pl-rv" style="margin: 0; max-width: 560px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.1; letter-spacing: -0.025em">No developer pays us. Ever. Every band stands on public filings.</p>
+        <nav aria-label="Footer" style="flex: 0 1 560px; display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 17px">
+          <a href="#dxp" style="color: {{t.ink}}; text-decoration: none">Dwarka Expressway</a>
+          <a href="#gcer" style="color: {{t.ink}}; text-decoration: none">Golf Course Ext Rd</a>
+          <a href="#ng" style="color: {{t.ink}}; text-decoration: none">New Gurugram</a>
+          <a href="#cost" style="color: {{t.ink}}; text-decoration: none">All-in cost</a>
+          <a href="#money" style="color: {{t.ink}}; text-decoration: none">How we make money</a>
+          <a href="#pricing" style="color: {{t.ink}}; text-decoration: none">Free and Pro</a>
+          <a href="#emi" style="color: {{t.ink}}; text-decoration: none">EMI stress test</a>
+          <a href="#rera" style="color: {{t.ink}}; text-decoration: none">RERA status check</a>
+          <a href="#method" style="color: {{t.ink}}; text-decoration: none">Methodology v1.2</a>
+          <a href="#reply" style="color: {{t.ink}}; text-decoration: none">Developer reply portal</a>
+        </nav>
+      </div>
+      <p style="margin: 0; font-size: 16px; color: {{t.ink2}}">{{liveStrip}}</p>
+    </div>
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; margin-top: 56px; overflow: hidden">
+      <p class="pl-rv pl-d1" style="width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 16px; box-sizing: border-box; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(110px, 35vw, 470px); line-height: 0.8; letter-spacing: -0.06em; white-space: nowrap; color: {{t.ink}}">Plinth</p>
+      <div style="background: {{t.ink}}; color: {{t.bg}}">
+        <p style="max-width: 1240px; margin: 0 auto; padding: 28px 28px 32px; box-sizing: border-box; font-size: 16px; line-height: 1.5">Our opinion, based on public records. Not a credit rating. Not issued by any RERA. <a href="#report" style="color: {{t.bg}}; text-decoration: underline">Report an error</a> · <a href="#money" style="color: {{t.bg}}; text-decoration: underline">How we make money</a></p>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"screen":{"editor":"enum","options":["Risk card","Answer","Should I buy?","Unknown project","Noida","HARERA down"],"default":"Risk card"},"$preview":{"width":1280,"height":5160}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {ready: false, themePick: null, mode: 'card', card: 'aurelia', asm: 0, ai: 0, asked: '', shown: 999, query: '', voice: 'idle', heard: 0, scan: 'aim', follows: {}, corridor: 'dxp', sort: 'risk', corridorFollow: false, step: 1, play: -1, weightsOpen: false, from: null, unk: '', requested: false, waitlisted: false};
+    this.voiceWords = ['Dwarka', 'Expressway', 'pe', '3', 'BHK,', '2.5', 'crore', 'ke', 'andar,', 'low', 'risk', 'wala'];
+  }
+  componentDidMount() {
+    var self = this;
+    this._t = setTimeout(function () { self.setState({ready: true}); }, 300);
+    this._t4 = setTimeout(function () { self.assemble(self.state.card || 'aurelia'); }, 400);
+  }
+  componentWillUnmount() {
+    clearTimeout(this._t);
+    clearTimeout(this._t2);
+    clearTimeout(this._t3);
+    clearTimeout(this._t4);
+    clearInterval(this._iv);
+    clearInterval(this._vi);
+    clearInterval(this._pi);
+    clearInterval(this._ai);
+  }
+  reduced() {
+    return typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+  assemble(id) {
+    var self = this;
+    clearInterval(this._ai);
+    if (this.reduced()) { this.setState({card: id, asm: 99}); return; }
+    this.setState({card: id, asm: 0});
+    this._ai = setInterval(function () {
+      if ((self.state.asm || 0) >= 15) return;
+      var n = (self.state.asm || 0) + 1;
+      self.setState({asm: n});
+      if (n >= 15) clearInterval(self._ai);
+    }, 80);
+  }
+  matchCard(text) {
+    var keys = [['aurelia', 'aurelia'], ['northfield', 'aurelia'], ['kestrel', 'kestrel'], ['orbis', 'kestrel'], ['sapphire', 'sapphire'], ['meridian', 'sapphire'], ['coral', 'coral'], ['vantage', 'coral'], ['laurel', 'laurel'], ['elmstone', 'laurel'], ['juniper', 'juniper'], ['halcyon', 'juniper']];
+    var words = String(text || '').toLowerCase().split(/[^a-z]+/);
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i];
+      if (w.length < 3) continue;
+      for (var k = 0; k < keys.length; k++) { if (keys[k][0].indexOf(w) === 0) return keys[k][1]; }
+    }
+    return null;
+  }
+  scr() { return this.props.screen || 'Risk card'; }
+  presets() {
+    return {
+      'Answer': {ai: 1, asked: 'Is Aurelia Heights, Phase 2 on track?', unk: ''},
+      'Should I buy?': {ai: 4, asked: 'Should I buy Aurelia Heights?', unk: ''},
+      'Unknown project': {ai: 5, asked: 'Indigo Terraces, Sector 79', unk: 'Indigo Terraces'},
+      'Noida': {ai: 6, asked: '3 BHK in Noida under ₹2 Cr', unk: ''},
+      'HARERA down': {ai: 1, asked: 'Is Aurelia Heights, Phase 2 on track?', unk: ''}
+    };
+  }
+  eff() {
+    var s = this.state || {};
+    var scr = this.scr();
+    var pr = this.presets()[scr];
+    if (pr && s.from !== scr) return {mode: 'ai', ai: pr.ai, asked: pr.asked, shown: 999, unk: pr.unk};
+    return {mode: s.mode, ai: s.ai, asked: s.asked, shown: s.shown, unk: s.unk || ''};
+  }
+  freeze(extra) {
+    var e = this.eff();
+    this.setState(Object.assign({from: this.scr(), mode: e.mode, ai: e.ai, asked: e.asked, shown: e.shown, unk: e.unk}, extra || {}));
+  }
+  ask(i, text, unk) {
+    var self = this;
+    clearInterval(this._iv);
+    var instant = this.reduced();
+    this.setState({mode: 'ai', ai: i, asked: text, shown: instant ? 999 : 0, from: this.scr(), unk: unk || '', requested: false});
+    if (instant) return;
+    this._iv = setInterval(function () {
+      if ((self.state.shown || 0) > 90) return;
+      var n = (self.state.shown || 0) + 2;
+      self.setState({shown: n});
+      if (n > 90) clearInterval(self._iv);
+    }, 45);
+  }
+  askTyped() {
+    var q = String(this.state.query || '').trim();
+    if (!q) { this.ask(0, '3 BHK on Dwarka Expressway under ₹2.5 Cr, low delivery risk'); return; }
+    var l = q.toLowerCase();
+    if (/should (i|we) (buy|book)|buy or not|is it worth buying/.test(l)) { this.ask(4, q); return; }
+    if (/noida|\bgnw\b/.test(l)) { this.ask(6, q); return; }
+    var i = 3;
+    if (l.indexOf('aurelia') >= 0) i = 1;
+    else if (l.indexOf('northfield') >= 0) i = 2;
+    else if (l.indexOf('bhk') >= 0 || l.indexOf('dwarka') >= 0 || l.indexOf('crore') >= 0 || l.indexOf(' cr') >= 0) i = 0;
+    var card = this.matchCard(q);
+    if (i === 3 && card) { this.setState({mode: 'card', from: this.scr()}); this.assemble(card); return; }
+    var wds = q.replace(/[?.!,]+$/, '').split(/\s+/);
+    var qWord = /^(what|how|is|are|can|does|do|why|when|which|who|where|tell|show|explain)$/i.test(wds[0]);
+    if (i === 3 && !qWord && wds.length <= 5 && q.indexOf('?') < 0) {
+      var nm = wds.map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(' ');
+      this.ask(5, q, nm);
+      return;
+    }
+    this.ask(i, q);
+  }
+  listen() {
+    var self = this;
+    var v = this.state.voice;
+    clearInterval(this._vi);
+    clearTimeout(this._t2);
+    if (v === 'listening' || v === 'thinking') { this.setState({voice: 'idle'}); return; }
+    this.setState({voice: 'listening', heard: 0});
+    this._vi = setInterval(function () {
+      if (self.state.voice !== 'listening') return;
+      var n = (self.state.heard || 0) + 1;
+      if (n > self.voiceWords.length) {
+        clearInterval(self._vi);
+        self.setState({voice: 'thinking', heard: n});
+        self._t2 = setTimeout(function () {
+          var said = self.voiceWords.join(' ');
+          self.setState({voice: 'idle', query: said});
+          self.ask(0, said);
+        }, 900);
+        return;
+      }
+      self.setState({heard: n});
+    }, 240);
+  }
+  readQr() {
+    var self = this;
+    clearTimeout(this._t3);
+    this.setState({scan: 'reading'});
+    this._t3 = setTimeout(function () { self.setState({scan: 'matched'}); }, 1100);
+  }
+  play() {
+    var self = this;
+    clearInterval(this._pi);
+    if (this.reduced()) { this.setState({play: -1, step: 2}); return; }
+    this.setState({play: 0, weightsOpen: false, ready: true});
+    this._pi = setInterval(function () {
+      if (self.state.play < 0) return;
+      var p = self.state.play + 1;
+      if (p > 30) { clearInterval(self._pi); self.setState({play: -1, step: 2}); return; }
+      self.setState({play: p});
+    }, 180);
+  }
+  toggleFollowFor(id) {
+    var f = Object.assign({}, this.state.follows || {});
+    f[id] = !f[id];
+    this.setState({follows: f});
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var reduce = this.reduced();
+    var D = "'Bricolage Grotesque', system-ui, sans-serif";
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#101C17', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claimBg: '#1D2621', chipFill: 'rgba(255,255,255,0.10)', chipFillOnTrack: 'rgba(255,255,255,0.12)',
+      emptyCell: 'rgba(255,255,255,0.08)', emptyBorder: '#7D828A', segEmpty: 'transparent', limited: '#A3A8B0', limitedFill: 'transparent'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', photo: '#E7E3DA',
+      line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claimBg: '#F1ECE2', chipFill: '#ECE8DF', chipFillOnTrack: '#E6E1D6',
+      emptyCell: '#E9E5DC', emptyBorder: '#8C9199', segEmpty: '#FFFFFF', limited: '#6B7079', limitedFill: '#FFFFFF'
+    };
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', fillD: '#15323A', lo: 5, hi: 15},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', fillD: '#332B0C', lo: 15, hi: 30},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillD: '#3A2210', lo: 30, hi: 45},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', fillD: '#3D1A19', lo: 45, hi: 65},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', fillD: '#341A33', lo: 65, hi: 80}
+    };
+    var names = ['Low', 'Moderate', 'Elevated', 'High', 'Severe'];
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function textOf(n) { if (n === 'Limited') return T.ink2; return night ? B[n].dark : (B[n].i <= 2 ? T.ink : B[n].light); }
+    function dots(conf) {
+      var base = 'display:inline-block;width:6px;height:6px;border-radius:50%;box-sizing:border-box;';
+      return [{style: base + 'background:' + T.ink2}, {style: base + (conf === 'high' ? 'background:' + T.ink2 : 'border:1.2px solid ' + T.ink2)}];
+    }
+    function chip(p) {
+      var base = 'display:inline-flex;align-items:center;align-self:flex-start;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:600;line-height:1;white-space:nowrap;color:' + T.ink + ';';
+      var segBase = 'width:6px;height:10px;border-radius:2px;box-sizing:border-box;';
+      var segs = [];
+      var j;
+      if (p.band === 'Limited') {
+        for (j = 0; j < 5; j++) segs.push({style: segBase + 'border:1px dashed ' + T.limited});
+        return {chipStyle: base + 'background:' + T.track + ';color:' + T.ink2, segs: segs, label: 'Limited history', hasDots: false, dots: [], flag: false, confText: ''};
+      }
+      var b = B[p.band];
+      for (j = 1; j <= 5; j++) segs.push({style: segBase + (j <= b.i ? 'background:' + ink(p.band) : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder)});
+      return {
+        chipStyle: base + 'background:' + (night ? b.fillD : b.fill),
+        segs: segs, label: p.band, hasDots: !!p.conf, dots: p.conf ? dots(p.conf) : [], flag: !!p.flag,
+        confText: p.conf === 'high' ? 'more certain' : 'less certain'
+      };
+    }
+    var follows = s.follows || {};
+    var tonePill = 'height:48px;padding:0 20px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;';
+    function followStyle(on) { return tonePill + (on ? 'background:' + T.accentSoft + ';color:' + T.onAccentSoft : 'background:' + T.track + ';color:' + T.ink); }
+    var srcBase = 'display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:3px 12px;box-sizing:border-box;border-radius:999px;font-size:14px;line-height:1.25;text-decoration:none;color:' + T.ink + ';';
+
+    var P = [
+      {id: 'kestrel', name: 'Kestrel Park', dev: 'Orbis Land', sector: 'Sector 113', corridor: 'dxp', band: 'Low', conf: 'high', built: 63, time: 58, allIn: 2.44, price: '₹2.44 Cr', priceNote: 'all-in · quoted ₹2.10 Cr'},
+      {id: 'sapphire', name: 'Sapphire Grove, Phase 1', dev: 'Meridian Habitat', sector: 'Sector 106', corridor: 'dxp', band: 'Moderate', conf: 'high', built: 48, time: 55, allIn: 2.27, price: '₹2.27 Cr', priceNote: 'all-in · quoted ₹1.95 Cr'},
+      {id: 'aurelia', name: 'Aurelia Heights, Phase 2', dev: 'Northfield Estates', sector: 'Sector 37D', corridor: 'dxp', band: 'Elevated', conf: 'low', built: 41, time: 77, allIn: 2.74, price: '₹2.74 Cr', priceNote: 'all-in · quoted ₹2.35 Cr'},
+      {id: 'juniper', name: 'Juniper Enclave', dev: 'Halcyon Homes', sector: 'Sector 102', corridor: 'dxp', band: 'Limited', conf: null, built: 9, time: 31, allIn: null, quoted: 2.25, price: 'Quoted ₹2.25 Cr', priceNote: 'all-in not known yet'},
+      {id: 'coral', name: 'Coral Towers', dev: 'Vantage Buildcon', sector: 'Sector 89', corridor: 'ng', band: 'High', conf: 'low', built: 22, time: 70, allIn: 1.90, price: '₹1.90 Cr', priceNote: 'all-in · quoted ₹1.62 Cr'},
+      {id: 'laurel', name: 'Laurel Residency', dev: 'Elmstone Developers', sector: 'Sector 92', corridor: 'ng', band: 'Severe', conf: null, flag: true, built: 34, time: 106, allIn: null, quoted: 1.48, price: 'Quoted ₹1.48 Cr', priceNote: 'all-in not known yet', note: 'Severe is set by a published rule: a group company was admitted to insolvency (NCLT order, 12 Mar 2023).'}
+    ];
+    var byId = {};
+    P.forEach(function (p) { byId[p.id] = p; });
+
+    function builtStyle(p) { return 'position:absolute;left:0;top:0;bottom:0;width:' + p.built + '%;border-radius:2px;background:' + T.accent + ';transition:width .5s ease'; }
+    function tickStyle(p) { var x = Math.min(p.time, 100); return 'position:absolute;top:-5px;width:3px;height:18px;border-radius:1px;background:' + T.ink + ';left:calc(' + x + '% - 1.5px)'; }
+    function barLabel(p) { return p.built + '% built · ' + (p.time > 100 ? 'past original date' : p.time + '% of time used'); }
+
+    // Signature: the risk card that assembles as you type a project name
+    var harDown = this.scr() === 'HARERA down';
+    var e = this.eff();
+    var lessSure = 'We’re less certain about this one, so we show a range, not one number.';
+    var CD = {
+      aurelia: {name: 'Aurelia Heights, Phase 2', dev: 'Northfield Estates', sector: 'Sector 37D', band: 'Elevated', conf: 'low', since: 'since 2 Oct 2026 · Moderate before', freq: 'Between 30 and 45 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date. OC usually comes before keys, often by a few months.', cert: 'We’re less certain about this one: Northfield has only 6 finished RERA projects to learn from, so we show a range, not one number.', built: 41, sold: 72, time: 77, price: '₹2.74 Cr', priceNote: 'all-in · quoted ₹2.35 Cr', orig: 'Dec 2027', pend: harDown ? 'the Jul–Sep 2026 progress report was due 15 Oct 2026. It wasn’t on HARERA at our last full read, 17 Oct 2026, 11:40 pm.' : 'the Jul–Sep 2026 progress report was due 15 Oct 2026. It isn’t on HARERA as of 18 Oct 2026.', claim: 'filed on 12 Oct 2026.', src: ['HARERA QPR · Apr–Jun 2026', harDown ? 'HARERA QPR register · last read 17 Oct 2026' : 'HARERA QPR register · 18 Oct 2026', 'Developer cost sheet · 2 Oct 2026'], href: '#aurelia'},
+      kestrel: {name: 'Kestrel Park', dev: 'Orbis Land', sector: 'Sector 113', band: 'Low', conf: 'high', since: 'as of 14 Oct 2026', freq: 'About 10 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date. OC usually comes before keys, often by a few months.', cert: '', built: 63, sold: null, time: 58, price: '₹2.44 Cr', priceNote: 'all-in · quoted ₹2.10 Cr', orig: 'Jun 2027', pend: 'the Jul–Sep 2026 progress report was filed on time, on 12 Oct 2026.', claim: '', src: ['HARERA QPR · Jul–Sep 2026', 'Developer cost sheet'], href: '#kestrel'},
+      sapphire: {name: 'Sapphire Grove, Phase 1', dev: 'Meridian Habitat', sector: 'Sector 106', band: 'Moderate', conf: 'high', since: 'as of 14 Oct 2026', freq: 'About 20 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date. OC usually comes before keys, often by a few months.', cert: '', built: 48, sold: null, time: 55, price: '₹2.27 Cr', priceNote: 'all-in · quoted ₹1.95 Cr', orig: 'Mar 2028', pend: 'the Jul–Sep 2026 progress report reached HARERA on 16 Oct 2026. We re-score by 19 Oct 2026, 7:40 pm; until then the band uses the Apr–Jun 2026 report.', claim: '', src: ['HARERA QPR · Apr–Jun 2026', 'Developer cost sheet'], href: '#sapphire'},
+      coral: {name: 'Coral Towers', dev: 'Vantage Buildcon', sector: 'Sector 89', band: 'High', conf: 'low', since: 'as of 14 Oct 2026', freq: 'Between 45 and 65 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date. OC usually comes before keys, often by a few months.', cert: lessSure, built: 22, sold: null, time: 70, price: '₹1.90 Cr', priceNote: 'all-in · quoted ₹1.62 Cr', orig: 'Aug 2028, extended twice to Aug 2029', pend: 'the newest progress report on HARERA is Jan–Mar 2026, 187 days old. Extension 2, granted 14 Oct 2026, moved completion to Aug 2029.', claim: '', src: ['HARERA QPR · Jan–Mar 2026', 'HARERA extension order · 14 Oct 2026'], href: '#coral'},
+      laurel: {name: 'Laurel Residency', dev: 'Elmstone Developers', sector: 'Sector 92', band: 'Severe', conf: null, since: 'set by a published rule', freq: 'Severe is set by a published rule: a group company was admitted to insolvency (NCLT order, 12 Mar 2023).', cert: '', built: 34, sold: null, time: 106, price: 'Quoted ₹1.48 Cr', priceNote: 'all-in not known yet', orig: 'Jun 2026, already passed', pend: 'no progress for 4 quarters: 34% built in every report from Jul–Sep 2025 to Apr–Jun 2026.', claim: '', src: ['NCLT order · 12 Mar 2023', 'HARERA QPR · Apr–Jun 2026'], href: '#laurel'},
+      juniper: {name: 'Juniper Enclave', dev: 'Halcyon Homes', sector: 'Sector 102', band: 'Limited', conf: null, since: 'registered May 2025', freq: 'Not enough history to score. No penalty: Halcyon Homes is a new developer, so we show the records instead.', cert: '', built: 9, sold: null, time: 31, price: 'Quoted ₹2.25 Cr', priceNote: 'all-in not known yet', orig: 'Dec 2029', pend: '', claim: '', src: ['HARERA registration · May 2025'], href: '#juniper'}
+    };
+    var cardId = CD[s.card] ? s.card : 'aurelia';
+    var cd = CD[cardId];
+    var a = reduce ? 99 : (s.asm || 0);
+    function show(th) { return (reduce ? '' : 'transition:opacity .45s ease,transform .55s cubic-bezier(.22,1,.36,1);') + (a >= th ? 'opacity:1;transform:none' : 'opacity:0;transform:translateY(10px)'); }
+    var cSegs = [];
+    var segB = 'display:block;width:18px;height:14px;border-radius:3px;box-sizing:border-box;' + (reduce ? '' : 'transition:background-color .25s ease;');
+    for (var j = 1; j <= 5; j++) {
+      if (cd.band === 'Limited') cSegs.push({style: segB + 'border:1px dashed ' + T.limited + ';background:' + T.limitedFill});
+      else if (j <= B[cd.band].i && a >= 2 + j) cSegs.push({style: segB + 'background:' + ink(cd.band)});
+      else cSegs.push({style: segB + 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder});
+    }
+    var nBuilt = Math.round(cd.built / 10);
+    var nSold = cd.sold ? Math.round(cd.sold / 10) : -1;
+    var cSlabs = [];
+    for (var k = 0; k < 10; k++) {
+      var on = k < nBuilt && a >= 9;
+      var sl = 'display:block;height:9px;border-radius:2px;box-sizing:border-box;' + (reduce ? '' : 'transition:background-color .3s ease ' + (k * 55) + 'ms;') + 'background:' + (on ? T.accent : T.emptyCell) + ';';
+      if (k === nSold - 1 && a >= 10) sl += 'outline:2px solid ' + ink(cd.band === 'Limited' ? 'Elevated' : cd.band) + ';outline-offset:2px;';
+      cSlabs.push({style: sl});
+    }
+    var bandLabel = cd.band === 'Limited' ? 'Limited history' : cd.band;
+    var cv = {
+      s1: show(1), s2: show(2), s3: show(8), s4: show(9), s5: show(11), s6: show(12), s7: show(13),
+      segs: cSegs, slabs: cSlabs,
+      bandLabel: bandLabel,
+      bandStyle: show(7) + ';font-family:' + D + ';font-weight:800;font-size:36px;line-height:1;letter-spacing:-0.025em;color:' + textOf(cd.band),
+      hasCert: !!cd.cert, certText: cd.cert,
+      hasPend: !!cd.pend, pendText: cd.pend, hasClaim: !!cd.claim, claimText: '“' + cd.claim + '”',
+      builtText: cd.built + '% built' + (cd.sold ? ', ' + cd.sold + '% sold' : ''),
+      timeText: cd.time > 100 ? 'Past its original completion date' : cd.time + '% of the promised time used',
+      src: cd.src,
+      following: !!follows[cardId], followLabel: follows[cardId] ? 'Following · alerts on' : 'Follow this project',
+      followStyle: followStyle(!!follows[cardId]),
+      follow: function () { self.toggleFollowFor(cardId); },
+      srText: a >= 13 ? (cd.name + '. Delivery risk ' + bandLabel + ', ' + cd.since + '. ' + cd.freq + ' ' + cd.cert + ' ' + cd.built + '% built. ' + cd.price + ' ' + cd.priceNote + '.') : ''
+    };
+
+    // Corridor explorer
+    var rankOf = {Low: 1, Moderate: 2, Elevated: 3, High: 4, Severe: 5, Limited: 6};
+    var corridors = [{key: 'dxp', name: 'Dwarka Expressway'}, {key: 'gcer', name: 'Golf Course Ext Rd'}, {key: 'ng', name: 'New Gurugram'}];
+    var inCorr = P.filter(function (p) { return p.corridor === s.corridor; });
+    inCorr.sort(function (x, y) {
+      if (s.sort === 'price') return (x.allIn || x.quoted) - (y.allIn || y.quoted);
+      return rankOf[x.band] - rankOf[y.band];
+    });
+    var enterCls = ['pl-rv', 'pl-rv pl-d1', 'pl-rv pl-d2', 'pl-rv pl-d3'];
+    var rows = inCorr.map(function (p, i) {
+      var c = chip(p);
+      return {
+        href: '#' + p.id, name: p.name, dev: p.dev, sector: p.sector, enter: enterCls[Math.min(i, 3)],
+        isKestrel: p.id === 'kestrel', isSapphire: p.id === 'sapphire', isAurelia: p.id === 'aurelia', isJuniper: p.id === 'juniper', isCoral: p.id === 'coral', isLaurel: p.id === 'laurel',
+        chipStyle: c.chipStyle, segs: c.segs, label: c.label, hasDots: c.hasDots, dots: c.dots, flag: c.flag, confText: c.confText,
+        barLabel: barLabel(p), builtStyle: builtStyle(p), tickStyle: tickStyle(p),
+        price: p.price, priceNote: p.priceNote, hasNote: !!p.note, note: p.note || ''
+      };
+    });
+    var tabs = corridors.map(function (c) {
+      var on = c.key === s.corridor;
+      var n = P.filter(function (p) { return p.corridor === c.key; }).length;
+      return {
+        id: 'tab-' + c.key, name: c.name, on: on, count: n ? n + ' projects' : 'Planned for Dec 2026',
+        pick: function () { self.setState({corridor: c.key}); },
+        style: 'width:100%;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 20px;border-radius:8px;font:inherit;cursor:pointer;text-align:left;border:0;background:' + (on ? T.track : 'transparent') + ';color:' + T.ink,
+        countStyle: 'flex:none;font-size:16px;font-weight:' + (on ? 700 : 500) + ';color:' + (on ? T.ink : T.ink2)
+      };
+    });
+    var sorts = [{key: 'risk', text: 'Lowest risk first'}, {key: 'price', text: 'Lowest price first'}].map(function (o) {
+      var on = o.key === s.sort;
+      return {text: o.text, on: on, pick: function () { self.setState({sort: o.key}); }, style: 'height:40px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (on ? T.bgSolid : 'transparent') + ';color:' + T.ink};
+    });
+    var corrName = corridors.filter(function (c) { return c.key === s.corridor; })[0].name;
+
+    // AI answers
+    var unkName = e.unk || 'that project';
+    var answers = [
+      {a: 'I read “low delivery risk” as Low or Moderate; say “Low only” to narrow it. 2 projects fit on all-in price. Kestrel Park is Low at ₹2.44 Cr all-in [1]. Sapphire Grove, Phase 1 is Moderate at ₹2.27 Cr all-in [2]. Aurelia Heights is quoted ₹2.35 Cr but costs ₹2.74 Cr all-in, so I left it out [3].', src: ['[1] HARERA QPR · Kestrel Park · Jul–Sep 2026', '[2] HARERA QPR · Sapphire Grove · Apr–Jun 2026', '[3] Developer cost sheets · Oct 2026'], cards: ['kestrel', 'sapphire']},
+      {a: 'Delivery risk is Elevated since 2 Oct 2026; it was Moderate before [1]. 72% of units are sold but 41% is built [2]. 77% of the promised time is used; original completion is Dec 2027 [2]. The Jul–Sep 2026 progress report was due 15 Oct and ' + (harDown ? 'wasn’t on HARERA at our last full read [3].' : 'isn’t on HARERA as of 18 Oct 2026 [3].') + ' Northfield says it filed on 12 Oct; we haven’t verified that.', src: ['[1] Plinth Delivery Risk · v1.2 · 14 Oct 2026', '[2] HARERA QPR · Apr–Jun 2026 · filed 15 Jul 2026', harDown ? '[3] HARERA QPR register · last read 17 Oct 2026, 11:40 pm' : '[3] HARERA QPR register · checked 18 Oct 2026'], cards: ['aurelia']},
+      {a: '2 of Northfield Estates’ 6 finished RERA projects got OC more than 12 months late [1]. The other 4 got OC within 12 months [1]. No insolvency case was found across its 9 linked companies, checked 14 Oct 2026 [2].', src: ['[1] HARERA · DTCP OC records', '[2] IBBI · NCLT · MCA · 14 Oct 2026'], cards: []},
+      {a: 'I can answer questions about Gurugram projects, developers and costs. Try naming a project, a developer or a corridor.', src: [], cards: []},
+      {a: 'I can’t tell you whether to buy. That’s your call, and no developer pays us to steer it. Here’s how to decide:', src: [], cards: []},
+      {a: 'I can’t find ' + unkName + ' in our records. If it has a Gurugram RERA number, we’ll add it by 1 Nov 2026 or tell you why not.', src: [], cards: []},
+      {a: 'We don’t cover Noida yet, so I won’t guess. Plinth covers Gurugram today. Noida and Greater Noida West are planned for Jul–Sep 2027.', src: [], cards: []}
+    ];
+    var promptDefs = [
+      {text: '3 BHK on Dwarka Expressway under ₹2.5 Cr', ask: '3 BHK on Dwarka Expressway under ₹2.5 Cr, low delivery risk', ai: 0},
+      {text: 'Is Aurelia Heights on track?', ask: 'Is Aurelia Heights, Phase 2 on track?', ai: 1},
+      {text: 'Has Northfield delivered on time?', ask: 'Has Northfield Estates delivered on time before?', ai: 2},
+      {text: 'Should I buy?', ask: 'Should I buy Aurelia Heights?', ai: 4}
+    ];
+    var prompts = promptDefs.map(function (pd) {
+      var on = e.mode === 'ai' && e.ai === pd.ai;
+      return {text: pd.text, on: on, pick: function () { self.setState({query: pd.ask}); self.ask(pd.ai, pd.ask); }, style: 'min-height:44px;padding:6px 18px;border:0;border-radius:999px;font:inherit;font-size:16px;cursor:pointer;' + (on ? 'background:#FFFFFF;color:#1B1A17;font-weight:600' : 'background:rgba(255,255,255,0.16);color:#FFFFFF')};
+    });
+    var checks = [
+      {text: 'Can you carry a 12–24-month delay, paying rent and pre-EMI together?', link: 'Afford the wait', href: '#afford-the-wait'},
+      {text: 'Read the 4 reasons and what would change the band.', link: 'See the 4 reasons', href: '#reasons'},
+      {text: 'Look at the lower-band projects nearby: Kestrel Park (Low) and Sapphire Grove, Phase 1 (Moderate).', link: 'Lower band nearby', href: '#lower-band'},
+      {text: 'Before paying anything, check the payee against the RERA collection account.', link: 'Before you pay', href: '#before-you-pay'}
+    ];
+    var ai = answers[e.ai] || answers[0];
+    var words = ai.a.split(' ');
+    var shown = Math.min(words.length, e.shown);
+    var done = shown >= words.length;
+    var answerCards = ai.cards.map(function (id) {
+      var p = byId[id];
+      var c = chip(p);
+      return {name: p.name, chipStyle: c.chipStyle, segs: c.segs, label: c.label, price: p.price, priceNote: p.priceNote};
+    });
+
+    // Voice
+    var listening = s.voice === 'listening' || s.voice === 'thinking';
+    var wave = [];
+    for (var w = 0; w < 12; w++) {
+      var h = s.voice === 'thinking' ? 6 : 6 + ((w * 7 + (s.heard || 0) * 5) % 11) * 2;
+      wave.push({style: 'display:block;width:3px;border-radius:2px;background:' + T.ink + ';height:' + h + 'px;transition:height .2s ease'});
+    }
+    var heardWords = this.voiceWords.slice(0, Math.min(s.heard || 0, this.voiceWords.length));
+    var heardText = s.voice === 'thinking' ? 'Thinking…' : (heardWords.length ? heardWords.join(' ') + ' …' : 'Listening…');
+
+    // QR scan
+    var scanChip = chip(byId.aurelia);
+    var scanLineStyle = 'position:absolute;left:30px;right:30px;height:2px;border-radius:1px;background:' + T.ink + ';top:' + (s.scan === 'reading' ? '70%' : '30%') + ';transition:' + (reduce ? 'none' : 'top 1s ease-in-out');
+
+    // How it works: one stage, three steps; the 8 QPRs are drawn as 8 slabs
+    var playing = s.play >= 0;
+    var p = s.play;
+    var activeStep = playing ? (p < 10 ? 0 : (p < 20 ? 1 : 2)) : s.step;
+    var lateQ = {0: true, 2: true, 5: true};
+    var qLabels = ["Sep '24", "Dec '24", "Mar '25", "Jun '25", "Sep '25", "Dec '25", "Mar '26", "Jun '26"];
+    var tape = qLabels.map(function (lbl, i) {
+      var lit = !playing || p > i;
+      var late = !!lateQ[i];
+      var bar = 'display:block;height:26px;border-radius:2px;' + (reduce ? '' : 'transition:background-color .25s ease,opacity .25s ease;');
+      if (!lit) bar += 'background:' + T.emptyCell + ';opacity:.7';
+      else if (late) bar += 'background:repeating-linear-gradient(45deg,' + T.ink2 + ' 0 2px,' + T.track + ' 2px 7px)';
+      else bar += 'background:' + T.ink;
+      return {label: lbl, late: lit && late, ok: lit && !late, state: lit ? (late ? 'Late' : 'On time') : 'Reading…', barStyle: bar};
+    });
+    var b3 = B.Elevated;
+    function pt(deg, r) { var an = deg * Math.PI / 180; return (150 + r * Math.cos(an)).toFixed(1) + ' ' + (150 - r * Math.sin(an)).toFixed(1); }
+    var arcs = names.map(function (n, i) {
+      var a0 = 180 - i * 36 - 1.6, a1 = 180 - (i + 1) * 36 + 1.6, cur = n === 'Elevated';
+      return {d: 'M ' + pt(a0, 112) + ' A 112 112 0 0 1 ' + pt(a1, 112), color: ink(n), w: cur ? 30 : 20, op: cur ? 1 : 0.42};
+    });
+    var swept = reduce || (s.ready && (!playing || p >= 13));
+    var angle = swept ? (-90 + (b3.i - 0.5) * 36) : -90;
+    var needleStyle = 'transform-origin:150px 150px;transform:rotate(' + angle + 'deg);transition:' + (reduce ? 'none' : 'transform 1.4s cubic-bezier(.2,.8,.2,1)');
+    var weightsData = [['Finances, cash vs progress', 30], ['Developer track record', 30], ['Timeline and filings', 20], ['Legal and regulatory', 15], ['Site and approvals', 5]];
+    var weights = weightsData.map(function (x) {
+      return {name: x[0], w: x[1], style: 'display:block;height:100%;border-radius:2px;background:' + T.ink + ';width:' + (x[1] / 30 * 100) + '%'};
+    });
+    var reasonFull = 'Finances: 72% of units sold, 41% built.';
+    var reasonText = reasonFull;
+    if (playing && p >= 20) { var rw = reasonFull.split(' '); reasonText = rw.slice(0, Math.min(rw.length, p - 19)).join(' '); }
+    var stepDefs = [
+      {title: 'Read the records', desc: 'HARERA, NCLT, MCA and DTCP, every night.'},
+      {title: 'Score the risk', desc: 'A published scorecard. No AI sets a score.'},
+      {title: 'Show the evidence', desc: 'Up to 4 sourced reasons and the developer’s reply.'}
+    ];
+    var stations = stepDefs.map(function (d, i) {
+      var on = i === activeStep;
+      var reached = i <= activeStep;
+      return {
+        title: d.title, desc: d.desc, on: on,
+        pick: function () { clearInterval(self._pi); self.setState({play: -1, step: i, weightsOpen: false}); },
+        rowStyle: 'width:100%;min-height:44px;display:flex;flex-direction:column;gap:10px;padding:0 0 4px;border:0;border-radius:0;background:transparent;font:inherit;color:' + T.ink + ';cursor:pointer;text-align:left',
+        slabStyle: 'display:block;height:10px;border-radius:2px;' + (reduce ? '' : 'transition:background-color .3s ease;') + 'background:' + (reached ? T.ink : T.emptyCell),
+        titleStyle: 'font-family:' + D + ';font-weight:800;font-size:24px;letter-spacing:-0.02em;line-height:1.15;' + (on ? 'text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:.22em' : '')
+      };
+    });
+
+    var ledger = [
+      {who: 'Everyone', what: 'Bands, reasons, sources, compare and alerts. Alerts are always free.', price: 'Free'},
+      {who: 'Pro, if you want more', what: '₹999 per project · 12 months of written updates. Alerts stay free.', price: '₹999'},
+      {who: 'Agents', what: 'A published fee split, only when you choose them. It never touches a band or a ranking.', price: 'Fee split'},
+      {who: 'Loans', what: 'Loan checks arrive in 2027. No lender pays us today.', price: '2027'},
+      {who: 'You, buying resale', what: 'Verified Flat Check with an independent advocate. Planned for Apr–Jun 2027.', price: '₹6,999'}
+    ];
+
+    var mode = (e.mode === 'ai' || e.mode === 'scan') ? e.mode : 'card';
+    var isBuy = mode === 'ai' && e.ai === 4, isUnk = mode === 'ai' && e.ai === 5, isNoida = mode === 'ai' && e.ai === 6;
+    var scanFollowing = !!follows.aurelia;
+
+    return {
+      t: T, rootClass: night ? 'pl-night' : 'pl-day',
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      h2: 'margin:0;font-family:' + D + ';font-weight:800;font-size:clamp(40px, 4.7vw, 60px);line-height:1.0;letter-spacing:-0.035em;text-wrap:balance',
+      lead: 'margin:0;font-size:21px;line-height:1.5',
+      srcChip: srcBase + 'background:' + T.chipFill,
+      srcChipOnTrack: srcBase + 'background:' + T.chipFillOnTrack,
+
+      askBarStyle: 'display:flex;align-items:center;gap:10px;height:72px;padding:0 10px 0 22px;border-radius:999px;box-sizing:border-box;background:' + T.bgSolid + ';border:' + (listening ? '2px solid ' + T.accent : '0'),
+      query: s.query,
+      onQuery: function (e) {
+        var v = e.target.value;
+        self.setState({query: v});
+        var id = self.matchCard(v);
+        if (id && (id !== self.state.card || self.eff().mode !== 'card')) { self.setState({mode: 'card', from: self.scr()}); self.assemble(id); }
+      },
+      onQueryKey: function (e) { if (e && e.key === 'Enter') self.askTyped(); },
+      onAsk: function () { self.askTyped(); },
+      notListening: !listening, listening: listening, wave: wave, heardText: heardText,
+      askHint: listening ? 'Recording only while the mic is on. Tap the mic to stop.' : 'Type a project and its risk card builds. Or ask Plinth in English or Hinglish; answers cite sources.',
+      micLabel: listening ? 'Stop listening' : 'Ask Plinth by voice',
+      micStyle: 'flex:none;width:48px;height:48px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;' + (listening ? 'background:' + T.accent + ';color:' + T.onAccent : 'background:' + T.track + ';color:' + T.ink),
+      onMic: function () { self.listen(); },
+      onScan: function () { self.setState({mode: 'scan', scan: 'aim', from: self.scr()}); },
+      prompts: prompts,
+
+      modeCard: mode === 'card', modeAi: mode === 'ai', modeScan: mode === 'scan',
+      panelLabel: mode === 'scan' ? 'Scan a RERA QR' : (mode === 'ai' ? 'Ask Plinth answer' : 'Risk card for ' + cd.name),
+      closePanel: function () { clearInterval(self._iv); clearTimeout(self._t3); self.setState({mode: 'card', from: self.scr()}); },
+      cd: cd, cv: cv,
+      askedText: e.asked,
+      answerText: words.slice(0, shown).join(' ') + (shown < words.length ? ' …' : ''),
+      answerDone: done && ai.src.length > 0, answerSources: ai.src,
+      showCards: done && answerCards.length > 0, answerCards: answerCards,
+      harDown: harDown,
+      staleLine: 'HARERA\u2019s website hasn\u2019t answered since 7:10 am today. This ' + (mode === 'ai' ? 'answer' : 'card') + ' uses our last full read, 17 Oct 2026, 11:40 pm. We retry every 30 minutes.',
+      liveStrip: harDown ? 'HARERA not answering since 7:10 am · last full read 17 Oct 2026, 11:40 pm · retrying every 30 minutes · scores as of 14 Oct 2026, model v1.2' : 'HARERA synced 2 hours ago · 17,938 orders read · next QPR due 15 Jan 2027 · scores as of 14 Oct 2026, model v1.2',
+      showChecks: isBuy && done, checks: checks,
+      showRequest: isUnk && done, requested: !!s.requested, notRequested: !s.requested,
+      requestIt: function () { self.freeze({requested: true}); },
+      showWaitlist: isNoida && done, waitlisted: !!s.waitlisted, notWaitlisted: !s.waitlisted,
+      joinWaitlist: function () { if (self.eff().mode === 'ai') self.freeze({waitlisted: true}); else self.setState({waitlisted: true}); },
+
+      scanAim: s.scan !== 'matched', scanMatched: s.scan === 'matched',
+      scanMsg: s.scan === 'reading' ? 'Reading the QR code…' : 'Point at the RERA QR on a hoarding or brochure, or upload a photo of it.',
+      onScanRead: function () { self.readQr(); },
+      scanLineStyle: scanLineStyle, scanChip: scanChip,
+      following: scanFollowing, followLabel: scanFollowing ? 'Following · alerts on' : 'Follow this project',
+      scanFollowStyle: followStyle(scanFollowing),
+      toggleFollow: function () { self.toggleFollowFor('aurelia'); },
+
+      tabs: tabs, sorts: sorts, activeTabId: 'tab-' + s.corridor,
+      hasRows: rows.length > 0, noRows: rows.length === 0, rows: rows,
+      rowsNote: (s.corridor === 'dxp' ? 'Limited history: not enough history to score. No penalty. ' : rows.length + ' projects scored on ' + corrName + ' so far. ') + 'Prices are all-in first. The bar is built; the black tick is time used. Photos are illustrative.',
+      rankNote: s.sort === 'price' ? 'Sorted by all-in price.' : 'Ranked by delivery risk.',
+      pendSeg: 'display:block;width:18px;height:14px;border-radius:3px;box-sizing:border-box;border:1px dashed ' + T.limited,
+      corridorFollowing: s.corridorFollow,
+      corridorFollowLabel: s.corridorFollow ? 'We\u2019ll tell you when it\u2019s live' : 'Notify me',
+      toggleCorridorFollow: function () { self.setState({corridorFollow: !s.corridorFollow}); },
+
+      onPlay: function () { self.play(); },
+      playLabel: playing ? 'Playing…' : 'Play all 3 steps',
+      stations: stations,
+      stage0: activeStep === 0, stage1: activeStep === 1, stage2: activeStep === 2,
+      tape: tape,
+      feeds: ['HARERA progress reports and orders · 17,938 orders read', 'NCLT and IBBI insolvency lists', 'MCA company and director filings', 'DTCP licences and OCs'],
+      arcs: arcs, needleStyle: needleStyle, bandText: night ? b3.dark : b3.light,
+      dialLabel: 'Riskometer for Aurelia Heights, Phase 2 pointing to Elevated, step 3 of 5, on a scale from Low to Severe',
+      showDial: !s.weightsOpen, showWeights: !!s.weightsOpen,
+      weightsLabel: s.weightsOpen ? 'Back to the dial' : 'See the published weights',
+      toggleWeights: function () { self.setState({weightsOpen: !s.weightsOpen}); },
+      weights: weights,
+      reasonText: reasonText,
+
+      ledger: ledger
+    };
+  }
+}
+</script>
+</body>
+</html>

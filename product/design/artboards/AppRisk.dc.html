@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Delivery risk card: Aurelia Heights, Phase 2 (phone)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hs{scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:pointer}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pl-drift{from{transform:scale(1)}to{transform:scale(1.04)}}
+@keyframes pl-sheet{from{opacity:.4;transform:translateY(56px)}to{opacity:1;transform:none}}
+@keyframes pl-out{from{opacity:1}to{opacity:0}}
+@keyframes pl-wipe{from{transform:scaleX(0)}to{transform:none}}
+@keyframes pl-popA{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes pl-popB{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.pl-rise{animation:pl-rise .72s cubic-bezier(.22,1,.36,1) both}
+.pl-drift{transform-origin:50% 70%;animation:pl-drift 16s cubic-bezier(.33,1,.68,1) both}
+.pl-sheet{animation:pl-sheet .4s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 5300px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+<div style="display: flex; flex-direction: column; min-height: 100%">
+
+<header style="position: relative; flex: none; height: 360px; overflow: hidden; background: #1B2A24">
+  <img class="pl-drift" data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2: residential towers seen from the entrance road" style="position: absolute; left: 0; top: 0; width: 390px; height: 360px; background: #E7E3DA; object-fit: cover; display: block">
+  <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 360px; background: linear-gradient(180deg, rgba(11,20,17,0.55) 0%, rgba(11,20,17,0) 28%, rgba(11,20,17,0.2) 40%, rgba(11,20,17,0.7) 64%, rgba(11,20,17,0.94) 100%)"></div>
+  <div style="position: absolute; left: 12px; right: 12px; top: 40px; height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 8px">
+    <a href="#project" class="pl-press" aria-label="Back to Aurelia Heights, Phase 2" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: {{t.glass}}; color: {{t.glassInk}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; text-decoration: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"></path></g></svg></a>
+    <span style="font-size: 13px; line-height: 1; color: #FFFFFF">Images are illustrative</span>
+    <div style="display: flex; gap: 8px">
+      <a href="#methodology" class="pl-press" aria-label="How this is calculated" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: {{t.glass}}; color: {{t.glassInk}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; text-decoration: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7.5v.01"></path></g></svg></a>
+      <button type="button" class="pl-press" onClick="{{openShare}}" aria-label="Share risk card" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: {{t.glass}}; color: {{t.glassInk}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; text-decoration: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="18.5" r="2.5"></circle><path d="M8.2 10.8l7.6-4.1M8.2 13.2l7.6 4.1"></path></g></svg></button>
+    </div>
+  </div>
+  <div style="position: absolute; left: 16px; right: 16px; bottom: 26px; color: #FFFFFF">
+    <h1 class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 37px; line-height: 0.98; letter-spacing: -0.04em; animation-delay: 120ms">Will it be delivered on time?</h1>
+    <p class="pl-rise" style="margin: 12px 0 0; font-size: 16px; line-height: 1.45; color: #FFFFFF; animation-delay: 190ms">Aurelia Heights, Phase 2 · <strong>RERA GGM/673/405/2022/117</strong></p>
+  </div>
+</header>
+
+<section aria-labelledby="band-h" style="padding: 48px 16px 52px; background: {{t.track}}">
+  <h2 id="band-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 80px; line-height: 0.9; letter-spacing: -0.055em; color: {{bandText}}; animation-delay: 240ms">{{bandName}}</h2>
+  <p class="pl-rise" style="margin: 16px 0 0; font-size: 18px; line-height: 1.45; color: {{t.ink}}; animation-delay: 310ms">Delivery risk, our opinion.</p>
+  <div role="img" aria-label="{{scaleLabel}}" style="margin-top: 32px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; align-items: end">
+    <sc-for list="{{scale}}" as="sc" hint-placeholder-count="5">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span style="{{sc.bar}}"></span><span style="{{sc.text}}">{{sc.name}}</span></div>
+    </sc-for>
+  </div>
+  <p style="{{changeStyle}}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-6"></path><path d="M15 8h5v5"></path></g></svg><span>Was Moderate until 2 Oct 2026. <a href="#changelog" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">What changed</a></span></p>
+  <p style="{{pendStyle}}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5V12l3 2"></path></g></svg><span><strong style="font-weight: 700">Jul–Sep 2026 QPR not on HARERA yet</strong> (due 15 Oct). Developer says: filed 12 Oct, not yet verified. If it is still missing on 25 Oct 2026, this band may change.</span></p>
+  <p style="margin: 10px 0 0; font-size: 14px; color: {{t.muted}}">Data as of 14 Oct 2026 · Model v1.2</p>
+</section>
+
+<section aria-labelledby="freq-h" style="padding: 56px 16px 52px; background: {{t.bg}}">
+  <h2 id="freq-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 31px; line-height: 1.04">How often are projects like this late?</h2>
+  <p style="margin: 14px 0 0; font-size: 18px; line-height: 1.55; color: {{t.ink}}">Between <strong style="color: {{t.ink}}">{{lo}} and {{hi}} of 100</strong> similar Gurugram projects got their OC more than 12 months after the original RERA date. For Aurelia, that means after Apr 2029, counting the 4-month blanket extension of Jul 2026. The rest, {{restLo}} to {{restHi}}, got it within 12 months: some on time, some up to a year late. Keys come after the OC, often by a few months.</p>
+  <p style="margin: 16px 0 0; display: flex; align-items: flex-start; gap: 10px; font-size: 17px; line-height: 1.5; color: {{t.ink}}"><span aria-hidden="true" style="flex: none; margin-top: 8px; display: inline-flex; gap: 3px"><span style="display: block; width: 8px; height: 8px; border-radius: 50%; background: {{t.ink2}}"></span><span style="display: block; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid {{t.ink2}}; box-sizing: border-box"></span></span><span><strong style="font-weight: 700">We’re less certain about this one.</strong> Northfield has only 6 finished RERA projects to learn from, so we show a range, not one number.</span></p>
+  <div style="margin-top: 24px; display: flex; justify-content: center">
+    <div role="img" aria-label="{{arrayLabel}}" style="display: grid; grid-template-columns: repeat(10, 20px); gap: 6px">
+      <sc-for list="{{cells}}" as="c" hint-placeholder-count="100"><span style="{{c.style}}"></span></sc-for>
+    </div>
+  </div>
+  <ul style="margin: 20px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: {{t.ink2}}">
+    <li style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="{{lgFilled}}"></span>OC more than 12 months late</li>
+    <li style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="{{lgHatch}}"></span>{{hatchText}}</li>
+    <li style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="{{lgEmpty}}"></span>OC within 12 months</li>
+  </ul>
+  <p style="margin: 16px 0 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Similar means registered 2017–2021, 300–800 units, and a developer with 3–8 finished RERA projects. Based on 212 projects.</p>
+</section>
+
+<section aria-labelledby="why-h" style="padding: 56px 16px 52px; background: {{t.track}}">
+  <h2 id="why-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 31px; line-height: 1.04">Why {{bandName}}?</h2>
+  <p style="margin: 10px 0 0; font-size: 17px; line-height: 1.5; color: {{t.ink}}">4 reasons, strongest first. Each one is a line in a public record; tap a source to read it.</p>
+  <img data-slot="qprDesk" src="/_blob/1f8e2b69914c4995e3797c6affdda5b5" alt="A printed HARERA quarterly progress report lying on a desk: the kind of public record each reason below cites" style="margin: 28px -16px 0; width: 390px; height: 220px; background: #E7E3DA; object-fit: cover; display: block">
+  <ol style="margin: 28px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 28px">
+    <sc-for list="{{reasons}}" as="r" hint-placeholder-count="4">
+      <li class="pl-rise" style="{{r.anim}}">
+        <span style="display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 18px; line-height: 1.5"><strong style="font-weight: 700">{{r.group}}:</strong> {{r.fact}}</span>
+          <span style="display: flex; flex-wrap: wrap; gap: 0 8px">
+            <sc-for list="{{r.chips}}" as="sx" hint-placeholder-count="1">
+              <button type="button" class="pl-press" onClick="{{sx.open}}" aria-haspopup="dialog" style="display: inline-flex; align-items: center; height: 48px; padding: 0; border: 0; background: transparent; font: inherit; cursor: pointer"><span style="display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 12px; border-radius: 999px; background: {{t.bgSolid}}; font-size: 14px; color: {{t.ink}}"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4v13H7z"></path><path d="M14 3.5v4h4"></path></g></svg>{{sx.label}}</span></button>
+            </sc-for>
+          </span>
+        </span>
+      </li>
+    </sc-for>
+  </ol>
+  <button type="button" class="pl-press" onClick="{{togglePre}}" aria-expanded="{{preOpen}}" aria-controls="pre-rera" style="margin-top: 24px; display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-align: left; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">{{preLabel}}<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="{{preChev}}"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+  <sc-if value="{{preOpen}}" hint-placeholder-val="{{false}}">
+    <div id="pre-rera" data-review="founder" style="margin-top: 8px; padding: 18px 16px; border-radius: 8px; background: {{t.bgSolid}}; display: flex; flex-direction: column; gap: 12px">
+      <p style="margin: 0; font-size: 14px; font-weight: 600; color: {{t.ink2}}">Before RERA · from court orders and news</p>
+      <p style="margin: 0; font-size: 16px; line-height: 1.5">Reason 4 counts RERA-era projects only: registered 2017 or later. Northfield built before that too. None of this counts in the band.</p>
+      <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px">
+        <sc-for list="{{preRera}}" as="pr" hint-placeholder-count="3">
+          <li style="display: flex; flex-direction: column; gap: 2px; font-size: 16px; line-height: 1.5"><strong style="font-weight: 700">{{pr.name}}</strong><span>{{pr.fact}}</span><span style="font-size: 14px; color: {{t.muted}}">{{pr.src}}</span></li>
+        </sc-for>
+      </ul>
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Before May 2017 there was no public register of promised dates, so this list may be incomplete.</p>
+    </div>
+  </sc-if>
+</section>
+
+<section aria-labelledby="chg-h" style="padding: 56px 16px 52px; background: {{t.bg}}">
+  <h2 id="chg-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 31px; line-height: 1.04">What would change this?</h2>
+  <p style="margin: 14px 0 0; font-size: 18px; line-height: 1.55; color: {{t.ink}}">{{changeLine}}</p>
+  <p style="margin: 8px 0 0; font-size: 15px; color: {{t.ink2}}">Only public-record events move a band. Nobody can pay to change it.</p>
+  <div style="margin-top: 28px; padding: 20px; border-radius: 8px; background: {{t.claimBg}}; display: flex; flex-direction: column; gap: 10px">
+    <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: {{t.ink2}}"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><path d="M5 5.5h14A1.5 1.5 0 0 1 20.5 7v8a1.5 1.5 0 0 1-1.5 1.5h-8.5L6 20v-3.5H5A1.5 1.5 0 0 1 3.5 15V7A1.5 1.5 0 0 1 5 5.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>Developer says · not yet verified · 15 Oct 2026</span>
+    <span style="font-size: 17px; line-height: 1.55">"Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October."</span>
+    <span style="font-size: 14px; line-height: 1.45; color: {{t.muted}}">Northfield Estates, via our developer reply portal. The latest QPR, Apr–Jun 2026, shows Tower B at slab 7. HARERA doesn't show the Jul–Sep 2026 QPR yet (checked 18 Oct 2026).</span>
+  </div>
+</section>
+
+<section id="next" aria-labelledby="next-h" style="padding: 56px 16px 52px; background: {{t.track}}">
+  <h2 id="next-h" class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; font-size: 31px; line-height: 1.04">So what do we do now?</h2>
+  <p style="margin: 12px 0 0; font-size: 18px; line-height: 1.5; color: {{t.ink}}">{{nextIntro}}</p>
+  <ul style="margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 20px">
+    <sc-for list="{{nextSteps}}" as="ns" hint-placeholder-count="4">
+      <li style="display: flex; align-items: flex-start; gap: 12px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block; margin-top: 4px"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></g></svg><span style="font-size: 17px; line-height: 1.55"><strong style="font-weight: 700">{{ns.h}}</strong> {{ns.p}}</span></li>
+    </sc-for>
+  </ul>
+  <div style="margin-top: 28px; padding: 18px 16px; border-radius: 8px; background: {{t.bgSolid}}; display: flex; flex-direction: column; gap: 6px">
+    <p style="margin: 0; font-size: 14px; font-weight: 600; color: {{t.ink2}}">For scale</p>
+    <p style="margin: 0; font-size: 17px; line-height: 1.5">{{baseLine}}</p>
+  </div>
+  <p style="margin: 18px 0 0; font-size: 16px; line-height: 1.5; color: {{t.ink}}">{{nearLine}}</p>
+  <a href="#before-you-pay" class="pl-press" style="margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 22px; border-radius: 999px; background: {{t.inverse}}; color: {{t.onInverse}}; text-decoration: none; font-weight: 600"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" style="flex: none; display: block"><path d="M10 2.5l6 2.5v4.5c0 4-2.6 6.8-6 8-3.4-1.2-6-4-6-8V5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.2 10.2l2 2 3.6-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Check before you pay anything</a>
+  <a href="#ask" style="margin-top: 8px; display: inline-flex; align-items: center; min-height: 48px; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Questions to ask the developer</a>
+</section>
+
+<footer style="flex: 1 0 auto; padding: 64px 16px 124px; display: flex; flex-direction: column; gap: 12px; background: {{t.bg}}">
+  <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 128px; line-height: 0.82; letter-spacing: -0.06em; color: {{t.ink}}">Plinth</p>
+  <p style="margin: 14px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 26px; line-height: 1.1">No developer pays us. Ever.</p>
+  <p style="margin: 0; font-size: 16px; line-height: 1.55">Our opinion, based on public records. Not a credit rating. Not issued by any RERA.</p>
+  <p style="margin: 0; display: flex; flex-wrap: wrap; gap: 0 20px; font-size: 15px">
+    <a href="#methodology" style="display: inline-flex; align-items: center; min-height: 48px; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">How this is calculated (v1.2)</a>
+    <a href="#report" style="display: inline-flex; align-items: center; min-height: 48px; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Report an error</a>
+    <a href="#money" style="display: inline-flex; align-items: center; min-height: 48px; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">How we make money</a>
+  </p>
+  <p style="margin: 0; font-size: 14px; color: {{t.muted}}">Data as of 14 Oct 2026 · Model v1.2 · Phase 2 only</p>
+</footer>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 30; height: 80px; box-sizing: border-box; padding: 14px 16px; display: flex; gap: 10px; background: {{t.nav}}">
+  <a href="#ask" class="pl-press" style="flex: 1 1 0; height: 52px; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.1 5.4L19.5 10l-5.4 2.1L12 17.5l-2.1-5.4L4.5 10l5.4-2.1z"></path><path d="M18.5 16l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"></path></g></svg><span>Ask why</span></a>
+  <button type="button" class="pl-press" onClick="{{openShare}}" style="flex: 1.4 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="18.5" r="2.5"></circle><path d="M8.2 10.8l7.6-4.1M8.2 13.2l7.6 4.1"></path></g></svg><span>Share risk card</span></button>
+</div>
+
+<sc-if value="{{evOpen}}" hint-placeholder-val="{{false}}">
+  <div aria-hidden="true" onClick="{{closeSheet}}" style="position: absolute; inset: 0; z-index: 40; background: {{t.scrim}}"></div>
+  <section class="pl-sheet" role="dialog" aria-modal="true" aria-labelledby="ev-h" data-signature="record-highlight" style="position: absolute; left: 0; right: 0; bottom: 0; height: 760px; z-index: 41; background: {{t.sheet}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; display: flex; flex-direction: column">
+    <div aria-hidden="true" style="display: flex; justify-content: center; padding-top: 10px"><span style="width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span></div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 6px 8px 0 20px">
+      <div style="flex: 1; min-width: 0">
+        <h2 id="ev-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 26px; line-height: 1.1">{{ev.chip}}</h2>
+        <p style="margin: 2px 0 0; font-size: 14px; color: {{t.muted}}">Evidence for reason {{ev.n}} of 4</p>
+      </div>
+      <button type="button" class="pl-press" onClick="{{closeSheet}}" aria-label="Close evidence" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></g></svg></button>
+    </div>
+    <div class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 14px 20px 24px">
+      <span style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font-size: 14px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></g></svg>Records show</span>
+      <p style="margin: 12px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; font-size: 26px; line-height: 1.12">{{ev.fact}}</p>
+      <dl style="margin: 4px 0 0">
+        <dt style="font-size: 14px; color: {{t.muted}}; margin-top: 14px">Source</dt><dd style="margin: 2px 0 0; font-size: 16px; line-height: 1.5">{{ev.source}}</dd>
+        <dt style="font-size: 14px; color: {{t.muted}}; margin-top: 14px">Dates</dt><dd style="margin: 2px 0 0; font-size: 16px; line-height: 1.5">{{ev.dates}}</dd>
+        <dt style="font-size: 14px; color: {{t.muted}}; margin-top: 14px">Extract · {{ev.page}}</dt>
+        <dd style="margin: 6px 0 0"><blockquote style="margin: 0; padding: 14px 16px; border-radius: 8px; background: {{t.track}}; font-size: 17px; line-height: 1.55">{{ev.ex1}}<mark style="position: relative; z-index: 0; background: transparent; color: {{t.onAccentSoft}}; font-weight: 700; padding: 0 3px"><span aria-hidden="true" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: -1; border-radius: 4px; background: {{t.accentSoft}}; transform-origin: 0 50%; animation: pl-wipe .7s cubic-bezier(.22,1,.36,1) .45s both"></span>{{ev.exv}}</mark>{{ev.ex2}}</blockquote></dd>
+        <dt style="font-size: 14px; color: {{t.muted}}; margin-top: 14px">How we read it</dt><dd style="margin: 2px 0 0; font-size: 16px; line-height: 1.5">{{ev.read}}</dd>
+        <dt style="font-size: 14px; color: {{t.muted}}; margin-top: 14px">Used in</dt><dd style="margin: 2px 0 0; font-size: 16px; line-height: 1.5">{{ev.used}}</dd>
+        <dt style="font-size: 14px; color: {{t.muted}}; margin-top: 14px">Developer's note on this fact</dt><dd style="margin: 2px 0 0; font-size: 16px; line-height: 1.5">{{ev.dev}}</dd>
+        <dt style="font-size: 14px; color: {{t.muted}}; margin-top: 14px">Corrections</dt><dd style="margin: 2px 0 0; font-size: 16px; line-height: 1.5">{{ev.corr}}</dd>
+      </dl>
+      <div style="margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px">
+        <a href="#original" class="pl-press" style="display: inline-flex; align-items: center; gap: 6px; height: 48px; padding: 0 18px; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; text-decoration: none; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></g></svg>Open original</a>
+        <a href="#archive" class="pl-press" style="display: inline-flex; align-items: center; height: 48px; padding: 0 18px; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; text-decoration: none; font-weight: 600">Our archived copy</a>
+      </div>
+      <p style="margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 0 20px"><a href="#report" style="display: inline-flex; align-items: center; min-height: 48px; color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Report an error</a><button type="button" class="pl-press" onClick="{{copyCite}}" style="min-height: 48px; border: 0; background: transparent; padding: 0; font: inherit; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">{{copyLabel}}</button></p>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{shareOpen}}" hint-placeholder-val="{{false}}">
+  <div aria-hidden="true" onClick="{{closeSheet}}" style="position: absolute; inset: 0; z-index: 40; background: {{t.scrim}}"></div>
+  <section class="pl-sheet" role="dialog" aria-modal="true" aria-labelledby="sh-h" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 41; background: {{t.sheet}}; border-radius: 28px 28px 0 0; box-shadow: {{t.shadow}}; padding: 10px 20px 24px; display: flex; flex-direction: column; gap: 14px">
+    <div aria-hidden="true" style="display: flex; justify-content: center"><span style="width: 32px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span></div>
+    <div style="display: flex; align-items: center; gap: 12px">
+      <h2 id="sh-h" style="flex: 1; margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; font-size: 24px; line-height: 1.2">Share this risk card</h2>
+      <button type="button" class="pl-press" onClick="{{closeSheet}}" aria-label="Close" style="width: 48px; height: 48px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></g></svg></button>
+    </div>
+    <div role="img" aria-label="{{shareLabel}}" style="align-self: center; width: 272px; height: 340px; box-sizing: border-box; border-radius: 8px; background: {{t.track}}; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+      <span style="display: flex; align-items: center; gap: 6px"><svg width="20" height="20" viewBox="0 0 28 28" aria-hidden="true" style="display: block"><rect x="2" y="2" width="24" height="24" rx="8" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; font-size: 15px">Plinth</span></span>
+      <span style="font-size: 13px; color: {{t.muted}}; margin-top: 4px">Delivery risk · RERA GGM/673/405/2022/117</span>
+      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; font-size: 19px; line-height: 1.15">Aurelia Heights, Phase 2</span>
+      <span style="display: flex; align-items: center; gap: 10px"><span style="display: grid; grid-template-columns: repeat(5, 14px); gap: 3px"><sc-for list="{{meterM}}" as="mm" hint-placeholder-count="5"><span style="{{mm.style}}"></span></sc-for></span><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; font-size: 28px; line-height: 1; color: {{bandText}}">{{bandName}}</span></span>
+      <span style="font-size: 14px; line-height: 1.4">Between {{lo}} and {{hi}} of 100 similar projects got their OC more than 12 months late.</span>
+      <span style="flex: 1"></span>
+      <span style="display: flex; align-items: center; gap: 10px">
+        <span style="flex: none; width: 52px; height: 52px; border-radius: 6px; background: {{t.bgSolid}}; display: flex; align-items: center; justify-content: center; color: {{t.ink}}"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; display: block"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><path d="M14 14h2v2M20 14v.01M18 18h2v2M14 20h2"></path></g></svg></span>
+        <span style="font-size: 13px; line-height: 1.35; color: {{t.ink2}}">Check the live version · data as of 14 Oct 2026 · v1.2</span>
+      </span>
+      <span style="font-size: 13px; line-height: 1.35; color: {{t.muted}}">Not a credit rating. Not issued by any RERA.</span>
+    </div>
+    <p style="margin: 0; font-size: 14px; line-height: 1.45; color: {{t.muted}}; text-align: center">A 1080 × 1350 image plus a link to the live card. Opens Android's share sheet.</p>
+    <div style="display: flex; gap: 10px">
+      <button type="button" class="pl-press" onClick="{{copyLink}}" style="flex: 1 1 0; height: 52px; border-radius: 999px; border: 0; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-weight: 600; cursor: pointer">{{linkLabel}}</button>
+      <button type="button" class="pl-press" style="flex: 1.4 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-weight: 600; cursor: pointer">Share image and link</button>
+    </div>
+  </section>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"band":{"editor":"enum","options":["Low","Moderate","Elevated","High","Severe"],"default":"Elevated"},"$preview":{"width":390,"height":5300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {flip: false, sheet: '', ev: 0, copied: false, linkCopied: false, preOpen: false};
+  }
+  renderVals() {
+
+    var self = this;
+    var s = this.state || {};
+    var night = ((this.props.theme || 'Day') === 'Night') !== !!s.flip;
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', headerBg: 'rgba(11,20,17,0.78)',
+      panel: 'rgba(255,255,255,0.045)', overlay: 'rgba(11,20,17,0.62)', chipBg: 'rgba(11,20,17,0.55)', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claim: '#7E8C86', wire: 'rgba(238,243,240,0.30)',
+      emptyCell: 'rgba(255,255,255,0.06)', emptyBorder: '#7D828A', segOff: 'transparent', slabOff: 'rgba(255,255,255,0.12)', claimBg: '#1D2621',
+      nav: '#121D19', navInd: 'rgba(110,231,183,0.16)', sheet: '#111D19', scrim: 'rgba(0,0,0,0.58)', shadow: '0 8px 24px rgba(0,0,0,0.45)',
+      glass: '#111D19', glassInk: '#EEF3F0', solid: '#111D19', inverse: '#EEF3F0', onInverse: '#0B1411', segOn: 'rgba(255,255,255,0.14)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', headerBg: 'rgba(251,250,247,0.85)',
+      panel: '#FFFFFF', overlay: 'rgba(255,255,255,0.80)', chipBg: 'rgba(255,255,255,0.85)', photo: '#E7E3DA',
+      line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claim: '#9A958B', wire: 'rgba(27,26,23,0.30)',
+      emptyCell: '#EEEBE4', emptyBorder: '#8C9199', segOff: '#FFFFFF', slabOff: '#E2DED4', claimBg: '#F1ECE2',
+      nav: '#EFECE5', navInd: '#E9F1EC', sheet: '#FFFFFF', scrim: 'rgba(27,26,23,0.42)', shadow: '0 8px 24px rgba(27,26,23,.12)',
+      glass: '#FFFFFF', glassInk: '#1B1A17', solid: '#FFFFFF', inverse: '#1B1A17', onInverse: '#FFFFFF', segOn: '#FFFFFF'
+    };
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', fillD: '#15323A', lo: 5, hi: 15},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', fillD: '#332B0C', lo: 15, hi: 30},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillD: '#3A2210', lo: 30, hi: 45},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', fillD: '#3D1A19', lo: 45, hi: 65},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', fillD: '#341A33', lo: 65, hi: 80},
+      Limited: {i: 0, light: '#6B7079', dark: '#A3A8B0', fill: '#FFFFFF', fillD: '#1C1F24', lo: 0, hi: 0}
+    };
+    var names = ['Low', 'Moderate', 'Elevated', 'High', 'Severe'];
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    function bfill(n) { return night ? B[n].fillD : B[n].fill; }
+    function textInk(n) { return night ? B[n].dark : (B[n].i <= 2 ? T.ink : B[n].light); }
+    function chip(n, conf, flag) {
+      var lim = n === 'Limited';
+      var x = B[n];
+      var segInk = ink(n);
+      var meter = [1, 2, 3, 4, 5].map(function (j) {
+        var on = !lim && j <= x.i;
+        return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (on ? 'background:' + segInk + ';' : 'background:' + T.segOff + ';border:1px ' + (lim ? 'dashed ' + segInk : 'solid ' + T.emptyBorder) + ';')};
+      });
+      var dot = 'display:block;width:7px;height:7px;border-radius:50%;box-sizing:border-box;';
+      return {
+        wrap: 'display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;flex:none;color:' + T.ink + ';background:' + (lim ? T.track : bfill(n)) + ';',
+        meter: meter,
+        name: lim ? 'Limited history' : n,
+        text: 'font-size:14px;font-weight:600;line-height:1;color:' + (lim ? T.ink2 : T.ink),
+        dots: conf ? 'display:inline-flex;gap:3px;align-items:center' : 'display:none',
+        d1: dot + 'background:' + T.ink2 + ';',
+        d2: dot + (conf === 'high' ? 'background:' + T.ink2 + ';' : 'border:1.5px solid ' + T.ink2 + ';'),
+        flag: flag ? 'display:block;flex:none;color:' + T.ink : 'display:none',
+        sr: 'Delivery risk: ' + (lim ? 'limited history, not scored' : n + ', step ' + x.i + ' of 5') + (conf ? ', ' + conf + ' confidence' : '') + (flag ? ', set by a red-flag rule' : '')
+      };
+    }
+    function seg(on) {
+      return 'height:48px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;flex:1 1 0;color:' + T.ink + ';background:' + (on ? T.segOn : 'transparent') + ';';
+    }
+    function pill(on, alt) {
+      return 'display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 18px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:15px;font-weight:600;color:' + (on ? T.onInverse : T.ink) + ';background:' + (on ? T.inverse : (alt ? T.bgSolid : T.track)) + ';';
+    }
+    var themeIcons = {moon: night ? 'display:none' : 'display:block', sun: night ? 'display:block' : 'display:none'};
+    var themeLabel = night ? 'Switch to Day theme' : 'Switch to Night theme';
+    var flipTheme = function () { self.setState({flip: !s.flip}); };
+
+    var band = (B[this.props.band] && this.props.band !== 'Limited') ? this.props.band : 'Elevated';
+    var b = B[band];
+    var bandText = textInk(band);
+    var scale = names.map(function (n) {
+      var cur = n === band;
+      return {
+        name: n,
+        bar: 'display:block;box-sizing:border-box;border-radius:999px;height:' + (cur ? 22 : 12) + 'px;background:' + (cur ? ink(n) : bfill(n)) + ';' + (cur ? 'outline:2px solid ' + T.ink + ';outline-offset:3px;' : 'border:1px solid ' + ink(n) + ';'),
+        text: 'font-size:14px;line-height:1.2;text-align:center;' + (cur ? 'font-weight:700;color:' + T.ink : 'color:' + T.ink2)
+      };
+    });
+    var cells = [];
+    var base = 'display:block;width:20px;height:20px;border-radius:50%;box-sizing:border-box;';
+    var hatch = 'background:repeating-linear-gradient(45deg,' + ink(band) + ' 0 2px,' + bfill(band) + ' 2px 5px);border:1px solid ' + ink(band) + ';';
+    for (var k = 0; k < 100; k++) {
+      var st = base;
+      if (k < b.lo) st += 'background:' + ink(band) + ';';
+      else if (k < b.hi) st += hatch;
+      else st += 'background:' + T.emptyCell + ';border:1px solid ' + T.emptyBorder + ';';
+      cells.push({style: st});
+    }
+    var sw = 'flex:none;display:block;width:16px;height:16px;border-radius:50%;box-sizing:border-box;';
+    var E = [
+      {chip: 'HARERA QPR · Apr–Jun 2026', n: 1, fact: '72% of units sold, 41% built.', source: 'HARERA · Quarterly Progress Report · Apr–Jun 2026 · Aurelia Heights, Phase 2', dates: 'Filed 15 Jul 2026 · we fetched it 16 Jul 2026 · last checked live 14 Oct 2026', page: 'p. 3', ex1: 'Units booked: ', exv: '72%', ex2: ' of total. Physical progress, all towers: 41%.', read: 'Read by two AI extractors; they matched. Checked by a person on 16 Jul 2026.', used: 'Reason 1 of Delivery risk · Project page: How much is built?', dev: 'See the developer reply below. It refers to the next QPR, not this one.', corr: 'No corrections.'},
+      {chip: 'HARERA QPR register', n: 2, fact: '77% of the promised time used. QPRs filed late in 3 of the last 8 quarters.', source: 'HARERA · QPR filing register for this project · every quarter since registration (Dec 2022)', dates: 'Register checked live 14 Oct 2026', page: 'register', ex1: 'Filed after the due date in ', exv: '3 of the last 8 quarters', ex2: ': Jul–Sep 2024 (12 days late), Jan–Mar 2025 (41 days) and Oct–Dec 2025 (38 days). Longest delay: 41 days.', read: 'Due and filing dates read by software. Checked by a person on 14 Oct 2026. Time used counts from registration (Dec 2022) to the original date (Dec 2027).', used: 'Reason 2 of Delivery risk', dev: 'None on this fact.', corr: 'No corrections.'},
+      {chip: 'HARERA orders · 24 months', n: 3, fact: '14 complaints decided against the promoter in 24 months · 2.8 per 100 units. Median count for similar projects: 3.', source: 'HARERA · complaint orders for this RERA number · Oct 2024 to Oct 2026', dates: 'Orders search run 14 Oct 2026', page: 'order list', ex1: 'Decided against the promoter: ', exv: '14 orders', ex2: ' on 500 units, or 2.8 per 100 units. Peer median count across 212 similar projects: 3.', read: 'Each order matched to this project by RERA number. Checked by a person.', used: 'Reason 3 of Delivery risk', dev: 'None on this fact.', corr: 'No corrections.'},
+      {chip: 'HARERA · DTCP OC records', n: 4, fact: '2 of the group’s 6 finished RERA projects got OC more than 12 months late.', source: 'HARERA project pages and DTCP occupation certificates · 6 Northfield Estates group projects', dates: 'Checked 14 Oct 2026', page: 'OC register', ex1: 'OC granted more than 12 months after the original RERA date: ', exv: '2 of 6', ex2: '. The other 4 got OC within 12 months.', read: 'Group built from 9 linked companies in MCA records. Checked by a person.', used: 'Reason 4 of Delivery risk · Developer track record', dev: 'None on this fact.', corr: 'No corrections.'},
+      {chip: 'IBBI · NCLT search', n: 4, fact: 'No insolvency found for the Northfield Estates group.', source: 'IBBI and NCLT cause lists, searched for the promoter and 9 linked companies', dates: 'Searched 14 Oct 2026', page: 'search log', ex1: 'Insolvency (CIRP) admitted: ', exv: 'none found', ex2: '. These registers can lag by weeks, so absence is not proof.', read: 'Searched by company name and CIN. Checked by a person.', used: 'Reason 4 of Delivery risk · context', dev: 'None on this fact.', corr: 'No corrections.'}
+    ];
+    function opener(i) { return function () { self.setState({sheet: 'ev', ev: i, copied: false}); }; }
+    function anim(i) { return 'animation-delay:' + (80 + i * 80) + 'ms'; }
+    var reasons = [
+      {n: '1', anim: anim(0), group: 'Finances', fact: '72% of units sold, 41% built.', chips: [{label: E[0].chip, open: opener(0)}]},
+      {n: '2', anim: anim(1), group: 'Timeline', fact: '77% of the promised time used. QPRs filed late in 3 of the last 8 quarters.', chips: [{label: E[1].chip, open: opener(1)}]},
+      {n: '3', anim: anim(2), group: 'Legal', fact: '14 complaints decided against the promoter in 24 months · 2.8 per 100 units. Median count for similar projects: 3.', chips: [{label: E[2].chip, open: opener(2)}]},
+      {n: '4', anim: anim(3), group: 'Track record', fact: '2 of the group’s 6 finished RERA projects got OC more than 12 months late. No insolvency found.', chips: [{label: E[3].chip, open: opener(3)}, {label: E[4].chip, open: opener(4)}]}
+    ];
+    var ev = E[s.ev] || E[0];
+    var changeLine = b.i > 1 ? 'Two consecutive quarters with construction ahead of sales would move this to ' + names[b.i - 2] + '.' : 'Low is the lowest band. Late QPRs, an extension or more complaints decided against the promoter would move it up.';
+    // G-08: steps that lower what a buyer has at stake. Never "buy" or "don't buy".
+    var NEXT = {
+      Low: [['Keep to 10% until the agreement is registered.', 'That is the RERA limit before an agreement for sale (s.13).'], ['Pay only for stages on record.', 'Check every demand letter against the latest QPR with Pay-as-built.'], ['Follow it.', 'We tell you the day a QPR is late or the band moves.']],
+      Moderate: [['Ask for it in writing.', 'The CA certificate on escrow withdrawals, filed with each QPR.'], ['Prefer a plan that pays as it’s built.', 'Construction-linked, and only for stages on record.'], ['Keep a rent buffer.', 'About 12 months of rent and pre-EMI, in case keys come late.'], ['Follow it.', 'Late filings and new orders reach you first.']],
+      Elevated: [['Ask for it in writing.', 'The slab schedule for your tower, and the CA certificate on escrow withdrawals with the latest QPR.'], ['Prefer a plan that pays as it’s built.', 'Construction-linked, and only for stages on record. Tower A is at slab 9, but a demand for slab 12 went out on 10 Oct 2026.'], ['Keep a rent buffer.', 'If keys come 12 months after Dec 2027, rent and pre-EMI cost about ₹24.1 L more on our default loan.'], ['Watch the next QPR.', 'Jul–Sep 2026 is not on HARERA yet. If it is still missing on 25 Oct 2026, this band may change.']],
+      High: [['Ask for it in writing.', 'The slab schedule, the CA escrow certificate and any extension application.'], ['Pay no more than the law allows.', '10% before a registered agreement; after that, only stages on record.'], ['Keep a longer buffer.', 'About 24 months of rent and pre-EMI: ₹48.1 L on our default loan.'], ['Read the complaint orders.', 'They show what buyers before you went through, and what HARERA decided.']],
+      Severe: [['Read the reason first.', 'A published rule or the record sets this band. Open its source.'], ['If you’ve paid already,', 'your RERA rights to a refund or delay interest still stand. See “If you’ve already booked here”.'], ['Before paying anything more,', 'ask for the project’s status in writing, and keep every receipt.']]
+    };
+    var nextSteps = (NEXT[band] || NEXT.Elevated).map(function (x) { return {h: x[0], p: x[1]}; });
+    var where = b.hi < 36 ? (b.i === 1 ? 'well below' : 'below') : (b.lo > 36 ? (b.i === 5 ? 'well above' : 'above') : 'around');
+    var baseLine = 'Across 212 past Gurugram projects, about 36 of 100 got their OC more than 12 months late. ' + band + ', ' + b.lo + ' to ' + b.hi + ' of 100, sits ' + where + ' that.';
+    var near = [['Kestrel Park', 'Low', 1, '₹2.44 Cr'], ['Sapphire Grove, Phase 1', 'Moderate', 2, '₹2.27 Cr']].filter(function (x) { return x[2] < b.i; });
+    var nearLine = near.length ? 'Same corridor, a lower band, all-in within 20%: ' + near.map(function (x) { return x[0] + ' (' + x[1] + ', ' + x[3] + ')'; }).join(' and ') + '. A published rule picks ' + (near.length > 1 ? 'them' : 'it') + '; nobody pays to appear here.' : 'No project on this corridor has a lower band at a similar all-in.';
+    var preRera = [
+      {name: 'Northfield Greens, Sector 52', fact: 'Promised Dec 2011. OC Mar 2014, about 27 months late.', src: 'Haryana State Consumer Commission order, Aug 2015 (delay compensation for 38 buyers) · news report, Feb 2013'},
+      {name: 'Alder Court, Sector 49', fact: 'Promised Jun 2013. OC Sep 2013.', src: 'DTCP OC record · news report, Oct 2013'},
+      {name: 'Larch Enclave, Sector 21 (2004)', fact: 'No court order or news found. That is not proof of anything.', src: 'Searched 14 Oct 2026'}
+    ];
+    var meterM = [1, 2, 3, 4, 5].map(function (j) { return {style: 'display:block;width:14px;height:11px;border-radius:3px;box-sizing:border-box;' + (j <= b.i ? 'background:' + ink(band) + ';' : 'background:' + T.segOff + ';border:1px solid ' + T.emptyBorder + ';')}; });
+    return {
+      t: T,
+      bandName: band, bandText: bandText, lo: b.lo, hi: b.hi, restLo: 100 - b.hi, restHi: 100 - b.lo,
+      scale: scale,
+      scaleLabel: 'Delivery risk scale from Low to Severe. This project: ' + band + ', step ' + b.i + ' of 5. We are less certain about this one, so we show a range.',
+      changeStyle: band === 'Elevated' ? 'margin:28px 0 0;display:flex;align-items:flex-start;gap:8px;font-size:17px;line-height:1.5;color:' + T.ink : 'display:none',
+      pendStyle: band === 'Elevated' ? 'margin:12px 0 0;display:flex;align-items:flex-start;gap:8px;font-size:17px;line-height:1.5;color:' + T.ink : 'display:none',
+      cells: cells,
+      arrayLabel: 'Between ' + b.lo + ' and ' + b.hi + ' of 100 similar projects got their OC more than 12 months late. The rest, ' + (100 - b.hi) + ' to ' + (100 - b.lo) + ', got it within 12 months.',
+      lgFilled: sw + 'background:' + ink(band) + ';',
+      lgHatch: sw + hatch,
+      hatchText: 'Hatched: the ' + (b.hi - b.lo) + ' of 100 we’re less certain about',
+      nextIntro: 'We never say buy or don’t buy. At ' + band + ', these steps keep less of your money at stake.',
+      nextSteps: nextSteps, baseLine: baseLine, nearLine: nearLine, preRera: preRera,
+      preOpen: !!s.preOpen, preLabel: s.preOpen ? 'Hide Northfield before RERA' : 'Northfield before RERA, from court orders and news',
+      preChev: 'flex:none;display:block;transition:transform .2s ease;transform:rotate(' + (s.preOpen ? 180 : 0) + 'deg)',
+      togglePre: function () { self.setState({preOpen: !s.preOpen}); },
+      lgEmpty: sw + 'background:' + T.emptyCell + ';border:1px solid ' + T.emptyBorder + ';',
+      reasons: reasons,
+      changeLine: changeLine,
+      evOpen: s.sheet === 'ev',
+      shareOpen: s.sheet === 'share',
+      ev: ev,
+      openShare: function () { self.setState({sheet: 'share', linkCopied: false}); },
+      closeSheet: function () { self.setState({sheet: ''}); },
+      copyCite: function () { self.setState({copied: true}); },
+      copyLabel: s.copied ? 'Citation copied' : 'Copy citation',
+      copyLink: function () { self.setState({linkCopied: true}); },
+      linkLabel: s.linkCopied ? 'Link copied' : 'Copy link',
+      meterM: meterM,
+      shareLabel: 'Preview of the shareable risk card: Aurelia Heights, Phase 2, delivery risk ' + band + '. Between ' + b.lo + ' and ' + b.hi + ' of 100 similar projects got their OC more than 12 months late. Data as of 14 Oct 2026, model v1.2. Not a credit rating. Not issued by any RERA.'
+    };
+  }
+}
+</script>
+</body>
+</html>

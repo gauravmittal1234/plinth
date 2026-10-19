@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth app: Picture it furnished, result</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pl-slab{0%,100%{opacity:.35}50%{opacity:1}}
+.pl-rise{animation:pl-rise .72s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease,background-color .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums">
+  <header style="position: absolute; left: 4px; right: 4px; top: 40px; height: 56px; display: flex; align-items: center; gap: 4px">
+    <a href="#capture" class="pl-press" aria-label="{{backAria}}" style="width: 48px; height: 48px; flex: none; border-radius: 999px; display: grid; place-items: center; color: {{t.ink}}">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+    <div style="flex: 1; min-width: 0">
+      <h1 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.035em; line-height: 1.1">{{headTitle}}</h1>
+      <span style="display: block; font-size: 14px; line-height: 1.4; color: {{t.ink2}}">{{headSub}}</span>
+    </div>
+    <button type="button" class="pl-press" onClick="{{openAbout}}" aria-label="About this image" style="width: 48px; height: 48px; flex: none; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M12 11v5.5M12 7.5v.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+    </button>
+  </header>
+
+  <div data-signature="before-after" style="position: absolute; left: 0; top: 100px; width: 390px; height: 400px; overflow: hidden; background: #E7E3DA">
+    <img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="{{baseAlt}}" style="position: absolute; left: 0; top: 0; width: 390px; height: 400px; background: #E7E3DA; object-fit: cover; display: block">
+    <span style="position: absolute; left: 12px; top: 12px; min-height: 26px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 600; line-height: 1; color: #1B1A17; background: #FFFFFF; padding: 0 10px; border-radius: 999px">{{baseLabel}}</span>
+
+    <div style="{{after0}}">
+      <img data-slot="roomModernIndian" src="/_blob/6b062f16f5d7632569e4c012811473c2" alt="AI-generated illustration: the same room furnished in Modern Indian style" style="position: absolute; left: 0; top: 0; width: 390px; height: 400px; background: #E7E3DA; object-fit: cover; display: block">
+      <span style="position: absolute; right: 12px; top: 12px; min-height: 26px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 600; line-height: 1; color: #FFFFFF; background: #1B1A17; padding: 0 10px; border-radius: 999px">AI-generated illustration</span>
+    </div>
+    <div style="{{after1}}">
+      <img data-slot="roomMinimal" src="/_blob/e1a0cb38dadcfa3321ba3cc1854b53bc" alt="AI-generated illustration: the same room furnished in Minimal style" style="position: absolute; left: 0; top: 0; width: 390px; height: 400px; background: #E7E3DA; object-fit: cover; display: block">
+      <span style="position: absolute; right: 12px; top: 12px; min-height: 26px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 600; line-height: 1; color: #FFFFFF; background: #1B1A17; padding: 0 10px; border-radius: 999px">AI-generated illustration</span>
+    </div>
+    <div style="{{after2}}">
+      <img data-slot="roomWarmWood" src="/_blob/d7c665ef54bd23149ee299cecb0fd15e" alt="AI-generated illustration: the same room furnished in Warm wood style" style="position: absolute; left: 0; top: 0; width: 390px; height: 400px; background: #E7E3DA; object-fit: cover; display: block">
+      <span style="position: absolute; right: 12px; top: 12px; min-height: 26px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 600; line-height: 1; color: #FFFFFF; background: #1B1A17; padding: 0 10px; border-radius: 999px">AI-generated illustration</span>
+    </div>
+
+    <div aria-hidden="true" style="position: absolute; left: 0; bottom: 0; width: 390px; height: 104px; background: linear-gradient(0deg, rgba(8,12,10,0.72), rgba(8,12,10,0)); pointer-events: none"></div>
+    <p style="position: absolute; left: 14px; right: 14px; bottom: 10px; margin: 0; font-size: 13px; line-height: 1.4; color: #FFFFFF">{{sourceCap}}</p>
+
+    <div aria-hidden="true" style="{{divider}}"></div>
+    <div aria-hidden="true" style="{{handle}}">
+      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5" fill="none" stroke="#1B1A17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </div>
+
+    <sc-if value="{{generating}}" hint-placeholder-val="{{false}}">
+      <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 400px; background: rgba(8,12,10,0.5)"></div>
+      <span aria-hidden="true" style="{{sweep}}"></span>
+      <div style="position: absolute; left: 0; right: 0; top: 176px; display: flex; justify-content: center">
+        <span style="display: inline-flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 16px; border-radius: 999px; background: #111D19; color: #FFFFFF; font-size: 15px; font-weight: 600"><span aria-hidden="true" style="display: flex; flex-direction: column-reverse; gap: 2px; width: 16px"><sc-for list="{{slabsOn}}" as="sb" hint-placeholder-count="3"><span style="{{sb.style}}"></span></sc-for></span>{{stageNow}}</span>
+      </div>
+    </sc-if>
+    <sc-if value="{{restyling}}" hint-placeholder-val="{{false}}">
+      <div style="position: absolute; left: 0; right: 0; top: 52px; display: flex; justify-content: center">
+        <span role="status" class="pl-rise" style="display: inline-flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 16px; border-radius: 999px; background: #111D19; color: #FFFFFF; font-size: 15px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="none" stroke="#6EE7B7" stroke-width="2"></rect><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="#6EE7B7" stroke-width="2"></path></svg>Restyling · walls and windows stay locked</span>
+      </div>
+    </sc-if>
+
+    <label for="cmp-range" class="sr">{{rangeLabel}}</label>
+    <input id="cmp-range" type="range" min="0" max="100" step="1" value="{{vis}}" onChange="{{onVis}}" aria-valuetext="{{visText}}" style="{{rangeStyle}}">
+  </div>
+
+  <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+    <div style="position: absolute; left: 16px; right: 16px; top: 508px; display: flex; flex-direction: column; gap: 8px">
+    <div role="group" aria-label="View" style="height: 48px; display: flex; padding: 3px; box-sizing: border-box; border-radius: 999px; background: {{t.track}}">
+      <sc-for list="{{views}}" as="v" hint-placeholder-count="3">
+        <button type="button" class="pl-press" onClick="{{v.pick}}" aria-pressed="{{v.aria}}" style="{{v.style}}">{{v.name}}</button>
+      </sc-for>
+    </div>
+    <p style="margin: 0; display: flex; align-items: flex-start; gap: 8px; font-size: 14px; line-height: 1.4; color: {{t.ink}}">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"></rect><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="2"></path></svg>
+      <span>{{lockLine}}</span>
+    </p>
+    <p id="style-l" style="margin: 0; font-size: 14px; line-height: 1.4; color: {{t.ink2}}">Style · estimated furnishing budget, not a price quote</p>
+    <div role="group" aria-labelledby="style-l" style="display: flex; gap: 6px">
+      <sc-for list="{{styles}}" as="st" hint-placeholder-count="3">
+        <button type="button" class="pl-press" onClick="{{st.pick}}" aria-pressed="{{st.aria}}" style="{{st.style}}"><span style="display: block; font-size: 15px; font-weight: 600; line-height: 1.3; white-space: nowrap">{{st.name}}</span><span style="display: block; font-size: 14px; line-height: 1.3; color: {{st.sub}}">{{st.budget}}</span></button>
+      </sc-for>
+    </div>
+    <div style="display: flex; gap: 10px">
+      <button type="button" class="pl-press" onClick="{{save}}" aria-pressed="{{savedAria}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px">
+        <sc-if value="{{notSaved}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+        <sc-if value="{{saved}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{saveLabel}}
+      </button>
+      <button type="button" class="pl-press" onClick="{{openShare}}" style="flex: 1.4 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.5" cy="12" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle><circle cx="17.5" cy="6" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle><circle cx="17.5" cy="18" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M8.7 10.8l6.6-3.6M8.7 13.2l6.6 3.6" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg>Share
+      </button>
+    </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{generating}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 16px; right: 16px; top: 516px; display: flex; flex-direction: column; gap: 12px">
+      <h2 class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.04em; line-height: 1">Furnishing your room</h2>
+      <div role="progressbar" aria-label="Generating the illustration" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{gprog}}" style="height: 8px; border-radius: 2px; background: {{t.slabOff}}; overflow: hidden"><span style="{{gbar}}"></span></div>
+      <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px">
+        <sc-for list="{{stages}}" as="g" hint-placeholder-count="3">
+          <li style="display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 16px; color: {{g.color}}">
+            <sc-if value="{{g.done}}" hint-placeholder-val="{{true}}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+            <sc-if value="{{g.now}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="width: 18px; height: 18px; display: grid; place-items: center"><span style="{{nowDot}}"></span></span></sc-if>
+            <sc-if value="{{g.todo}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="width: 18px; height: 18px; display: grid; place-items: center"><span style="width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid {{t.muted}}; box-sizing: border-box"></span></span></sc-if>
+            {{g.text}}
+          </li>
+        </sc-for>
+      </ol>
+      <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">{{genNote}}</p>
+      <div style="display: flex; gap: 10px">
+        <button type="button" class="pl-press" onClick="{{toggleNotify}}" aria-pressed="{{notifyAria}}" style="{{notifyBtn}}">{{notifyLabel}}</button>
+        <button type="button" class="pl-press" onClick="{{cancelGen}}" style="height: 52px; padding: 0 22px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Cancel</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+    <div style="position: absolute; left: 16px; right: 16px; top: 772px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+      <a href="#report" class="pl-press" style="min-height: 48px; display: inline-flex; align-items: center; gap: 6px; color: {{t.ink}}; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 21V4M5.5 4h11l-2 4 2 4h-11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{reportLabel}}
+      </a>
+      <span style="font-size: 14px; color: {{t.ink2}}">Beta · made 18 Oct 2026</span>
+    </div>
+  </sc-if>
+
+  <div role="status" aria-live="polite" style="{{toastStyle}}">{{toast}}</div>
+
+  <div aria-hidden="true" onClick="{{closeSheets}}" style="{{scrimStyle}}"></div>
+
+  <section role="dialog" aria-modal="true" aria-labelledby="share-h" style="{{shareSheet}}">
+    <div aria-hidden="true" style="width: 32px; height: 4px; margin: 0 auto 6px; border-radius: 2px; background: {{t.lineStrong}}"></div>
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <h2 id="share-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.035em; line-height: 1.05">Share this illustration</h2>
+      <button type="button" class="pl-press" onClick="{{closeSheets}}" aria-label="Close" style="width: 48px; height: 48px; margin-right: -12px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>
+    </div>
+    <div style="display: flex; gap: 4px; margin: 0 -20px">
+      <div style="position: relative; flex: 0.8 1 0; height: 150px; overflow: hidden">
+        <img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="{{shareBaseAlt}}" style="position: absolute; left: 0; top: 0; width: 100%; height: 150px; background: #E7E3DA; object-fit: cover; display: block">
+        <span style="position: absolute; left: 8px; top: 8px; min-height: 24px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 600; line-height: 1; color: #1B1A17; background: #FFFFFF; padding: 0 8px; border-radius: 999px">{{shareBaseLabel}}</span>
+      </div>
+      <div style="position: relative; flex: 1.2 1 0; height: 150px; overflow: hidden">
+        <sc-if value="{{st0}}" hint-placeholder-val="{{true}}"><img data-slot="roomModernIndian" src="/_blob/6b062f16f5d7632569e4c012811473c2" alt="AI-generated illustration, Modern Indian style" style="position: absolute; left: 0; top: 0; width: 100%; height: 150px; background: #E7E3DA; object-fit: cover; display: block"></sc-if>
+        <sc-if value="{{st1}}" hint-placeholder-val="{{false}}"><img data-slot="roomMinimal" src="/_blob/e1a0cb38dadcfa3321ba3cc1854b53bc" alt="AI-generated illustration, Minimal style" style="position: absolute; left: 0; top: 0; width: 100%; height: 150px; background: #E7E3DA; object-fit: cover; display: block"></sc-if>
+        <sc-if value="{{st2}}" hint-placeholder-val="{{false}}"><img data-slot="roomWarmWood" src="/_blob/d7c665ef54bd23149ee299cecb0fd15e" alt="AI-generated illustration, Warm wood style" style="position: absolute; left: 0; top: 0; width: 100%; height: 150px; background: #E7E3DA; object-fit: cover; display: block"></sc-if>
+        <span style="position: absolute; right: 8px; top: 8px; min-height: 24px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 600; line-height: 1; color: #FFFFFF; background: #1B1A17; padding: 0 8px; border-radius: 999px">AI-generated illustration</span>
+      </div>
+    </div>
+    <p style="margin: 0; display: flex; gap: 10px; align-items: flex-start; font-size: 16px; line-height: 1.5; color: {{t.ink}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 3px"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"></rect><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="2"></path></svg>
+      <span>{{shareKeep}}</span>
+    </p>
+    <p style="margin: 0; padding: 12px 14px; border-radius: 8px; background: {{t.track}}; font-size: 15px; line-height: 1.45; color: {{t.ink}}"><span style="display: block">{{shareL1}}</span><span style="display: block">{{shareL2}}</span><span style="display: block; margin-top: 4px; font-size: 14px; color: {{t.ink2}}">{{shareSrc}}</span><span style="display: block; font-weight: 600">Plinth · No developer pays us. Ever.</span></p>
+    <div style="display: flex; gap: 10px">
+      <button type="button" class="pl-press" onClick="{{shareMore}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">More apps</button>
+      <button type="button" class="pl-press" onClick="{{shareWa}}" style="flex: 1.4 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Share on WhatsApp</button>
+    </div>
+  </section>
+
+  <section role="dialog" aria-modal="true" aria-labelledby="about-h" style="{{aboutSheet}}">
+    <div aria-hidden="true" style="width: 32px; height: 4px; margin: 0 auto 6px; border-radius: 2px; background: {{t.lineStrong}}"></div>
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <h2 id="about-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.035em; line-height: 1.05">How was this made?</h2>
+      <button type="button" class="pl-press" onClick="{{closeSheets}}" aria-label="Close" style="width: 48px; height: 48px; margin-right: -12px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: grid; place-items: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>
+    </div>
+    <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px">
+      <sc-for list="{{aboutRows}}" as="ab" hint-placeholder-count="4">
+        <li style="display: flex; gap: 12px; align-items: flex-start">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 4px"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="{{t.ink}}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span><strong style="display: block; font-size: 17px; font-weight: 700">{{ab.title}}</strong><span style="font-size: 16px; color: {{t.ink}}">{{ab.body}}</span></span>
+        </li>
+      </sc-for>
+    </ul>
+    <button type="button" class="pl-press" onClick="{{closeSheets}}" style="margin-top: auto; height: 52px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Done</button>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"screen":{"editor":"enum","options":["Result","Generating","From the floor plan"],"default":"Result"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var p = props || {};
+    var gen = p.screen === 'Generating';
+    this.state = {phase: gen ? 'generating' : 'result', start: p.screen === 'From the floor plan' ? 'plan' : 'sample', gprog: gen ? 0 : 100, vis: 100, anim: !gen, style: 0, restyle: false, saved: false, sheet: '', notify: false, toast: '', reduced: false};
+  }
+  componentDidMount() {
+    var self = this;
+    var reduced = false;
+    try { reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { reduced = false; }
+    this.setState({reduced: reduced});
+    this.peek();
+    this._iv = setInterval(function () {
+      var s = self.state;
+      if (s.phase !== 'generating') return;
+      var g = Math.min(100, (Number(s.gprog) || 0) + 2);
+      if (g >= 100) { self.setState({gprog: 100, phase: 'result', vis: 100, anim: true}); self.peek(); }
+      else self.setState({gprog: g});
+    }, 240);
+  }
+  componentWillUnmount() {
+    clearInterval(this._iv);
+    clearTimeout(this._pk);
+    clearTimeout(this._rs);
+    clearTimeout(this._ts);
+  }
+  peek() {
+    var self = this;
+    clearTimeout(this._pk);
+    if (this.state.reduced) return;
+    this._pk = setTimeout(function () { if (self.state.phase === 'result' && self.state.vis === 100) self.setState({vis: 50, anim: true}); }, 900);
+  }
+  say(msg) {
+    var self = this;
+    clearTimeout(this._ts);
+    this.setState({toast: msg});
+    this._ts = setTimeout(function () { self.setState({toast: ''}); }, 3000);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var night = (this.props.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', sheet: '#111C18', track: 'rgba(255,255,255,0.07)', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      slabOff: 'rgba(255,255,255,0.12)', inverse: '#EEF3F0', onInverse: '#0B1411', segOn: 'rgba(255,255,255,0.14)', shadow: '0 8px 24px rgba(0,0,0,0.45)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', sheet: '#FFFFFF', track: '#F4F2ED', line: '#E7E3DA', lineStrong: '#C9C4B9',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      slabOff: '#E2DED4', inverse: '#1B1A17', onInverse: '#FFFFFF', segOn: '#FFFFFF', shadow: '0 8px 24px rgba(27,26,23,.12)'
+    };
+    var gen = s.phase === 'generating';
+    var isPlan = s.start === 'plan';
+    var visN = Number(s.vis);
+    var vis = Math.max(0, Math.min(100, isNaN(visN) ? 100 : visN));
+    var origWord = isPlan ? 'empty room' : 'original photo';
+    var S = [
+      {name: 'Modern Indian', budget: '₹8–12 L'},
+      {name: 'Minimal', budget: '₹5–8 L'},
+      {name: 'Warm wood', budget: '₹9–14 L'}
+    ];
+    var clipT = s.anim && !s.reduced ? ', clip-path .8s cubic-bezier(.76,0,.24,1)' : '';
+    function after(i) {
+      var on = i === s.style && !gen;
+      return 'position:absolute;left:0;top:0;width:390px;height:400px;pointer-events:none;clip-path:inset(0 0 0 ' + vis + '%);opacity:' + (on ? 1 : 0) + ';transition:opacity .5s ease' + clipT;
+    }
+    var px = vis / 100 * 390;
+    var hx = Math.max(26, Math.min(364, px));
+    var moveT = s.anim && !s.reduced ? 'transition:transform .8s cubic-bezier(.76,0,.24,1),opacity .3s ease;' : 'transition:opacity .3s ease;';
+    var views = [
+      {name: isPlan ? 'Empty room' : 'Original', v: 100}, {name: 'Compare', v: 50}, {name: 'AI illustration', v: 0}
+    ].map(function (x) {
+      var on = vis === x.v;
+      return {name: x.name, aria: on ? 'true' : 'false', pick: function () { clearTimeout(self._pk); self.setState({vis: x.v, anim: true}); },
+        style: 'flex:1;height:42px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;' + (on ? 'background:' + T.segOn + ';color:' + T.ink + ';' : 'background:transparent;color:' + T.ink2 + ';')};
+    });
+    var styles = S.map(function (x, i) {
+      var on = i === s.style;
+      return {name: x.name, budget: x.budget, aria: on ? 'true' : 'false', sub: on ? T.onInverse : T.ink2,
+        pick: function () {
+          if (i === s.style) return;
+          clearTimeout(self._rs);
+          self.setState({style: i, restyle: true});
+          self._rs = setTimeout(function () { self.setState({restyle: false}); }, 900);
+        },
+        style: 'flex:1;min-width:0;min-height:60px;padding:8px 6px;border:0;border-radius:8px;font:inherit;text-align:center;cursor:pointer;' + (on ? 'background:' + T.inverse + ';color:' + T.onInverse + ';' : 'background:' + T.track + ';color:' + T.ink + ';')};
+    });
+    var g = Math.max(0, Math.min(100, Number(s.gprog) || 0));
+    var stageIdx = g < 36 ? 0 : (g < 76 ? 1 : 2);
+    var stageTexts = [isPlan ? 'Reading the room size from the plan' : 'Checking walls and windows', 'Placing furniture to scale', 'Adding the AI illustration label'];
+    var stages = stageTexts.map(function (txt, k) {
+      return {text: txt, done: k < stageIdx, now: k === stageIdx, todo: k > stageIdx, color: k <= stageIdx ? T.ink : T.muted};
+    });
+    var tri = (g * 3) % 200;
+    var sweepTop = tri < 100 ? tri : 200 - tri;
+    var slabsOn = [0, 1, 2].map(function (k) {
+      return {style: 'display:block;width:16px;height:4px;border-radius:1px;background:' + (k <= stageIdx ? '#6EE7B7' : 'rgba(255,255,255,0.25)') + ';' + (k === stageIdx && !s.reduced ? 'animation:pl-slab .9s ease infinite;' : '')};
+    });
+    var sheetOpen = s.sheet === 'share' || s.sheet === 'about';
+    function sheet(on, h) {
+      return 'position:absolute;left:0;right:0;bottom:0;height:' + h + 'px;box-sizing:border-box;padding:10px 20px 28px;display:flex;flex-direction:column;gap:14px;background:' + T.sheet + ';color:' + T.ink + ';border-radius:28px 28px 0 0;box-shadow:' + T.shadow + ';transform:translateY(' + (on ? '0' : '105%') + ');visibility:' + (on ? 'visible' : 'hidden') + ';transition:' + (on ? 'transform .4s cubic-bezier(.22,1,.36,1), visibility 0s' : 'transform .26s cubic-bezier(.76,0,.24,1), visibility 0s linear .26s');
+    }
+    var sty = S[s.style] || S[0];
+    function closeShare(msg) { self.setState({sheet: ''}); self.say(msg); }
+    return {
+      t: T,
+      isResult: !gen, generating: gen,
+      after0: after(0), after1: after(1), after2: after(2),
+      divider: 'position:absolute;left:0;top:0;width:2px;height:400px;background:#FFFFFF;pointer-events:none;' + moveT + 'transform:translateX(' + (px - 1).toFixed(1) + 'px);opacity:' + (gen ? 0 : 1),
+      handle: 'position:absolute;left:0;top:176px;width:48px;height:48px;border-radius:50%;background:#FFFFFF;display:grid;place-items:center;pointer-events:none;' + moveT + 'transform:translateX(' + (hx - 24).toFixed(1) + 'px);opacity:' + (gen ? 0 : 1),
+      vis: vis,
+      visText: vis >= 100 ? 'Showing the ' + origWord : (vis <= 0 ? 'Showing the AI-generated illustration' : 'The ' + origWord + ' on the left, AI illustration on the right'),
+      rangeLabel: 'Drag to compare the ' + origWord + ' and the AI-generated illustration',
+      onVis: function (e) { var v = Number(e && e.target ? e.target.value : NaN); if (isNaN(v)) return; clearTimeout(self._pk); self.setState({vis: Math.max(0, Math.min(100, v)), anim: false}); },
+      headTitle: isPlan ? 'Living + dining' : 'Living room, furnished',
+      headSub: isPlan ? 'Brochure plan · 22′ × 13′' : 'Sample flat · Aurelia Heights Ph 2',
+      backAria: isPlan ? 'Back to the floor plan' : 'Back to camera',
+      baseAlt: isPlan ? 'Empty living and dining room drawn from the brochure plan at 22 by 13 feet, before furnishing' : 'Original photo: the empty living room of the sample flat',
+      baseLabel: isPlan ? 'Empty room, from the plan' : 'Original photo',
+      sourceCap: isPlan ? 'Drawn from the brochure plan of 2 Oct 2026 · From the developer, not verified · your unit may differ' : 'From your photo of the sample flat · it may not match your unit · Illustrative image',
+      lockLine: isPlan ? 'Drawn at 22′ × 13′, as on the plan. Structure is never altered. Items are illustrative.' : 'Walls, windows and floors unchanged. Structure is never altered. Items are illustrative.',
+      genNote: 'Usually 10–20 seconds. You can leave this screen.',
+      reportLabel: 'Report a problem',
+      rangeStyle: 'position:absolute;left:0;top:0;width:390px;height:400px;margin:0;opacity:0;cursor:ew-resize;' + (gen ? 'pointer-events:none;' : ''),
+      views: views,
+      styles: styles,
+      restyling: !!s.restyle && !gen,
+      slabsOn: slabsOn,
+      nowDot: 'display:block;width:10px;height:10px;border-radius:50%;background:' + T.ink + ';' + (s.reduced ? '' : 'animation:pl-slab .9s ease infinite;'),
+      sweep: 'position:absolute;left:0;top:0;width:390px;height:2px;background:#6EE7B7;transform:translateY(' + (sweepTop * 3.98).toFixed(1) + 'px);transition:' + (s.reduced ? 'none' : 'transform .12s linear'),
+      stageNow: stageTexts[stageIdx],
+      stages: stages,
+      gprog: g,
+      gbar: 'display:block;height:100%;width:100%;background:' + T.accent + ';transform-origin:0 50%;transform:scaleX(' + (g / 100).toFixed(3) + ');transition:transform .12s linear',
+      notifyAria: s.notify ? 'true' : 'false',
+      notifyLabel: s.notify ? "We'll notify you" : 'Notify me when ready',
+      notifyBtn: 'flex:1;height:52px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;' + (s.notify ? 'background:' + T.inverse + ';color:' + T.onInverse : 'background:' + T.accent + ';color:' + T.onAccent),
+      toggleNotify: function () { self.setState({notify: !s.notify}); },
+      cancelGen: function () { self.setState({phase: 'result', gprog: 100, vis: 100, anim: true}); self.say('Stopped. Your original photo is unchanged.'); },
+      saved: !!s.saved, notSaved: !s.saved,
+      savedAria: s.saved ? 'true' : 'false',
+      saveLabel: s.saved ? 'Saved' : 'Save',
+      save: function () {
+        if (s.saved) { self.setState({saved: false}); return; }
+        self.setState({saved: true});
+        self.say('Saved to your phone with the AI label and the original.');
+      },
+      openShare: function () { self.setState({sheet: 'share'}); },
+      openAbout: function () { self.setState({sheet: 'about'}); },
+      closeSheets: function () { self.setState({sheet: ''}); },
+      scrimStyle: 'position:absolute;left:0;top:0;width:390px;height:844px;background:rgba(8,12,10,0.48);transition:opacity .3s;opacity:' + (sheetOpen ? 1 : 0) + ';pointer-events:' + (sheetOpen ? 'auto' : 'none'),
+      shareSheet: sheet(s.sheet === 'share', 668),
+      aboutSheet: sheet(s.sheet === 'about', 640),
+      st0: s.style === 0, st1: s.style === 1, st2: s.style === 2,
+      shareBaseAlt: isPlan ? 'The empty room drawn from the plan, included in the share' : 'Original photo, included in the share',
+      shareBaseLabel: isPlan ? 'Empty room' : 'Original',
+      shareKeep: isPlan ? 'The AI-generated illustration label and the empty room from the plan always travel with this image. They can’t be removed.' : 'The AI-generated illustration label and the original photo always travel with this image. They can’t be removed.',
+      shareL1: isPlan ? 'AI-generated illustration of a 3 BHK living room at Aurelia Heights Ph 2, drawn from the developer’s floor plan.' : 'AI-generated illustration of the living room in the Aurelia Heights Ph 2 sample flat, from my photo, in ' + sty.name + ' style.',
+      shareL2: isPlan ? 'Not the developer’s design or a quote.' : 'The sample flat may not match the unit. Not a quote.',
+      shareSrc: isPlan ? 'Brochure plan of 2 Oct 2026 · made 18 Oct 2026' : 'My photo of the sample flat · made 18 Oct 2026',
+      shareWa: function () { closeShare('Shared on WhatsApp with the AI label and the original.'); },
+      shareMore: function () { closeShare('Shared with the AI label and the original attached.'); },
+      aboutRows: isPlan ? [
+        {title: 'Drawn from the brochure plan', body: 'The developer’s plan of 2 Oct 2026 sets this room at 22′ × 13′. From the developer, not verified; your unit may differ.'},
+        {title: 'Made with AI on 18 Oct 2026', body: 'An image model drew the empty room at that size, then added furniture and decor.'},
+        {title: 'Labelled AI-generated illustration', body: 'The label is stored inside the file, so it stays when shared.'},
+        {title: 'Not the developer’s design', body: 'It is not the sample flat or a quote. Items are illustrative.'}
+      ] : [
+        {title: 'Made with AI on 18 Oct 2026', body: 'Furniture and decor were added by an image model. Nothing else was edited.'},
+        {title: 'Structure check passed', body: 'Walls, windows and floors match your photo of the sample flat.'},
+        {title: 'Labelled AI-generated illustration', body: 'The label is stored inside the file, so it stays when shared.'},
+        {title: 'Your original is kept as is', body: 'It stays on this phone unless you save it to your account. The sample flat may not match your unit.'}
+      ],
+      toast: s.toast,
+      toastStyle: 'position:absolute;left:16px;right:16px;bottom:22px;min-height:48px;box-sizing:border-box;padding:12px 16px;border-radius:8px;font-size:15px;line-height:1.4;background:' + (night ? '#EEF3F0' : '#1B1A17') + ';color:' + (night ? '#0B1411' : '#FFFFFF') + ';transition:opacity .25s,transform .25s;opacity:' + (s.toast ? 1 : 0) + ';transform:translateY(' + (s.toast ? '0' : '8px') + ');pointer-events:none'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth web: Developer, Northfield Estates</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:pointer}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+@keyframes plGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes plPop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+.mkg { transform-origin: left center; }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  .mkg { animation: plGrow 900ms cubic-bezier(.22,1,.36,1) both; }
+  .mkf { animation: plPop 500ms cubic-bezier(.22,1,.36,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+    .mkg { animation: plGrow linear both; animation-timeline: view(); animation-range: entry 20% cover 45%; }
+    .mkf { animation: plPop linear both; animation-timeline: view(); animation-range: entry 30% cover 48%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 9000px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
+        <a href="#developers" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Developers</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{followShort}}</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section aria-labelledby="dev-h" style="position: relative; min-height: 680px; overflow: hidden; display: flex; align-items: flex-end; background: {{t.photo}}">
+      <img data-slot="siteProgress" class="drift" src="/_blob/186406c855932c1c91c0cfbd6c934296" alt="Illustrative image: a residential tower under construction, with cranes" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+      <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,11,0) 28%, rgba(10,12,11,0.5) 58%, rgba(10,12,11,0.86) 100%)"></div>
+      <span style="position: absolute; top: 20px; right: 32px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+      <div style="position: relative; width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 32px 56px; box-sizing: border-box; color: #FFFFFF; display: flex; flex-direction: column; gap: 18px">
+        <h1 id="dev-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 112px); line-height: 0.94; letter-spacing: -0.045em">Northfield Estates</h1>
+        <p class="rise rise1" style="margin: 0; max-width: 52ch; font-size: 22px; line-height: 1.45">A developer group of 9 linked companies. 2 of its 6 finished projects got OC more than 12 months late. 3 are under construction.</p>
+        <p class="rise rise1" style="margin: 0; display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center">
+          <a href="#claim" style="display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 2px 14px; border-radius: 999px; box-sizing: border-box; background: #FFFFFF; color: #1B1A17; font-size: 15px; font-weight: 600; text-decoration: none"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style="flex: none"><path d="{{claimIcon}}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{claimText}}</a>
+          <sc-if value="{{factsOnly}}" hint-placeholder-val="{{false}}"><a href="#facts-only" style="display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 2px 14px; border-radius: 999px; box-sizing: border-box; background: #FFFFFF; color: #1B1A17; font-size: 15px; font-weight: 600; text-decoration: none">Bands withheld pending review, from 18 Oct 2026</a></sc-if>
+        </p>
+        <div class="rise rise2" style="display: flex; gap: 12px 24px; flex-wrap: wrap; align-items: center; padding-top: 4px">
+          <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 56px; display: inline-flex; align-items: center; gap: 10px; padding: 0 28px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6.5a4 4 0 0 1 8 0c0 3 1.2 4 1.5 4.5h-11C2.8 10.5 4 9.5 4 6.5zM6.5 13a1.6 1.6 0 0 0 3 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>{{followLabel}}
+          </button>
+          <a href="#ask" class="lk" style="font-size: 18px; font-weight: 600; color: #FFFFFF; text-decoration: underline; text-underline-offset: 5px">Ask about Northfield</a>
+          <button type="button" class="press" onClick="{{onShare}}" style="min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0; border: 0; background: transparent; color: #FFFFFF; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V2M5 4.5L8 1.8l3 2.7M3 8.5V13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{shareLabel}}</button>
+        </div>
+        <nav aria-label="Breadcrumb" style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 15px; color: rgba(255,255,255,0.9)">
+          <a href="#gurugram" class="lk" style="color: #FFFFFF">Gurugram</a><span aria-hidden="true">/</span><a href="#developers" class="lk" style="color: #FFFFFF">Developers</a><span aria-hidden="true">/</span><span>Northfield Estates</span><span aria-hidden="true" style="padding: 0 6px"></span><span>Records as of 14 Oct 2026 · model v1.2</span>
+        </nav>
+      </div>
+    </section>
+
+    <sc-if value="{{factsOnly}}" hint-placeholder-val="{{false}}">
+      <section id="facts-only" aria-labelledby="fx-h" style="background: {{t.track}}; padding: 88px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 24px 72px; align-items: flex-start">
+          <h2 id="fx-h" class="rise" style="margin: 0; flex: 1 1 360px; max-width: 14ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(36px, 4.4vw, 56px); line-height: 1; letter-spacing: -0.035em">Why is there no band on this page?</h2>
+          <div class="rise rise1" style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <p style="margin: 0; font-size: 22px; line-height: 1.45">Since 18 Oct 2026 we show facts only for Northfield’s projects, while a court considers an application about our bands for this group. Every record below is unchanged and carries its source.</p>
+            <ul style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 6px; font-size: 19px; line-height: 1.5">
+              <li><strong>Still here:</strong> dates, progress reports, complaints, OC orders and company links, each with its source.</li>
+              <li><strong>Withheld everywhere:</strong> the band, its reasons and the “of 100 similar projects” figure, on this page, in search, Compare, alerts and the Live Record.</li>
+              <li><strong>Not a finding:</strong> this says nothing about Northfield, and no record has changed.</li>
+            </ul>
+            <p style="margin: 0; font-size: 17px">We update this page the day anything changes. <a href="#facts-only-policy" class="lk" style="color: {{t.ink}}; font-weight: 600">How facts-only works</a></p>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <section id="record" aria-labelledby="rec-h" style="background: {{t.bg}}; padding: 144px 0 160px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 56px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px 64px">
+          <h2 id="rec-h" class="rv" style="margin: 0; max-width: 17ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">Does Northfield deliver on time?</h2>
+          <div class="rv rv1" style="flex: 0 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+            <p style="margin: 0; font-size: 22px; line-height: 1.45"><strong>2 of 6</strong> finished RERA projects got OC more than 12 months late. The other 4 got OC within 12 months, one of them early.</p>
+            <div role="group" aria-label="One mark per RERA project, by original completion date. Pick one to see its record." style="display: flex; gap: 4px; flex-wrap: wrap">
+              <sc-for list="{{strip}}" as="d" hint-placeholder-count="9">
+                <button type="button" class="press" onClick="{{d.pick}}" aria-pressed="{{d.on}}" aria-label="{{d.aria}}" style="{{d.btnStyle}}"><span aria-hidden="true" style="{{d.shapeStyle}}"></span></button>
+              </sc-for>
+            </div>
+            <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 16px; font-size: 15px; line-height: 1.4; color: {{t.ink2}}">
+              <sc-for list="{{legend}}" as="g" hint-placeholder-count="4">
+                <li style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="{{g.style}}"></span>{{g.text}}</li>
+              </sc-for>
+            </ul>
+          </div>
+        </div>
+
+        <div class="rv rv1" style="display: flex; flex-direction: column; gap: 28px">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px">
+            <button type="button" class="press" onClick="{{onPlay}}" aria-pressed="{{playingStr}}" style="{{playBtn}}">
+              <sc-if value="{{notPlaying}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"></path></svg></sc-if>
+              <sc-if value="{{playing}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z" fill="currentColor"></path></svg></sc-if>
+              {{playLabel}}
+            </button>
+            <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+              <label for="asof" style="font-size: 17px; color: {{t.ink}}">The record as it stood in <strong>{{asOfLabel}}</strong></label>
+              <input id="asof" type="range" min="0" max="39" step="1" value="{{asOfQ}}" onChange="{{onAsOf}}" aria-valuetext="{{asOfLabel}}">
+            </div>
+            <button type="button" onClick="{{toggleTable}}" aria-pressed="{{tableOnStr}}" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">{{tableLabel}}</button>
+          </div>
+
+          <sc-if value="{{chartOn}}" hint-placeholder-val="{{true}}">
+            <div style="position: relative; padding: 36px 0 36px">
+              <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 24px">
+                <sc-for list="{{ticks}}" as="k" hint-placeholder-count="8"><span style="{{k.style}}">{{k.text}}</span></sc-for>
+              </div>
+              <span aria-hidden="true" style="{{todayRule}}"></span>
+              <span aria-hidden="true" style="{{todayLabel}}">{{asOfShort}}</span>
+              <ol aria-label="Promised and actual completion, 9 projects" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px">
+                <sc-for list="{{rows}}" as="r" hint-placeholder-count="9">
+                  <li style="{{r.liStyle}}">
+                    <button type="button" onClick="{{r.pick}}" onMouseEnter="{{r.pick}}" onFocus="{{r.pick}}" aria-pressed="{{r.on}}" aria-label="{{r.aria}}" style="{{r.style}}">
+                      <span style="padding-left: 14px; font-size: 17px; font-weight: 600; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span>
+                      <span style="position: relative; height: 52px; margin-right: 80px">
+                        <sc-for list="{{r.bars}}" as="m" hint-placeholder-count="3"><span class="mkg" style="{{m.style}}"></span></sc-for>
+                        <sc-for list="{{r.dots}}" as="m2" hint-placeholder-count="3"><span class="mkf" style="{{m2.style}}">{{m2.text}}</span></sc-for>
+                      </span>
+                    </button>
+                  </li>
+                </sc-for>
+              </ol>
+            </div>
+          </sc-if>
+          <sc-if value="{{tableOn}}" hint-placeholder-val="{{false}}">
+            <table style="width: 100%; border-collapse: collapse; font-size: 17px; line-height: 1.4">
+              <caption class="sr">Northfield Estates projects: original RERA date, OC and delay</caption>
+              <thead>
+                <tr style="text-align: left; color: {{t.ink2}}; font-size: 15px">
+                  <th scope="col" style="padding: 8px 8px 8px 14px; font-weight: 600">Project</th>
+                  <th scope="col" style="padding: 8px; font-weight: 600">Original RERA date</th>
+                  <th scope="col" style="padding: 8px; font-weight: 600">OC</th>
+                  <th scope="col" style="padding: 8px; font-weight: 600">Delay, net</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{rows}}" as="r" hint-placeholder-count="9">
+                  <tr style="{{r.trStyle}}">
+                    <th scope="row" style="padding: 0; text-align: left; font-weight: 600"><button type="button" onClick="{{r.pick}}" aria-pressed="{{r.on}}" style="width: 100%; min-height: 48px; padding: 0 8px 0 14px; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-weight: 600; text-align: left; cursor: pointer">{{r.name}}</button></th>
+                    <td style="padding: 8px">{{r.origLabel}}</td>
+                    <td style="padding: 8px">{{r.ocLabel}}</td>
+                    <td style="padding: 8px; font-weight: 600">{{r.delayLabel}}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </sc-if>
+          <p style="margin: -8px 0 0; display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 15px; line-height: 1.4; color: {{t.ink2}}">
+            <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="{{keyOrig}}"></span>Original RERA date</span>
+            <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="{{keyExt}}"></span>COVID extension, not counted</span>
+            <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="{{keyBuild}}"></span>Under construction</span>
+            <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="{{keyLate}}"></span>Time past the promise</span>
+          </p>
+
+          <div aria-live="polite" style="border-radius: 8px; background: {{t.track}}; padding: 28px 32px; display: flex; flex-direction: column; gap: 16px">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap">
+              <div style="display: flex; flex-direction: column; min-width: 0">
+                <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">{{cur.name}}</strong>
+                <span style="font-size: 15px; line-height: 1.5; color: {{t.ink2}}">{{cur.sector}} · RERA {{cur.rera}} · {{cur.company}}</span>
+              </div>
+              <sc-if value="{{cur.ongoing}}" hint-placeholder-val="{{false}}">
+                <span style="{{curChip.chipStyle}}">
+                  <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{curChip.segs}}" as="g" hint-placeholder-count="5"><span style="{{g.style}}"></span></sc-for></span>{{curChip.label}}
+                </span>
+              </sc-if>
+              <sc-if value="{{cur.finished}}" hint-placeholder-val="{{true}}">
+                <span style="display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border-radius: 999px; background: {{t.bgSolid}}; font-size: 15px; font-weight: 600">
+                  <span aria-hidden="true" style="{{curShape}}"></span>{{cur.outcome}}
+                </span>
+              </sc-if>
+            </div>
+            <dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 12px 24px">
+              <sc-for list="{{cur.facts}}" as="f" hint-placeholder-count="4">
+                <div style="display: flex; flex-direction: column; line-height: 1.3">
+                  <dt style="font-size: 15px; color: {{t.ink2}}">{{f.k}}</dt>
+                  <dd style="margin: 0; font-size: 22px; font-weight: 700">{{f.v}}</dd>
+                </div>
+              </sc-for>
+            </dl>
+            <p style="margin: 0; font-size: 19px; line-height: 1.5">{{cur.result}}</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+              <sc-for list="{{cur.src}}" as="c" hint-placeholder-count="2">
+                <a href="#source" class="press" style="display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 2px 14px; border-radius: 999px; background: {{t.bgSolid}}; font-size: 14px; color: {{t.ink}}; text-decoration: none">
+                  <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>{{c}}
+                </a>
+              </sc-for>
+              <sc-if value="{{cur.ongoing}}" hint-placeholder-val="{{false}}"><a href="#project" class="lk" style="margin-left: 6px; font-size: 17px; font-weight: 600; color: {{t.ink}}">Open project</a></sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="companies" aria-labelledby="co-h" style="background: {{t.track}}; padding: 144px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: center">
+        <div class="rv rv1" style="flex: 1 1 600px; min-width: 0; position: relative; height: 460px">
+          <svg aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%">
+            <sc-for list="{{spokes}}" as="k" hint-placeholder-count="8">
+              <line x1="50" y1="50" x2="{{k.x}}" y2="{{k.y}}" stroke="{{k.color}}" stroke-width="{{k.w}}" stroke-dasharray="{{k.dash}}" vector-effect="non-scaling-stroke"></line>
+            </sc-for>
+          </svg>
+          <sc-for list="{{nodes}}" as="n" hint-placeholder-count="9">
+            <button type="button" class="press" onClick="{{n.pick}}" aria-pressed="{{n.on}}" style="{{n.style}}">
+              <span style="font-size: 16px; font-weight: 700; line-height: 1.25">{{n.short}}</span>
+              <span style="{{n.subStyle}}">{{n.sub}}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="flex: 0 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="co-h" class="rv" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">Who is Northfield?</h2>
+          <p class="rv rv1" style="margin: 0; font-size: 22px; line-height: 1.45">9 companies, linked by shareholding or common directors in MCA filings. No insolvency case found for any of them, checked 14 Oct 2026.</p>
+          <div aria-live="polite" class="rv rv2" style="display: flex; flex-direction: column; gap: 8px; padding-top: 12px">
+            <strong style="font-size: 22px; line-height: 1.35">{{co.full}}</strong>
+            <span style="font-size: 19px; line-height: 1.5">{{co.link}} · {{co.projects}}</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; padding-top: 4px">
+              <a href="#source" class="press" style="display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 2px 14px; border-radius: 999px; background: {{t.bgSolid}}; font-size: 14px; color: {{t.ink}}; text-decoration: none">
+                <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>MCA filings · checked 14 Oct 2026
+              </a>
+              <span style="font-size: 15px; color: {{t.ink2}}">No CIRP found in IBBI or NCLT records</span>
+            </div>
+            <span style="display: inline-flex; flex-wrap: wrap; gap: 6px 18px; padding-top: 6px; font-size: 15px; color: {{t.ink2}}">
+              <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="{{keySolid}}"></span>Shareholding or partner</span>
+              <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="{{keyDash}}"></span>Common directors only</span>
+            </span>
+            <a href="#method" class="lk" style="align-self: flex-start; padding-top: 6px; font-size: 17px; font-weight: 600; color: {{t.ink}}">How we link companies</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="complaints" aria-labelledby="cp-h" style="background: {{t.bg}}; padding: 144px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="cp-h" class="rv" style="margin: 0; max-width: 17ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">What has HARERA decided on complaints?</h2>
+          <p class="rv rv1" style="margin: 0; display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(88px, 11vw, 144px); line-height: 0.85; letter-spacing: -0.05em">7</span><span style="max-width: 20ch; font-size: 19px; line-height: 1.45">decided against the group in Jan–Jun 2025, or <strong>0.23 per 100 units</strong>. Up from 2 in Jan–Jun 2023.</span></p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: stretch">
+          <div class="rv rv1" style="flex: 2 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+              <span style="font-size: 17px">HARERA complaints decided, by half-year</span>
+              <div role="group" aria-label="Show" style="display: flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+                <sc-for list="{{cpModes}}" as="v" hint-placeholder-count="2">
+                  <button type="button" class="press" onClick="{{v.pick}}" aria-pressed="{{v.on}}" style="{{v.style}}">{{v.text}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="position: relative; height: 300px">
+              <div style="position: absolute; inset: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px">
+                <sc-for list="{{bars}}" as="b" hint-placeholder-count="8">
+                  <button type="button" onClick="{{b.pick}}" onMouseEnter="{{b.pick}}" aria-pressed="{{b.on}}" aria-label="{{b.aria}}" style="{{b.style}}">
+                    <span style="font-size: 17px; font-weight: 700; line-height: 1.2; margin-bottom: 6px">{{b.total}}</span>
+                    <sc-for list="{{b.segs}}" as="z" hint-placeholder-count="3"><span style="{{z.style}}"></span></sc-for>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+            <div aria-hidden="true" style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; font-size: 14px; line-height: 1.3; color: {{t.ink2}}; text-align: center">
+              <sc-for list="{{bars}}" as="b" hint-placeholder-count="8"><span>{{b.l1}}<br>{{b.l2}}</span></sc-for>
+            </div>
+            <sc-if value="{{cpAll}}" hint-placeholder-val="{{false}}">
+              <p style="margin: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: {{t.ink2}}">
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="{{keyAgainst}}"></span>Against the promoter</span>
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="{{keyFor}}"></span>In its favour</span>
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="{{keyWd}}"></span>Withdrawn or settled</span>
+              </p>
+            </sc-if>
+            <p aria-live="polite" style="margin: 8px 0 0; font-size: 19px; line-height: 1.5"><strong>{{cpCur.label}}:</strong> {{cpCur.text}}</p>
+            <p style="margin: 0; font-size: 19px; line-height: 1.5">In the 24 months to 14 Oct 2026: 24 decided against the group, or 0.7 per 100 units. Aurelia Heights, Phase 2 had 14 of them, or 2.8 per 100 units on its 500 units; similar projects had a median of 3. <a href="#orders" class="lk" style="color: {{t.ink}}; font-weight: 600">Show the HARERA orders</a></p>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Per 100 units uses the units in the group’s RERA registrations at the end of each half-year: 2,980 until Dec 2025, and 3,400 since Heron Point, Phase 2 was registered in Apr 2026. A bigger group isn’t penalised for its size.</p>
+          </div>
+          <div class="rv rv2" style="flex: 1 1 300px; min-width: 0; position: relative; min-height: 420px">
+            <img data-slot="ordersDesk" src="/_blob/5785f128e1c6016201ce2483d89a35e4" alt="Illustrative image: printed regulator orders on a desk" style="position: absolute; inset: 0; background: {{t.photo}}; border-radius: 0; object-fit: cover; display: block">
+            <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reply" aria-labelledby="rp-h" style="background: {{t.track}}; padding: 144px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: center">
+        <div class="rv" style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <div style="position: relative; aspect-ratio: 4 / 5; background: {{t.photo}}">
+            <img data-slot="towerBSite" src="/_blob/63563bddef8fb0534f0a376b2c1501d1" alt="Illustrative image: a residential tower whose concrete frame is complete, facade not yet installed" style="position: absolute; inset: 0; background: {{t.photo}}; border-radius: 0; object-fit: cover; display: block">
+            <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+          </div>
+          <p style="margin: 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">What “structure complete” looks like: frame and slabs done, facade and services still to come. Northfield’s own site photos are linked in its reply; we haven’t verified them.</p>
+        </div>
+        <div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="rp-h" class="rv" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">What does Northfield say?</h2>
+          <sc-if value="{{isClaimed}}" hint-placeholder-val="{{true}}">
+          <p class="rv rv1" style="margin: 0; font-size: 22px; line-height: 1.45">Northfield replied on 15 Oct 2026. We publish replies unedited, next to the records they answer.</p>
+          </sc-if>
+          <sc-if value="{{notClaimed}}" hint-placeholder-val="{{false}}">
+          <p class="rv rv1" style="margin: 0; font-size: 22px; line-height: 1.45">We invited Northfield Estates to respond on 3 Oct 2026. No response yet. Any reply will appear here unedited, next to the records it answers.</p>
+          </sc-if>
+          <sc-if value="{{isClaimed}}" hint-placeholder-val="{{true}}">
+          <div class="rv rv1" style="border-radius: 8px; background: {{t.claimBg}}; padding: 26px 28px; display: flex; flex-direction: column; gap: 12px">
+            <p style="margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 15px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 4.5h13v8.5h-7l-4 3.2V13h-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Developer says · not yet verified · Head of Customer Relations, from Northfield’s verified account · 15 Oct 2026 · we check it by 5 Nov 2026</p>
+            <p style="margin: 0; font-size: 21px; line-height: 1.55">“Heron Point, Phase 1 was ready in March 2024. Its OC then waited 15 months for a state fire NOC. On Aurelia Heights, Phase 2, the Tower B structure was completed in September 2026.”</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <a href="#attachment" class="press" style="display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 2px 14px; border-radius: 999px; background: {{t.bgSolid}}; font-size: 14px; color: {{t.ink}}; text-decoration: none"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>Fire NOC application · Mar 2024</a>
+              <a href="#attachment" class="press" style="display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 2px 14px; border-radius: 999px; background: {{t.bgSolid}}; font-size: 14px; color: {{t.ink}}; text-decoration: none"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>Site photos · Sep 2026</a>
+            </div>
+          </div>
+          </sc-if>
+          <div class="rv rv2" style="border-radius: 8px; background: {{t.panelSolid}}; padding: 22px 28px; display: flex; flex-direction: column; gap: 8px">
+            <p style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600"><svg width="18" height="18" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"></path></svg>Records show</p>
+            <p style="margin: 0; font-size: 19px">Heron Point, Phase 1 got OC in Jun 2025, 27 months after its original RERA date.</p>
+            <a href="#source" class="press" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 2px 14px; border-radius: 999px; background: {{t.track}}; font-size: 14px; color: {{t.ink}}; text-decoration: none"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5h4l2.5 2.5v6.5h-6.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>DTCP OC order · Jun 2025</a>
+          </div>
+          <p style="margin: 0; display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 17px">
+            <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.6" fill="none" stroke="currentColor" stroke-width="1.2"></circle><path d="M6 3.4V6l1.8 1.2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>Under review since 15 Oct 2026 · decision due by 5 Nov 2026</span>
+            <sc-if value="{{isClaimed}}" hint-placeholder-val="{{true}}"><span>Disputes this quarter: 2 · 1 upheld · <a href="#disputes" class="lk" style="color: {{t.ink}}">Public log</a></span></sc-if>
+          </p>
+          <a href="#disputes" class="lk" style="align-self: flex-start; font-size: 17px; font-weight: 600; color: {{t.ink}}">How replies and disputes work</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="claim" aria-labelledby="cl-h" style="background: {{t.bg}}; padding: 144px 0 120px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
+        <h2 id="cl-h" class="rv" style="margin: 0; max-width: 16ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">Who answers for Northfield here?</h2>
+        <p class="rv rv1" style="margin: 0; display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; min-height: 40px; padding: 4px 20px; border-radius: 999px; box-sizing: border-box; font-size: 19px; font-weight: 600; transition: background-color 260ms ease, color 260ms ease; {{claimSpecimen}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none"><path d="{{claimIcon}}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{claimText}}</p>
+        <p class="rv rv1" style="margin: 0; max-width: 34ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 34px; line-height: 1.15; letter-spacing: -0.025em">{{claimStatement}}</p>
+        <p class="rv rv1" style="margin: 0; max-width: 62ch; font-size: 19px; line-height: 1.55">Claiming lets a developer correct facts, reply next to the records and hear from buyers who ask. It never changes a band. A developer that hasn’t claimed is shown as “Invited” with the date, and we never call anyone uncooperative.</p>
+        <sc-if value="{{notClaimed}}" hint-placeholder-val="{{false}}"><a href="#claim-page" class="lk" style="align-self: flex-start; font-size: 17px; font-weight: 600; color: {{t.ink}}">Are you Northfield? Claim this page, free</a></sc-if>
+      </div>
+    </section>
+
+    <section id="find" aria-labelledby="fd-h" style="background: {{t.track}}; padding: 144px 0">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+        <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="fd-h" class="rv" style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">How do buyers find Northfield’s projects?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 44ch; font-size: 22px; line-height: 1.45">The same way they find anyone’s. Here is what decides it, for buyers and for Northfield.</p>
+          <ul class="rv rv1" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px">
+            <li style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 19px">Order never follows money.</strong><span style="font-size: 17px; line-height: 1.55">The default sort is lowest delivery risk first. No developer pays us, and the fees we earn from lenders never touch ranking. Nobody can buy a place, above or below anyone.</span></li>
+            <li style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 19px">Only verified facts count.</strong><span style="font-size: 17px; line-height: 1.55">Bands, dates and costs come from records we have matched to HARERA, DTCP or MCA. A price list or photo a developer adds is shown and labelled as theirs, but never used to rank. Claiming a page doesn’t move it either.</span></li>
+            <li style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 19px">Bands show in Compare.</strong><span style="font-size: 17px; line-height: 1.55">Buyers see each band side by side with the all-in cost and progress. The “Low delivery risk” filter keeps Low and Moderate, and buyers always see how many projects their filters hid.</span></li>
+          </ul>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+            <span style="font-size: 17px; font-weight: 600">3 BHK, Dwarka Expressway · lowest delivery risk first</span>
+            <button type="button" class="press" onClick="{{toggleLowOnly}}" aria-pressed="{{lowOnlyStr}}" style="{{lowOnlyStyle}}"><span aria-hidden="true" style="{{lowOnlyBox}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>Low delivery risk only</button>
+          </div>
+          <ol aria-label="Search results preview" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
+            <sc-for list="{{findRows}}" as="fr" hint-placeholder-count="3">
+              <li class="rise" style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; align-items: center; padding: 16px 18px; border-radius: 8px; background: {{t.bgSolid}}">
+                <span style="display: flex; flex-direction: column; min-width: 0"><span style="font-size: 17px; font-weight: 700">{{fr.name}}</span><span style="font-size: 15px; color: {{t.ink2}}">{{fr.where}}</span></span>
+                <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px"><span style="{{fr.chipStyle}}"><span aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, 6px); gap: 2px"><sc-for list="{{fr.segs}}" as="fs" hint-placeholder-count="5"><span style="{{fs.style}}"></span></sc-for></span>{{fr.band}}</span><span style="font-size: 15px; font-weight: 600">{{fr.cost}}</span></span>
+              </li>
+            </sc-for>
+          </ol>
+          <p aria-live="polite" style="margin: 0; font-size: 17px; line-height: 1.5">{{findNote}}</p>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">No paid placement. All-in prices are from Plinth’s cost sheets.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="follow" aria-labelledby="fo-h" style="position: relative; background: {{t.bg}}; overflow: hidden">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch">
+        <div style="flex: 1 1 520px; min-width: 0; padding: 144px 64px 160px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="fo-h" class="rv" style="margin: 0; max-width: 14ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">Want alerts on Northfield?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 40ch; font-size: 22px; line-height: 1.45">Follow Northfield and we'll tell you when a filing, order or OC lands, across all 9 companies. Your number is never shared without your tap.</p>
+          <ul class="rv rv1" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
+            <sc-for list="{{alerts}}" as="a" hint-placeholder-count="4">
+              <li style="display: flex; align-items: center; gap: 12px; font-size: 19px"><svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>{{a}}</li>
+            </sc-for>
+          </ul>
+          <fieldset class="rv rv2" style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 4px">
+            <legend style="padding: 0 0 6px; font-size: 15px; color: {{t.ink2}}">How should we tell you? Pick any, or none for in-app only.</legend>
+            <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 19px; cursor: pointer">
+              <input type="checkbox" checked="{{waOn}}" onChange="{{toggleWa}}" style="width: 22px; height: 22px; accent-color: #2F8F6A; cursor: pointer">WhatsApp, to a masked number
+            </label>
+            <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 19px; cursor: pointer">
+              <input type="checkbox" checked="{{mailOn}}" onChange="{{toggleMail}}" style="width: 22px; height: 22px; accent-color: #2F8F6A; cursor: pointer">Email, weekly digest
+            </label>
+          </fieldset>
+          <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 4px">
+            <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 56px; display: inline-flex; align-items: center; gap: 8px; padding: 0 28px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer">{{followLabel}}</button>
+            <span style="font-size: 15px; color: {{t.ink2}}">{{followNote}}</span>
+          </div>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 460px; min-width: 0; position: relative; min-height: 560px; margin-right: -32px; background: {{t.photo}}">
+          <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Illustrative image: Aurelia Heights, Phase 2, one of three Northfield projects under construction" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+          <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Aurelia Heights, Phase 2 · Illustrative image</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="max-width: 1264px; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">This page stands on HARERA registrations, progress reports and complaint orders, DTCP OC orders, MCA filings, and IBBI and NCLT records, read to 14 Oct 2026. Our opinion, based on public records. Not a credit rating. Not issued by any RERA.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#method" class="lk" style="color: {{t.onSlab}}">Methodology v1.2</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report an error</a>
+          <a href="#my-number" class="lk" style="color: {{t.onSlab}}">Who has my number</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.onSlab2}}"></span>HARERA synced 2 hours ago · 17,938 orders read · next QPR due 15 Jan 2027</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"mode":{"editor":"enum","options":["Scored","Facts-only"],"default":"Scored"},"claim":{"editor":"enum","options":["Claimed","Not claimed"],"default":"Claimed"},"$preview":{"width":1280,"height":9000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {themePick: null, sel: 1, table: false, co: 1, cpMode: 'against', cpSel: 4, following: false, wa: false, mail: false, shared: false, asOfQ: 39, playing: false, lowOnly: false};
+  }
+  componentDidMount() {
+    try { this._rm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { this._rm = false; }
+  }
+  componentWillUnmount() {
+    clearTimeout(this._t);
+    clearInterval(this._play);
+  }
+  play() {
+    var self = this;
+    if (this.state.playing) { clearInterval(this._play); this.setState({playing: false}); return; }
+    var q = this.state.asOfQ >= 39 ? 0 : this.state.asOfQ;
+    if (this._rm) { this.setState({asOfQ: 39, playing: false}); return; }
+    clearInterval(this._play);
+    this.setState({asOfQ: q, playing: true});
+    this._play = setInterval(function () {
+      var n = (self.state.asOfQ || 0) + 1;
+      if (n >= 39) { clearInterval(self._play); self.setState({asOfQ: 39, playing: false}); return; }
+      self.setState({asOfQ: n});
+    }, 110);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', headerBg: 'rgba(11,20,17,0.78)',
+      panel: 'rgba(255,255,255,0.045)', overlay: 'rgba(11,20,17,0.62)', chipBg: 'rgba(11,20,17,0.55)', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claim: '#7E8C86', wire: 'rgba(238,243,240,0.30)',
+      emptyCell: 'rgba(255,255,255,0.06)', emptyBorder: '#7D828A', segEmpty: 'transparent', limited: '#A3A8B0', limitedFill: 'transparent', node: '#16211D',
+      panelSolid: '#16221D', claimBg: '#1D2621', slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', headerBg: 'rgba(251,250,247,0.85)',
+      panel: '#FFFFFF', overlay: 'rgba(255,255,255,0.80)', chipBg: 'rgba(255,255,255,0.85)', photo: '#E7E3DA',
+      line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claim: '#9A958B', wire: 'rgba(27,26,23,0.30)',
+      emptyCell: '#EEEBE4', emptyBorder: '#8C9199', segEmpty: '#FFFFFF', limited: '#6B7079', limitedFill: '#FFFFFF', node: '#FFFFFF',
+      panelSolid: '#FFFFFF', claimBg: '#F1ECE2', slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', dfill: '#15323A'},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', dfill: '#332B0C'},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', dfill: '#3A2210'},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', dfill: '#3D1A19'},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', dfill: '#341A33'}
+    };
+    function ink(n) { return night ? B[n].dark : B[n].light; }
+    // Facts-only mode (G08): the band is withheld everywhere for Northfield's projects; sourced facts stay.
+    var factsOnly = this.props.mode === 'Facts-only';
+    var claimedNow = this.props.claim !== 'Not claimed';
+    function withheldChip() {
+      var segs = [];
+      for (var j = 0; j < 5; j++) segs.push({style: 'width:6px;height:10px;border-radius:2px;box-sizing:border-box;border:1px solid ' + T.emptyBorder});
+      return {chipStyle: 'display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;font-size:15px;font-weight:600;line-height:1;white-space:nowrap;border:0;background:' + T.bgSolid + ';color:' + T.ink, segs: segs, label: 'Band withheld · facts only'};
+    }
+    function chip(band) {
+      var base = 'display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;font-size:15px;font-weight:600;line-height:1;white-space:nowrap;color:' + T.ink + ';';
+      var segBase = 'width:6px;height:10px;border-radius:2px;box-sizing:border-box;';
+      var segs = [];
+      var j;
+      if (band === 'Not scored') {
+        for (j = 0; j < 5; j++) segs.push({style: segBase + 'border:1px solid ' + T.emptyBorder});
+        // Borderless chip; this one sits inside a t.track panel, so it takes the solid ground to stay visible
+        return {chipStyle: base + 'background:' + T.bgSolid + ';border:0;color:' + T.ink, segs: segs, label: 'Delivery risk: not scored'};
+      }
+      for (j = 1; j <= 5; j++) segs.push({style: segBase + (j <= B[band].i ? 'background:' + ink(band) : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder)});
+      return {chipStyle: base + 'background:' + (night ? B[band].dfill : B[band].fill) + ';border:0', segs: segs, label: 'Delivery risk: ' + band + ', low confidence'};
+    }
+
+    // Outcome shapes: work in greyscale (shape carries the meaning). Stripes = under construction.
+    var stripes = 'repeating-linear-gradient(45deg,' + T.accentText + ' 0 3px,transparent 3px 6px)';
+    function shape(cat, size) {
+      var z = 'display:inline-block;flex:none;box-sizing:border-box;width:' + size + 'px;height:' + size + 'px;';
+      if (cat === 'ontime') return z + 'border-radius:50%;background:' + T.accentText;
+      if (cat === 'mid') return z + 'border-radius:50%;border:2px solid ' + T.ink2 + ';background:linear-gradient(90deg,' + T.ink2 + ' 50%,transparent 50%)';
+      if (cat === 'late') return z + 'border-radius:3px;background:' + T.ink;
+      return z + 'border-radius:50%;background:' + stripes;
+    }
+    var outcomeText = {ontime: 'On time or up to 6 months late', mid: '6 to 12 months late', late: 'More than 12 months late', ongoing: 'Under construction'};
+
+    // Northfield group projects (fictional; finished-project names and dates are artboard assumptions)
+    var TODAY = 2026.796;
+    var P = [
+      {name: 'Cedar Walk, Phase 1', units: 320, sector: 'Sector 69', rera: 'GGM/118/50/2017/24', company: 'Cedarline Developers', reg: 2017.67, regL: 'Sep 2017', orig: 2019.42, origL: 'Jun 2019', ext: 0, oc: 2019.25, ocL: 'Apr 2019', cat: 'ontime', delay: '2 m early', result: 'OC came 2 months before the original RERA date.', src: ['HARERA registration · 2017', 'DTCP OC order · Apr 2019']},
+      {name: 'Aurelia Heights, Phase 1', units: 440, sector: 'Sector 37D', rera: 'GGM/131/63/2017/38', company: 'Northfield Buildtech', reg: 2017.58, regL: 'Aug 2017', orig: 2020.92, origL: 'Dec 2020', ext: 0.5, oc: 2023.17, ocL: 'Mar 2023', cat: 'late', delay: '+21 m', result: 'OC came 27 months after the original RERA date. That is 21 months after the 6-month COVID extension.', src: ['HARERA registration · 2017', 'HARERA COVID-19 extension · 2020', 'DTCP OC order · Mar 2023']},
+      {name: 'Wren Court', units: 260, sector: 'Sector 95', rera: 'GGM/176/108/2018/09', company: 'Wrenfield Infra', reg: 2018.0, regL: 'Jan 2018', orig: 2020.92, origL: 'Dec 2020', ext: 0.5, oc: 2021.83, ocL: 'Nov 2021', cat: 'ontime', delay: '+5 m', result: 'OC came 11 months after the original RERA date. That is 5 months after the 6-month COVID extension.', src: ['HARERA registration · 2018', 'HARERA COVID-19 extension · 2020', 'DTCP OC order · Nov 2021']},
+      {name: 'Opaline Residences', units: 380, sector: 'Sector 84', rera: 'GGM/262/194/2018/71', company: 'Opaline Realtors LLP', reg: 2018.83, regL: 'Nov 2018', orig: 2022.42, origL: 'Jun 2022', ext: 0, oc: 2023.33, ocL: 'May 2023', cat: 'mid', delay: '+11 m', result: 'OC came 11 months after the original RERA date.', src: ['HARERA registration · 2018', 'DTCP OC order · May 2023']},
+      {name: 'Heron Point, Phase 1', units: 420, sector: 'Sector 104', rera: 'GGM/301/233/2019/15', company: 'Heronstone Projects', reg: 2019.17, regL: 'Mar 2019', orig: 2023.17, origL: 'Mar 2023', ext: 0, oc: 2025.42, ocL: 'Jun 2025', cat: 'late', delay: '+27 m', result: 'OC came 27 months after the original RERA date. Northfield has replied about this project.', src: ['HARERA registration · 2019', 'DTCP OC order · Jun 2025']},
+      {name: 'Linden Square', units: 300, sector: 'Sector 67A, Golf Course Ext Rd', rera: 'GGM/349/281/2019/56', company: 'Linden Habitat', reg: 2019.5, regL: 'Jul 2019', orig: 2023.92, origL: 'Dec 2023', ext: 0, oc: 2024.67, ocL: 'Sep 2024', cat: 'mid', delay: '+9 m', result: 'OC came 9 months after the original RERA date.', src: ['HARERA registration · 2019', 'DTCP OC order · Sep 2024']},
+      {name: 'Cedar Walk, Phase 2', units: 360, sector: 'Sector 69', rera: 'GGM/566/298/2022/31', company: 'Cedarline Developers', reg: 2022.17, regL: 'Mar 2022', orig: 2027.17, origL: 'Mar 2027', ongoing: true, band: 'Moderate', built: 70, time: 92, cat: 'ongoing', delay: 'due Mar 2027', result: 'Under construction: 70% built with 92% of the promised time used.', src: ['HARERA QPR · Apr–Jun 2026']},
+      {name: 'Aurelia Heights, Phase 2', units: 500, sector: 'Sector 37D', rera: 'GGM/673/405/2022/117', company: 'Northfield Buildtech', reg: 2022.92, regL: 'Dec 2022', orig: 2027.92, origL: 'Dec 2027', ongoing: true, band: 'Elevated', built: 41, time: 77, cat: 'ongoing', delay: 'due Dec 2027', result: 'Under construction: 41% built with 77% of the promised time used. 72% of units are sold.', src: ['HARERA QPR · Apr–Jun 2026']},
+      {name: 'Heron Point, Phase 2', units: 420, sector: 'Sector 104', rera: 'GGM/902/634/2026/12', company: 'Heronstone Projects', reg: 2026.25, regL: 'Apr 2026', orig: 2031.25, origL: 'Apr 2031', ongoing: true, band: 'Not scored', built: null, time: 11, cat: 'ongoing', delay: 'due Apr 2031', result: 'Not scored: registered less than 6 months ago. We show the facts until there is enough to score.', src: ['HARERA registration · Apr 2026']}
+    ];
+    var sel = Math.max(0, Math.min(P.length - 1, Number(s.sel)));
+
+    function f(y) { return (y - 2017) / 15 * 100; }
+    var asOfQ = Math.max(0, Math.min(39, Number(s.asOfQ)));
+    var A = asOfQ >= 39 ? TODAY : 2017 + asOfQ / 4;
+    var QM = ['Jan', 'Apr', 'Jul', 'Oct'];
+    var asOfLabel = asOfQ >= 39 ? 'Oct 2026, today' : QM[asOfQ % 4] + ' ' + (2017 + Math.floor(asOfQ / 4));
+    var abs = 'position:absolute;display:block;box-sizing:border-box;';
+    function marks(p, i) {
+      var bars = [], dots = [];
+      if (A < p.reg) return {bars: bars, dots: dots};
+      var R = f(p.reg), O = f(p.orig), Af = f(A);
+      var dl = 'animation-delay:' + (i * 70) + 'ms;';
+      if (p.ongoing) {
+        var N = f(Math.min(TODAY, A));
+        if (O > N) bars.push({style: abs + dl + 'top:25px;height:2px;left:' + N + '%;width:' + (O - N) + '%;background:' + T.lineStrong});
+        bars.push({style: abs + dl + 'top:23px;height:6px;border-radius:3px;left:' + R + '%;width:' + Math.max(0.4, N - R) + '%;background:' + stripes});
+        dots.push({text: '', style: abs + dl + 'top:20px;left:calc(' + O + '% - 6px);width:12px;height:12px;border-radius:50%;border:2px solid ' + T.ink + ';background:' + T.bg});
+        if (A >= TODAY - 0.01) dots.push({text: p.delay, style: abs + dl + 'font-size:14px;font-weight:600;white-space:nowrap;color:' + T.ink2 + ';' + (O > 85 ? 'top:-2px;line-height:18px;right:calc(' + (100 - O) + '% + 4px)' : 'top:15px;line-height:22px;left:calc(' + O + '% + 12px)')});
+        return {bars: bars, dots: dots};
+      }
+      var C = f(p.oc), E = p.ext / 15 * 100;
+      bars.push({style: abs + dl + 'top:25px;height:2px;left:' + R + '%;width:' + (Math.min(O, Af) - R) + '%;background:' + T.lineStrong});
+      if (E && A >= 2020.25) bars.push({style: abs + dl + 'top:20px;height:12px;left:' + O + '%;width:' + E + '%;border-radius:2px;background:repeating-linear-gradient(45deg,' + T.lineStrong + ' 0 2px,transparent 2px 5px)'});
+      var start = O + E;
+      var col = p.cat === 'late' ? T.ink : (p.cat === 'mid' ? T.ink2 : T.accentText);
+      if (C >= start) { var end = Math.min(C, Af); if (end > start) bars.push({style: abs + dl + 'top:23px;height:6px;border-radius:3px;left:' + start + '%;width:' + (end - start) + '%;background:' + col}); }
+      else if (C < O && A >= p.oc) bars.push({style: abs + dl + 'top:23px;height:6px;border-radius:3px;left:' + C + '%;width:' + (O - C) + '%;background:' + T.accentText});
+      dots.push({text: '', style: abs + dl + 'top:20px;left:calc(' + O + '% - 6px);width:12px;height:12px;border-radius:50%;border:2px solid ' + T.ink + ';background:' + T.bg});
+      if (A >= p.oc) {
+        dots.push({text: '', style: abs + dl + 'top:18px;left:calc(' + C + '% - 8px);' + shape(p.cat, 16).replace('display:inline-block;', '')});
+        dots.push({text: p.delay, style: abs + dl + 'top:15px;font-size:14px;font-weight:700;line-height:22px;white-space:nowrap;color:' + T.ink + ';left:calc(' + Math.max(C, start, O) + '% + 14px)'});
+      } else if (A > p.orig) {
+        var over = Math.round((A - p.orig - p.ext) * 12);
+        dots.push({text: over > 0 ? '+' + over + ' m, no OC yet' : 'no OC yet', style: abs + dl + 'top:15px;font-size:14px;font-weight:600;line-height:22px;white-space:nowrap;color:' + T.ink2 + ';left:calc(' + Math.max(Af, O) + '% + 14px)'});
+      }
+      return {bars: bars, dots: dots};
+    }
+    var rows = P.map(function (p, i) {
+      var on = i === sel;
+      var mk = marks(p, i);
+      return {
+        name: p.name, on: on, bars: mk.bars, dots: mk.dots,
+        origLabel: p.origL, ocLabel: p.ongoing ? 'Under construction' : p.ocL, delayLabel: p.ongoing ? '—' : p.delay,
+        aria: p.name + ': original RERA date ' + p.origL + (p.ongoing ? ', under construction' : ', OC ' + p.ocL + ', ' + outcomeText[p.cat].toLowerCase()),
+        pick: function () { if (self.state.sel !== i) self.setState({sel: i}); },
+        liStyle: 'transition:opacity .3s ease;opacity:' + (A < p.reg ? 0.32 : 1),
+        style: 'width:100%;height:52px;display:grid;grid-template-columns:240px minmax(0,1fr);align-items:center;padding:0;border:0;border-radius:8px;font:inherit;text-align:left;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.track : 'transparent') + ';transition:background-color .2s ease',
+        trStyle: 'border-top:1px solid ' + T.line + ';background:' + (on ? T.track : 'transparent')
+      };
+    });
+    var ticks = [2017, 2019, 2021, 2023, 2025, 2027, 2029, 2031].map(function (y) {
+      return {text: String(y), style: 'position:absolute;top:0;transform:translateX(-50%);font-size:14px;line-height:24px;color:' + T.ink2 + ';left:calc(240px + (100% - 320px) * ' + ((y - 2017) / 15).toFixed(4) + ')'};
+    });
+    var tf = ((A - 2017) / 15).toFixed(4);
+    var todayRule = 'position:absolute;top:30px;bottom:30px;width:2px;margin-left:-1px;background:' + T.ink + ';left:calc(240px + (100% - 320px) * ' + tf + ')';
+    var todayLabel = 'position:absolute;bottom:0;transform:translateX(-50%);font-size:14px;font-weight:600;line-height:24px;white-space:nowrap;color:' + T.ink + ';left:calc(240px + (100% - 320px) * ' + tf + ')';
+
+    var strip = P.map(function (p, i) {
+      var on = i === sel;
+      return {
+        on: on, aria: p.name + ': ' + outcomeText[p.cat],
+        pick: function () { self.setState({sel: i}); },
+        btnStyle: 'width:52px;height:52px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:8px;cursor:pointer;background:' + (on ? T.track : 'transparent') + ';' + (on ? 'outline:2px solid ' + T.ink + ';outline-offset:-2px' : ''),
+        shapeStyle: shape(p.cat, 30)
+      };
+    });
+    var legend = ['ontime', 'mid', 'late', 'ongoing'].map(function (c) { return {style: shape(c, 14), text: outcomeText[c]}; });
+
+    var p = P[sel];
+    var facts = p.ongoing ? [
+      {k: 'Registered', v: p.regL}, {k: 'Original RERA date', v: p.origL}, {k: 'Built', v: p.built == null ? 'First QPR due' : p.built + '%'}, {k: 'Time used', v: p.time + '%'}, {k: 'Units (HARERA)', v: p.units.toLocaleString('en-IN')}
+    ] : [
+      {k: 'Registered', v: p.regL}, {k: 'Original RERA date', v: p.origL}, {k: 'COVID extension', v: p.ext ? '+6 m, not counted' : 'None'}, {k: 'OC granted', v: p.ocL}, {k: 'Units (HARERA)', v: p.units.toLocaleString('en-IN')}
+    ];
+    var cur = {name: p.name, sector: p.sector, rera: p.rera, company: p.company, ongoing: !!p.ongoing, finished: !p.ongoing, outcome: outcomeText[p.cat], facts: facts, result: p.result, src: p.src};
+    var curChip = factsOnly && p.ongoing ? withheldChip() : chip(p.ongoing ? p.band : 'Moderate');
+
+    // Linked companies (fictional)
+    var C = [
+      {short: 'Northfield Estates', sub: 'Group parent', full: 'Northfield Estates Pvt Ltd', link: 'Group parent', projects: 'No RERA projects in its own name', x: 50, y: 50, dash: false},
+      {short: 'NF Buildtech', sub: '2 projects', full: 'Northfield Buildtech Pvt Ltd', link: '100% owned by the parent, 2 common directors', projects: 'Aurelia Heights, Phase 1 and Phase 2', x: 50, y: 11, dash: false},
+      {short: 'Cedarline', sub: '2 projects', full: 'Cedarline Developers Pvt Ltd', link: '74% owned by the parent', projects: 'Cedar Walk, Phase 1 and Phase 2', x: 81, y: 22, dash: false},
+      {short: 'Wrenfield Infra', sub: '1 project', full: 'Wrenfield Infra Pvt Ltd', link: '2 common directors, no shareholding', projects: 'Wren Court', x: 85, y: 50, dash: true},
+      {short: 'Opaline Realtors', sub: '1 project', full: 'Opaline Realtors LLP', link: 'The parent is a designated partner', projects: 'Opaline Residences', x: 81, y: 78, dash: false},
+      {short: 'Heronstone', sub: '2 projects', full: 'Heronstone Projects Pvt Ltd', link: '100% owned by the parent', projects: 'Heron Point, Phase 1 and Phase 2', x: 50, y: 89, dash: false},
+      {short: 'Linden Habitat', sub: '1 project', full: 'Linden Habitat Pvt Ltd', link: '51% owned by the parent', projects: 'Linden Square', x: 19, y: 78, dash: false},
+      {short: 'NF Land Holdings', sub: 'Land only', full: 'NF Land Holdings Pvt Ltd', link: '100% owned by the parent', projects: 'Holds land, no RERA projects', x: 15, y: 50, dash: false},
+      {short: 'NF Facility Services', sub: 'Maintenance', full: 'Northfield Facility Services Pvt Ltd', link: '1 common director, no shareholding', projects: 'Maintenance services, no RERA projects', x: 19, y: 22, dash: true}
+    ];
+    var coSel = Math.max(0, Math.min(C.length - 1, Number(s.co)));
+    var spokes = C.slice(1).map(function (c, i) {
+      var on = coSel === i + 1;
+      return {x: c.x, y: c.y, dash: c.dash ? '5 5' : '0', w: on ? 2.5 : 1.5, color: on ? T.ink : T.lineStrong};
+    });
+    var nodes = C.map(function (c, i) {
+      var on = i === coSel;
+      var parent = i === 0;
+      return {
+        short: c.short, sub: c.sub, on: on,
+        pick: function () { self.setState({co: i}); },
+        style: 'position:absolute;left:' + c.x + '%;top:' + c.y + '%;transform:translate(-50%,-50%);min-width:' + (parent ? 200 : 150) + 'px;min-height:' + (parent ? 64 : 56) + 'px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 16px;box-sizing:border-box;border-radius:8px;font:inherit;cursor:pointer;text-align:center;' +
+          'border:0;transition:background-color .2s ease,color .2s ease;' + (on ? 'background:' + T.ink + ';color:' + T.bg : 'background:' + T.node + ';color:' + T.ink),
+        subStyle: 'font-size:13px;line-height:1.3;color:' + (on ? T.bg : T.ink2)
+      };
+    });
+    var co = C[coSel];
+
+    // Complaints decided (fictional half-yearly counts, group level)
+    var H = [
+      {l1: 'Jan–Jun', l2: '2023', a: 2, f: 1, w: 1, u: 2980},
+      {l1: 'Jul–Dec', l2: '2023', a: 3, f: 1, w: 0, u: 2980},
+      {l1: 'Jan–Jun', l2: '2024', a: 4, f: 2, w: 1, u: 2980},
+      {l1: 'Jul–Dec', l2: '2024', a: 5, f: 1, w: 1, u: 2980},
+      {l1: 'Jan–Jun', l2: '2025', a: 7, f: 2, w: 0, u: 2980},
+      {l1: 'Jul–Dec', l2: '2025', a: 6, f: 1, w: 2, u: 2980},
+      {l1: 'Jan–Jun', l2: '2026', a: 5, f: 2, w: 1, u: 3400},
+      {l1: 'Jul–Oct', l2: '2026', a: 3, f: 0, w: 1, u: 3400, partial: true}
+    ];
+    // G11: complaints decided against the group per 100 registered units, next to every count.
+    function per100(h) { return (h.a / h.u * 100).toFixed(2); }
+    var rateMode = s.cpMode === 'rate';
+    var all = s.cpMode === 'all';
+    var unit = 26;
+    var cpSel = Math.max(0, Math.min(7, Number(s.cpSel)));
+    var bars = H.map(function (h, i) {
+      var on = i === cpSel;
+      var segs = [];
+      if (all && h.w) segs.push({style: 'display:block;width:56px;height:' + (h.w * unit) + 'px;box-sizing:border-box;background:repeating-linear-gradient(45deg,' + T.ink2 + ' 0 2px,transparent 2px 6px)'});
+      if (all && h.f) segs.push({style: 'display:block;width:56px;height:' + (h.f * unit) + 'px;background:' + T.accent});
+      segs.push({style: 'display:block;width:56px;height:' + (rateMode ? Math.round(h.a / h.u * 100 * 1000) : h.a * unit) + 'px;background:' + T.ink + ';border-radius:' + (all && (h.f || h.w) ? '0' : '4px 4px 0 0')});
+      if (segs.length > 1) segs[0].style += ';border-radius:4px 4px 0 0';
+      var tot = rateMode ? per100(h) : (all ? h.a + h.f + h.w : h.a);
+      return {
+        l1: h.l1, l2: h.l2, total: String(tot), on: on, segs: segs,
+        aria: h.l1 + ' ' + h.l2 + ': ' + h.a + ' decided against the promoter, ' + per100(h) + ' per 100 units, ' + h.f + ' in its favour, ' + h.w + ' withdrawn' + (h.partial ? ', partial half-year' : ''),
+        pick: function () { if (self.state.cpSel !== i) self.setState({cpSel: i}); },
+        style: 'display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;padding:0;border:0;border-radius:8px 8px 0 0;font:inherit;color:' + T.ink + ';cursor:pointer;transition:background-color .2s ease;background:' + (on ? T.track : 'transparent')
+      };
+    });
+    var grid = [0, 5, 10].map(function (v) {
+      return {
+        text: String(v),
+        lineStyle: 'position:absolute;left:0;right:0;bottom:' + (v * unit) + 'px;height:0;border-top:1px solid ' + T.line,
+        labelStyle: 'position:absolute;left:-32px;width:24px;text-align:right;bottom:' + (v * unit - 9) + 'px;font-size:13px;line-height:18px;color:' + T.muted
+      };
+    });
+    var hc = H[cpSel];
+    var cpCur = {
+      label: hc.l1 + ' ' + hc.l2 + (hc.partial ? ' (partial)' : ''),
+      text: hc.a + ' decided against the promoter, or ' + per100(hc) + ' per 100 units on ' + hc.u.toLocaleString('en-IN') + ' units. ' + hc.f + ' in its favour, ' + hc.w + ' withdrawn or settled.' + (hc.partial ? ' The half-year is not over yet.' : '')
+    };
+    var cpModes = [{key: 'against', text: 'Against the promoter'}, {key: 'rate', text: 'Per 100 units'}, {key: 'all', text: 'All outcomes'}].map(function (m) {
+      var on = s.cpMode === m.key;
+      return {text: m.text, on: on, pick: function () { self.setState({cpMode: m.key}); }, style: 'height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (on ? T.bgSolid : 'transparent') + ';color:' + T.ink};
+    });
+
+    var lineKey = 'display:inline-block;width:22px;height:0;';
+
+    // G18: how buyers find Northfield's projects. Default sort is lowest delivery risk; no paid placement.
+    var FIND = [
+      {name: 'Kestrel Park', where: 'Orbis Land · Sector 113', band: 'Low', cost: 'All-in ₹2.44 Cr', mine: false},
+      {name: 'Sapphire Grove, Phase 1', where: 'Meridian Habitat · Sector 106', band: 'Moderate', cost: 'All-in ₹2.27 Cr', mine: false},
+      {name: 'Aurelia Heights, Phase 2', where: 'Northfield Estates · Sector 37D', band: 'Elevated', cost: 'All-in ₹2.74 Cr', mine: true}
+    ];
+    var lowOnly = !!s.lowOnly;
+    var hidden = [];
+    var findRows = [];
+    FIND.forEach(function (r) {
+      var withheld = factsOnly && r.mine;
+      var c = withheld ? withheldChip() : chip(r.band);
+      var keep = withheld || !lowOnly || r.band === 'Low' || r.band === 'Moderate';
+      if (!keep) { hidden.push(r.name + ' (' + r.band + ')'); return; }
+      findRows.push({name: r.name, where: r.where, cost: r.cost, chipStyle: c.chipStyle.replace('background:' + T.bgSolid, 'background:' + T.track), segs: c.segs, band: withheld ? 'Band withheld' : r.band});
+    });
+    var findNote = hidden.length ? hidden.length + ' project hidden by the buyer’s filter: ' + hidden.join(', ') + '. Buyers see this line too.' :
+      (factsOnly ? 'In facts-only mode, Northfield’s projects show “Band withheld” and stay in results whatever the risk filter.' : (lowOnly ? 'Nothing hidden.' : 'Turn on the filter to see what a buyer’s risk filter hides, and how we tell them.'));
+    return {
+      t: T,
+      factsOnly: factsOnly, isClaimed: claimedNow, notClaimed: !claimedNow,
+      claimText: claimedNow ? 'Claimed by Northfield · verified signatory' : 'Invited 24 Nov 2025 · not yet claimed',
+      claimIcon: claimedNow ? 'M3 8.5l3.2 3L13 4.5' : 'M2 4h12v8H2zM2 4l6 5 6-5',
+      claimSpecimen: claimedNow ? 'background: ' + T.ink + '; color: ' + T.bg : 'background: ' + T.track + '; color: ' + T.ink,
+      claimStatement: claimedNow ? 'Northfield claimed this page on 2 Dec 2025. Its replies come from a signatory we checked against MCA and HARERA.' : 'We invited Northfield to claim this page on 24 Nov 2025. That is all this line means: the records and the band are the same either way.',
+      findRows: findRows, findNote: findNote,
+      lowOnlyStr: lowOnly ? 'true' : 'false',
+      toggleLowOnly: function () { self.setState({lowOnly: !self.state.lowOnly}); },
+      lowOnlyStyle: 'display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 18px 0 12px;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (lowOnly ? T.ink : T.bgSolid) + ';color:' + (lowOnly ? T.bg : T.ink),
+      lowOnlyBox: 'flex:none;width:20px;height:20px;border-radius:6px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;' + (lowOnly ? 'background:' + T.bg + ';color:' + T.ink + ';' : 'border:2px solid ' + T.ink2 + ';color:transparent;'),
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+
+      following: s.following,
+      followingStr: s.following ? 'true' : 'false',
+      followLabel: s.following ? 'Following Northfield · alerts on' : 'Follow developer',
+      followShort: s.following ? 'Following' : 'Follow',
+      toggleFollow: function () { self.setState({following: !self.state.following}); },
+      followNote: s.following ? (s.wa || s.mail ? 'Unfollow any time. The developer never sees your number.' : 'Alerts will appear in Following. Add a channel any time.') : 'Unfollow any time. The developer never sees your number.',
+      waOn: !!s.wa, mailOn: !!s.mail,
+      toggleWa: function () { self.setState({wa: !self.state.wa}); },
+      toggleMail: function () { self.setState({mail: !self.state.mail}); },
+      shareLabel: s.shared ? 'Link copied' : 'Share',
+      onShare: function () { clearTimeout(self._t); self.setState({shared: true}); self._t = setTimeout(function () { self.setState({shared: false}); }, 1600); },
+      alerts: ['New RERA registrations', 'Progress reports filed or missed', 'Complaints decided', 'OCs granted and dates extended'],
+
+      strip: strip, legend: legend,
+      chartOn: !s.table, tableOn: !!s.table, tableOnStr: s.table ? 'true' : 'false',
+      asOfQ: asOfQ, asOfLabel: asOfLabel,
+      asOfShort: asOfQ >= 39 ? 'Today · 18 Oct 2026' : 'As of ' + asOfLabel,
+      onAsOf: function (e) { clearInterval(self._play); self.setState({asOfQ: Number(e.target.value), playing: false}); },
+      onPlay: function () { self.play(); },
+      playing: !!s.playing, notPlaying: !s.playing, playingStr: s.playing ? 'true' : 'false',
+      playLabel: s.playing ? 'Pause' : (asOfQ >= 39 ? 'Replay 2017 to today' : 'Play to today'),
+      playBtn: 'display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px 0 20px;border:0;border-radius:999px;background:' + T.ink + ';color:' + T.bg + ';font:inherit;font-size:17px;font-weight:600;cursor:pointer;white-space:nowrap',
+      tableLabel: s.table ? 'Show as a chart' : 'Show as a table',
+      toggleTable: function () { self.setState({table: !self.state.table}); },
+      ticks: ticks, todayRule: todayRule, todayLabel: todayLabel, rows: rows,
+      keyOrig: 'display:inline-block;width:12px;height:12px;border-radius:50%;box-sizing:border-box;border:2px solid ' + T.ink,
+      keyExt: 'display:inline-block;width:24px;height:12px;border-radius:2px;background:repeating-linear-gradient(45deg,' + T.lineStrong + ' 0 2px,transparent 2px 5px)',
+      keyBuild: 'display:inline-block;width:24px;height:6px;border-radius:3px;background:' + stripes,
+      keyLate: 'display:inline-block;width:24px;height:6px;border-radius:3px;background:' + T.ink,
+      cur: cur, curChip: curChip, curShape: shape(p.cat, 14),
+
+      spokes: spokes, nodes: nodes, co: co,
+      keySolid: lineKey + 'border-top:2px solid ' + T.ink2,
+      keyDash: lineKey + 'border-top:2px dashed ' + T.ink2,
+
+      cpModes: cpModes, cpAll: all, bars: bars, grid: grid, cpCur: cpCur,
+      keyAgainst: 'display:inline-block;width:14px;height:14px;border-radius:3px;background:' + T.ink,
+      keyFor: 'display:inline-block;width:14px;height:14px;border-radius:3px;background:' + T.accent,
+      keyWd: 'display:inline-block;width:14px;height:14px;border-radius:3px;box-sizing:border-box;background:repeating-linear-gradient(45deg,' + T.ink2 + ' 0 2px,transparent 2px 6px)'
+    };
+  }
+}
+</script>
+</body>
+</html>

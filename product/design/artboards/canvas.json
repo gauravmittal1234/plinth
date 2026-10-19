@@ -1,0 +1,677 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-18T07:35:02Z"
+  },
+  "title": "Home Platform UI · R1",
+  "launch": {
+    "view": "canvas",
+    "page": "web"
+  },
+  "pages": [
+    {
+      "id": "web",
+      "name": "Web"
+    },
+    {
+      "id": "android",
+      "name": "Android app"
+    },
+    {
+      "id": "whatsapp",
+      "name": "WhatsApp"
+    },
+    {
+      "id": "directions",
+      "name": "Directions (archive)"
+    }
+  ],
+  "boards": {
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 1760,
+      "title": "A · Public Record",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "directions"
+    },
+    "DirectionB.dc.html": {
+      "x": 1360,
+      "y": 0,
+      "w": 1280,
+      "h": 1760,
+      "title": "B · Precision Instrument",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "directions"
+    },
+    "DirectionC.dc.html": {
+      "x": 2720,
+      "y": 0,
+      "w": 1280,
+      "h": 1760,
+      "title": "C · Daylight",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "directions"
+    },
+    "LiveNight.dc.html": {
+      "x": 0,
+      "y": 2180,
+      "w": 1280,
+      "h": 2240,
+      "title": "C+ Daylight Live · Night",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "directions"
+    },
+    "LiveDay.dc.html": {
+      "x": 1360,
+      "y": 2180,
+      "w": 1280,
+      "h": 2240,
+      "title": "C+ Daylight Live · Day",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "directions"
+    },
+    "WebHome.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 5040,
+      "title": "Home",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebCostSheet.dc.html": {
+      "x": 6800,
+      "y": 0,
+      "w": 1280,
+      "h": 6900,
+      "title": "Cost-sheet normaliser",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebMethodology.dc.html": {
+      "x": 10880,
+      "y": 0,
+      "w": 1280,
+      "h": 10500,
+      "title": "How Delivery Risk works",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "AppScan.dc.html": {
+      "x": 2350,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Scan · camera identify",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "WaRisk.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 1400,
+      "title": "WhatsApp · risk card",
+      "is_interactive": true,
+      "page": "whatsapp"
+    },
+    "WaCost.dc.html": {
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 1400,
+      "title": "WhatsApp · cost sheet",
+      "is_interactive": true,
+      "page": "whatsapp"
+    },
+    "AppVoice.dc.html": {
+      "x": 2820,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Voice assistant (Ask)",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "AppVisualiseCapture.dc.html": {
+      "x": 3290,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Picture it furnished · capture",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "AppVisualiseResult.dc.html": {
+      "x": 3760,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Picture it furnished · result",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "AppYou.dc.html": {
+      "x": 4230,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "You · privacy and settings",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "WebSearch.dc.html": {
+      "x": 1360,
+      "y": 0,
+      "w": 1280,
+      "h": 2340,
+      "title": "Search results",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebDeveloper.dc.html": {
+      "x": 5440,
+      "y": 0,
+      "w": 1280,
+      "h": 9000,
+      "title": "Developer · Northfield Estates",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "AppExplore.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Explore · home",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "AppMap.dc.html": {
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Map results",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "AppProject.dc.html": {
+      "x": 940,
+      "y": 0,
+      "w": 390,
+      "h": 9800,
+      "title": "Project · Aurelia Heights Ph 2",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "AppRisk.dc.html": {
+      "x": 1410,
+      "y": 0,
+      "w": 390,
+      "h": 5300,
+      "title": "Delivery risk card",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "AppFollowing.dc.html": {
+      "x": 1880,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Following · projects and updates",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "WebProject.dc.html": {
+      "x": 2720,
+      "y": 0,
+      "w": 1280,
+      "h": 9100,
+      "title": "Project page · Aurelia Heights Ph 2",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebCompare.dc.html": {
+      "x": 4080,
+      "y": 0,
+      "w": 1280,
+      "h": 3400,
+      "title": "Compare · 3 projects",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WaAlerts.dc.html": {
+      "x": 940,
+      "y": 0,
+      "w": 1400,
+      "h": 1600,
+      "title": "WhatsApp · alerts, visit booking, login code",
+      "is_interactive": true,
+      "page": "whatsapp"
+    },
+    "WebVisualise.dc.html": {
+      "x": 8160,
+      "y": 0,
+      "w": 1280,
+      "h": 4320,
+      "title": "Picture it furnished",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebFollowing.dc.html": {
+      "x": 9520,
+      "y": 0,
+      "w": 1280,
+      "h": 12100,
+      "title": "Following · since you last looked",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebDevPortal.dc.html": {
+      "x": 12240,
+      "y": 0,
+      "w": 1280,
+      "h": 11400,
+      "title": "Developer workspace · Overview",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebPrivacy.dc.html": {
+      "x": 13600,
+      "y": 0,
+      "w": 1280,
+      "h": 5550,
+      "title": "Privacy centre · who has my number",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebDevInbox.dc.html": {
+      "x": 14960,
+      "y": 0,
+      "w": 1280,
+      "h": 4400,
+      "title": "Developer workspace · Enquiries & visits",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebDevLiveRecord.dc.html": {
+      "x": 16320,
+      "y": 0,
+      "w": 1280,
+      "h": 4300,
+      "title": "Developer workspace · Live Record kit",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebDevFacts.dc.html": {
+      "x": 17680,
+      "y": 0,
+      "w": 1280,
+      "h": 4400,
+      "title": "Developer workspace · From the developer",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebBeforePay.dc.html": {
+      "x": 19040,
+      "y": 0,
+      "w": 1280,
+      "h": 6520,
+      "title": "Before you pay",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebProjectStates.dc.html": {
+      "x": 20400,
+      "y": 0,
+      "w": 1280,
+      "h": 3960,
+      "title": "Project page · hard states",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "AppBeforePay.dc.html": {
+      "x": 4700,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Before you pay (phone)",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "WebAbout.dc.html": {
+      "x": 21760,
+      "y": 0,
+      "w": 1280,
+      "h": 10000,
+      "title": "Who is Plinth",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebSignIn.dc.html": {
+      "x": 23120,
+      "y": 0,
+      "w": 1280,
+      "h": 900,
+      "title": "Sign in to Plinth",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebPricing.dc.html": {
+      "x": 24480,
+      "y": 0,
+      "w": 1280,
+      "h": 7500,
+      "title": "What’s free and what’s Pro",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "AppOnboarding.dc.html": {
+      "x": 5170,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Plinth app · first run",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "WebClaims.dc.html": {
+      "x": 25840,
+      "y": 0,
+      "w": 1280,
+      "h": 5900,
+      "title": "Claims vs records",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "AppClaims.dc.html": {
+      "x": 5640,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Claims vs records",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "WaClaims.dc.html": {
+      "x": 2420,
+      "y": 0,
+      "w": 390,
+      "h": 1340,
+      "title": "WhatsApp · claims check",
+      "is_interactive": true,
+      "page": "whatsapp"
+    },
+    "WebForAgents.dc.html": {
+      "x": 27200,
+      "y": 0,
+      "w": 1280,
+      "h": 13200,
+      "title": "For agents · work with Plinth",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebAgentProfile.dc.html": {
+      "x": 28560,
+      "y": 0,
+      "w": 1280,
+      "h": 5600,
+      "title": "Agent profile and briefs",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WebBrokerCheck.dc.html": {
+      "x": 29920,
+      "y": 0,
+      "w": 1280,
+      "h": 3900,
+      "title": "Is this broker registered?",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "WaAgentOnboarding.dc.html": {
+      "x": 2890,
+      "y": 0,
+      "w": 390,
+      "h": 1300,
+      "title": "WhatsApp · agent onboarding",
+      "is_interactive": true,
+      "page": "whatsapp"
+    },
+    "WebDevOnboarding.dc.html": {
+      "x": 31280,
+      "y": 0,
+      "w": 1280,
+      "h": 7300,
+      "title": "Developer workspace · Claim and verify",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "AppDevCapture.dc.html": {
+      "x": 6110,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Site capture · phone web (developer)",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "WaDevAlerts.dc.html": {
+      "x": 3360,
+      "y": 0,
+      "w": 390,
+      "h": 1880,
+      "title": "Developer WhatsApp alerts",
+      "is_interactive": true,
+      "page": "whatsapp"
+    },
+    "WaDigest.dc.html": {
+      "x": 3830,
+      "y": 0,
+      "w": 390,
+      "h": 1280,
+      "title": "WhatsApp · weekly digest and stale card",
+      "is_interactive": true,
+      "page": "whatsapp"
+    },
+    "AppFamily.dc.html": {
+      "x": 6580,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Family circle · invite, opt-in, revoke",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "AppProjectStates.dc.html": {
+      "x": 7050,
+      "y": 0,
+      "w": 390,
+      "h": 4700,
+      "title": "Project hard states (phone)",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "WebPayAsBuilt.dc.html": {
+      "x": 32640,
+      "y": 0,
+      "w": 1280,
+      "h": 6300,
+      "title": "Pay-as-built check",
+      "expand": "fill",
+      "is_interactive": true,
+      "page": "web"
+    },
+    "AppVisitPass.dc.html": {
+      "x": 7520,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Site-visit co-pilot",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "AppPayAsBuilt.dc.html": {
+      "x": 7990,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Pay-as-built check (phone)",
+      "is_interactive": true,
+      "page": "android"
+    },
+    "WaVisitPass.dc.html": {
+      "x": 4300,
+      "y": 0,
+      "w": 390,
+      "h": 1340,
+      "title": "WhatsApp · visit pass and recap",
+      "is_interactive": true,
+      "page": "whatsapp"
+    },
+    "WaBeforePay.dc.html": {
+      "x": 4770,
+      "y": 0,
+      "w": 390,
+      "h": 1260,
+      "title": "WhatsApp · before you pay",
+      "is_interactive": true,
+      "page": "whatsapp"
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "DirectionB.dc.html",
+    "DirectionC.dc.html",
+    "LiveNight.dc.html",
+    "LiveDay.dc.html",
+    "WebHome.dc.html",
+    "WebCostSheet.dc.html",
+    "WebMethodology.dc.html",
+    "AppScan.dc.html",
+    "WaRisk.dc.html",
+    "WaCost.dc.html",
+    "AppVoice.dc.html",
+    "AppVisualiseCapture.dc.html",
+    "AppVisualiseResult.dc.html",
+    "AppYou.dc.html",
+    "WebSearch.dc.html",
+    "WebDeveloper.dc.html",
+    "AppExplore.dc.html",
+    "AppMap.dc.html",
+    "AppProject.dc.html",
+    "AppRisk.dc.html",
+    "AppFollowing.dc.html",
+    "WebProject.dc.html",
+    "WebCompare.dc.html",
+    "WaAlerts.dc.html",
+    "WebVisualise.dc.html",
+    "WebFollowing.dc.html",
+    "WebDevPortal.dc.html",
+    "WebPrivacy.dc.html",
+    "WebDevInbox.dc.html",
+    "WebDevLiveRecord.dc.html",
+    "WebDevFacts.dc.html",
+    "WebBeforePay.dc.html",
+    "WebProjectStates.dc.html",
+    "AppBeforePay.dc.html",
+    "WebAbout.dc.html",
+    "WebSignIn.dc.html",
+    "WebPricing.dc.html",
+    "AppOnboarding.dc.html",
+    "WebClaims.dc.html",
+    "AppClaims.dc.html",
+    "WaClaims.dc.html",
+    "WebForAgents.dc.html",
+    "WebAgentProfile.dc.html",
+    "WebBrokerCheck.dc.html",
+    "WaAgentOnboarding.dc.html",
+    "WebDevOnboarding.dc.html",
+    "AppDevCapture.dc.html",
+    "WaDevAlerts.dc.html",
+    "WaDigest.dc.html",
+    "AppFamily.dc.html",
+    "AppProjectStates.dc.html",
+    "WebPayAsBuilt.dc.html",
+    "AppVisitPass.dc.html",
+    "AppPayAsBuilt.dc.html",
+    "WaVisitPass.dc.html",
+    "WaBeforePay.dc.html"
+  ],
+  "notes": {
+    "dirTitle": {
+      "x": 0,
+      "y": -300,
+      "text": "Visual directions: same project page, three looks",
+      "kind": "title1",
+      "maxW": 4000,
+      "page": "directions"
+    },
+    "liveTitle": {
+      "x": 0,
+      "y": 1880,
+      "text": "Daylight Live: interactive and new-age (press Play)",
+      "kind": "title1",
+      "maxW": 2640,
+      "page": "directions"
+    },
+    "webTitle": {
+      "x": 0,
+      "y": -300,
+      "text": "Web · R1 (Daylight Live, guided story)",
+      "kind": "title1",
+      "maxW": 33920,
+      "page": "web"
+    },
+    "appTitle": {
+      "x": 0,
+      "y": -300,
+      "text": "Android app · R1",
+      "kind": "title1",
+      "maxW": 8380,
+      "page": "android"
+    },
+    "waTitle": {
+      "x": 0,
+      "y": -300,
+      "text": "WhatsApp · R1 (illustrative)",
+      "kind": "title1",
+      "maxW": 5160,
+      "page": "whatsapp"
+    }
+  },
+  "designSystems": []
+}

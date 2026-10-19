@@ -1,0 +1,32 @@
+[
+  {
+    "slot": "ordersDesk",
+    "aspect": "4:5",
+    "prompt": "A short stack of printed regulator order documents, stapled at the corner, lying on a plain teak office desk in Gurugram, India. A pair of reading glasses and a ballpoint pen rest on the top page, soft window light from the left, shallow depth of field, calm and documentary. The printed text is small and not legible. No seals, no logos, no names, no readable words."
+  },
+  {
+    "slot": "towerBSite",
+    "aspect": "4:5",
+    "prompt": "Ground-level photograph of a 30-storey residential tower in Gurugram, India, at the structure-complete stage: the reinforced concrete frame and all floor slabs are finished up to the roof, but there is no facade, glazing or paint yet. A tower crane stands beside it, scaffolding at the lower floors, a construction site boundary in the foreground, hazy winter morning light. Shot like an honest site-visit photo, slightly off-axis. No signage, no logos, no text."
+  },
+  {
+    "slot": "costSheetDesk",
+    "aspect": "4:5",
+    "prompt": "Top-down photograph of a two-page printed apartment cost sheet lying flat on a light wooden dining table in an Indian home, next to a smartphone and a pen, natural daylight from a window, a cup of chai at the edge of the frame. The sheet shows a simple table of line items and amounts, but the text and numbers are too small to read. No logos, no brand names, no legible words."
+  },
+  {
+    "slot": "deedKeys",
+    "aspect": "3:4",
+    "prompt": "Close-up photograph of a new set of apartment keys on a plain steel ring, resting on a signed property sale deed printed on Indian stamp paper, lying on a desk. Warm late-afternoon light, shallow depth of field, the signatures and text out of focus and not legible. No logos, no names, no readable words."
+  },
+  {
+    "slot": "salesGallery",
+    "aspect": "4:5",
+    "prompt": "An empty property sales gallery in Gurugram, India, in the quiet of mid-morning: a long white desk with two chairs facing it, and a large architectural scale model of two residential towers under a clear acrylic cover in the foreground. Polished stone floor, soft even light, no people. Calm, slightly clinical, documentary. No signage, no logos, no brochures with readable text."
+  },
+  {
+    "slot": "phoneSiteVisit",
+    "aspect": "4:5",
+    "prompt": "Over-the-shoulder photograph of a young Indian homebuyer holding up a smartphone to photograph a bare, unfurnished living room in a newly built apartment during a site visit: plain off-white walls, a large window with daylight, grey vitrified floor tiles, no furniture. The phone screen shows the same room. Natural light, honest and documentary, the buyer's face not visible. No logos, no text."
+  }
+]

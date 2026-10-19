@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WhatsApp visit pass and recap</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pl-lit{from{transform:scaleX(0)}to{transform:none}}
+.pl-rise{animation:pl-rise .6s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1)}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1340px; overflow: hidden; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 16px; line-height: 22px; font-variant-numeric: tabular-nums lining-nums">
+
+  <div style="flex: none; padding: 6px 12px 6px 16px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 16px; color: {{t.muted}}">
+    <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><span>WhatsApp conversation (illustrative) · {{stageNote}}</span><sc-if value="{{isAfter}}" hint-placeholder-val="{{false}}"><button type="button" class="pl-press" onClick="{{replay}}" style="flex: none; height: 28px; padding: 0 6px; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-weight: 600; cursor: pointer">Replay</button></sc-if></span>
+    <div role="group" aria-label="Show the conversation on" style="display: flex; gap: 4px; padding: 3px; border-radius: 999px; background: {{t.pillBg}}">
+      <sc-for list="{{stages}}" as="sg" hint-placeholder-count="3"><button type="button" class="pl-press" onClick="{{sg.pick}}" aria-pressed="{{sg.on}}" style="{{sg.style}}">{{sg.label}}</button></sc-for>
+    </div>
+  </div>
+
+  <header style="flex: none; height: 56px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
+    <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+    <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="{{t.accent}}"></circle><path d="M11 24h14M13.5 24v-8h9v8" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 4px">
+      <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 17px; line-height: 22px; font-weight: 600">Plinth<svg width="16" height="16" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+      <span aria-live="polite" style="font-size: 13px; line-height: 16px; color: {{t.muted}}">{{subtitle}}</span>
+    </div>
+    <button type="button" class="pl-press" aria-label="More options" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="5" r="1.7" fill="currentColor"></circle><circle cx="11" cy="11" r="1.7" fill="currentColor"></circle><circle cx="11" cy="17" r="1.7" fill="currentColor"></circle></svg></button>
+  </header>
+
+  <main aria-label="Conversation with Plinth" style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 8px 12px 16px; background: {{t.chatBg}}">
+
+    <sc-if value="{{isPass}}" hint-placeholder-val="{{true}}">
+      <div style="align-self: flex-start; width: 270px; display: flex; flex-direction: column; gap: 4px">
+        <div style="padding: 4px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+          <div role="img" aria-label="{{passLabel}}" style="width: 262px; height: 300px; box-sizing: border-box; border-radius: 12px; background: #FFFFFF; color: #1B1A17; display: flex; flex-direction: column; overflow: hidden">
+            <div style="position: relative; flex: none; height: 84px; overflow: hidden; background: #E7E3DA">
+              <img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="" style="position: absolute; left: 0; top: 0; width: 262px; height: 84px; background: #E7E3DA; object-fit: cover; object-position: 50% 78%; display: block">
+              <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 60px; background: linear-gradient(rgba(12,14,13,0), rgba(12,14,13,0.78))"></div>
+              <span style="position: absolute; top: 4px; right: 8px; font-size: 13px; line-height: 16px; color: #FFFFFF; text-shadow: 0 1px 2px rgba(0,0,0,0.6)">Illustrative image</span>
+              <div style="position: absolute; left: 12px; right: 12px; bottom: 6px; display: flex; flex-direction: column; color: #FFFFFF">
+                <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 16px; line-height: 19px; letter-spacing: -0.02em">Aurelia Heights, Phase 2</span>
+                <span style="font-size: 13px; line-height: 16px">Sales gallery · Sector 37D, Gurugram</span>
+              </div>
+            </div>
+            <div style="flex: 1; min-height: 0; padding: 10px 14px 10px; display: flex; flex-direction: column">
+              <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 34px; letter-spacing: -0.045em">Sat 24 Oct</p>
+              <span style="margin-top: 2px; font-size: 14px; line-height: 18px">11:00 am–12:00 pm · 2 visitors</span>
+              <div style="margin-top: 8px; display: flex; align-items: center; gap: 10px">
+                <span style="flex: none; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; line-height: 28px; letter-spacing: 0.02em">4821</span>
+                <span style="font-size: 13px; line-height: 16px; color: #3F3C36">Your visit code. Show it instead of your number.</span>
+              </div>
+              <span style="margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; line-height: 16px; font-weight: 600"><svg width="12" height="13" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>5 questions from the records · no agent</span>
+              <div style="margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px">
+                <div style="min-width: 0; display: flex; flex-direction: column; font-size: 13px; line-height: 16px; color: #3F3C36">
+                  <span style="display: inline-flex; align-items: center; gap: 6px; margin-bottom: 2px"><svg width="16" height="16" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="#1D5A44"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 15px; line-height: 18px; letter-spacing: -0.02em; color: #1B1A17">Plinth</span></span>
+                  <span style="font-weight: 700; color: #1B1A17">No developer pays us. Ever.</span>
+                  <span>Booked 18 Oct 2026</span>
+                </div>
+                <div style="flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px">
+                  <svg width="48" height="48" viewBox="0 0 25 25" aria-hidden="true"><rect width="25" height="25" fill="#FFFFFF"></rect><path d="{{qrP}}" fill="#1B1A17"></path></svg>
+                  <span style="font-size: 13px; line-height: 16px; font-weight: 600">Visit code</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 8px 8px 2px">
+            <p style="margin: 0">Visit booked: <strong>Aurelia Heights, Phase 2</strong>, Sat 24 Oct, 11 am. Show code <strong>4821</strong> at the sales gallery. You don't have to give your number at the gate.</p>
+            <p style="margin: 6px 0 0">I've added 5 questions from the records to your pass.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:15 am</span></p>
+          </div>
+        </div>
+        <div role="group" aria-label="Quick replies" style="display: flex; flex-direction: column; gap: 4px">
+          <button type="button" class="pl-press" style="{{btnSpent}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>See my 5 questions</button>
+          <button type="button" class="pl-press" style="{{btn}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Change or cancel</button>
+        </div>
+      </div>
+
+      <div style="align-self: flex-end; max-width: 260px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+        <div style="padding: 5px 10px; border-radius: 12px; background: {{t.quoteBg}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">Visit pass · Aurelia Heights, Phase 2</div>
+        <div style="padding: 4px 8px 0">See my 5 questions<span style="float: right; display: inline-flex; align-items: center; gap: 4px; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:16 am<svg width="18" height="12" viewBox="0 0 18 12" role="img" aria-label="Read"><path d="M1.5 6.5l3 3 6.5-7.5M8.5 9.5l6.5-7.5" fill="none" stroke="{{t.accentText}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div>
+      </div>
+
+      <div style="align-self: flex-start; width: 300px; display: flex; flex-direction: column; gap: 4px">
+        <div class="pl-rise" style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+          <p style="margin: 0"><strong>5 questions for Sat 24 Oct</strong>, from the records:</p>
+          <ul style="margin: 6px 0 0; padding: 0 0 0 16px; display: flex; flex-direction: column; gap: 6px">
+            <sc-for list="{{questions}}" as="q" hint-placeholder-count="5">
+              <li>{{q.rec}} Ask: <strong>“{{q.ask}}”</strong></li>
+            </sc-for>
+          </ul>
+          <p data-review="legal" style="margin: 8px 0 0">Two need papers. Send those two to the sales gallery now, so they can bring them? Only the questions go, with your code.</p>
+          <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">HARERA records to 14 Oct 2026 · cost sheet of 2 Oct 2026<span style="float: right; margin-left: 10px">9:16 am</span></p>
+        </div>
+        <sc-if value="{{aheadOpen}}" hint-placeholder-val="{{true}}">
+          <div role="group" aria-label="Quick replies" style="display: flex; flex-direction: column; gap: 4px">
+            <button type="button" class="pl-press" onClick="{{sendAhead}}" style="{{btn}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Send those 2</button>
+            <button type="button" class="pl-press" onClick="{{keepPrivate}}" style="{{btn}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Keep them private</button>
+          </div>
+        </sc-if>
+      </div>
+      <sc-if value="{{aheadDone}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="align-self: flex-end; max-width: 260px; padding: 8px 12px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">{{aheadChoice}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:17 am</span></div>
+        <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">{{aheadReply}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:17 am</span></div>
+      </sc-if>
+    </sc-if>
+
+    <sc-if value="{{isDay}}" hint-placeholder-val="{{false}}">
+      <div style="align-self: center; font-size: 13px; line-height: 16px; padding: 4px 12px; border-radius: 999px; background: {{t.pill}}; color: {{t.ink2}}">Sun 18 Oct</div>
+      <div style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">Sent to Northfield's site office with code 4821. They see the two questions, your first name and the visit time. Never your number.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:17 am</span></div>
+
+      <div style="align-self: center; margin-top: 6px; font-size: 13px; line-height: 16px; padding: 4px 12px; border-radius: 999px; background: {{t.pill}}; color: {{t.ink2}}">Fri 23 Oct</div>
+      <div style="align-self: flex-start; width: 300px; display: flex; flex-direction: column; gap: 4px">
+        <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+          <p style="margin: 0"><strong>Tomorrow, 11 am:</strong> Aurelia Heights, Phase 2, sales gallery, Sector 37D.</p>
+          <p style="margin: 6px 0 0">Show code <strong>4821</strong>. You don't have to give your number at the gate.</p>
+          <p style="margin: 6px 0 0">Your 5 questions are on your pass, and 2 went ahead. No new filings since you booked.</p>
+          <p style="margin: 6px 0 0">When you arrive, send me your location and I'll check you in.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">6:00 pm</span></p>
+        </div>
+        <div role="group" aria-label="Quick replies" style="display: flex; flex-direction: column; gap: 4px">
+          <sc-for list="{{remReplies}}" as="r" hint-placeholder-count="2">
+            <button type="button" class="pl-press" onClick="{{r.pick}}" aria-pressed="{{r.on}}" style="{{r.style}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{r.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+      <sc-if value="{{remSee}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">Your questions are on the pass above, and in the Plinth app under Following. The ones you sent ahead: the Jul–Sep QPR receipt, and which charges are optional.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">6:02 pm</span></div>
+      </sc-if>
+      <sc-if value="{{remChange}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">Opens the booking form again: pick a new day or time, or cancel. The site office is told either way.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">6:02 pm</span></div>
+      </sc-if>
+
+      <div style="align-self: center; margin-top: 6px; font-size: 13px; line-height: 16px; padding: 4px 12px; border-radius: 999px; background: {{t.pill}}; color: {{t.ink2}}">Sat 24 Oct</div>
+      <div style="align-self: flex-start; width: 300px; display: flex; flex-direction: column; gap: 4px">
+        <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">Your visit to <strong>Aurelia Heights, Phase 2</strong> is at 11 am today. Code 4821.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:00 am</span></div>
+        <a href="#directions" class="pl-press" style="height: 44px; border-radius: 999px; background: {{t.bubbleIn}}; color: {{t.accentText}}; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; text-decoration: none"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Open directions</a>
+      </div>
+
+      <div style="align-self: flex-end; width: 268px; padding: 4px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+        <div role="img" aria-label="Shared location: Sector 37D, Gurugram, inside the Aurelia Heights site" style="position: relative; width: 260px; height: 118px; border-radius: 12px; overflow: hidden; background: #E9E5DB">
+          <svg width="260" height="118" viewBox="0 0 260 118" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+            <path d="M-10 92L270 58" stroke="#FFFFFF" stroke-width="14"></path>
+            <path d="M-10 92L270 58" stroke="#D9D3C5" stroke-width="2"></path>
+            <path d="M70 -10L96 130M190 -10L176 130" stroke="#FFFFFF" stroke-width="7"></path>
+            <path d="M104 18L168 10L176 54L112 62Z" fill="#D4E2D9"></path>
+            <path d="M18 14h36v26H18zM206 74h40v32h-40z" fill="#DEDACF"></path>
+            <circle cx="140" cy="34" r="9" fill="#1D5A44"></circle>
+            <circle cx="140" cy="34" r="3.5" fill="#FFFFFF"></circle>
+          </svg>
+        </div>
+        <div style="padding: 4px 6px 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px"><span><strong style="font-weight: 600">Location</strong><span style="display: block; font-size: 14px; line-height: 18px; color: {{t.ink2}}">Sector 37D, Gurugram</span></span><span style="flex: none; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:52 am<svg width="18" height="12" viewBox="0 0 18 12" role="img" aria-label="Read"><path d="M1.5 6.5l3 3 6.5-7.5M8.5 9.5l6.5-7.5" fill="none" stroke="{{t.accentText}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div>
+      </div>
+
+      <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+        <p data-review="legal" style="margin: 0">You're at <strong>Aurelia Heights, Phase 2</strong>, inside its RERA site boundary. Checked in at 10:52 am. I used your location once and kept only the time.</p>
+        <p style="margin: 6px 0 0">Worth a photo, for your own record:</p>
+        <ul style="margin: 4px 0 0; padding: 0 0 0 16px; display: flex; flex-direction: column; gap: 2px">
+          <li>the RERA board on the hoarding (it should read GGM/673/405/2022/117)</li>
+          <li>Tower A from the gate (the last filing shows slab 9)</li>
+          <li>the sample flat</li>
+          <li>the cost sheet and the booking form's bank details</li>
+        </ul>
+        <p style="margin: 6px 0 0">After you leave, send me a voice note of what they told you. Please don't record the sales team.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:52 am</span></p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isAfter}}" hint-placeholder-val="{{false}}">
+      <div style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">After you leave, send me a voice note of what they told you. Please don't record the sales team.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:52 am</span></div>
+
+      <div style="align-self: flex-start; width: 300px; display: flex; flex-direction: column; gap: 4px; margin-top: 6px">
+        <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+          <p style="margin: 0">How did the visit to <strong>Aurelia Heights, Phase 2</strong> go?</p>
+          <p data-review="legal" style="margin: 6px 0 0">Send me a voice note: what did the sales team tell you? Your own words, please, not a recording of them. I'll check it against the records.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">2:00 pm</span></p>
+        </div>
+        <div role="group" aria-label="Quick replies" style="display: flex; gap: 4px">
+          <button type="button" class="pl-press" onClick="{{typeIt}}" style="{{btnHalf}}">I'll type it</button>
+          <button type="button" class="pl-press" onClick="{{notNow}}" style="{{btnHalf}}">Not now</button>
+        </div>
+      </div>
+
+      <div style="align-self: flex-end; width: 262px; display: flex; align-items: center; gap: 8px; padding: 8px 10px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+        <button type="button" class="pl-press" aria-label="Play your voice note, 1 minute 12 seconds" style="flex: none; width: 36px; height: 36px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink2}}; display: grid; place-items: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 3.5v11l9-5.5z" fill="currentColor"></path></svg></button>
+        <span aria-hidden="true" style="flex: 1; min-width: 0; height: 28px; display: flex; align-items: center; gap: 2px">
+          <sc-for list="{{voiceBars}}" as="vb" hint-placeholder-count="34"><span style="{{vb.style}}"></span></sc-for>
+        </span>
+        <span style="flex: none; display: flex; flex-direction: column; align-items: flex-end; font-size: 13px; line-height: 16px; color: {{t.muted}}"><span>1:12</span><span style="display: inline-flex; align-items: center; gap: 4px">2:04 pm<svg width="18" height="12" viewBox="0 0 18 12" role="img" aria-label="Read"><path d="M1.5 6.5l3 3 6.5-7.5M8.5 9.5l6.5-7.5" fill="none" stroke="{{t.accentText}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></span>
+      </div>
+
+      <sc-if value="{{typing}}" hint-placeholder-val="{{false}}">
+        <div role="status" aria-label="{{typingLabel}}" class="pl-rise" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 14px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+          <span aria-hidden="true" style="display: inline-flex; gap: 5px"><span style="width: 7px; height: 7px; border-radius: 50%; background: {{t.muted}}"></span><span style="width: 7px; height: 7px; border-radius: 50%; background: {{t.muted}}; opacity: 0.6"></span><span style="width: 7px; height: 7px; border-radius: 50%; background: {{t.muted}}; opacity: 0.3"></span></span>
+          <span aria-hidden="true" style="font-size: 13px; line-height: 18px; color: {{t.ink2}}">{{typingText}}</span>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{showCard}}" hint-placeholder-val="{{true}}">
+        <div style="align-self: flex-start; width: 296px; display: flex; flex-direction: column; gap: 4px">
+          <div class="pl-rise" style="padding: 4px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+            <div role="img" aria-label="{{cardLabel}}" style="width: 288px; height: 384px; box-sizing: border-box; border-radius: 12px; background: #FFFFFF; color: #1B1A17; padding: 13px 14px 12px; display: flex; flex-direction: column; overflow: hidden">
+              <span style="font-size: 13px; line-height: 16px; font-weight: 600; color: #3F3C36">Your visit recap · Aurelia Heights, Phase 2</span>
+              <div style="margin-top: 4px; display: flex; align-items: center; gap: 12px">
+                <span style="flex: none; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 44px; line-height: 42px; letter-spacing: -0.045em">1 of 5</span>
+                <span style="font-size: 15px; line-height: 18px">things they told you differ from the records.</span>
+              </div>
+              <span style="margin-top: 8px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px">
+                <sc-for list="{{strip}}" as="sg" hint-placeholder-count="5"><span style="{{sg.style}}"></span></sc-for>
+              </span>
+              <div style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 6px; font-size: 13px; line-height: 16px">
+                <span style="display: inline-flex; align-items: center; gap: 5px; font-weight: 600; color: #3F3C36"><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>They said</span>
+                <span style="display: inline-flex; align-items: center; gap: 5px; font-weight: 600; color: #3F3C36"><svg width="12" height="13" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>Records show</span>
+                <sc-for list="{{cardRows}}" as="cr" hint-placeholder-count="5">
+                  <span style="{{cr.saysStyle}}">{{cr.says}}</span>
+                  <span style="{{cr.recStyle}}"><svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="{{cr.icon}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>{{cr.rec}}</span></span>
+                </sc-for>
+              </div>
+              <div style="margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+                <div style="min-width: 0; display: flex; flex-direction: column; font-size: 13px; line-height: 16px; color: #3F3C36">
+                  <span style="display: inline-flex; align-items: center; gap: 6px; margin-bottom: 2px"><svg width="16" height="16" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="#1D5A44"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 15px; line-height: 18px; letter-spacing: -0.02em; color: #1B1A17">Plinth</span></span>
+                  <span style="font-weight: 700; color: #1B1A17">No developer pays us. Ever.</span>
+                  <span>Your notes, unverified · 24 Oct 2026</span>
+                </div>
+                <div style="flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px">
+                  <svg width="44" height="44" viewBox="0 0 25 25" aria-hidden="true"><rect width="25" height="25" fill="#FFFFFF"></rect><path d="{{qrR}}" fill="#1B1A17"></path></svg>
+                  <span style="font-size: 13px; line-height: 16px; font-weight: 600">Your notes</span>
+                </div>
+              </div>
+            </div>
+            <div data-review="legal" style="padding: 8px 8px 2px">
+              <p style="margin: 0"><strong>1 of 5 things they told you differs from the records.</strong> They said possession Dec 2026. Records show original completion Dec 2027, with 41% built.</p>
+              <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">I wrote your note down and deleted the audio. Saved privately on your Aurelia card as Developer says, sales office, unverified. Read by AI; I can make mistakes. Type human for a person.<span style="float: right; margin-left: 10px">2:05 pm</span></p>
+            </div>
+          </div>
+          <div role="group" aria-label="Reply options" style="display: flex; flex-direction: column; gap: 4px">
+            <sc-for list="{{replies}}" as="r" hint-placeholder-count="3">
+              <button type="button" class="pl-press" onClick="{{r.pick}}" aria-pressed="{{r.on}}" style="{{r.style}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{r.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{hasTurn}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="align-self: flex-end; max-width: 260px; margin-top: 6px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+          <div style="padding: 5px 10px; border-radius: 12px; background: {{t.quoteBg}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">Visit recap · Aurelia Heights, Phase 2</div>
+          <div style="padding: 4px 8px 0">{{turnLabel}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">2:06 pm</span></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{isAll}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="align-self: flex-start; width: 300px; display: flex; flex-direction: column; gap: 4px; animation-delay: 90ms">
+          <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+            <p style="margin: 0">All 5, in the order you said them:</p>
+            <ul style="list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{all}}" as="a" hint-placeholder-count="5"><li><strong>{{a.v}}</strong> · “{{a.said}}” {{a.rec}}</li></sc-for>
+            </ul>
+            <p style="margin: 6px 0 0; font-style: italic; color: {{t.ink2}}">HARERA registration and QPR register, checked 24 Oct 2026, 2:05 pm; Northfield's price list and cost sheet of 2 Oct 2026<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; font-style: normal; color: {{t.muted}}">2:06 pm</span></p>
+          </div>
+          <a href="#notes" class="pl-press" style="height: 44px; border-radius: 999px; background: {{t.bubbleIn}}; color: {{t.accentText}}; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; text-decoration: none"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13H3V4.5h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Open your notes</a>
+        </div>
+      </sc-if>
+      <sc-if value="{{isFix}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">
+          <p style="margin: 0">Here's what I heard:</p>
+          <p style="margin: 6px 0 0; padding: 6px 10px; border-radius: 8px; background: {{t.quoteBg}}; font-style: italic">“They said possession will be December 2026. They said Tower A is at the 12th slab now. The Jul–Sep QPR, they said, was filed on 12 October. The 3 BHK starts at 2.35 crore. And they'll waive the PLC and club charges if we book this week.”</p>
+          <p style="margin: 6px 0 0">Reply with anything I got wrong, in your words, and I'll check it again.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">2:06 pm</span></p>
+        </div>
+      </sc-if>
+      <sc-if value="{{isShare}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">Forward the card above to your family group. It carries the 5 lines and where each check comes from. Never your voice, and never the sales team's names.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">2:06 pm</span></div>
+      </sc-if>
+      <sc-if value="{{isType}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">{{typeReply}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">2:01 pm</span></div>
+      </sc-if>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"stage":{"editor":"enum","options":["Visit pass","Reminders and check-in","After the visit"],"default":"Visit pass"},"$preview":{"width":390,"height":1340}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {ov: null, ovFrom: null, ahead: null, rem: null, phase: 'card', turn: null, pre: null};
+  }
+  componentDidMount() {
+    try { this._rm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { this._rm = false; }
+  }
+  componentWillUnmount() { clearTimeout(this._t); }
+  stageKey() {
+    var map = {'Visit pass': 'pass', 'Reminders and check-in': 'day', 'After the visit': 'after'};
+    var P = this.props || {};
+    var s = this.state || {};
+    var prop = map[P.stage] || 'pass';
+    return (s.ov && s.ovFrom === P.stage) ? s.ov : prop;
+  }
+  replay() {
+    var self = this;
+    clearTimeout(this._t);
+    this.setState({phase: 'listen', turn: null, pre: null});
+    if (this._rm) { this.setState({phase: 'card'}); return; }
+    this._t = setTimeout(function () {
+      self.setState({phase: 'check'});
+      self._t = setTimeout(function () { self.setState({phase: 'card'}); }, 2000);
+    }, 1600);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var P = this.props || {};
+    var night = (P.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', chatBg: '#0E1814', headerBg: '#121C18', bubbleIn: '#17221E', bubbleOut: '#173A2D',
+      line: 'rgba(255,255,255,0.11)', ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D',
+      accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7', quoteBg: 'rgba(110,231,183,0.10)', pressed: '#1C2E27', pill: '#17221E', pillBg: 'rgba(255,255,255,0.07)', segOn: 'rgba(255,255,255,0.14)', voice: '#B9C6C0', voiceOff: 'rgba(255,255,255,0.28)'
+    } : {
+      bg: '#FBFAF7', chatBg: '#EEEBE4', headerBg: '#FFFFFF', bubbleIn: '#FFFFFF', bubbleOut: '#DCEBE2',
+      line: '#E7E3DA', ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52',
+      accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44', quoteBg: 'rgba(29,90,68,0.08)', pressed: '#E9F1EC', pill: '#FFFFFF', pillBg: '#F4F2ED', segOn: '#FFFFFF', voice: '#3F3C36', voiceOff: '#9A958B'
+    };
+    var st = this.stageKey();
+    function go(k) { clearTimeout(self._t); self.setState({ov: k, ovFrom: P.stage, phase: 'card', turn: null, pre: null}); }
+    var STG = [['pass', '18 Oct · pass'], ['day', '23–24 Oct · visit'], ['after', '24 Oct · recap']];
+    var stages = STG.map(function (x) {
+      var on = st === x[0];
+      return {label: x[1], on: on ? 'true' : 'false', pick: function () { go(x[0]); },
+        style: 'flex:1 1 0;min-height:32px;padding:0 6px;border:0;border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.segOn : 'transparent')};
+    });
+    var NOTES = {
+      pass: 'utility template with an image header, then a session reply',
+      day: 'reminder templates and a location check-in',
+      after: 'utility follow-up, the buyer’s voice note, the checked recap'
+    };
+
+    // Illustrative QR (21 modules, 2-module quiet zone), as on the other WhatsApp cards.
+    function makeQr(seed) {
+      var n = 21, g = [], y, x;
+      function rnd() { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+      for (y = 0; y < n; y++) { g.push([]); for (x = 0; x < n; x++) g[y].push(-1); }
+      function finder(ox, oy) {
+        for (var dy = -1; dy <= 7; dy++) for (var dx = -1; dx <= 7; dx++) {
+          var xx = ox + dx, yy = oy + dy;
+          if (xx < 0 || yy < 0 || xx >= n || yy >= n) continue;
+          var ring = Math.max(Math.abs(dx - 3), Math.abs(dy - 3));
+          g[yy][xx] = (ring === 3 || ring <= 1) ? 1 : 0;
+        }
+      }
+      finder(0, 0); finder(14, 0); finder(0, 14);
+      for (var q = 8; q < 13; q++) { g[6][q] = q % 2 === 0 ? 1 : 0; g[q][6] = q % 2 === 0 ? 1 : 0; }
+      var d = '';
+      for (y = 0; y < n; y++) for (x = 0; x < n; x++) {
+        var v = g[y][x];
+        if (v === -1) v = rnd() < 0.48 ? 1 : 0;
+        if (v === 1) d += 'M' + (x + 2) + ' ' + (y + 2) + 'h1v1h-1z';
+      }
+      return d;
+    }
+
+    function btnStyle(on) {
+      return 'height:44px;width:100%;border:0;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;color:' + T.accentText + ';background:' + (on ? T.pressed : T.bubbleIn) + ';';
+    }
+
+    // Stage 1: the pass and the 5 questions (DESIGN.md §5b, B3 block).
+    var questions = [
+      {rec: 'Tower A: slab 9 is the latest on record.', ask: 'Can I see slab 9, and the floor you’re casting now?'},
+      {rec: 'The Jul–Sep QPR isn’t on HARERA yet.', ask: 'Can I see the HARERA receipt for the Jul–Sep 2026 QPR?'},
+      {rec: 'HARERA lists one collection account.', ask: 'Can you give me the RERA collection account in writing?'},
+      {rec: 'Completion Dec 2027, with 41% built.', ask: 'Which completion date will my agreement carry?'},
+      {rec: 'The cost sheet adds ₹9.2 L in charges.', ask: 'Which charges on the cost sheet are optional?'}
+    ];
+    var ahead = s.ahead;
+    var AHEAD = {
+      send: {label: 'Send those 2', reply: 'Sent to Northfield’s site office with code 4821. They see the two questions, your first name and the visit time. Never your number.'},
+      keep: {label: 'Keep them private', reply: 'Kept private. All 5 stay on your pass, and only you can see them.'}
+    };
+
+    // Stage 2: reminder replies.
+    var remReplies = [['see', 'See my questions'], ['change', 'Change or cancel']].map(function (x) {
+      var on = s.rem === x[0];
+      return {label: x[1], on: on ? 'true' : 'false', style: btnStyle(on), pick: function () { self.setState({rem: x[0]}); }};
+    });
+
+    // Stage 3: the recap card. It is an image we send (PNG 1080x1440), so it keeps the light palette in both themes.
+    var V = ['Differs', "Can't check", "Can't check", 'Matches', 'Not in records'];
+    var SEG = {
+      'Differs': 'background:#1B1A17',
+      'Matches': 'background:#8A847A',
+      'Not in records': 'background:#C9C4B9',
+      "Can't check": 'background:repeating-linear-gradient(45deg, rgba(63,60,54,0.34) 0 1.5px, transparent 1.5px 6px), #EEEBE4'
+    };
+    var ICON = {
+      'Differs': 'M2.5 5.2h9M2.5 8.8h9M9.6 2.2L4.4 11.8',
+      'Matches': 'M3 7.5l2.5 2.5L11 4',
+      'Not in records': 'M9.8 6a3.8 3.8 0 1 1-7.6 0a3.8 3.8 0 1 1 7.6 0M8.8 8.8l3.2 3.2M4.3 6h3.4',
+      "Can't check": 'M12 7a5 5 0 1 1-10 0a5 5 0 1 1 10 0M7 4.3V7l2 1.4'
+    };
+    var ph = s.phase || 'card';
+    var cardIn = ph === 'card';
+    var strip = V.map(function (v, i) {
+      return {style: 'display:block;height:8px;border-radius:2px;' + SEG[v] + ';transform-origin:0 50%;' + (cardIn && !self._rm ? 'animation:pl-lit .45s cubic-bezier(.22,1,.36,1) ' + (300 + i * 110) + 'ms both' : '')};
+    });
+    var CR = [
+      {says: 'Possession Dec 2026', rec: 'Completion Dec 2027 · 41% built'},
+      {says: 'Tower A at slab 12', rec: 'Slab 9 at the last filing'},
+      {says: 'Jul–Sep QPR filed 12 Oct', rec: 'Not on HARERA yet'},
+      {says: '3 BHK from ₹2.35 Cr', rec: 'Price list: ₹2.35 Cr'},
+      {says: 'PLC and club waived', rec: 'Not in any record'}
+    ];
+    var cardRows = CR.map(function (r, i) {
+      var cell = 'box-sizing:border-box;min-height:34px;padding:3px 7px;border-radius:4px;';
+      var strong = V[i] === 'Differs';
+      return {says: r.says, rec: r.rec, icon: ICON[V[i]],
+        saysStyle: 'display:block;' + cell + 'background:#F1ECE2;color:#1B1A17',
+        recStyle: 'display:flex;gap:5px;align-items:flex-start;' + cell + 'background:' + (strong ? '#1B1A17' : '#F4F2ED') + ';color:' + (strong ? '#FFFFFF' : '#1B1A17') + ';font-weight:600'};
+    });
+    var bars = [];
+    for (var i = 0; i < 34; i++) {
+      var h = 6 + Math.round(18 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * 0.45)));
+      bars.push({style: 'display:block;flex:none;width:3px;height:' + h + 'px;border-radius:2px;background:' + (i < 2 ? T.voice : T.voiceOff)});
+    }
+    var turn = s.turn;
+    var replyDefs = [['all', 'See all 5'], ['fix', 'Fix what I heard'], ['share', 'Share with family']];
+    var replies = replyDefs.map(function (r) {
+      var on = r[0] === turn;
+      return {label: r[1], on: on ? 'true' : 'false', style: btnStyle(on), pick: function () { self.setState({turn: r[0]}); }};
+    });
+    var all = [
+      {v: 'Differs', said: 'Possession Dec 2026', rec: 'HARERA: original completion Dec 2027, no extensions; 41% built.'},
+      {v: 'Can’t check yet', said: 'Tower A at slab 12', rec: 'Slab 9 at the last filing, Apr–Jun 2026.'},
+      {v: 'Can’t check yet', said: 'Jul–Sep QPR filed 12 Oct', rec: 'Not on HARERA at 2:05 pm. Northfield says the same in public; not verified.'},
+      {v: 'Matches', said: '3 BHK from ₹2.35 Cr', rec: 'Northfield’s price list says ₹2.35 Cr; all-in ₹2.74 Cr.'},
+      {v: 'Not in records', said: 'PLC and club waived this week', rec: 'An offer. Ask for it in writing on the cost sheet (₹4.4 L).'}
+    ];
+    var typing = st === 'after' && (ph === 'listen' || ph === 'check');
+
+    return {
+      t: T, stages: stages, stageNote: NOTES[st],
+      isPass: st === 'pass', isDay: st === 'day', isAfter: st === 'after',
+      subtitle: typing ? 'typing…' : 'Business account · AI assistant',
+      btn: btnStyle(false), btnSpent: btnStyle(true),
+      btnHalf: 'flex:1 1 0;height:44px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;color:' + T.accentText + ';background:' + T.bubbleIn,
+      qrP: makeQr(29), qrR: makeQr(53),
+      passLabel: 'Visit pass image. Aurelia Heights, Phase 2, sales gallery, Sector 37D, Gurugram (illustrative image). Sat 24 Oct, 11:00 am to 12:00 pm, 2 visitors. Visit code 4821: show it instead of your number. 5 questions from the records, no agent of record. Plinth. No developer pays us. Ever. Booked 18 Oct 2026. QR code: the visit code.',
+      questions: questions,
+      aheadOpen: !ahead, aheadDone: !!ahead,
+      aheadChoice: ahead ? AHEAD[ahead].label : '', aheadReply: ahead ? AHEAD[ahead].reply : '',
+      sendAhead: function () { self.setState({ahead: 'send'}); },
+      keepPrivate: function () { self.setState({ahead: 'keep'}); },
+      remReplies: remReplies, remSee: s.rem === 'see', remChange: s.rem === 'change',
+      voiceBars: bars,
+      typing: typing,
+      typingText: ph === 'listen' ? 'Listening to your note' : 'Checking 5 things against the records',
+      typingLabel: ph === 'listen' ? 'Plinth is listening to your voice note' : 'Plinth is checking 5 things against the records',
+      showCard: cardIn, strip: strip, cardRows: cardRows,
+      cardLabel: 'Recap card image. Your visit recap, Aurelia Heights, Phase 2. 1 of 5 things they told you differ from the records. They said possession Dec 2026; records show completion Dec 2027, 41% built. They said Tower A is at slab 12; records show slab 9 at the last filing, can’t check yet. They said the Jul–Sep QPR was filed 12 Oct; not on HARERA yet, can’t check yet. They said 3 BHK from 2.35 crore; the price list says 2.35 crore, matches. They said PLC and club waived; not in any record. Plinth. No developer pays us. Ever. Your notes, unverified, 24 Oct 2026. QR code: your notes.',
+      replies: replies,
+      hasTurn: cardIn && !!turn,
+      turnLabel: turn === 'fix' ? 'Fix what I heard' : (turn === 'share' ? 'Share with family' : 'See all 5'),
+      isAll: cardIn && turn === 'all', isFix: cardIn && turn === 'fix', isShare: cardIn && turn === 'share',
+      all: all,
+      isType: !!s.pre,
+      typeReply: s.pre === 'not' ? 'No problem. Send a voice note or type it whenever you like today; I check it the same way.' : 'Type what they told you in one message, in your own words. I check it the same way as a voice note.',
+      typeIt: function () { self.setState({pre: 'type'}); },
+      notNow: function () { self.setState({pre: 'not'}); },
+      replay: function () { self.replay(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+[
+  {
+    "slot": "aboutTable",
+    "aspect": "4:5",
+    "prompt": "Documentary photograph, slightly overhead, of a plain light-oak work table in a small, quiet office in Gurugram, India, in late-afternoon window light. Printed A4 quarterly construction progress reports and regulator orders lie in three neat piles, a few pages fanned out, with yellow paper flags marking pages and a steel ruler beside them. One person's forearm and hand (no face visible, plain cotton sleeve) holds a pencil against one row of a printed table, checking it against a second printout. A closed laptop and a steel tumbler of water sit at the edge of the frame. Soft daylight from the left, shallow depth of field, calm and matter-of-fact. All printed text soft and illegible. No logos, no names, no letterheads, no seals, no emblems, no readable words, no screens showing content. Portrait crop with the hand and the open page in the lower centre and quiet table space above. Used as the hero picture of Plinth's 'Who is Plinth?' page: where the records get read."
+  },
+  {
+    "slot": "evidencePack",
+    "aspect": "1:1",
+    "prompt": "Documentary photograph of a thick printed report of about 46 A4 pages, spiral-bound with five muted coloured tab dividers, lying on a light wooden dining table in a Gurugram apartment, India. Beside it: a smartphone lying face down, a ballpoint pen and a cup of chai. The report is open at a divider, showing a page with a plain table and a small photograph of a building under construction; all text is soft and illegible. Natural morning daylight from a window, shallow depth of field, calm and premium, true-to-life colours. No logos, no names, no letterheads, no seals, no emblems, no readable words. Square crop with the report filling the lower two thirds of the frame. Used as the hero picture of Plinth's 'What's free, and what's Pro?' page: a Pro deep report, printed."
+  }
+]

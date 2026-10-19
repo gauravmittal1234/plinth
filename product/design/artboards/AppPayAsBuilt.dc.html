@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth app: Pay-as-built check</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hs{scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes pl-sweep{from{transform:scaleX(0)}to{transform:none}}
+@keyframes pl-scan{from{transform:translateY(0)}to{transform:translateY(296px)}}
+.pl-rise{animation:pl-rise .62s cubic-bezier(.22,1,.36,1) both}
+.pl-r1{animation-delay:90ms}.pl-r2{animation-delay:180ms}.pl-r3{animation-delay:270ms}
+.pl-sweep{transform-origin:left center;animation:pl-sweep .9s cubic-bezier(.22,1,.36,1) .5s both}
+.pl-scan{animation:pl-scan 2.2s cubic-bezier(.45,0,.55,1) infinite alternate}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1),opacity .18s ease}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; font-variant-numeric: tabular-nums lining-nums">
+  <div aria-hidden="true" style="flex: none; height: 48px"></div>
+  <header style="flex: none; height: 56px; padding: 0 8px 0 4px; display: flex; align-items: center; gap: 4px">
+    <button type="button" class="pl-press" onClick="{{goBack}}" aria-label="{{backLabel}}" style="width: 48px; height: 48px; flex: none; border: 0; padding: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer">
+      <sc-if value="{{backArrow}}" hint-placeholder-val="{{true}}"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+      <sc-if value="{{backClose}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></sc-if>
+    </button>
+    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2">
+      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 21px; letter-spacing: -0.02em">{{barTitle}}</span>
+      <span style="font-size: 14px; color: {{t.muted}}">{{barSub}}</span>
+    </span>
+    <button type="button" class="pl-press" onClick="{{flipTheme}}" aria-label="{{themeLabel}}" style="width: 48px; height: 48px; flex: none; border: 0; padding: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.6A6.5 6.5 0 0 1 7.4 4a6.5 6.5 0 1 0 8.6 8.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg></button>
+  </header>
+
+  <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+    <main class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 28px; box-sizing: border-box">
+      <h1 class="pl-rise" data-review="legal" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.04; letter-spacing: -0.035em">The latest filing shows slab 9. This letter asks for the slab 12 instalment.</h1>
+      <p class="pl-rise pl-r1" style="margin: 10px 0 0; font-size: 16px; line-height: 1.5">That's 3 slabs above the filing. Anything cast after 30 Jun isn't in a filing yet; a certificate or the next QPR would show it.</p>
+
+      <section aria-label="Tower A: stage on the letter against the latest filing" class="pl-rise pl-r2" style="margin: 18px -16px 0; padding: 18px 16px 14px; background: {{t.track}}">
+        <div role="img" aria-label="{{diagramLabel}}">
+          <div aria-hidden="true" style="display: flex; justify-content: space-between; font-size: 13px; line-height: 1.3; color: {{t.ink2}}; margin-bottom: 6px"><span>Stages · 7.5% each</span><span>Tower A · 20 floors</span></div>
+          <div aria-hidden="true" style="display: flex">
+            <div style="flex: none; width: 70px; height: 297px; position: relative">
+              <sc-for list="{{labels}}" as="lb" hint-placeholder-count="7"><span style="{{lb.style}}">{{lb.text}}</span></sc-for>
+            </div>
+            <div style="flex: 1 1 auto; min-width: 100px; height: 297px; position: relative">
+              <sc-for list="{{floors}}" as="fl" hint-placeholder-count="20"><span style="{{fl.box}}"><span style="{{fl.fill}}"></span></span></sc-for>
+            </div>
+            <div style="flex: none; width: 138px; height: 297px; position: relative">
+              <sc-for list="{{markers}}" as="mk" hint-placeholder-count="2"><span style="{{mk.wrap}}"><span style="{{mk.lead}}"></span><span style="display: flex; flex-direction: column"><span style="{{mk.pill}}">{{mk.title}}</span><span style="font-size: 13px; line-height: 1.3; color: {{t.ink2}}; padding-left: 2px">{{mk.sub}}</span></span></span></sc-for>
+            </div>
+          </div>
+          <div aria-hidden="true" style="display: flex; align-items: center; margin-top: 2px"><span style="flex: none; width: 70px; font-size: 13px; color: {{t.ink2}}">Ground</span><span style="flex: 1 1 auto; height: 4px; background: {{t.ink}}"></span><span style="flex: none; width: 138px"></span></div>
+        </div>
+        <p style="margin: 10px 0 0; font-size: 13px; line-height: 1.4; color: {{t.ink2}}">HARERA QPR, Apr–Jun 2026 (as of 30 Jun, filed 15 Jul) · your letter of 10 Oct 2026</p>
+      </section>
+
+      <section aria-labelledby="led-h" style="margin-top: 24px; display: flex; flex-direction: column; gap: 10px">
+        <h2 id="led-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 24px; line-height: 1.1; letter-spacing: -0.03em">What does the letter ask for?</h2>
+        <ul aria-label="The letter compared with the records" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px">
+          <sc-for list="{{ledger}}" as="lg" hint-placeholder-count="4">
+            <li style="display: flex; flex-direction: column; gap: 6px">
+              <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><strong style="font-size: 17px; font-weight: 600">{{lg.line}}</strong><span style="{{lg.pill}}"><svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true"><path d="{{lg.icon}}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{lg.verdict}}</span></span>
+              <span style="padding: 8px 12px; border-radius: 6px; background: {{t.claimBg}}; font-size: 15px; line-height: 1.45"><span style="font-weight: 600">Letter says:</span> {{lg.says}}</span>
+              <span style="padding: 8px 12px; border-radius: 6px; background: {{t.track}}; font-size: 15px; line-height: 1.45"><span style="font-weight: 600">{{lg.recLabel}}:</span> {{lg.rec}}</span>
+            </li>
+          </sc-for>
+        </ul>
+      </section>
+
+      <section aria-labelledby="do-h" data-review="legal" style="margin-top: 28px; display: flex; flex-direction: column; gap: 14px">
+        <h2 id="do-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 24px; line-height: 1.1; letter-spacing: -0.03em">What can you do now?</h2>
+        <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px">
+          <li style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 17px; font-weight: 700">Ask for the certificate</strong><span style="font-size: 16px; line-height: 1.5">The architect's or engineer's certificate that Tower A slab 12 is cast, with the date.</span></li>
+          <li style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 17px; font-weight: 700">Write to Northfield</strong><span style="font-size: 16px; line-height: 1.5">A draft is ready. You send it from your own email.</span></li>
+          <li style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 17px; font-weight: 700">Pay on time if the stage is reached</strong><span style="font-size: 16px; line-height: 1.5">If the certificate or the next filing shows slab 12, pay by 30 Oct 2026 into the account ending 4417. Paying on time is your duty under the agreement (RERA s.19(6)).</span></li>
+        </ol>
+      </section>
+
+      <div style="margin-top: 24px; padding: 14px 16px; border-radius: 8px; background: {{t.claimBg}}; display: flex; flex-direction: column; gap: 2px">
+        <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>Developer says · not yet verified</span>
+        <span style="font-size: 15px; line-height: 1.5">“The Jul–Sep QPR was filed on 12 Oct 2026.” It isn't on HARERA yet. When it is, we check this letter again.</span>
+      </div>
+      <p style="margin: 14px 0 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">What the filings show today. No forecasts. Not legal advice. Plinth never takes, holds or moves money.</p>
+    </main>
+    <div style="flex: none; height: 88px; box-sizing: border-box; padding: 14px 16px 22px; display: flex; gap: 10px; background: {{t.nav}}">
+      <button type="button" class="pl-press" onClick="{{toggleAlert}}" aria-pressed="{{alertStr}}" style="flex: none; height: 52px; padding: 0 18px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; cursor: pointer"><sc-if value="{{alertOn}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l3.5 3.5L16 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{alertLabel}}</button>
+      <button type="button" class="pl-press" onClick="{{toDraft}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Write to Northfield</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isAdd}}" hint-placeholder-val="{{false}}">
+    <main class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+      <h1 class="pl-rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 44px; line-height: 0.96; letter-spacing: -0.045em">Is it built yet?</h1>
+      <p class="pl-rise pl-r1" style="margin: 0; font-size: 17px; line-height: 1.5">Add the demand letter. We compare the stage it asks for with the latest filing on HARERA, and check the amount and the payee.</p>
+      <div class="pl-rise pl-r2" style="position: relative; margin: 4px -16px 0; height: 300px; overflow: hidden; background: {{t.photo}}">
+        <img data-slot="demandLetter" src="/_blob/57870dcfd92321e78ef9ea1863f06a9e" alt="Illustrative image: a printed demand letter on a desk" style="position: absolute; left: -92px; top: -224px; width: 580px; height: 773px; background: #E7E3DA; object-fit: cover; display: block">
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 6.4px; top: 19.5px; width: 354.7px; height: 21.9px; padding: 0 4px; background: rgba(231,235,239,0.97);"><strong style="font-size: 15px; line-height: 1">Demand: on casting of Tower A slab 12</strong></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 9.6px; top: 145.1px; width: 290.6px; height: 22.5px; padding: 0 4px; background: rgba(223,227,231,0.97);"><span style="font-size: 13px; line-height: 1">Stage: casting of Tower A, slab 12</span></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 304.8px; top: 145.1px; width: 79.0px; height: 22.5px; padding: 0 4px; background: rgba(223,227,231,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">7.5%</strong></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 9.6px; top: 170.2px; width: 290.6px; height: 22.5px; padding: 0 4px; background: rgba(231,235,239,0.97);"><span style="font-size: 13px; line-height: 1">Instalment (₹)</span></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 304.8px; top: 170.2px; width: 79.0px; height: 22.5px; padding: 0 4px; background: rgba(231,235,239,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">12,54,000</strong></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 9.6px; top: 195.4px; width: 290.6px; height: 21.9px; padding: 0 4px; background: rgba(223,227,231,0.97);"><span style="font-size: 13px; line-height: 1">GST at 5% (₹)</span></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 304.8px; top: 195.4px; width: 79.0px; height: 21.9px; padding: 0 4px; background: rgba(223,227,231,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">62,700</strong></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 9.6px; top: 220.5px; width: 290.6px; height: 22.5px; padding: 0 4px; background: rgba(231,235,239,0.97);"><span style="font-size: 13px; line-height: 1">Total due (₹)</span></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 304.8px; top: 220.5px; width: 79.0px; height: 22.5px; padding: 0 4px; background: rgba(231,235,239,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">13,16,700</strong></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 5.1px; top: 264.3px; width: 317.2px; height: 21.9px; padding: 0 4px; background: rgba(231,235,239,0.97);"><strong style="font-size: 14px; line-height: 1">Please pay by 30 Oct 2026</strong></div>
+        <span style="position: absolute; left: 12px; bottom: 10px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+      </div>
+      <ul aria-label="Other ways to add it" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+        <li><button type="button" class="pl-press" onClick="{{toReading}}" style="width: 100%; min-height: 60px; padding: 0 16px; border: 0; border-radius: 8px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-align: left; display: flex; align-items: center; gap: 12px; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.7"></path></svg>Choose a PDF</button></li>
+        <li><a href="#whatsapp" class="pl-press" style="width: 100%; min-height: 60px; box-sizing: border-box; padding: 0 16px; border-radius: 8px; background: {{t.track}}; color: {{t.ink}}; font-size: 17px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 12px"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg>Forward it to Plinth on WhatsApp</a></li>
+      </ul>
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">We read the stage, the amount, the due date and the payee. We keep only the last 4 digits of any account. The file is deleted after 30 days unless you save it.</p>
+    </main>
+    <div style="flex: none; height: 88px; box-sizing: border-box; padding: 14px 16px 22px; display: flex; gap: 10px; background: {{t.nav}}">
+      <button type="button" class="pl-press" onClick="{{toReading}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.5-2h5L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"></path><circle cx="12" cy="13" r="3.5"></circle></g></svg>Photograph the letter</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isReading}}" hint-placeholder-val="{{false}}">
+    <main class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+      <div role="group" aria-label="Your letter, as we read it (illustrative)" style="position: relative; margin: 0 -16px; height: 300px; overflow: hidden; background: {{t.photo}}">
+        <img data-slot="demandLetter" src="/_blob/57870dcfd92321e78ef9ea1863f06a9e" alt="Illustrative image: your demand letter" style="position: absolute; left: -92px; top: -224px; width: 580px; height: 773px; background: #E7E3DA; object-fit: cover; display: block">
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 6.4px; top: 19.5px; width: 354.7px; height: 21.9px; padding: 0 4px; background: rgba(231,235,239,0.97);"><strong style="font-size: 15px; line-height: 1">Demand: on casting of Tower A slab 12</strong></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 9.6px; top: 145.1px; width: 290.6px; height: 22.5px; padding: 0 4px; background: rgba(223,227,231,0.97);"><span style="font-size: 13px; line-height: 1">Stage: casting of Tower A, slab 12</span></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 304.8px; top: 145.1px; width: 79.0px; height: 22.5px; padding: 0 4px; background: rgba(223,227,231,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">7.5%</strong></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 9.6px; top: 170.2px; width: 290.6px; height: 22.5px; padding: 0 4px; background: rgba(231,235,239,0.97);"><span style="font-size: 13px; line-height: 1">Instalment (₹)</span></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 304.8px; top: 170.2px; width: 79.0px; height: 22.5px; padding: 0 4px; background: rgba(231,235,239,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">12,54,000</strong></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 9.6px; top: 195.4px; width: 290.6px; height: 21.9px; padding: 0 4px; background: rgba(223,227,231,0.97);"><span style="font-size: 13px; line-height: 1">GST at 5% (₹)</span></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 304.8px; top: 195.4px; width: 79.0px; height: 21.9px; padding: 0 4px; background: rgba(223,227,231,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">62,700</strong></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 9.6px; top: 220.5px; width: 290.6px; height: 22.5px; padding: 0 4px; background: rgba(231,235,239,0.97);"><span style="font-size: 13px; line-height: 1">Total due (₹)</span></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 304.8px; top: 220.5px; width: 79.0px; height: 22.5px; padding: 0 4px; background: rgba(231,235,239,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">13,16,700</strong></div>
+        <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 5.1px; top: 264.3px; width: 317.2px; height: 21.9px; padding: 0 4px; background: rgba(231,235,239,0.97);"><strong style="font-size: 14px; line-height: 1">Please pay by 30 Oct 2026</strong></div>
+        <sc-if value="{{readDone}}" hint-placeholder-val="{{false}}">
+          <span aria-hidden="true" class="pl-sweep" style="position: absolute; left: 3.8px; top: 18.2px; width: 359.9px; height: 24.5px; background: rgba(110,231,183,0.62); mix-blend-mode: multiply"></span>
+          <span aria-hidden="true" class="pl-sweep" style="position: absolute; left: 9.6px; top: 145.1px; width: 290.6px; height: 22.5px; background: rgba(110,231,183,0.62); mix-blend-mode: multiply; animation-delay: .8s"></span>
+        </sc-if>
+        <sc-if value="{{readBusy}}" hint-placeholder-val="{{true}}"><span aria-hidden="true" class="pl-scan" style="position: absolute; left: 0; right: 0; top: 2px; height: 3px; background: {{t.accent}}"></span></sc-if>
+        <span style="position: absolute; right: 12px; bottom: 10px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+      </div>
+      <p aria-live="polite" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.1; letter-spacing: -0.03em">{{readHead}}</p>
+      <ul aria-label="What we found on the letter" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px">
+        <sc-for list="{{found}}" as="fd" hint-placeholder-count="5">
+          <li style="{{fd.style}}"><span style="{{fd.dot}}"><svg width="11" height="11" viewBox="0 0 20 20" aria-hidden="true"><path d="{{fd.icon}}" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span style="flex: none; width: 66px; color: {{t.ink2}}">{{fd.k}}</span><strong style="font-weight: 600">{{fd.v}}</strong></li>
+        </sc-for>
+      </ul>
+      <sc-if value="{{readDone}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="padding: 14px 16px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 4px">
+          <strong style="font-size: 18px; line-height: 1.35">Is this your home: A-1104 at Aurelia Heights, Phase 2?</strong>
+          <span style="font-size: 15px; line-height: 1.45">We matched the RERA number and the unit on the letter. Nothing is compared before you confirm.</span>
+        </div>
+      </sc-if>
+    </main>
+    <div style="flex: none; height: 88px; box-sizing: border-box; padding: 14px 16px 22px; display: flex; gap: 10px; background: {{t.nav}}">
+      <button type="button" class="pl-press" onClick="{{toAdd}}" style="flex: none; height: 52px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Not mine</button>
+      <button type="button" class="pl-press" onClick="{{confirmHome}}" aria-disabled="{{confirmOff}}" style="{{confirmStyle}}">Yes, compare it</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isDraft}}" hint-placeholder-val="{{false}}">
+    <main class="hs" style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px" data-review="legal">
+      <label for="draft-m" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.1; letter-spacing: -0.03em">Ask for the slab 12 certificate</label>
+      <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">A draft. Edit anything; you send it, from your own email.</p>
+      <textarea id="draft-m" rows="14" value="{{draft}}" onChange="{{onDraft}}" style="width: 100%; box-sizing: border-box; padding: 14px 16px; border-radius: 8px; border: 1px solid {{t.lineStrong}}; background: {{t.bgSolid}}; color: {{t.ink}}; font: inherit; font-size: 15px; line-height: 1.5; resize: vertical"></textarea>
+      <p style="margin: 0; padding: 14px 16px; border-radius: 8px; background: {{t.claimBg}}; font-size: 15px; line-height: 1.5">Paying on time is your duty under the agreement (RERA s.19(6)), and a delay can carry interest (s.19(7)). If the certificate shows slab 12, pay by 30 Oct 2026 into the account ending 4417.</p>
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: {{t.muted}}">Send it to the email on Northfield's HARERA registration. Plinth never sends letters for you. Not legal advice.</p>
+    </main>
+    <div style="flex: none; height: 88px; box-sizing: border-box; padding: 14px 16px 22px; display: flex; gap: 10px; background: {{t.nav}}">
+      <a href="{{mailto}}" class="pl-press" style="flex: none; height: 52px; padding: 0 20px; box-sizing: border-box; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; text-decoration: none; font-size: 17px; font-weight: 600; display: inline-flex; align-items: center">Open email</a>
+      <button type="button" class="pl-press" onClick="{{copyDraft}}" style="flex: 1 1 0; height: 52px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 17px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"></rect><path d="M10.5 3.5V3A1.5 1.5 0 0 0 9 1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>{{copyLabel}}</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <p role="status" style="position: absolute; left: 16px; right: 16px; bottom: 100px; margin: 0; padding: 12px 16px; border-radius: 8px; background: {{t.inverse}}; color: {{t.onInverse}}; font-size: 15px; line-height: 1.4; box-shadow: {{t.shadow}}">{{toast}}</p>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"screen":{"editor":"enum","options":["Result","Add the letter","Reading","Write to Northfield"],"default":"Result"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {flip: false, ov: null, ovFrom: null, built: false, readN: 5, alert: false, draft: null, copied: false, toast: ''};
+  }
+  componentDidMount() {
+    var self = this;
+    var reduced = false;
+    try { reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { reduced = false; }
+    this._rm = reduced;
+    if (reduced) this.setState({built: true});
+    else this._b = setTimeout(function () { self.setState({built: true}); }, 160);
+    if (this.scrKey() === 'reading') this.read();
+  }
+  componentWillUnmount() { clearTimeout(this._b); clearInterval(this._r); clearTimeout(this._toastT); clearTimeout(this._c); }
+  scrKey() {
+    var map = {'Result': 'result', 'Add the letter': 'add', 'Reading': 'reading', 'Write to Northfield': 'draft'};
+    var P = this.props || {};
+    var s = this.state || {};
+    var prop = map[P.screen] || 'result';
+    return (s.ov && s.ovFrom === P.screen) ? s.ov : prop;
+  }
+  go(k) { this.setState({ov: k, ovFrom: (this.props || {}).screen}); }
+  read() {
+    var self = this;
+    clearInterval(this._r);
+    this.setState({readN: this._rm ? 5 : 0});
+    if (this._rm) return;
+    this._r = setInterval(function () {
+      var n = (self.state.readN || 0) + 1;
+      self.setState({readN: Math.min(5, n)});
+      if (n >= 5) clearInterval(self._r);
+    }, 520);
+  }
+  flash(msg) {
+    var self = this;
+    clearTimeout(this._toastT);
+    this.setState({toast: msg});
+    this._toastT = setTimeout(function () { self.setState({toast: ''}); }, 2800);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var P = this.props || {};
+    var night = ((P.theme || 'Day') === 'Night') !== !!s.flip;
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#121F1A', track: 'rgba(255,255,255,0.07)', lineStrong: 'rgba(255,255,255,0.28)', photo: '#1B2A24',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      claimBg: '#1D2621', nav: '#121D19', inverse: '#EEF3F0', onInverse: '#0B1411', shadow: '0 8px 24px rgba(0,0,0,0.45)', slabOff: 'rgba(255,255,255,0.09)',
+      vMatch: 'rgba(255,255,255,0.15)', vCant: 'rgba(255,255,255,0.09)',
+      hatch: 'repeating-linear-gradient(45deg, rgba(238,243,240,0.55) 0 1.5px, transparent 1.5px 5px)',
+      hatchPill: 'repeating-linear-gradient(45deg, rgba(185,198,192,0.34) 0 1.5px, transparent 1.5px 7px)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', track: '#F4F2ED', lineStrong: '#C9C4B9', photo: '#E7E3DA',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      claimBg: '#F1ECE2', nav: '#EFECE5', inverse: '#1B1A17', onInverse: '#FFFFFF', shadow: '0 8px 24px rgba(27,26,23,.12)', slabOff: '#E6E2D9',
+      vMatch: '#E2DED4', vCant: '#EEEAE2',
+      hatch: 'repeating-linear-gradient(45deg, rgba(27,26,23,0.55) 0 1.5px, transparent 1.5px 5px)',
+      hatchPill: 'repeating-linear-gradient(45deg, rgba(63,60,54,0.30) 0 1.5px, transparent 1.5px 7px)'
+    };
+    var scr = this.scrKey();
+    var reduced = !!this._rm;
+
+    // Tower A: slab 9 on record (QPR Apr–Jun 2026); the letter of 10 Oct 2026 asks for slab 12 (DESIGN.md §5b, B3 block).
+    var F = 9, K = 12, PITCH = 15, SLAB = 12;
+    var floors = [];
+    for (var n = 20; n >= 1; n--) {
+      var kind = n <= F ? 'filed' : (n <= K ? 'gap' : 'empty');
+      var delay = reduced ? 0 : (kind === 'filed' ? (n - 1) * 45 : (kind === 'gap' ? F * 45 + (n - F) * 80 + 120 : 0));
+      floors.push({
+        box: 'position:absolute;left:0;right:0;top:' + ((20 - n) * PITCH) + 'px;height:' + SLAB + 'px;border-radius:2px;overflow:hidden;background:' + T.slabOff,
+        fill: 'display:block;width:100%;height:100%;transform-origin:left center;' +
+          (kind === 'filed' ? 'background:' + T.ink + ';' : (kind === 'gap' ? 'background:' + T.hatch + ',' + T.claimBg + ';' : 'background:transparent;')) +
+          'transform:scaleX(' + ((kind !== 'empty' && s.built) ? 1 : 0) + ');' + (reduced ? '' : 'transition:transform .5s cubic-bezier(.22,1,.36,1) ' + delay + 'ms')
+      });
+    }
+    var labels = [3, 6, 9, 12, 15, 18, 20].map(function (p) {
+      return {text: 'Slab ' + p, style: 'position:absolute;left:0;top:' + ((20 - p) * PITCH - 2) + 'px;height:16px;display:flex;align-items:center;font-size:13px;line-height:1;white-space:nowrap;' + (p === K ? 'font-weight:700;color:' + T.ink : 'color:' + T.ink2)};
+    });
+    function marker(level, title, sub, pill) {
+      return {title: title, sub: sub,
+        wrap: 'position:absolute;left:0;right:0;top:' + ((20 - level) * PITCH - 8) + 'px;display:flex;align-items:flex-start;gap:6px',
+        lead: 'flex:none;width:10px;height:2px;margin-top:13px;background:' + T.ink,
+        pill: 'align-self:flex-start;display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:999px;font-size:14px;font-weight:700;white-space:nowrap;' + pill};
+    }
+    var markers = [
+      marker(K, 'Letter: slab 12', '10 Oct 2026', 'background:' + T.claimBg + ';color:' + T.ink),
+      marker(F, 'Filed: slab 9', 'QPR Apr–Jun 2026', 'background:' + T.ink + ';color:' + T.bg)
+    ];
+
+    var VS = {
+      match: {label: 'Matches', bg: T.vMatch, icon: 'M3 7.5l2.5 2.5L11 4'},
+      cant: {label: 'Can’t check yet', bg: T.hatchPill + ',' + T.vCant, icon: 'M12 7a5 5 0 1 1-10 0a5 5 0 1 1 10 0M7 4.3V7l2 1.4'}
+    };
+    var L = [
+      {line: 'Stage', says: 'on casting of Tower A slab 12', recLabel: 'Records show', rec: 'slab 9 at the latest filing, as of 30 Jun 2026.', v: 'cant'},
+      {line: 'Plan and amount', says: '7.5%: ₹12,54,000 plus GST ₹62,700', recLabel: 'Your plan shows', rec: '7.5% at slab 12, on your ₹1,67,20,000 price.', v: 'match'},
+      {line: 'Pay to', says: 'RERA Collection Account, ending 4417', recLabel: 'Records show', rec: 'the account registered with HARERA for Phase 2.', v: 'match'},
+      {line: 'Due', says: 'by 30 Oct 2026', recLabel: 'Today', rec: '18 Oct 2026, so 12 days to go.', v: null}
+    ];
+    var ledger = L.map(function (r) {
+      var v = r.v ? VS[r.v] : {label: 'Your date', bg: T.track, icon: 'M3 3.5h8v8H3zM3 6h8M5.5 2v3M8.5 2v3'};
+      return {line: r.line, says: r.says, recLabel: r.recLabel, rec: r.rec, verdict: v.label, icon: v.icon,
+        pill: 'flex:none;display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 10px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap;color:' + T.ink + ';background:' + v.bg};
+    });
+
+    var FOUND = [['Unit', 'A-1104, Tower A'], ['Stage', 'Tower A, slab 12'], ['Amount', '₹13,16,700 with GST'], ['Due', '30 Oct 2026'], ['Pay to', 'account ending 4417']];
+    var readN = reduced ? 5 : (s.readN === undefined ? 5 : s.readN);
+    var found = FOUND.map(function (x, i) {
+      var got = i < readN;
+      return {k: x[0], v: got ? x[1] : 'Reading…',
+        style: 'display:flex;align-items:center;gap:10px;min-height:40px;font-size:16px;' + (got ? '' : 'color:' + T.ink2),
+        dot: 'flex:none;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:' + (got ? T.accentSoft : T.track) + ';color:' + (got ? T.onAccentSoft : T.ink2),
+        icon: got ? 'M4 10.5l3.5 3.5L16 6' : 'M6 10h8'};
+    });
+    var readDone = readN >= 5;
+
+    var DRAFT = 'To: Northfield Estates Pvt Ltd\n' +
+      'Subject: Demand letter NE/AH2/A-1104/12 of 10 Oct 2026: certificate for Tower A slab 12\n\n' +
+      'Dear Sir or Madam,\n\n' +
+      'I have received your demand letter dated 10 Oct 2026 for the Tower A slab 12 instalment of ₹13,16,700, for unit A-1104 at Aurelia Heights, Phase 2 (RERA GGM/673/405/2022/117).\n\n' +
+      'The latest quarterly progress report on HARERA, for Apr–Jun 2026, shows Tower A at slab 9.\n\n' +
+      'Before the due date of 30 Oct 2026, please send me:\n' +
+      '- the architect’s or engineer’s certificate that slab 12 of Tower A is cast, with the casting date;\n' +
+      '- the HARERA filing receipt for the Jul–Sep 2026 quarterly progress report.\n\n' +
+      'I want to pay each instalment on time, and these papers will help me do that.\n\n' +
+      'Regards,\nKavya Nair\nUnit A-1104, Aurelia Heights, Phase 2';
+    var draft = s.draft === null || s.draft === undefined ? DRAFT : s.draft;
+
+    var titles = {
+      result: ['Pay-as-built', 'Aurelia Heights, Phase 2 · A-1104'],
+      add: ['Check a demand letter', 'Aurelia Heights, Phase 2 · A-1104'],
+      reading: ['Reading your letter', 'Aurelia Heights, Phase 2'],
+      draft: ['Write to Northfield', 'A draft you send yourself']
+    };
+    var backTo = {result: null, add: 'result', reading: 'add', draft: 'result'};
+
+    return {
+      t: T,
+      themeLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      flipTheme: function () { self.setState({flip: !s.flip}); },
+      barTitle: titles[scr][0], barSub: titles[scr][1],
+      backArrow: scr === 'result' || scr === 'draft', backClose: scr === 'add' || scr === 'reading',
+      backLabel: scr === 'result' ? 'Back to Following' : (scr === 'draft' ? 'Back to the check' : 'Close'),
+      goBack: function () { if (backTo[scr]) self.go(backTo[scr]); },
+      isResult: scr === 'result', isAdd: scr === 'add', isReading: scr === 'reading', isDraft: scr === 'draft',
+      floors: floors, labels: labels, markers: markers,
+      diagramLabel: 'Tower A, 20 floors. The latest filing shows slab 9. This letter asks for the slab 12 instalment. Floors 10 to 12 are not on record yet. Payment stages are slabs 3, 6, 9, 12, 15, 18 and 20, at 7.5% each.',
+      ledger: ledger,
+      alertOn: !!s.alert, alertStr: s.alert ? 'true' : 'false', alertLabel: s.alert ? 'Alert on' : 'Alert me',
+      toggleAlert: function () { self.setState({alert: !s.alert}); self.flash(s.alert ? 'Alert off.' : 'We’ll tell you when the Jul–Sep QPR is on HARERA, and check this letter again.'); },
+      toDraft: function () { self.go('draft'); },
+      toReading: function () { self.go('reading'); self.read(); },
+      toAdd: function () { clearInterval(self._r); self.go('add'); },
+      found: found, readDone: readDone, readBusy: !readDone,
+      readHead: readDone ? 'Read. One check before we compare.' : 'Reading the stage, amount and payee…',
+      confirmOff: readDone ? 'false' : 'true',
+      confirmStyle: 'flex:1 1 0;height:52px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;background:' + T.accent + ';color:' + T.onAccent + ';opacity:' + (readDone ? 1 : 0.45),
+      confirmHome: function () { if (readDone) self.go('result'); },
+      draft: draft,
+      onDraft: function (e) { self.setState({draft: String(e.target.value || '')}); },
+      copyLabel: s.copied ? 'Copied' : 'Copy the letter',
+      copyDraft: function () {
+        try { if (navigator && navigator.clipboard) navigator.clipboard.writeText(draft); } catch (e) {}
+        clearTimeout(self._c);
+        self.setState({copied: true});
+        self._c = setTimeout(function () { self.setState({copied: false}); }, 1800);
+        self.flash('Copied. Paste it into an email to the address on Northfield’s HARERA registration.');
+      },
+      mailto: 'mailto:?subject=' + encodeURIComponent('Demand letter NE/AH2/A-1104/12: certificate for Tower A slab 12') + '&body=' + encodeURIComponent(draft),
+      hasToast: !!s.toast, toast: s.toast || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

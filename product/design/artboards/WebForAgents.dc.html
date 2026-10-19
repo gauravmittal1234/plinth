@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>For agents: work with Plinth</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:pointer}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .rise3 { animation-delay: 270ms; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: 13200px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
+        <a href="#how-scores-work" class="lk" style="color: {{t.ink}}; text-decoration: none">How scores work</a>
+        <a href="#broker-check" class="lk" style="color: {{t.ink}}; text-decoration: none">Check a broker</a>
+        <a href="#top" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">For agents</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
+          <sc-if value="{{isNight}}" hint-placeholder-val="{{false}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </sc-if>
+          <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.5 11.2A6.2 6.2 0 0 1 6.8 3.5a6.2 6.2 0 1 0 7.7 7.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </sc-if>
+        </button>
+        <a href="#waitlist" class="press" style="height: 44px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font-size: 17px; font-weight: 600; text-decoration: none; white-space: nowrap">Join the waitlist</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="top" aria-labelledby="hero-h" style="background: {{t.bg}}; padding: 48px 0 128px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch; gap: 48px 64px">
+        <div style="flex: 1 1 600px; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; padding-bottom: 8px">
+          <h1 id="hero-h" class="rise" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 100px); line-height: 0.94; letter-spacing: -0.045em">One buyer, one agent.</h1>
+          <p class="rise rise1" style="margin: 0; max-width: 42ch; font-size: 22px; line-height: 1.45">Plinth never sells or broadcasts an enquiry. A buyer picks at most one agent for a flat, and every introduction is time-stamped. Here are the rules, published for every agent alike.</p>
+          <div class="rise rise2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding-top: 4px">
+            <a href="#waitlist" class="press" style="height: 56px; display: inline-flex; align-items: center; padding: 0 28px; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font-size: 18px; font-weight: 600; text-decoration: none; white-space: nowrap">Join the waitlist</a>
+            <a href="#split" class="lk" style="font-size: 18px; font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 5px">Work out what a deal pays</a>
+          </div>
+          <p class="rise rise3" style="margin: 0; max-width: 60ch; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Partner rules v1, published 18 Oct 2026. Any change is posted here 30 days before it applies. We compete with lead reselling, not with you. <a href="#hi" lang="hi" class="lk" style="color: {{t.ink}}">हिन्दी में पढ़ें</a></p>
+        </div>
+        <figure class="rise rise2" style="flex: 1 1 380px; min-width: 0; margin: 0; position: relative; min-height: 620px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="agentSocietyGate" src="/_blob/d151f827e72445ed65bd8b99c29bbb2d" alt="Illustrative image: an agent's small office at the gate of a Gurugram housing society in the morning, towers behind" class="drift" style="position: absolute; inset: 0; background: #E7E3DA; border-radius: 0; object-fit: cover; display: block">
+          <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · the society gate, where the work happens</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="promise" aria-labelledby="promise-h" style="background: {{t.track}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 56px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="promise-h" class="rv" style="{{u.h2}}; max-width: 14ch">What’s in it for you?</h2>
+          <p class="rv rv1" style="{{u.lead}}; flex: 0 1 520px; min-width: 0">Your enquiry goes to one agent the buyer chose, not fifteen. The buyer arrives knowing the records, and nobody can buy their way above you.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 40px 64px; align-items: start">
+          <div class="rv" style="min-width: 0; grid-column: span 1">
+            <h3 style="{{u.h3}}">What you get</h3>
+            <ol style="margin: 16px 0 0; padding: 0 0 0 24px; display: flex; flex-direction: column; gap: 14px">
+              <li><strong>Buyers who chose you.</strong> One agent per buyer and flat. We never sell or broadcast an enquiry.</li>
+              <li><strong>Buyers who already know.</strong> The delivery record, the all-in cost and the paperwork status. Fewer wasted visits.</li>
+              <li><strong>Proof you introduced them.</strong> Every consented contact and verified visit is time-stamped.</li>
+              <li><strong>Paid within 7 days</strong> of registration on desk deals, with the TDS and GST paperwork done.</li>
+              <li><strong>Your mandates kept yours.</strong> We don’t approach an owner you hold a mandate for.</li>
+              <li><strong>Free tools on WhatsApp.</strong> List by forwarding a message; confirm every flat in one weekly tap.</li>
+            </ol>
+          </div>
+          <div class="rv rv1" style="min-width: 0">
+            <h3 style="{{u.h3}}">What we ask</h3>
+            <ul style="margin: 16px 0 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 10px">
+              <li>Your HARERA agent number, PAN and an office address.</li>
+              <li>The owner’s OTP for every mandate.</li>
+              <li>Honest availability, confirmed every week.</li>
+              <li>Respect for a buyer’s STOP and quiet hours.</li>
+              <li>Telling buyers who pays you.</li>
+            </ul>
+            <h3 style="{{u.h3}}; margin-top: 36px">What our own staff do</h3>
+            <p style="margin: 12px 0 0">Plinth’s staff explain records and handle desk paperwork. They don’t show flats or negotiate. The field work is yours.</p>
+          </div>
+          <div class="rv rv2" style="min-width: 0">
+            <h3 style="{{u.h3}}">What we never do</h3>
+            <ul style="margin: 16px 0 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 10px">
+              <li>Sell your leads, your listings or your data.</li>
+              <li>Take developer money, directly or through you.</li>
+              <li>Show anyone a band before buyers see it.</li>
+              <li>Charge for a badge, a ranking or a placement.</li>
+              <li>Hold your listings hostage. Leave anytime and export them.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rules" aria-labelledby="rules-h" style="background: {{t.bg}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 56px 80px; align-items: flex-start">
+        <div style="flex: 1 1 400px; max-width: 480px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="rules-h" class="rv" style="{{u.h2}}">Who owns an introduction?</h2>
+          <p class="rv rv1" style="{{u.lead}}">You do, once the buyer taps to connect you and makes a verified visit to that flat. It holds for 60 days after the last verified visit, and never past 90 days after the first.</p>
+          <p class="rv rv1" style="margin: 0; font-size: 17px">A verified visit means the buyer’s own OTP at the flat plus a location check. A claim can’t be planted from a desk.</p>
+          <p class="rv rv1" style="margin: 0; font-size: 17px">The contact cap works for you too. A buyer lets at most 3 new parties reach them in 30 days, and you count once, however many flats you show them. Listing agents you co-broke with don’t count.</p>
+          <button type="button" class="press" onClick="{{togRules}}" aria-expanded="{{xRules}}" aria-controls="rules-list" style="{{u.disclose}}">Read Introduction Rules v1<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="{{chevRules}}"><path d="M5 7l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <sc-if value="{{xRules}}" hint-placeholder-val="{{false}}">
+            <ol id="rules-list" style="margin: 0; padding: 0 0 0 24px; display: flex; flex-direction: column; gap: 12px; font-size: 17px">
+              <li>An introduction is a consented contact plus a verified visit, for one flat.</li>
+              <li>It is yours for 60 days from the last verified visit, and never more than 90 days from the first.</li>
+              <li>Claiming an earlier introduction made off Plinth? Bring dated evidence: a message, a visit slip or a call log.</li>
+              <li>The buyer may switch agents at any time. The ledger then gives 25% of the agent share to the agent who introduced them. The buyer never pays twice.</li>
+              <li>Disputes are decided within 7 days. Appeals go to a panel that includes one outside broker.</li>
+              <li>You can export your own ledger as evidence, whenever you like.</li>
+            </ol>
+          </sc-if>
+        </div>
+        <figure class="rv rv1" style="flex: 1 1 560px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 20px">
+          <div role="img" aria-label="Example timeline. A buyer taps to connect you on 2 Oct 2026, makes a first verified visit on 9 Oct and a second on 16 Oct. The introduction is yours until 15 Dec 2026, 60 days after the last visit. It can never run past 7 Jan 2027, 90 days after the first visit. Today is 18 Oct 2026." style="position: relative; height: 150px">
+            <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 78px; height: 2px; background: {{t.ink}}"></div>
+            <div aria-hidden="true" style="{{tl.window}}"></div>
+            <div aria-hidden="true" style="{{tl.maxLine}}"></div>
+            <div aria-hidden="true" style="{{tl.todayLine}}"></div>
+            <sc-for list="{{tl.months}}" as="mo" hint-placeholder-count="4">
+              <span aria-hidden="true" style="{{mo.style}}">{{mo.label}}</span>
+            </sc-for>
+            <sc-for list="{{tl.marks}}" as="mk" hint-placeholder-count="3">
+              <span aria-hidden="true" style="{{mk.dot}}"></span>
+            </sc-for>
+            <span aria-hidden="true" style="{{tl.windowLabel}}">Yours until 15 Dec 2026</span>
+            <span aria-hidden="true" style="{{tl.maxLabel}}">7 Jan 2027 · never past 90 days</span>
+            <span aria-hidden="true" style="{{tl.todayLabel}}">Today</span>
+          </div>
+          <ol aria-hidden="true" style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: 12px 24px; font-size: 15px; line-height: 1.4">
+            <sc-for list="{{tl.marks}}" as="mk2" hint-placeholder-count="3">
+              <li style="display: flex; gap: 10px; align-items: flex-start"><span style="{{mk2.key}}"></span><span><strong style="display: block">{{mk2.date}}</strong>{{mk2.label}}</span></li>
+            </sc-for>
+          </ol>
+          <figcaption style="font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Example: a buyer you introduced to a 3 BHK in Amberwood Greens, Sector 66. A second verified visit restarts the 60 days; nothing restarts the 90.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="split" aria-labelledby="split-h" style="background: {{t.track}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="split-h" class="rv" style="{{u.h2}}; max-width: 14ch">What does a deal pay you?</h2>
+          <div class="rv rv1" style="flex: 0 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+            <p style="{{u.lead}}">We publish only Plinth’s own share. Your fee is yours to set, and a buyer never pays two buyer-side fees.</p>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Split rules v1 for resale deals in Gurugram. Desk deals start once our HARERA agent registration is in place.</p>
+          </div>
+        </div>
+
+        <div class="rv rv1" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch">
+          <div role="radiogroup" aria-labelledby="deal-l" style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+            <p id="deal-l" style="margin: 0 0 8px; font-size: 15px; font-weight: 600">Pick the kind of deal</p>
+            <div aria-hidden="true" style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 16px; padding: 0 20px 4px 52px; font-size: 14px; color: {{t.ink2}}">
+              <span>Deal</span><span>Who pays whom</span><span>Plinth’s share</span>
+            </div>
+            <sc-for list="{{deals}}" as="d" hint-placeholder-count="5">
+              <button type="button" class="press" role="radio" aria-checked="{{d.on}}" onClick="{{d.pick}}" style="{{d.style}}">
+                <span aria-hidden="true" style="{{d.dot}}"></span>
+                <span style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 16px; flex: 1; min-width: 0">
+                  <span style="font-weight: 600">{{d.label}}</span>
+                  <span>{{d.who}}</span>
+                  <span style="font-weight: 600">{{d.share}}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="flex: 1 1 420px; min-width: 0; padding: 28px; border-radius: 8px; background: {{t.panelSolid}}; display: flex; flex-direction: column; gap: 20px">
+            <sc-if value="{{showInputs}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="price" style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 600"><span>Sale price</span><span aria-hidden="true">{{priceText}}</span></label>
+                <input id="price" type="range" min="50" max="500" step="5" value="{{price}}" onChange="{{onPrice}}" aria-valuetext="{{priceText}}">
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
+                <div style="display: flex; flex-direction: column; min-width: 0">
+                  <span id="fee-l" style="font-size: 15px; font-weight: 600">{{feeLabel}}</span>
+                  <span style="font-size: 14px; color: {{t.ink2}}">{{feeHint}}</span>
+                </div>
+                <div role="group" aria-labelledby="fee-l" style="flex: none; display: flex; align-items: center; gap: 6px">
+                  <button type="button" class="press" onClick="{{feeDown}}" aria-label="Lower the fee by 0.25%" aria-disabled="{{feeDownOff}}" style="{{feeDownStyle}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>
+                  <span aria-live="polite" style="min-width: 64px; text-align: center; font-size: 20px; font-weight: 700">{{feeText}}</span>
+                  <button type="button" class="press" onClick="{{feeUp}}" aria-label="Raise the fee by 0.25%" aria-disabled="{{feeUpOff}}" style="{{feeUpStyle}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9M8 3.5v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>
+                </div>
+              </div>
+              <button type="button" class="press" role="switch" aria-checked="{{switchedAria}}" aria-disabled="{{switchOffAria}}" onClick="{{toggleSwitch}}" style="{{switchRow}}">
+                <span style="{{sw.track}}"><span style="{{sw.knob}}"></span></span>
+                <span style="flex: 1; min-width: 0">The buyer switched agents after the first introduction</span>
+              </button>
+              <sc-if value="{{switchNoteShow}}" hint-placeholder-val="{{false}}">
+                <p style="margin: -8px 0 0; font-size: 14px; color: {{t.ink2}}">{{switchNote}}</p>
+              </sc-if>
+            </sc-if>
+
+            <div aria-live="polite" style="display: flex; flex-direction: column; gap: 6px">
+              <span style="font-size: 15px; font-weight: 600">{{bigLabel}}</span>
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(44px, 4.6vw, 64px); line-height: 1; letter-spacing: -0.04em">{{bigValue}}</span>
+              <span style="font-size: 16px">{{bigNote}}</span>
+            </div>
+
+            <div role="img" aria-label="{{barLabel}}" style="position: relative; height: 28px; border-radius: 4px; overflow: hidden; background: {{t.track}}">
+              <sc-for list="{{segs}}" as="sg" hint-placeholder-count="3">
+                <span style="{{sg.style}}"></span>
+              </sc-for>
+            </div>
+            <dl style="margin: 0; display: flex; flex-direction: column; gap: 10px">
+              <sc-for list="{{splitRows}}" as="sr" hint-placeholder-count="3">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px">
+                  <dt style="display: inline-flex; align-items: center; gap: 10px; font-size: 17px"><span aria-hidden="true" style="{{sr.swatch}}"></span>{{sr.label}}</dt>
+                  <dd style="margin: 0; font-size: 17px; font-weight: 700; white-space: nowrap">{{sr.value}}</dd>
+                </div>
+              </sc-for>
+            </dl>
+            <p style="margin: 0; padding: 14px 16px; border-radius: 8px; background: {{t.track}}; font-size: 16px; line-height: 1.5">{{payNote}}</p>
+          </div>
+        </div>
+
+        <div class="rv" style="display: flex; flex-wrap: wrap; gap: 24px 64px; font-size: 17px">
+          <p style="margin: 0; flex: 1 1 340px; min-width: 0"><strong>How Plinth earns from agents.</strong> A share of our resale fee on the deals above, and optional tools later for a flat monthly fee. Neither ever touches a band, a ranking or your badge.</p>
+          <p style="margin: 0; flex: 1 1 340px; min-width: 0"><strong>Paperwork.</strong> On desk deals we deduct TDS on your share and show it on the payment notice. Send a GST invoice if you’re registered for GST.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="shield" aria-labelledby="shield-h" style="background: {{t.bg}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 56px 80px; align-items: center">
+        <figure class="rv" style="flex: 1 1 420px; min-width: 0; margin: 0; position: relative; min-height: 620px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="deedKeys" src="/_blob/6ca2bc5de9dc542dc12c4d95e30a6af3" alt="Illustrative image: apartment keys resting on a signed sale deed" style="position: absolute; inset: 0; width: 100%; height: 100%; background: {{t.photo}}; border-radius: 0; object-fit: cover; display: block">
+          <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</figcaption>
+        </figure>
+        <div style="flex: 1 1 440px; max-width: 520px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+          <h2 id="shield-h" class="rv" style="{{u.h2}}">Will we poach your owners?</h2>
+          <p class="rv rv1" style="{{u.lead}}">No. While your mandate is active, and for 60 days after it ends, we don’t approach that owner to list directly or to use our desk.</p>
+          <ul class="rv rv1" style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 10px; font-size: 17px">
+            <li>An owner who comes to us on their own sees who holds the mandate, and until when.</li>
+            <li>One flat, one card. The owner’s listing and yours merge; nobody relists it without a mandate.</li>
+            <li>The owner can end a mandate at any time. That is their right, and we won’t argue it for you.</li>
+          </ul>
+          <div class="rv rv2" style="padding: 20px 22px; border-radius: 8px; background: {{t.claimBg}}; display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 14px; color: {{t.ink2}}">What an owner sees if they try to list with us directly</span>
+            <span style="font-weight: 700">Amberwood Greens · Tower 4 · flat 902</span>
+            <span style="font-size: 17px">Mandated to Arora Estates until 16 Jan 2027. Plinth won’t approach you to list directly while this mandate is active. You can end it anytime.</span>
+          </div>
+          <p class="rv rv2" style="margin: 0; font-size: 15px; color: {{t.ink2}}">The rule is published now and binds from your first mandate. Mandates are confirmed by the owner’s OTP when resale listings open.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="channel-partners" aria-labelledby="cp-h" style="background: {{t.track}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-direction: column; gap: 24px; max-width: 900px">
+          <h2 id="cp-h" class="rv" style="{{u.h2}}; max-width: 14ch">Are we a channel partner?</h2>
+          <p class="rv rv1" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.22; letter-spacing: -0.02em; max-width: 30ch">No, and we never will be. We never take any part of a commission a developer pays you.</p>
+        </div>
+        <dl class="rv rv1" style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr)); gap: 36px 72px">
+          <div style="min-width: 0">
+            <dt style="font-weight: 700">Your client can name you.</dt>
+            <dd style="margin: 6px 0 0">When a buyer books a site visit through Plinth, they can name their agent. The site office receives “Agent of record” with the booking.</dd>
+          </div>
+          <div style="min-width: 0">
+            <dt style="font-weight: 700">We are never anyone’s lead source.</dt>
+            <dd style="margin: 6px 0 0">We never register with a developer as a source. A buyer who names no agent is booked as a direct visitor.</dd>
+          </div>
+          <div style="min-width: 0">
+            <dt style="font-weight: 700">Tagging stays between you and the developer.</dt>
+            <dd style="margin: 6px 0 0">We don’t decide who tagged a client first. If your client wants, they can share a dated first-contact receipt from Plinth.</dd>
+          </div>
+          <div style="min-width: 0">
+            <dt style="font-weight: 700">The developer is the seller, not our partner.</dt>
+            <dd style="margin: 6px 0 0">We score their projects from public records. They pay us nothing, and so do you. Keep every empanelment you have.</dd>
+          </div>
+        </dl>
+        <figure class="rv rv2" style="margin: 0; position: relative; height: 400px; overflow: hidden; background: {{t.photo}}">
+          <img data-slot="salesGallery" src="/_blob/5fb6202e7c5c795906c6ae2cb14ac821" alt="Illustrative image: an empty sales gallery with a scale model of two towers" style="position: absolute; inset: 0; width: 100%; height: 100%; background: {{t.photo}}; border-radius: 0; object-fit: cover; object-position: 50% 60%; display: block">
+          <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · the sales gallery stays your ground</figcaption>
+        </figure>
+        <p class="rv" style="margin: 0; max-width: 64ch; font-size: 17px">Bands read the same public records you would check before empanelling with a developer: progress against time, filings, orders and the group’s finished projects. Use them however helps your business.</p>
+      </div>
+    </section>
+
+    <section id="bands" aria-labelledby="bands-h" style="background: {{t.bg}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="bands-h" class="rv" style="{{u.h2}}; max-width: 14ch">How do I explain a band?</h2>
+          <p class="rv rv1" style="{{u.lead}}; flex: 0 1 540px; min-width: 0">Show it, cite it, and let your client read it. A band is a pattern in public records, not a verdict on the project or on you.</p>
+        </div>
+        <div class="rv rv1" style="display: flex; flex-wrap: wrap; gap: 40px 72px; align-items: flex-start">
+          <div style="flex: 1 1 360px; max-width: 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+            <p id="band-l" style="margin: 0; font-size: 15px; font-weight: 600">Pick a band to see a talk track</p>
+            <div role="radiogroup" aria-labelledby="band-l" style="display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{bandPicks}}" as="bp" hint-placeholder-count="5">
+                <button type="button" class="press" role="radio" aria-checked="{{bp.on}}" onClick="{{bp.pick}}" style="{{bp.style}}">
+                  <span style="{{bp.chip}}"><span aria-hidden="true" style="display: inline-flex; gap: 2px"><sc-for list="{{bp.meter}}" as="bm" hint-placeholder-count="5"><span style="{{bm.style}}"></span></sc-for></span>{{bp.name}}</span>
+                  <span style="flex: 1; min-width: 0; text-align: right; font-size: 15px; color: {{t.ink2}}">{{bp.project}}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <div aria-live="polite" style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+            <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px">
+              <span style="{{tk.nameStyle}}">{{tk.name}}</span>
+              <span style="font-size: 17px">{{tk.project}}</span>
+            </div>
+            <p style="margin: 0; font-size: 19px">{{tk.freq}}</p>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 15px; font-weight: 600">Records show</span>
+              <p style="margin: 0">{{tk.records}} <span style="{{u.chip}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 1.5h5l2.5 2.5v8.5h-7.5z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>{{tk.source}}</span></p>
+            </div>
+            <div style="padding: 20px 22px; border-radius: 8px; background: {{t.track}}; display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 15px; font-weight: 600">You could say</span>
+              <p style="margin: 0; font-size: 20px; line-height: 1.45">“{{tk.say}}”</p>
+            </div>
+            <p style="margin: 0; font-size: 17px"><strong>Ask the site office together:</strong> {{tk.ask}}</p>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Don’t promise an outcome either way. Any claim that contradicts a band is a strike.</p>
+          </div>
+        </div>
+        <div class="rv" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 32px 72px">
+          <div style="min-width: 0; display: flex; flex-direction: column; gap: 8px">
+            <h3 style="{{u.h3}}">No previews, for anyone</h3>
+            <p style="margin: 0; font-size: 17px">You see a band change when buyers do. No agent, channel partner or advertiser sees one early, and nobody can pay to. The only notice goes to the developer whose own project it is, 7 days ahead, so they can send evidence. It is never shared.</p>
+          </div>
+          <div style="min-width: 0; display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+            <h3 style="{{u.h3}}">Think a record is wrong?</h3>
+            <p style="margin: 0; font-size: 17px">Send evidence through Report an error. Your note is published with who pays you, for example “from an agent paid by the developer on bookings”. Facts change scores; arguments don’t.</p>
+            <a href="#report" class="press" style="margin-top: 6px; height: 48px; display: inline-flex; align-items: center; padding: 0 22px; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font-size: 17px; font-weight: 600; text-decoration: none">Report an error with evidence</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="share" aria-labelledby="share-h" style="background: {{t.track}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap-reverse; gap: 56px 80px; align-items: center">
+        <div class="rv" style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+          <div role="radiogroup" aria-label="Project to share" style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{shareProjects}}" as="sp" hint-placeholder-count="3">
+              <button type="button" class="press" role="radio" aria-checked="{{sp.on}}" onClick="{{sp.pick}}" style="{{sp.style}}">{{sp.label}}</button>
+            </sc-for>
+          </div>
+          <div style="padding: 20px; border-radius: 8px; background: {{t.chatBg}}">
+            <div style="margin-left: auto; max-width: 400px; padding: 4px 4px 8px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}; color: {{t.ink}}">
+              <div style="display: flex; gap: 10px; padding: 6px; border-radius: 12px; background: {{t.quoteBg}}">
+                <div style="position: relative; flex: none; width: 88px; height: 88px; overflow: hidden; background: #E7E3DA">
+                  <sc-if value="{{spKestrel}}" hint-placeholder-val="{{true}}"><img data-slot="heroKestrel" src="/_blob/29ddb4eb8af81bf41e28a3b11bdfd13e" alt="Kestrel Park towers (illustrative image)" style="position: absolute; inset: 0; width: 88px; height: 88px; object-fit: cover; display: block; background: #E7E3DA"></sc-if>
+                  <sc-if value="{{spAurelia}}" hint-placeholder-val="{{false}}"><img data-slot="heroAurelia" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Aurelia Heights, Phase 2 towers (illustrative image)" style="position: absolute; inset: 0; width: 88px; height: 88px; object-fit: cover; display: block; background: #E7E3DA"></sc-if>
+                  <sc-if value="{{spCoral}}" hint-placeholder-val="{{false}}"><img data-slot="heroCoral" src="/_blob/76b15081db77011ae5930ad87bcd7272" alt="Coral Towers (illustrative image)" style="position: absolute; inset: 0; width: 88px; height: 88px; object-fit: cover; display: block; background: #E7E3DA"></sc-if>
+                </div>
+                <div style="min-width: 0; display: flex; flex-direction: column; gap: 2px; font-size: 15px; line-height: 1.35">
+                  <strong>{{shareTitle}}</strong>
+                  <span style="{{shareChip}}"><span aria-hidden="true" style="display: inline-flex; gap: 2px"><sc-for list="{{shareMeter}}" as="sm" hint-placeholder-count="5"><span style="{{sm.style}}"></span></sc-for></span>{{shareBand}}</span>
+                  <span style="color: {{t.ink2}}">Live record · data as of 14 Oct 2026</span>
+                  <span style="color: {{t.ink2}}">plinth.in</span>
+                </div>
+              </div>
+              <p style="margin: 8px 8px 0; font-size: 16px; line-height: 1.45">{{shareText}}</p>
+              <p style="margin: 4px 8px 0; font-size: 16px; line-height: 1.45; text-decoration: underline">{{shareLink}}</p>
+              <sc-if value="{{attrib}}" hint-placeholder-val="{{true}}">
+                <p style="margin: 6px 8px 0; font-size: 15px; line-height: 1.45; color: {{t.ink2}}">Shared by a HARERA-registered agent. Agents don’t pay Plinth to share.</p>
+              </sc-if>
+            </div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px">
+            <button type="button" class="press" role="switch" aria-checked="{{attribAria}}" onClick="{{toggleAttrib}}" style="display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; cursor: pointer; text-align: left">
+              <span style="{{swA.track}}"><span style="{{swA.knob}}"></span></span>Add the agent line
+            </button>
+            <button type="button" class="press" onClick="{{copyShare}}" style="margin-left: auto; height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{copyLabel}}</button>
+          </div>
+          <p aria-live="polite" class="sr">{{copyLive}}</p>
+        </div>
+        <div style="flex: 1 1 400px; max-width: 500px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="share-h" class="rv" style="{{u.h2}}">Can I share a risk card?</h2>
+          <p class="rv rv1" style="{{u.lead}}">Yes. Share the live link. It always shows today’s band and date, so it never goes stale in a client’s chat.</p>
+          <ul class="rv rv1" style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 10px; font-size: 17px">
+            <li>Send the link, not a screenshot, and never crop out or cover the band.</li>
+            <li>Don’t write “Plinth recommends”. We don’t recommend projects or agents.</li>
+            <li>Your logo never goes on the card. The agent line sits on your message only.</li>
+            <li>We count how many people open your links, for you to see. Opens never change a band or a ranking.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="low-bands" aria-labelledby="low-h" style="background: {{t.bg}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="low-h" class="rv" style="{{u.h2}}; max-width: 14ch">What if the band is High?</h2>
+          <p class="rv rv1" style="{{u.lead}}; flex: 0 1 540px; min-width: 0">You can still list a flat in a High or Severe project. The band is pinned to the top, the buyer reads it before contacting you, and the listing gets no boost.</p>
+        </div>
+        <div class="rv rv1" style="display: flex; flex-wrap: wrap; gap: 40px 72px; align-items: center">
+          <article aria-label="Example listing with the band pinned" style="flex: 0 1 460px; min-width: 0; border-radius: 8px; overflow: hidden; background: {{t.panelSolid}}">
+            <div style="padding: 16px 20px; background: {{coralFill}}; display: flex; flex-direction: column; gap: 4px; color: {{t.ink}}">
+              <span style="display: inline-flex; align-items: center; gap: 10px; font-weight: 700"><span aria-hidden="true" style="display: inline-flex; gap: 2px"><sc-for list="{{coralMeter}}" as="cm" hint-placeholder-count="5"><span style="{{cm.style}}"></span></sc-for></span><span style="color: {{coralText}}">High</span> delivery risk · low confidence</span>
+              <span style="font-size: 15px">22% built with 70% of the promised time used. Extended twice, now to Aug 2029.</span>
+            </div>
+            <div style="position: relative; height: 180px; overflow: hidden; background: #E7E3DA">
+              <img data-slot="heroCoral" src="/_blob/76b15081db77011ae5930ad87bcd7272" alt="Coral Towers, Sector 89 (illustrative image)" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: #E7E3DA">
+              <span style="position: absolute; top: 10px; right: 10px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+            </div>
+            <div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px">
+              <span style="font-weight: 700">Coral Towers · 3 BHK · allotment transfer</span>
+              <span style="font-size: 16px">1,240 sq ft carpet · RERA project · Sector 89</span>
+              <span style="font-size: 15px; color: {{t.ink2}}">Kabir Malhotra · HARERA agent · paid by the seller, and by you if you hire him · pays Plinth nothing</span>
+              <button type="button" class="press" role="checkbox" aria-checked="{{ackAria}}" onClick="{{toggleAck}}" style="margin-top: 4px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; display: flex; gap: 12px; align-items: flex-start; text-align: left; font: inherit; font-size: 16px; line-height: 1.45; cursor: pointer">
+                <span aria-hidden="true" style="{{ackBox}}"><sc-if value="{{ack}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="{{t.bg}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></span>
+                <span>I’ve read why this project is High.</span>
+              </button>
+              <button type="button" class="press" onClick="{{tryContact}}" aria-disabled="{{contactOffAria}}" style="{{contactStyle}}">Contact Kabir</button>
+              <sc-if value="{{contactMsgShow}}" hint-placeholder-val="{{false}}">
+                <p role="status" style="margin: 0; font-size: 15px">{{contactMsg}}</p>
+              </sc-if>
+            </div>
+          </article>
+          <ul style="flex: 1 1 420px; min-width: 0; margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 14px">
+            <li>The band sits above the photo, in the same place on every listing in these bands.</li>
+            <li>The buyer ticks that they’ve read it before the contact button works.</li>
+            <li>Before any visit, you confirm on WhatsApp: “I’ve shown my client the band.”</li>
+            <li>No ranking boost, and no hiding it either. It ranks like any listing at its verification level.</li>
+            <li>Telling a client something the records contradict is a strike.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="ranking" aria-labelledby="rank-h" style="background: {{t.track}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 56px 80px; align-items: flex-start">
+        <div style="flex: 1 1 420px; max-width: 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="rank-h" class="rv" style="{{u.h2}}">How are listings ranked?</h2>
+          <p class="rv rv1" style="{{u.lead}}">By verification, then freshness. Nothing else. Verification is free, and nobody can buy a place, including you.</p>
+          <ul class="rv rv1" style="margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 10px; font-size: 17px">
+            <li>Owner and agent listings share one feed. Each card says who posted it, and buyers may filter either out.</li>
+            <li>One flat has one card, from our society dictionary.</li>
+            <li>List by forwarding your broadcast message on WhatsApp. We draft it; the owner confirms by OTP.</li>
+            <li>One weekly WhatsApp roll-call covers all your flats: Available, On hold or Sold. A flat not confirmed in 14 days hides until you confirm it.</li>
+          </ul>
+          <figure class="rv rv2" style="margin: 12px 0 0; position: relative; height: 300px; overflow: hidden; background: {{t.photo}}">
+            <img data-slot="phoneSiteVisit" src="/_blob/c1ab5963b1196fad4e05972eb94b5e05" alt="Illustrative image: someone photographing an empty living room on a phone during a visit" style="position: absolute; inset: 0; width: 100%; height: 100%; background: {{t.photo}}; border-radius: 0; object-fit: cover; display: block">
+            <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image · an on-site photo, one rung up</figcaption>
+          </figure>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+          <ol aria-label="Verification levels, lowest first" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column-reverse; gap: 6px">
+            <sc-for list="{{ladder}}" as="ld" hint-placeholder-count="4">
+              <li style="{{ld.style}}">
+                <span style="font-weight: 700">{{ld.name}}</span>
+                <span style="font-size: 16px">{{ld.how}}</span>
+              </li>
+            </sc-for>
+          </ol>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <h3 style="{{u.h3}}">What never counts</h3>
+            <p style="margin: 0; font-size: 17px">Paid tools, ads, how many listings you hold, how long you’ve been with us, founding status, or anything you or a developer could pay for.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="strikes" aria-labelledby="strikes-h" style="background: {{t.bg}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+          <h2 id="strikes-h" class="rv" style="{{u.h2}}; max-width: 14ch">What gets a strike?</h2>
+          <p class="rv rv1" style="{{u.lead}}; flex: 0 1 540px; min-width: 0">Three strikes in 12 months means a 90-day pause. Every strike can be appealed. We act on evidence; we won’t police every deal.</p>
+        </div>
+        <div class="rv rv1" style="overflow-x: auto">
+          <table style="width: 100%; min-width: 720px; border-collapse: collapse; font-size: 17px; line-height: 1.5">
+            <caption class="sr">What gets a strike, how we spot it and what happens</caption>
+            <thead>
+              <tr style="text-align: left; font-size: 15px; color: {{t.ink2}}">
+                <th scope="col" style="padding: 0 24px 12px 0; font-weight: 600; width: 26%">What</th>
+                <th scope="col" style="padding: 0 24px 12px 0; font-weight: 600">How we spot it</th>
+                <th scope="col" style="padding: 0 0 12px; font-weight: 600; width: 24%">What happens</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{strikes}}" as="st" hint-placeholder-count="7">
+                <tr style="border-top: 1px solid {{t.line}}; vertical-align: top">
+                  <th scope="row" style="padding: 16px 24px 16px 0; text-align: left; font-weight: 700">{{st.what}}</th>
+                  <td style="padding: 16px 24px 16px 0">{{st.how}}</td>
+                  <td style="padding: 16px 0">{{st.then}}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <p class="rv" style="margin: 0; max-width: 64ch; font-size: 17px">Appeals go to a panel that includes one outside broker. A quarterly council of five partner agents reviews these rules and our tools. It never reviews scores.</p>
+      </div>
+    </section>
+
+    <section id="waitlist" aria-labelledby="wait-h" style="background: {{t.track}}; padding: 128px 0 140px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 56px 80px; align-items: flex-start">
+        <div style="flex: 1 1 380px; max-width: 460px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="wait-h" class="rv" style="{{u.h2}}">Where do you work?</h2>
+          <p class="rv rv1" style="{{u.lead}}">We open society by society, with two to four founding agents in each, plus agents for each new-launch corridor.</p>
+          <p class="rv rv1" style="margin: 0; font-size: 17px">Founding is a dated fact on your profile. It never lifts a ranking. Saying you’re an agent changes nothing you see on Plinth: same records, same bands, no previews.</p>
+        </div>
+        <div class="rv rv1" style="flex: 1 1 520px; min-width: 0; padding: 32px; border-radius: 8px; background: {{t.panelSolid}}">
+          <sc-if value="{{notJoined}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 22px">
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="w-name" style="font-size: 17px; font-weight: 600">Your name or firm</label>
+                <input id="w-name" type="text" autocomplete="organization" value="{{wName}}" onChange="{{onWName}}" placeholder="For example, Arora Estates" style="height: 52px; padding: 0 20px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; box-sizing: border-box; width: 100%">
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="w-reg" style="font-size: 17px; font-weight: 600">HARERA agent number <span style="font-weight: 400; color: {{t.ink2}}">(if you have one)</span></label>
+                <input id="w-reg" type="text" autocomplete="off" value="{{wReg}}" onChange="{{onWReg}}" placeholder="RC/REA/HARERA/GGM/…" style="height: 52px; padding: 0 20px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 17px; box-sizing: border-box; width: 100%">
+                <span style="font-size: 15px; color: {{t.ink2}}">Not registered yet? Join anyway. We’ll walk you through HARERA registration on the call.</span>
+              </div>
+              <div role="radiogroup" aria-labelledby="w-seg-l" style="display: flex; flex-direction: column; gap: 8px">
+                <span id="w-seg-l" style="font-size: 17px; font-weight: 600">What do you mostly do?</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                  <sc-for list="{{segOpts}}" as="so" hint-placeholder-count="3">
+                    <button type="button" class="press" role="radio" aria-checked="{{so.on}}" onClick="{{so.pick}}" style="{{so.style}}">{{so.label}}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <fieldset style="margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+                <legend style="padding: 0; margin-bottom: 10px; font-size: 17px; font-weight: 600">Societies and corridors you work</legend>
+                <sc-for list="{{corridors}}" as="co" hint-placeholder-count="3">
+                  <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px">
+                    <span style="font-size: 15px; color: {{t.ink2}}">{{co.name}}</span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                      <sc-for list="{{co.items}}" as="so2" hint-placeholder-count="3">
+                        <button type="button" class="press" aria-pressed="{{so2.on}}" onClick="{{so2.pick}}" style="{{so2.style}}">{{so2.label}}<span style="font-size: 13px; font-weight: 500; opacity: 0.85">{{so2.status}}</span></button>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </fieldset>
+              <sc-if value="{{wErrShow}}" hint-placeholder-val="{{false}}">
+                <p role="alert" style="margin: 0; font-size: 16px; font-weight: 600">{{wErr}}</p>
+              </sc-if>
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px">
+                <button type="button" class="press" onClick="{{joinWait}}" style="height: 56px; padding: 0 28px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer">Join the waitlist</button>
+                <span style="font-size: 15px; color: {{t.ink2}}">{{pickedCount}}</span>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{joined}}" hint-placeholder-val="{{false}}">
+            <div role="status" style="display: flex; flex-direction: column; gap: 16px">
+              <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 34px; line-height: 1.1; letter-spacing: -0.03em">You’re on the list.</p>
+              <p style="margin: 0">{{joinedText}}</p>
+              <p style="margin: 0; font-size: 17px">Next, verify on WhatsApp: your HARERA number is checked live, then PAN and coverage, then a short call with a person. About 4 minutes.</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center">
+                <a href="#whatsapp-onboarding" class="press" style="height: 52px; display: inline-flex; align-items: center; padding: 0 24px; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font-size: 17px; font-weight: 600; text-decoration: none">Verify on WhatsApp</a>
+                <button type="button" class="press" onClick="{{editWait}}" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; cursor: pointer">Change my societies</button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">Not through you either. Plinth takes no part of any commission a developer pays, never registers as anyone’s lead source, and sells no placement. These rules stand on Partner rules v1, published 18 Oct 2026.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#broker-check" class="lk" style="color: {{t.onSlab}}">Is this broker registered?</a>
+          <a href="#rules-pdf" class="lk" style="color: {{t.onSlab}}">Partner rules v1 (PDF)</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report an error</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.onSlab2}}"></span>HARERA agent register read 14 Oct 2026 · checked monthly</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"deal":{"editor":"enum","options":["Network","Found you","Desk","Listing","New launch"],"default":"Desk"},"$preview":{"width":1280,"height":13200}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {themePick: null, deal: '', price: 245, fee: 100, switched: false, xRules: false, band: 'Elevated', share: 'kestrel', attrib: true, copied: false, ack: false, contactTry: false, wName: '', wReg: '', seg: '', picks: {}, wErr: '', joined: false};
+  }
+  componentWillUnmount() {
+    clearTimeout(this._c);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var propTheme = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var themeName = (s.themePick && s.themePick.from === propTheme) ? s.themePick.to : propTheme;
+    var night = themeName === 'Night';
+    var BG = "'Bricolage Grotesque', system-ui, sans-serif";
+    var T = night ? {
+      bg: '#0B1411', photo: '#1B2A24', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F',
+      panelSolid: '#16221D', claimBg: '#1D2621', segEmpty: 'transparent', emptyBorder: '#7D828A', switchOff: '#5A6B64', knobOff: '#EEF3F0',
+      windowFill: 'rgba(255,255,255,0.12)', other: '#7E9A8F',
+      chatBg: '#111C17', bubbleOut: '#173A2D', quoteBg: 'rgba(110,231,183,0.10)',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', photo: '#E7E3DA', line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF',
+      panelSolid: '#FFFFFF', claimBg: '#F1ECE2', segEmpty: '#FFFFFF', emptyBorder: '#8C9199', switchOff: '#8C9199', knobOff: '#FFFFFF',
+      windowFill: 'rgba(27,26,23,0.10)', other: '#8C877D',
+      chatBg: '#EEEBE4', bubbleOut: '#DCEBE2', quoteBg: 'rgba(29,90,68,0.08)',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0'
+    };
+    var U = {
+      h2: 'margin:0;font-family:' + BG + ';font-weight:800;font-size:clamp(44px, 5vw, 64px);line-height:1;letter-spacing:-0.035em',
+      h3: 'margin:0;font-size:19px;line-height:1.4;font-weight:700',
+      lead: 'margin:0;font-size:22px;line-height:1.45',
+      disclose: 'align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-size:17px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:5px',
+      chip: 'display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:2px 12px;border-radius:999px;box-sizing:border-box;background:' + T.track + ';font-size:14px;color:' + T.ink + ';vertical-align:middle'
+    };
+    function chev(open) { return 'flex:none;transition:transform .2s ease;transform:rotate(' + (open ? 180 : 0) + 'deg)'; }
+    function sw(on, off) {
+      return {
+        track: 'position:relative;flex:none;display:block;width:52px;height:32px;border-radius:999px;opacity:' + (off ? 0.45 : 1) + ';background:' + (on ? T.ink : T.switchOff),
+        knob: 'position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:' + (on ? T.panelSolid : T.knobOff) + ';transform:translateX(' + (on ? 20 : 0) + 'px);transition:transform 200ms cubic-bezier(.22,1,.36,1)'
+      };
+    }
+    function pill(on) {
+      return 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;box-sizing:border-box;transition:background-color 180ms ease,color 180ms ease;background:' + (on ? T.ink : T.track) + ';color:' + (on ? T.bg : T.ink);
+    }
+    function dot(on) {
+      return 'flex:none;width:20px;height:20px;border-radius:50%;box-sizing:border-box;' + (on ? 'border:6px solid ' + T.ink : 'border:2px solid ' + T.ink2);
+    }
+    function inr(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+    function lakhCr(l) { return l >= 100 ? '₹' + (l / 100).toFixed(2).replace(/0$/, '').replace(/\.$/, '') + ' Cr' : '₹' + l + ' L'; }
+
+    // Risk ramp (DESIGN §3.2), shared with the band talk track and the pinned listing.
+    var B = {
+      Low: {i: 1, light: '#4A90A4', dark: '#7CC0D2', fill: '#E6F2F5', fillN: '#15323A'},
+      Moderate: {i: 2, light: '#9E8300', dark: '#D9BC45', fill: '#F7F0D2', fillN: '#332B0C'},
+      Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillN: '#3A2210'},
+      High: {i: 4, light: '#94211C', dark: '#F2706A', fill: '#F8DFDD', fillN: '#3D1A19'},
+      Severe: {i: 5, light: '#4A1445', dark: '#D58BD0', fill: '#F0E1EE', fillN: '#341A33'}
+    };
+    function bInk(n) { return night ? B[n].dark : B[n].light; }
+    function bFill(n) { return night ? B[n].fillN : B[n].fill; }
+    function bText(n) { return night ? B[n].dark : (B[n].i <= 2 ? T.ink : B[n].light); }
+    function meter(n, w, h) {
+      return [1, 2, 3, 4, 5].map(function (j) {
+        return {style: 'display:block;width:' + w + 'px;height:' + h + 'px;border-radius:2px;box-sizing:border-box;' + (j <= B[n].i ? 'background:' + bInk(n) + ';' : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder + ';')};
+      });
+    }
+    function chip(n) {
+      return 'display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;white-space:nowrap;font-size:15px;font-weight:600;background:' + bFill(n) + ';color:' + T.ink;
+    }
+
+    // Introduction window example: 1 Oct 2026 to 15 Jan 2027 (106 days). Day numbers count from 1 Oct.
+    var SPAN = 106;
+    function pos(d) { return (d / SPAN * 100).toFixed(2) + '%'; }
+    var tl = {
+      window: 'position:absolute;top:54px;height:50px;left:' + pos(15) + ';width:' + ((75 - 15) / SPAN * 100).toFixed(2) + '%;background:' + T.windowFill + ';border-radius:4px',
+      maxLine: 'position:absolute;top:36px;height:76px;width:0;left:' + pos(98) + ';border-left:2px dashed ' + T.ink,
+      todayLine: 'position:absolute;top:26px;height:78px;width:2px;left:' + pos(17) + ';background:' + T.ink2,
+      todayLabel: 'position:absolute;top:0;left:' + pos(17) + ';transform:translateX(-50%);font-size:14px;font-weight:700;color:' + T.ink,
+      windowLabel: 'position:absolute;top:58px;left:calc(' + pos(17) + ' + 16px);font-size:15px;font-weight:700;color:' + T.ink + ';white-space:nowrap',
+      maxLabel: 'position:absolute;top:8px;left:' + pos(98) + ';transform:translateX(-100%);padding-right:10px;white-space:nowrap;font-size:14px;color:' + T.ink2,
+      months: [['Oct', 0], ['Nov', 31], ['Dec', 61], ['Jan 2027', 92]].map(function (m) {
+        return {label: m[0], style: 'position:absolute;top:120px;left:' + pos(m[1]) + ';font-size:14px;color:' + T.ink2 + ';padding-left:6px;border-left:1px solid ' + T.lineStrong};
+      }),
+      marks: [
+        {d: 1, date: '2 Oct', label: 'Buyer taps Connect', hollow: true},
+        {d: 8, date: '9 Oct', label: 'First verified visit', hollow: false},
+        {d: 15, date: '16 Oct', label: 'Second verified visit: the 60 days restart', hollow: false}
+      ].map(function (m) {
+        var look = 'border-radius:50%;box-sizing:border-box;' + (m.hollow ? 'background:' + T.bg + ';border:3px solid ' + T.ink : 'background:' + T.ink + ';border:3px solid ' + T.bg);
+        return {
+          date: m.date, label: m.label,
+          dot: 'position:absolute;top:70px;left:' + pos(m.d) + ';width:18px;height:18px;margin-left:-9px;' + look,
+          key: 'flex:none;margin-top:3px;width:16px;height:16px;' + look.replace('border:3px solid ' + T.bg, 'border:0')
+        };
+      })
+    };
+
+    // Signature: the split calculator. Shares are Split rules v1 (founder decision pending; see fix-broker.md).
+    var DEALS = [
+      {key: 'network', prop: 'Network', label: 'Two partner agents matched through Plinth', who: 'Each of you charges your own client', share: '₹0 in year 1'},
+      {key: 'found', prop: 'Found you', label: 'A buyer who found you on Plinth hires you', who: 'You charge your client as usual', share: '20% of your buyer-side fee, on registration'},
+      {key: 'desk', prop: 'Desk', label: 'A buyer hires our desk; you do the field work', who: 'Plinth invoices the buyer 1% + GST', share: '25% of the desk fee. You get 75%'},
+      {key: 'listing', prop: 'Listing', label: 'You are the listing agent, in any deal', who: 'You charge the seller as usual', share: 'Nothing'},
+      {key: 'uc', prop: 'New launch', label: 'A new launch, by any route', who: 'The developer pays you, if anyone does', share: '₹0, ever'}
+    ];
+    var propDeal = 'desk';
+    DEALS.forEach(function (d) { if (d.prop === self.props.deal) propDeal = d.key; });
+    var dealKey = s.deal || propDeal;
+    var deals = DEALS.map(function (d) {
+      var on = d.key === dealKey;
+      return {
+        label: d.label, who: d.who, share: d.share, on: on ? 'true' : 'false', dot: dot(on),
+        pick: function () { self.setState({deal: d.key}); },
+        style: 'display:flex;align-items:center;gap:16px;width:100%;min-height:72px;padding:14px 20px;border:0;border-radius:8px;box-sizing:border-box;text-align:left;font:inherit;font-size:16px;line-height:1.4;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.panelSolid : 'transparent') + ';transition:background-color 200ms ease'
+      };
+    });
+    var P = (Number(s.price) || 245) * 100000;
+    var fee = Number(s.fee) || 100;
+    var feePct = fee / 100;
+    var canSwitch = dealKey === 'network' || dealKey === 'found' || dealKey === 'desk';
+    var switched = !!s.switched && canSwitch;
+    var you = 0, plinth = 0, other = 0, total = 0, segs = [], rows = [], bigLabel = '', bigValue = '', bigNote = '', payNote = '', barLabel = '';
+    function seg(start, frac, color) {
+      return {style: 'position:absolute;left:0;top:0;bottom:0;width:100%;transform-origin:left center;transform:translateX(' + (start * 100).toFixed(2) + '%) scaleX(' + Math.max(frac, 0).toFixed(4) + ');background:' + color + ';transition:transform 520ms cubic-bezier(.22,1,.36,1)'};
+    }
+    function swatch(c) { return 'flex:none;width:14px;height:14px;border-radius:3px;background:' + c; }
+    if (dealKey === 'uc') {
+      bigLabel = 'Plinth’s share of a new-launch commission';
+      bigValue = '₹0, ever';
+      bigNote = 'The developer pays you under your own agreement. We never see the amount, never touch it and never take a cut.';
+      segs = [seg(0, 1, T.ink)];
+      rows = [{label: 'You, from the developer', value: 'As your agreement says', swatch: swatch(T.ink)}, {label: 'Plinth', value: '₹0', swatch: swatch(T.accent)}];
+      payNote = 'Tagging disputes stay between you and the developer. Your client can name you as agent of record when booking a visit through Plinth.';
+      barLabel = 'All of any new-launch commission goes to you. Plinth takes nothing.';
+    } else {
+      if (dealKey === 'desk') { total = P * 0.01; plinth = total * 0.25; you = total * 0.75; }
+      else if (dealKey === 'found') { total = P * feePct / 100; plinth = total * 0.2; you = total * 0.8; }
+      else { total = P * feePct / 100; plinth = 0; you = total; }
+      var agentShare = you;
+      if (switched) { other = agentShare * 0.75; you = agentShare * 0.25; }
+      var tds = dealKey === 'desk' ? (switched ? agentShare : you) * 0.02 : 0;
+      bigLabel = dealKey === 'listing' ? 'The seller pays one listing fee' : 'The buyer pays one buyer-side fee';
+      bigValue = inr(total);
+      bigNote = dealKey === 'desk' ? 'Plinth’s desk fee is 1% of the price, plus GST. The buyer pays no other agent.' : (dealKey === 'listing' ? 'Plus GST if you charge it. Plinth takes nothing from the listing side.' : 'Your fee, plus GST if you charge it. The buyer never pays a second agent.');
+      var yc = T.ink, oc = T.other, pc = T.accent;
+      var x = 0;
+      if (switched) {
+        segs.push(seg(0, you / total, yc)); x = you / total;
+        segs.push(seg(x, other / total, oc)); x += other / total;
+        segs.push(seg(x, plinth / total, pc));
+        rows.push({label: 'Agent who introduced the buyer', value: inr(you), swatch: swatch(yc)});
+        rows.push({label: 'Agent who closed the deal', value: inr(other), swatch: swatch(oc)});
+      } else {
+        segs.push(seg(0, you / total, yc)); x = you / total;
+        segs.push(seg(x, plinth / total, pc));
+        rows.push({label: dealKey === 'listing' ? 'You, from the seller' : 'You', value: inr(you), swatch: swatch(yc)});
+      }
+      rows.push({label: dealKey === 'network' ? 'Plinth (year 1)' : 'Plinth', value: inr(plinth), swatch: swatch(pc)});
+      if (dealKey === 'desk') {
+        payNote = 'Plinth pays the agent share within 7 days of registration, less TDS (about ' + inr(tds) + ' at today’s 2%). The payment notice arrives on WhatsApp with the invoice.';
+      } else if (dealKey === 'found') {
+        payNote = 'You invoice your client as usual. We invoice you our 20% only after the sale deed is registered. No registration, no share.';
+      } else if (dealKey === 'network') {
+        payNote = 'Each agent charges their own client. Plinth takes nothing from agent-to-agent deals in year 1, and will publish any change 30 days ahead.';
+      } else {
+        payNote = 'You charge the seller as you agreed with them. Plinth never takes a share of a listing fee.';
+      }
+      barLabel = 'Of ' + inr(total) + ': ' + rows.map(function (r) { return r.label + ' ' + r.value; }).join(', ') + '.';
+    }
+    var feeDownOff = fee <= 25, feeUpOff = fee >= 200;
+    function stepStyle(off) {
+      return 'width:44px;height:44px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;cursor:' + (off ? 'default' : 'pointer') + ';background:' + T.track + ';color:' + T.ink + ';opacity:' + (off ? 0.4 : 1);
+    }
+    var swS = sw(switched, !canSwitch);
+    var switchNote = dealKey === 'listing' ? 'Switching rules cover buyer-side fees only.' : (dealKey === 'uc' ? '' : 'Switch it on to see how the ledger splits one fee between two agents.');
+    if (switched) switchNote = 'One fee, split by the ledger: 25% of the agent share to whoever introduced the buyer. The buyer pays once.';
+
+    // Band talk track: one example per band from the fictional set (DESIGN §5, §5b).
+    var TALK = {
+      Low: {project: 'Kestrel Park · Orbis Land', freq: 'About 10 of 100 similar projects got their OC more than 12 months late. High confidence.', records: '63% built with 58% of the promised time used. The Jul–Sep 2026 progress report was filed on time, on 12 Oct.', source: 'HARERA QPR, Jul–Sep 2026', say: 'The public records look steady for this one. Here’s the live card. Read the reasons yourself.', ask: 'Which tower is furthest along, and when is its OC applied for?'},
+      Moderate: {project: 'Sapphire Grove, Phase 1 · Meridian Habitat', freq: 'About 20 of 100 similar projects got their OC more than 12 months late. High confidence.', records: '48% built with 55% of the promised time used. The Apr–Jun 2026 report was filed 12 days late.', source: 'HARERA QPR register', say: 'There’s one thing to watch here: a late filing. Here’s where it comes from.', ask: 'Why was the Apr–Jun report late, and is the next one filed?'},
+      Elevated: {project: 'Aurelia Heights, Phase 2 · Northfield Estates', freq: 'Between 30 and 45 of 100 similar projects got their OC more than 12 months late. Low confidence.', records: '72% of units sold, 41% built. The Jul–Sep 2026 report, due 15 Oct, is not on HARERA yet.', source: 'HARERA QPR, Apr–Jun 2026', say: 'Plinth shows Elevated because sales are well ahead of building. Let’s read the source together and ask about it at the site.', ask: 'Can we see the HARERA receipt for the Jul–Sep 2026 report?'},
+      High: {project: 'Coral Towers · Vantage Buildcon', freq: 'Between 45 and 65 of 100 similar projects got their OC more than 12 months late. Low confidence.', records: '22% built with 70% of the promised time used. A second extension, granted 14 Oct 2026, moved completion to Aug 2029.', source: 'HARERA extension orders', say: 'This one is High on Plinth. If you still want to look, here’s what to check first, and here’s how to match each demand to the progress report.', ask: 'What changed after the second extension, and what is the new slab schedule?'},
+      Severe: {project: 'Laurel Residency · Elmstone Developers', freq: 'Set by a published red-flag rule, not by the pattern alone.', records: 'A group company was admitted to insolvency by an NCLT order of 12 Mar 2023. No progress filed for 4 quarters; past its Jun 2026 date.', source: 'NCLT order, 12 Mar 2023', say: 'Plinth shows Severe because of a tribunal order. Please read it before anything else, and talk to a lawyer before paying.', ask: 'Who is running the project now, and is there a resolution plan on record?'}
+    };
+    var bandName = B[s.band] ? s.band : 'Elevated';
+    var talk = TALK[bandName];
+    var bandPicks = ['Low', 'Moderate', 'Elevated', 'High', 'Severe'].map(function (n) {
+      var on = n === bandName;
+      return {
+        name: n, project: TALK[n].project.split(' · ')[0], on: on ? 'true' : 'false', chip: chip(n), meter: meter(n, 5, 9),
+        pick: function () { self.setState({band: n}); },
+        style: 'display:flex;align-items:center;gap:16px;width:100%;min-height:56px;padding:8px 16px 8px 8px;border:0;border-radius:8px;box-sizing:border-box;font:inherit;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.track : 'transparent') + ';transition:background-color 200ms ease'
+      };
+    });
+    var tk = {
+      name: bandName, project: talk.project, freq: talk.freq, records: talk.records, source: talk.source, say: talk.say, ask: talk.ask,
+      nameStyle: 'font-family:' + BG + ';font-weight:800;font-size:clamp(56px, 6vw, 88px);line-height:0.95;letter-spacing:-0.045em;color:' + bText(bandName)
+    };
+
+    // Share kit: the live link only.
+    var SHARE = {
+      kestrel: {label: 'Kestrel Park', band: 'Low', slug: 'kestrel-park', title: 'Kestrel Park · Sector 113'},
+      aurelia: {label: 'Aurelia Heights, Phase 2', band: 'Elevated', slug: 'aurelia-heights-phase-2', title: 'Aurelia Heights, Phase 2 · Sector 37D'},
+      coral: {label: 'Coral Towers', band: 'High', slug: 'coral-towers', title: 'Coral Towers · Sector 89'}
+    };
+    var shareKey = SHARE[s.share] ? s.share : 'kestrel';
+    var sh = SHARE[shareKey];
+    var shareProjects = ['kestrel', 'aurelia', 'coral'].map(function (k) {
+      var on = k === shareKey;
+      return {label: SHARE[k].label, on: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({share: k, copied: false}); }};
+    });
+    var shareLink = 'plinth.in/p/' + sh.slug;
+    var shareText = 'Here is the independent Plinth record for ' + sh.label + '. It shows the delivery risk and its sources, updated live.';
+
+    // Bottom-band listing: the buyer acknowledges the band before contact works.
+    var ack = !!s.ack;
+
+    // Verification ladder (F-22 tiers). Rendered bottom-up: the more verified, the higher the slab.
+    var LAD = [
+      {name: 'Identity checked', how: 'The owner’s e-KYC matches the listing.'},
+      {name: 'Ownership matched', how: 'Sale deed or allotment letter matched; mandate confirmed by the owner’s OTP.'},
+      {name: 'Available, confirmed', how: 'Confirmed in the last 14 days, with an on-site photo showing the flat number.'},
+      {name: 'Registry and OC checked', how: 'A person at Plinth checked the registry entry and the OC.'}
+    ];
+    var ladder = LAD.map(function (l, i) {
+      var w = 100 - i * 12;
+      return {name: l.name, how: l.how, style: 'width:' + w + '%;min-width:min(280px, 100%);box-sizing:border-box;display:flex;flex-direction:column;gap:2px;padding:14px 18px;border-radius:4px;background:' + (i === 3 ? T.ink : T.panelSolid) + ';color:' + (i === 3 ? T.bg : T.ink)};
+    });
+
+    var strikes = [
+      {what: 'Posing as an owner', how: 'Owner e-KYC is matched to the sale deed. The mandate OTP goes only to the owner’s e-KYC mobile. One number behind several “owner” listings is flagged.', then: 'Strike on the first proven case; listing removed'},
+      {what: 'Bait prices or flats already gone', how: 'Prices far from the society median are flagged. Buyers can tap “Not available”. The weekly roll-call catches the rest.', then: 'Listing hidden; strike if proven'},
+      {what: 'Planting an introduction', how: 'Ownership needs the buyer’s own OTP-verified number and a verified visit at the flat.', then: 'Claim rejected; strike'},
+      {what: 'Reviews you wrote or bought', how: 'Only buyers with a verified visit can review.', then: 'Review removed; strike'},
+      {what: 'Ignoring STOP or quiet hours', how: 'The relay logs every call and message.', then: 'Strike; relay paused for you'},
+      {what: 'Contradicting a band', how: 'A buyer reports it, and we read the messages they choose to share.', then: 'Strike'},
+      {what: 'Closing around the ledger', how: 'Ledger evidence of a proven bypass on a desk or network deal.', then: 'Strike'}
+    ];
+
+    // Waitlist by society (fictional societies; see fix-broker.md for the proposed §5b additions).
+    var COR = [
+      {name: 'Golf Course Extension Road', items: [['amberwood', 'Amberwood Greens', true], ['wrenfield', 'Wrenfield Towers', true], ['palisade', 'Palisade Court', false], ['saffron', 'Saffron Crest', false]]},
+      {name: 'Dwarka Expressway', items: [['cobalt', 'Cobalt Square', true], ['larchwood', 'Larchwood Residency', false], ['dxe-new', 'New launches, whole corridor', true]]},
+      {name: 'New Gurugram and Sohna Road', items: [['marigold', 'Marigold Enclave', false], ['hollybrook', 'Hollybrook Residency', false]]}
+    ];
+    var picks = s.picks || {};
+    var pickedNames = [];
+    var corridors = COR.map(function (c) {
+      return {name: c.name, items: c.items.map(function (it) {
+        var on = !!picks[it[0]];
+        if (on) pickedNames.push(it[1]);
+        return {
+          label: it[1], status: it[2] ? 'first group' : 'waitlist', on: on ? 'true' : 'false',
+          pick: function () { var p = Object.assign({}, self.state.picks || {}); p[it[0]] = !p[it[0]]; self.setState({picks: p, wErr: ''}); },
+          style: pill(on).replace('font-size:16px', 'font-size:15px') + ';flex-direction:column;align-items:flex-start;justify-content:center;gap:0;min-height:52px;padding:4px 18px;line-height:1.25'
+        };
+      })};
+    });
+    var segOpts = [['resale', 'Resale'], ['new', 'New launches'], ['both', 'Both']].map(function (o) {
+      var on = s.seg === o[0];
+      return {label: o[1], on: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({seg: o[0], wErr: ''}); }};
+    });
+    function listNames(a) { return a.length <= 1 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+
+    return {
+      t: T, u: U,
+      isNight: night, isDay: !night,
+      themeBtnLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themePick: {from: propTheme, to: night ? 'Day' : 'Night'}}); },
+      xRules: !!s.xRules, chevRules: chev(!!s.xRules), togRules: function () { self.setState({xRules: !self.state.xRules}); },
+      tl: tl,
+      deals: deals,
+      showInputs: dealKey !== 'uc',
+      price: Number(s.price) || 245, priceText: lakhCr(Number(s.price) || 245),
+      onPrice: function (e) { self.setState({price: Number(e.target.value) || 245}); },
+      feeLabel: dealKey === 'desk' ? 'Desk fee, set by Plinth' : (dealKey === 'listing' ? 'Your listing fee, as you set it' : 'Your buyer-side fee, as you set it'),
+      feeHint: dealKey === 'desk' ? 'Fixed at 1% for every buyer' : 'Only an example. We never suggest a rate.',
+      feeText: dealKey === 'desk' ? '1.00%' : feePct.toFixed(2) + '%',
+      feeDownOff: (feeDownOff || dealKey === 'desk') ? 'true' : 'false', feeUpOff: (feeUpOff || dealKey === 'desk') ? 'true' : 'false',
+      feeDownStyle: stepStyle(feeDownOff || dealKey === 'desk'), feeUpStyle: stepStyle(feeUpOff || dealKey === 'desk'),
+      feeDown: function () { if (dealKey !== 'desk' && fee > 25) self.setState({fee: fee - 25}); },
+      feeUp: function () { if (dealKey !== 'desk' && fee < 200) self.setState({fee: fee + 25}); },
+      sw: swS, switchedAria: switched ? 'true' : 'false', switchOffAria: canSwitch ? 'false' : 'true',
+      switchRow: 'display:flex;align-items:center;gap:14px;min-height:48px;padding:0;border:0;background:transparent;font:inherit;font-size:17px;text-align:left;color:' + T.ink + ';cursor:' + (canSwitch ? 'pointer' : 'default'),
+      toggleSwitch: function () { if (canSwitch) self.setState({switched: !self.state.switched}); },
+      switchNoteShow: !!switchNote, switchNote: switchNote,
+      bigLabel: bigLabel, bigValue: bigValue, bigNote: bigNote, segs: segs, splitRows: rows, payNote: payNote, barLabel: barLabel,
+      bandPicks: bandPicks, tk: tk,
+      shareProjects: shareProjects, spKestrel: shareKey === 'kestrel', spAurelia: shareKey === 'aurelia', spCoral: shareKey === 'coral',
+      shareTitle: sh.title, shareBand: sh.band + ' delivery risk', shareChip: chip(sh.band).replace('height:30px', 'height:26px').replace('font-size:15px', 'font-size:14px') + ';align-self:flex-start', shareMeter: meter(sh.band, 5, 9),
+      shareText: shareText, shareLink: shareLink,
+      attrib: !!s.attrib, attribAria: s.attrib ? 'true' : 'false', swA: sw(!!s.attrib, false),
+      toggleAttrib: function () { self.setState({attrib: !self.state.attrib, copied: false}); },
+      copyLabel: s.copied ? 'Copied' : 'Copy message',
+      copyLive: s.copied ? 'Message copied with the live link to ' + sh.label + '.' : '',
+      copyShare: function () {
+        clearTimeout(self._c);
+        self.setState({copied: true});
+        self._c = setTimeout(function () { self.setState({copied: false}); }, 1800);
+      },
+      coralFill: bFill('High'), coralText: bText('High'), coralMeter: meter('High', 6, 10),
+      ack: ack, ackAria: ack ? 'true' : 'false',
+      ackBox: 'flex:none;width:22px;height:22px;margin-top:1px;border-radius:6px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;' + (ack ? 'background:' + T.ink + ';border:2px solid ' + T.ink : 'border:2px solid ' + T.ink2),
+      toggleAck: function () { self.setState({ack: !self.state.ack, contactTry: false}); },
+      contactOffAria: ack ? 'false' : 'true',
+      contactStyle: 'height:48px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;background:' + (ack ? T.ink : T.track) + ';color:' + (ack ? T.bg : T.ink2),
+      tryContact: function () { self.setState({contactTry: true}); },
+      contactMsgShow: !!s.contactTry,
+      contactMsg: ack ? 'Kabir is connected through the relay. Your number stays hidden unless you tap to share it.' : 'Tick the box first. It’s there so nobody contacts an agent without having seen the band.',
+      ladder: ladder, strikes: strikes,
+      notJoined: !s.joined, joined: !!s.joined,
+      wName: s.wName || '', onWName: function (e) { self.setState({wName: e.target.value, wErr: ''}); },
+      wReg: s.wReg || '', onWReg: function (e) { self.setState({wReg: e.target.value}); },
+      segOpts: segOpts, corridors: corridors,
+      pickedCount: pickedNames.length ? pickedNames.length + (pickedNames.length === 1 ? ' place picked' : ' places picked') : 'Pick at least one place',
+      wErrShow: !!s.wErr, wErr: s.wErr || '',
+      joinWait: function () {
+        if (!(self.state.wName || '').trim()) { self.setState({wErr: 'Add your name or firm to join.'}); return; }
+        if (!pickedNames.length) { self.setState({wErr: 'Pick at least one society or corridor.'}); return; }
+        self.setState({joined: true, wErr: ''});
+      },
+      joinedText: 'We’ll message ' + ((s.wName || '').trim() || 'you') + ' on WhatsApp when ' + listNames(pickedNames) + (pickedNames.length === 1 ? ' opens' : ' open') + '. Nothing is published about you until you’re verified.',
+      editWait: function () { self.setState({joined: false}); }
+    };
+  }
+}
+</script>
+</body>
+</html>

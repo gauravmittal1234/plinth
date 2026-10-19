@@ -1,0 +1,12 @@
+[
+  {
+    "slot": "slabDeckA",
+    "aspect": "4:5",
+    "prompt": "Documentary phone-camera photograph taken at chest height by a site engineer standing on a freshly cast upper-floor concrete slab of a residential tower under construction in Gurugram, India, in soft early-morning light. Rebar starter bars for the next floor's columns rise in neat clusters near the slab edge, steel props and plywood shuttering are stacked to one side, a tower crane mast and jib cross a pale hazy sky, and two neighbouring towers at a similar frame stage sit softly in the distance. Slightly wide angle, natural true-to-life colours, calm and matter-of-fact, no people's faces. No text, letters, numbers, signage, logos, emblems, safety posters or legible markings anywhere. Portrait 4:5 crop that still reads well when cropped to a square in the centre. Used as the live camera view on Plinth's phone site-capture page for developers."
+  },
+  {
+    "slot": "heroAshgrove",
+    "aspect": "16:9",
+    "prompt": "Documentary photograph of a newly registered residential site at excavation stage in New Gurugram, India, in hazy late-afternoon light. A plain matte off-white hoarding runs along a quiet service road; behind it, a wide excavated foundation pit with one piling rig, two small excavators and a single-storey site office cabin, flat open land around it and a row of finished towers far in the soft distance. No people close to camera, no vehicles in the foreground. Calm, true-to-life colours, gentle depth of field. No text, letters, numbers, logos, emblems, QR codes, RERA boards or legible signage on the hoarding or anywhere else. Landscape 16:9 crop with the pit in the lower two thirds and open sky above. Used as the illustrative photo on a new developer's page preview in Plinth's claim-your-page flow."
+  }
+]

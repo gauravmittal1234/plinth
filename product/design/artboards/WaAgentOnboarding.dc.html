@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WhatsApp agent onboarding</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pl-sheet{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@keyframes pl-spin{to{transform:rotate(360deg)}}
+.pl-rise{animation:pl-rise .6s cubic-bezier(.22,1,.36,1) both}
+.pl-sheet{animation:pl-sheet .5s cubic-bezier(.22,1,.36,1) both}
+.pl-spin{animation:pl-spin .9s linear infinite;transform-origin:50% 50%}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1)}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 1300px; overflow: hidden; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 16px; line-height: 22px; font-variant-numeric: tabular-nums lining-nums">
+
+  <div style="flex: none; padding: 8px 12px 6px 12px; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+      <div role="radiogroup" aria-label="Which flow" style="display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: {{t.track}}">
+        <sc-for list="{{views}}" as="vw" hint-placeholder-count="2">
+          <button type="button" class="pl-press" role="radio" aria-checked="{{vw.on}}" onClick="{{vw.pick}}" style="{{vw.style}}">{{vw.label}}</button>
+        </sc-for>
+      </div>
+      <button type="button" class="pl-press" onClick="{{startOver}}" style="height: 36px; padding: 0 6px; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Start over</button>
+    </div>
+    <p style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; font-size: 13px; line-height: 18px; color: {{t.muted}}">
+      <span>{{stripNote}}</span>
+      <sc-if value="{{demoMatch}}" hint-placeholder-val="{{true}}">
+        <button type="button" onClick="{{fillMatch}}" style="padding: 0; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer">Fill a match</button>
+        <button type="button" onClick="{{fillTypo}}" style="padding: 0; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer">Fill a typo</button>
+      </sc-if>
+      <sc-if value="{{demoStep2}}" hint-placeholder-val="{{false}}">
+        <button type="button" onClick="{{fillStep2}}" style="padding: 0; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer">Fill this step</button>
+      </sc-if>
+    </p>
+  </div>
+
+  <header style="flex: none; height: 56px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
+    <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+    <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="{{t.accent}}"></circle><path d="M11 24h14M13.5 24v-8h9v8" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 4px">
+      <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 17px; line-height: 22px; font-weight: 600">Plinth<svg width="16" height="16" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+      <span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">{{headerSub}}</span>
+    </div>
+  </header>
+
+  <sc-if value="{{isOnb}}" hint-placeholder-val="{{true}}">
+    <main aria-label="Conversation with Plinth" style="position: relative; flex: 1; min-height: 0; overflow: hidden; background: {{t.chatBg}}">
+      <div role="log" style="height: 100%; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column; gap: 6px; padding: 12px 12px 16px">
+        <div style="align-self: center; padding: 2px 12px; border-radius: 8px; background: {{t.dayPill}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">Today</div>
+        <div style="align-self: flex-end; max-width: 280px; padding: 8px 12px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">I’m an agent<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:12 am</span></div>
+        <div style="align-self: flex-start; width: 300px; display: flex; flex-direction: column; gap: 4px">
+          <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+            <p style="margin: 0">Thanks, Kabir. Saying you’re an agent changes nothing you see on Plinth: same records, same bands, no previews.</p>
+            <p style="margin: 6px 0 0">Want to be listed as a <strong>Verified agent</strong>? Three short steps, then a call with a person. About 4 minutes.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:12 am</span></p>
+          </div>
+          <button type="button" class="pl-press" onClick="{{openFlow}}" style="height: 44px; width: 100%; border: 0; border-radius: 999px; background: {{t.bubbleIn}}; color: {{t.accentText}}; display: flex; align-items: center; justify-content: center; gap: 8px; font: inherit; font-weight: 600; cursor: pointer"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2.5h7l3 3v8H3z M6 8.5l1.6 1.6L11 6.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Get verified</button>
+        </div>
+
+        <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+          <div class="pl-rise" style="align-self: flex-end; max-width: 280px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+            <div style="padding: 5px 10px; border-radius: 12px; background: {{t.quoteBg}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">Get verified as an agent</div>
+            <div style="padding: 4px 8px 0">Details sent<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:16 am</span></div>
+          </div>
+          <div class="pl-rise" style="align-self: flex-start; width: 300px; display: flex; flex-direction: column; gap: 4px; animation-delay: 90ms">
+            <div style="padding: 4px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+              <div role="img" aria-label="{{cardLabel}}" style="box-sizing: border-box; border-radius: 12px; padding: 14px 16px; background: #FFFFFF; color: #1B1A17; display: flex; flex-direction: column; gap: 6px">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+                  <span style="display: inline-flex; align-items: center; gap: 6px"><svg width="16" height="16" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="#1D5A44"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 15px; letter-spacing: -0.02em">Plinth</span></span>
+                  <span style="font-size: 13px; line-height: 16px; color: #3F3C36">18 Oct 2026</span>
+                </div>
+                <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 32px; letter-spacing: -0.04em">{{statusTitle}}</span>
+                <span style="font-weight: 600">Kabir Malhotra</span>
+                <span style="font-size: 14px; line-height: 19px">{{statusReg}}</span>
+                <span style="font-size: 14px; line-height: 19px">{{statusCoverage}}</span>
+                <span style="font-size: 14px; line-height: 19px">No listings yet · verified, never endorsed</span>
+              </div>
+              <div style="padding: 8px 8px 2px">
+                <p style="margin: 0">{{doneText}}</p>
+                <p style="margin: 6px 0 0">Call booked: <strong>{{callLabel}}</strong>.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:16 am</span></p>
+              </div>
+            </div>
+            <div role="group" aria-label="Reply options" style="display: flex; flex-direction: column; gap: 4px">
+              <sc-for list="{{doneReplies}}" as="dr" hint-placeholder-count="3">
+                <button type="button" class="pl-press" onClick="{{dr.pick}}" aria-pressed="{{dr.on}}" style="{{dr.style}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{dr.label}}</button>
+              </sc-for>
+            </div>
+          </div>
+          <sc-if value="{{doneReplyShow}}" hint-placeholder-val="{{false}}">
+            <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">{{doneReply}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:17 am</span></div>
+          </sc-if>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{flowOpen}}" hint-placeholder-val="{{true}}">
+        <div aria-hidden="true" style="position: absolute; inset: 0; background: {{t.scrim}}"></div>
+        <div role="dialog" aria-labelledby="fl-h" aria-modal="true" class="pl-sheet" style="position: absolute; left: 0; right: 0; bottom: 0; top: 196px; display: flex; flex-direction: column; background: {{t.sheet}}; border-radius: 20px 20px 0 0">
+          <div style="flex: none; height: 52px; padding: 0 14px 0 4px; display: flex; align-items: center; gap: 4px; border-bottom: 1px solid {{t.line}}">
+            <button type="button" class="pl-press" onClick="{{flowBack}}" aria-label="{{backLabel}}" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer">
+              <sc-if value="{{isStep1}}" hint-placeholder-val="{{true}}"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></sc-if>
+              <sc-if value="{{notStep1}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+            </button>
+            <span id="fl-h" style="flex: 1; font-weight: 600">Get verified as an agent</span>
+            <span style="font-size: 13px; color: {{t.muted}}">{{stepOf}}</span>
+          </div>
+
+          <div style="flex: 1; min-height: 0; overflow: hidden; padding: 18px 16px; display: flex; flex-direction: column">
+            <sc-if value="{{isStep1}}" hint-placeholder-val="{{true}}">
+              <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 24px; line-height: 28px; letter-spacing: -0.02em">What’s your HARERA agent number?</h3>
+              <p style="margin: 8px 0 0; color: {{t.ink2}}">We check it live against HARERA’s agent register.</p>
+              <label for="reg" style="margin: 18px 0 6px; font-size: 14px; line-height: 20px; font-weight: 600">HARERA agent registration number</label>
+              <input id="reg" type="text" autocomplete="off" spellcheck="false" value="{{reg}}" onChange="{{onReg}}" placeholder="RC/REA/HARERA/GGM/…" aria-describedby="reg-status" style="height: 50px; box-sizing: border-box; padding: 0 16px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.sheet}}; color: {{t.ink}}; font: inherit; font-size: 16px; letter-spacing: 0.01em">
+              <button type="button" class="pl-press" onClick="{{checkReg}}" style="margin-top: 8px; height: 44px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Check this number</button>
+              <div id="reg-status" aria-live="polite" style="margin-top: 10px">
+                <sc-if value="{{regIdle}}" hint-placeholder-val="{{false}}">
+                  <p style="margin: 0; font-size: 14px; line-height: 20px; color: {{t.muted}}">{{idleNote}}</p>
+                </sc-if>
+                <sc-if value="{{regChecking}}" hint-placeholder-val="{{false}}">
+                  <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 15px; line-height: 20px"><svg class="pl-spin" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2a6 6 0 1 0 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>Checking HARERA’s register…</p>
+                </sc-if>
+                <sc-if value="{{regFound}}" hint-placeholder-val="{{true}}">
+                  <div class="pl-rise" style="padding: 14px; border-radius: 14px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; display: flex; flex-direction: column; gap: 4px">
+                    <span style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Found on HARERA</span>
+                    <span style="font-size: 18px; font-weight: 700; color: {{t.ink}}">Kabir Malhotra</span>
+                    <span style="font-size: 14px; line-height: 19px; color: {{t.ink}}">Individual agent · valid until 14 Mar 2029 · office Sector 56, Gurugram</span>
+                    <span style="font-size: 14px; line-height: 19px; color: {{t.ink}}">Matches your WhatsApp name</span>
+                    <span style="font-size: 13px; line-height: 18px; color: {{t.ink2}}">HARERA agent register, read 14 Oct 2026 · checked now</span>
+                  </div>
+                  <p id="me-l" style="margin: 14px 0 8px; font-size: 14px; line-height: 20px; font-weight: 600">Is this you?</p>
+                  <div role="radiogroup" aria-labelledby="me-l" style="display: flex; flex-direction: column; gap: 8px">
+                    <sc-for list="{{meOpts}}" as="mo" hint-placeholder-count="2">
+                      <button type="button" class="pl-press" role="radio" aria-checked="{{mo.on}}" onClick="{{mo.pick}}" style="{{mo.style}}"><span aria-hidden="true" style="{{mo.dot}}"></span><span style="flex: 1">{{mo.label}}</span></button>
+                    </sc-for>
+                  </div>
+                  <sc-if value="{{notMe}}" hint-placeholder-val="{{false}}">
+                    <p style="margin: 10px 0 0; font-size: 14px; line-height: 20px">Then this number belongs to someone else. Check your certificate, or type <strong>human</strong> in the chat for a person.</p>
+                  </sc-if>
+                </sc-if>
+                <sc-if value="{{regMissing}}" hint-placeholder-val="{{false}}">
+                  <div class="pl-rise" style="padding: 14px; border-radius: 14px; background: {{t.track}}; display: flex; flex-direction: column; gap: 6px">
+                    <span style="font-weight: 700">No agent with this number on HARERA’s register</span>
+                    <span style="font-size: 14px; line-height: 20px">We read the register on 14 Oct 2026. Check for a typo: the year and the last digits matter most.</span>
+                    <span style="font-size: 14px; line-height: 20px">Registered with UP RERA instead? Type that number; we read both registers.</span>
+                  </div>
+                  <button type="button" class="pl-press" onClick="{{notRegistered}}" aria-pressed="{{helpAria}}" style="{{helpStyle}}">I’m not registered yet</button>
+                  <sc-if value="{{help}}" hint-placeholder-val="{{false}}">
+                    <p style="margin: 8px 0 0; font-size: 14px; line-height: 20px">You can still go on. You won’t show as a Verified agent until HARERA registers you, and we’ll walk you through registering on the call.</p>
+                  </sc-if>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{isStep2}}" hint-placeholder-val="{{false}}">
+              <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 24px; line-height: 28px; letter-spacing: -0.02em">Your PAN, and where you work</h3>
+              <label for="pan" style="margin: 16px 0 6px; font-size: 14px; line-height: 20px; font-weight: 600">PAN</label>
+              <input id="pan" type="text" autocomplete="off" spellcheck="false" maxlength="10" value="{{pan}}" onChange="{{onPan}}" placeholder="ABCDE1234F" aria-describedby="pan-note" style="height: 50px; box-sizing: border-box; padding: 0 16px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.sheet}}; color: {{t.ink}}; font: inherit; font-size: 17px; letter-spacing: 0.12em">
+              <p id="pan-note" aria-live="polite" style="margin: 6px 0 0; display: flex; gap: 6px; font-size: 14px; line-height: 19px; color: {{panNoteColor}}"><sc-if value="{{panOk}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M2.5 7.5l2.5 2.5L11.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if><span>{{panNote}}</span></p>
+
+              <p id="seg-l" style="margin: 16px 0 8px; font-size: 14px; line-height: 20px; font-weight: 600">What do you mostly do?</p>
+              <div role="radiogroup" aria-labelledby="seg-l" style="display: flex; gap: 4px; padding: 3px; border-radius: 999px; background: {{t.track}}">
+                <sc-for list="{{segOpts}}" as="so" hint-placeholder-count="3">
+                  <button type="button" class="pl-press" role="radio" aria-checked="{{so.on}}" onClick="{{so.pick}}" style="{{so.style}}">{{so.label}}</button>
+                </sc-for>
+              </div>
+
+              <p id="cor-l" style="margin: 16px 0 8px; font-size: 14px; line-height: 20px; font-weight: 600">Corridors</p>
+              <div role="group" aria-labelledby="cor-l" style="display: flex; flex-wrap: wrap; gap: 6px">
+                <sc-for list="{{corOpts}}" as="co" hint-placeholder-count="4">
+                  <button type="button" class="pl-press" aria-pressed="{{co.on}}" onClick="{{co.pick}}" style="{{co.style}}">{{co.label}}</button>
+                </sc-for>
+              </div>
+
+              <p id="soc-l" style="margin: 16px 0 8px; font-size: 14px; line-height: 20px; font-weight: 600">Societies you work in <span style="font-weight: 400; color: {{t.muted}}">· up to 10</span></p>
+              <sc-if value="{{noCorridor}}" hint-placeholder-val="{{false}}">
+                <p style="margin: 0; font-size: 14px; line-height: 20px; color: {{t.muted}}">Pick a corridor to see its societies.</p>
+              </sc-if>
+              <div role="group" aria-labelledby="soc-l" style="display: flex; flex-wrap: wrap; gap: 6px">
+                <sc-for list="{{socOpts}}" as="sc" hint-placeholder-count="4">
+                  <button type="button" class="pl-press" aria-pressed="{{sc.on}}" onClick="{{sc.pick}}" style="{{sc.style}}">{{sc.label}}</button>
+                </sc-for>
+              </div>
+
+              <label for="office" style="margin: 16px 0 6px; font-size: 14px; line-height: 20px; font-weight: 600">Office address</label>
+              <input id="office" type="text" autocomplete="street-address" value="{{office}}" onChange="{{onOffice}}" placeholder="Shop or office number, sector" style="height: 50px; box-sizing: border-box; padding: 0 16px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.sheet}}; color: {{t.ink}}; font: inherit">
+              <p style="margin: 14px 0 0; padding: 10px 12px; border-radius: 14px; background: {{t.track}}; display: flex; gap: 8px; font-size: 14px; line-height: 19px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex: none; margin-top: 2px"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>PAN is for checking it’s you, and for TDS on any payment. It never appears on your profile. Coverage does.</span></p>
+            </sc-if>
+
+            <sc-if value="{{isStep3}}" hint-placeholder-val="{{false}}">
+              <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 24px; line-height: 28px; letter-spacing: -0.02em">Book a 15-minute call</h3>
+              <p style="margin: 8px 0 0; color: {{t.ink2}}">Someone from our partner team walks you through the rules and answers your questions. Nothing to buy.</p>
+              <p id="day-l" style="margin: 16px 0 8px; font-size: 14px; line-height: 20px; font-weight: 600">Day</p>
+              <div role="radiogroup" aria-labelledby="day-l" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px">
+                <sc-for list="{{dayOpts}}" as="dy" hint-placeholder-count="4">
+                  <button type="button" class="pl-press" role="radio" aria-checked="{{dy.on}}" onClick="{{dy.pick}}" style="{{dy.style}}"><span style="font-size: 13px; line-height: 16px">{{dy.wd}}</span><span style="font-size: 18px; line-height: 22px; font-weight: 700">{{dy.d}}</span></button>
+                </sc-for>
+              </div>
+              <p id="tm-l" style="margin: 16px 0 8px; font-size: 14px; line-height: 20px; font-weight: 600">Time</p>
+              <div role="radiogroup" aria-labelledby="tm-l" style="display: flex; flex-direction: column; gap: 6px">
+                <sc-for list="{{timeOpts}}" as="tm" hint-placeholder-count="4">
+                  <button type="button" class="pl-press" role="radio" aria-checked="{{tm.on}}" aria-disabled="{{tm.off}}" onClick="{{tm.pick}}" style="{{tm.style}}"><span aria-hidden="true" style="{{tm.dot}}"></span><span style="flex: 1">{{tm.label}}</span><span style="font-size: 13px; color: {{t.muted}}">{{tm.note}}</span></button>
+                </sc-for>
+              </div>
+              <p id="lang-l" style="margin: 16px 0 8px; font-size: 14px; line-height: 20px; font-weight: 600">Language</p>
+              <div role="radiogroup" aria-labelledby="lang-l" style="display: flex; gap: 4px; padding: 3px; border-radius: 999px; background: {{t.track}}">
+                <sc-for list="{{langOpts}}" as="lg" hint-placeholder-count="2">
+                  <button type="button" class="pl-press" role="radio" aria-checked="{{lg.on}}" onClick="{{lg.pick}}" style="{{lg.style}}">{{lg.label}}</button>
+                </sc-for>
+              </div>
+              <button type="button" class="pl-press" role="checkbox" aria-checked="{{agreeAria}}" onClick="{{toggleAgree}}" style="margin-top: 18px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; display: flex; gap: 12px; align-items: flex-start; text-align: left; font: inherit; font-size: 15px; line-height: 20px; cursor: pointer">
+                <span aria-hidden="true" style="{{agreeBox}}"><sc-if value="{{agree}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></span>
+                <span>I’ve read Partner rules v1 and will follow them: introductions, the mandate shield, the contact cap, honest labels and band etiquette.</span>
+              </button>
+              <a href="#partner-rules" style="margin: 6px 0 0 34px; font-size: 15px; font-weight: 600; color: {{t.accentText}}">Read the rules</a>
+            </sc-if>
+          </div>
+
+          <div style="flex: none; padding: 12px 16px 16px; border-top: 1px solid {{t.line}}; display: flex; flex-direction: column; gap: 6px">
+            <sc-if value="{{errShow}}" hint-placeholder-val="{{false}}">
+              <p role="alert" style="margin: 0 0 4px; font-size: 14px; line-height: 20px; font-weight: 600">{{err}}</p>
+            </sc-if>
+            <button type="button" class="pl-press" onClick="{{next}}" aria-disabled="{{nextOffAria}}" style="{{nextStyle}}">{{nextLabel}}</button>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{isIntake}}" hint-placeholder-val="{{false}}">
+    <main aria-label="Conversation with Plinth" style="flex: 1; min-height: 0; overflow: hidden; background: {{t.chatBg}}">
+      <div role="log" style="height: 100%; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 12px 12px 16px">
+        <div style="align-self: center; max-width: 320px; padding: 4px 12px; border-radius: 8px; background: {{t.dayPill}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}; text-align: center">Preview: arrives with resale listings (R2)</div>
+        <div style="align-self: center; padding: 2px 12px; border-radius: 8px; background: {{t.dayPill}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">Sun 18 Oct 2026</div>
+
+        <div style="align-self: flex-end; width: 286px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+          <span style="display: flex; align-items: center; gap: 4px; padding: 2px 6px 4px; font-size: 13px; line-height: 16px; font-style: italic; color: {{t.muted}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M8 3l4 3.5L8 10M12 6.5H6A3.5 3.5 0 0 0 2.5 10v1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Forwarded</span>
+          <div style="position: relative; height: 140px; border-radius: 12px; overflow: hidden; background: #E7E3DA">
+            <img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="Forwarded photo: an empty living room" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: #E7E3DA">
+            <span style="position: absolute; right: 8px; bottom: 8px; padding: 0 8px; border-radius: 999px; background: rgba(12,14,13,0.66); color: #FFFFFF; font-size: 13px; line-height: 20px">3 photos</span>
+          </div>
+          <p style="margin: 6px 8px 0">3BHK Amberwood Greens T4 9th flr park facing, 1650 sqft super, 2.45 Cr nego, owner NRI, ready to move. Call Sunil<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">3:58 pm</span></p>
+        </div>
+
+        <div style="align-self: flex-start; width: 310px; display: flex; flex-direction: column; gap: 4px">
+          <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+            <p style="margin: 0">I drafted a listing from your message. Blanks say <strong>Not provided</strong>; nothing is guessed.</p>
+            <dl style="margin: 8px 0 0; padding: 10px 12px; border-radius: 12px; background: {{t.track}}; display: grid; grid-template-columns: 82px 1fr; gap: 4px 10px; font-size: 14px; line-height: 19px">
+              <sc-for list="{{draft}}" as="df" hint-placeholder-count="8">
+                <dt style="color: {{t.muted}}">{{df.k}}</dt><dd style="{{df.style}}">{{df.v}}</dd>
+              </sc-for>
+            </dl>
+            <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">Society matched in our dictionary: Amberwood Greens, Sector 66.<span style="float: right; margin-left: 12px">3:58 pm</span></p>
+          </div>
+          <sc-if value="{{draftOpen}}" hint-placeholder-val="{{true}}">
+            <div role="group" aria-label="Reply options" style="display: flex; flex-direction: column; gap: 4px">
+              <button type="button" class="pl-press" onClick="{{fillBlanks}}" style="{{replyStyle}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{fillLabel}}</button>
+              <button type="button" class="pl-press" onClick="{{askOwner}}" style="{{replyStyle}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Ask the owner to confirm</button>
+            </div>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ownerAsk}}" hint-placeholder-val="{{false}}">
+          <div class="pl-rise" style="align-self: flex-start; width: 310px; display: flex; flex-direction: column; gap: 4px">
+            <div style="padding: 8px 12px 8px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+              <p style="margin: 0">The owner confirms by OTP. Send the mobile linked to their Aadhaar e-KYC; the request goes only there.</p>
+              <label for="own" style="display: block; margin: 8px 0 4px; font-size: 14px; line-height: 20px; font-weight: 600">Owner’s mobile</label>
+              <input id="own" type="tel" inputmode="numeric" autocomplete="off" value="{{ownerNum}}" onChange="{{onOwner}}" placeholder="10 digits" style="width: 100%; height: 44px; box-sizing: border-box; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.sheet}}; color: {{t.ink}}; font: inherit; letter-spacing: 0.06em">
+              <sc-if value="{{ownerErrShow}}" hint-placeholder-val="{{false}}">
+                <p role="alert" style="margin: 6px 0 0; font-size: 14px; line-height: 20px; font-weight: 600">Enter all 10 digits of the owner’s mobile.</p>
+              </sc-if>
+            </div>
+            <sc-if value="{{notSent}}" hint-placeholder-val="{{true}}">
+              <button type="button" class="pl-press" onClick="{{sendOwner}}" style="{{replyStyle}}">Send the request</button>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{sent}}" hint-placeholder-val="{{false}}">
+          <div class="pl-rise" style="align-self: flex-start; width: 310px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+            <p style="margin: 0">Sent to the owner at {{ownerMasked}}:</p>
+            <p style="margin: 6px 0 0; padding: 8px 10px; border-radius: 10px; background: {{t.quoteBg}}; font-size: 14px; line-height: 19px; color: {{t.ink2}}">“Arora Estates wants to list your flat, Amberwood Greens T4-902, at ₹2.45 Cr. Reply with the OTP to confirm. While this mandate is active, Plinth won’t approach you to list directly. You can end it anytime.”</p>
+            <p style="margin: 6px 0 0">{{ownerStatus}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">{{ownerTime}}</span></p>
+          </div>
+          <sc-if value="{{confirmed}}" hint-placeholder-val="{{false}}">
+            <div class="pl-rise" style="align-self: flex-start; width: 310px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">
+              <p style="margin: 0"><strong>Live on Plinth.</strong> Ownership matched, level 2 of 4. Mandate to Arora Estates until 16 Jan 2027.</p>
+              <p style="margin: 6px 0 0">Add an on-site photo showing the flat number to move up a level. The owner re-confirms by OTP every 30 days; next on 17 Nov.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">4:12 pm</span></p>
+            </div>
+            <div style="align-self: center; padding: 2px 12px; border-radius: 8px; background: {{t.dayPill}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">Sun 1 Nov 2026 · 14 days later</div>
+            <div class="pl-rise" style="align-self: flex-start; width: 310px; display: flex; flex-direction: column; gap: 4px">
+              <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+                <p style="margin: 0"><strong>Weekly roll-call</strong>, 1 of 2. Is <strong>Amberwood Greens T4-902</strong> (₹2.45 Cr) still available?</p>
+                <p style="margin: 6px 0 0; font-size: 14px; line-height: 19px">{{rollNote}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:00 am</span></p>
+              </div>
+              <div role="group" aria-label="Roll-call answer" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px">
+                <sc-for list="{{rollOpts}}" as="ro" hint-placeholder-count="3">
+                  <button type="button" class="pl-press" onClick="{{ro.pick}}" aria-pressed="{{ro.on}}" style="{{ro.style}}">{{ro.label}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <sc-if value="{{rolled}}" hint-placeholder-val="{{false}}">
+              <div class="pl-rise" style="align-self: flex-start; max-width: 310px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">{{rollReply}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">9:01 am</span></div>
+            </sc-if>
+          </sc-if>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"view":{"editor":"enum","options":["Onboarding","Listing intake (R2)"],"default":"Onboarding"},"$preview":{"width":390,"height":1300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = this.fresh();
+  }
+  fresh() {
+    return {view: null, open: false, step: 1, reg: '', regState: 'idle', short: false, me: '', help: false, pan: '', seg: '', cors: {}, socs: {}, office: '', day: 1, time: 2, lang: 'English', agree: false, err: '', done: false, doneReply: '',
+      filled: false, ownerAsk: false, ownerNum: '', ownerErr: false, sent: false, confirmed: false, roll: ''};
+  }
+  componentWillUnmount() {
+    clearTimeout(this._r); clearTimeout(this._o);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var night = (this.props.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', chatBg: '#111C17', headerBg: '#121C18', bubbleIn: '#17221E', bubbleOut: '#173A2D', sheet: '#121C18', dayPill: '#1A2621',
+      track: 'rgba(255,255,255,0.07)', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', scrim: 'rgba(0,0,0,0.55)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', faint: '#5F6E68',
+      accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7', accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      quoteBg: 'rgba(110,231,183,0.10)', pressed: '#1C2E27', segOn: 'rgba(255,255,255,0.14)', disabledBg: 'rgba(255,255,255,0.10)', disabledFg: '#B9C6C0'
+    } : {
+      bg: '#FBFAF7', chatBg: '#EEEBE4', headerBg: '#FFFFFF', bubbleIn: '#FFFFFF', bubbleOut: '#DCEBE2', sheet: '#FFFFFF', dayPill: '#FFFFFF',
+      track: '#F4F2ED', line: '#E7E3DA', lineStrong: '#C9C4B9', scrim: 'rgba(27,26,23,0.45)',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', faint: '#9A958B',
+      accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44', accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      quoteBg: 'rgba(29,90,68,0.08)', pressed: '#E9F1EC', segOn: '#FFFFFF', disabledBg: '#EEEBE4', disabledFg: '#3F3C36'
+    };
+    var propView = this.props.view === 'Listing intake (R2)' ? 'intake' : 'onb';
+    var view = s.view || propView;
+
+    function seg(on) {
+      return 'flex:1;min-height:40px;padding:0 10px;border:0;border-radius:999px;font:inherit;font-size:15px;cursor:pointer;color:' + T.ink + ';font-weight:' + (on ? 600 : 400) + ';background:' + (on ? T.segOn : 'transparent') + (on && !night ? ';box-shadow:inset 0 0 0 1px ' + T.line : '');
+    }
+    function chipBtn(on) {
+      return 'min-height:40px;padding:0 14px;border-radius:999px;font:inherit;font-size:14px;cursor:pointer;box-sizing:border-box;border:' + (on ? '1.5px solid ' + T.accent : '1px solid ' + T.line) + ';background:' + (on ? T.accentSoft : 'transparent') + ';color:' + T.ink + ';font-weight:' + (on ? 600 : 400);
+    }
+    function rowBtn(on, off) {
+      return 'min-height:48px;width:100%;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:0 14px;border-radius:14px;font:inherit;font-size:16px;text-align:left;cursor:' + (off ? 'default' : 'pointer') + ';border:' + (on ? '1.5px solid ' + T.accent : '1px solid ' + T.line) + ';background:' + (on ? T.accentSoft : 'transparent') + ';color:' + (off ? T.faint : T.ink);
+    }
+    function radioDot(on, off) {
+      return 'flex:none;width:20px;height:20px;border-radius:50%;box-sizing:border-box;' + (on ? 'border:6px solid ' + T.accent : 'border:2px solid ' + (off ? T.faint : T.muted));
+    }
+    function reply(on) {
+      return 'height:44px;width:100%;border:0;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;color:' + T.accentText + ';background:' + (on ? T.pressed : T.bubbleIn) + ';';
+    }
+
+    var views = [['onb', 'Onboarding · R1'], ['intake', 'Listing intake · R2']].map(function (v) {
+      var on = view === v[0];
+      return {label: v[1], on: on ? 'true' : 'false', pick: function () { self.setState({view: v[0]}); },
+        style: 'min-height:36px;padding:0 12px;border:0;border-radius:999px;font:inherit;font-size:14px;cursor:pointer;color:' + T.ink + ';font-weight:' + (on ? 600 : 400) + ';background:' + (on ? T.segOn : 'transparent') + (on && !night ? ';box-shadow:inset 0 0 0 1px ' + T.line : '')};
+    });
+
+    // Step 1: live HARERA agent check (fictional register extract, see fix-broker.md).
+    var KNOWN = {'RC/REA/HARERA/GGM/2024/1187': 'kabir'};
+    function normReg(x) { return String(x || '').toUpperCase().replace(/\s+/g, ''); }
+    var regState = s.regState || 'idle';
+    var meOpts = [['yes', 'Yes, that’s me'], ['no', 'No, that’s not me']].map(function (o) {
+      var on = s.me === o[0];
+      return {label: o[1], on: on ? 'true' : 'false', style: rowBtn(on, false), dot: radioDot(on, false), pick: function () { self.setState({me: o[0], err: ''}); }};
+    });
+
+    // Step 2: PAN, segment, coverage.
+    var pan = String(s.pan || '').toUpperCase();
+    var panValid = /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan);
+    var panNote = !pan ? 'Used to check it’s you and for TDS. Never shown on your profile.' : (panValid ? 'Format looks right. Name on PAN matches your HARERA record.' : (pan.length < 10 ? 'Keep going: 5 letters, 4 digits, 1 letter.' : 'That doesn’t look like a PAN. Check the 10 characters.'));
+    var segOpts = [['resale', 'Resale'], ['new', 'New launches'], ['both', 'Both']].map(function (o) {
+      var on = s.seg === o[0];
+      return {label: o[1], on: on ? 'true' : 'false', style: seg(on), pick: function () { self.setState({seg: o[0], err: ''}); }};
+    });
+    var CORS = [
+      {key: 'gcer', label: 'Golf Course Ext Road', socs: [['amberwood', 'Amberwood Greens'], ['wrenfield', 'Wrenfield Towers'], ['palisade', 'Palisade Court'], ['saffron', 'Saffron Crest']]},
+      {key: 'dxe', label: 'Dwarka Expressway', socs: [['cobalt', 'Cobalt Square'], ['larchwood', 'Larchwood Residency']]},
+      {key: 'ng', label: 'New Gurugram', socs: [['marigold', 'Marigold Enclave']]},
+      {key: 'sohna', label: 'Sohna Road', socs: [['hollybrook', 'Hollybrook Residency']]}
+    ];
+    var cors = s.cors || {}, socs = s.socs || {};
+    var corOpts = CORS.map(function (c) {
+      var on = !!cors[c.key];
+      return {label: c.label, on: on ? 'true' : 'false', style: chipBtn(on), pick: function () {
+        var n = Object.assign({}, self.state.cors || {}); n[c.key] = !n[c.key];
+        var sn = Object.assign({}, self.state.socs || {});
+        if (!n[c.key]) c.socs.forEach(function (x) { delete sn[x[0]]; });
+        self.setState({cors: n, socs: sn, err: ''});
+      }};
+    });
+    var socOpts = [], corNames = [], socNames = [];
+    CORS.forEach(function (c) {
+      if (!cors[c.key]) return;
+      corNames.push(c.label);
+      c.socs.forEach(function (x) {
+        var on = !!socs[x[0]];
+        if (on) socNames.push(x[1]);
+        socOpts.push({label: x[1], on: on ? 'true' : 'false', style: chipBtn(on), pick: function () {
+          var n = Object.assign({}, self.state.socs || {});
+          var count = Object.keys(n).filter(function (k) { return n[k]; }).length;
+          if (!n[x[0]] && count >= 10) return;
+          n[x[0]] = !n[x[0]]; self.setState({socs: n});
+        }});
+      });
+    });
+
+    // Step 3: call booking.
+    var DAYS = [['Mon', '19 Oct'], ['Tue', '20 Oct'], ['Wed', '21 Oct'], ['Thu', '22 Oct']];
+    var TIMES = [['11:00 am', ''], ['12:30 pm', ''], ['4:00 pm', ''], ['6:30 pm', 'Full']];
+    var dayOpts = DAYS.map(function (d, i) {
+      var on = s.day === i;
+      return {wd: d[0], d: d[1].split(' ')[0], on: on ? 'true' : 'false', pick: function () { self.setState({day: i}); },
+        style: 'min-height:56px;border-radius:14px;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;border:' + (on ? '1.5px solid ' + T.accent : '1px solid ' + T.line) + ';background:' + (on ? T.accentSoft : 'transparent') + ';color:' + T.ink};
+    });
+    var timeOpts = TIMES.map(function (t, i) {
+      var on = s.time === i, off = !!t[1];
+      return {label: t[0], note: t[1], on: on ? 'true' : 'false', off: off ? 'true' : 'false', style: rowBtn(on, off), dot: radioDot(on, off), pick: function () { if (!off) self.setState({time: i}); }};
+    });
+    var langOpts = ['English', 'Hindi'].map(function (l) {
+      var on = s.lang === l;
+      return {label: l === 'Hindi' ? 'हिन्दी' : l, on: on ? 'true' : 'false', style: seg(on), pick: function () { self.setState({lang: l}); }};
+    });
+    var callLabel = DAYS[s.day || 0][0] + ' ' + DAYS[s.day || 0][1] + ', ' + TIMES[s.time || 0][0] + ', in ' + (s.lang || 'English');
+
+    var step = s.step || 1;
+    var registered = regState === 'found' && s.me === 'yes';
+    var unregistered = regState === 'missing' && !!s.help;
+    var canNext = step === 1 ? (registered || unregistered) : (step === 2 ? (panValid && corNames.length > 0) : !!s.agree);
+    var errMsg = step === 1 ? (regState === 'found' ? 'Confirm whether this record is you.' : 'Enter a number we can find, or tap “I’m not registered yet”.') : (step === 2 ? (!panValid ? 'Add a valid PAN to go on.' : 'Pick at least one corridor.') : 'Tick the box to agree to the rules.');
+
+    // The check runs on tap (a Flow data_exchange call to our endpoint), not per keystroke.
+    function runCheck(v) {
+      clearTimeout(self._r);
+      var n = normReg(v);
+      if (n.length < 12) { self.setState({reg: v, regState: 'idle', short: true, me: '', help: false}); return; }
+      self.setState({reg: v, regState: 'checking', short: false, me: '', help: false, err: ''});
+      self._r = setTimeout(function () { self.setState({regState: KNOWN[n] ? 'found' : 'missing'}); }, 700);
+    }
+    function setReg(v) { clearTimeout(self._r); self.setState({reg: v, regState: 'idle', short: false, me: '', help: false, err: ''}); }
+
+    var verifiedTitle = unregistered ? 'Registration help' : 'Verified agent';
+    var coverage = socNames.length ? socNames.join(', ') : corNames.join(', ');
+
+    // R2 preview: listing intake from a forwarded broadcast.
+    var filled = !!s.filled;
+    var D = [
+      ['Society', 'Amberwood Greens, Sector 66', false],
+      ['Flat', filled ? 'Tower 4, flat 902, 9th floor' : 'Tower 4, 9th floor; flat number Not provided', !filled],
+      ['Type', '3 BHK, ready to move', false],
+      ['Size', filled ? '1,650 sq ft super · 1,210 sq ft carpet' : '1,650 sq ft super · carpet Not provided', !filled],
+      ['Asking', '₹2.45 Cr, negotiable', false],
+      ['Facing', 'Park', false],
+      ['Parking', filled ? '1 covered' : 'Not provided', !filled],
+      ['Owner', 'NRI, per your message', false]
+    ];
+    var draft = D.map(function (d) { return {k: d[0], v: d[1], style: 'margin:0;' + (d[2] ? 'font-style:italic;color:' + T.ink2 : '')}; });
+    var digits = String(s.ownerNum || '').replace(/\D/g, '');
+    var rollDefs = [['avail', 'Available'], ['hold', 'On hold'], ['sold', 'Sold']];
+    var rollOpts = rollDefs.map(function (r) {
+      var on = s.roll === r[0];
+      return {label: r[1], on: on ? 'true' : 'false', style: reply(on) + 'font-size:15px;', pick: function () { self.setState({roll: r[0]}); }};
+    });
+    var rollReply = s.roll === 'avail' ? 'Confirmed: T4-902 stays live, “Available · confirmed 1 Nov 2026”. Next roll-call Sun 8 Nov.' : (s.roll === 'hold' ? 'Marked On hold. Buyers see it as on hold, and new enquiries pause until you mark it Available.' : (s.roll === 'sold' ? 'Marked Sold and taken down. If a deal came through Plinth, the ledger has the introduction.' : ''));
+
+    var stripNote = view === 'intake' ? 'R2 preview · Sunil Arora, Arora Estates' : (s.open && step === 1 ? 'R1 · Kabir, a HARERA agent · prototype:' : (s.open && step === 2 ? 'R1 · step 2 · prototype:' : 'R1 · Kabir, a HARERA-registered agent'));
+
+    return {
+      t: T, views: views, isOnb: view === 'onb', isIntake: view === 'intake',
+      headerSub: view === 'intake' ? 'Business account · listings' : 'Business account · for agents',
+      stripNote: stripNote,
+      demoMatch: view === 'onb' && !!s.open && step === 1, demoStep2: view === 'onb' && !!s.open && step === 2,
+      fillMatch: function () { runCheck('RC/REA/HARERA/GGM/2024/1187'); },
+      fillTypo: function () { runCheck('RC/REA/HARERA/GGM/2024/1817'); },
+      fillStep2: function () { self.setState({pan: 'AXKPM1187L', seg: 'resale', cors: {gcer: true}, socs: {amberwood: true, wrenfield: true}, office: 'SCO 14, Sector 56, Gurugram', err: ''}); },
+      startOver: function () { clearTimeout(self._r); clearTimeout(self._o); var f = self.fresh(); f.view = view; self.setState(f); },
+
+      openFlow: function () { self.setState({open: true, step: 1, err: ''}); },
+      flowOpen: !!s.open && view === 'onb',
+      isStep1: step === 1, notStep1: step !== 1, isStep2: step === 2, isStep3: step === 3,
+      stepOf: step + ' of 3',
+      backLabel: step === 1 ? 'Close' : 'Back',
+      flowBack: function () { if (step === 1) self.setState({open: false, err: ''}); else self.setState({step: step - 1, err: ''}); },
+
+      reg: s.reg || '', onReg: function (e) { setReg(e.target.value); },
+      checkReg: function () { runCheck(self.state.reg || ''); },
+      idleNote: s.short ? 'That looks too short. Type the full number, as it appears on your certificate.' : 'Type the full number from your certificate, then tap Check. Capitals or not, either works.',
+      regIdle: regState === 'idle', regChecking: regState === 'checking', regFound: regState === 'found', regMissing: regState === 'missing',
+      meOpts: meOpts, notMe: s.me === 'no',
+      help: !!s.help, helpAria: s.help ? 'true' : 'false',
+      helpStyle: 'margin-top:10px;height:44px;width:100%;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:' + (s.help ? T.pressed : T.track) + ';color:' + T.ink,
+      notRegistered: function () { self.setState({help: !self.state.help, err: ''}); },
+
+      pan: pan, onPan: function (e) { self.setState({pan: String(e.target.value || '').toUpperCase().slice(0, 10), err: ''}); },
+      panOk: panValid, panNote: panNote, panNoteColor: panValid ? T.accentText : T.muted,
+      segOpts: segOpts, corOpts: corOpts, socOpts: socOpts, noCorridor: corNames.length === 0,
+      office: s.office || '', onOffice: function (e) { self.setState({office: e.target.value}); },
+
+      dayOpts: dayOpts, timeOpts: timeOpts, langOpts: langOpts,
+      agree: !!s.agree, agreeAria: s.agree ? 'true' : 'false',
+      agreeBox: 'flex:none;width:22px;height:22px;margin-top:-1px;border-radius:6px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;' + (s.agree ? 'background:' + T.accent + ';border:2px solid ' + T.accent : 'border:2px solid ' + T.muted),
+      toggleAgree: function () { self.setState({agree: !self.state.agree, err: ''}); },
+
+      errShow: !!s.err, err: s.err || '',
+      nextLabel: step === 3 ? 'Finish' : 'Continue',
+      nextOffAria: canNext ? 'false' : 'true',
+      nextStyle: 'height:48px;width:100%;border:0;border-radius:999px;font:inherit;font-weight:600;cursor:pointer;background:' + (canNext ? T.accent : T.disabledBg) + ';color:' + (canNext ? T.onAccent : T.disabledFg),
+      next: function () {
+        if (!canNext) { self.setState({err: errMsg}); return; }
+        if (step < 3) self.setState({step: step + 1, err: ''});
+        else self.setState({open: false, done: true, err: ''});
+      },
+
+      done: !!s.done && view === 'onb',
+      statusTitle: verifiedTitle,
+      statusReg: unregistered ? 'HARERA registration: in progress, with our help' : 'HARERA RC/REA/HARERA/GGM/2024/1187 · checked 18 Oct 2026',
+      statusCoverage: 'Covers: ' + (coverage || 'Golf Course Ext Road'),
+      cardLabel: 'Status card. Plinth, 18 Oct 2026. ' + verifiedTitle + '. Kabir Malhotra. ' + (unregistered ? 'HARERA registration in progress.' : 'HARERA RC/REA/HARERA/GGM/2024/1187, checked 18 Oct 2026.') + ' Covers ' + (coverage || 'Golf Course Ext Road') + '. No listings yet. Verified, never endorsed.',
+      doneText: unregistered ? 'You’re in. You won’t show as a Verified agent until HARERA registers you; we’ll help on the call.' : 'You’re a Verified agent. Buyers who check your number on Plinth now see it. Your public profile shows your registration and coverage; badges come once there’s data.',
+      callLabel: callLabel,
+      doneReplies: [['profile', 'See my public profile', 'Here it is: plinth.in/agents/kabir-malhotra. It shows your registration, coverage and “Verified agent since 18 Oct 2026”.'], ['rules', 'Read the rules', 'Partner rules v1: plinth.in/for-agents. Introductions, the mandate shield, the contact cap, labels and band etiquette.'], ['human', 'Talk to a person', 'A person from our partner team will reply here within 2 working hours.']].map(function (r) {
+        var on = s.doneReply === r[0];
+        return {label: r[1], on: on ? 'true' : 'false', style: reply(on), pick: function () { self.setState({doneReply: r[0]}); }, text: r[2]};
+      }),
+      doneReplyShow: !!s.doneReply,
+      doneReply: s.doneReply === 'profile' ? 'Here it is: plinth.in/agents/kabir-malhotra. It shows your registration, coverage and “Verified agent since 18 Oct 2026”.' : (s.doneReply === 'rules' ? 'Partner rules v1: plinth.in/for-agents. Introductions, the mandate shield, the contact cap, labels and band etiquette.' : 'A person from our partner team will reply here within 2 working hours.'),
+
+      draft: draft, draftOpen: !s.ownerAsk,
+      fillLabel: filled ? 'Blanks filled' : 'Fill the blanks',
+      replyStyle: reply(false),
+      fillBlanks: function () { self.setState({filled: true}); },
+      askOwner: function () { self.setState({ownerAsk: true}); },
+      ownerAsk: !!s.ownerAsk,
+      ownerNum: s.ownerNum || '', onOwner: function (e) { self.setState({ownerNum: e.target.value, ownerErr: false}); },
+      ownerErrShow: !!s.ownerErr, notSent: !s.sent,
+      sendOwner: function () {
+        if (digits.length !== 10) { self.setState({ownerErr: true}); return; }
+        clearTimeout(self._o);
+        self.setState({sent: true, ownerErr: false});
+        self._o = setTimeout(function () { self.setState({confirmed: true}); }, 1400);
+      },
+      sent: !!s.sent, confirmed: !!s.confirmed,
+      ownerMasked: digits.length === 10 ? '+91 ••••• •' + digits.slice(6) : '+91 ••••• ••••',
+      ownerStatus: s.confirmed ? 'The owner confirmed by OTP.' : 'Waiting for the owner…',
+      ownerTime: s.confirmed ? '4:12 pm' : '4:01 pm',
+      rollOpts: rollOpts, rolled: !!s.roll, rollReply: rollReply,
+      rollNote: 'Last confirmed 18 Oct, 14 days ago. Reply today or it hides from buyers tonight, until you confirm.'
+    };
+  }
+}
+</script>
+</body>
+</html>

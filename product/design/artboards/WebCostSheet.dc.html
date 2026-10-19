@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cost sheet normaliser: What will I really pay?</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:pointer}
+@keyframes plRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes plDrift { from { transform: scale(1); } to { transform: scale(1.04); } }
+.press { transition: transform 140ms cubic-bezier(.22,1,.36,1), opacity 180ms ease; }
+.press:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .press:hover { transform: translateY(-1px); }
+  .press:active { transform: scale(.97); }
+  .lk:hover { text-decoration-thickness: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: plRise 800ms cubic-bezier(.22,1,.36,1) both; }
+  .rise1 { animation-delay: 90ms; }
+  .rise2 { animation-delay: 180ms; }
+  .drift { animation: plDrift 18s cubic-bezier(.33,1,.68,1) both; }
+  @supports (animation-timeline: view()) {
+    .rv { animation: plRise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+    .rv1 { animation-range: entry 8% cover 32%; }
+    .rv2 { animation-range: entry 16% cover 38%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</helmet>
+<div style="min-height: {{rootMin}}px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 20; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
+        <a href="#cost" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Cost sheet</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask Plinth</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer; display: inline-flex; align-items: center; justify-content: center">
+          <sc-if value="{{night}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.5" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M10 1.8v2.2M10 16v2.2M1.8 10H4M16 10h2.2M4.2 4.2l1.6 1.6M14.2 14.2l1.6 1.6M4.2 15.8l1.6-1.6M14.2 5.8l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+          <sc-if value="{{day}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.6A6.5 6.5 0 0 1 7.4 4a6.5 6.5 0 1 0 8.6 8.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg></sc-if>
+        </button>
+        <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{followLabel}}</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" style="flex: none; display: flex; flex-direction: column">
+    <nav aria-label="Cost sheet steps" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 32px 32px 0; box-sizing: border-box">
+      <ol style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 28px">
+        <sc-for list="{{steps}}" as="st" hint-placeholder-count="3">
+          <li><button type="button" class="press" onClick="{{st.go}}" aria-current="{{st.current}}" style="{{st.btnStyle}}"><sc-if value="{{st.done}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{st.label}}</button></li>
+        </sc-for>
+      </ol>
+    </nav>
+
+    <sc-if value="{{isUpload}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="up-h" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 48px 32px 160px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: center">
+        <div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+          <h1 id="up-h" class="rise" style="{{u.h1}}">What will I really pay?</h1>
+          <p class="rise rise1" style="{{u.lead}}; max-width: 36ch">Add the cost sheet the developer gave you. We turn it into one all-in number, with every line explained.</p>
+          <sc-if value="{{noFile}}" hint-placeholder-val="{{true}}">
+            <div class="rise rise2" style="box-sizing: border-box; border-radius: 8px; background: {{t.track}}; padding: 40px 36px; display: flex; flex-direction: column; align-items: flex-start; gap: 16px">
+              <p style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">Drop a photo or PDF of your cost sheet</p>
+              <p style="margin: 0">A clear phone photo works. Include every page.</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 6px">
+                <button type="button" class="press" onClick="{{chooseFile}}" style="{{u.primary}}">Choose a file</button>
+                <button type="button" class="press" onClick="{{chooseFile}}" style="{{u.secondaryOnBand}}">
+                  <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6.5h3l1.5-2h5L14 6.5h3v9H3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path><circle cx="10" cy="11" r="3" fill="none" stroke="currentColor" stroke-width="1.6"></circle></svg>Take a photo
+                </button>
+              </div>
+              <button type="button" onClick="{{chooseFile}}" style="{{u.tertiary}}">No cost sheet yet? Try the sample from Aurelia Heights, Phase 2</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{hasFile}}" hint-placeholder-val="{{false}}">
+            <div style="box-sizing: border-box; display: flex; align-items: center; gap: 18px; padding: 22px 26px; border-radius: 8px; background: {{t.track}}">
+              <span aria-hidden="true" style="flex: 0 0 52px; height: 52px; border-radius: 6px; background: {{t.bgSolid}}; display: flex; align-items: center; justify-content: center">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path><path d="M14 3v5h5M9 13h6M9 17h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+              </span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+                <strong style="font-weight: 600">Cost sheet · Aurelia Heights, Phase 2</strong>
+                <span style="font-size: 17px; color: {{t.ink2}}">2 pages · dated 2 Oct 2026 · issued by Northfield Estates</span>
+              </span>
+              <button type="button" onClick="{{removeFile}}" style="{{u.tertiary}}; align-self: center">Remove</button>
+            </div>
+            <p style="margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 17px">
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3 3L14 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              Matched to Aurelia Heights, Phase 2 · RERA GGM/673/405/2022/117
+            </p>
+            <button type="button" class="press" onClick="{{startReading}}" style="{{u.primary}}; align-self: flex-start">Read my cost sheet</button>
+          </sc-if>
+          <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 4px">
+            <p style="margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 17px">
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3.5" y="8" width="11" height="7.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M6 8V5.8a3 3 0 0 1 6 0V8" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg>
+              Private to you. We never send your cost sheet to the developer. Delete it any time.
+            </p>
+            <p style="margin: 0; font-size: 17px; color: {{t.ink2}}">Prefer WhatsApp? Send the photo to Plinth and get the same breakdown there.</p>
+          </div>
+        </div>
+        <div class="rise rise2" style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <div style="position: relative; aspect-ratio: 4 / 5; background: {{t.photo}}">
+            <img data-slot="costSheetDesk" src="/_blob/0df253c9bcc49614197e2e73dc9444e4" alt="Illustrative image: a printed two-page cost sheet on a desk beside a phone" style="position: absolute; inset: 0; background: {{t.photo}}; border-radius: 0; object-fit: cover; display: block">
+            <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+          </div>
+          <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Flat on a table, in daylight, every page. That's all the reader needs.</p>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isReading}}" hint-placeholder-val="{{false}}">
+      <section aria-labelledby="rd-h" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 48px 32px 160px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <h1 id="rd-h" class="rise" style="{{u.h1}}">{{readTitle}}</h1>
+          <p class="rise rise1" style="{{u.lead}}; max-width: 46ch">{{readSub}}</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+          <div aria-hidden="true" style="flex: 0 1 420px; min-width: 0; position: relative; box-sizing: border-box; padding: 28px 22px; background: {{t.paper}}">
+            <div style="height: 64px; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 19px; letter-spacing: -0.01em">Northfield Estates · Cost sheet</span>
+              <span style="font-size: 14px; color: {{t.ink2}}">Aurelia Heights, Phase 2 · 3 BHK · 2 Oct 2026</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <sc-for list="{{docRows}}" as="r" hint-placeholder-count="10">
+                <div style="{{r.style}}"><span>{{r.label}}</span><span style="white-space: nowrap">{{r.amt}}</span></div>
+              </sc-for>
+            </div>
+            <div style="{{scanStyle}}"></div>
+            <span style="position: absolute; right: 16px; bottom: 8px; font-size: 13px; color: {{t.ink2}}">p. 1–2</span>
+          </div>
+          <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">What we found · read by AI, checked by a second AI reader</p>
+            <ol aria-live="polite" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px">
+              <sc-for list="{{found}}" as="f" hint-placeholder-count="6">
+                <li style="display: flex; justify-content: space-between; gap: 16px; padding: 10px 14px; border-radius: 4px; background: {{t.track}}">
+                  <span style="display: flex; flex-direction: column; min-width: 0">
+                    <span style="font-weight: 600">{{f.label}}</span>
+                    <span style="font-size: 15px; color: {{t.ink2}}">{{f.note}}</span>
+                  </span>
+                  <strong style="{{f.amtStyle}}">{{f.amt}}</strong>
+                </li>
+              </sc-for>
+            </ol>
+            <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 16px">
+              <div role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{readPct}}" style="width: 100%; height: 8px; border-radius: 4px; background: {{t.track}}; overflow: hidden">
+                <span style="{{readBar}}"></span>
+              </div>
+              <p style="margin: 0; font-size: 17px">{{readStage}} · {{readCount}}</p>
+              <sc-if value="{{readBusy}}" hint-placeholder-val="{{true}}">
+                <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Usually under 20 seconds. You can leave this page; we'll keep reading.</p>
+              </sc-if>
+              <sc-if value="{{readDone}}" hint-placeholder-val="{{false}}">
+                <button type="button" class="press" onClick="{{seeResult}}" style="{{u.primary}}; align-self: flex-start">See my all-in</button>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+      <section aria-labelledby="res-h" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 40px 32px 144px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+        <div style="flex: 1 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+          <h1 id="res-h" class="rise" style="{{u.h1}}">What will I really pay?</h1>
+          <p class="rise rise1" style="margin: 0; font-size: 19px">Aurelia Heights, Phase 2 · 3 BHK · 1,450 sq ft carpet · from your cost sheet dated 2 Oct 2026</p>
+          <p aria-live="polite" class="rise rise1" style="margin: 16px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(88px, 11vw, 152px); line-height: 0.9; letter-spacing: -0.05em; white-space: nowrap">{{allInCr}}</p>
+          <p style="margin: 0; font-size: 22px; line-height: 1.45">all-in · <strong>{{perSqft}}</strong> per sq ft carpet · {{pctMore}}% more than the {{baseCr}} quoted</p>
+
+          <div class="rise rise2" style="display: flex; flex-direction: column; gap: 22px; margin-top: 20px; padding: 28px 30px; border-radius: 8px; background: {{t.track}}">
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <p id="own-l" style="margin: 0; font-size: 17px; font-weight: 600">Who will own it? Stamp duty depends on it.</p>
+              <div role="radiogroup" aria-labelledby="own-l" style="align-self: flex-start; display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.bgSolid}}">
+                <sc-for list="{{ownerSegs}}" as="o" hint-placeholder-count="3">
+                  <button type="button" class="press" role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="{{o.segStyle}}">{{o.name}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 16px 36px">
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <label for="dp" style="font-size: 17px">Down payment <strong>{{dp}}%</strong> · {{dpL}}</label>
+                <input id="dp" type="range" min="10" max="40" step="5" value="{{dp}}" onChange="{{onDp}}" aria-valuetext="{{dpText}}">
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <label for="rt" style="font-size: 17px">Home-loan rate <strong>{{ratePct}}%</strong> · 20 years</label>
+                <input id="rt" type="range" min="750" max="975" step="25" value="{{rateBp}}" onChange="{{onRate}}" aria-valuetext="{{rateText}}">
+              </div>
+            </div>
+            <dl aria-live="polite" style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 16px 36px">
+              <div style="display: flex; flex-direction: column"><dt style="font-size: 15px; color: {{t.ink2}}">EMI a month</dt><dd style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">{{emiL}}</dd></div>
+              <div style="display: flex; flex-direction: column"><dt style="font-size: 15px; color: {{t.ink2}}">Cash before the loan starts</dt><dd style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">{{cashL}}</dd></div>
+              <div style="display: flex; flex-direction: column"><dt style="font-size: 15px; color: {{t.ink2}}">Paid over 20 years</dt><dd style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; line-height: 1.15">{{lifeCr}}</dd></div>
+            </dl>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">{{interestCr}} of that is interest. Cash covers the down payment plus stamp duty and registration. Loan on the price with GST, {{loanBaseCr}}. Arithmetic, not advice; banks set their own limits.</p>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 12px">
+            <button type="button" class="press" onClick="{{toggleShare}}" aria-expanded="{{shareExp}}" style="{{u.primary}}">
+              <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="15" cy="5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="15" cy="15" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M7 9l6-3M7 11l6 3" fill="none" stroke="currentColor" stroke-width="1.6"></path></svg>Share with family
+            </button>
+            <button type="button" class="press" onClick="{{toggleSave}}" aria-pressed="{{savedPressed}}" style="{{u.secondary}}">
+              <sc-if value="{{saved}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+              <sc-if value="{{notSaved}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 3.5h9v13l-4.5-3-4.5 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg></sc-if>
+              {{saveLabel}}
+            </button>
+          </div>
+          <sc-if value="{{saved}}" hint-placeholder-val="{{false}}">
+            <p role="status" style="margin: 0; font-size: 17px">Saved. It sits on the Aurelia Heights, Phase 2 page, next to the project's records.</p>
+          </sc-if>
+          <sc-if value="{{share}}" hint-placeholder-val="{{false}}">
+            <div style="max-width: 620px; box-sizing: border-box; border-radius: 8px; padding: 24px; display: flex; flex-direction: column; gap: 14px; background: {{t.track}}">
+              <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">What your family will see</p>
+              <div style="border-radius: 6px; padding: 16px 18px; background: {{t.bgSolid}}; font-size: 17px; line-height: 1.55">
+                <strong>Aurelia Heights, Phase 2 · 3-bedroom flat</strong><br>
+                {{allInCr}} all-in, against ₹2.35 Cr quoted.<br>
+                The park-facing premium and club fee, ₹4.4 L, are often negotiable.<br>
+                <span style="font-size: 14px; color: {{t.ink2}}">From the developer's cost sheet of 2 Oct 2026 · Plinth · No developer pays us. Ever.</span><br>
+                <span style="text-decoration: underline">Full breakdown on Plinth</span>
+              </div>
+              <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Only this summary is shared. Your cost sheet file stays private.</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                <button type="button" class="press" onClick="{{sendWa}}" style="{{u.secondarySm}}">
+                  <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 14.5l1-3A6 6 0 1 1 6.5 14z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>{{waLabel}}
+                </button>
+                <button type="button" class="press" onClick="{{copyLink}}" style="{{u.secondarySm}}">
+                  <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7.5 10.5l3-3M6 8.5l-1.8 1.8a2.5 2.5 0 0 0 3.5 3.5L9.5 12M12 9.5l1.8-1.8a2.5 2.5 0 0 0-3.5-3.5L8.5 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>{{copyLabel}}
+                </button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        <div class="rise rise2" style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+          <div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: {{t.photo}}">
+            <img data-slot="heroAurelia" class="drift" src="/_blob/c3b52e41d6da32356184bfa8fddea9b4" alt="Illustrative image: Aurelia Heights, Phase 2 exterior" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+            <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+          </div>
+          <p style="margin: 0; font-size: 17px; line-height: 1.5">Aurelia Heights, Phase 2 · Northfield Estates · RERA GGM/673/405/2022/117</p>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Based on your cost sheet dated 2 Oct 2026 · rules version Oct 2026. Costs at move-in are not in this total: our estimate is about ₹12–18 L more. <a href="#move-in" class="lk" style="color: {{t.ink}}">See the move-in number</a></p>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+      <section id="where" aria-labelledby="wf-h" style="background: {{t.band}}; padding: 144px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+          <div style="flex: 1 1 360px; max-width: 440px; display: flex; flex-direction: column; gap: 20px">
+            <h2 id="wf-h" class="rv" style="{{u.h2}}">Where does {{extraL}} go?</h2>
+            <p class="rv rv1" style="{{u.lead}}">The quoted price is only the base. Charges, GST and stamp duty add {{extraL}} on top.</p>
+            <button type="button" onClick="{{toggleBreak}}" aria-expanded="{{breakExp}}" aria-controls="ledger" style="{{u.tertiary}}">Full breakdown, line by line <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="{{chevBreak}}"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <div class="rv rv2" style="position: relative; aspect-ratio: 4 / 3; margin-top: 12px; background: {{t.photo}}">
+              <img data-slot="costSheetDesk" src="/_blob/0df253c9bcc49614197e2e73dc9444e4" alt="Illustrative image: a printed cost sheet on a desk, with a pen" style="position: absolute; inset: 0; background: {{t.photo}}; border-radius: 0; object-fit: cover; display: block">
+              <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+            </div>
+          </div>
+          <div class="rv rv1" style="flex: 1.5 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <div role="group" aria-label="Waterfall from the quoted price to your all-in. Tap a bar for its exact amount." style="position: relative; height: 420px; margin-top: 8px">
+              <sc-for list="{{connectors}}" as="c" hint-placeholder-count="4">
+                <span aria-hidden="true" style="{{c.style}}"></span>
+              </sc-for>
+              <div style="position: absolute; inset: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+                <sc-for list="{{bars}}" as="b" hint-placeholder-count="5">
+                  <button type="button" onClick="{{b.pick}}" aria-pressed="{{b.on}}" aria-label="{{b.aria}}" style="position: relative; height: 100%; border: 0; padding: 0; background: transparent; cursor: pointer; font: inherit; color: inherit">
+                    <span aria-hidden="true" style="{{b.barStyle}}"></span>
+                    <span aria-hidden="true" style="{{b.breakStyle}}"></span>
+                    <span aria-hidden="true" style="{{b.valStyle}}">{{b.val}}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+            <div aria-hidden="true" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px">
+              <sc-for list="{{bars}}" as="b" hint-placeholder-count="5">
+                <span style="{{b.labStyle}}">{{b.label}}</span>
+              </sc-for>
+            </div>
+            <p aria-live="polite" style="margin: 8px 0 0; padding: 16px 20px; border-radius: 8px; background: {{t.bgSolid}}; font-size: 17px; line-height: 1.5"><strong>{{selName}}: {{selExact}}</strong> · {{selNote}}</p>
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Bars start at ₹2.0 Cr so the smaller costs stay visible. The cut marks show the two tall bars are shortened.</p>
+          </div>
+        </div>
+        <sc-if value="{{openBreak}}" hint-placeholder-val="{{false}}">
+          <div id="ledger" style="max-width: 1264px; margin: 56px auto 0; padding: 0 32px; box-sizing: border-box">
+            <div style="border-radius: 8px; background: {{t.bgSolid}}; padding: 32px 36px; display: flex; flex-direction: column; gap: 6px">
+              <h3 style="margin: 0 0 8px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em">Every line, and where it comes from</h3>
+              <sc-for list="{{ledger}}" as="g" hint-placeholder-count="4">
+                <div style="display: flex; flex-direction: column; padding-top: 14px">
+                  <p style="margin: 0 0 4px; font-size: 15px; font-weight: 600; color: {{t.ink2}}">{{g.group}}</p>
+                  <sc-for list="{{g.rows}}" as="row" hint-placeholder-count="3">
+                    <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 6px 18px; align-items: center; padding: 10px 0; border-bottom: 1px solid {{t.line}}">
+                      <span style="display: flex; flex-direction: column; min-width: 0">
+                        <span>{{row.label}} <span style="{{row.tagStyle}}">{{row.tag}}</span></span>
+                        <span style="font-size: 15px; color: {{t.ink2}}">{{row.note}}</span>
+                      </span>
+                      <a href="#source" class="press" style="{{u.chip}}">{{row.src}}</a>
+                      <strong style="text-align: right; min-width: 132px">{{row.amt}}</strong>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+              <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 16px 0 0; font-size: 22px">
+                <strong>All-in</strong><strong style="text-align: right">{{allInExact}}</strong>
+              </div>
+              <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">{{pctMore}}% more than quoted · {{perSqft}} per sq ft carpet · "From your cost sheet" lines are as the developer printed them. "Our calculation" lines use Haryana rules, Oct 2026.</p>
+            </div>
+          </div>
+        </sc-if>
+      </section>
+
+      <section aria-labelledby="area-h" style="background: {{t.bg}}; padding: 144px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+            <h2 id="area-h" class="rv" style="{{u.h2}}; max-width: 14ch">How much of it can you use?</h2>
+            <div class="rv rv1" style="flex: 0 1 520px; display: flex; flex-direction: column; gap: 14px">
+              <p style="margin: 0; display: flex; align-items: baseline; gap: 14px"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(64px, 8vw, 104px); letter-spacing: -0.05em; line-height: 0.9">38%</span><span style="font-size: 22px">loading</span></p>
+              <p style="{{u.lead}}">You pay for 2,000 sq ft. You can use 1,450 sq ft. The other 550 sq ft is your share of walls, lifts and lobbies.</p>
+            </div>
+          </div>
+          <div class="rv rv1" role="img" aria-label="Area drawn to scale: 1,450 sq ft of carpet inside 2,000 sq ft of super area. The 550 sq ft difference is shared space." style="display: flex; height: 180px; gap: 4px">
+            <div style="{{carpetStyle}}">
+              <span style="font-size: 17px">Carpet area · the space inside your walls</span>
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 44px; letter-spacing: -0.03em; line-height: 1.05">1,450 sq ft</span>
+            </div>
+            <div style="{{sharedStyle}}">
+              <span style="font-size: 17px">Shared</span>
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 44px; letter-spacing: -0.03em; line-height: 1.05">550</span>
+            </div>
+          </div>
+          <p style="margin: -32px 0 0; font-size: 15px; color: {{t.ink2}}">Together, the 2,000 sq ft super area. The price is quoted on it.</p>
+          <div class="rv rv2" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 48px">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px">
+              <span style="display: flex; flex-direction: column"><span style="font-size: 15px; color: {{t.ink2}}">Quoted, per sq ft super</span><strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 30px; letter-spacing: -0.025em">₹11,750</strong></span>
+              <svg width="32" height="20" viewBox="0 0 32 20" aria-hidden="true"><path d="M2 10h26M21 3l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <span style="display: flex; flex-direction: column"><span style="font-size: 15px; color: {{t.ink2}}">All-in, per sq ft carpet</span><strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 30px; letter-spacing: -0.025em">{{perSqft}}</strong></span>
+            </div>
+            <div style="flex: 0 1 520px; display: flex; flex-direction: column; gap: 10px">
+              <button type="button" onClick="{{toggleLoad}}" aria-expanded="{{loadExp}}" style="{{u.tertiary}}">How we work out loading <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="{{chevLoad}}"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+              <sc-if value="{{openLoad}}" hint-placeholder-val="{{false}}">
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 17px">
+                  <p style="margin: 0">Loading = (super − carpet) ÷ carpet = (2,000 − 1,450) ÷ 1,450 = 38%.</p>
+                  <p style="margin: 0">Some sites divide by the super area instead. That gives 28% for the same flat.</p>
+                  <a href="#source" class="press" style="{{u.chip}}; align-self: flex-start">Cost sheet p. 1 · areas</a>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="own-h" style="background: {{t.band}}; padding: 144px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start">
+          <div style="flex: 1.5 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+            <h2 id="own-h" class="rv" style="{{u.h2}}">Who will own the flat?</h2>
+            <p class="rv rv1" style="{{u.lead}}; max-width: 40ch">Haryana charges less stamp duty when a woman owns the home. Pick the owners to see your number.</p>
+            <div role="radiogroup" aria-label="Who will own the flat" class="rv rv1" style="display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{owners}}" as="o" hint-placeholder-count="3">
+                <button type="button" class="press" role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="{{o.style}}">
+                  <span style="display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 16px">
+                    <span aria-hidden="true" style="{{o.ringStyle}}"><span style="{{o.dotStyle}}"></span></span>
+                    <span><strong style="font-weight: 600">{{o.name}}</strong><span style="color: {{t.ink2}}"> · {{o.rate}} stamp duty</span></span>
+                    <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em">{{o.amt}}</strong>
+                  </span>
+                  <span aria-hidden="true" style="display: block; height: 8px; margin-left: 44px; border-radius: 4px; background: {{t.bg}}; overflow: hidden"><span style="{{o.barStyle}}"></span></span>
+                </button>
+              </sc-for>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 14px 48px; align-items: flex-end">
+              <span style="display: flex; flex-direction: column"><span style="font-size: 15px; color: {{t.ink2}}">Stamp duty and registration</span><strong aria-live="polite" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 44px; letter-spacing: -0.03em; line-height: 1.1">{{stampL}}</strong></span>
+              <span style="display: flex; flex-direction: column"><span style="font-size: 15px; color: {{t.ink2}}">Your all-in</span><strong aria-live="polite" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 44px; letter-spacing: -0.03em; line-height: 1.1">{{allInCr}}</strong></span>
+            </div>
+            <p style="margin: 0">{{ownerDelta}}</p>
+            <button type="button" onClick="{{toggleRule}}" aria-expanded="{{ruleExp}}" style="{{u.tertiary}}">Show the rule <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="{{chevRule}}"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <sc-if value="{{openRule}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; gap: 10px; font-size: 17px">
+                <p style="margin: 0">Stamp duty is charged on ₹2.44 Cr, your price before GST, or on the circle rate if that is higher.</p>
+                <p style="margin: 0">Urban Haryana: 7% for a man, 5% for a woman, 6% for a man and a woman jointly. Registration fee: ₹50,000.</p>
+                <a href="#source" class="press" style="{{u.chipOnBand}}; align-self: flex-start">Haryana stamp duty · rules Oct 2026</a>
+              </div>
+            </sc-if>
+          </div>
+          <div class="rv rv2" style="flex: 1 1 360px; min-width: 0; position: relative; aspect-ratio: 3 / 4; background: {{t.photo}}">
+            <img data-slot="deedKeys" src="/_blob/6ca2bc5de9dc542dc12c4d95e30a6af3" alt="Illustrative image: house keys resting on a signed sale deed" style="position: absolute; inset: 0; background: {{t.photo}}; border-radius: 0; object-fit: cover; display: block">
+            <span style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="neg-h" style="background: {{t.bg}}; overflow: hidden">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch">
+          <div class="rv" style="flex: 1 1 440px; min-width: 0; position: relative; min-height: 560px; margin-left: -32px; background: {{t.photo}}">
+            <img data-slot="salesGallery" src="/_blob/5fb6202e7c5c795906c6ae2cb14ac821" alt="Illustrative image: an empty sales gallery desk with a scale model of a tower" style="position: absolute; inset: 0; background: {{t.photo}}; border-radius: 0; object-fit: cover; display: block">
+            <span style="position: absolute; left: 44px; bottom: 12px; font-size: 13px; line-height: 1.5; color: #1B1A17; background: #FFFFFF; padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+          </div>
+          <div style="flex: 1.3 1 560px; min-width: 0; padding: 144px 0 160px 72px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+            <h2 id="neg-h" class="rv" style="{{u.h2}}">What can you negotiate?</h2>
+            <p class="rv rv1" style="{{u.lead}}; max-width: 40ch">2 charges on your sheet are set by the developer, not by law. You can ask for them to be cut or dropped before you sign.</p>
+            <div class="rv rv1" style="display: flex; flex-direction: column; gap: 8px">
+              <sc-for list="{{negs}}" as="n" hint-placeholder-count="2">
+                <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; padding: 22px 24px; border-radius: 8px; background: {{t.track}}">
+                  <span style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+                    <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 7.5V2h5.5l5.5 5.5-5.5 5.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path><circle cx="4.5" cy="4.8" r="1" fill="currentColor"></circle></svg>Often negotiable</span>
+                    <strong style="font-size: 22px; font-weight: 600">{{n.name}}</strong>
+                    <span style="font-size: 17px">{{n.why}}</span>
+                  </span>
+                  <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 30px; letter-spacing: -0.025em; text-align: right">{{n.amt}}</strong>
+                  <button type="button" role="switch" aria-checked="{{n.on}}" onClick="{{n.flip}}" style="grid-column: 1 / -1; justify-self: start; display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 17px; color: {{t.ink}}; cursor: pointer">
+                    <span aria-hidden="true" style="{{n.trackStyle}}"><span style="{{n.knobStyle}}"></span></span>See my all-in without it
+                  </button>
+                </div>
+              </sc-for>
+            </div>
+            <div aria-live="polite" style="padding: 4px 0 0">
+              <sc-if value="{{noWaive}}" hint-placeholder-val="{{true}}">
+                <p style="margin: 0">Switch one on to see your all-in without it, including the GST and stamp duty you'd save.</p>
+              </sc-if>
+              <sc-if value="{{anyWaive}}" hint-placeholder-val="{{false}}">
+                <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Without {{waiveWhat}}</p>
+                <p style="margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px"><strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 44px; letter-spacing: -0.03em; line-height: 1.1">{{waiveCr}}</strong><span>all-in · {{waiveSave}} less, with the GST and stamp duty on it</span></p>
+              </sc-if>
+            </div>
+            <button type="button" onClick="{{toggleNeg}}" aria-expanded="{{negExp}}" style="{{u.tertiary}}">Why only these two? <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="{{chevNeg}}"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <sc-if value="{{openNeg}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; gap: 10px; font-size: 17px">
+                <p style="margin: 0">GST, stamp duty and registration are set by law, and EDC and IDC by the government. They can't be negotiated.</p>
+                <p style="margin: 0">Parking and IFMS are standard on this sheet. EDC, IDC and power backup are already in the base price.</p>
+                <p style="margin: 0">Get any change in writing, in the agreement for sale or a signed addendum. The next section lists what to ask for.</p>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+
+      <section id="before-you-negotiate" aria-labelledby="bn-h" style="background: {{t.band}}; padding: 144px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 56px">
+          <div style="display: flex; flex-direction: column; gap: 22px; max-width: 980px">
+            <h2 id="bn-h" class="rv" style="{{u.h2}}">What should I know before I negotiate?</h2>
+            <p class="rv rv1" style="{{u.lead}}; max-width: 44ch">Three things your cost sheet won't tell you. Read them before you sit down at the sales gallery.</p>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 48px 56px; align-items: flex-start">
+            <div class="rv rv1" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+              <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">Some agents give part of their fee back</h3>
+              <p style="margin: 0; font-size: 19px; line-height: 1.55">Channel partners earn a commission from the developer. Some pass part of it back to the buyer as a discount.</p>
+              <p style="margin: 0; font-size: 19px; line-height: 1.55">Plinth can't, and never will: no developer money reaches us, so there is no commission to share. If you go direct, ask the developer for the same discount.</p>
+              <a href="#money" class="lk" style="color: {{t.ink}}; font-size: 17px">How we make money</a>
+            </div>
+            <div class="rv rv2" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+              <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">EDC and IDC can go up later</h3>
+              <p style="margin: 0; font-size: 19px; line-height: 1.55">These are development charges the state sets. On your sheet they sit inside the base price, and the amount isn't shown.</p>
+              <div style="display: flex; gap: 12px; align-items: flex-start; padding: 18px 20px; border-radius: 8px; background: {{t.claimBg}}; color: {{t.ink}}">
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M5 5.5h14v10H10l-4 3.5v-3.5H5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+                <span style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 15px; font-weight: 600">From the developer · draft agreement for sale, 2 Oct 2026 · not verified</span><span style="font-size: 17px; line-height: 1.5">If the government raises EDC or IDC before possession, Northfield may bill each buyer a share, by super area.</span></span>
+              </div>
+              <p style="margin: 0; font-size: 17px; line-height: 1.5">Ask for the EDC and IDC amount inside your base price, and who pays any increase, in writing.</p>
+            </div>
+            <div class="rv rv2" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+              <h3 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em">Get these in writing</h3>
+              <p style="margin: 0; font-size: 17px; line-height: 1.5">In the agreement for sale or a signed addendum. Not a WhatsApp message, and not a side letter.</p>
+              <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+                <sc-for list="{{writing}}" as="wr" hint-placeholder-count="6">
+                  <li style="display: flex; gap: 10px; align-items: flex-start; font-size: 17px; line-height: 1.45"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>{{wr}}</span></li>
+                </sc-for>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="tds-h" style="background: {{t.bg}}; padding: 160px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 28px; text-align: center">
+          <h2 id="tds-h" class="rv" style="{{u.h2}}">Is TDS an extra cost?</h2>
+          <p class="rv rv1" style="margin: 0; max-width: 30ch; font-size: 30px; line-height: 1.3; letter-spacing: -0.01em">No. You keep back 1% of the price, ₹2.44 L, and deposit it with the Income Tax Department in the developer's name.</p>
+          <a href="#source" class="press" style="{{u.chipOnBand}}">Income-tax Act 2025 · s.393(1)</a>
+          <div class="rv rv2" style="width: 100%; display: flex; flex-direction: column; gap: 12px; padding-top: 24px; text-align: left">
+            <p style="margin: 0; font-size: 15px; color: {{t.ink2}}">Your price before GST: ₹2,44,20,000</p>
+            <div role="img" aria-label="99% of the price goes to the developer. 1%, ₹2,44,200, is withheld as TDS and paid to the Income Tax Department." style="position: relative; height: 64px; display: flex; gap: 4px">
+              <span style="flex: 99; border-radius: 4px 0 0 4px; background: {{t.ink}}"></span>
+              <span style="flex: 1; min-width: 12px; border-radius: 0 4px 4px 0; background: {{t.hatch}}"></span>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px">
+              <span style="display: flex; flex-direction: column"><span style="font-size: 15px; color: {{t.ink2}}">Paid to the developer</span><strong style="font-size: 22px">₹2,41,75,800</strong></span>
+              <span style="display: flex; flex-direction: column; text-align: right"><span style="font-size: 15px; color: {{t.ink2}}">TDS 1%, withheld from the developer</span><strong style="font-size: 22px">₹2,44,200</strong></span>
+            </div>
+            <p style="margin: 8px 0 0; display: flex; align-items: center; gap: 10px; font-size: 19px">
+              <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <span>Withheld, not added. Your all-in stays {{allInCr}}.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="move-in" aria-labelledby="mi-h" style="background: {{t.band}}; padding: 144px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px 96px; align-items: flex-start">
+          <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+            <h2 id="mi-h" class="rv" style="{{u.h2}}">What will moving in cost?</h2>
+            <p class="rv rv1" style="{{u.lead}}; max-width: 30ch">About ₹12–18 L more, paid around the offer of possession. It is not in your {{allInCr}} all-in.</p>
+            <p class="rv rv2" style="margin: 0; max-width: 44ch; font-size: 17px; line-height: 1.55">This is our estimate, not the developer's figure. Ask the developer for the maintenance agreement and the connection charges before you book.</p>
+          </div>
+          <div class="rv rv1" style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <span style="align-self: flex-start; display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 999px; background: {{t.bgSolid}}; font-size: 15px; font-weight: 600">Move-in number · Plinth estimate, Oct 2026</span>
+            <dl style="margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 24px; font-size: 17px; line-height: 1.45">
+              <sc-for list="{{moveIn}}" as="mv" hint-placeholder-count="4">
+                <dt style="padding: 16px 0 0; display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">{{mv.label}}</strong><span style="font-size: 15px; color: {{t.ink2}}">{{mv.note}}</span></dt>
+                <dd style="margin: 0; padding: 16px 0 0; text-align: right; font-weight: 600; white-space: nowrap">{{mv.amt}}</dd>
+              </sc-for>
+              <dt style="margin-top: 16px; padding: 16px 0 0; border-top: 1px solid {{t.lineStrong}}; font-weight: 700">Move-in number</dt>
+              <dd style="margin: 16px 0 0; padding: 16px 0 0; border-top: 1px solid {{t.lineStrong}}; text-align: right; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em; white-space: nowrap">₹12–18 L</dd>
+            </dl>
+            <p style="margin: 4px 0 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Estimate for this 3 BHK: 2,000 sq ft super. Fit-outs are your choice, so the range is wide.</p>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; background: {{t.slab}}; color: {{t.onSlab}}; overflow: hidden">
+    <div style="max-width: 1264px; width: 100%; margin: 0 auto; padding: 120px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+      <div class="rv" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
+        <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">This all-in stands on two things: your cost sheet dated 2 Oct 2026, as the developer printed it, and Haryana stamp duty and GST rules, Oct 2026. Calculated 18 Oct 2026. Information, not tax or legal advice.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <a href="#report" class="lk" style="color: {{t.onSlab}}">Report an error</a>
+          <a href="#money" class="lk" style="color: {{t.onSlab}}">How we make money</a>
+          <a href="#delete" class="lk" style="color: {{t.onSlab}}">Delete my cost sheet</a>
+          <a href="#privacy" class="lk" style="color: {{t.onSlab}}">Privacy</a>
+        </nav>
+        <span>Rules version Oct 2026 · next GST or stamp duty change will update this page</span>
+      </div>
+    </div>
+    <p style="margin: 56px 0 0; padding: 0 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(120px, 36vw, 520px); line-height: 0.74; letter-spacing: -0.06em; white-space: nowrap; text-align: center; color: {{t.onSlab}}; transform: translateY(0.06em)">Plinth</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"step":{"editor":"enum","options":["Result","Upload","Reading"],"default":"Result"},"$preview":{"width":1280,"height":8600}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var map = {Upload: 0, Reading: 1, Result: 2};
+    var p = props || {};
+    var st = map[p.step] != null ? map[p.step] : 2;
+    this.state = {
+      step: st, hasFile: st > 0, readN: st === 2 ? 10 : 0,
+      owner: 'male', rateShown: 7, grown: false, sel: 3,
+      waivePlc: false, waiveClub: false,
+      saved: false, share: false, copied: false, sent: false,
+      openBreak: false, openLoad: false, openRule: false, openNeg: false,
+      dp: 20, rateBp: 850, themeOv: null, themeFrom: null, following: false
+    };
+  }
+  componentDidMount() {
+    try { this._rm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { this._rm = false; }
+    if (this.state.step === 1) this.startReading();
+    if (this.state.step === 2) this.grow();
+  }
+  componentWillUnmount() {
+    clearInterval(this._read);
+    clearInterval(this._tw);
+    clearTimeout(this._g);
+  }
+  grow() {
+    var self = this;
+    clearTimeout(this._g);
+    if (this._rm) { this.setState({grown: true}); return; }
+    this.setState({grown: false});
+    this._g = setTimeout(function () { self.setState({grown: true}); }, 160);
+  }
+  startReading() {
+    var self = this;
+    clearInterval(this._read);
+    this.setState({step: 1, hasFile: true, readN: 0});
+    this._read = setInterval(function () {
+      var n = (self.state.readN || 0) + 1;
+      self.setState({readN: n});
+      if (n >= 10) clearInterval(self._read);
+    }, this._rm ? 120 : 520);
+  }
+  goStep(i) {
+    clearInterval(this._read);
+    if (i === 1) { this.startReading(); return; }
+    if (i === 2) { this.setState({step: 2, hasFile: true, readN: 10}); this.grow(); return; }
+    this.setState({step: 0});
+  }
+  setOwner(o) {
+    var self = this;
+    var rates = {male: 7, female: 5, joint: 6};
+    var from = this.state.rateShown, to = rates[o];
+    clearInterval(this._tw);
+    this.setState({owner: o});
+    if (this._rm || from === to) { this.setState({rateShown: to}); return; }
+    var k = 0, N = 16;
+    this._tw = setInterval(function () {
+      k++;
+      var e = 1 - Math.pow(1 - k / N, 3);
+      self.setState({rateShown: from + (to - from) * e});
+      if (k >= N) { clearInterval(self._tw); self.setState({rateShown: to}); }
+    }, 30);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var tw = this.props.theme === 'Night' ? 'Night' : 'Day';
+    var night = ((s.themeOv && s.themeFrom === tw) ? s.themeOv : tw) === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#0B1411', headerBg: 'rgba(11,20,17,0.78)',
+      panel: 'rgba(255,255,255,0.045)', overlay: 'rgba(11,20,17,0.62)', chipBg: 'rgba(11,20,17,0.55)', photo: '#1B2A24',
+      line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)', track: 'rgba(255,255,255,0.07)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6', claim: '#7E8C86', wire: 'rgba(238,243,240,0.30)',
+      emptyCell: 'rgba(255,255,255,0.06)', emptyBorder: '#7D828A',
+      band: '#101B17', claimBg: '#1D2621', paper: '#13201B', docInk: 'rgba(255,255,255,0.26)', docBar: 'rgba(255,255,255,0.13)', docDone: 'rgba(110,231,183,0.08)',
+      slab: '#13201B', onSlab: '#EEF3F0', onSlab2: '#B9C6C0', panelSolid: '#16221D',
+      wfCharges: '#6F8F82', hatchInk: '#B9C6C0', hatch: 'repeating-linear-gradient(45deg, #B9C6C0 0 2px, transparent 2px 7px)',
+      hatchSoft: 'repeating-linear-gradient(45deg, rgba(185,198,192,0.22) 0 1.5px, transparent 1.5px 9px)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', headerBg: 'rgba(251,250,247,0.85)',
+      panel: '#FFFFFF', overlay: 'rgba(255,255,255,0.80)', chipBg: 'rgba(255,255,255,0.85)', photo: '#E7E3DA',
+      line: '#E7E3DA', lineStrong: '#C9C4B9', track: '#F4F2ED',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', onAccentSoft: '#133D2E', claim: '#9A958B', wire: 'rgba(27,26,23,0.30)',
+      emptyCell: '#EEEBE4', emptyBorder: '#8C9199',
+      band: '#F4F2ED', claimBg: '#F1ECE2', paper: '#FFFFFF', docInk: '#C9C4B9', docBar: '#E7E3DA', docDone: 'rgba(29,90,68,0.07)',
+      slab: '#1B1A17', onSlab: '#FBFAF7', onSlab2: '#CFCAC0', panelSolid: '#FFFFFF',
+      wfCharges: '#8A847A', hatchInk: '#3F3C36', hatch: 'repeating-linear-gradient(45deg, #3F3C36 0 2px, transparent 2px 7px)',
+      hatchSoft: 'repeating-linear-gradient(45deg, rgba(63,60,54,0.16) 0 1.5px, transparent 1.5px 9px)'
+    };
+    var disp = "font-family:'Bricolage Grotesque', system-ui, sans-serif;font-weight:800;";
+    var U = {
+      h1: 'margin:0;' + disp + 'font-size:clamp(56px, 7.5vw, 104px);line-height:0.96;letter-spacing:-0.045em',
+      h2: 'margin:0;' + disp + 'font-size:clamp(40px, 5vw, 64px);line-height:1;letter-spacing:-0.035em',
+      lead: 'margin:0;font-size:22px;line-height:1.45;color:' + T.ink,
+      primary: 'display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 30px;border:0;border-radius:999px;background:' + T.accent + ';color:' + T.onAccent + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer',
+      secondary: 'display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 26px;border:0;border-radius:999px;background:' + T.track + ';color:' + T.ink + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer',
+      secondaryOnBand: 'display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 26px;border:0;border-radius:999px;background:' + T.panelSolid + ';color:' + T.ink + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer',
+      secondarySm: 'display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;border:0;border-radius:999px;background:' + T.panelSolid + ';color:' + T.ink + ';font:inherit;font-size:17px;font-weight:600;cursor:pointer',
+      tertiary: 'display:inline-flex;align-items:center;gap:8px;align-self:flex-start;min-height:44px;padding:0;border:0;background:transparent;color:' + T.ink + ';font:inherit;font-size:19px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:5px',
+      chip: 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 14px;border-radius:999px;background:' + T.track + ';font-size:14px;color:' + T.ink + ';text-decoration:none;white-space:nowrap',
+      chipOnBand: 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 14px;border-radius:999px;background:' + T.panelSolid + ';font-size:14px;color:' + T.ink + ';text-decoration:none;white-space:nowrap'
+    };
+
+    var BASE = 23500000, CH = 920000, CONS = BASE + CH, GST = Math.round(CONS * 0.05), REG = 50000, CARPET = 1450;
+    var RATES = {male: 7, female: 5, joint: 6};
+    function stampAt(rate, cons) { return Math.round(cons * rate / 100) + REG; }
+    function cr(v) { return '₹' + (v / 1e7).toFixed(2) + ' Cr'; }
+    function inr(v) { return '₹' + Math.round(v).toLocaleString('en-IN'); }
+    function lk(v) { if (v >= 1e7) return cr(v); if (v < 100000) return inr(v); var x = (v / 1e5).toFixed(1); if (x.slice(-2) === '.0') x = x.slice(0, -2); return '₹' + x + ' L'; }
+
+    var rate = typeof s.rateShown === 'number' ? s.rateShown : 7;
+    var rateFinal = RATES[s.owner] || 7;
+    var stamp = stampAt(rate, CONS);
+    var allIn = CONS + GST + stamp;
+    var stampF = stampAt(rateFinal, CONS);
+    var allInF = CONS + GST + stampF;
+    var perSqft = inr(Math.round(allIn / CARPET / 10) * 10);
+    var pctMore = Math.round((allIn / BASE - 1) * 100);
+
+    var stepNames = ['Upload', 'Reading', 'Your all-in'];
+    var steps = stepNames.map(function (n, i) {
+      var done = i < s.step, cur = i === s.step;
+      return {
+        n: String(i + 1), label: n, done: done, notDone: !done, hasLine: i < 2,
+        current: cur ? 'step' : 'false',
+        go: function () { self.goStep(i); },
+        btnStyle: 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:transparent;color:' + (cur || done ? T.ink : T.ink2) + ';font:inherit;font-size:17px;font-weight:' + (cur ? 700 : 500) + ';cursor:pointer;' + (cur ? 'text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:8px' : 'text-decoration:none')
+      };
+    });
+
+    var LINES = [
+      {label: 'Base price', note: '2,000 sq ft super × ₹11,750 · p. 1', amt: '₹2,35,00,000', w: 56},
+      {label: 'PLC, park facing', note: '₹145 per sq ft super · p. 1', amt: '₹2,90,000', w: 44},
+      {label: 'Car parking, 1 covered', note: 'p. 1', amt: '₹3,50,000', w: 50},
+      {label: 'Club membership', note: 'p. 1', amt: '₹1,50,000', w: 40},
+      {label: 'EDC and IDC', note: 'Government charges, included in the base price · p. 1', amt: 'Included', w: 34},
+      {label: 'IFMS', note: 'Refundable maintenance deposit · p. 1', amt: '₹1,30,000', w: 28},
+      {label: 'Power backup, 5 kVA', note: 'Included in the base price · p. 1', amt: 'Included', w: 46},
+      {label: 'GST, 5%', note: 'On ₹2,44,20,000 · p. 2', amt: '₹12,21,000', w: 24},
+      {label: 'Total on the sheet', note: 'Adds up: matches our sum of the lines above · p. 2', amt: '₹2,56,41,000', w: 40, total: true},
+      {label: 'Stamp duty and registration', note: 'Not on the sheet. We add it from Haryana rules, Oct 2026.', amt: 'We add it', w: 0, missing: true}
+    ];
+    var readN = Math.max(0, Math.min(10, s.readN || 0));
+    var readDone = readN >= 10;
+    var docRows = LINES.map(function (l, i) {
+      var done = i < readN, cur = i === readN && !readDone;
+      var st = 'display:flex;justify-content:space-between;align-items:center;gap:12px;height:34px;padding:0 10px;border-radius:4px;box-sizing:border-box;font-size:15px;line-height:1.3;transition:background-color .3s ease;color:' + T.ink + ';';
+      if (l.total) st += 'margin-top:10px;font-weight:700;';
+      if (cur) st += 'background:' + T.accentSoft + ';';
+      else if (done) st += 'background:' + T.docDone + ';';
+      if (l.missing) st += 'font-style:italic;' + ((done || cur) ? '' : 'color:transparent;');
+      return {style: st, label: l.label, amt: l.missing ? 'Not on the sheet' : l.amt};
+    });
+    var scanTop = 28 + 64 + readN * 38 + (readN >= 9 ? 10 : 0) - 2;
+    var found = LINES.slice(0, readN).map(function (l) {
+      return {label: l.label, note: l.note, amt: l.amt, amtStyle: 'white-space:nowrap;font-weight:600;' + (l.missing ? 'font-style:italic' : '')};
+    });
+    var stageTxt = readDone ? 'Done. All 10 lines read and checked' : (readN === 0 ? 'Finding the price table' : (readN < 8 ? 'Reading line items' : (readN === 8 ? 'Checking the total adds up' : 'Applying Haryana rules, Oct 2026')));
+
+    var MIN = 20000000, RANGE = 8000000;
+    function pc(v) { return (v - MIN) / RANGE * 100; }
+    var L1 = BASE, L2 = BASE + CH, L3 = BASE + CH + GST, L4 = allIn;
+    var grown = !!s.grown;
+    var defs = [
+      {label: 'Quoted base', name: 'Quoted base price', from: MIN, to: L1, val: cr(BASE), fill: 'background:' + T.ink, brk: true, exact: inr(BASE), note: '2,000 sq ft super × ₹11,750 · ' + Math.round(BASE / allIn * 100) + '% of your all-in · from your cost sheet, p. 1'},
+      {label: 'Charges', name: 'Charges on the sheet', from: L1, to: L2, val: '+' + lk(CH), fill: 'background:' + T.wfCharges, exact: inr(CH), note: 'PLC, parking, club and IFMS · ' + Math.round(CH / allIn * 100) + '% of your all-in · from your cost sheet, p. 1'},
+      {label: 'GST 5%', name: 'GST at 5%', from: L2, to: L3, val: '+' + lk(GST), fill: 'background:' + T.ink2, exact: inr(GST), note: 'On ₹2.44 Cr · ' + Math.round(GST / allIn * 100) + '% of your all-in · from your cost sheet, p. 2'},
+      {label: 'Stamp duty, registration', name: 'Stamp duty and registration', from: L3, to: L4, val: '+' + lk(stamp), fill: 'background:' + T.hatch, exact: inr(stamp), note: rateFinal + '% stamp duty plus ₹50,000 registration · ' + Math.round(stamp / allIn * 100) + '% of your all-in · our calculation, Haryana rules Oct 2026'},
+      {label: 'All-in', name: 'All-in', from: MIN, to: L4, val: cr(allIn), fill: 'background:' + T.accent, brk: true, exact: inr(allIn), note: perSqft + ' per sq ft carpet · ' + pctMore + '% more than quoted'}
+    ];
+    var sel = Math.max(0, Math.min(4, s.sel == null ? 3 : s.sel));
+    var bars = defs.map(function (d, i) {
+      var on = i === sel;
+      var h = pc(d.to) - pc(d.from);
+      var bar = 'position:absolute;left:50%;width:64px;margin-left:-32px;box-sizing:border-box;border-radius:3px;bottom:' + pc(d.from).toFixed(2) + '%;height:' + h.toFixed(2) + '%;' + d.fill + ';transform-origin:50% 100%;transform:scaleY(' + (grown ? 1 : 0) + ');transition:transform .7s cubic-bezier(.2,.8,.2,1) ' + (i * 110) + 'ms;';
+      if (on) bar += 'outline:2px solid ' + T.ink + ';outline-offset:4px;';
+      return {
+        label: d.label, val: d.val,
+        on: on ? 'true' : 'false',
+        aria: d.name + ', ' + d.exact,
+        pick: function () { self.setState({sel: i}); },
+        barStyle: bar,
+        breakStyle: d.brk && grown ? 'position:absolute;left:50%;width:80px;margin-left:-40px;bottom:22px;height:8px;background:' + T.band + ';transform:skewY(-10deg)' : 'display:none',
+        valStyle: 'position:absolute;left:-10px;right:-10px;text-align:center;bottom:calc(' + pc(d.to).toFixed(2) + '% + 12px);font-size:19px;font-weight:' + (i === 4 ? 700 : 600) + ';white-space:nowrap;color:' + T.ink + ';opacity:' + (grown ? 1 : 0) + ';transition:opacity .4s ease ' + (300 + i * 110) + 'ms',
+        labStyle: 'text-align:center;font-size:15px;line-height:1.3;color:' + T.ink + ';font-weight:' + (on ? 700 : 400)
+      };
+    });
+    var grid = [0, 1, 2, 3, 4].map(function (k) {
+      var p = k * 25;
+      return {
+        label: '₹' + (2 + k * 0.2).toFixed(1) + ' Cr',
+        lineStyle: 'position:absolute;left:0;right:0;bottom:' + p + '%;height:1px;background:' + T.line,
+        labelStyle: 'position:absolute;left:-66px;width:56px;text-align:right;bottom:calc(' + p + '% - 10px);font-size:13px;line-height:20px;color:' + T.muted
+      };
+    });
+    var lv = [L1, L2, L3, L4];
+    var connectors = lv.map(function (v, i) {
+      return {style: 'position:absolute;left:calc(' + (i * 20 + 10) + '% + 32px);width:calc(20% - 64px);bottom:' + pc(v).toFixed(2) + '%;height:2px;margin-bottom:-1px;background:' + T.lineStrong + ';opacity:' + (grown ? 1 : 0) + ';transition:opacity .4s ease ' + (500 + i * 110) + 'ms'};
+    });
+    var sd = defs[sel];
+
+    var OW = [
+      {k: 'male', name: 'A man', short: 'a man'},
+      {k: 'female', name: 'A woman', short: 'a woman'},
+      {k: 'joint', name: 'A man and a woman, jointly', short: 'joint owners'}
+    ];
+    var stMale = stampAt(7, CONS), stFem = stampAt(5, CONS), stJoint = stampAt(6, CONS);
+    var owners = OW.map(function (o) {
+      var on = s.owner === o.k;
+      var amt = stampAt(RATES[o.k], CONS);
+      return {
+        name: o.name, rate: RATES[o.k] + '%', amt: lk(amt), on: on ? 'true' : 'false',
+        pick: function () { self.setOwner(o.k); },
+        style: 'display:flex;flex-direction:column;gap:10px;width:100%;text-align:left;padding:18px 22px;border:0;border-radius:8px;box-sizing:border-box;font:inherit;font-size:19px;cursor:pointer;color:' + T.ink + ';background:' + (on ? T.panelSolid : 'transparent') + ';transition:background-color .2s ease',
+        ringStyle: 'width:24px;height:24px;border-radius:50%;box-sizing:border-box;border:2px solid ' + (on ? T.ink : T.lineStrong) + ';display:inline-flex;align-items:center;justify-content:center',
+        dotStyle: 'width:12px;height:12px;border-radius:50%;background:' + (on ? T.ink : 'transparent'),
+        barStyle: 'display:block;height:100%;border-radius:4px;width:' + (amt / stMale * 100).toFixed(1) + '%;background:' + (on ? T.ink : T.lineStrong) + ';transition:background-color .3s ease'
+      };
+    });
+    var ownerShort = (OW.filter(function (o) { return o.k === s.owner; })[0] || OW[0]).short;
+    var ownerDelta = s.owner === 'female' ? lk(stMale - stFem) + ' less stamp duty than if a man owned it.' : (s.owner === 'joint' ? lk(stMale - stJoint) + ' less stamp duty than if a man owned it alone.' : 'If a woman owned it, stamp duty would be ' + lk(stMale - stFem) + ' less.');
+
+    var negDefs = [
+      {k: 'waivePlc', name: 'PLC, park facing', amt: 290000, short: 'PLC', why: 'A premium for a park-facing flat, ₹145 per sq ft super. The developer sets it.'},
+      {k: 'waiveClub', name: 'Club membership', amt: 150000, short: 'club membership', why: 'A one-time fee for the clubhouse. It is not a government charge.'}
+    ];
+    var negs = negDefs.map(function (n) {
+      var on = !!s[n.k];
+      return {
+        name: n.name, why: n.why, amt: lk(n.amt), on: on ? 'true' : 'false',
+        flip: function () { var o = {}; o[n.k] = !self.state[n.k]; self.setState(o); },
+        trackStyle: 'position:relative;display:inline-block;flex:none;width:48px;height:28px;border-radius:999px;box-sizing:border-box;background:' + (on ? T.ink : T.lineStrong) + ';transition:background-color .2s ease',
+        knobStyle: 'position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:' + (on ? T.bg : '#FFFFFF') + ';transform:translateX(' + (on ? 20 : 0) + 'px);transition:transform .24s cubic-bezier(.22,1,.36,1)'
+      };
+    });
+    var W = (s.waivePlc ? 290000 : 0) + (s.waiveClub ? 150000 : 0);
+    var cons2 = CONS - W;
+    var all2 = cons2 + Math.round(cons2 * 0.05) + stampAt(rateFinal, cons2);
+    var waiveWhat = s.waivePlc && s.waiveClub ? 'PLC and club membership' : (s.waivePlc ? 'PLC' : 'club membership');
+
+    var ledger = [
+      {group: 'Paid to the developer · from your cost sheet', rows: [
+        {label: 'Base price', tag: '', note: '2,000 sq ft super × ₹11,750', src: 'Cost sheet p. 1', amt: '₹2,35,00,000'},
+        {label: 'PLC, park facing', tag: 'Often negotiable', note: '₹145 per sq ft super', src: 'Cost sheet p. 1', amt: '₹2,90,000'},
+        {label: 'Car parking, 1 covered', tag: '', note: 'Mandatory on this sheet', src: 'Cost sheet p. 1', amt: '₹3,50,000'},
+        {label: 'Club membership', tag: 'Often negotiable', note: 'One-time fee', src: 'Cost sheet p. 1', amt: '₹1,50,000'},
+        {label: 'EDC and IDC', tag: '', note: 'Government development charges, included in the base price on this sheet', src: 'Cost sheet p. 1', amt: 'Included'},
+        {label: 'IFMS', tag: '', note: 'Refundable maintenance deposit', src: 'Cost sheet p. 1', amt: '₹1,30,000'},
+        {label: 'Power backup, 5 kVA', tag: '', note: 'Included in the base price on this sheet', src: 'Cost sheet p. 1', amt: 'Included'}
+      ]},
+      {group: 'Tax · from your cost sheet', rows: [
+        {label: 'GST, 5%', tag: '', note: 'Under construction. Nil once the OC is granted.', src: 'Cost sheet p. 2', amt: inr(GST)}
+      ]},
+      {group: 'Government · our calculation', rows: [
+        {label: 'Stamp duty, ' + rateFinal + '%', tag: '', note: 'Owner: ' + ownerShort + ' · on ₹2,44,20,000', src: 'Haryana rules Oct 2026', amt: inr(stampF - REG)},
+        {label: 'Registration fee', tag: '', note: 'Fixed fee', src: 'Haryana rules Oct 2026', amt: '₹50,000'}
+      ]},
+      {group: 'Not in this total', rows: [
+        {label: 'Move-in costs: maintenance advance, connections, fit-outs', tag: 'Estimate', note: 'Not on your sheet. Paid around the offer of possession. See the move-in number below.', src: 'Plinth estimate, Oct 2026', amt: '₹12–18 L'},
+        {label: 'TDS, 1%', tag: '', note: 'Withheld from the developer and paid to the Income Tax Department. Not extra.', src: 's.393(1)', amt: '₹2,44,200'}
+      ]}
+    ];
+    ledger.forEach(function (g) {
+      g.rows.forEach(function (r) {
+        r.tagStyle = r.tag ? 'display:inline-flex;align-items:center;height:24px;margin-left:8px;padding:0 10px;border-radius:999px;background:' + T.track + ';color:' + T.ink + ';font-size:13px;font-weight:600;vertical-align:2px' : 'display:none';
+      });
+    });
+
+    var ownerSegs = OW.map(function (o) {
+      var on = s.owner === o.k;
+      return {
+        name: o.k === 'joint' ? 'Jointly' : o.name, on: on ? 'true' : 'false',
+        pick: function () { self.setOwner(o.k); },
+        segStyle: 'min-height:44px;padding:0 20px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;transition:background-color .2s ease,color .2s ease;background:' + (on ? T.ink : 'transparent') + ';color:' + (on ? T.bg : T.ink)
+      };
+    });
+
+    // Live loan arithmetic: 20-year tenure, loan on the price with GST
+    var dp = Math.max(10, Math.min(40, Number(s.dp) || 20));
+    var rateBp = Math.max(750, Math.min(975, Number(s.rateBp) || 850));
+    var priceGst = CONS + GST;
+    var loan = Math.round(priceGst * (1 - dp / 100));
+    var mr = rateBp / 10000 / 12, nM = 240, gr = Math.pow(1 + mr, nM);
+    var emi = Math.round(loan * mr * gr / (gr - 1));
+    var interest = emi * nM - loan;
+    var cash = priceGst - loan + stamp;
+
+    function chev(open) { return 'transition:transform .2s ease;transform:rotate(' + (open ? 180 : 0) + 'deg)'; }
+
+    return {
+      t: T, u: U,
+      rootMin: s.step === 2 ? 8600 : 1900,
+      night: night, day: !night,
+      themeLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themeOv: night ? 'Day' : 'Night', themeFrom: tw}); },
+      toggleFollow: function () { self.setState({following: !self.state.following}); },
+      followLabel: s.following ? 'Following' : 'Follow project',
+      followingStr: s.following ? 'true' : 'false',
+      ownerSegs: ownerSegs,
+      dp: dp, dpL: lk(priceGst - loan), dpText: dp + '%, ' + lk(priceGst - loan),
+      onDp: function (e) { self.setState({dp: Number(e.target.value)}); },
+      rateBp: rateBp, ratePct: (rateBp / 100).toFixed(2), rateText: (rateBp / 100).toFixed(2) + '% a year',
+      onRate: function (e) { self.setState({rateBp: Number(e.target.value)}); },
+      emiL: inr(emi), cashL: lk(cash), lifeCr: cr(allIn + interest), interestCr: cr(interest), loanBaseCr: cr(priceGst),
+      sharedStyle: 'flex:550;min-width:0;box-sizing:border-box;padding:18px 22px;border-radius:0 4px 4px 0;display:flex;flex-direction:column;justify-content:flex-end;color:' + T.ink + ';background:' + T.hatchSoft + ',' + T.track,
+      steps: steps,
+      isUpload: s.step === 0, isReading: s.step === 1, isResult: s.step === 2,
+      noFile: !s.hasFile, hasFile: !!s.hasFile,
+      chooseFile: function () { self.setState({hasFile: true}); },
+      removeFile: function () { self.setState({hasFile: false}); },
+      startReading: function () { self.startReading(); },
+      seeResult: function () { self.goStep(2); },
+
+      docRows: docRows, found: found,
+      scanStyle: 'position:absolute;left:14px;right:14px;top:0;height:2px;border-radius:1px;background:' + T.accent + ';transform:translateY(' + scanTop + 'px);opacity:' + (readDone ? 0 : 1) + ';transition:transform .45s ease,opacity .3s ease',
+      readPct: readN * 10,
+      readBar: 'display:block;height:100%;width:100%;border-radius:4px;background:' + T.accent + ';transform-origin:0 50%;transform:scaleX(' + (readN / 10) + ');transition:transform .45s ease',
+      readStage: stageTxt, readCount: readN + ' of 10 lines',
+      readBusy: !readDone, readDone: readDone,
+      readTitle: readDone ? 'Your cost sheet is read' : 'Reading your cost sheet',
+      readSub: readDone ? 'Every line matched between the two AI readers, and the total on the sheet adds up.' : 'Two AI readers read each line and check each other. Then we check the total on the sheet adds up.',
+
+      writing: ['The final price, and the all-in it gives', 'Any PLC or club waiver', 'The EDC and IDC amount inside the base, and who pays an increase', 'The payment stages for your tower', 'Your parking slot number', 'The RERA completion date: Dec 2027'],
+      moveIn: [
+        {label: 'Maintenance advance', note: '24 months × ₹5 per sq ft super × 2,000 sq ft, plus 18% GST', amt: '₹2.8 L'},
+        {label: 'IFMS deposit', note: 'Already in your all-in (₹1.3 L)', amt: '₹0 more'},
+        {label: 'Connections and deposits', note: 'Electricity meter and load, water and sewer, piped gas', amt: '₹0.9–1.4 L'},
+        {label: 'Fit-outs', note: 'Kitchen, wardrobes, lights, fans, ACs, curtains · your choice', amt: '₹8–14 L'}
+      ],
+      allInCr: cr(allIn), allInExact: inr(allIn), baseCr: cr(BASE), perSqft: perSqft, pctMore: pctMore,
+      extraL: lk(allIn - BASE), ownerShort: ownerShort,
+      toggleShare: function () { self.setState({share: !self.state.share, copied: false, sent: false}); },
+      shareExp: s.share ? 'true' : 'false', share: !!s.share,
+      sendWa: function () { self.setState({sent: true}); },
+      waLabel: s.sent ? 'Opening WhatsApp' : 'Send on WhatsApp',
+      copyLink: function () { self.setState({copied: true}); },
+      copyLabel: s.copied ? 'Link copied' : 'Copy link',
+      toggleSave: function () { self.setState({saved: !self.state.saved}); },
+      saved: !!s.saved, notSaved: !s.saved, savedPressed: s.saved ? 'true' : 'false',
+      saveLabel: s.saved ? 'Saved to project' : 'Save to project',
+
+      grid: grid, connectors: connectors, bars: bars,
+      selName: sd.name, selExact: sd.exact, selNote: sd.note,
+      openBreak: !!s.openBreak, breakExp: s.openBreak ? 'true' : 'false', chevBreak: chev(s.openBreak),
+      toggleBreak: function () { self.setState({openBreak: !self.state.openBreak}); },
+      ledger: ledger,
+
+      carpetStyle: 'flex:1450;min-width:0;box-sizing:border-box;padding:18px 22px;border-radius:4px 0 0 4px;display:flex;flex-direction:column;justify-content:flex-end;background:' + T.ink + ';color:' + T.bg,
+      openLoad: !!s.openLoad, loadExp: s.openLoad ? 'true' : 'false', chevLoad: chev(s.openLoad),
+      toggleLoad: function () { self.setState({openLoad: !self.state.openLoad}); },
+
+      owners: owners, stampL: lk(stamp), ownerDelta: ownerDelta,
+      openRule: !!s.openRule, ruleExp: s.openRule ? 'true' : 'false', chevRule: chev(s.openRule),
+      toggleRule: function () { self.setState({openRule: !self.state.openRule}); },
+
+      negs: negs, noWaive: W === 0, anyWaive: W > 0,
+      waiveWhat: waiveWhat, waiveCr: cr(all2), waiveSave: lk(allInF - all2),
+      openNeg: !!s.openNeg, negExp: s.openNeg ? 'true' : 'false', chevNeg: chev(s.openNeg),
+      toggleNeg: function () { self.setState({openNeg: !self.state.openNeg}); }
+    };
+  }
+}
+</script>
+</body>
+</html>

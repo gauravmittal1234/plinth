@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pay-as-built check: Aurelia Heights, Phase 2</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+button,a{transition:transform 140ms cubic-bezier(.22,1,.36,1),filter 180ms ease,background-color 180ms ease,text-decoration-thickness 180ms ease}
+button:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){button:hover{filter:brightness(.93)}.pl-night button:hover{filter:brightness(1.15)}}
+.pl-line{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+.pl-l{display:block}
+@keyframes plRise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes plLine{from{transform:translateY(106%)}to{transform:none}}
+@keyframes plDrift{from{transform:scale(1)}to{transform:scale(1.04)}}
+@keyframes plSweep{from{transform:scaleX(0)}to{transform:none}}
+@keyframes plScan{from{transform:translateY(0)}to{transform:translateY(620px)}}
+@media (prefers-reduced-motion:no-preference){
+html{scroll-behavior:smooth}
+.pl-l{animation:plLine 950ms cubic-bezier(.22,1,.36,1) 120ms both}
+.pl-in{animation:plRise 800ms cubic-bezier(.22,1,.36,1) 200ms both}
+.pl-drift{animation:plDrift 26s cubic-bezier(.33,1,.68,1) infinite alternate}
+.pl-d1{animation-delay:200ms}.pl-d2{animation-delay:290ms}.pl-d3{animation-delay:380ms}
+.pl-sweep{transform-origin:left center;animation:plSweep 900ms cubic-bezier(.22,1,.36,1) 700ms both}
+.pl-scan{animation:plScan 2.4s cubic-bezier(.45,0,.55,1) infinite alternate}
+@supports (animation-timeline:view()){
+.pl-rv{animation:plRise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+.pl-rv.pl-d1{animation-delay:0s;animation-range:entry 8% entry 63%}.pl-rv.pl-d2{animation-delay:0s;animation-range:entry 16% entry 71%}
+}
+}
+</style>
+</helmet>
+<div id="top" class="{{rootClass}}" style="position: relative; min-height: {{rootMin}}px; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.6; font-variant-numeric: tabular-nums lining-nums">
+
+  <header style="position: sticky; top: 0; z-index: 30; background: {{t.bg}}">
+    <div style="max-width: 1264px; margin: 0 auto; min-height: 72px; padding: 12px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: {{t.ink}}">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" fill="{{t.accent}}"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="{{t.onAccent}}" stroke-width="2"></path></svg>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.02em">Plinth</span>
+      </a>
+      <nav aria-label="Primary" style="margin-left: auto; display: flex; align-items: center; gap: 4px 24px; flex-wrap: wrap; font-size: 17px; font-weight: 500">
+        <a href="#projects" style="color: {{t.ink}}; text-decoration: none">Projects</a>
+        <a href="#following" style="color: {{t.ink}}; text-decoration: none">Following</a>
+        <a href="#before-you-pay" style="color: {{t.ink}}; text-decoration: none">Before you pay</a>
+        <a href="#pay-as-built" aria-current="page" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Pay-as-built</a>
+        <a href="#ask" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer; display: inline-flex; align-items: center; justify-content: center">
+          <sc-if value="{{night}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.5" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M10 1.8v2.2M10 16v2.2M1.8 10H4M16 10h2.2M4.2 4.2l1.6 1.6M14.2 14.2l1.6 1.6M4.2 15.8l1.6-1.6M14.2 5.8l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg></sc-if>
+          <sc-if value="{{day}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.6A6.5 6.5 0 0 1 7.4 4a6.5 6.5 0 1 0 8.6 8.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg></sc-if>
+        </button>
+        <button type="button" onClick="{{toggleFollow}}" aria-pressed="{{followStr}}" style="height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{followLabel}}</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" style="flex: none; display: flex; flex-direction: column">
+    <nav aria-label="Pay-as-built steps" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 28px 32px 0; box-sizing: border-box">
+      <ol style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 28px">
+        <sc-for list="{{steps}}" as="st" hint-placeholder-count="3">
+          <li><button type="button" onClick="{{st.go}}" aria-current="{{st.current}}" style="{{st.style}}"><sc-if value="{{st.done}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{st.label}}</button></li>
+        </sc-for>
+      </ol>
+    </nav>
+
+    <section id="letter" aria-labelledby="hero-h" style="background: {{t.bg}}; padding: 40px 0 136px">
+      <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: stretch; gap: 56px 72px">
+        <div style="flex: 1 1 540px; max-width: 600px; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 24px">
+          <h1 id="hero-h" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(56px, 7.5vw, 112px); line-height: 0.92; letter-spacing: -0.045em">
+            <span class="pl-line"><span class="pl-l">Is it built</span></span>
+            <span class="pl-line"><span class="pl-l pl-d1">yet?</span></span>
+          </h1>
+          <p class="pl-in pl-d1" style="margin: 0; font-size: 16px; line-height: 1.5; color: {{t.ink2}}">Pay-as-built check · Aurelia Heights, Phase 2 · Northfield Estates · RERA GGM/673/405/2022/117 · records as of 14 Oct 2026</p>
+
+          <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+            <p class="pl-in pl-d2" data-review="legal" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.12; letter-spacing: -0.025em; max-width: 600px">{{heroLine}}</p>
+            <p class="pl-in pl-d3" style="margin: 0; font-size: 21px; line-height: 1.5; max-width: 580px">{{heroSub}}</p>
+            <div class="pl-in pl-d3" style="display: flex; flex-wrap: wrap; gap: 12px">
+              <a href="#act" style="display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 24px; box-sizing: border-box; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; text-decoration: none; font-size: 18px; font-weight: 600">What can I do?<svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+              <button type="button" onClick="{{toUpload}}" style="height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer">Check another letter</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{isUpload}}" hint-placeholder-val="{{false}}">
+            <p class="pl-in pl-d2" style="margin: 0; font-size: 22px; line-height: 1.5; max-width: 580px">Add a demand letter. We compare the stage it asks for with the latest filing on HARERA, and check the amount and the payee against your plan.</p>
+            <div class="pl-in pl-d3" style="display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 32px; border-radius: 8px; background: {{t.track}}">
+              <svg width="36" height="36" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path><path d="M14 3.5V8h4M10 13h5M10 16h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+              <strong style="font-size: 21px; font-weight: 600">Drop a PDF or a photo of the letter here</strong>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                <button type="button" onClick="{{startReading}}" style="height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer">Choose a file</button>
+                <button type="button" onClick="{{startReading}}" style="height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.chipFill}}; color: {{t.ink}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer">Take a photo</button>
+              </div>
+              <span style="font-size: 17px">Or forward it to Plinth on WhatsApp. No letter handy? <button type="button" onClick="{{startReading}}" style="padding: 0; min-height: 44px; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Try the sample letter</button></span>
+            </div>
+            <p style="margin: 0; font-size: 16px; line-height: 1.55; color: {{t.ink2}}">We read the stage, the amount, the due date and the payee. We keep only the last 4 digits of any account. The file is deleted after 30 days unless you save it.</p>
+          </sc-if>
+
+          <sc-if value="{{isReading}}" hint-placeholder-val="{{false}}">
+            <p aria-live="polite" class="pl-in pl-d2" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.12; letter-spacing: -0.025em">{{readHead}}</p>
+            <ul aria-label="What we found on the letter" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{found}}" as="fd" hint-placeholder-count="5">
+                <li style="{{fd.style}}"><span style="{{fd.dot}}"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="{{fd.icon}}" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span style="flex: none; width: 96px; color: {{t.ink2}}">{{fd.k}}</span><strong style="font-weight: 600">{{fd.v}}</strong></li>
+              </sc-for>
+            </ul>
+            <sc-if value="{{askConfirm}}" hint-placeholder-val="{{false}}">
+              <div class="pl-in" style="display: flex; flex-direction: column; gap: 14px; padding: 24px 28px; border-radius: 8px; background: {{t.track}}">
+                <strong style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.15; letter-spacing: -0.02em">Is this your home: A-1104 at Aurelia Heights, Phase 2?</strong>
+                <span style="font-size: 17px; line-height: 1.5">We matched the RERA number and the unit on the letter. Nothing is compared before you confirm.</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                  <button type="button" onClick="{{confirmHome}}" style="height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer">Yes, compare it</button>
+                  <button type="button" onClick="{{toUpload}}" style="height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: {{t.chipFill}}; color: {{t.ink}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer">No, pick the project</button>
+                </div>
+              </div>
+            </sc-if>
+          </sc-if>
+        </div>
+
+        <figure class="pl-in pl-d2" style="flex: 1 1 480px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 10px">
+          <div role="group" aria-label="{{letterLabel}}" style="position: relative; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; background: {{t.photo}}">
+            <img data-slot="demandLetter" src="/_blob/57870dcfd92321e78ef9ea1863f06a9e" alt="Illustrative image: a printed demand letter on a desk" style="position: absolute; inset: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block">
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 16.96%; top: 11.08%; width: 45.54%; height: 3.08%; padding: 0 4px; background: rgba(231,235,239,0.97);"><strong style="font-size: 15px; line-height: 1">Northfield Estates Pvt Ltd</strong></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 16.96%; top: 14.50%; width: 41.07%; height: 2.17%; padding: 0 4px; background: rgba(231,235,239,0.97);"><span style="font-size: 13px; line-height: 1">Sector 37D, Gurugram</span></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 64.17%; top: 15.50%; width: 18.64%; height: 1.83%; padding: 0 4px; background: rgba(231,235,239,0.97); justify-content: flex-end;"><span style="font-size: 13px; line-height: 1">10 Oct 2026</span></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 16.74%; top: 22.00%; width: 45.76%; height: 6.42%; padding: 0 4px; background: rgba(231,235,239,0.97);"><span style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; font-size: 13px; line-height: 1.1; padding: 1px 0; box-sizing: border-box"><span>Kavya Nair</span><span>Unit A-1104, Tower A</span><span>Aurelia Heights, Phase 2</span></span></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 16.96%; top: 31.50%; width: 61.16%; height: 2.83%; padding: 0 4px; background: rgba(231,235,239,0.97); filter: {{blurStage}};"><strong style="font-size: 15px; line-height: 1">Demand: on casting of Tower A slab 12</strong></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 17.52%; top: 47.75%; width: 50.11%; height: 2.92%; padding: 0 4px; background: rgba(223,227,231,0.97); filter: {{blurStage}};"><span style="font-size: 13px; line-height: 1">Stage: casting of Tower A, slab 12</span></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 68.42%; top: 47.75%; width: 13.62%; height: 2.92%; padding: 0 4px; background: rgba(223,227,231,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">7.5%</strong></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 17.52%; top: 51.00%; width: 50.11%; height: 2.92%; padding: 0 4px; background: rgba(231,235,239,0.97);"><span style="font-size: 13px; line-height: 1">Instalment (₹)</span></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 68.42%; top: 51.00%; width: 13.62%; height: 2.92%; padding: 0 4px; background: rgba(231,235,239,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">12,54,000</strong></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 17.52%; top: 54.25%; width: 50.11%; height: 2.83%; padding: 0 4px; background: rgba(223,227,231,0.97);"><span style="font-size: 13px; line-height: 1">GST at 5% (₹)</span></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 68.42%; top: 54.25%; width: 13.62%; height: 2.83%; padding: 0 4px; background: rgba(223,227,231,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">62,700</strong></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 17.52%; top: 57.50%; width: 50.11%; height: 2.92%; padding: 0 4px; background: rgba(231,235,239,0.97);"><span style="font-size: 13px; line-height: 1">Total due (₹)</span></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 68.42%; top: 57.50%; width: 13.62%; height: 2.92%; padding: 0 4px; background: rgba(231,235,239,0.97); justify-content: flex-end; padding: 0 3px;"><strong style="font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: -0.01em">13,16,700</strong></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 16.74%; top: 63.17%; width: 54.69%; height: 2.83%; padding: 0 4px; background: rgba(231,235,239,0.97);"><strong style="font-size: 14px; line-height: 1">Please pay by 30 Oct 2026</strong></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 16.74%; top: 68.67%; width: 65.85%; height: 6.58%; padding: 0 4px; background: rgba(231,235,239,0.97);"><span style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; font-size: 13px; line-height: 1.1; padding: 1px 0; box-sizing: border-box"><span>Pay to: RERA Collection Account, Aurelia Ph 2</span><span>Peepal Bank, Golf Course Road, Gurugram</span><span>A/c ending 4417 · IFSC PEPL0000418</span></span></div>
+            <div aria-hidden="true" style="position: absolute; box-sizing: border-box; color: #1B1A17; display: flex; align-items: center; overflow: hidden; white-space: nowrap; left: 60.27%; top: 79.92%; width: 22.88%; height: 2.00%; padding: 0 4px; background: rgba(231,235,239,0.97); justify-content: flex-end;"><span style="font-size: 13px; line-height: 1">Authorised signatory</span></div>
+            <sc-if value="{{showMark}}" hint-placeholder-val="{{true}}">
+              <span aria-hidden="true" class="pl-sweep" style="position: absolute; left: 16.52%; top: 31.33%; width: 62.05%; height: 3.17%; background: rgba(110,231,183,0.62); mix-blend-mode: multiply"></span>
+              <span aria-hidden="true" class="pl-sweep" style="position: absolute; left: 17.52%; top: 47.75%; width: 50.11%; height: 2.92%; background: rgba(110,231,183,0.62); mix-blend-mode: multiply; animation-delay: 900ms"></span>
+            </sc-if>
+            <sc-if value="{{isReading}}" hint-placeholder-val="{{false}}">
+              <span aria-hidden="true" class="pl-scan" style="position: absolute; left: 0; right: 0; top: 2%; height: 3px; background: {{t.accent}}"></span>
+            </sc-if>
+          </div>
+          <figcaption style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 15px; line-height: 1.4; color: {{t.ink2}}"><span style="font-size: 13px; color: {{t.ink}}; background: {{t.track}}; padding: 2px 10px; border-radius: 999px">Illustrative image</span><span>{{letterCaption}}</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <sc-if value="{{isResult}}" hint-placeholder-val="{{true}}">
+      <section id="tower" aria-labelledby="tower-h" data-signature="stage-vs-filing" style="background: {{t.track}}; padding: 136px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 56px 80px">
+          <div class="pl-rv" style="flex: 1 1 560px; min-width: 0; padding: 36px 32px 28px; box-sizing: border-box; border-radius: 8px; background: {{t.bgSolid}}; display: flex; flex-direction: column; gap: 24px">
+            <div role="img" aria-label="{{diagramLabel}}" style="display: flex; flex-direction: column; gap: 8px">
+              <div aria-hidden="true" style="display: flex; justify-content: space-between; font-size: 15px; color: {{t.ink2}}"><span>Payment stages</span><span>Tower {{tw}} · 20 floors</span><span style="width: 200px">On record</span></div>
+              <div aria-hidden="true" style="display: flex; gap: 0">
+                <div style="flex: none; width: 132px; height: 535px; position: relative">
+                  <sc-for list="{{labels}}" as="lb" hint-placeholder-count="7"><span style="{{lb.style}}">{{lb.text}}</span></sc-for>
+                </div>
+                <div style="flex: 1 1 auto; min-width: 140px; height: 535px; position: relative">
+                  <sc-for list="{{floors}}" as="fl" hint-placeholder-count="20"><span style="{{fl.box}}"><span style="{{fl.fill}}"></span></span></sc-for>
+                  <sc-if value="{{hasGap}}" hint-placeholder-val="{{true}}"><span style="{{gapStyle}}"><span style="{{gapPill}}">{{gapText}}</span></span></sc-if>
+                </div>
+                <div style="flex: none; width: 200px; height: 535px; position: relative">
+                  <sc-for list="{{markers}}" as="mk" hint-placeholder-count="2">
+                    <span style="{{mk.wrap}}"><span style="{{mk.lead}}"></span><span style="display: flex; flex-direction: column; gap: 2px"><span style="{{mk.pill}}">{{mk.title}}</span><span style="font-size: 13px; line-height: 1.3; color: {{t.ink2}}; padding-left: 4px">{{mk.sub}}</span></span></span>
+                  </sc-for>
+                </div>
+              </div>
+              <div aria-hidden="true" style="display: flex; align-items: center"><span style="flex: none; width: 132px; font-size: 13px; color: {{t.ink2}}">Ground</span><span style="flex: 1 1 auto; height: 6px; background: {{t.ink}}"></span><span style="flex: none; width: 200px"></span></div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 28px">
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <span id="tw-l" style="font-size: 15px; color: {{t.ink2}}">Tower</span>
+                <div role="group" aria-labelledby="tw-l" style="display: inline-flex; padding: 4px; border-radius: 999px; background: {{t.track}}">
+                  <sc-for list="{{towers}}" as="to" hint-placeholder-count="3"><button type="button" onClick="{{to.pick}}" aria-pressed="{{to.on}}" style="{{to.style}}">{{to.label}}</button></sc-for>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <span id="sg-l" style="font-size: 15px; color: {{t.ink2}}">Stage on the letter</span>
+                <div role="group" aria-labelledby="sg-l" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px; border-radius: 999px; background: {{t.track}}">
+                  <button type="button" onClick="{{stageDown}}" aria-label="Lower stage" style="width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; cursor: pointer; display: grid; place-items: center"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>
+                  <output aria-live="polite" style="min-width: 128px; text-align: center; font-size: 18px; font-weight: 600">{{stageLabel}}</output>
+                  <button type="button" onClick="{{stageUp}}" aria-label="Higher stage" style="width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; color: {{t.ink}}; cursor: pointer; display: grid; place-items: center"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M10 4v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>
+                </div>
+              </div>
+              <sc-if value="{{changed}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{resetLetter}}" style="min-height: 44px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 16px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Back to this letter</button></sc-if>
+            </div>
+          </div>
+
+          <div style="flex: 1 1 380px; max-width: 470px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+            <h2 id="tower-h" class="pl-rv" style="{{h2}}">How far up is Tower {{tw}}?</h2>
+            <p aria-live="polite" class="pl-rv pl-d1" data-review="legal" style="margin: 0; font-size: 22px; line-height: 1.5"><strong>{{answer}}</strong> {{answerSub}}</p>
+            <dl class="pl-rv pl-d2" style="margin: 0; display: flex; flex-direction: column; gap: 14px; font-size: 17px; line-height: 1.5">
+              <div><dt style="font-size: 15px; color: {{t.ink2}}">Latest filing</dt><dd style="margin: 0">QPR for Apr–Jun 2026, as of 30 Jun. Filed 15 Jul 2026, on time.</dd></div>
+              <div><dt style="font-size: 15px; color: {{t.ink2}}">This letter</dt><dd style="margin: 0">Dated 10 Oct 2026. Asks for Tower A, slab 12, by 30 Oct 2026.</dd></div>
+              <div><dt style="font-size: 15px; color: {{t.ink2}}">Next filing</dt><dd style="margin: 0">The Jul–Sep 2026 QPR was due 15 Oct. It isn't on HARERA yet.</dd></div>
+            </dl>
+            <div class="pl-rv pl-d2" style="padding: 18px 20px; border-radius: 8px; background: {{t.claimBg}}; display: flex; flex-direction: column; gap: 4px">
+              <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>Developer says · not yet verified · 15 Oct 2026</span>
+              <span style="font-size: 17px; line-height: 1.5">“The Jul–Sep QPR was filed on 12 Oct 2026.” When it appears on HARERA, we check this letter again and tell you.</span>
+            </div>
+            <span style="display: flex; flex-wrap: wrap; gap: 8px">
+              <sc-for list="{{srcChips}}" as="sc" hint-placeholder-count="3"><button type="button" onClick="{{openSrc}}" aria-label="{{sc.aria}}" style="{{chip}}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>{{sc.label}}</button></sc-for>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section id="ledger" aria-labelledby="ledger-h" style="background: {{t.bg}}; padding: 144px 0 136px">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
+          <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px 72px">
+            <div style="flex: 1 1 520px; max-width: 640px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+              <h2 id="ledger-h" class="pl-rv" style="{{h2}}">What does the letter ask for?</h2>
+              <p class="pl-rv pl-d1" style="margin: 0; font-size: 21px; line-height: 1.5">{{ledgerSummary}}</p>
+            </div>
+            <figure class="pl-rv pl-d1" style="flex: 0 1 460px; min-width: 0; height: 300px; margin: 0; position: relative; overflow: hidden; background: {{t.photo}}">
+              <img data-slot="receiptDesk" src="/_blob/8b723d7d89b2fb71afade8463f2f0e2e" alt="Illustrative image: a stamped payment receipt and a cheque counterfoil on a desk beside a phone" style="position: absolute; inset: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; object-position: 50% 45%; display: block">
+              <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 2px 10px; border-radius: 999px">Illustrative image</figcaption>
+            </figure>
+          </div>
+          <div role="table" aria-label="The letter compared with the records" style="display: flex; flex-direction: column; gap: 10px">
+            <div role="row" style="display: grid; grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1.3fr) 190px; gap: 16px; padding: 0 20px; font-size: 15px; color: {{t.ink2}}">
+              <span role="columnheader">Line</span>
+              <span role="columnheader" style="display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>Letter says</span>
+              <span role="columnheader" style="display: inline-flex; align-items: center; gap: 6px"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1h5l3 3v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4 7h4M4 9.5h4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>Records show</span>
+              <span role="columnheader">Check</span>
+            </div>
+            <sc-for list="{{ledger}}" as="lg" hint-placeholder-count="4">
+              <div role="row" class="pl-rv" style="display: grid; grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1.3fr) 190px; gap: 16px; align-items: start; padding: 18px 20px; border-radius: 8px; background: {{t.track}}">
+                <span role="rowheader" style="font-weight: 600">{{lg.line}}</span>
+                <span role="cell" style="padding: 8px 12px; border-radius: 6px; background: {{t.claimBg}}; font-size: 17px; line-height: 1.45">{{lg.says}}</span>
+                <span role="cell" style="display: flex; flex-direction: column; gap: 4px; font-size: 17px; line-height: 1.45"><span style="font-size: 14px; font-weight: 600; color: {{t.ink2}}">{{lg.recLabel}}</span><span>{{lg.rec}}</span><span style="font-size: 14px; color: {{t.ink2}}">{{lg.src}}</span></span>
+                <span role="cell"><span style="{{lg.pill}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="{{lg.icon}}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{lg.verdict}}</span></span>
+              </div>
+            </sc-for>
+          </div>
+          <p style="margin: 0; font-size: 17px; line-height: 1.55">Due by <strong>30 Oct 2026</strong>, 12 days from today. Paid so far, by your plan: booking, agreement, foundation and slabs 3, 6 and 9, which is 52.5% of the price.</p>
+        </div>
+      </section>
+
+      <section id="act" aria-labelledby="act-h" style="background: {{t.track}}; padding: 136px 0">
+        <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 56px 80px">
+          <div style="flex: 1 1 440px; max-width: 520px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+            <h2 id="act-h" class="pl-rv" style="{{h2}}">What can you do now?</h2>
+            <ol class="pl-rv pl-d1" data-review="legal" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 28px">
+              <li style="display: flex; flex-direction: column; gap: 6px">
+                <h3 style="{{h3}}">Ask for the certificate</h3>
+                <p style="margin: 0; font-size: 19px; line-height: 1.55">Ask Northfield for the architect's or engineer's certificate that Tower A slab 12 is cast, with the casting date. A dated site photo helps too.</p>
+              </li>
+              <li style="display: flex; flex-direction: column; gap: 6px">
+                <h3 style="{{h3}}">Write to Northfield</h3>
+                <p style="margin: 0; font-size: 19px; line-height: 1.55">Use the draft beside this. Send it from your own email, so you keep a dated record of the question.</p>
+              </li>
+              <li style="display: flex; flex-direction: column; gap: 6px">
+                <h3 style="{{h3}}">Pay on time if the stage is reached</h3>
+                <p style="margin: 0; font-size: 19px; line-height: 1.55">If the certificate or the next filing shows slab 12, pay by 30 Oct 2026 into the account ending 4417. Under RERA s.19(6), paying on time is your duty under the agreement; s.19(7) adds interest for delay.</p>
+                <a href="#before-you-pay" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; font-size: 17px; font-weight: 600; color: {{t.ink}}; text-decoration: underline">Check the payee before you pay</a>
+              </li>
+              <li style="display: flex; flex-direction: column; gap: 6px">
+                <h3 style="{{h3}}">See it yourself</h3>
+                <p style="margin: 0; font-size: 19px; line-height: 1.55">On a site visit, count Tower A's floors from the gate. <a href="#visit" style="color: {{t.ink}}; font-weight: 600">Book a visit</a></p>
+              </li>
+            </ol>
+          </div>
+
+          <div class="pl-rv pl-d1" data-review="legal" style="flex: 1 1 520px; min-width: 0; padding: 32px; box-sizing: border-box; border-radius: 8px; background: {{t.bgSolid}}; display: flex; flex-direction: column; gap: 16px">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px">
+              <label for="draft" style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.15; letter-spacing: -0.02em">Your letter to Northfield</label>
+              <span style="font-size: 15px; color: {{t.ink2}}">A draft. Edit it; you send it.</span>
+            </div>
+            <textarea id="draft" rows="19" value="{{draft}}" onChange="{{onDraft}}" spellcheck="true" style="width: 100%; box-sizing: border-box; padding: 18px 20px; border-radius: 8px; border: 1px solid {{t.lineStrong}}; background: {{t.bg}}; color: {{t.ink}}; font: inherit; font-size: 16px; line-height: 1.55; resize: vertical"></textarea>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+              <button type="button" onClick="{{copyDraft}}" aria-live="polite" style="display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 26px; box-sizing: border-box; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"></rect><path d="M10.5 3.5V3A1.5 1.5 0 0 0 9 1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>{{copyLabel}}</button>
+              <a href="{{mailto}}" style="display: inline-flex; align-items: center; height: 52px; padding: 0 22px; box-sizing: border-box; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; text-decoration: none; font-size: 18px; font-weight: 600">Open in my email</a>
+            </div>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.ink2}}">Send it to the email on Northfield's HARERA registration. Plinth never sends letters for you, and this draft is not legal advice.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="lag" aria-labelledby="lag-h" style="position: relative; min-height: 680px; overflow: hidden; background: {{t.photo}}; display: flex; align-items: flex-end">
+        <img data-slot="qprDesk" class="pl-drift" src="/_blob/1f8e2b69914c4995e3797c6affdda5b5" alt="Illustrative image: a printed quarterly progress report on a desk" style="position: absolute; inset: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block; transform-origin: 60% 50%">
+        <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 78%; background: linear-gradient(rgba(10,12,11,0), rgba(10,12,11,0.82))"></div>
+        <span style="position: absolute; right: 16px; top: 16px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 2px 10px; border-radius: 999px">Illustrative image</span>
+        <div style="position: relative; width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 32px 88px; box-sizing: border-box; color: #FFFFFF; display: flex; flex-direction: column; gap: 20px">
+          <h2 id="lag-h" class="pl-rv" style="{{h2}}; color: #FFFFFF; max-width: 700px">Why can a filing lag the site?</h2>
+          <p class="pl-rv pl-d1" style="margin: 0; max-width: 640px; font-size: 21px; line-height: 1.5">Developers file a QPR every quarter, within 15 days of its end. The latest on HARERA covers Apr–Jun 2026. Anything cast after 30 Jun isn't in a filing yet, so a certificate is the faster proof.</p>
+          <div class="pl-rv pl-d2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px">
+            <button type="button" onClick="{{toggleAlert}}" aria-pressed="{{alertStr}}" style="height: 52px; padding: 0 24px; border: 0; border-radius: 999px; background: #FFFFFF; color: #1B1A17; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 10px"><sc-if value="{{alertOn}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l3.5 3.5L16 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{alertLabel}}</button>
+            <span style="font-size: 17px; line-height: 1.5; max-width: 520px">We check this letter again the day the Jul–Sep QPR appears, and tell you on WhatsApp.</span>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <div style="position: sticky; bottom: 24px; height: 0; z-index: 40">
+      <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+        <p role="status" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 48px); margin: 0; padding: 12px 20px; box-sizing: border-box; border-radius: 8px; background: {{t.ink}}; color: {{t.bg}}; font-size: 16px; line-height: 1.4">{{toast}}</p>
+      </sc-if>
+    </div>
+  </main>
+
+  <footer style="flex: 1; display: flex; flex-direction: column; background: {{t.track}}; padding-top: 128px">
+    <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 40px 64px">
+      <figure class="pl-rv" style="flex: 0 1 320px; min-width: 0; height: 360px; margin: 0; position: relative; overflow: hidden; background: {{t.photo}}">
+        <img data-slot="siteProgress" src="/_blob/186406c855932c1c91c0cfbd6c934296" alt="Illustrative image: a residential tower under construction with a crane above it" style="position: absolute; inset: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; object-position: 45% 50%; display: block">
+        <figcaption style="position: absolute; left: 12px; bottom: 12px; font-size: 13px; line-height: 1.4; color: #1B1A17; background: rgba(255,255,255,0.94); padding: 2px 10px; border-radius: 999px">Illustrative image</figcaption>
+      </figure>
+      <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+        <p class="pl-rv" style="margin: 0; max-width: 680px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.1; letter-spacing: -0.025em">Every slab on record, before every rupee. When to pay stays your call.</p>
+        <p style="margin: 0; font-size: 18px; line-height: 1.55">Plinth never takes, holds or moves money, and never speaks for you to the developer. No developer pays us. Ever.</p>
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 17px">
+          <a href="#money" style="color: {{t.ink}}; text-decoration: none">How we make money</a>
+          <a href="#report" style="color: {{t.ink}}; text-decoration: none">Report an error</a>
+          <a href="#person" style="color: {{t.ink}}; text-decoration: none">Talk to a person</a>
+          <a href="#delete" style="color: {{t.ink}}; text-decoration: none">Delete my letter</a>
+        </nav>
+      </div>
+    </div>
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; margin-top: 72px; overflow: hidden">
+      <p class="pl-rv pl-d1" style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 0 16px; box-sizing: border-box; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(110px, 35vw, 470px); line-height: 0.8; letter-spacing: -0.06em; white-space: nowrap; color: {{t.ink}}">Plinth</p>
+      <div style="background: {{t.ink}}; color: {{t.bg}}">
+        <p style="max-width: 1264px; margin: 0 auto; padding: 28px 32px 32px; box-sizing: border-box; font-size: 16px; line-height: 1.5">What the filings show today, from HARERA records as of 14 Oct 2026 and your own letter. Present tense only: no forecasts. Not legal or financial advice. <a href="#report" style="color: {{t.bg}}; text-decoration: underline">Report an error</a> · <a href="#money" style="color: {{t.bg}}; text-decoration: underline">How we make money</a></p>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"step":{"editor":"enum","options":["Result","Add the letter","Reading"],"default":"Result"},"case":{"editor":"enum","options":["Slab 12 letter","Stage not readable"],"default":"Slab 12 letter"},"$preview":{"width":1280,"height":6300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      themeOv: null, themeFrom: null, stepOv: null, stepFrom: null,
+      tower: 'A', towerFrom: null, si: null, siFrom: null,
+      built: false, readN: 0, follow: true, alert: false,
+      draft: null, copied: false, toast: ''
+    };
+  }
+  componentDidMount() {
+    var self = this;
+    var reduced = false;
+    try { reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { reduced = false; }
+    this._rm = reduced;
+    if (reduced) this.setState({built: true, readN: 5});
+    else this._b = setTimeout(function () { self.setState({built: true}); }, 160);
+    if (this.stepKey() === 'reading') this.read();
+  }
+  componentWillUnmount() { clearTimeout(this._b); clearInterval(this._r); clearTimeout(this._toastT); clearTimeout(this._c); }
+  stepKey() {
+    var map = {'Result': 'result', 'Add the letter': 'upload', 'Reading': 'reading'};
+    var P = this.props || {};
+    var s = this.state || {};
+    var prop = map[P.step] || 'result';
+    return (s.stepOv && s.stepFrom === P.step) ? s.stepOv : prop;
+  }
+  setStep(k) { this.setState({stepOv: k, stepFrom: (this.props || {}).step}); }
+  read() {
+    var self = this;
+    clearInterval(this._r);
+    this.setState({readN: this._rm ? 5 : 0});
+    if (this._rm) return;
+    this._r = setInterval(function () {
+      var n = (self.state.readN || 0) + 1;
+      self.setState({readN: Math.min(5, n)});
+      if (n >= 5) clearInterval(self._r);
+    }, 520);
+  }
+  flash(msg) {
+    var self = this;
+    clearTimeout(this._toastT);
+    this.setState({toast: msg});
+    this._toastT = setTimeout(function () { self.setState({toast: ''}); }, 3200);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var P = this.props || {};
+    var tw0 = P.theme === 'Night' ? 'Night' : 'Day';
+    var theme = (s.themeOv && s.themeFrom === tw0) ? s.themeOv : tw0;
+    var night = theme === 'Night';
+    var T = night ? {
+      bg: '#0B1411', bgSolid: '#121F1A', photo: '#1B2A24', track: 'rgba(255,255,255,0.07)', lineStrong: 'rgba(255,255,255,0.28)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentSoft: 'rgba(110,231,183,0.12)', onAccentSoft: '#CFF7E6',
+      claimBg: '#1D2621', chipFill: 'rgba(255,255,255,0.10)', slabOff: 'rgba(255,255,255,0.08)',
+      vMatch: 'rgba(255,255,255,0.15)', vCant: 'rgba(255,255,255,0.09)',
+      hatch: 'repeating-linear-gradient(45deg, rgba(238,243,240,0.55) 0 2px, transparent 2px 7px)'
+    } : {
+      bg: '#FBFAF7', bgSolid: '#FFFFFF', photo: '#E7E3DA', track: '#F4F2ED', lineStrong: '#C9C4B9',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentSoft: '#E9F1EC', onAccentSoft: '#133D2E',
+      claimBg: '#F1ECE2', chipFill: '#ECE8DF', slabOff: '#EEEBE4',
+      vMatch: '#E2DED4', vCant: '#EEEAE2',
+      hatch: 'repeating-linear-gradient(45deg, rgba(27,26,23,0.55) 0 2px, transparent 2px 7px)'
+    };
+    var D = "'Bricolage Grotesque', system-ui, sans-serif";
+    var reduced = !!this._rm;
+    var step = this.stepKey();
+    var unreadable = P['case'] === 'Stage not readable';
+
+    // Tower progress on record (DESIGN.md §5b: QPR Apr–Jun 2026, slabs by tower) and the payment-plan slab stages.
+    var FILED = {A: 9, B: 7, C: 5};
+    var PLAN = [3, 6, 9, 12, 15, 18, 20];
+    var LETTER_SI = 3;
+    var tower = (s.towerFrom === P['case']) ? s.tower : 'A';
+    var si = (s.siFrom === P['case']) ? s.si : (unreadable ? null : LETTER_SI);
+    var f = FILED[tower];
+    var k = si === null ? null : PLAN[si];
+    var isLetter = !unreadable && tower === 'A' && si === LETTER_SI;
+    function setSel(t2, s2) { self.setState({tower: t2, towerFrom: P['case'], si: s2, siFrom: P['case']}); }
+
+    var PITCH = 27, SLAB = 22;
+    var floors = [];
+    for (var n = 20; n >= 1; n--) {
+      var kind = n <= f ? 'filed' : (k !== null && n <= k ? 'gap' : 'empty');
+      var top = (20 - n) * PITCH;
+      var delay = reduced ? 0 : (kind === 'filed' ? (n - 1) * 45 : (kind === 'gap' ? f * 45 + (n - f) * 70 + 120 : 0));
+      floors.push({
+        box: 'position:absolute;left:0;right:0;top:' + top + 'px;height:' + SLAB + 'px;border-radius:2px;overflow:hidden;background:' + T.slabOff,
+        fill: 'display:block;width:100%;height:100%;transform-origin:left center;' +
+          (kind === 'filed' ? 'background:' + T.ink + ';' : (kind === 'gap' ? 'background:' + T.hatch + ',' + T.claimBg + ';' : 'background:transparent;')) +
+          'transform:scaleX(' + ((kind !== 'empty' && s.built) ? 1 : 0) + ');' + (reduced ? '' : 'transition:transform .5s cubic-bezier(.22,1,.36,1) ' + delay + 'ms')
+      });
+    }
+    var labels = PLAN.map(function (p) {
+      var on = p === k;
+      return {text: p === 20 ? 'Slab 20 (top) · 7.5%' : 'Slab ' + p + ' · 7.5%',
+        style: 'position:absolute;left:0;right:12px;top:' + ((20 - p) * PITCH) + 'px;height:' + SLAB + 'px;display:flex;align-items:center;font-size:14px;line-height:1;white-space:nowrap;' + (on ? 'font-weight:700;color:' + T.ink : 'color:' + T.ink2)};
+    });
+    var hasGap = k !== null && k > f;
+    var gapN = hasGap ? k - f : 0;
+    function markerAt(level, title, sub, pill) {
+      return {
+        title: title, sub: sub,
+        wrap: 'position:absolute;left:0;right:0;top:' + ((20 - level) * PITCH - 5) + 'px;display:flex;align-items:flex-start;gap:8px;' + (reduced ? '' : 'transition:top .55s cubic-bezier(.22,1,.36,1)'),
+        lead: 'flex:none;width:16px;height:2px;margin-top:15px;background:' + T.ink,
+        pill: 'align-self:flex-start;display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;font-size:15px;font-weight:700;white-space:nowrap;' + pill
+      };
+    }
+    var markers = [];
+    var pillFiled = 'background:' + T.ink + ';color:' + T.bg;
+    var pillLetter = 'background:' + T.claimBg + ';color:' + T.ink;
+    if (k === null) {
+      markers.push(markerAt(f, 'Filed: slab ' + f, 'QPR Apr–Jun 2026', pillFiled));
+    } else if (Math.abs(k - f) === 1) {
+      markers.push(markerAt(Math.max(k, f), 'Asked ' + k + ' · filed ' + f, k > f ? '1 slab above the filing' : 'On record', k > f ? pillLetter : pillFiled));
+    } else if (k > f) {
+      markers.push(markerAt(k, (isLetter ? 'This letter: slab ' : 'Asked: slab ') + k, isLetter ? 'Dated 10 Oct 2026' : 'Your pick', pillLetter));
+      markers.push(markerAt(f, 'Filed: slab ' + f, 'QPR Apr–Jun 2026', pillFiled));
+    } else if (k === f) {
+      markers.push(markerAt(f, 'Filed and asked: slab ' + f, 'On record', pillFiled));
+    } else {
+      markers.push(markerAt(f, 'Filed: slab ' + f, 'QPR Apr–Jun 2026', pillFiled));
+      markers.push(markerAt(k, 'Asked: slab ' + k, 'On record', pillLetter));
+    }
+    var gapTop = hasGap ? (20 - k) * PITCH : 0;
+    var gapH = hasGap ? gapN * PITCH - (PITCH - SLAB) : 0;
+
+    var answer, answerSub;
+    if (k === null) {
+      answer = 'The latest filing shows slab ' + f + ' for Tower ' + tower + '.';
+      answerSub = 'We couldn’t read the stage on your letter. Pick it with the − and + buttons, and we compare it the same way.';
+    } else if (isLetter) {
+      answer = 'The latest filing shows slab 9. This letter asks for the slab 12 instalment.';
+      answerSub = 'That is 3 slabs above the filing. Anything cast after 30 Jun isn’t in a filing yet; a certificate or the next QPR would show it.';
+    } else if (k > f) {
+      answer = 'The latest filing shows slab ' + f + ' for Tower ' + tower + '.';
+      answerSub = 'Slab ' + k + ' is ' + (k - f) + (k - f === 1 ? ' slab' : ' slabs') + ' above it, so it isn’t on record yet. A certificate would show it.';
+    } else {
+      answer = 'The latest filing shows slab ' + f + ' for Tower ' + tower + '.';
+      answerSub = 'Slab ' + k + ' is on record. A demand for it matches the filing; check the payee, then pay on time.';
+    }
+    var diagramLabel = 'Tower ' + tower + ', 20 floors. ' + answer + ' ' + (k === null ? 'No stage picked yet.' : (k > f ? 'Floors ' + (f + 1) + ' to ' + k + ' are not on record yet.' : 'The stage is on record.')) + ' Payment stages are slabs 3, 6, 9, 12, 15, 18 and 20, at 7.5% each.';
+    function seg(on) { return 'min-width:52px;min-height:44px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:17px;font-weight:600;cursor:pointer;color:' + (on ? T.bg : T.ink) + ';background:' + (on ? T.ink : 'transparent'); }
+    var towers = ['A', 'B', 'C'].map(function (x) {
+      return {label: x, on: tower === x ? 'true' : 'false', style: seg(tower === x), pick: function () { setSel(x, si); }};
+    });
+
+    // Steps.
+    var STEPS = [['upload', 'Add the letter'], ['reading', 'Read it'], ['result', 'Compare']];
+    var order = {upload: 0, reading: 1, result: 2};
+    var steps = STEPS.map(function (x) {
+      var cur = step === x[0];
+      var done = order[x[0]] < order[step];
+      return {label: x[1], current: cur ? 'step' : 'false', done: done,
+        style: 'display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:transparent;font:inherit;font-size:17px;cursor:pointer;color:' + (cur ? T.ink : T.ink2) + ';font-weight:' + (cur ? 700 : 500) + ';' + (cur ? 'text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:8px' : ''),
+        go: function () { if (x[0] === 'reading') { self.setStep('reading'); self.read(); } else self.setStep(x[0]); }};
+    });
+
+    // Reading: fields found on the letter, one at a time.
+    var FOUND = [
+      ['Unit', 'A-1104, Tower A'],
+      ['Stage', unreadable ? 'Couldn’t read it' : 'Tower A, slab 12'],
+      ['Amount', '₹13,16,700 with GST'],
+      ['Due', '30 Oct 2026'],
+      ['Pay to', 'RERA Collection Account, ending 4417']
+    ];
+    var readN = reduced ? 5 : (s.readN || 0);
+    var found = FOUND.map(function (x, i) {
+      var got = i < readN;
+      var miss = got && unreadable && i === 1;
+      return {k: x[0], v: got ? x[1] : 'Reading…',
+        style: 'display:flex;align-items:center;gap:12px;min-height:44px;font-size:18px;' + (got ? '' : 'color:' + T.ink2) + ';' + (reduced ? '' : 'transition:color .3s ease'),
+        dot: 'flex:none;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:' + (got ? (miss ? T.claimBg : T.accentSoft) : T.track) + ';color:' + (got ? (miss ? T.ink : T.onAccentSoft) : T.ink2),
+        icon: got ? (miss ? 'M10 5v6M10 14.5v.5' : 'M4 10.5l3.5 3.5L16 6') : 'M6 10h8'};
+    });
+
+    // The ledger: Letter says / Records show (same row component and verdict words as Claims vs records).
+    var VS = {
+      match: {label: 'Matches', bg: T.vMatch, fg: T.ink, icon: 'M3 7.5l2.5 2.5L11 4'},
+      cant: {label: 'Can’t check yet', bg: T.hatch.replace('0.55', '0.28') + ',' + T.vCant, fg: T.ink, icon: 'M12 7a5 5 0 1 1-10 0a5 5 0 1 1 10 0M7 4.3V7l2 1.4'}
+    };
+    var L = [
+      {line: 'Stage', says: unreadable ? 'Couldn’t read it on this copy' : 'On casting of Tower A slab 12', recLabel: 'Records show', rec: unreadable ? 'Tower A at slab 9 at the latest filing. Pick the stage above, or retake the photo.' : 'Tower A at slab 9 at the latest filing, as of 30 Jun 2026. Nothing newer is on HARERA.', src: 'HARERA QPR · Apr–Jun 2026 · filed 15 Jul 2026', v: 'cant'},
+      {line: 'Plan', says: '7.5% of the price at this stage', recLabel: 'Your plan shows', rec: '7.5% at each of slabs 3, 6, 9, 12, 15, 18 and 20.', src: 'From the developer · payment plan in your agreement, Feb 2023', v: 'match'},
+      {line: 'Amount', says: '₹12,54,000 plus GST ₹62,700: ₹13,16,700', recLabel: 'Your price shows', rec: '7.5% of ₹1,67,20,000 is ₹12,54,000. GST at 5% is ₹62,700.', src: 'Your agreement for sale · Feb 2023', v: 'match'},
+      {line: 'Pay to', says: 'RERA Collection Account, Peepal Bank, ending 4417', recLabel: 'Records show', rec: 'The account Northfield registered with HARERA for Phase 2.', src: 'HARERA registration · bank accounts · 14 Oct 2026', v: 'match'}
+    ];
+    var ledger = L.map(function (r) {
+      var v = VS[r.v];
+      return {line: r.line, says: r.says, recLabel: r.recLabel, rec: r.rec, src: r.src, verdict: v.label, icon: v.icon,
+        pill: 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 14px;border-radius:999px;font-size:15px;font-weight:700;white-space:nowrap;background:' + v.bg + ';color:' + v.fg};
+    });
+
+    var DRAFT = 'To: Northfield Estates Pvt Ltd\n' +
+      'Subject: Demand letter NE/AH2/A-1104/12 of 10 Oct 2026: certificate for Tower A slab 12\n\n' +
+      'Dear Sir or Madam,\n\n' +
+      'I have received your demand letter dated 10 Oct 2026 for the Tower A slab 12 instalment of ₹13,16,700, for unit A-1104 at Aurelia Heights, Phase 2 (RERA GGM/673/405/2022/117).\n\n' +
+      'The latest quarterly progress report on HARERA, for Apr–Jun 2026, shows Tower A at slab 9.\n\n' +
+      'Before the due date of 30 Oct 2026, please send me:\n' +
+      '- the architect’s or engineer’s certificate that slab 12 of Tower A is cast, with the casting date;\n' +
+      '- the HARERA filing receipt for the Jul–Sep 2026 quarterly progress report.\n\n' +
+      'I want to pay each instalment on time, and these papers will help me do that.\n\n' +
+      'Regards,\nKavya Nair\nUnit A-1104, Aurelia Heights, Phase 2';
+    var draft = s.draft === null || s.draft === undefined ? DRAFT : s.draft;
+
+    var chipBase = 'display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 12px;box-sizing:border-box;border-radius:999px;border:0;font:inherit;font-size:14px;line-height:1.25;color:' + T.ink + ';cursor:pointer;text-align:left;background:' + T.chipFill;
+    var rootMin = step === 'result' ? 6300 : 2100;
+
+    return {
+      t: T, night: night, day: !night, rootClass: night ? 'pl-night' : 'pl-day', rootMin: rootMin,
+      themeLabel: night ? 'Switch to Day theme' : 'Switch to Night theme',
+      toggleTheme: function () { self.setState({themeOv: night ? 'Day' : 'Night', themeFrom: tw0}); },
+      followStr: s.follow ? 'true' : 'false', followLabel: s.follow ? 'Following' : 'Follow',
+      toggleFollow: function () { self.setState({follow: !s.follow}); self.flash(s.follow ? 'You no longer follow Aurelia Heights, Phase 2.' : 'Following Aurelia Heights, Phase 2. Alerts are always free.'); },
+      h2: 'margin:0;font-family:' + D + ';font-weight:800;font-size:clamp(40px, 4.7vw, 60px);line-height:1.0;letter-spacing:-0.035em;text-wrap:balance',
+      h3: 'margin:0;font-family:' + D + ';font-weight:800;font-size:26px;line-height:1.15;letter-spacing:-0.02em',
+      chip: chipBase,
+      steps: steps,
+      isResult: step === 'result', isUpload: step === 'upload', isReading: step === 'reading',
+      heroLine: unreadable ? 'The latest filing shows slab 9. We couldn’t read the stage on this letter.' : 'The latest filing shows slab 9. This letter asks for the slab 12 instalment.',
+      heroSub: unreadable ? 'Pick the stage from your payment plan below and we compare it the same way. Or retake the photo, flat and in daylight.' : 'We compare the letter with what HARERA shows today. Whether and when to pay stays your decision.',
+      toUpload: function () { self.setStep('upload'); },
+      startReading: function () { self.setStep('reading'); self.read(); },
+      readHead: readN < 5 ? 'Reading your letter…' : (unreadable ? 'Read, except the stage.' : 'Read. One check before we compare.'),
+      found: found, askConfirm: readN >= 5,
+      confirmHome: function () { self.setStep('result'); },
+      showMark: step !== 'upload',
+      blurStage: unreadable ? 'blur(3px)' : 'none',
+      letterLabel: 'Your demand letter (illustrative). Northfield Estates Pvt Ltd, 10 Oct 2026, to Kavya Nair, unit A-1104, Tower A, Aurelia Heights, Phase 2. Demand on casting of Tower A slab 12' + (unreadable ? ' (the stage is unreadable on this copy)' : '') + '. Instalment 7.5%, 12,54,000 rupees; GST 5%, 62,700 rupees; total due 13,16,700 rupees by 30 Oct 2026. Pay to the Aurelia Heights Phase 2 RERA Collection Account, Peepal Bank, account ending 4417.',
+      letterCaption: step === 'upload' ? 'A demand letter like the one you add' : 'Your letter of 10 Oct 2026, as we read it. We keep only the last 4 digits of the account.',
+      tw: tower, floors: floors, labels: labels, markers: markers,
+      hasGap: hasGap && gapN >= 2,
+      gapStyle: 'position:absolute;left:0;right:0;top:' + gapTop + 'px;height:' + gapH + 'px;display:flex;align-items:center;justify-content:center;pointer-events:none;' + (reduced ? '' : 'transition:top .55s cubic-bezier(.22,1,.36,1),height .55s cubic-bezier(.22,1,.36,1)'),
+      gapPill: 'display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:999px;background:' + T.bgSolid + ';color:' + T.ink + ';font-size:13px;font-weight:700;white-space:nowrap',
+      gapText: gapN + (gapN === 1 ? ' slab' : ' slabs') + ' not on record',
+      diagramLabel: diagramLabel, towers: towers,
+      stageLabel: k === null ? 'Pick a stage' : 'Slab ' + k + (k === 20 ? ' (top)' : ''),
+      stageDown: function () { setSel(tower, si === null ? PLAN.length - 1 : Math.max(0, si - 1)); },
+      stageUp: function () { setSel(tower, si === null ? 0 : Math.min(PLAN.length - 1, si + 1)); },
+      changed: !unreadable && !isLetter,
+      resetLetter: function () { setSel('A', LETTER_SI); },
+      answer: answer, answerSub: answerSub,
+      srcChips: [
+        {label: 'HARERA QPR · Apr–Jun 2026', aria: 'Source: HARERA quarterly progress report, Apr–Jun 2026, filed 15 Jul 2026'},
+        {label: 'QPR register · 18 Oct 2026', aria: 'Source: HARERA QPR register, checked 18 Oct 2026'},
+        {label: 'Your demand letter · 10 Oct 2026', aria: 'Source: your demand letter dated 10 Oct 2026'}
+      ],
+      openSrc: function () { self.flash('Opens the source with our saved copy and its date.'); },
+      ledgerSummary: unreadable ? 'The plan, the amount and the payee match. The stage couldn’t be read, so pick it above.' : 'The plan, the amount and the payee match. The stage can’t be checked yet: the latest filing shows slab 9.',
+      ledger: ledger,
+      draft: draft,
+      onDraft: function (e) { self.setState({draft: String(e.target.value || '')}); },
+      copyLabel: s.copied ? 'Copied' : 'Copy the letter',
+      copyDraft: function () {
+        try { if (navigator && navigator.clipboard) navigator.clipboard.writeText(draft); } catch (e) {}
+        clearTimeout(self._c);
+        self.setState({copied: true});
+        self._c = setTimeout(function () { self.setState({copied: false}); }, 1800);
+        self.flash('Copied. Paste it into an email to the address on Northfield’s HARERA registration.');
+      },
+      mailto: 'mailto:?subject=' + encodeURIComponent('Demand letter NE/AH2/A-1104/12: certificate for Tower A slab 12') + '&body=' + encodeURIComponent(draft),
+      alertOn: !!s.alert, alertStr: s.alert ? 'true' : 'false', alertLabel: s.alert ? 'We’ll tell you' : 'Tell me when it’s filed',
+      toggleAlert: function () { self.setState({alert: !s.alert}); },
+      hasToast: !!s.toast, toast: s.toast || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

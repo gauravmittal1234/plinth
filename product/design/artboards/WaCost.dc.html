@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WhatsApp cost sheet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1D5A44}a:hover{color:#12402F}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #2F8F6A;outline-offset:2px}
+@keyframes pl-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pl-sheet{from{opacity:.4;transform:translateY(56px)}to{opacity:1;transform:none}}
+.pl-rise{animation:pl-rise .6s cubic-bezier(.22,1,.36,1) both}
+.pl-sheet{animation:pl-sheet .4s cubic-bezier(.22,1,.36,1) both}
+.pl-press{transition:transform .14s cubic-bezier(.22,1,.36,1)}
+.pl-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1460px; overflow: hidden; position: relative; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 16px; line-height: 22px; font-variant-numeric: tabular-nums lining-nums">
+
+  <div style="flex: none; height: 28px; padding: 0 12px 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 16px; color: {{t.muted}}">
+    <span>WhatsApp conversation (illustrative)</span>
+    <button type="button" class="pl-press" onClick="{{replay}}" style="height: 28px; padding: 0 6px; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-weight: 600; cursor: pointer">Replay reading</button>
+  </div>
+
+  <header style="flex: none; height: 56px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
+    <button type="button" class="pl-press" aria-label="Back" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M14 4l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="18" fill="{{t.accent}}"></circle><path d="M11 24h14M13.5 24v-8h9v8" fill="none" stroke="{{t.onAccent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; padding-left: 4px">
+      <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 17px; line-height: 22px; font-weight: 600">Plinth
+        <svg width="16" height="16" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </span>
+      <span aria-live="polite" style="font-size: 13px; line-height: 16px; color: {{t.muted}}">{{subtitle}}</span>
+    </div>
+    <button type="button" class="pl-press" aria-label="More options" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="5" r="1.7" fill="currentColor"></circle><circle cx="11" cy="11" r="1.7" fill="currentColor"></circle><circle cx="11" cy="17" r="1.7" fill="currentColor"></circle></svg>
+    </button>
+  </header>
+
+  <main aria-label="Conversation with Plinth" style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 8px 12px 16px; background: {{t.chatBg}}">
+
+    <div style="align-self: center; font-size: 13px; line-height: 16px; padding: 4px 12px; border-radius: 999px; background: {{t.pill}}; color: {{t.ink2}}">Today</div>
+
+    <div style="align-self: flex-end; width: 264px; padding: 4px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; background: {{t.quoteBg}}">
+        <svg width="32" height="40" viewBox="0 0 32 40" aria-hidden="true"><path d="M3 2h18l8 8v28H3z" fill="{{t.bubbleIn}}" stroke="{{t.ink2}}" stroke-width="1.5" stroke-linejoin="round"></path><path d="M21 2v8h8" fill="none" stroke="{{t.ink2}}" stroke-width="1.5" stroke-linejoin="round"></path><path d="M8 20h16M8 25h16M8 30h10" fill="none" stroke="{{t.ink2}}" stroke-width="1.5" stroke-linecap="round"></path></svg>
+        <div style="min-width: 0; display: flex; flex-direction: column">
+          <span style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Aurelia-Ph2-cost-sheet.pdf</span>
+          <span style="font-size: 13px; line-height: 18px; color: {{t.muted}}">2 pages · PDF · 412 kB</span>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; padding: 4px 6px 0; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:52 am<svg width="18" height="12" viewBox="0 0 18 12" role="img" aria-label="Read"><path d="M1.5 6.5l3 3 6.5-7.5M8.5 9.5l6.5-7.5" fill="none" stroke="{{t.accentText}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    </div>
+
+    <div style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+      <p style="margin: 0">Got it. Reading your cost sheet; usually under a minute.</p>
+      <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px">
+        <span role="progressbar" aria-label="Pages read" aria-valuemin="0" aria-valuemax="2" aria-valuenow="{{pagesRead}}" style="flex: none; width: 96px; height: 6px; border-radius: 3px; background: {{t.track}}; overflow: hidden; display: block"><span style="{{progressStyle}}"></span></span>
+        <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 13px; line-height: 18px; color: {{t.ink2}}">
+          <sc-if value="{{done}}" hint-placeholder-val="{{true}}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="{{t.accentText}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>{{progressText}}
+        </span>
+      </div>
+      <p style="margin: 8px 0 0">We keep this file for 30 days, then delete it, unless you save it to your account.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:52 am</span></p>
+    </div>
+
+    <sc-if value="{{reading}}" hint-placeholder-val="{{false}}">
+      <div role="status" aria-label="Plinth is typing" class="pl-rise" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 5px; height: 36px; padding: 0 14px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: {{t.muted}}"></span>
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: {{t.muted}}; opacity: 0.6"></span>
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: {{t.muted}}; opacity: 0.3"></span>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{done}}" hint-placeholder-val="{{true}}">
+      <div style="align-self: flex-start; width: 296px; display: flex; flex-direction: column; gap: 4px">
+        <div class="pl-rise" style="padding: 4px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
+
+          <div role="img" aria-label="Cost card image. Aurelia Heights, Phase 2, 3 BHK. 2.74 crore rupees all-in, 17% more than the quote. Quoted 2.35 crore, plus charges 9.2 lakh, plus GST at 5% 12.2 lakh, plus stamp duty and registration 17.6 lakh, equals 2.74 crore. The quoted bar is shortened; the extras are to scale. Plinth. No developer pays us. Ever. Cost sheet of 2 Oct 2026. Estimate, not a quote. QR code: live costs for this project." style="width: 288px; height: 360px; box-sizing: border-box; border-radius: 12px; background: #FFFFFF; color: #1B1A17; padding: 14px 16px 12px; display: flex; flex-direction: column; overflow: hidden">
+            <span style="font-size: 15px; line-height: 20px; font-weight: 600">Aurelia Heights, Phase 2 · 3 BHK</span>
+            <p style="margin: 6px 0 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 56px; line-height: 52px; letter-spacing: -0.045em">₹2.74 Cr</p>
+            <p style="margin: 4px 0 0; font-size: 15px; line-height: 19px">All-in, 17% more than the quote.</p>
+
+            <div style="margin-top: 14px; display: grid; grid-template-columns: 72px 106px 1fr; grid-template-rows: repeat(5, 18px); row-gap: 3px; column-gap: 8px; align-items: center; font-size: 14px; line-height: 18px">
+              <span style="grid-column: 1; grid-row: 1; color: #3F3C36">Quoted</span>
+              <span style="grid-column: 1; grid-row: 2; color: #3F3C36">Charges</span>
+              <span style="grid-column: 1; grid-row: 3; color: #3F3C36">GST, 5%</span>
+              <span style="grid-column: 1; grid-row: 4; color: #3F3C36">Stamp duty</span>
+              <span style="grid-column: 1; grid-row: 5; font-weight: 700">All-in</span>
+              <svg width="106" height="102" viewBox="0 0 106 102" style="grid-column: 2; grid-row: 1 / span 5; align-self: start; display: block" aria-hidden="true">
+                <rect x="0" y="3" width="31.8" height="12" fill="#C9C4B9"></rect>
+                <polygon points="10,1 13.5,1 16.5,17 13,17" fill="#FFFFFF"></polygon>
+                <rect x="31.8" y="24" width="17.5" height="12" fill="#1B1A17"></rect>
+                <rect x="49.3" y="45" width="23.2" height="12" fill="#1B1A17"></rect>
+                <rect x="72.5" y="66" width="33.5" height="12" fill="#1B1A17"></rect>
+                <rect x="0" y="87" width="31.8" height="12" fill="#C9C4B9"></rect>
+                <rect x="31.8" y="87" width="74.2" height="12" fill="#1B1A17"></rect>
+                <polygon points="10,85 13.5,85 16.5,101 13,101" fill="#FFFFFF"></polygon>
+              </svg>
+              <span style="grid-column: 3; grid-row: 1; text-align: right">₹2.35 Cr</span>
+              <span style="grid-column: 3; grid-row: 2; text-align: right">+₹9.2 L</span>
+              <span style="grid-column: 3; grid-row: 3; text-align: right">+₹12.2 L</span>
+              <span style="grid-column: 3; grid-row: 4; text-align: right">+₹17.6 L</span>
+              <span style="grid-column: 3; grid-row: 5; text-align: right; font-weight: 700">₹2.74 Cr</span>
+            </div>
+            <span style="margin-top: 4px; font-size: 13px; line-height: 16px; color: #5E5A52">Quoted bar shortened; extras to scale.</span>
+
+            <div style="margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+              <div style="min-width: 0; display: flex; flex-direction: column; font-size: 13px; line-height: 16px; color: #3F3C36">
+                <span style="display: inline-flex; align-items: center; gap: 6px; margin-bottom: 2px">
+                  <svg width="16" height="16" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="8" fill="#1D5A44"></rect><path d="M8 19h12M10 19v-7h8v7" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg>
+                  <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 15px; line-height: 18px; letter-spacing: -0.02em; color: #1B1A17">Plinth</span>
+                </span>
+                <span style="font-weight: 700; color: #1B1A17">No developer pays us. Ever.</span>
+                <span>Cost sheet of 2 Oct 2026</span>
+                <span>Estimate, not a quote</span>
+              </div>
+              <div style="flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px">
+                <svg width="56" height="56" viewBox="0 0 25 25" aria-hidden="true"><rect width="25" height="25" fill="#FFFFFF"></rect><path d="{{qr}}" fill="#1B1A17"></path></svg>
+                <span style="font-size: 13px; line-height: 16px; font-weight: 600">Live costs</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding: 8px 8px 2px">
+            <p style="margin: 0"><strong>₹2.74 Cr all-in</strong>, 17% above the quoted ₹2.35 Cr. That is ₹18,900 per sq ft you can use (carpet). You pay for 2,000 sq ft super but use 1,450.</p>
+            <p style="margin: 6px 0 0"><strong>Often negotiable:</strong> the location premium (PLC) and club membership, ₹4.4 L together. Get any change in writing.</p>
+            <p style="margin: 6px 0 0">TDS of 1% is withheld from what you pay the seller. It is not an extra cost.</p>
+            <p style="margin: 6px 0 0">Not in this total: costs at move-in (maintenance advance, connections, fit-outs), about ₹12–18 L more, our estimate.</p>
+            <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">Estimate from your sheet. Not a quote.<span style="float: right; margin-left: 12px">10:53 am</span></p>
+          </div>
+        </div>
+
+        <div role="group" aria-label="Reply options" style="display: flex; flex-direction: column; gap: 4px">
+          <sc-for list="{{replies}}" as="r" hint-placeholder-count="3">
+            <button type="button" class="pl-press" onClick="{{r.pick}}" aria-pressed="{{r.on}}" style="{{r.style}}">
+              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5L3 7l3.5 3.5M3 7h6.5A3.5 3.5 0 0 1 13 10.5V12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{r.label}}
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <sc-if value="{{hasTurn}}" hint-placeholder-val="{{true}}">
+        <div class="pl-rise" style="align-self: flex-end; max-width: 280px; margin-top: 6px; padding: 4px 4px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+          <div style="padding: 5px 10px; border-radius: 12px; background: {{t.quoteBg}}; font-size: 13px; line-height: 18px; color: {{t.ink2}}">All-in cost · ₹2.74 Cr</div>
+          <div style="padding: 4px 8px 0">{{turnLabel}}<span style="float: right; display: inline-flex; align-items: center; gap: 4px; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:54 am<svg width="18" height="12" viewBox="0 0 18 12" role="img" aria-label="Read"><path d="M1.5 6.5l3 3 6.5-7.5M8.5 9.5l6.5-7.5" fill="none" stroke="{{t.accentText}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isBreakdown}}" hint-placeholder-val="{{true}}">
+        <div class="pl-rise" style="align-self: flex-start; width: 296px; display: flex; flex-direction: column; gap: 4px; animation-delay: 90ms">
+          <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">Your sheet has 7 lines. Tap one to ask about it.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:54 am</span></div>
+          <button type="button" class="pl-press" onClick="{{openSheet}}" aria-haspopup="dialog" style="height: 44px; width: 100%; border: 0; border-radius: 999px; background: {{t.bubbleIn}}; color: {{t.accentText}}; display: flex; align-items: center; justify-content: center; gap: 8px; font: inherit; font-weight: 600; cursor: pointer">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 4h8M5.5 8h8M5.5 12h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="2.5" cy="4" r="1" fill="currentColor"></circle><circle cx="2.5" cy="8" r="1" fill="currentColor"></circle><circle cx="2.5" cy="12" r="1" fill="currentColor"></circle></svg>See each line
+          </button>
+        </div>
+        <sc-if value="{{hasAsked}}" hint-placeholder-val="{{false}}">
+          <div class="pl-rise" style="align-self: flex-end; max-width: 280px; padding: 8px 12px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">
+            <span style="display: block; font-weight: 600">{{asked.title}}</span>
+            <span style="font-size: 13px; line-height: 18px; color: {{t.ink2}}">{{asked.desc}}</span><span style="float: right; margin: 3px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:55 am</span>
+          </div>
+          <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">{{asked.answer}}<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:55 am</span></div>
+        </sc-if>
+      </sc-if>
+
+      <sc-if value="{{isSave}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">Saved to <strong>Aurelia Heights, Phase 2</strong>. This sheet now stays in your Plinth account until you delete it: plinth.in/you<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:54 am</span></div>
+      </sc-if>
+
+      <sc-if value="{{isPerson}}" hint-placeholder-val="{{false}}">
+        <div class="pl-rise" style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}; animation-delay: 90ms">Connecting you to a Plinth adviser: paid by you, never by developers. Free to ask, Mon–Sat, 10 am–7 pm IST, usually within 4 working hours. We'll share this chat with them.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:54 am</span></div>
+      </sc-if>
+    </sc-if>
+  </main>
+
+  <p style="flex: none; margin: 0; padding: 9px 16px; font-size: 13px; line-height: 18px; color: {{t.muted}}">Placeholder policy: 30-day file deletion, pending legal review.</p>
+
+  <sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 0; right: 0; top: 28px; bottom: 0; background: {{t.scrim}}; display: flex; flex-direction: column; justify-content: flex-end">
+      <div role="dialog" aria-modal="true" aria-labelledby="sheet-h" class="pl-sheet" style="background: {{t.sheet}}; border-radius: 20px 20px 0 0; box-shadow: 0 8px 24px rgba(27,26,23,.12); padding: 8px 16px 20px; display: flex; flex-direction: column">
+        <span aria-hidden="true" style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: {{t.lineStrong}}"></span>
+        <div style="display: flex; align-items: center; gap: 4px; margin: 6px 0 4px -10px">
+          <button type="button" class="pl-press" onClick="{{closeSheet}}" aria-label="Close" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+          </button>
+          <h2 id="sheet-h" style="margin: 0; font-size: 17px; line-height: 22px; font-weight: 600">Your cost sheet, line by line</h2>
+        </div>
+        <div role="radiogroup" aria-label="Cost lines" style="display: flex; flex-direction: column">
+          <sc-for list="{{rows}}" as="w" hint-placeholder-count="7">
+            <button type="button" class="pl-press" role="radio" aria-checked="{{w.on}}" onClick="{{w.pick}}" style="{{w.style}}">
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; text-align: left">
+                <span style="font-size: 16px; line-height: 22px">{{w.title}}</span>
+                <span style="font-size: 14px; line-height: 20px; color: {{t.muted}}">{{w.desc}}</span>
+              </span>
+              <span aria-hidden="true" style="{{w.dot}}"></span>
+            </button>
+          </sc-for>
+        </div>
+        <button type="button" class="pl-press" onClick="{{sendRow}}" aria-disabled="{{sendDisabled}}" style="{{sendStyle}}">Send</button>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Day","Night"],"default":"Day"},"$preview":{"width":390,"height":1460}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {phase: 'done', turn: 'breakdown', sheet: false, row: null, asked: null};
+  }
+  componentWillUnmount() {
+    clearTimeout(this._t1);
+    clearTimeout(this._t2);
+  }
+  replay() {
+    var self = this;
+    clearTimeout(this._t1);
+    clearTimeout(this._t2);
+    this.setState({phase: 'p1', turn: null, sheet: false, row: null, asked: null});
+    this._t1 = setTimeout(function () { self.setState({phase: 'p2'}); }, 1300);
+    this._t2 = setTimeout(function () { self.setState({phase: 'done'}); }, 2600);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var night = (this.props.theme || 'Day') === 'Night';
+    var T = night ? {
+      bg: '#0B1411', chatBg: '#0E1814', headerBg: '#121C18', bubbleIn: '#17221E', bubbleOut: '#173A2D', sheet: '#121C18',
+      track: 'rgba(255,255,255,0.10)', line: 'rgba(255,255,255,0.11)', lineStrong: 'rgba(255,255,255,0.28)',
+      ink: '#EEF3F0', ink2: '#B9C6C0', muted: '#93A69D', accent: '#6EE7B7', onAccent: '#052E1F', accentText: '#6EE7B7',
+      accentSoft: 'rgba(110,231,183,0.12)', quoteBg: 'rgba(110,231,183,0.10)', pressed: '#1C2E27',
+      pill: 'rgba(255,255,255,0.08)', scrim: 'rgba(0,0,0,0.55)', off: 'rgba(255,255,255,0.07)'
+    } : {
+      bg: '#FBFAF7', chatBg: '#EEEBE4', headerBg: '#FFFFFF', bubbleIn: '#FFFFFF', bubbleOut: '#DCEBE2', sheet: '#FFFFFF',
+      track: '#E7E3DA', line: '#E7E3DA', lineStrong: '#C9C4B9',
+      ink: '#1B1A17', ink2: '#3F3C36', muted: '#5E5A52', accent: '#1D5A44', onAccent: '#FFFFFF', accentText: '#1D5A44',
+      accentSoft: '#E9F1EC', quoteBg: 'rgba(29,90,68,0.08)', pressed: '#E9F1EC',
+      pill: 'rgba(255,255,255,0.85)', scrim: 'rgba(27,26,23,0.45)', off: '#F4F2ED'
+    };
+    // Illustrative QR for the card (21 modules, 2-module quiet zone): finder patterns, timing, seeded fill.
+    var n = 21, g = [], seed = 11;
+    function rnd() { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+    for (var y = 0; y < n; y++) { g.push([]); for (var x = 0; x < n; x++) g[y].push(-1); }
+    function finder(ox, oy) {
+      for (var dy = -1; dy <= 7; dy++) for (var dx = -1; dx <= 7; dx++) {
+        var xx = ox + dx, yy = oy + dy;
+        if (xx < 0 || yy < 0 || xx >= n || yy >= n) continue;
+        var ring = Math.max(Math.abs(dx - 3), Math.abs(dy - 3));
+        g[yy][xx] = (ring === 3 || ring <= 1) ? 1 : 0;
+      }
+    }
+    finder(0, 0); finder(14, 0); finder(0, 14);
+    for (var q = 8; q < 13; q++) { g[6][q] = q % 2 === 0 ? 1 : 0; g[q][6] = q % 2 === 0 ? 1 : 0; }
+    var qr = '';
+    for (var y2 = 0; y2 < n; y2++) for (var x2 = 0; x2 < n; x2++) {
+      var v = g[y2][x2];
+      if (v === -1) v = rnd() < 0.48 ? 1 : 0;
+      if (v === 1) qr += 'M' + (x2 + 2) + ' ' + (y2 + 2) + 'h1v1h-1z';
+    }
+
+    var phase = s.phase || 'done';
+    var done = phase === 'done';
+    var pages = phase === 'p1' ? 1 : 2;
+
+    function btnStyle(on) {
+      return 'height:44px;width:100%;border:0;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;color:' + T.accentText + ';background:' + (on ? T.pressed : T.bubbleIn) + ';';
+    }
+    var defs = [
+      {key: 'breakdown', label: 'See breakdown'},
+      {key: 'save', label: 'Save to project'},
+      {key: 'person', label: 'Talk to an adviser'}
+    ];
+    var replies = defs.map(function (d) {
+      var on = d.key === s.turn;
+      return {label: d.label, on: on ? 'true' : 'false', style: btnStyle(on), pick: function () { self.setState({turn: d.key, sheet: false, row: null, asked: null}); }};
+    });
+
+    var lines = [
+      {title: 'Base price', desc: '₹2.35 Cr · 1,450 sq ft carpet, 2,000 super', answer: 'Base price is ₹2.35 Cr. That is ₹16,207/sq ft carpet before any extras.'},
+      {title: 'PLC, park-facing', desc: '₹2.9 L · often negotiable', answer: 'PLC is a premium for a unit’s location in the project. Yours is ₹2.9 L. It is often negotiable; get any change in writing.'},
+      {title: 'Club membership', desc: '₹1.5 L · often negotiable', answer: 'Club membership is ₹1.5 L on your sheet. It is often negotiable; get any change in writing.'},
+      {title: 'Covered car parking', desc: '₹3.5 L · 1 space', answer: 'Covered car parking is ₹3.5 L for 1 space.'},
+      {title: 'IFMS deposit', desc: '₹1.3 L · maintenance security', answer: 'IFMS is an interest-free maintenance security deposit of ₹1.3 L. It is held against future maintenance dues.'},
+      {title: 'GST, 5%', desc: '₹12.2 L · on price and charges', answer: 'GST is 5% of the price and charges: ₹12.2 L.'},
+      {title: 'Stamp duty, registration', desc: '₹17.6 L · our estimate, not on your sheet', answer: 'Stamp duty and registration are our estimate: ₹17.6 L. You pay them to the state, not the developer.'}
+    ];
+    var rows = lines.map(function (l, i) {
+      var on = s.row === i;
+      return {
+        title: l.title, desc: l.desc, on: on ? 'true' : 'false',
+        pick: function () { self.setState({row: i}); },
+        style: 'min-height:62px;width:100%;display:flex;align-items:center;gap:12px;padding:8px 2px;border:0;border-bottom:1px solid ' + T.line + ';background:transparent;color:' + T.ink + ';font:inherit;cursor:pointer',
+        dot: 'flex:none;width:20px;height:20px;border-radius:50%;box-sizing:border-box;' + (on ? 'border:6px solid ' + T.accent : 'border:2px solid ' + T.muted)
+      };
+    });
+    var canSend = s.row !== null && s.row !== undefined;
+    var asked = (s.asked !== null && s.asked !== undefined) ? lines[s.asked] : {title: '', desc: '', answer: ''};
+
+    return {
+      t: T, qr: qr,
+      subtitle: done ? 'Business account · Ask Plinth is an AI' : 'typing…',
+      done: done, reading: !done,
+      pagesRead: pages,
+      progressText: done ? '2 of 2 pages read' : ('Reading page ' + pages + ' of 2'),
+      progressStyle: 'display:block;height:100%;border-radius:3px;background:' + T.accent + ';width:' + (done ? 100 : (pages === 1 ? 35 : 75)) + '%;transition:width .6s ease',
+      replies: replies,
+      hasTurn: !!s.turn,
+      turnLabel: s.turn === 'save' ? 'Save to project' : (s.turn === 'person' ? 'Talk to an adviser' : 'See breakdown'),
+      isBreakdown: s.turn === 'breakdown', isSave: s.turn === 'save', isPerson: s.turn === 'person',
+      sheetOpen: !!s.sheet,
+      openSheet: function () { self.setState({sheet: true}); },
+      closeSheet: function () { self.setState({sheet: false}); },
+      rows: rows,
+      sendDisabled: canSend ? 'false' : 'true',
+      sendStyle: 'height:48px;margin-top:16px;border:0;border-radius:999px;font:inherit;font-weight:600;cursor:pointer;' + (canSend ? 'background:' + T.accent + ';color:' + T.onAccent : 'background:' + T.off + ';color:' + T.muted),
+      sendRow: function () { if (canSend) self.setState({sheet: false, asked: s.row, row: null}); },
+      hasAsked: s.asked !== null && s.asked !== undefined,
+      asked: asked,
+      replay: function () { self.replay(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

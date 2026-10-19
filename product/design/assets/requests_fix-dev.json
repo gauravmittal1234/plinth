@@ -1,0 +1,12 @@
+[
+  {
+    "slot": "hoardingQrPanel",
+    "aspect": "4:5",
+    "prompt": "Documentary photograph of a construction-site hoarding along a service road off the Dwarka Expressway, Gurugram, India, in soft late-morning light. A long run of corrugated metal hoarding panels painted plain matte off-white with a narrow dark forest-green band along the base. Behind the hoarding, the upper floors of a concrete residential tower under construction and one tower crane against a pale hazy sky. At eye level on the hoarding, one clean blank rectangular panel in portrait A-series proportion (about 1:1.41), matte white, mounted flush with four small bolts and completely empty: this is where a printed QR code and short link will be placed later. A swept footpath with a few dry leaves in the foreground, no people, no vehicles. Calm and matter-of-fact, gentle depth of field that keeps the blank panel sharp. No text, no letters, no numbers, no logos, no emblems, no QR code, no signboards, no RERA board text, no brand colours. Portrait 4:5 crop with the blank panel in the left-centre third and quiet space above it. Used on Plinth's Live Record kit page to show where the printed QR panel goes on a hoarding."
+  },
+  {
+    "slot": "floorPlan3bhk",
+    "aspect": "4:3",
+    "prompt": "Clean architectural floor plan of a 3-bedroom apartment (an Indian 3 BHK of about 1,450 sq ft carpet area) drawn as a crisp black line drawing on a plain warm-white background, seen straight from above. Solid dark walls, thin arcs for door swings, double lines for windows. Rooms: one living-dining room opening onto a long balcony, a kitchen with a small utility balcony, three bedrooms each with an attached bathroom, a short entrance passage. Furniture shown only as a few faint outline shapes (beds, sofa, dining table) so the rooms read at thumbnail size. No text, no room labels, no numbers, no dimensions, no north arrow, no scale bar, no title block, no logos, no watermark. Even margins, the plan centred and filling about 85% of the frame, no perspective, no shadows, no paper texture. Landscape 4:3. Used as the 3 BHK floor-plan picture in Plinth's developer workspace and in the 'From the developer' section of the project page."
+  }
+]
