@@ -2,7 +2,7 @@
 -- domains, and the constraints that encode DATA_MODEL rules.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(23);
+select plan(25);
 
 select is(
   (
@@ -112,11 +112,34 @@ select is(
   null::text[],
   'every *_precision column uses the core.date_precision domain'
 );
-select ok(
-  to_regclass('core.extensions') is not null
-    and exists (select 1 from pg_catalog.pg_attribute where attrelid = 'core.extensions'::regclass and attname = 'granted_on_precision')
-    and exists (select 1 from pg_catalog.pg_attribute where attrelid = 'core.rera_registrations'::regclass and attname = 'registered_on_precision'),
-  'extensions.granted_on_precision and rera_registrations.registered_on_precision exist (C-28)'
+select is(
+  (
+    select array_agg(c.col order by 1)
+    from (values
+      ('core.rera_registrations', 'registered_on_precision'),
+      ('core.extensions', 'granted_on_precision'),
+      ('core.completion_events', 'granted_on_precision')
+    ) as c(tbl, col)
+    where not exists (
+      select 1 from pg_catalog.pg_attribute a
+      where a.attrelid = c.tbl::regclass and a.attname = c.col and not a.attisdropped
+    )
+  ),
+  null::text[],
+  'rera_registrations.registered_on_precision, extensions.granted_on_precision and completion_events.granted_on_precision exist (C-28)'
+);
+insert into core.completion_events (phase_id, kind, granted_on, granted_on_precision)
+values ('00000000-0000-4000-8000-000000000503', 'oc', '2019-04-01', 'month');
+select results_eq(
+  $$select granted_on_precision::text from core.completion_events where phase_id = '00000000-0000-4000-8000-000000000503'$$,
+  $$values ('month'::text)$$,
+  'an OC granted in a month is stored as the 1st with precision month'
+);
+select is(
+  (select column_default from information_schema.columns
+   where table_schema = 'core' and table_name = 'completion_events' and column_name = 'granted_on_precision'),
+  '''day''::text',
+  'completion_events.granted_on_precision defaults to day'
 );
 select throws_ok(
   $$update core.rera_registrations set registered_on_precision = 'year' where id = '00000000-0000-4000-8000-000000000504'$$,

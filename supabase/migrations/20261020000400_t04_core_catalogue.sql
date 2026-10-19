@@ -313,12 +313,14 @@ create table core.completion_events (
   tower_id uuid references core.towers (id),
   kind text not null check (kind in ('oc', 'part_oc', 'cc')),
   granted_on date,
+  granted_on_precision core.date_precision not null default 'day',
   audit_flag boolean not null default false,
   snapshot_id uuid references core.snapshots (id),
   created_at timestamptz not null default now()
 );
 create index completion_events_phase_idx on core.completion_events (phase_id);
 comment on table core.completion_events is 'Occupation and completion certificates: the outcome labels (Northfield: 6 finished, 2 late).';
+comment on column core.completion_events.granted_on_precision is 'pii:C0 · day (certificate date) or month (OC Apr 2019 → 2019-04-01).';
 
 create table core.reported_incidents (
   id uuid primary key default gen_random_uuid(),
