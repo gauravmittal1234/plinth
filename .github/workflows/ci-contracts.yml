@@ -51,7 +51,8 @@ jobs:
 
       - run: npm ci --no-audit --no-fund
 
-      - uses: astral-sh/setup-uv@v10
+      # setup-uv publishes exact tags only (no floating major).
+      - uses: astral-sh/setup-uv@v10.3.0
 
       - name: Python env from pipelines/uv.lock (datamodel-codegen, pytest)
         run: |
