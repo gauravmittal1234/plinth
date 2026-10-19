@@ -195,7 +195,51 @@ describe("canonical records", () => {
       ["time used today: Coral 70", fact("coral-towers/time-used"), (r) => r.value === 70],
       ["time used today: Laurel 106", fact("laurel-residency/time-used"), (r) => r.value === 106],
       ["time used today: Juniper 31", fact("juniper-enclave/time-used"), (r) => r.value === 31],
-      ["Juniper 9% built", fact("juniper-enclave/progress"), (r) => r.value === 9],
+      [
+        "Juniper 9% built, Apr–Jun 2026, filed 10 Jul",
+        q("juniper-enclave", "2026-Q2"),
+        (r) => r.built_pct === 9 && r.filed_on === "2026-07-10",
+      ],
+      [
+        "Kestrel Apr–Jun 2026 filed 14 Jul, on time",
+        q("kestrel-park", "2026-Q2"),
+        (r) => r.filed_on === "2026-07-14" && r.status === "on_time",
+      ],
+      [
+        "Laurel Jul–Sep 2025 filed 13 Oct 2025",
+        q("laurel-residency", "2025-Q3"),
+        (r) => r.filed_on === "2025-10-13" && r.built_pct === 34,
+      ],
+      [
+        "Cedar Walk Ph 2 Jan 2022 → Mar 2027, GGM/566/298/2022/31",
+        reg("cedar-walk-phase-2"),
+        (r) =>
+          r.registered_on === "2022-01-01" &&
+          r.original_completion === "2027-03-01" &&
+          r.rera_number === "GGM/566/298/2022/31",
+      ],
+      ["Cedar Walk Ph 2 70% built", q("cedar-walk-phase-2", "2026-Q2"), (r) => r.built_pct === 70],
+      [
+        "Cedar Walk Ph 2 92% time used",
+        fact("cedar-walk-phase-2/time-used"),
+        (r) => r.value === 92,
+      ],
+      ["Kestrel RERA number", reg("kestrel-park"), (r) => r.rera_number === "GGM/781/513/2023/64"],
+      [
+        "Coral extension 1, 20 Jan 2026, order 014",
+        arr(cat, "extensions").find((e) => e.seq === 1),
+        (r) => r.granted_on === "2026-01-20" && r.order_ref === "HARERA/GGM/EXT/2026/014",
+      ],
+      [
+        "Aurelia Ph 1 OC Mar 2023, 27 months late",
+        arr(cat, "completion_events").find((e) => e.phase === "aurelia-heights-phase-1"),
+        (r) => r.granted_on === "2023-03-01" && r.months_late === 27,
+      ],
+      [
+        "Orbis Land claimed 3 Dec 2025",
+        arr(cat, "developer_groups").find((g) => g.slug === "orbis-land"),
+        (r) => r.claimed_on === "2025-12-03",
+      ],
       [
         "Northfield track record 2 of 6",
         fact("northfield-estates/track-record"),
@@ -333,8 +377,15 @@ describe("API_CONTRACTS §2.1 example", () => {
   const example = JSON.parse(block) as unknown;
   const fixture = loadExpected("risk_summary", "aurelia-heights-phase-2");
   const isPlaceholder = (v: unknown) => typeof v === "string" && (v === "…" || v.includes("…"));
+  // Values superseded by DESIGN §5b "Fixture decisions, round 2" whose doc update (PR #8) may not
+  // be on this base yet: path → the stale doc value still accepted. Once PR #8 is in, the doc
+  // value equals the fixture and these entries are no longer hit.
+  const superseded: Record<string, unknown> = {
+    "$.developer_response.signatory_title": "Head of Customer Relations",
+  };
   const compare = (a: unknown, b: unknown, path: string, out: string[]) => {
     if (isPlaceholder(a)) return;
+    if (path in superseded && a === superseded[path]) return;
     if (Array.isArray(a)) {
       if (!Array.isArray(b) || a.length !== b.length) return void out.push(`${path}: length`);
       a.forEach((x, i) => compare(x, b[i], `${path}[${i}]`, out));

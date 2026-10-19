@@ -12,6 +12,7 @@
       "parent": null,
       "coverage": "covered",
       "coverage_line": null,
+      "pin": null,
       "geom": null,
       "source": "DESIGN §5b"
     },
@@ -23,6 +24,7 @@
       "parent": "gurugram",
       "coverage": "covered",
       "coverage_line": null,
+      "pin": null,
       "geom": null,
       "source": "DESIGN §5"
     },
@@ -34,6 +36,7 @@
       "parent": "gurugram",
       "coverage": "covered",
       "coverage_line": null,
+      "pin": null,
       "geom": null,
       "source": "DESIGN §5"
     },
@@ -45,6 +48,7 @@
       "parent": "gurugram",
       "coverage": "planned",
       "coverage_line": "Planned for Dec 2026",
+      "pin": null,
       "geom": null,
       "source": "DESIGN §5b"
     },
@@ -56,8 +60,27 @@
       "parent": "dwarka-expressway",
       "coverage": "covered",
       "coverage_line": null,
+      "pin": {
+        "lat": 28.437,
+        "lng": 76.985
+      },
       "geom": null,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
+    },
+    {
+      "id": "51749c61-ea2e-5bf5-bd1b-69075984b5bb",
+      "slug": "sector-99",
+      "kind": "sector",
+      "name": "Sector 99",
+      "parent": "dwarka-expressway",
+      "coverage": "covered",
+      "coverage_line": null,
+      "pin": {
+        "lat": 28.479,
+        "lng": 76.983
+      },
+      "geom": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05); pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "f1fbbb2e-f203-5b8d-8f28-b3ea3774d192",
@@ -67,8 +90,12 @@
       "parent": "dwarka-expressway",
       "coverage": "covered",
       "coverage_line": null,
+      "pin": {
+        "lat": 28.49,
+        "lng": 76.996
+      },
       "geom": null,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "7b6f156d-10f2-5db7-ab74-21f83a82a35b",
@@ -78,8 +105,12 @@
       "parent": "dwarka-expressway",
       "coverage": "covered",
       "coverage_line": null,
+      "pin": {
+        "lat": 28.5,
+        "lng": 77.006
+      },
       "geom": null,
-      "source": "DESIGN §5b"
+      "source": "DESIGN §5b; pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "218f67c5-0659-5ae2-9828-9e1d5db70710",
@@ -89,8 +120,12 @@
       "parent": "dwarka-expressway",
       "coverage": "covered",
       "coverage_line": null,
+      "pin": {
+        "lat": 28.507,
+        "lng": 77.014
+      },
       "geom": null,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "8d80d5b0-613d-5a5c-bcc2-35a0dff26172",
@@ -100,8 +135,12 @@
       "parent": "dwarka-expressway",
       "coverage": "covered",
       "coverage_line": null,
+      "pin": {
+        "lat": 28.527,
+        "lng": 77.034
+      },
       "geom": null,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "2c35ccf7-77b6-5293-af7b-5bd2adec937b",
@@ -111,8 +150,12 @@
       "parent": "new-gurugram",
       "coverage": "covered",
       "coverage_line": null,
+      "pin": {
+        "lat": 28.418,
+        "lng": 76.946
+      },
       "geom": null,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "b82e2d1b-72cf-558b-a104-0153c3a5602a",
@@ -122,8 +165,12 @@
       "parent": "new-gurugram",
       "coverage": "covered",
       "coverage_line": null,
+      "pin": {
+        "lat": 28.415,
+        "lng": 76.928
+      },
       "geom": null,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     }
   ],
   "developer_groups": [
@@ -145,13 +192,13 @@
       "id": "88e7f11f-54e1-5c0f-a8a0-743d277a8472",
       "slug": "orbis-land",
       "name": "Orbis Land",
-      "claim_state": "invited",
+      "claim_state": "claimed",
       "invited_on": "2025-11-24",
-      "claimed_on": null,
+      "claimed_on": "2025-12-03",
       "linked_companies": null,
       "finished_projects": 9,
       "finished_late12": 1,
-      "source": "DESIGN §5; claim state CONFLICTS.md C-07 (proposed; not yet in DESIGN §5b)",
+      "source": "DESIGN §5; DESIGN §5b · Fixture decisions, round 2 (C-07, C-08)",
       "facts_only_since": null,
       "facts_only_line": null
     },
@@ -161,11 +208,11 @@
       "name": "Meridian Habitat",
       "claim_state": "claimed",
       "invited_on": "2025-11-24",
-      "claimed_on": null,
+      "claimed_on": "2025-12-05",
       "linked_companies": null,
       "finished_projects": 11,
       "finished_late12": 2,
-      "source": "DESIGN §5; DESIGN §5b (claimed; claim date CONFLICTS.md C-08 (proposed; not yet in DESIGN §5b))",
+      "source": "DESIGN §5; DESIGN §5b · Fixture decisions, round 2 (C-07, C-08)",
       "facts_only_since": null,
       "facts_only_line": null
     },
@@ -203,11 +250,11 @@
       "name": "Halcyon Homes",
       "claim_state": "claimed",
       "invited_on": "2025-11-24",
-      "claimed_on": null,
+      "claimed_on": "2025-12-09",
       "linked_companies": null,
       "finished_projects": 0,
       "finished_late12": 0,
-      "source": "DESIGN §5 (\"new developer\"); DESIGN §5b (claimed; claim date CONFLICTS.md C-08 (proposed; not yet in DESIGN §5b))",
+      "source": "DESIGN §5 (\"new developer\"); DESIGN §5b · Fixture decisions, round 2 (C-07, C-08)",
       "facts_only_since": null,
       "facts_only_line": null
     },
@@ -236,7 +283,7 @@
       "llpin": null,
       "kind": "company",
       "status": "active",
-      "source": "DESIGN §5b (holder of the Aurelia RERA collection account)"
+      "source": "DESIGN §5b; DESIGN §5b · Fixture decisions, round 2 (C-27) (group parent, promoter of Aurelia Heights Ph 2)"
     },
     {
       "id": "80865f65-f739-5071-bdc7-8075454bfafd",
@@ -248,6 +295,39 @@
       "kind": "company",
       "status": "active",
       "source": "DESIGN §5b"
+    },
+    {
+      "id": "75792eb9-77e3-5508-9169-b9dfe615794e",
+      "key": "cedarline-developers",
+      "group": "northfield-estates",
+      "legal_name": "Cedarline Developers",
+      "cin": null,
+      "llpin": null,
+      "kind": "company",
+      "status": "active",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05, C-27)"
+    },
+    {
+      "id": "a8e0af27-19e3-5f48-ac67-5b0f8e12f8cd",
+      "key": "northfield-buildtech",
+      "group": "northfield-estates",
+      "legal_name": "Northfield Buildtech",
+      "cin": null,
+      "llpin": null,
+      "kind": "company",
+      "status": "active",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27)"
+    },
+    {
+      "id": "8c61385e-640b-5f64-89b5-cfc2ae53ac58",
+      "key": "opaline-realtors-llp",
+      "group": "northfield-estates",
+      "legal_name": "Opaline Realtors LLP",
+      "cin": null,
+      "llpin": null,
+      "kind": "llp",
+      "status": "active",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27)"
     },
     {
       "id": "d6035fd1-d240-5668-8afa-8754abd77ae2",
@@ -294,15 +374,15 @@
       "source": "DESIGN §5"
     },
     {
-      "id": "74c9317e-b95c-5dfa-be81-577e819b1716",
-      "key": "elmstone-group-company",
+      "id": "687c81af-3fe9-58fb-87f2-5007a618c9ab",
+      "key": "elmstone-infra-projects",
       "group": "elmstone-developers",
-      "legal_name": "Elmstone Developers group company",
+      "legal_name": "Elmstone Infra Projects Pvt Ltd",
       "cin": null,
       "llpin": null,
       "kind": "company",
       "status": "cirp",
-      "source": "DESIGN §5b (the group company is unnamed; CONFLICTS.md C-09 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b; name DESIGN §5b · Fixture decisions, round 2 (C-09)"
     },
     {
       "id": "5a3a4335-a741-503a-93e1-9ba25dfa13e7",
@@ -335,8 +415,11 @@
       "group": "northfield-estates",
       "locality": "sector-37d",
       "footprint": null,
-      "centroid": null,
-      "source": "DESIGN §5"
+      "centroid": {
+        "lat": 28.437,
+        "lng": 76.985
+      },
+      "source": "DESIGN §5; centroid = sector pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "6d16a84a-0fdb-5867-ae9e-c54c20abbe3b",
@@ -345,8 +428,11 @@
       "group": "orbis-land",
       "locality": "sector-113",
       "footprint": null,
-      "centroid": null,
-      "source": "DESIGN §5"
+      "centroid": {
+        "lat": 28.527,
+        "lng": 77.034
+      },
+      "source": "DESIGN §5; centroid = sector pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "e109a851-314a-5e08-be53-0cf01ad49826",
@@ -355,8 +441,11 @@
       "group": "meridian-habitat",
       "locality": "sector-106",
       "footprint": null,
-      "centroid": null,
-      "source": "DESIGN §5"
+      "centroid": {
+        "lat": 28.507,
+        "lng": 77.014
+      },
+      "source": "DESIGN §5; centroid = sector pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "7523c629-b415-5d08-8bed-5f51ecc7d53a",
@@ -365,8 +454,11 @@
       "group": "vantage-buildcon",
       "locality": "sector-89",
       "footprint": null,
-      "centroid": null,
-      "source": "DESIGN §5"
+      "centroid": {
+        "lat": 28.418,
+        "lng": 76.946
+      },
+      "source": "DESIGN §5; centroid = sector pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "51507d81-634f-55cd-a948-aff449166c90",
@@ -375,8 +467,11 @@
       "group": "elmstone-developers",
       "locality": "sector-92",
       "footprint": null,
-      "centroid": null,
-      "source": "DESIGN §5"
+      "centroid": {
+        "lat": 28.415,
+        "lng": 76.928
+      },
+      "source": "DESIGN §5; centroid = sector pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "4ab38de0-d09e-5942-bcd2-acda7128bd85",
@@ -385,8 +480,11 @@
       "group": "halcyon-homes",
       "locality": "sector-102",
       "footprint": null,
-      "centroid": null,
-      "source": "DESIGN §5"
+      "centroid": {
+        "lat": 28.49,
+        "lng": 76.996
+      },
+      "source": "DESIGN §5; centroid = sector pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "829cc75b-8ec7-5508-b455-ac19b8220b29",
@@ -395,18 +493,24 @@
       "group": "northfield-estates",
       "locality": "sector-104",
       "footprint": null,
-      "centroid": null,
-      "source": "DESIGN §5b"
+      "centroid": {
+        "lat": 28.5,
+        "lng": 77.006
+      },
+      "source": "DESIGN §5b; centroid = sector pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "ccff7608-a422-58eb-86c3-602e28ce9a43",
       "slug": "cedar-walk",
       "name": "Cedar Walk",
       "group": "northfield-estates",
-      "locality": null,
+      "locality": "sector-99",
       "footprint": null,
-      "centroid": null,
-      "source": "DESIGN §5"
+      "centroid": {
+        "lat": 28.479,
+        "lng": 76.983
+      },
+      "source": "DESIGN §5; sector DESIGN §5b · Fixture decisions, round 2 (C-05); centroid = sector pin DESIGN §5b · Fixture decisions, round 2 (C-20)"
     },
     {
       "id": "42f41954-38cd-5e8a-a15b-3e4446de7437",
@@ -544,27 +648,27 @@
       "project": "cedar-walk",
       "name": "Cedar Walk, Phase 2",
       "short_name": "Cedar Walk Ph 2",
-      "promoter": null,
-      "units_total": null,
+      "promoter": "cedarline-developers",
+      "units_total": 320,
       "status": "under_construction",
       "short_code": null,
-      "corridor": null,
+      "corridor": "dwarka-expressway",
       "finished_late12": null,
-      "source": "DESIGN §5 (Northfield ongoing, Moderate); other facts CONFLICTS.md C-05 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5; DESIGN §5b · Fixture decisions, round 2 (C-05)"
     },
     {
       "id": "06c3dc26-9013-5619-a408-f2ea895f382d",
       "slug": "cedar-walk",
       "project": "cedar-walk",
       "name": "Cedar Walk",
-      "short_name": "Cedar Walk",
-      "promoter": null,
+      "short_name": "Cedar Walk Ph 1",
+      "promoter": "cedarline-developers",
       "units_total": null,
       "status": "completed",
       "short_code": null,
       "corridor": null,
       "finished_late12": false,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; DESIGN §5b · Fixture decisions, round 2 (C-27)"
     },
     {
       "id": "543fda32-7cc7-5831-a3cc-96b284b4cda5",
@@ -572,13 +676,13 @@
       "project": "aurelia-heights",
       "name": "Aurelia Heights, Phase 1",
       "short_name": "Aurelia Heights Ph 1",
-      "promoter": null,
+      "promoter": "northfield-buildtech",
       "units_total": null,
       "status": "completed",
       "short_code": null,
       "corridor": null,
       "finished_late12": true,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; DESIGN §5b · Fixture decisions, round 2 (C-27)"
     },
     {
       "id": "5dec9952-1cc4-527a-bcd1-5749dc517f0d",
@@ -592,7 +696,7 @@
       "short_code": null,
       "corridor": null,
       "finished_late12": false,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; DESIGN §5b · Fixture decisions, round 2 (C-27)"
     },
     {
       "id": "ceeea9cf-6c9c-54a3-88b0-93d0bb7b52d3",
@@ -600,13 +704,13 @@
       "project": "opaline-residences",
       "name": "Opaline Residences",
       "short_name": "Opaline Residences",
-      "promoter": null,
+      "promoter": "opaline-realtors-llp",
       "units_total": null,
       "status": "completed",
       "short_code": null,
       "corridor": null,
       "finished_late12": false,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; DESIGN §5b · Fixture decisions, round 2 (C-27)"
     },
     {
       "id": "3f1da1ba-0778-5feb-bd1c-d93a940f6c1f",
@@ -614,13 +718,13 @@
       "project": "heron-point",
       "name": "Heron Point, Phase 1",
       "short_name": "Heron Point Ph 1",
-      "promoter": null,
+      "promoter": "heronstone-projects",
       "units_total": null,
       "status": "completed",
       "short_code": null,
       "corridor": null,
       "finished_late12": true,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; DESIGN §5b · Fixture decisions, round 2 (C-27)"
     },
     {
       "id": "3e320b2d-f8de-5b39-a721-8e9caeb545a5",
@@ -634,7 +738,7 @@
       "short_code": null,
       "corridor": null,
       "finished_late12": false,
-      "source": "DESIGN §5"
+      "source": "DESIGN §5; DESIGN §5b · Fixture decisions, round 2 (C-27)"
     }
   ],
   "rera_registrations": [
@@ -663,7 +767,7 @@
       "id": "4af467c7-b246-5df9-9dbc-e3359d4b4f6a",
       "phase": "kestrel-park",
       "authority": "harera_ggm",
-      "rera_number": null,
+      "rera_number": "GGM/781/513/2023/64",
       "registered_on": "2023-11-01",
       "registered_precision": "month",
       "original_completion": "2028-11-01",
@@ -678,13 +782,13 @@
       "collection_ifsc": null,
       "official_url": "https://haryanarera.gov.in",
       "snapshot": "harera_registration/kestrel-park",
-      "source": "DESIGN §5b · Engineering fixture decisions (19 Oct 2026); RERA number CONFLICTS.md C-04 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b · Engineering fixture decisions (19 Oct 2026); RERA number DESIGN §5b · Fixture decisions, round 2 (C-04)"
     },
     {
       "id": "021208fb-476a-5fcb-ad6e-2f1c44bac9ec",
       "phase": "sapphire-grove-phase-1",
       "authority": "harera_ggm",
-      "rera_number": null,
+      "rera_number": "GGM/867/599/2025/03",
       "registered_on": "2025-01-01",
       "registered_precision": "month",
       "original_completion": "2028-03-01",
@@ -699,13 +803,13 @@
       "collection_ifsc": null,
       "official_url": "https://haryanarera.gov.in",
       "snapshot": "harera_registration/sapphire-grove-phase-1",
-      "source": "DESIGN §5 (completion); registration month derived: time used 55% in Oct 2026 → Jan 2025 (CONFLICTS.md C-02 (proposed; not yet in DESIGN §5b)); RERA number CONFLICTS.md C-04 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5 (completion); registration DESIGN §5b · Fixture decisions, round 2 (C-02); RERA number DESIGN §5b · Fixture decisions, round 2 (C-04)"
     },
     {
       "id": "16924de3-79d8-584e-97d6-703384a7a420",
       "phase": "coral-towers",
       "authority": "harera_ggm",
-      "rera_number": null,
+      "rera_number": "GGM/612/344/2022/41",
       "registered_on": "2022-07-01",
       "registered_precision": "month",
       "original_completion": "2028-08-01",
@@ -720,13 +824,13 @@
       "collection_ifsc": null,
       "official_url": "https://haryanarera.gov.in",
       "snapshot": "harera_registration/coral-towers",
-      "source": "DESIGN §5b (completion, extensions); registration month derived: time used 70% in Oct 2026 → Jul 2022; Jun 2022 also rounds to 70% (CONFLICTS.md C-02 (proposed; not yet in DESIGN §5b)); RERA number CONFLICTS.md C-04 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b (completion, extensions); registration DESIGN §5b · Fixture decisions, round 2 (C-02); RERA number DESIGN §5b · Fixture decisions, round 2 (C-04)"
     },
     {
       "id": "45312ffc-0f36-5543-b3af-f1c30b07587a",
       "phase": "laurel-residency",
       "authority": "harera_ggm",
-      "rera_number": null,
+      "rera_number": "GGM/447/179/2020/52",
       "registered_on": "2020-11-01",
       "registered_precision": "month",
       "original_completion": "2026-06-01",
@@ -741,13 +845,13 @@
       "collection_ifsc": null,
       "official_url": "https://haryanarera.gov.in",
       "snapshot": "harera_registration/laurel-residency",
-      "source": "DESIGN §5b · Engineering fixture decisions (19 Oct 2026); RERA number CONFLICTS.md C-04 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b · Engineering fixture decisions (19 Oct 2026); RERA number DESIGN §5b · Fixture decisions, round 2 (C-04)"
     },
     {
       "id": "ce8b2531-7840-54ff-b0f9-22aaf106e05b",
       "phase": "juniper-enclave",
       "authority": "harera_ggm",
-      "rera_number": null,
+      "rera_number": "GGM/889/621/2025/22",
       "registered_on": "2025-05-01",
       "registered_precision": "month",
       "original_completion": "2029-12-01",
@@ -762,7 +866,7 @@
       "collection_ifsc": null,
       "official_url": "https://haryanarera.gov.in",
       "snapshot": "harera_registration/juniper-enclave",
-      "source": "DESIGN §5b; RERA number CONFLICTS.md C-04 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b; RERA number DESIGN §5b · Fixture decisions, round 2 (C-04)"
     },
     {
       "id": "c50b68fd-454c-5ac7-9ba0-785298223ec3",
@@ -784,6 +888,153 @@
       "official_url": "https://haryanarera.gov.in",
       "snapshot": "harera_registration/heron-point-phase-2",
       "source": "DESIGN §5b; registration day DESIGN §5b · Engineering fixture decisions (19 Oct 2026)"
+    },
+    {
+      "id": "7e7a1be5-f36f-55d2-aabb-7cbbfde7c5ef",
+      "phase": "cedar-walk-phase-2",
+      "authority": "harera_ggm",
+      "rera_number": "GGM/566/298/2022/31",
+      "registered_on": "2022-01-01",
+      "registered_precision": "month",
+      "original_completion": "2027-03-01",
+      "original_completion_precision": "month",
+      "current_completion": "2027-03-01",
+      "current_completion_precision": "month",
+      "status": "valid",
+      "collection_account_name": null,
+      "collection_bank": null,
+      "collection_branch": null,
+      "collection_account_number": null,
+      "collection_ifsc": null,
+      "official_url": "https://haryanarera.gov.in",
+      "snapshot": "harera_registration/cedar-walk-phase-2",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-04, C-05)"
+    },
+    {
+      "id": "a04594c8-cd4f-5d8d-b51f-d0ed69bcdb76",
+      "phase": "cedar-walk",
+      "authority": "harera_ggm",
+      "rera_number": "GGM/118/50/2017/24",
+      "registered_on": null,
+      "registered_precision": "month",
+      "original_completion": "2019-06-01",
+      "original_completion_precision": "month",
+      "current_completion": null,
+      "current_completion_precision": "month",
+      "status": "valid",
+      "collection_account_name": null,
+      "collection_bank": null,
+      "collection_branch": null,
+      "collection_account_number": null,
+      "collection_ifsc": null,
+      "official_url": "https://haryanarera.gov.in",
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27); original date derived: OC 2019-04 minus -2 months"
+    },
+    {
+      "id": "232d0e56-401d-564f-ba2e-1e3fc81d4a8d",
+      "phase": "aurelia-heights-phase-1",
+      "authority": "harera_ggm",
+      "rera_number": "GGM/131/63/2017/38",
+      "registered_on": null,
+      "registered_precision": "month",
+      "original_completion": "2020-12-01",
+      "original_completion_precision": "month",
+      "current_completion": null,
+      "current_completion_precision": "month",
+      "status": "valid",
+      "collection_account_name": null,
+      "collection_bank": null,
+      "collection_branch": null,
+      "collection_account_number": null,
+      "collection_ifsc": null,
+      "official_url": "https://haryanarera.gov.in",
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27); original date derived: OC 2023-03 minus 27 months"
+    },
+    {
+      "id": "535b5a34-9787-54c6-91a7-7fe8684bd89a",
+      "phase": "wren-court",
+      "authority": "harera_ggm",
+      "rera_number": "GGM/176/108/2018/09",
+      "registered_on": null,
+      "registered_precision": "month",
+      "original_completion": "2020-12-01",
+      "original_completion_precision": "month",
+      "current_completion": null,
+      "current_completion_precision": "month",
+      "status": "valid",
+      "collection_account_name": null,
+      "collection_bank": null,
+      "collection_branch": null,
+      "collection_account_number": null,
+      "collection_ifsc": null,
+      "official_url": "https://haryanarera.gov.in",
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27); original date derived: OC 2021-11 minus 11 months"
+    },
+    {
+      "id": "9c6a73cd-d0ca-5a63-ada8-4d478d52ca4d",
+      "phase": "opaline-residences",
+      "authority": "harera_ggm",
+      "rera_number": "GGM/262/194/2018/71",
+      "registered_on": null,
+      "registered_precision": "month",
+      "original_completion": "2022-06-01",
+      "original_completion_precision": "month",
+      "current_completion": null,
+      "current_completion_precision": "month",
+      "status": "valid",
+      "collection_account_name": null,
+      "collection_bank": null,
+      "collection_branch": null,
+      "collection_account_number": null,
+      "collection_ifsc": null,
+      "official_url": "https://haryanarera.gov.in",
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27); original date derived: OC 2023-05 minus 11 months"
+    },
+    {
+      "id": "2b30b484-09b7-5409-995c-8f64ce3ea37f",
+      "phase": "heron-point-phase-1",
+      "authority": "harera_ggm",
+      "rera_number": "GGM/301/233/2019/15",
+      "registered_on": null,
+      "registered_precision": "month",
+      "original_completion": "2023-03-01",
+      "original_completion_precision": "month",
+      "current_completion": null,
+      "current_completion_precision": "month",
+      "status": "valid",
+      "collection_account_name": null,
+      "collection_bank": null,
+      "collection_branch": null,
+      "collection_account_number": null,
+      "collection_ifsc": null,
+      "official_url": "https://haryanarera.gov.in",
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27); original date derived: OC 2025-06 minus 27 months"
+    },
+    {
+      "id": "abed7f95-69e1-557a-84e5-cec7a221a887",
+      "phase": "linden-square",
+      "authority": "harera_ggm",
+      "rera_number": "GGM/349/281/2019/56",
+      "registered_on": null,
+      "registered_precision": "month",
+      "original_completion": "2023-12-01",
+      "original_completion_precision": "month",
+      "current_completion": null,
+      "current_completion_precision": "month",
+      "status": "valid",
+      "collection_account_name": null,
+      "collection_bank": null,
+      "collection_branch": null,
+      "collection_account_number": null,
+      "collection_ifsc": null,
+      "official_url": "https://haryanarera.gov.in",
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27); original date derived: OC 2024-09 minus 9 months"
     }
   ],
   "towers": [
@@ -922,6 +1173,17 @@
       "carpet_lane": null,
       "super_lane": null,
       "source": "DESIGN §5b (3 BHK quoted; carpet not in §5b)"
+    },
+    {
+      "id": "1b44b78a-77ec-52d3-bc53-1325e1b8fa70",
+      "phase": "cedar-walk-phase-2",
+      "label": "3 BHK",
+      "carpet_sqft": 1350,
+      "super_sqft": null,
+      "units": null,
+      "carpet_lane": "from_developer",
+      "super_lane": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05) (price list of 12 Jun 2026)"
     }
   ],
   "qpr_filings": [
@@ -940,7 +1202,7 @@
       "time_used_pct": 10,
       "notes": null,
       "snapshot": "harera_qpr/aurelia-heights-phase-2/2023-Q2",
-      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named)"
+      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named); first QPR DESIGN §5b · Fixture decisions, round 2 (C-03)"
     },
     {
       "id": "69b60455-45c9-5804-870d-c8fae95e065d",
@@ -957,7 +1219,7 @@
       "time_used_pct": null,
       "notes": null,
       "snapshot": "harera_qpr/aurelia-heights-phase-2/2023-Q3",
-      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named)"
+      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named); first QPR DESIGN §5b · Fixture decisions, round 2 (C-03)"
     },
     {
       "id": "11ed5529-de26-5468-b883-85ba520b2510",
@@ -974,7 +1236,7 @@
       "time_used_pct": 20,
       "notes": null,
       "snapshot": "harera_qpr/aurelia-heights-phase-2/2023-Q4",
-      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named)"
+      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named); first QPR DESIGN §5b · Fixture decisions, round 2 (C-03)"
     },
     {
       "id": "bd3a506c-3a97-56b8-bbc2-6bc46cb43c8b",
@@ -991,7 +1253,7 @@
       "time_used_pct": null,
       "notes": null,
       "snapshot": "harera_qpr/aurelia-heights-phase-2/2024-Q1",
-      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named)"
+      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named); first QPR DESIGN §5b · Fixture decisions, round 2 (C-03)"
     },
     {
       "id": "806ffd3b-df90-5ec2-933b-ddbd16ae3151",
@@ -1008,7 +1270,7 @@
       "time_used_pct": 30,
       "notes": null,
       "snapshot": "harera_qpr/aurelia-heights-phase-2/2024-Q2",
-      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named)"
+      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named); first QPR DESIGN §5b · Fixture decisions, round 2 (C-03)"
     },
     {
       "id": "6d3927f2-9477-52e4-9416-9385d7ef91a5",
@@ -1042,7 +1304,7 @@
       "time_used_pct": 40,
       "notes": null,
       "snapshot": "harera_qpr/aurelia-heights-phase-2/2024-Q4",
-      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named)"
+      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named); first QPR DESIGN §5b · Fixture decisions, round 2 (C-03)"
     },
     {
       "id": "bb5fc707-1523-5109-a3f5-1011b5ddec43",
@@ -1076,7 +1338,7 @@
       "time_used_pct": 50,
       "notes": null,
       "snapshot": "harera_qpr/aurelia-heights-phase-2/2025-Q2",
-      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named)"
+      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named); first QPR DESIGN §5b · Fixture decisions, round 2 (C-03)"
     },
     {
       "id": "d4df7363-fd37-55cf-bf94-0e89a6f82d74",
@@ -1093,7 +1355,7 @@
       "time_used_pct": null,
       "notes": null,
       "snapshot": "harera_qpr/aurelia-heights-phase-2/2025-Q3",
-      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named)"
+      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named); first QPR DESIGN §5b · Fixture decisions, round 2 (C-03)"
     },
     {
       "id": "32164a6d-0346-5214-b288-8a6ae9d05393",
@@ -1127,7 +1389,7 @@
       "time_used_pct": 65,
       "notes": "Tower A slab 9 cast",
       "snapshot": "harera_qpr/aurelia-heights-phase-2/2026-Q1",
-      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named)"
+      "source": "DESIGN §5b (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named); first QPR DESIGN §5b · Fixture decisions, round 2 (C-03)"
     },
     {
       "id": "497cec88-bfca-5820-8bbf-b528ce648338",
@@ -1168,17 +1430,17 @@
       "phase": "kestrel-park",
       "quarter": "2026-Q2",
       "due_on": "2026-07-15",
-      "filed_on": null,
+      "filed_on": "2026-07-14",
       "appeared_on": null,
       "fetched_at": null,
-      "status": null,
-      "days_late": null,
+      "status": "on_time",
+      "days_late": 0,
       "sold_pct": null,
       "built_pct": 59,
       "time_used_pct": null,
       "notes": null,
       "snapshot": "harera_qpr/kestrel-park/2026-Q2",
-      "source": "DESIGN §5b (Kestrel's Jul–Sep QPR: built 59% → 63%); filing date and timeliness CONFLICTS.md C-06 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b (Kestrel's Jul–Sep QPR: built 59% → 63%); filed date DESIGN §5b · Fixture decisions, round 2 (C-06)"
     },
     {
       "id": "cc08d422-ed8f-5ec1-8c5b-3d2118101720",
@@ -1287,68 +1549,221 @@
       "phase": "laurel-residency",
       "quarter": "2025-Q3",
       "due_on": "2025-10-15",
-      "filed_on": null,
+      "filed_on": "2025-10-13",
       "appeared_on": null,
       "fetched_at": null,
-      "status": null,
-      "days_late": null,
+      "status": "on_time",
+      "days_late": 0,
       "sold_pct": null,
       "built_pct": 34,
       "time_used_pct": null,
       "notes": null,
       "snapshot": "harera_qpr/laurel-residency/2025-Q3",
-      "source": "DESIGN §5b (34% built in each QPR, Jul–Sep 2025 to Apr–Jun 2026); filing dates CONFLICTS.md C-06 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b (34% built in each QPR, Jul–Sep 2025 to Apr–Jun 2026); filed dates DESIGN §5b · Fixture decisions, round 2 (C-06)"
     },
     {
       "id": "e1e55ee7-e6e1-5996-8893-03fbfb8d2dd3",
       "phase": "laurel-residency",
       "quarter": "2025-Q4",
       "due_on": "2026-01-15",
-      "filed_on": null,
+      "filed_on": "2026-01-12",
       "appeared_on": null,
       "fetched_at": null,
-      "status": null,
-      "days_late": null,
+      "status": "on_time",
+      "days_late": 0,
       "sold_pct": null,
       "built_pct": 34,
       "time_used_pct": null,
       "notes": null,
       "snapshot": "harera_qpr/laurel-residency/2025-Q4",
-      "source": "DESIGN §5b (34% built in each QPR, Jul–Sep 2025 to Apr–Jun 2026); filing dates CONFLICTS.md C-06 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b (34% built in each QPR, Jul–Sep 2025 to Apr–Jun 2026); filed dates DESIGN §5b · Fixture decisions, round 2 (C-06)"
     },
     {
       "id": "6ca441ec-1719-50a0-a199-754a698b8859",
       "phase": "laurel-residency",
       "quarter": "2026-Q1",
       "due_on": "2026-04-15",
-      "filed_on": null,
+      "filed_on": "2026-04-14",
       "appeared_on": null,
       "fetched_at": null,
-      "status": null,
-      "days_late": null,
+      "status": "on_time",
+      "days_late": 0,
       "sold_pct": null,
       "built_pct": 34,
       "time_used_pct": null,
       "notes": null,
       "snapshot": "harera_qpr/laurel-residency/2026-Q1",
-      "source": "DESIGN §5b (34% built in each QPR, Jul–Sep 2025 to Apr–Jun 2026); filing dates CONFLICTS.md C-06 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b (34% built in each QPR, Jul–Sep 2025 to Apr–Jun 2026); filed dates DESIGN §5b · Fixture decisions, round 2 (C-06)"
     },
     {
       "id": "fa83e78e-6802-58ab-bd73-a0c54e48dfdd",
       "phase": "laurel-residency",
       "quarter": "2026-Q2",
       "due_on": "2026-07-15",
-      "filed_on": null,
+      "filed_on": "2026-07-15",
       "appeared_on": null,
       "fetched_at": null,
-      "status": null,
-      "days_late": null,
+      "status": "on_time",
+      "days_late": 0,
       "sold_pct": null,
       "built_pct": 34,
       "time_used_pct": null,
       "notes": null,
       "snapshot": "harera_qpr/laurel-residency/2026-Q2",
-      "source": "DESIGN §5b (34% built in each QPR, Jul–Sep 2025 to Apr–Jun 2026); filing dates CONFLICTS.md C-06 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b (34% built in each QPR, Jul–Sep 2025 to Apr–Jun 2026); filed dates DESIGN §5b · Fixture decisions, round 2 (C-06)"
+    },
+    {
+      "id": "8b71d998-6f27-536f-8d40-4d5cbdf0cefd",
+      "phase": "juniper-enclave",
+      "quarter": "2026-Q2",
+      "due_on": "2026-07-15",
+      "filed_on": "2026-07-10",
+      "appeared_on": null,
+      "fetched_at": null,
+      "status": "on_time",
+      "days_late": 0,
+      "sold_pct": null,
+      "built_pct": 9,
+      "time_used_pct": null,
+      "notes": null,
+      "snapshot": "harera_qpr/juniper-enclave/2026-Q2",
+      "source": "DESIGN §5b (9% built); quarter and filed date DESIGN §5b · Fixture decisions, round 2 (C-06)"
+    },
+    {
+      "id": "0ccf7c9e-a4e3-5104-b7e4-5a3912c45538",
+      "phase": "cedar-walk-phase-2",
+      "quarter": "2024-Q3",
+      "due_on": "2024-10-15",
+      "filed_on": null,
+      "appeared_on": null,
+      "fetched_at": null,
+      "status": "on_time",
+      "days_late": null,
+      "sold_pct": null,
+      "built_pct": null,
+      "time_used_pct": null,
+      "notes": null,
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05) (on time in each of the last 8 quarters; filed dates not given)"
+    },
+    {
+      "id": "2f398bdf-81db-582f-9977-4d11694b61d4",
+      "phase": "cedar-walk-phase-2",
+      "quarter": "2024-Q4",
+      "due_on": "2025-01-15",
+      "filed_on": null,
+      "appeared_on": null,
+      "fetched_at": null,
+      "status": "on_time",
+      "days_late": null,
+      "sold_pct": null,
+      "built_pct": null,
+      "time_used_pct": null,
+      "notes": null,
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05) (on time in each of the last 8 quarters; filed dates not given)"
+    },
+    {
+      "id": "a53a794a-cfd7-5890-8bbc-408ee4b770cf",
+      "phase": "cedar-walk-phase-2",
+      "quarter": "2025-Q1",
+      "due_on": "2025-04-15",
+      "filed_on": null,
+      "appeared_on": null,
+      "fetched_at": null,
+      "status": "on_time",
+      "days_late": null,
+      "sold_pct": null,
+      "built_pct": null,
+      "time_used_pct": null,
+      "notes": null,
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05) (on time in each of the last 8 quarters; filed dates not given)"
+    },
+    {
+      "id": "72b15479-d0df-5304-9d0b-c8fb24d242c8",
+      "phase": "cedar-walk-phase-2",
+      "quarter": "2025-Q2",
+      "due_on": "2025-07-15",
+      "filed_on": null,
+      "appeared_on": null,
+      "fetched_at": null,
+      "status": "on_time",
+      "days_late": null,
+      "sold_pct": null,
+      "built_pct": null,
+      "time_used_pct": null,
+      "notes": null,
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05) (on time in each of the last 8 quarters; filed dates not given)"
+    },
+    {
+      "id": "3e4f87ae-70a2-54a7-b537-2f72c10b5000",
+      "phase": "cedar-walk-phase-2",
+      "quarter": "2025-Q3",
+      "due_on": "2025-10-15",
+      "filed_on": null,
+      "appeared_on": null,
+      "fetched_at": null,
+      "status": "on_time",
+      "days_late": null,
+      "sold_pct": null,
+      "built_pct": null,
+      "time_used_pct": null,
+      "notes": null,
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05) (on time in each of the last 8 quarters; filed dates not given)"
+    },
+    {
+      "id": "2df7ae05-5908-5da4-8d30-ca5484df98d2",
+      "phase": "cedar-walk-phase-2",
+      "quarter": "2025-Q4",
+      "due_on": "2026-01-15",
+      "filed_on": null,
+      "appeared_on": null,
+      "fetched_at": null,
+      "status": "on_time",
+      "days_late": null,
+      "sold_pct": null,
+      "built_pct": null,
+      "time_used_pct": null,
+      "notes": null,
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05) (on time in each of the last 8 quarters; filed dates not given)"
+    },
+    {
+      "id": "2be5d28f-60bd-5f5a-b5ee-7a5361751eb1",
+      "phase": "cedar-walk-phase-2",
+      "quarter": "2026-Q1",
+      "due_on": "2026-04-15",
+      "filed_on": null,
+      "appeared_on": null,
+      "fetched_at": null,
+      "status": "on_time",
+      "days_late": null,
+      "sold_pct": null,
+      "built_pct": null,
+      "time_used_pct": null,
+      "notes": null,
+      "snapshot": null,
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05) (on time in each of the last 8 quarters; filed dates not given)"
+    },
+    {
+      "id": "8729585d-fb58-580a-a207-c890ea5893ce",
+      "phase": "cedar-walk-phase-2",
+      "quarter": "2026-Q2",
+      "due_on": "2026-07-15",
+      "filed_on": null,
+      "appeared_on": null,
+      "fetched_at": null,
+      "status": "on_time",
+      "days_late": null,
+      "sold_pct": null,
+      "built_pct": 70,
+      "time_used_pct": null,
+      "notes": null,
+      "snapshot": "harera_qpr/cedar-walk-phase-2/2026-Q2",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-05) (on time in each of the last 8 quarters; filed dates not given)"
     }
   ],
   "qpr_tower_progress": [
@@ -1494,13 +1909,13 @@
       "phase": "coral-towers",
       "seq": 1,
       "kind": "section6",
-      "granted_on": "2026-01-01",
-      "granted_precision": "month",
+      "granted_on": "2026-01-20",
+      "granted_precision": "day",
       "from_completion": "2028-08-01",
       "to_completion": "2029-02-01",
-      "order_ref": null,
+      "order_ref": "HARERA/GGM/EXT/2026/014",
       "snapshot": "harera_extension/coral-towers/1",
-      "source": "DESIGN §5b; kind derived: a project-specific HARERA extension of registration is a RERA s.6 extension; order ref CONFLICTS.md C-10 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b; DESIGN §5b · Fixture decisions, round 2 (C-10)"
     },
     {
       "id": "cae4c13b-bb48-59d8-a54b-a78857a722ef",
@@ -1511,9 +1926,9 @@
       "granted_precision": "day",
       "from_completion": "2029-02-01",
       "to_completion": "2029-08-01",
-      "order_ref": null,
+      "order_ref": "HARERA/GGM/EXT/2026/219",
       "snapshot": "harera_extension/coral-towers/2",
-      "source": "DESIGN §5b; kind derived: a project-specific HARERA extension of registration is a RERA s.6 extension; order ref CONFLICTS.md C-10 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b; DESIGN §5b · Fixture decisions, round 2 (C-10)"
     }
   ],
   "blanket_extensions": [
@@ -1539,7 +1954,8 @@
       "median_count_similar": 3,
       "latest_order_on": "2026-10-09",
       "previous_count": 13,
-      "source": "DESIGN §5b",
+      "units_history": null,
+      "source": "DESIGN §5b; DESIGN §5b · Fixture decisions, round 2 (C-11)",
       "window_to": "2026-10-14"
     },
     {
@@ -1552,6 +1968,7 @@
       "median_count_similar": 3,
       "latest_order_on": null,
       "previous_count": null,
+      "units_history": null,
       "source": "DESIGN §5b",
       "window_to": "2026-10-14"
     },
@@ -1565,6 +1982,7 @@
       "median_count_similar": 3,
       "latest_order_on": null,
       "previous_count": null,
+      "units_history": null,
       "source": "DESIGN §5b",
       "window_to": "2026-10-14"
     },
@@ -1578,21 +1996,100 @@
       "median_count_similar": null,
       "latest_order_on": null,
       "previous_count": null,
-      "source": "DESIGN §5b (24 complaints, 0.7 per 100 units); units base 3,400 from BUILD_PLAN §7.1 (CONFLICTS.md C-12 (proposed; not yet in DESIGN §5b))",
+      "units_history": [
+        {
+          "to": "2025-12",
+          "units": 2980
+        },
+        {
+          "from": "2026-04",
+          "units": 3400,
+          "line": "after Heron Point, Phase 2 was registered"
+        }
+      ],
+      "source": "DESIGN §5b (24 complaints, 0.7 per 100 units); units base DESIGN §5b · Fixture decisions, round 2 (C-12)",
       "window_to": "2026-10-14"
+    }
+  ],
+  "completion_events": [
+    {
+      "id": "7dd0ccb3-b18b-5c65-a0d6-e2e5ec13eb93",
+      "phase": "cedar-walk",
+      "kind": "oc",
+      "granted_on": "2019-04-01",
+      "granted_precision": "month",
+      "months_late": -2,
+      "late12": false,
+      "line": "OC came 2 months before the original RERA date.",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27)"
+    },
+    {
+      "id": "6f466dd5-cb2e-5ec5-b4ea-51f27c39ccf3",
+      "phase": "aurelia-heights-phase-1",
+      "kind": "oc",
+      "granted_on": "2023-03-01",
+      "granted_precision": "month",
+      "months_late": 27,
+      "late12": true,
+      "line": "OC came 27 months after the original RERA date. That is 21 months after the 6-month COVID extension.",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27)"
+    },
+    {
+      "id": "8dbc5dfd-14ba-5109-8af0-d286ab3ee32f",
+      "phase": "wren-court",
+      "kind": "oc",
+      "granted_on": "2021-11-01",
+      "granted_precision": "month",
+      "months_late": 11,
+      "late12": false,
+      "line": "OC came 11 months after the original RERA date.",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27)"
+    },
+    {
+      "id": "db128c8f-0974-5852-8579-2395cf02cec7",
+      "phase": "opaline-residences",
+      "kind": "oc",
+      "granted_on": "2023-05-01",
+      "granted_precision": "month",
+      "months_late": 11,
+      "late12": false,
+      "line": "OC came 11 months after the original RERA date.",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27)"
+    },
+    {
+      "id": "15fd858d-cf4a-51ca-bfe9-e88af37d8ed2",
+      "phase": "heron-point-phase-1",
+      "kind": "oc",
+      "granted_on": "2025-06-01",
+      "granted_precision": "month",
+      "months_late": 27,
+      "late12": true,
+      "line": "OC came 27 months after the original RERA date.",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27)"
+    },
+    {
+      "id": "985175fe-636e-5a04-aa6d-a35a7d2b80b8",
+      "phase": "linden-square",
+      "kind": "oc",
+      "granted_on": "2024-09-01",
+      "granted_precision": "month",
+      "months_late": 9,
+      "late12": false,
+      "line": "OC came 9 months after the original RERA date.",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-27)"
     }
   ],
   "insolvency_events": [
     {
-      "id": "780634e3-025f-554d-a248-e87e20ea4e39",
-      "developer": "elmstone-group-company",
+      "id": "550b1f06-a23d-5a9e-a4c0-0b069dea22ba",
+      "developer": "elmstone-infra-projects",
       "group": "elmstone-developers",
       "kind": "admitted",
       "event_on": "2023-03-12",
       "forum": "NCLT",
       "case_ref": null,
-      "snapshot": "ibbi/elmstone-group-company",
-      "source": "DESIGN §5b"
+      "snapshot": "ibbi/elmstone-infra-projects",
+      "source": "DESIGN §5b; company DESIGN §5b · Fixture decisions, round 2 (C-09)"
     }
   ],
   "insolvency_checks": [

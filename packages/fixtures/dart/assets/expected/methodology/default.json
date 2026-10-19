@@ -240,6 +240,15 @@
       "current": false
     }
   ],
+  "how_we_worked_this_out": {
+    "afford_the_wait": [
+      "We round the all-in to the nearest ₹1 lakh before any loan arithmetic: ₹2,74,00,400 becomes ₹2,74,00,000.",
+      "The bank pays out in step with the payment plan, after your down payment. The paid-out share rises in equal monthly steps from 52.5% in Nov 2026 to 95% in Dec 2027.",
+      "Pre-EMI is interest only on what the bank has paid out. Each month's outgo is pre-EMI plus your rent.",
+      "If keys come late, the Dec 2027 outgo carries on. A delay costs the number of months times that outgo.",
+      "RERA s.18 interest for delay is left out: HARERA orders take months."
+    ]
+  },
   "never_line": "No developer pays us. Ever. And no one can pay to change, hide, delay or preview a score.",
   "meta": {
     "generated_at": "2026-10-18T12:00:00+05:30",

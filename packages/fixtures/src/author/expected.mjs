@@ -93,7 +93,7 @@ export const PHASE_COPY = {
     commute: null,
   },
   "cedar-walk-phase-2": {
-    locality_line: null,
+    locality_line: "Sector 99, Dwarka Expressway",
     image: null,
     confidence_line: NF_LESS_CERTAIN,
     getting_around: null,
@@ -235,7 +235,8 @@ const HERO_SUMMARY = {
     "Delivery risk: Limited history, not enough history to score · no penalty · 9% built · 31% of the time used · Original completion Dec 2029",
   "heron-point-phase-2":
     "Delivery risk: Not scored yet · Registered Apr 2026 · Original completion Apr 2031",
-  "cedar-walk-phase-2": "Delivery risk: Moderate",
+  "cedar-walk-phase-2":
+    "Delivery risk: Moderate · 70% built · 92% of the time used · Original completion Mar 2027",
 };
 const SEARCH_NOTE = {
   [AH2]: "Since 2 Oct 2026. We're less certain about this one.",
@@ -245,7 +246,7 @@ const SEARCH_NOTE = {
   "laurel-residency": "Red-flag rule · NCLT order, 12 Mar 2023",
   "juniper-enclave": "Not enough history to score. No penalty.",
   "heron-point-phase-2": "Registered Apr 2026, less than 6 months ago.",
-  "cedar-walk-phase-2": "Delivery risk · as of 14 Oct 2026",
+  "cedar-walk-phase-2": "Delivery risk · as of 14 Oct 2026. We're less certain about this one.",
 };
 
 export function makeExpected(cat, ev, sc, dc, vectors) {
@@ -298,6 +299,8 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
         return "IBBI · NCLT order 12 Mar 2023";
       case "insolvency.search":
         return "IBBI · NCLT search";
+      case "completion.oc":
+        return `DTCP OC order · ${fmtMonth(f.value.oc)}`;
       default:
         return f.attribute;
     }
@@ -1274,6 +1277,12 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
         "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026.",
       );
     }
+    if (slug === "cedar-walk-phase-2")
+      add(
+        `${slug}/qpr-register`,
+        "HARERA QPR register",
+        "QPRs filed on time in each of the last 8 quarters.",
+      );
     if (slug === "coral-towers")
       for (const q of ["2026-Q2", "2026-Q3"])
         add(
@@ -1415,7 +1424,13 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
       (p) => p.status === "completed" && project(p.project).group === gslug,
     );
     const c = complaints(gslug);
-    const reply = gslug === "northfield-estates" ? dc.developer_replies[0] : null;
+    const reply =
+      gslug === "northfield-estates" ? dc.developer_replies.find((x) => x.scope === "group") : null;
+    const ocOf = (slug) => cat.completion_events.find((e) => e.phase === slug);
+    const regOf = (slug) => cat.rera_registrations.find((r) => r.phase === slug);
+    const units = c?.units_history
+      ? "Per 100 units uses the units in the group's RERA registrations: 2,980 until Dec 2025, and 3,400 since Heron Point, Phase 2 was registered in Apr 2026."
+      : null;
     const claim =
       g.claim_state === "claimed"
         ? {
@@ -1473,13 +1488,24 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
         finished: tr ? tr.value.finished : null,
         late: tr ? tr.value.late : null,
         line: trLine,
-        projects: finished.map((p) => ({
-          slug: p.slug,
-          name: p.name,
-          promised: null,
-          oc_on: null,
-          late: p.finished_late12,
-        })),
+        projects: finished.map((p) => {
+          const oc = ocOf(p.slug);
+          const r = regOf(p.slug);
+          return {
+            slug: p.slug,
+            name: p.name,
+            rera_number: r?.rera_number ?? null,
+            promoter_name: p.promoter
+              ? cat.developers.find((d) => d.key === p.promoter).legal_name
+              : null,
+            promised: r ? r.original_completion.slice(0, 7) : null,
+            oc_on: oc ? oc.granted_on.slice(0, 7) : null,
+            months_late: oc ? oc.months_late : null,
+            late: p.finished_late12,
+            line: oc ? oc.line : null,
+            sources: factByKey(`${p.slug}/oc`) ? sourceRefs([factByKey(`${p.slug}/oc`).id]) : [],
+          };
+        }),
         sources: tr ? sourceRefs([tr.id]) : [],
       },
       ongoing,
@@ -1490,6 +1516,7 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
             units_base: c.units_base,
             line_24m: `${c.count_24m} decided against the group, or ${c.per_100_units} per 100 units.`,
             half_years: [],
+            units_line: units,
             fairness_line: "A bigger group isn't penalised for its size.",
           }
         : null,
@@ -1499,6 +1526,9 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
         ? {
             text: reply.text,
             signatory_title: reply.signatory_title,
+            signed_line: reply.signed_line,
+            records_line:
+              "Heron Point, Phase 1 got OC in Jun 2025, 27 months after its original RERA date.",
             published_on: reply.published_on,
             check_by: reply.check_by,
             line: `Developer says · not yet verified · ${fmtDate(reply.published_on)} · we check it by ${fmtDate(reply.check_by)}`,
@@ -1560,7 +1590,8 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
         ? `Original completion ${fmtMonth(g.original_completion.slice(0, 7))}`
         : null,
       image_url: PHASE_COPY[slug].image,
-      centroid: null,
+      // GeoJSON order [lng, lat], as in API_CONTRACTS §4.3; the sector pin (§5b round 2, C-20).
+      centroid: (({ centroid: c }) => (c ? [c.lng, c.lat] : null))(project(p.project)),
     };
   };
   const rank = (slug) => {
@@ -1934,6 +1965,16 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
         note: m.note,
         current: m.status === "current",
       })),
+    // §5b round 2, C-22 (published here) and BUILD_PLAN D-6.
+    how_we_worked_this_out: {
+      afford_the_wait: [
+        "We round the all-in to the nearest ₹1 lakh before any loan arithmetic: ₹2,74,00,400 becomes ₹2,74,00,000.",
+        "The bank pays out in step with the payment plan, after your down payment. The paid-out share rises in equal monthly steps from 52.5% in Nov 2026 to 95% in Dec 2027.",
+        "Pre-EMI is interest only on what the bank has paid out. Each month's outgo is pre-EMI plus your rent.",
+        "If keys come late, the Dec 2027 outgo carries on. A delay costs the number of months times that outgo.",
+        "RERA s.18 interest for delay is left out: HARERA orders take months.",
+      ],
+    },
     never_line:
       "No developer pays us. Ever. And no one can pay to change, hide, delay or preview a score.",
     meta: { generated_at: NOW, disclaimer_line: DISCLAIMER, promise_line: PROMISE },
@@ -2044,14 +2085,15 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
     meta: { generated_at: NOW, promise_line: PROMISE, disclaimer_line: DISCLAIMER },
   });
   // api.flags() for an anonymous caller in the fixture world: T04's seeded defaults
-  // (20261020000700) with bands_public turned on by 30_scoring.sql. Internal- and
-  // user-audience flags read false for anon.
+  // (20261020000700), with bands_public turned on and the AI kill switches turned off
+  // until M5 by 30_scoring.sql (§5b round 2, C-29). Internal- and user-audience flags read
+  // false for anon.
   const flags = () => ({
     bands_public: true,
     harera_live_fetch: false,
-    ai_ask: true,
-    ai_doc_check: true,
-    ai_staging: true,
+    ai_ask: false,
+    ai_doc_check: false,
+    ai_staging: false,
     wa_outbound: false,
     wa_inbound: false,
     push_outbound: false,

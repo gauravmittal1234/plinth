@@ -4,7 +4,7 @@
     "slug": "laurel-residency",
     "name": "Laurel Residency",
     "short_code": null,
-    "rera_number": null,
+    "rera_number": "GGM/447/179/2020/52",
     "authority": {
       "code": "harera_ggm",
       "name": "HARERA Gurugram",
@@ -87,7 +87,7 @@
           "fact_ids": ["c640c448-4244-5d92-8506-022c6ef33369"],
           "evidence_url": "/evidence/c640c448-4244-5d92-8506-022c6ef33369",
           "official_url": "https://haryanarera.gov.in",
-          "as_of": "2026-06-30"
+          "as_of": "2026-07-15"
         }
       ]
     },
@@ -102,28 +102,28 @@
           "fact_ids": ["bda0d3f0-dac6-5315-b6e9-331d47f48a78"],
           "evidence_url": "/evidence/bda0d3f0-dac6-5315-b6e9-331d47f48a78",
           "official_url": "https://haryanarera.gov.in",
-          "as_of": "2025-09-30"
+          "as_of": "2025-10-13"
         },
         {
           "label": "HARERA QPR · Oct–Dec 2025",
           "fact_ids": ["77e91e5a-b9b7-571e-90a4-5d6f17e13c8c"],
           "evidence_url": "/evidence/77e91e5a-b9b7-571e-90a4-5d6f17e13c8c",
           "official_url": "https://haryanarera.gov.in",
-          "as_of": "2025-12-31"
+          "as_of": "2026-01-12"
         },
         {
           "label": "HARERA QPR · Jan–Mar 2026",
           "fact_ids": ["b932f577-9426-5fdd-877e-8c02c0a556f9"],
           "evidence_url": "/evidence/b932f577-9426-5fdd-877e-8c02c0a556f9",
           "official_url": "https://haryanarera.gov.in",
-          "as_of": "2026-03-31"
+          "as_of": "2026-04-14"
         },
         {
           "label": "HARERA QPR · Apr–Jun 2026",
           "fact_ids": ["c640c448-4244-5d92-8506-022c6ef33369"],
           "evidence_url": "/evidence/c640c448-4244-5d92-8506-022c6ef33369",
           "official_url": "https://haryanarera.gov.in",
-          "as_of": "2026-06-30"
+          "as_of": "2026-07-15"
         }
       ]
     }
@@ -138,8 +138,8 @@
     "latest_qpr": {
       "quarter": "2026-Q2",
       "label": "Apr–Jun 2026",
-      "filed_on": null,
-      "age_days": null
+      "filed_on": "2026-07-15",
+      "age_days": 95
     },
     "line": "34% built · 106% of the promised time used"
   },

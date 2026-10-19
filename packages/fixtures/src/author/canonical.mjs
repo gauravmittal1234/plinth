@@ -1,7 +1,8 @@
 // Canonical fixtures, part 1: catalogue and evidence (DESIGN.md §5/§5b as data).
-// Every record carries `source`. Gaps stay null and are listed in CONFLICTS.md.
+// Every record carries `source`. "R2" = DESIGN §5b "Fixture decisions, round 2" (answers to CONFLICTS.md).
 import {
   addDays,
+  addMonths,
   qprDue,
   quarterEndMonth,
   quartersRange,
@@ -14,6 +15,7 @@ export const S5 = "DESIGN §5";
 export const S5B = "DESIGN §5b";
 export const S5B_ENG = "DESIGN §5b · Engineering fixture decisions (19 Oct 2026)";
 export const S5B_SWEEP = "DESIGN §5b · Final sweep rulings (19 Oct 2026)";
+export const R2 = (c) => `DESIGN §5b · Fixture decisions, round 2 (${c})`;
 export const ART_EVIDENCE = "artboards AppRisk/WebProject (evidence copy, a T03 input)";
 export const derived = (rule) => `derived: ${rule}`;
 export const proposed = (id) => `CONFLICTS.md ${id} (proposed; not yet in DESIGN §5b)`;
@@ -21,9 +23,21 @@ export const proposed = (id) => `CONFLICTS.md ${id} (proposed; not yet in DESIGN
 const id = (kind, key) => uuid5(kind, key);
 export const IST = (date, time = "00:00:00") => `${date}T${time}+05:30`;
 const AH2 = "aurelia-heights-phase-2";
+const CW2 = "cedar-walk-phase-2";
 
 // ---------------------------------------------------------------- catalogue
 export function buildCatalogue() {
+  // Sector pins (R2 C-20): approximate positions, fictional projects at real sector locations.
+  const PIN = {
+    "sector-37d": [28.437, 76.985],
+    "sector-89": [28.418, 76.946],
+    "sector-92": [28.415, 76.928],
+    "sector-99": [28.479, 76.983],
+    "sector-102": [28.49, 76.996],
+    "sector-104": [28.5, 77.006],
+    "sector-106": [28.507, 77.014],
+    "sector-113": [28.527, 77.034],
+  };
   const localities = [
     { key: "gurugram", kind: "city", name: "Gurugram", parent: null, source: S5B },
     {
@@ -49,6 +63,13 @@ export function buildCatalogue() {
       name: "Sector 37D",
       parent: "dwarka-expressway",
       source: S5,
+    },
+    {
+      key: "sector-99",
+      kind: "sector",
+      name: "Sector 99",
+      parent: "dwarka-expressway",
+      source: R2("C-05"),
     },
     {
       key: "sector-102",
@@ -88,10 +109,12 @@ export function buildCatalogue() {
     parent: l.parent,
     coverage: l.coverage ?? "covered",
     coverage_line: l.coverage_line ?? null,
+    pin: PIN[l.key] ? { lat: PIN[l.key][0], lng: PIN[l.key][1] } : null,
     geom: null,
-    source: l.source,
+    source: PIN[l.key] ? `${l.source}; pin ${R2("C-20")}` : l.source,
   }));
 
+  const claims = R2("C-07, C-08");
   const developer_groups = [
     {
       slug: "northfield-estates",
@@ -107,24 +130,24 @@ export function buildCatalogue() {
     {
       slug: "orbis-land",
       name: "Orbis Land",
-      claim_state: "invited",
+      claim_state: "claimed",
       invited_on: "2025-11-24",
-      claimed_on: null,
+      claimed_on: "2025-12-03",
       linked_companies: null,
       finished_projects: 9,
       finished_late12: 1,
-      source: `${S5}; claim state ${proposed("C-07")}`,
+      source: `${S5}; ${claims}`,
     },
     {
       slug: "meridian-habitat",
       name: "Meridian Habitat",
       claim_state: "claimed",
       invited_on: "2025-11-24",
-      claimed_on: null,
+      claimed_on: "2025-12-05",
       linked_companies: null,
       finished_projects: 11,
       finished_late12: 2,
-      source: `${S5}; ${S5B} (claimed; claim date ${proposed("C-08")})`,
+      source: `${S5}; ${claims}`,
     },
     {
       slug: "vantage-buildcon",
@@ -153,11 +176,11 @@ export function buildCatalogue() {
       name: "Halcyon Homes",
       claim_state: "claimed",
       invited_on: "2025-11-24",
-      claimed_on: null,
+      claimed_on: "2025-12-09",
       linked_companies: null,
       finished_projects: 0,
       finished_late12: 0,
-      source: `${S5} ("new developer"); ${S5B} (claimed; claim date ${proposed("C-08")})`,
+      source: `${S5} ("new developer"); ${claims}`,
     },
     {
       slug: "ashgrove-realty",
@@ -183,7 +206,7 @@ export function buildCatalogue() {
       group: "northfield-estates",
       legal_name: "Northfield Estates Pvt Ltd",
       status: "active",
-      source: `${S5B} (holder of the Aurelia RERA collection account)`,
+      source: `${S5B}; ${R2("C-27")} (group parent, promoter of Aurelia Heights Ph 2)`,
     },
     {
       key: "heronstone-projects",
@@ -191,6 +214,27 @@ export function buildCatalogue() {
       legal_name: "Heronstone Projects",
       status: "active",
       source: S5B,
+    },
+    {
+      key: "cedarline-developers",
+      group: "northfield-estates",
+      legal_name: "Cedarline Developers",
+      status: "active",
+      source: R2("C-05, C-27"),
+    },
+    {
+      key: "northfield-buildtech",
+      group: "northfield-estates",
+      legal_name: "Northfield Buildtech",
+      status: "active",
+      source: R2("C-27"),
+    },
+    {
+      key: "opaline-realtors-llp",
+      group: "northfield-estates",
+      legal_name: "Opaline Realtors LLP",
+      status: "active",
+      source: R2("C-27"),
     },
     {
       key: "orbis-land",
@@ -221,11 +265,11 @@ export function buildCatalogue() {
       source: S5,
     },
     {
-      key: "elmstone-group-company",
+      key: "elmstone-infra-projects",
       group: "elmstone-developers",
-      legal_name: "Elmstone Developers group company",
+      legal_name: "Elmstone Infra Projects Pvt Ltd",
       status: "cirp",
-      source: `${S5B} (the group company is unnamed; ${proposed("C-09")})`,
+      source: `${S5B}; name ${R2("C-09")}`,
     },
     {
       key: "halcyon-homes",
@@ -248,7 +292,7 @@ export function buildCatalogue() {
     legal_name: d.legal_name,
     cin: null,
     llpin: null,
-    kind: "company",
+    kind: d.legal_name.endsWith("LLP") ? "llp" : "company",
     status: d.status,
     source: d.source,
   }));
@@ -261,7 +305,7 @@ export function buildCatalogue() {
     ["laurel-residency", "Laurel Residency", "elmstone-developers", "sector-92", S5],
     ["juniper-enclave", "Juniper Enclave", "halcyon-homes", "sector-102", S5],
     ["heron-point", "Heron Point", "northfield-estates", "sector-104", S5B],
-    ["cedar-walk", "Cedar Walk", "northfield-estates", null, S5],
+    ["cedar-walk", "Cedar Walk", "northfield-estates", "sector-99", `${S5}; sector ${R2("C-05")}`],
     ["wren-court", "Wren Court", "northfield-estates", null, S5],
     ["opaline-residences", "Opaline Residences", "northfield-estates", null, S5],
     ["linden-square", "Linden Square", "northfield-estates", null, S5],
@@ -272,11 +316,12 @@ export function buildCatalogue() {
     group,
     locality,
     footprint: null,
-    centroid: null,
-    source,
+    centroid: locality && PIN[locality] ? { lat: PIN[locality][0], lng: PIN[locality][1] } : null,
+    source: locality && PIN[locality] ? `${source}; centroid = sector pin ${R2("C-20")}` : source,
   }));
 
   // The 8 seeded phases (the unit of a page, a score and a follow) + Northfield's 6 finished phases.
+  const C27 = R2("C-27");
   const phases = [
     {
       slug: AH2,
@@ -298,7 +343,6 @@ export function buildCatalogue() {
       promoter: "orbis-land",
       units_total: 420,
       status: "under_construction",
-      short_code: null,
       corridor: "dwarka-expressway",
       source: S5B,
     },
@@ -310,7 +354,6 @@ export function buildCatalogue() {
       promoter: "meridian-habitat",
       units_total: 360,
       status: "under_construction",
-      short_code: null,
       corridor: "dwarka-expressway",
       source: S5B,
     },
@@ -322,7 +365,6 @@ export function buildCatalogue() {
       promoter: "vantage-buildcon",
       units_total: 640,
       status: "under_construction",
-      short_code: null,
       corridor: "new-gurugram",
       source: S5B,
     },
@@ -334,7 +376,6 @@ export function buildCatalogue() {
       promoter: "elmstone-developers",
       units_total: null,
       status: "stalled",
-      short_code: null,
       corridor: "new-gurugram",
       source: S5B,
     },
@@ -346,7 +387,6 @@ export function buildCatalogue() {
       promoter: "halcyon-homes",
       units_total: 280,
       status: "under_construction",
-      short_code: null,
       corridor: "dwarka-expressway",
       source: S5B,
     },
@@ -358,76 +398,80 @@ export function buildCatalogue() {
       promoter: "heronstone-projects",
       units_total: null,
       status: "registered",
-      short_code: null,
       corridor: "dwarka-expressway",
       source: S5B,
     },
     {
-      slug: "cedar-walk-phase-2",
+      slug: CW2,
       project: "cedar-walk",
       name: "Cedar Walk, Phase 2",
       short_name: "Cedar Walk Ph 2",
-      promoter: null,
-      units_total: null,
+      promoter: "cedarline-developers",
+      units_total: 320,
       status: "under_construction",
-      short_code: null,
-      corridor: null,
-      source: `${S5} (Northfield ongoing, Moderate); other facts ${proposed("C-05")}`,
+      corridor: "dwarka-expressway",
+      source: `${S5}; ${R2("C-05")}`,
     },
-    // Northfield's finished phases (track record): names and late flags only (§5).
+    // Northfield's finished phases (track record), R2 C-27.
     {
       slug: "cedar-walk",
       project: "cedar-walk",
       name: "Cedar Walk",
-      short_name: "Cedar Walk",
+      short_name: "Cedar Walk Ph 1",
+      promoter: "cedarline-developers",
       status: "completed",
       finished_late12: false,
-      source: S5,
+      source: `${S5}; ${C27}`,
     },
     {
       slug: "aurelia-heights-phase-1",
       project: "aurelia-heights",
       name: "Aurelia Heights, Phase 1",
       short_name: "Aurelia Heights Ph 1",
+      promoter: "northfield-buildtech",
       status: "completed",
       finished_late12: true,
-      source: S5,
+      source: `${S5}; ${C27}`,
     },
     {
       slug: "wren-court",
       project: "wren-court",
       name: "Wren Court",
       short_name: "Wren Court",
+      promoter: null,
       status: "completed",
       finished_late12: false,
-      source: S5,
+      source: `${S5}; ${C27}`,
     },
     {
       slug: "opaline-residences",
       project: "opaline-residences",
       name: "Opaline Residences",
       short_name: "Opaline Residences",
+      promoter: "opaline-realtors-llp",
       status: "completed",
       finished_late12: false,
-      source: S5,
+      source: `${S5}; ${C27}`,
     },
     {
       slug: "heron-point-phase-1",
       project: "heron-point",
       name: "Heron Point, Phase 1",
       short_name: "Heron Point Ph 1",
+      promoter: "heronstone-projects",
       status: "completed",
       finished_late12: true,
-      source: S5,
+      source: `${S5}; ${C27}`,
     },
     {
       slug: "linden-square",
       project: "linden-square",
       name: "Linden Square",
       short_name: "Linden Square",
+      promoter: null,
       status: "completed",
       finished_late12: false,
-      source: S5,
+      source: `${S5}; ${C27}`,
     },
   ].map((p) => ({
     id: id("phase", p.slug),
@@ -465,6 +509,7 @@ export function buildCatalogue() {
     snapshot: `harera_registration/${phase}`,
     ...o,
   });
+  const NUM = R2("C-04");
   const rera_registrations = [
     reg(AH2, {
       rera_number: "GGM/673/405/2022/117",
@@ -480,34 +525,39 @@ export function buildCatalogue() {
       source: S5B,
     }),
     reg("kestrel-park", {
+      rera_number: "GGM/781/513/2023/64",
       registered_on: "2023-11-01",
       original_completion: "2028-11-01",
       current_completion: "2028-11-01",
-      source: `${S5B_ENG}; RERA number ${proposed("C-04")}`,
+      source: `${S5B_ENG}; RERA number ${NUM}`,
     }),
     reg("sapphire-grove-phase-1", {
+      rera_number: "GGM/867/599/2025/03",
       registered_on: "2025-01-01",
       original_completion: "2028-03-01",
       current_completion: "2028-03-01",
-      source: `${S5} (completion); registration month ${derived("time used 55% in Oct 2026 → Jan 2025")} (${proposed("C-02")}); RERA number ${proposed("C-04")}`,
+      source: `${S5} (completion); registration ${R2("C-02")}; RERA number ${NUM}`,
     }),
     reg("coral-towers", {
+      rera_number: "GGM/612/344/2022/41",
       registered_on: "2022-07-01",
       original_completion: "2028-08-01",
       current_completion: "2029-08-01",
-      source: `${S5B} (completion, extensions); registration month ${derived("time used 70% in Oct 2026 → Jul 2022; Jun 2022 also rounds to 70%")} (${proposed("C-02")}); RERA number ${proposed("C-04")}`,
+      source: `${S5B} (completion, extensions); registration ${R2("C-02")}; RERA number ${NUM}`,
     }),
     reg("laurel-residency", {
+      rera_number: "GGM/447/179/2020/52",
       registered_on: "2020-11-01",
       original_completion: "2026-06-01",
       current_completion: "2026-06-01",
-      source: `${S5B_ENG}; RERA number ${proposed("C-04")}`,
+      source: `${S5B_ENG}; RERA number ${NUM}`,
     }),
     reg("juniper-enclave", {
+      rera_number: "GGM/889/621/2025/22",
       registered_on: "2025-05-01",
       original_completion: "2029-12-01",
       current_completion: "2029-12-01",
-      source: `${S5B}; RERA number ${proposed("C-04")}`,
+      source: `${S5B}; RERA number ${NUM}`,
     }),
     reg("heron-point-phase-2", {
       rera_number: "GGM/902/634/2026/12",
@@ -517,7 +567,86 @@ export function buildCatalogue() {
       current_completion: "2031-04-01",
       source: `${S5B}; registration day ${S5B_ENG}`,
     }),
+    reg(CW2, {
+      rera_number: "GGM/566/298/2022/31",
+      registered_on: "2022-01-01",
+      original_completion: "2027-03-01",
+      current_completion: "2027-03-01",
+      source: R2("C-04, C-05"),
+    }),
   ];
+  // Finished Northfield phases (R2 C-27): RERA number, OC month and timing. The original RERA
+  // date is derived (OC month minus the stated months late, or plus months early); the
+  // registration month is not given (the year is in the number).
+  const finished = [
+    [
+      "cedar-walk",
+      "GGM/118/50/2017/24",
+      "2019-04",
+      -2,
+      "OC came 2 months before the original RERA date.",
+    ],
+    [
+      "aurelia-heights-phase-1",
+      "GGM/131/63/2017/38",
+      "2023-03",
+      27,
+      "OC came 27 months after the original RERA date. That is 21 months after the 6-month COVID extension.",
+    ],
+    [
+      "wren-court",
+      "GGM/176/108/2018/09",
+      "2021-11",
+      11,
+      "OC came 11 months after the original RERA date.",
+    ],
+    [
+      "opaline-residences",
+      "GGM/262/194/2018/71",
+      "2023-05",
+      11,
+      "OC came 11 months after the original RERA date.",
+    ],
+    [
+      "heron-point-phase-1",
+      "GGM/301/233/2019/15",
+      "2025-06",
+      27,
+      "OC came 27 months after the original RERA date.",
+    ],
+    [
+      "linden-square",
+      "GGM/349/281/2019/56",
+      "2024-09",
+      9,
+      "OC came 9 months after the original RERA date.",
+    ],
+  ];
+  for (const [phase, num, oc, late] of finished) {
+    const orig = addMonths(oc, -late);
+    rera_registrations.push(
+      reg(phase, {
+        rera_number: num,
+        registered_on: null,
+        original_completion: `${orig}-01`,
+        current_completion: null,
+        status: "valid",
+        snapshot: null,
+        source: `${C27}; original date ${derived(`OC ${oc} minus ${late} months`)}`,
+      }),
+    );
+  }
+  const completion_events = finished.map(([phase, , oc, late, line]) => ({
+    id: id("completion_event", `${phase}/oc`),
+    phase,
+    kind: "oc",
+    granted_on: `${oc}-01`,
+    granted_precision: "month",
+    months_late: late,
+    late12: late > 12,
+    line,
+    source: C27,
+  }));
 
   const towers = ["A", "B", "C"].map((code) => ({
     id: id("tower", `${AH2}/${code}`),
@@ -599,9 +728,10 @@ export function buildCatalogue() {
       "from_developer",
       `${S5B} (3 BHK quoted; carpet not in §5b)`,
     ),
+    ut(CW2, "3 BHK", 1350, null, "from_developer", `${R2("C-05")} (price list of 12 Jun 2026)`),
   ];
 
-  // QPR filings. Aurelia: 14 rows, Apr–Jun 2023 to Jul–Sep 2026 (C-03), progress only on the 8 §5b quarters.
+  // QPR filings. Aurelia: 14 rows, Apr–Jun 2023 to Jul–Sep 2026 (R2 C-03), progress only on the 8 §5b quarters.
   const aureliaProgress = {
     "2023-Q2": [24, 6, 10],
     "2023-Q4": [38, 12, 20],
@@ -630,13 +760,14 @@ export function buildCatalogue() {
     snapshot: null,
     ...o,
   });
+  const onTime = (filed) => ({ status: "on_time", days_late: filed ? 0 : null, filed_on: filed });
   const qpr_filings = [];
   for (const q of quartersRange("2023-Q2", "2026-Q3")) {
     const p = aureliaProgress[q];
     const late = aureliaLate[q];
     let o = {
       status: "on_time",
-      source: `${S5B} (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named)`,
+      source: `${S5B} (quarters before Jul–Sep 2024 on time; 3 of the last 8 late, named); first QPR ${R2("C-03")}`,
     };
     if (late)
       o = {
@@ -647,9 +778,7 @@ export function buildCatalogue() {
       };
     if (q === "2026-Q2")
       o = {
-        status: "on_time",
-        days_late: 0,
-        filed_on: "2026-07-15",
+        ...onTime("2026-07-15"),
         fetched_at: IST("2026-07-16"),
         source: `${S5B} (filed 15 Jul 2026, on time); fetched 16 Jul 2026 per ${ART_EVIDENCE}`,
       };
@@ -664,16 +793,16 @@ export function buildCatalogue() {
     o.snapshot = q === "2026-Q3" ? null : `harera_qpr/${AH2}/${q}`;
     qpr_filings.push(qpr(AH2, q, o));
   }
+  const C06 = R2("C-06");
   qpr_filings.push(
     qpr("kestrel-park", "2026-Q2", {
+      ...onTime("2026-07-14"),
       built_pct: 59,
       snapshot: "harera_qpr/kestrel-park/2026-Q2",
-      source: `${S5B} (Kestrel's Jul–Sep QPR: built 59% → 63%); filing date and timeliness ${proposed("C-06")}`,
+      source: `${S5B} (Kestrel's Jul–Sep QPR: built 59% → 63%); filed date ${C06}`,
     }),
     qpr("kestrel-park", "2026-Q3", {
-      status: "on_time",
-      days_late: 0,
-      filed_on: "2026-10-12",
+      ...onTime("2026-10-12"),
       built_pct: 63,
       snapshot: "harera_qpr/kestrel-park/2026-Q3",
       source: S5B,
@@ -687,9 +816,7 @@ export function buildCatalogue() {
       source: S5B,
     }),
     qpr("sapphire-grove-phase-1", "2026-Q3", {
-      status: "on_time",
-      days_late: 0,
-      filed_on: "2026-10-15",
+      ...onTime("2026-10-15"),
       appeared_on: "2026-10-16",
       fetched_at: IST("2026-10-16", "19:40:00"),
       notes: "Being read; no figures shown until the re-score",
@@ -697,20 +824,39 @@ export function buildCatalogue() {
       source: S5B,
     }),
     qpr("coral-towers", "2026-Q1", {
-      status: "on_time",
-      days_late: 0,
-      filed_on: "2026-04-14",
+      ...onTime("2026-04-14"),
       built_pct: 22,
       snapshot: "harera_qpr/coral-towers/2026-Q1",
       source: S5B,
     }),
     qpr("coral-towers", "2026-Q2", { status: "missing", source: S5B }),
     qpr("coral-towers", "2026-Q3", { status: "missing", source: S5B }),
-    ...["2025-Q3", "2025-Q4", "2026-Q1", "2026-Q2"].map((q) =>
+    ...[
+      ["2025-Q3", "2025-10-13"],
+      ["2025-Q4", "2026-01-12"],
+      ["2026-Q1", "2026-04-14"],
+      ["2026-Q2", "2026-07-15"],
+    ].map(([q, filed]) =>
       qpr("laurel-residency", q, {
+        ...onTime(filed),
         built_pct: 34,
         snapshot: `harera_qpr/laurel-residency/${q}`,
-        source: `${S5B} (34% built in each QPR, Jul–Sep 2025 to Apr–Jun 2026); filing dates ${proposed("C-06")}`,
+        source: `${S5B} (34% built in each QPR, Jul–Sep 2025 to Apr–Jun 2026); filed dates ${C06}`,
+      }),
+    ),
+    qpr("juniper-enclave", "2026-Q2", {
+      ...onTime("2026-07-10"),
+      built_pct: 9,
+      snapshot: "harera_qpr/juniper-enclave/2026-Q2",
+      source: `${S5B} (9% built); quarter and filed date ${C06}`,
+    }),
+    // Cedar Walk Ph 2: QPRs on time in the last 8 quarters; Apr–Jun 2026 shows 70% built (R2 C-05).
+    ...quartersRange("2024-Q3", "2026-Q2").map((q) =>
+      qpr(CW2, q, {
+        status: "on_time",
+        built_pct: q === "2026-Q2" ? 70 : null,
+        snapshot: q === "2026-Q2" ? `harera_qpr/${CW2}/${q}` : null,
+        source: `${R2("C-05")} (on time in each of the last 8 quarters; filed dates not given)`,
       }),
     ),
   );
@@ -735,19 +881,20 @@ export function buildCatalogue() {
         source: S5B,
       });
 
+  const C10 = R2("C-10");
   const extensions = [
     {
       id: id("extension", "coral-towers/1"),
       phase: "coral-towers",
       seq: 1,
       kind: "section6",
-      granted_on: "2026-01-01",
-      granted_precision: "month",
+      granted_on: "2026-01-20",
+      granted_precision: "day",
       from_completion: "2028-08-01",
       to_completion: "2029-02-01",
-      order_ref: null,
+      order_ref: "HARERA/GGM/EXT/2026/014",
       snapshot: "harera_extension/coral-towers/1",
-      source: `${S5B}; kind ${derived("a project-specific HARERA extension of registration is a RERA s.6 extension")}; order ref ${proposed("C-10")}`,
+      source: `${S5B}; ${C10}`,
     },
     {
       id: id("extension", "coral-towers/2"),
@@ -758,9 +905,9 @@ export function buildCatalogue() {
       granted_precision: "day",
       from_completion: "2029-02-01",
       to_completion: "2029-08-01",
-      order_ref: null,
+      order_ref: "HARERA/GGM/EXT/2026/219",
       snapshot: "harera_extension/coral-towers/2",
-      source: `${S5B}; kind ${derived("a project-specific HARERA extension of registration is a RERA s.6 extension")}; order ref ${proposed("C-10")}`,
+      source: `${S5B}; ${C10}`,
     },
   ];
 
@@ -777,7 +924,7 @@ export function buildCatalogue() {
     },
   ];
 
-  // Complaint counts (24 months, decided against the promoter). Per-order rows are not in §5b (C-11).
+  // Complaint counts (24 months, decided against the promoter), stored as count facts in R1 (R2 C-11).
   const complaint_counts = [
     {
       subject_type: "phase",
@@ -788,7 +935,8 @@ export function buildCatalogue() {
       median_count_similar: 3,
       latest_order_on: "2026-10-09",
       previous_count: 13,
-      source: S5B,
+      units_history: null,
+      source: `${S5B}; ${R2("C-11")}`,
     },
     {
       subject_type: "phase",
@@ -799,6 +947,7 @@ export function buildCatalogue() {
       median_count_similar: 3,
       latest_order_on: null,
       previous_count: null,
+      units_history: null,
       source: S5B,
     },
     {
@@ -810,6 +959,7 @@ export function buildCatalogue() {
       median_count_similar: 3,
       latest_order_on: null,
       previous_count: null,
+      units_history: null,
       source: S5B,
     },
     {
@@ -821,21 +971,25 @@ export function buildCatalogue() {
       median_count_similar: null,
       latest_order_on: null,
       previous_count: null,
-      source: `${S5B} (24 complaints, 0.7 per 100 units); units base 3,400 from BUILD_PLAN §7.1 (${proposed("C-12")})`,
+      units_history: [
+        { to: "2025-12", units: 2980 },
+        { from: "2026-04", units: 3400, line: "after Heron Point, Phase 2 was registered" },
+      ],
+      source: `${S5B} (24 complaints, 0.7 per 100 units); units base ${R2("C-12")}`,
     },
   ].map((c) => ({ id: id("complaint_count", c.subject), ...c, window_to: "2026-10-14" }));
 
   const insolvency_events = [
     {
-      id: id("insolvency_event", "elmstone-group-company/admitted"),
-      developer: "elmstone-group-company",
+      id: id("insolvency_event", "elmstone-infra-projects/admitted"),
+      developer: "elmstone-infra-projects",
       group: "elmstone-developers",
       kind: "admitted",
       event_on: "2023-03-12",
       forum: "NCLT",
       case_ref: null,
-      snapshot: "ibbi/elmstone-group-company",
-      source: S5B,
+      snapshot: "ibbi/elmstone-infra-projects",
+      source: `${S5B}; company ${R2("C-09")}`,
     },
   ];
   const insolvency_checks = [
@@ -936,6 +1090,7 @@ export function buildCatalogue() {
     extensions,
     blanket_extensions,
     complaint_counts,
+    completion_events,
     insolvency_events,
     insolvency_checks,
     reported_incidents,
@@ -1016,8 +1171,8 @@ export function buildEvidence(cat) {
     return rec;
   };
 
-  // Registrations
-  for (const r of cat.rera_registrations) {
+  // Registrations of the 8 phases
+  for (const r of cat.rera_registrations.filter((x) => x.snapshot)) {
     snap(r.snapshot, "harera_registration", IST("2026-10-14"), "application/pdf");
     const ph = cat.phases.find((p) => p.slug === r.phase);
     const isA = r.phase === AH2;
@@ -1188,13 +1343,14 @@ export function buildEvidence(cat) {
   snap(`harera_qpr_register/${AH2}/2026-10-18`, "harera_qpr_register", IST("2026-10-18"));
   const d118 = {
     ref: "D-118",
-    raised_on: null,
-    decided_on: null,
+    raised_on: "2026-08-14",
+    decided_on: "2026-09-03",
     outcome: "upheld",
     before: "late",
     after: "on_time",
-    line: "Corrected after dispute D-118 (upheld): the Apr–Jun 2026 QPR was first marked late; it was filed 15 Jul 2026, on time.",
+    line: "Corrected 3 Sep 2026 after dispute D-118 (upheld): the Apr–Jun 2026 QPR was first marked late; it was filed 15 Jul 2026, on time.",
   };
+  const d118src = `${S5B_SWEEP} (D-118); dates ${R2("C-14")}`;
   fact({
     key: `${AH2}/qpr-register`,
     subject_type: "registration",
@@ -1230,7 +1386,7 @@ export function buildEvidence(cat) {
       used_in: ["Reason 2 of Delivery risk", "Records → QPR filings"],
       source: ART_EVIDENCE,
     },
-    source: `${S5B}; time used ${derived("month-based, Dec 2022 → Oct 2026 over Dec 2022 → Dec 2027 = 46/60")}; correction ${S5B_SWEEP} (D-118)`,
+    source: `${S5B}; time used ${derived("month-based, Dec 2022 → Oct 2026 over Dec 2022 → Dec 2027 = 46/60")}; ${d118src}`,
   });
   fact({
     key: `${AH2}/qpr/2026-Q2/status`,
@@ -1241,7 +1397,7 @@ export function buildEvidence(cat) {
     as_of: "2026-07-15",
     snapshot: `harera_qpr_register/${AH2}/2026-10-14`,
     corrections: [d118],
-    source: `${S5B} (D-118 upheld; dates ${proposed("C-14")})`,
+    source: `${S5B}; ${d118src}`,
   });
   fact({
     key: `${AH2}/qpr/2026-Q3/missing`,
@@ -1254,6 +1410,18 @@ export function buildEvidence(cat) {
     extract_text: "No QPR for Jul–Sep 2026 on the HARERA register (checked 18 Oct 2026).",
     read_note: "Register read by software. Checked 18 Oct 2026.",
     source: S5B,
+  });
+  // Cedar Walk Ph 2: on time in each of the last 8 quarters (R2 C-05)
+  snap(`harera_qpr_register/${CW2}/2026-10-14`, "harera_qpr_register", IST("2026-10-14"));
+  fact({
+    key: `${CW2}/qpr-register`,
+    subject_type: "registration",
+    subject: CW2,
+    attribute: "qpr.filing_record",
+    value: { late_in_last_8: 0, first_quarter: "2024-Q3", last_quarter: "2026-Q2" },
+    as_of: "2026-10-14",
+    snapshot: `harera_qpr_register/${CW2}/2026-10-14`,
+    source: R2("C-05"),
   });
   snap("harera_qpr_register/coral-towers/2026-10-18", "harera_qpr_register", IST("2026-10-18"));
   for (const q of ["2026-Q2", "2026-Q3"])
@@ -1313,17 +1481,18 @@ export function buildEvidence(cat) {
     source: S5B,
   });
 
-  // Time used today (phase level; month-based, checked against the §5 figure)
+  // Time used today (phase level; month-based, checked against the §5/§5b figure)
   const tu = [
-    [AH2, 77],
-    ["kestrel-park", 58],
-    ["sapphire-grove-phase-1", 55],
-    ["coral-towers", 70],
-    ["laurel-residency", 106],
-    ["juniper-enclave", 31],
-    ["heron-point-phase-2", 10],
+    [AH2, 77, `${S5}/${S5B}`],
+    ["kestrel-park", 58, S5],
+    ["sapphire-grove-phase-1", 55, S5],
+    ["coral-towers", 70, S5],
+    ["laurel-residency", 106, S5B],
+    ["juniper-enclave", 31, S5B],
+    ["heron-point-phase-2", 10, null],
+    [CW2, 92, R2("C-05")],
   ];
-  for (const [ph, pct] of tu) {
+  for (const [ph, pct, src] of tu) {
     const r = cat.rera_registrations.find((x) => x.phase === ph);
     const calc = timeUsedPct(
       r.registered_on.slice(0, 7),
@@ -1338,24 +1507,14 @@ export function buildEvidence(cat) {
       attribute: "progress.time_used_pct",
       value: pct,
       as_of: "2026-10-14",
-      method: "parser",
+      method: "rules",
       method_version: "time-used rule v1.2",
       snapshot: r.snapshot,
-      source:
-        ph === "heron-point-phase-2"
-          ? derived("month-based time used, Apr 2026 → Oct 2026 over Apr 2026 → Apr 2031 = 6/60")
-          : `${S5}/${S5B} figure; ${derived("month-based time used (BUILD_PLAN §7.1)")}`,
+      source: src
+        ? `${src} figure; ${derived("month-based time used (BUILD_PLAN §7.1)")}`
+        : derived("month-based time used, Apr 2026 → Oct 2026 over Apr 2026 → Apr 2031 = 6/60"),
     });
   }
-  fact({
-    key: "juniper-enclave/progress",
-    subject_type: "phase",
-    subject: "juniper-enclave",
-    attribute: "progress.built_pct",
-    value: 9,
-    as_of: "2026-10-14",
-    source: `${S5B} (latest QPR); its quarter ${proposed("C-06")}`,
-  });
 
   // Complaints (reason 3 for Aurelia)
   for (const c of cat.complaint_counts) {
@@ -1411,7 +1570,7 @@ export function buildEvidence(cat) {
     });
   }
 
-  // Track records (reason 4 for Aurelia)
+  // Track records (reason 4 for Aurelia) and Northfield's finished projects
   snap("dtcp_oc/northfield-estates/2026-10-14", "dtcp_oc", IST("2026-10-14"));
   for (const g of cat.developer_groups.filter((x) => x.finished_projects != null)) {
     const isN = g.slug === "northfield-estates";
@@ -1448,6 +1607,25 @@ export function buildEvidence(cat) {
       source: g.source,
     });
   }
+  for (const e of cat.completion_events) {
+    const r = cat.rera_registrations.find((x) => x.phase === e.phase);
+    fact({
+      key: `${e.phase}/oc`,
+      subject_type: "phase",
+      subject: e.phase,
+      attribute: "completion.oc",
+      value: {
+        rera_number: r.rera_number,
+        original_completion: r.original_completion.slice(0, 7),
+        oc: e.granted_on.slice(0, 7),
+        months_late: e.months_late,
+      },
+      as_of: "2026-10-14",
+      snapshot: "dtcp_oc/northfield-estates/2026-10-14",
+      method: "manual",
+      source: e.source,
+    });
+  }
 
   // Insolvency
   snap("ibbi/northfield-estates/2026-10-14", "ibbi", IST("2026-10-14"));
@@ -1466,29 +1644,25 @@ export function buildEvidence(cat) {
     read_note: "Searched by company name and CIN. Checked by a person.",
     source: S5,
   });
-  snap("ibbi/elmstone-group-company", "ibbi", IST("2026-10-14"));
+  snap("ibbi/elmstone-infra-projects", "ibbi", IST("2026-10-14"));
   fact({
     key: "elmstone-developers/insolvency-admitted",
     subject_type: "developer",
-    subject: "elmstone-group-company",
+    subject: "elmstone-infra-projects",
     attribute: "insolvency.admitted",
-    value: { forum: "NCLT", order_on: "2023-03-12" },
+    value: { company: "Elmstone Infra Projects Pvt Ltd", forum: "NCLT", order_on: "2023-03-12" },
     as_of: "2023-03-12",
     learned_at: IST("2026-10-14"),
-    snapshot: "ibbi/elmstone-group-company",
+    snapshot: "ibbi/elmstone-infra-projects",
     extract_text:
-      "Insolvency (CIRP) admitted against a group company of Elmstone Developers, NCLT order of 12 Mar 2023.",
+      "Insolvency (CIRP) admitted against Elmstone Infra Projects Pvt Ltd, a group company of Elmstone Developers, NCLT order of 12 Mar 2023.",
     method: "manual",
-    source: S5B,
+    source: `${S5B}; company ${R2("C-09")}`,
   });
 
   // Coral's two extensions
   for (const e of cat.extensions) {
-    snap(
-      e.snapshot,
-      "harera_extension",
-      IST(e.granted_precision === "day" ? e.granted_on : "2026-10-14"),
-    );
+    snap(e.snapshot, "harera_extension", IST(e.granted_on));
     fact({
       key: `coral-towers/extension-${e.seq}`,
       subject_type: "registration",
@@ -1496,45 +1670,34 @@ export function buildEvidence(cat) {
       attribute: "registration.extension",
       value: {
         seq: e.seq,
-        granted: e.granted_precision === "day" ? e.granted_on : e.granted_on.slice(0, 7),
+        granted: e.granted_on,
         from_completion: e.from_completion.slice(0, 7),
         to_completion: e.to_completion.slice(0, 7),
+        order_ref: e.order_ref,
       },
-      as_of: e.granted_precision === "day" ? e.granted_on : "2026-01-31",
+      as_of: e.granted_on,
       snapshot: e.snapshot,
-      source: S5B,
+      extract_text: `Order ${e.order_ref}: completion extended from ${e.from_completion.slice(0, 7)} to ${e.to_completion.slice(0, 7)} (RERA s.6).`,
+      source: e.source,
     });
   }
 
   // Prices (from the developer; all-in = rules v2026.10 on the developer's cost sheet)
   const prices = [
     [AH2, 23500000, 27400400, 18900, "2026-10-02", S5B],
-    [
-      "kestrel-park",
-      21000000,
-      24400000,
-      17400,
-      null,
-      `${S5}; exact all-in rupees ${proposed("C-13")}`,
-    ],
+    ["kestrel-park", 21000000, 24400000, 17400, null, `${S5}; rounded all-in ${R2("C-13")}`],
     [
       "sapphire-grove-phase-1",
       19500000,
       22700000,
       16200,
       null,
-      `${S5}/${S5B}; exact all-in rupees ${proposed("C-13")}`,
+      `${S5}/${S5B}; rounded all-in ${R2("C-13")}`,
     ],
-    [
-      "coral-towers",
-      16200000,
-      19000000,
-      15300,
-      null,
-      `${S5}; exact all-in rupees ${proposed("C-13")}`,
-    ],
+    ["coral-towers", 16200000, 19000000, 15300, null, `${S5}; rounded all-in ${R2("C-13")}`],
     ["laurel-residency", 14800000, null, null, null, S5B],
     ["juniper-enclave", 22500000, null, null, null, S5B],
+    [CW2, 18500000, null, null, "2026-06-12", R2("C-05")],
   ];
   for (const [ph, quoted, allIn, psf, dated, src] of prices) {
     fact({
@@ -1563,13 +1726,12 @@ export function buildEvidence(cat) {
         },
         as_of: dated ?? "2026-10-14",
         lane: "from_developer",
-        method: "developer",
+        method: "rules",
         method_version: "cost rules 2026.10",
         source: src,
       });
   }
 
-  // Reported waterlogging near Sector 37D (reported, not verified)
   for (const r of cat.reported_incidents)
     fact({
       key: `sector-37d/waterlogging/${r.reported_on}`,

@@ -205,8 +205,15 @@
       "version": 1,
       "lane": "from_developer",
       "note": null,
-      "items": [],
-      "source": "DESIGN §5b (dated 12 Jun 2026); items CONFLICTS.md C-05 (proposed; not yet in DESIGN §5b)"
+      "items": [
+        {
+          "unit_type": "1b44b78a-77ec-52d3-bc53-1325e1b8fa70",
+          "unit_label": "3 BHK",
+          "base_price_inr": 18500000,
+          "per_sqft_carpet_inr": null
+        }
+      ],
+      "source": "DESIGN §5b (dated 12 Jun 2026); 3 BHK from ₹1.85 Cr DESIGN §5b · Fixture decisions, round 2 (C-05)"
     }
   ],
   "previous_prices": [
@@ -334,7 +341,7 @@
         "B": 45,
         "C": 37.5
       },
-      "source": "DESIGN §5b (13 stages, 100% in all); DATA_MODEL's \"11 rows\" CONFLICTS.md C-18 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b; 13 stages DESIGN §5b · Fixture decisions, round 2 (C-18)"
     }
   ],
   "cost_sheets": [
@@ -527,11 +534,27 @@
       "id": "944f86c1-af0b-5868-9d9f-16be9d905477",
       "phase": "aurelia-heights-phase-2",
       "text": "Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.",
-      "signatory_title": "Head of Customer Relations",
+      "signatory_title": "Authorised signatory",
+      "signatory_name": "Ananya Rao",
+      "signed_line": "Ananya Rao, authorised signatory, Northfield Estates",
+      "scope": "project",
       "published_on": "2026-10-15",
       "check_by": "2026-11-05",
       "status": "published",
-      "source": "DESIGN §5b (published 15 Oct 2026; checked by 5 Nov 2026); text artboards AppRisk/WebProject (evidence copy, a T03 input); title API_CONTRACTS §2.1 (CONFLICTS.md C-19 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b (published 15 Oct 2026; checked by 5 Nov 2026); DESIGN §5b · Fixture decisions, round 2 (C-19)"
+    },
+    {
+      "id": "7923fef3-caf6-583e-9aef-2f7e043ebb38",
+      "phase": "heron-point-phase-1",
+      "text": "Heron Point, Phase 1 was ready in March 2024. Its OC then waited 15 months for a state fire NOC. On Aurelia Heights, Phase 2, the Tower B structure was completed in September 2026.",
+      "signatory_title": "Authorised signatory",
+      "signatory_name": "Ananya Rao",
+      "signed_line": "Ananya Rao, authorised signatory, Northfield Estates",
+      "scope": "group",
+      "published_on": "2026-10-15",
+      "check_by": "2026-11-05",
+      "status": "published",
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-19); text from the WebDeveloper artboard"
     }
   ],
   "live_record_links": [

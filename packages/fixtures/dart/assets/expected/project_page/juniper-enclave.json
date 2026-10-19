@@ -6,7 +6,7 @@
       "slug": "juniper-enclave",
       "name": "Juniper Enclave",
       "short_code": null,
-      "rera_number": null,
+      "rera_number": "GGM/889/621/2025/22",
       "authority": {
         "code": "harera_ggm",
         "name": "HARERA Gurugram",
@@ -20,7 +20,7 @@
         "claim": {
           "state": "claimed",
           "line": "claimed developer page, replies here",
-          "since": null
+          "since": "2025-12-09"
         }
       }
     },
@@ -53,7 +53,12 @@
       "built_pct": 9,
       "sold_pct": null,
       "time_used_pct": 31,
-      "latest_qpr": null,
+      "latest_qpr": {
+        "quarter": "2026-Q2",
+        "label": "Apr–Jun 2026",
+        "filed_on": "2026-07-10",
+        "age_days": 100
+      },
       "line": "9% built · 31% of the promised time used"
     },
     "price": {
@@ -93,7 +98,11 @@
     "image_url": "/media/heroJuniper.jpg",
     "image_caption": "Images on this page are illustrative",
     "summary_line": "Delivery risk: Limited history, not enough history to score · no penalty · 9% built · 31% of the time used · Original completion Dec 2029",
-    "rera_badge": null
+    "rera_badge": {
+      "number": "GGM/889/621/2025/22",
+      "authority_url": "https://haryanarera.gov.in",
+      "qr_url": null
+    }
   },
   "truth_panel": [
     {
@@ -118,11 +127,11 @@
       "lane": "records_show",
       "sources": [
         {
-          "label": "progress.built_pct",
-          "fact_ids": ["4a3cf42f-feb6-51ae-a10b-dc2c5e8b9f50"],
-          "evidence_url": "/evidence/4a3cf42f-feb6-51ae-a10b-dc2c5e8b9f50",
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["9db09e3b-b950-56cf-bff6-1fad0aa4418c"],
+          "evidence_url": "/evidence/9db09e3b-b950-56cf-bff6-1fad0aa4418c",
           "official_url": "https://haryanarera.gov.in",
-          "as_of": "2026-10-14"
+          "as_of": "2026-07-10"
         },
         {
           "label": "HARERA registration",
@@ -137,7 +146,20 @@
   "progress": {
     "floors_per_tower": null,
     "towers": null,
-    "quarters": [],
+    "quarters": [
+      {
+        "quarter": "2026-Q2",
+        "label": "Apr–Jun 2026",
+        "sold_pct": null,
+        "built_pct": 9,
+        "time_used_pct": null,
+        "band_then": null,
+        "towers": null,
+        "filed_on": "2026-07-10",
+        "status": "on_time",
+        "note_line": null
+      }
+    ],
     "today": {
       "time_used_pct": 31,
       "band": null,
@@ -343,6 +365,14 @@
       "lane": "records_show",
       "as_of": "2026-10-14",
       "evidence_url": "/evidence/ba03f08e-ffcf-55e9-8dd4-d328b1dbba9f"
+    },
+    {
+      "fact_id": "9db09e3b-b950-56cf-bff6-1fad0aa4418c",
+      "chip": "HARERA QPR · Apr–Jun 2026",
+      "line": "9% built.",
+      "lane": "records_show",
+      "as_of": "2026-07-10",
+      "evidence_url": "/evidence/9db09e3b-b950-56cf-bff6-1fad0aa4418c"
     }
   ],
   "meta": {

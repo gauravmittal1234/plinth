@@ -1,5 +1,5 @@
 // Canonical fixtures, part 2: scoring (published output of v1.2) and "From the developer" content.
-import { ART_EVIDENCE, S5, S5B, S5B_ENG, S5B_SWEEP, derived, proposed } from "./canonical.mjs";
+import { R2, S5, S5B, S5B_ENG, S5B_SWEEP, derived } from "./canonical.mjs";
 import { uuid5 } from "./lib.mjs";
 
 export const BANDS = {
@@ -60,7 +60,7 @@ export function buildScoring(cat, ev) {
         "RF4_GROUP_DEFAULT",
       ],
     },
-    source: `release dates and changelog: WebMethodology artboard (v1.0 15 Jul and v1.2 14 Oct also in DATA_MODEL §3); weights and thresholds: BUILD_PLAN §7.1; band ranges ${proposed("C-15")}`,
+    source: `${R2("C-15")}; changelog lines and committee dates: WebMethodology artboard`,
   });
   const score_models = [
     model(
@@ -192,6 +192,7 @@ export function buildScoring(cat, ev) {
       "track_record",
       "{late} of the group's {finished} finished RERA projects got OC more than 12 months late.",
     ],
+    ["TIM_QPR_ON_TIME", "timeline", "QPRs filed on time in each of the last {n} quarters."],
     [
       "SITE_STALL",
       "site",
@@ -203,7 +204,7 @@ export function buildScoring(cat, ev) {
     factor,
     template_en,
     version: "v1.2",
-    source: `Aurelia texts BUILD_PLAN §7.1; others ${proposed("C-16")}`,
+    source: `Aurelia texts BUILD_PLAN §7.1; others ${R2("C-05, C-16")}`,
   }));
 
   const runs = [];
@@ -255,7 +256,7 @@ export function buildScoring(cat, ev) {
     );
     return r;
   };
-  const histSrc = `first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (${proposed("C-17")})`;
+  const histSrc = R2("C-17");
 
   // Aurelia: Moderate (v1.0, 15 Jul) → Elevated (v1.1, 2 Oct; heads-up 30 Sep) → v1.2 recalculation (14 Oct, unchanged).
   const a10 = run({
@@ -271,6 +272,22 @@ export function buildScoring(cat, ev) {
     confidence: "low",
     source: `${S5B} (Moderate from first scoring until 2 Oct 2026); first scoring 15 Jul 2026 per DATA_MODEL §3 and BUILD_PLAN §7.1`,
   });
+  // The v1.1 release (2 Sep 2026) kept Aurelia at Moderate; the old share card (data as of
+  // 30 Sep 2026, model v1.1, Moderate) was issued from this run.
+  const a11m = run({
+    phase: AH2,
+    model_version: "v1.1",
+    data_cutoff: "2026-09-02",
+    computed_on: "2026-09-02",
+    published_on: "2026-09-02",
+    status: "superseded",
+    state: "scored",
+    band: "moderate",
+    set_by: "model",
+    confidence: "low",
+    supersedes: a10.id,
+    source: `${S5B} (Moderate until 2 Oct 2026; old card of 30 Sep 2026 shows v1.1 Moderate); v1.1 release ${R2("C-15")}`,
+  });
   const a11 = run({
     phase: AH2,
     model_version: "v1.1",
@@ -282,7 +299,7 @@ export function buildScoring(cat, ev) {
     band: "elevated",
     set_by: "model",
     confidence: "low",
-    supersedes: a10.id,
+    supersedes: a11m.id,
     notice: uuid5("band_notice", `${AH2}/heads_up_48h/2026-09-30`),
     source: `${S5B} (Elevated since 2 Oct 2026; heads-up sent 30 Sep 2026, 48 hours before)`,
   });
@@ -349,10 +366,21 @@ export function buildScoring(cat, ev) {
       state: "scored",
       confidence: "low",
       from_date: "2026-07-15",
-      to_date: "2026-10-02",
+      to_date: "2026-09-02",
       run: a10.id,
       model_version: "v1.0",
       source: S5B,
+    },
+    {
+      phase: AH2,
+      band: "moderate",
+      state: "scored",
+      confidence: "low",
+      from_date: "2026-09-02",
+      to_date: "2026-10-02",
+      run: a11m.id,
+      model_version: "v1.1",
+      source: `${S5B} (old card, 30 Sep 2026, v1.1, Moderate)`,
     },
     {
       phase: AH2,
@@ -417,7 +445,7 @@ export function buildScoring(cat, ev) {
       confidence: "high",
       source: S5,
       what_would_change:
-        "Two consecutive quarters with construction ahead of sales would move this to Low.",
+        "Two consecutive quarters of construction at or ahead of schedule would move this to Low.",
       reasons: [
         {
           factor: "timeline",
@@ -457,7 +485,7 @@ export function buildScoring(cat, ev) {
       stale: true,
       source: S5,
       what_would_change:
-        "Two consecutive quarters with construction ahead of sales would move this to Elevated.",
+        "Two consecutive quarters of construction at or ahead of schedule would move this to Elevated.",
       reasons: [
         {
           factor: "timeline",
@@ -543,10 +571,29 @@ export function buildScoring(cat, ev) {
       band: "moderate",
       set_by: "model",
       confidence: "low",
-      source: `${S5} (Moderate); confidence ${derived("Northfield has 6 finished projects, below the 8 the model needs")}; reasons ${proposed("C-05")}`,
+      source: `${S5} (Moderate); ${R2("C-05")}`,
       what_would_change:
-        "Two consecutive quarters with construction ahead of sales would move this to Low.",
-      reasons: [],
+        "Two consecutive quarters of construction at or ahead of schedule would move this to Low.",
+      reasons: [
+        {
+          factor: "timeline",
+          code: "TIM_BUILT_VS_TIME",
+          text: "70% built with 92% of the promised time used.",
+          facts: ["cedar-walk-phase-2/qpr/2026-Q2/progress", "cedar-walk-phase-2/time-used"],
+        },
+        {
+          factor: "track_record",
+          code: "TRK_GROUP_LATE12",
+          text: "2 of the group's 6 finished RERA projects got OC more than 12 months late.",
+          facts: ["northfield-estates/track-record"],
+        },
+        {
+          factor: "timeline",
+          code: "TIM_QPR_ON_TIME",
+          text: "QPRs filed on time in each of the last 8 quarters.",
+          facts: ["cedar-walk-phase-2/qpr-register"],
+        },
+      ],
     },
   ];
   for (const o of others) {
@@ -571,7 +618,7 @@ export function buildScoring(cat, ev) {
       supersedes: r10.id,
       reasons: o.reasons.map((x) => ({
         ...x,
-        source: `numbers ${S5}/${S5B}; text ${proposed("C-16")}`,
+        source: `numbers ${S5}/${S5B}; text ${R2("C-16")}`,
       })),
     });
     band_history.push(
@@ -650,7 +697,7 @@ export function buildScoring(cat, ev) {
     n_late: late,
     per_100: Math.round((late / n) * 100),
     illustrative: true,
-    source: `per 100: BUILD_PLAN §7.1; counts: WebAbout artboard (${proposed("C-15")})`,
+    source: R2("C-15"),
   }));
   const calibration_summary = {
     model_version: "v1.2",
@@ -827,8 +874,8 @@ export function buildDeveloperContent(cat, ev) {
       "cedar-walk-phase-2",
       "2026-06-12",
       "day",
-      [],
-      `${S5B} (dated 12 Jun 2026); items ${proposed("C-05")}`,
+      [["3 BHK", 18500000, null]],
+      `${S5B} (dated 12 Jun 2026); 3 BHK from ₹1.85 Cr ${R2("C-05")}`,
     ),
   ];
   const previous_prices = [
@@ -881,7 +928,7 @@ export function buildDeveloperContent(cat, ev) {
         pct,
       })),
       due_by_registration_pct: { A: 52.5, B: 45, C: 37.5 },
-      source: `${S5B} (13 stages, 100% in all); DATA_MODEL's "11 rows" ${proposed("C-18")}`,
+      source: `${S5B}; 13 stages ${R2("C-18")}`,
     },
   ];
 
@@ -1043,11 +1090,28 @@ export function buildDeveloperContent(cat, ev) {
       id: uuid5("developer_reply", `${AH2}/2026-10-15`),
       phase: AH2,
       text: "Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.",
-      signatory_title: "Head of Customer Relations",
+      signatory_title: "Authorised signatory",
+      signatory_name: "Ananya Rao",
+      signed_line: "Ananya Rao, authorised signatory, Northfield Estates",
+      scope: "project",
       published_on: "2026-10-15",
       check_by: "2026-11-05",
       status: "published",
-      source: `${S5B} (published 15 Oct 2026; checked by 5 Nov 2026); text ${ART_EVIDENCE}; title API_CONTRACTS §2.1 (${proposed("C-19")})`,
+      source: `${S5B} (published 15 Oct 2026; checked by 5 Nov 2026); ${R2("C-19")}`,
+    },
+    {
+      // Group-level reply on the developer page (Heron Point Ph 1 fire NOC), same signatory.
+      id: uuid5("developer_reply", "northfield-estates/2026-10-15"),
+      phase: "heron-point-phase-1",
+      text: "Heron Point, Phase 1 was ready in March 2024. Its OC then waited 15 months for a state fire NOC. On Aurelia Heights, Phase 2, the Tower B structure was completed in September 2026.",
+      signatory_title: "Authorised signatory",
+      signatory_name: "Ananya Rao",
+      signed_line: "Ananya Rao, authorised signatory, Northfield Estates",
+      scope: "group",
+      published_on: "2026-10-15",
+      check_by: "2026-11-05",
+      status: "published",
+      source: `${R2("C-19")}; text from the WebDeveloper artboard`,
     },
   ];
   const live_record_links = [

@@ -6,7 +6,7 @@
       "slug": "kestrel-park",
       "name": "Kestrel Park",
       "short_code": null,
-      "rera_number": null,
+      "rera_number": "GGM/781/513/2023/64",
       "authority": {
         "code": "harera_ggm",
         "name": "HARERA Gurugram",
@@ -18,9 +18,9 @@
         "slug": "orbis-land",
         "name": "Orbis Land",
         "claim": {
-          "state": "invited",
-          "line": "invited 24 Nov 2025 · not yet claimed",
-          "since": "2025-11-24"
+          "state": "claimed",
+          "line": "claimed developer page, replies here",
+          "since": "2025-12-03"
         }
       }
     },
@@ -180,7 +180,11 @@
     "image_url": "/media/heroKestrel.jpg",
     "image_caption": "Images on this page are illustrative",
     "summary_line": "Delivery risk: Low · All-in ₹2.44 Cr · 63% built · Original completion Nov 2028",
-    "rera_badge": null
+    "rera_badge": {
+      "number": "GGM/781/513/2023/64",
+      "authority_url": "https://haryanarera.gov.in",
+      "qr_url": null
+    }
   },
   "truth_panel": [
     {
@@ -248,8 +252,8 @@
         "time_used_pct": null,
         "band_then": "low",
         "towers": null,
-        "filed_on": null,
-        "status": null,
+        "filed_on": "2026-07-14",
+        "status": "on_time",
         "note_line": null
       },
       {
@@ -490,7 +494,7 @@
       "chip": "HARERA QPR · Apr–Jun 2026",
       "line": "59% built.",
       "lane": "records_show",
-      "as_of": "2026-06-30",
+      "as_of": "2026-07-14",
       "evidence_url": "/evidence/2c5a7da2-aa5b-549c-952a-8ecc86bc31dd"
     },
     {

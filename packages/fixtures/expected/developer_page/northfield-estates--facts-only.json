@@ -31,44 +31,122 @@
       {
         "slug": "cedar-walk",
         "name": "Cedar Walk",
-        "promised": null,
-        "oc_on": null,
-        "late": false
+        "rera_number": "GGM/118/50/2017/24",
+        "promoter_name": "Cedarline Developers",
+        "promised": "2019-06",
+        "oc_on": "2019-04",
+        "months_late": -2,
+        "late": false,
+        "line": "OC came 2 months before the original RERA date.",
+        "sources": [
+          {
+            "label": "DTCP OC order · Apr 2019",
+            "fact_ids": ["e153042c-fcf0-5c0b-a606-be4740e618f7"],
+            "evidence_url": "/evidence/e153042c-fcf0-5c0b-a606-be4740e618f7",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
       },
       {
         "slug": "aurelia-heights-phase-1",
         "name": "Aurelia Heights, Phase 1",
-        "promised": null,
-        "oc_on": null,
-        "late": true
+        "rera_number": "GGM/131/63/2017/38",
+        "promoter_name": "Northfield Buildtech",
+        "promised": "2020-12",
+        "oc_on": "2023-03",
+        "months_late": 27,
+        "late": true,
+        "line": "OC came 27 months after the original RERA date. That is 21 months after the 6-month COVID extension.",
+        "sources": [
+          {
+            "label": "DTCP OC order · Mar 2023",
+            "fact_ids": ["bf036059-4c4d-5e30-aeeb-ba9975785e73"],
+            "evidence_url": "/evidence/bf036059-4c4d-5e30-aeeb-ba9975785e73",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
       },
       {
         "slug": "wren-court",
         "name": "Wren Court",
-        "promised": null,
-        "oc_on": null,
-        "late": false
+        "rera_number": "GGM/176/108/2018/09",
+        "promoter_name": null,
+        "promised": "2020-12",
+        "oc_on": "2021-11",
+        "months_late": 11,
+        "late": false,
+        "line": "OC came 11 months after the original RERA date.",
+        "sources": [
+          {
+            "label": "DTCP OC order · Nov 2021",
+            "fact_ids": ["5a5c415a-1137-5431-b4d4-1a1359a59356"],
+            "evidence_url": "/evidence/5a5c415a-1137-5431-b4d4-1a1359a59356",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
       },
       {
         "slug": "opaline-residences",
         "name": "Opaline Residences",
-        "promised": null,
-        "oc_on": null,
-        "late": false
+        "rera_number": "GGM/262/194/2018/71",
+        "promoter_name": "Opaline Realtors LLP",
+        "promised": "2022-06",
+        "oc_on": "2023-05",
+        "months_late": 11,
+        "late": false,
+        "line": "OC came 11 months after the original RERA date.",
+        "sources": [
+          {
+            "label": "DTCP OC order · May 2023",
+            "fact_ids": ["2d9c1a70-86c7-580a-9d74-8a7cba82130c"],
+            "evidence_url": "/evidence/2d9c1a70-86c7-580a-9d74-8a7cba82130c",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
       },
       {
         "slug": "heron-point-phase-1",
         "name": "Heron Point, Phase 1",
-        "promised": null,
-        "oc_on": null,
-        "late": true
+        "rera_number": "GGM/301/233/2019/15",
+        "promoter_name": "Heronstone Projects",
+        "promised": "2023-03",
+        "oc_on": "2025-06",
+        "months_late": 27,
+        "late": true,
+        "line": "OC came 27 months after the original RERA date.",
+        "sources": [
+          {
+            "label": "DTCP OC order · Jun 2025",
+            "fact_ids": ["c216b1be-59bc-5e04-a218-d32d3b83f221"],
+            "evidence_url": "/evidence/c216b1be-59bc-5e04-a218-d32d3b83f221",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
       },
       {
         "slug": "linden-square",
         "name": "Linden Square",
-        "promised": null,
-        "oc_on": null,
-        "late": false
+        "rera_number": "GGM/349/281/2019/56",
+        "promoter_name": null,
+        "promised": "2023-12",
+        "oc_on": "2024-09",
+        "months_late": 9,
+        "late": false,
+        "line": "OC came 9 months after the original RERA date.",
+        "sources": [
+          {
+            "label": "DTCP OC order · Sep 2024",
+            "fact_ids": ["a14e7f89-6255-50f4-b6b6-c2bdbc43ced3"],
+            "evidence_url": "/evidence/a14e7f89-6255-50f4-b6b6-c2bdbc43ced3",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
       }
     ],
     "sources": [
@@ -118,8 +196,8 @@
         "step": null,
         "meter_filled": 0
       },
-      "price_line": null,
-      "progress_line": null
+      "price_line": "Quoted ₹1.85 Cr · all-in not known yet",
+      "progress_line": "70% built · 92% of the promised time used"
     }
   ],
   "complaints": {
@@ -128,6 +206,7 @@
     "units_base": 3400,
     "line_24m": "24 decided against the group, or 0.7 per 100 units.",
     "half_years": [],
+    "units_line": "Per 100 units uses the units in the group's RERA registrations: 2,980 until Dec 2025, and 3,400 since Heron Point, Phase 2 was registered in Apr 2026.",
     "fairness_line": "A bigger group isn't penalised for its size."
   },
   "insolvency_line": "No insolvency found (checked 14 Oct 2026).",
@@ -154,8 +233,10 @@
     ]
   },
   "reply": {
-    "text": "Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.",
-    "signatory_title": "Head of Customer Relations",
+    "text": "Heron Point, Phase 1 was ready in March 2024. Its OC then waited 15 months for a state fire NOC. On Aurelia Heights, Phase 2, the Tower B structure was completed in September 2026.",
+    "signatory_title": "Authorised signatory",
+    "signed_line": "Ananya Rao, authorised signatory, Northfield Estates",
+    "records_line": "Heron Point, Phase 1 got OC in Jun 2025, 27 months after its original RERA date.",
     "published_on": "2026-10-15",
     "check_by": "2026-11-05",
     "line": "Developer says · not yet verified · 15 Oct 2026 · we check it by 5 Nov 2026"

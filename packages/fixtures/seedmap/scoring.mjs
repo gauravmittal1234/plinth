@@ -235,7 +235,11 @@ export function build({ load, sql }) {
       ]),
     ),
   );
-  // The fixture world shows bands: T04 seeds bands_public off (the S1 default).
+  // The fixture world shows bands (T04 seeds bands_public off, the S1 default) and keeps the AI
+  // kill switches off until M5 (DESIGN §5b round 2, C-29).
   parts.push("update ops.feature_flags set enabled = true where key = 'bands_public';\n");
+  parts.push(
+    "update ops.feature_flags set enabled = false where key in ('ai_ask', 'ai_doc_check', 'ai_staging');\n",
+  );
   return parts.join("\n");
 }

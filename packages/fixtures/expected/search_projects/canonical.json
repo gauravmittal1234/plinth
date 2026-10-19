@@ -33,7 +33,31 @@
       "config_line": "3 BHK, 1,400 sq ft carpet",
       "completion_line": "Original completion Nov 2028",
       "image_url": "/media/heroKestrel.jpg",
-      "centroid": null
+      "centroid": [77.034, 28.527]
+    },
+    {
+      "slug": "cedar-walk-phase-2",
+      "name": "Cedar Walk, Phase 2",
+      "locality_line": "Sector 99, Dwarka Expressway",
+      "developer_name": "Northfield Estates",
+      "chip": {
+        "kind": "band",
+        "label": "Moderate",
+        "step": 2,
+        "meter_filled": 2
+      },
+      "state": "scored",
+      "chip_note": "Delivery risk · as of 14 Oct 2026. We're less certain about this one.",
+      "price_line": "Quoted ₹1.85 Cr · all-in not known yet",
+      "pin_label": null,
+      "built_line": "70% built",
+      "progress_line": "70% built · 92% of time used",
+      "built_pct": 70,
+      "time_used_pct": 92,
+      "config_line": "3 BHK, 1,350 sq ft carpet",
+      "completion_line": "Original completion Mar 2027",
+      "image_url": null,
+      "centroid": [76.983, 28.479]
     },
     {
       "slug": "sapphire-grove-phase-1",
@@ -57,7 +81,7 @@
       "config_line": "3 BHK, 1,400 sq ft carpet",
       "completion_line": "Original completion Mar 2028",
       "image_url": "/media/heroSapphire.jpg",
-      "centroid": null
+      "centroid": [77.014, 28.507]
     },
     {
       "slug": "juniper-enclave",
@@ -81,7 +105,7 @@
       "config_line": "3 BHK, carpet not in our records yet",
       "completion_line": "Original completion Dec 2029",
       "image_url": "/media/heroJuniper.jpg",
-      "centroid": null
+      "centroid": [76.996, 28.49]
     }
   ],
   "hidden_count": 2,

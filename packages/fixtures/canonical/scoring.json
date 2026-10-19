@@ -71,7 +71,7 @@
           "RF4_GROUP_DEFAULT"
         ]
       },
-      "source": "release dates and changelog: WebMethodology artboard (v1.0 15 Jul and v1.2 14 Oct also in DATA_MODEL §3); weights and thresholds: BUILD_PLAN §7.1; band ranges CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15); changelog lines and committee dates: WebMethodology artboard"
     },
     {
       "id": "fa7aa106-a631-56b5-ab65-67cb96ffba20",
@@ -140,7 +140,7 @@
           "RF4_GROUP_DEFAULT"
         ]
       },
-      "source": "release dates and changelog: WebMethodology artboard (v1.0 15 Jul and v1.2 14 Oct also in DATA_MODEL §3); weights and thresholds: BUILD_PLAN §7.1; band ranges CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15); changelog lines and committee dates: WebMethodology artboard"
     },
     {
       "id": "f196109f-f7e3-53dd-816e-f357ee4efb23",
@@ -210,7 +210,7 @@
           "RF4_GROUP_DEFAULT"
         ]
       },
-      "source": "release dates and changelog: WebMethodology artboard (v1.0 15 Jul and v1.2 14 Oct also in DATA_MODEL §3); weights and thresholds: BUILD_PLAN §7.1; band ranges CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15); changelog lines and committee dates: WebMethodology artboard"
     }
   ],
   "red_flag_rules": [
@@ -270,7 +270,7 @@
       "factor": "finances",
       "template_en": "{sold}% of units sold, {built}% built.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     },
     {
       "id": "e0e0c73e-e52a-5137-b724-a533e1a269bb",
@@ -278,7 +278,7 @@
       "factor": "timeline",
       "template_en": "{time_used}% of the promised time used. QPRs filed late in {late} of the last 8 quarters.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     },
     {
       "id": "89a719e3-3365-5f21-a632-c7b4c50a5783",
@@ -286,7 +286,7 @@
       "factor": "timeline",
       "template_en": "{built}% built with {time_used}% of the promised time used.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     },
     {
       "id": "24a2ae39-989e-552c-b5f4-63c61755606e",
@@ -294,7 +294,7 @@
       "factor": "timeline",
       "template_en": "{built}% built with {time_used}% of the promised time used. {extensions} extensions on record.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     },
     {
       "id": "649bfaeb-88fd-591e-8b0f-cf7d308b742a",
@@ -302,7 +302,7 @@
       "factor": "timeline",
       "template_en": "The {quarter} QPR was filed {days} days late.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     },
     {
       "id": "23888118-c5a5-5854-9138-261fe8e85a89",
@@ -310,7 +310,7 @@
       "factor": "timeline",
       "template_en": "The {quarter} QPR, due {due}, is not on HARERA.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     },
     {
       "id": "5fb042b4-a42e-5447-9fa1-c47479c181bd",
@@ -318,7 +318,7 @@
       "factor": "timeline",
       "template_en": "Original completion was {month}. That date has passed with {built}% built.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     },
     {
       "id": "c3d64f8c-b581-5325-8f9d-7bbc319c42e4",
@@ -326,7 +326,7 @@
       "factor": "legal",
       "template_en": "{count} complaints decided against the promoter in 24 months · {rate} per 100 units. Median count for similar projects: {median}.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     },
     {
       "id": "156bedf1-48a1-5601-8bbb-7ff83a094c98",
@@ -334,7 +334,7 @@
       "factor": "legal",
       "template_en": "A group company of {group} was admitted to insolvency by NCLT order on {date}.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     },
     {
       "id": "5137ed08-1451-598c-92c2-7f186175c5d1",
@@ -342,7 +342,15 @@
       "factor": "track_record",
       "template_en": "{late} of the group's {finished} finished RERA projects got OC more than 12 months late.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
+    },
+    {
+      "id": "e8c89880-7383-5f95-8017-ed968d62c83b",
+      "code": "TIM_QPR_ON_TIME",
+      "factor": "timeline",
+      "template_en": "QPRs filed on time in each of the last {n} quarters.",
+      "version": "v1.2",
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     },
     {
       "id": "19b151d8-7130-5257-867a-66a0da8a73b5",
@@ -350,7 +358,7 @@
       "factor": "site",
       "template_en": "No QPR progress for {n} quarters: {built}% built in each QPR from {from} to {to}.",
       "version": "v1.2",
-      "source": "Aurelia texts BUILD_PLAN §7.1; others CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
     }
   ],
   "runs": [
@@ -380,6 +388,31 @@
       "source": "DESIGN §5b (Moderate from first scoring until 2 Oct 2026); first scoring 15 Jul 2026 per DATA_MODEL §3 and BUILD_PLAN §7.1"
     },
     {
+      "id": "dcf13261-e728-5628-a069-8df586e62064",
+      "phase": "aurelia-heights-phase-2",
+      "model_version": "v1.1",
+      "data_cutoff": "2026-09-02",
+      "computed_on": "2026-09-02",
+      "published_on": "2026-09-02",
+      "code_commit": null,
+      "status": "superseded",
+      "state": "scored",
+      "band": "moderate",
+      "set_by": "model",
+      "rule_code": null,
+      "confidence": "low",
+      "freq_kind": "range",
+      "freq_low": 15,
+      "freq_high": 30,
+      "freq_point": null,
+      "stall": false,
+      "stale": false,
+      "what_would_change": null,
+      "supersedes": "e26ac58c-569b-5f36-8583-dbf89d69fbcd",
+      "notice": null,
+      "source": "DESIGN §5b (Moderate until 2 Oct 2026; old card of 30 Sep 2026 shows v1.1 Moderate); v1.1 release DESIGN §5b · Fixture decisions, round 2 (C-15)"
+    },
+    {
       "id": "2ae7c065-da21-5bf6-bdfb-bd8b20cf8de6",
       "phase": "aurelia-heights-phase-2",
       "model_version": "v1.1",
@@ -400,7 +433,7 @@
       "stall": false,
       "stale": false,
       "what_would_change": null,
-      "supersedes": "e26ac58c-569b-5f36-8583-dbf89d69fbcd",
+      "supersedes": "dcf13261-e728-5628-a069-8df586e62064",
       "notice": "af47febe-8eff-5755-a262-e03c344a8217",
       "source": "DESIGN §5b (Elevated since 2 Oct 2026; heads-up sent 30 Sep 2026, 48 hours before)"
     },
@@ -477,7 +510,7 @@
       "what_would_change": null,
       "supersedes": null,
       "notice": null,
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "id": "dc43680a-c18b-58cc-a963-c89938bdd127",
@@ -527,7 +560,7 @@
       "what_would_change": null,
       "supersedes": null,
       "notice": null,
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "id": "0cbf78fd-3b74-5440-bb85-2cefde33f927",
@@ -549,7 +582,7 @@
       "freq_point": 20,
       "stall": false,
       "stale": false,
-      "what_would_change": "Two consecutive quarters with construction ahead of sales would move this to Low.",
+      "what_would_change": "Two consecutive quarters of construction at or ahead of schedule would move this to Low.",
       "supersedes": "1f6e28c5-a3f4-53aa-b5ad-bf2902436251",
       "notice": null,
       "source": "DESIGN §5"
@@ -577,7 +610,7 @@
       "what_would_change": null,
       "supersedes": null,
       "notice": null,
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "id": "d4fada3e-5ed0-58b7-b5eb-53de0611d970",
@@ -599,7 +632,7 @@
       "freq_point": null,
       "stall": false,
       "stale": true,
-      "what_would_change": "Two consecutive quarters with construction ahead of sales would move this to Elevated.",
+      "what_would_change": "Two consecutive quarters of construction at or ahead of schedule would move this to Elevated.",
       "supersedes": "a164de9b-d42a-5e10-8d61-899d032b4ae9",
       "notice": null,
       "source": "DESIGN §5"
@@ -627,7 +660,7 @@
       "what_would_change": null,
       "supersedes": null,
       "notice": null,
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "id": "6ef63dab-b260-5412-8b9b-af416d6835af",
@@ -677,7 +710,7 @@
       "what_would_change": null,
       "supersedes": null,
       "notice": null,
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "id": "6847a528-51e1-52d1-9d25-f19b9f0db300",
@@ -727,7 +760,7 @@
       "what_would_change": null,
       "supersedes": null,
       "notice": null,
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "id": "9cedff31-3d7c-5e3b-bbac-69cf8ae4f582",
@@ -777,7 +810,7 @@
       "what_would_change": null,
       "supersedes": null,
       "notice": null,
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "id": "91d86092-0795-58cc-b22d-d4c2ce18baf8",
@@ -799,10 +832,10 @@
       "freq_point": null,
       "stall": false,
       "stale": false,
-      "what_would_change": "Two consecutive quarters with construction ahead of sales would move this to Low.",
+      "what_would_change": "Two consecutive quarters of construction at or ahead of schedule would move this to Low.",
       "supersedes": "40f9af47-aa07-50b3-8e5e-4d1a8ac0f034",
       "notice": null,
-      "source": "DESIGN §5 (Moderate); confidence derived: Northfield has 6 finished projects, below the 8 the model needs; reasons CONFLICTS.md C-05 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5 (Moderate); DESIGN §5b · Fixture decisions, round 2 (C-05)"
     }
   ],
   "reasons": [
@@ -854,7 +887,7 @@
       "code": "TIM_BUILT_VS_TIME",
       "text": "63% built with 58% of the promised time used.",
       "fact_ids": ["5acedd26-bae2-501c-aba0-635c4732b353", "eb55b690-651f-594f-af39-be5f8b5aee03"],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "dc43680a-c18b-58cc-a963-c89938bdd127",
@@ -864,7 +897,7 @@
       "code": "TRK_GROUP_LATE12",
       "text": "1 of the group's 9 finished RERA projects got OC more than 12 months late.",
       "fact_ids": ["72eef155-40ac-5405-96a7-fdd8cc9a5dfa"],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "dc43680a-c18b-58cc-a963-c89938bdd127",
@@ -874,7 +907,7 @@
       "code": "LEG_COMPLAINTS",
       "text": "2 complaints decided against the promoter in 24 months · 0.5 per 100 units. Median count for similar projects: 3.",
       "fact_ids": ["f2e68492-eb48-5e45-9c35-97a9733db42f"],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "0cbf78fd-3b74-5440-bb85-2cefde33f927",
@@ -884,7 +917,7 @@
       "code": "TIM_BUILT_VS_TIME",
       "text": "48% built with 55% of the promised time used.",
       "fact_ids": ["bcbeac16-a68a-587d-a18b-c83ab2cd672e", "4070ee84-2622-578f-8bb6-2e605e103e94"],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "0cbf78fd-3b74-5440-bb85-2cefde33f927",
@@ -894,7 +927,7 @@
       "code": "LEG_COMPLAINTS",
       "text": "5 complaints decided against the promoter in 24 months · 1.4 per 100 units. Median count for similar projects: 3.",
       "fact_ids": ["e5b0c43a-518c-5c39-8b5a-d712debe364a"],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "0cbf78fd-3b74-5440-bb85-2cefde33f927",
@@ -904,7 +937,7 @@
       "code": "TIM_QPR_LATE",
       "text": "The Apr–Jun 2026 QPR was filed 12 days late.",
       "fact_ids": ["fc2e6392-b9da-5aea-9c72-3f9b9e8c48c1"],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "0cbf78fd-3b74-5440-bb85-2cefde33f927",
@@ -914,7 +947,7 @@
       "code": "TRK_GROUP_LATE12",
       "text": "2 of the group's 11 finished RERA projects got OC more than 12 months late.",
       "fact_ids": ["a5f17432-e654-5866-a9a4-7de0202d7591"],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "d4fada3e-5ed0-58b7-b5eb-53de0611d970",
@@ -929,7 +962,7 @@
         "a7301216-3430-592a-aa01-1ea9619c813e",
         "2f789ce6-4038-5a21-a34c-afda2f5c3bad"
       ],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "d4fada3e-5ed0-58b7-b5eb-53de0611d970",
@@ -939,7 +972,7 @@
       "code": "TIM_QPR_MISSING",
       "text": "The Apr–Jun 2026 QPR, due 15 Jul 2026, is not on HARERA.",
       "fact_ids": ["966624b0-fb07-53f5-9cd3-aaaf740a5257"],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "6ef63dab-b260-5412-8b9b-af416d6835af",
@@ -949,7 +982,7 @@
       "code": "LEG_GROUP_CIRP",
       "text": "A group company of Elmstone Developers was admitted to insolvency by NCLT order on 12 Mar 2023.",
       "fact_ids": ["9f0f09ed-5fda-5c98-b18c-f02ddf1c8c46"],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "6ef63dab-b260-5412-8b9b-af416d6835af",
@@ -959,7 +992,7 @@
       "code": "TIM_PAST_ORIGINAL_DATE",
       "text": "Original completion was Jun 2026. That date has passed with 34% built.",
       "fact_ids": ["f2020584-2a6a-584f-8926-2e1334ba1182", "c640c448-4244-5d92-8506-022c6ef33369"],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     },
     {
       "run": "6ef63dab-b260-5412-8b9b-af416d6835af",
@@ -974,7 +1007,37 @@
         "b932f577-9426-5fdd-877e-8c02c0a556f9",
         "c640c448-4244-5d92-8506-022c6ef33369"
       ],
-      "source": "numbers DESIGN §5/DESIGN §5b; text CONFLICTS.md C-16 (proposed; not yet in DESIGN §5b)"
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
+    },
+    {
+      "run": "91d86092-0795-58cc-b22d-d4c2ce18baf8",
+      "phase": "cedar-walk-phase-2",
+      "rank": 1,
+      "factor": "timeline",
+      "code": "TIM_BUILT_VS_TIME",
+      "text": "70% built with 92% of the promised time used.",
+      "fact_ids": ["ec0468c0-036b-5fd2-bebf-109691b5d47a", "c26c19c9-b33c-5bda-8b95-a3f942de0e47"],
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
+    },
+    {
+      "run": "91d86092-0795-58cc-b22d-d4c2ce18baf8",
+      "phase": "cedar-walk-phase-2",
+      "rank": 2,
+      "factor": "track_record",
+      "code": "TRK_GROUP_LATE12",
+      "text": "2 of the group's 6 finished RERA projects got OC more than 12 months late.",
+      "fact_ids": ["145c288f-31dd-5955-9677-170f82ffd80c"],
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
+    },
+    {
+      "run": "91d86092-0795-58cc-b22d-d4c2ce18baf8",
+      "phase": "cedar-walk-phase-2",
+      "rank": 3,
+      "factor": "timeline",
+      "code": "TIM_QPR_ON_TIME",
+      "text": "QPRs filed on time in each of the last 8 quarters.",
+      "fact_ids": ["b1569619-e519-519d-a1d4-f2447c21372a"],
+      "source": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
     }
   ],
   "band_history": [
@@ -984,10 +1047,21 @@
       "state": "scored",
       "confidence": "low",
       "from_date": "2026-07-15",
-      "to_date": "2026-10-02",
+      "to_date": "2026-09-02",
       "run": "e26ac58c-569b-5f36-8583-dbf89d69fbcd",
       "model_version": "v1.0",
       "source": "DESIGN §5b"
+    },
+    {
+      "phase": "aurelia-heights-phase-2",
+      "band": "moderate",
+      "state": "scored",
+      "confidence": "low",
+      "from_date": "2026-09-02",
+      "to_date": "2026-10-02",
+      "run": "dcf13261-e728-5628-a069-8df586e62064",
+      "model_version": "v1.1",
+      "source": "DESIGN §5b (old card, 30 Sep 2026, v1.1, Moderate)"
     },
     {
       "phase": "aurelia-heights-phase-2",
@@ -1020,7 +1094,7 @@
       "to_date": "2026-10-14",
       "run": "5400cd27-9ed0-522e-8b2c-d075ec44093b",
       "model_version": "v1.0",
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "phase": "kestrel-park",
@@ -1042,7 +1116,7 @@
       "to_date": "2026-10-14",
       "run": "1f6e28c5-a3f4-53aa-b5ad-bf2902436251",
       "model_version": "v1.0",
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "phase": "sapphire-grove-phase-1",
@@ -1064,7 +1138,7 @@
       "to_date": "2026-10-14",
       "run": "a164de9b-d42a-5e10-8d61-899d032b4ae9",
       "model_version": "v1.0",
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "phase": "coral-towers",
@@ -1086,7 +1160,7 @@
       "to_date": "2026-10-14",
       "run": "26085f70-6235-5d41-96e9-584b9c3777bd",
       "model_version": "v1.0",
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "phase": "laurel-residency",
@@ -1108,7 +1182,7 @@
       "to_date": "2026-10-14",
       "run": "c775ee5f-9cca-5255-8fa6-f563f5410e47",
       "model_version": "v1.0",
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "phase": "juniper-enclave",
@@ -1130,7 +1204,7 @@
       "to_date": "2026-10-14",
       "run": "b9fa1f19-4e9b-500a-9461-478843d7b7e8",
       "model_version": "v1.0",
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "phase": "heron-point-phase-2",
@@ -1152,7 +1226,7 @@
       "to_date": "2026-10-14",
       "run": "40f9af47-aa07-50b3-8e5e-4d1a8ac0f034",
       "model_version": "v1.0",
-      "source": "first public bands 15 Jul 2026 (v1.0: WebMethodology/WebAbout artboards, DATA_MODEL §3); band unchanged until v1.2 (CONFLICTS.md C-17 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
     },
     {
       "phase": "cedar-walk-phase-2",
@@ -1163,7 +1237,7 @@
       "to_date": null,
       "run": "91d86092-0795-58cc-b22d-d4c2ce18baf8",
       "model_version": "v1.2",
-      "source": "DESIGN §5 (Moderate); confidence derived: Northfield has 6 finished projects, below the 8 the model needs; reasons CONFLICTS.md C-05 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5 (Moderate); DESIGN §5b · Fixture decisions, round 2 (C-05)"
     }
   ],
   "band_notices": [
@@ -1212,7 +1286,7 @@
       "n_late": 4,
       "per_100": 9,
       "illustrative": true,
-      "source": "per 100: BUILD_PLAN §7.1; counts: WebAbout artboard (CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15)"
     },
     {
       "id": "6aa96270-f9f1-57f3-b226-ffc7a71c9c61",
@@ -1224,7 +1298,7 @@
       "n_late": 19,
       "per_100": 31,
       "illustrative": true,
-      "source": "per 100: BUILD_PLAN §7.1; counts: WebAbout artboard (CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15)"
     },
     {
       "id": "069911be-5265-59fa-a00b-bbf7c24bb7ac",
@@ -1236,7 +1310,7 @@
       "n_late": 20,
       "per_100": 38,
       "illustrative": true,
-      "source": "per 100: BUILD_PLAN §7.1; counts: WebAbout artboard (CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15)"
     },
     {
       "id": "b139b604-ea73-5a64-8414-1d382bf316cc",
@@ -1248,7 +1322,7 @@
       "n_late": 19,
       "per_100": 56,
       "illustrative": true,
-      "source": "per 100: BUILD_PLAN §7.1; counts: WebAbout artboard (CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15)"
     },
     {
       "id": "4c32f144-76b9-5a2b-aa63-15b5b192376f",
@@ -1260,7 +1334,7 @@
       "n_late": 14,
       "per_100": 74,
       "illustrative": true,
-      "source": "per 100: BUILD_PLAN §7.1; counts: WebAbout artboard (CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b))"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15)"
     }
   ],
   "calibration_summary": {
@@ -1280,21 +1354,21 @@
       "published_on": "2026-07-15",
       "summary": "First public bands for Gurugram",
       "minutes_url": null,
-      "source": "release dates and changelog: WebMethodology artboard (v1.0 15 Jul and v1.2 14 Oct also in DATA_MODEL §3); weights and thresholds: BUILD_PLAN §7.1; band ranges CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15); changelog lines and committee dates: WebMethodology artboard"
     },
     {
       "version": "v1.1",
       "published_on": "2026-09-02",
       "summary": "Tighter QPR checks and group linking",
       "minutes_url": null,
-      "source": "release dates and changelog: WebMethodology artboard (v1.0 15 Jul and v1.2 14 Oct also in DATA_MODEL §3); weights and thresholds: BUILD_PLAN §7.1; band ranges CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15); changelog lines and committee dates: WebMethodology artboard"
     },
     {
       "version": "v1.2",
       "published_on": "2026-10-14",
       "summary": "Blanket extensions added to every original date",
       "minutes_url": null,
-      "source": "release dates and changelog: WebMethodology artboard (v1.0 15 Jul and v1.2 14 Oct also in DATA_MODEL §3); weights and thresholds: BUILD_PLAN §7.1; band ranges CONFLICTS.md C-15 (proposed; not yet in DESIGN §5b)"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-15); changelog lines and committee dates: WebMethodology artboard"
     }
   ],
   "rescoring": [

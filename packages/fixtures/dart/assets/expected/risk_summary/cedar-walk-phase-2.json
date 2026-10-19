@@ -4,14 +4,14 @@
     "slug": "cedar-walk-phase-2",
     "name": "Cedar Walk, Phase 2",
     "short_code": null,
-    "rera_number": null,
+    "rera_number": "GGM/566/298/2022/31",
     "authority": {
       "code": "harera_ggm",
       "name": "HARERA Gurugram",
       "url": "https://haryanarera.gov.in"
     },
-    "locality_line": null,
-    "units": null,
+    "locality_line": "Sector 99, Dwarka Expressway",
+    "units": 320,
     "developer": {
       "slug": "northfield-estates",
       "name": "Northfield Estates",
@@ -59,19 +59,90 @@
     },
     "hatch_legend": "Hatched: the 15 of 100 we're less certain about"
   },
-  "late12": null,
-  "reasons": [],
-  "what_would_change": "Two consecutive quarters with construction ahead of sales would move this to Low.",
+  "late12": {
+    "original_completion": "2027-03",
+    "blanket_extension_months": 4,
+    "late_after": "2028-07",
+    "line": "Original completion Mar 2027. More than 12 months late here means an OC after Jul 2028, with the 4-month blanket extension of Jul 2026.",
+    "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+  },
+  "reasons": [
+    {
+      "rank": 1,
+      "factor": "timeline",
+      "factor_label": "Timeline",
+      "text": "70% built with 92% of the promised time used.",
+      "sources": [
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["ec0468c0-036b-5fd2-bebf-109691b5d47a"],
+          "evidence_url": "/evidence/ec0468c0-036b-5fd2-bebf-109691b5d47a",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-06-30"
+        },
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["c26c19c9-b33c-5bda-8b95-a3f942de0e47"],
+          "evidence_url": "/evidence/c26c19c9-b33c-5bda-8b95-a3f942de0e47",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "factor": "track_record",
+      "factor_label": "Track record",
+      "text": "2 of the group's 6 finished RERA projects got OC more than 12 months late.",
+      "sources": [
+        {
+          "label": "HARERA · DTCP OC records",
+          "fact_ids": ["145c288f-31dd-5955-9677-170f82ffd80c"],
+          "evidence_url": "/evidence/145c288f-31dd-5955-9677-170f82ffd80c",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "factor": "timeline",
+      "factor_label": "Timeline",
+      "text": "QPRs filed on time in each of the last 8 quarters.",
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["b1569619-e519-519d-a1d4-f2447c21372a"],
+          "evidence_url": "/evidence/b1569619-e519-519d-a1d4-f2447c21372a",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "what_would_change": "Two consecutive quarters of construction at or ahead of schedule would move this to Low.",
   "pending": [],
   "developer_response": null,
   "progress": {
-    "built_pct": null,
+    "built_pct": 70,
     "sold_pct": null,
-    "time_used_pct": null,
-    "latest_qpr": null,
-    "line": null
+    "time_used_pct": 92,
+    "latest_qpr": {
+      "quarter": "2026-Q2",
+      "label": "Apr–Jun 2026",
+      "filed_on": null,
+      "age_days": null
+    },
+    "line": "70% built · 92% of the promised time used"
   },
-  "price": null,
+  "price": {
+    "all_in_inr": null,
+    "all_in_label": null,
+    "quoted_label": "₹1.85 Cr",
+    "per_sqft_carpet_label": null,
+    "basis_line": "3 BHK quoted price · no cost sheet with us",
+    "display_line": "Quoted ₹1.85 Cr · all-in not known yet"
+  },
   "complaints": null,
   "withheld": null,
   "meta": {
@@ -90,7 +161,8 @@
     "card_alt": "Cedar Walk, Phase 2: Delivery risk Moderate. Between 15 and 30 of 100 similar projects were more than 12 months late.",
     "lines": [
       "Delivery risk: Moderate",
-      "Between 15 and 30 of 100 similar Gurugram projects got their OC more than 12 months late."
+      "Between 15 and 30 of 100 similar Gurugram projects got their OC more than 12 months late.",
+      "70% built with 92% of the promised time used."
     ],
     "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
     "caption": "Plinth · No developer pays us. Ever."

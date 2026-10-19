@@ -1,4 +1,6 @@
 // Seedmap: canonical/catalogue.json -> supabase/seed/10_catalogue.sql (core catalogue tables, DATA_MODEL §1).
+// Column names follow T04's schema, including the precision columns T04 adds for CONFLICTS C-28
+// (rera_registrations.registered_on_precision, extensions.granted_on_precision).
 // Snapshot links are set in 20_evidence (snapshots are inserted there).
 export const output = "10_catalogue.sql";
 export const requires = ["20261020"]; // T04 core schema
@@ -19,18 +21,16 @@ export function build({ load, sql }) {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, " ")
       .trim();
+  // EWKT literal: PostGIS casts it to geography; no ST_* call, so PGlite can still load the file.
+  const point = (p) => (p ? q(`SRID=4326;POINT(${p.lng} ${p.lat})`) : "null");
   const parts = [];
 
-  // The fixture world runs on the frozen clock (ops.now() honours it only when plinth.env is
-  // test or fixture). Set it for this database unless the caller chose an env already.
-  parts.push(`do $$
-begin
-  if coalesce(current_setting('plinth.env', true), '') = '' then
-    execute format('alter database %I set plinth.env = %L', current_database(), 'fixture');
-  end if;
-end
-$$;
-`);
+  // The fixture world runs on the frozen clock: ops.now() honours it only when the env is test
+  // or fixture. T04's ops.runtime_settings holds the env (ALTER DATABASE needs a superuser on
+  // Supabase, so the seed never uses it).
+  parts.push(
+    "insert into ops.runtime_settings (key, value) values ('env', 'fixture')\n  on conflict (key) do update set value = excluded.value;\n",
+  );
   parts.push(
     insert(
       "core.localities",
@@ -72,13 +72,14 @@ $$;
   parts.push(
     insert(
       "core.developers",
-      ["id", "group_id", "legal_name", "cin", "llpin", "status", "name_norm"],
+      ["id", "group_id", "legal_name", "cin", "llpin", "kind", "status", "name_norm"],
       c.developers.map((d) => [
         q(d.id),
         q(grp[d.group]),
         q(d.legal_name),
         q(d.cin),
         q(d.llpin),
+        q(d.kind),
         q(d.status),
         q(norm(d.legal_name)),
       ]),
@@ -87,13 +88,14 @@ $$;
   parts.push(
     insert(
       "core.projects",
-      ["id", "slug", "name", "group_id", "locality_id"],
+      ["id", "slug", "name", "group_id", "locality_id", "centroid"],
       c.projects.map((p) => [
         q(p.id),
         q(p.slug),
         q(p.name),
         q(grp[p.group]),
         q(p.locality ? loc[p.locality] : null),
+        point(p.centroid),
       ]),
     ),
   );
@@ -113,12 +115,6 @@ $$;
       ]),
     ),
   );
-  // rera_number is NOT NULL in core.rera_registrations, but §5b gives no number for five phases
-  // (CONFLICTS.md C-04). Until the lead adds them, those rows carry a visible PENDING token,
-  // never a HARERA-shaped number. registered_on has no precision column: month dates are the 1st.
-  const pendingNumbers = c.rera_registrations.filter((r) => !r.rera_number).map((r) => r.phase);
-  if (pendingNumbers.length)
-    parts.push(`-- PENDING RERA numbers (CONFLICTS.md C-04): ${pendingNumbers.join(", ")}\n`);
   parts.push(
     insert(
       "core.rera_registrations",
@@ -128,6 +124,7 @@ $$;
         "authority",
         "rera_number",
         "registered_on",
+        "registered_on_precision",
         "original_completion",
         "original_completion_precision",
         "current_completion",
@@ -144,8 +141,9 @@ $$;
         q(r.id),
         q(ph[r.phase]),
         q(r.authority),
-        q(r.rera_number ?? `PENDING-C04-${r.phase}`),
+        q(r.rera_number),
         date(r.registered_on),
+        q(r.registered_precision),
         date(r.original_completion),
         q(r.original_completion_precision),
         date(r.current_completion),
@@ -182,12 +180,10 @@ $$;
       ]),
     ),
   );
-  // status is NOT NULL; filings whose timeliness §5b does not give stay out of the table
-  // (their figures are still seeded as facts in 20_evidence). CONFLICTS.md C-06.
   const unknown = c.qpr_filings.filter((f) => f.status == null);
   if (unknown.length)
-    parts.push(
-      `-- QPR rows not seeded, timeliness unknown (CONFLICTS.md C-06): ${unknown.map((f) => `${f.phase} ${f.quarter}`).join(", ")}\n`,
+    throw new Error(
+      `QPR rows without a status: ${unknown.map((f) => `${f.phase} ${f.quarter}`).join(", ")}`,
     );
   parts.push(
     insert(
@@ -205,35 +201,31 @@ $$;
         "built_pct",
         "time_used_pct",
       ],
-      c.qpr_filings
-        .filter((f) => f.status != null)
-        .map((f) => [
-          q(f.id),
-          q(regByPhase[f.phase]),
-          q(f.quarter),
-          date(f.due_on),
-          date(f.filed_on),
-          date(f.appeared_on),
-          sql.ts(f.fetched_at),
-          q(f.status),
-          q(f.sold_pct),
-          q(f.built_pct),
-          q(f.time_used_pct),
-        ]),
+      c.qpr_filings.map((f) => [
+        q(f.id),
+        q(regByPhase[f.phase]),
+        q(f.quarter),
+        date(f.due_on),
+        date(f.filed_on),
+        date(f.appeared_on),
+        sql.ts(f.fetched_at),
+        q(f.status),
+        q(f.sold_pct),
+        q(f.built_pct),
+        q(f.time_used_pct),
+      ]),
     ),
   );
   parts.push(
     insert(
       "core.qpr_tower_progress",
       ["filing_id", "tower_id", "slab_reached", "built_pct"],
-      c.qpr_tower_progress
-        .filter((t) => c.qpr_filings.find((f) => f.id === t.filing)?.status != null)
-        .map((t) => [
-          q(t.filing),
-          q(tower[`${t.phase}/${t.tower}`]),
-          q(t.slab_reached),
-          q(t.built_pct),
-        ]),
+      c.qpr_tower_progress.map((t) => [
+        q(t.filing),
+        q(tower[`${t.phase}/${t.tower}`]),
+        q(t.slab_reached),
+        q(t.built_pct),
+      ]),
     ),
   );
   parts.push(
@@ -244,6 +236,7 @@ $$;
         "registration_id",
         "kind",
         "granted_on",
+        "granted_on_precision",
         "from_completion",
         "from_completion_precision",
         "to_completion",
@@ -255,6 +248,7 @@ $$;
         q(regByPhase[e.phase]),
         q(e.kind),
         date(e.granted_on),
+        q(e.granted_precision),
         date(e.from_completion),
         q("month"),
         date(e.to_completion),
@@ -284,6 +278,13 @@ $$;
         q(b.months),
         q(b.source_url),
       ]),
+    ),
+  );
+  parts.push(
+    insert(
+      "core.completion_events",
+      ["id", "phase_id", "kind", "granted_on"],
+      c.completion_events.map((e) => [q(e.id), q(ph[e.phase]), q(e.kind), date(e.granted_on)]),
     ),
   );
   parts.push(

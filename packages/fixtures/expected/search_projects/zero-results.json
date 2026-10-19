@@ -7,15 +7,20 @@
     "corridors": ["dwarka-expressway"],
     "bands": ["low", "moderate"]
   },
-  "notes": ["“Low delivery risk” shows Low and Moderate.", "5 projects hidden by your filters."],
+  "notes": ["“Low delivery risk” shows Low and Moderate.", "6 projects hidden by your filters."],
   "sort_line": "Sorted by lowest delivery risk. Order never follows money.",
   "legend_line": "Pins show all-in prices",
   "items": [],
-  "hidden_count": 5,
+  "hidden_count": 6,
   "hidden": [
     {
       "slug": "kestrel-park",
       "name": "Kestrel Park",
+      "why_line": "no 4 BHK"
+    },
+    {
+      "slug": "cedar-walk-phase-2",
+      "name": "Cedar Walk, Phase 2",
       "why_line": "no 4 BHK"
     },
     {

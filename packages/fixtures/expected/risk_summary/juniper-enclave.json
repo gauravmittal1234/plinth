@@ -4,7 +4,7 @@
     "slug": "juniper-enclave",
     "name": "Juniper Enclave",
     "short_code": null,
-    "rera_number": null,
+    "rera_number": "GGM/889/621/2025/22",
     "authority": {
       "code": "harera_ggm",
       "name": "HARERA Gurugram",
@@ -18,7 +18,7 @@
       "claim": {
         "state": "claimed",
         "line": "claimed developer page, replies here",
-        "since": null
+        "since": "2025-12-09"
       }
     }
   },
@@ -51,7 +51,12 @@
     "built_pct": 9,
     "sold_pct": null,
     "time_used_pct": 31,
-    "latest_qpr": null,
+    "latest_qpr": {
+      "quarter": "2026-Q2",
+      "label": "Apr–Jun 2026",
+      "filed_on": "2026-07-10",
+      "age_days": 100
+    },
     "line": "9% built · 31% of the promised time used"
   },
   "price": {

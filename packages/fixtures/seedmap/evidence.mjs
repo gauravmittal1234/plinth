@@ -91,6 +91,7 @@ export function build({ load, sql }) {
         "reviewed_at",
         "lane",
         "superseded_by",
+        "corrections",
       ],
       e.facts.map((f) => [
         q(f.id),
@@ -111,6 +112,8 @@ export function build({ load, sql }) {
         ts(f.reviewed_at),
         q(f.lane),
         q(f.superseded_by),
+        // core.facts.corrections (jsonb, T04 for CONFLICTS C-28): dispute refs, dates, lines.
+        jsonb(f.corrections),
       ]),
     ),
   );

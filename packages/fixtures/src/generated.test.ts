@@ -71,7 +71,14 @@ describe("seed", () => {
     expect(all["30_scoring.sql"]).toContain(
       "update ops.feature_flags set enabled = true where key = 'bands_public'",
     );
-    expect(all["10_catalogue.sql"]).toContain("plinth.env");
+    expect(all["10_catalogue.sql"]).toContain(
+      "insert into ops.runtime_settings (key, value) values ('env', 'fixture')",
+    );
+    expect(all["10_catalogue.sql"]).not.toMatch(/alter database/i);
+    expect(all["30_scoring.sql"]).toContain(
+      "update ops.feature_flags set enabled = false where key in ('ai_ask', 'ai_doc_check', 'ai_staging')",
+    );
+    expect(all["10_catalogue.sql"]).not.toContain("PENDING");
   });
 });
 

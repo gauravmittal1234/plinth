@@ -6,7 +6,7 @@
       "slug": "coral-towers",
       "name": "Coral Towers",
       "short_code": null,
-      "rera_number": null,
+      "rera_number": "GGM/612/344/2022/41",
       "authority": {
         "code": "harera_ggm",
         "name": "HARERA Gurugram",
@@ -90,11 +90,11 @@
             "as_of": "2026-10-14"
           },
           {
-            "label": "HARERA order · Extension 1 · Jan 2026",
+            "label": "HARERA order · Extension 1 · 20 Jan 2026",
             "fact_ids": ["a7301216-3430-592a-aa01-1ea9619c813e"],
             "evidence_url": "/evidence/a7301216-3430-592a-aa01-1ea9619c813e",
             "official_url": "https://haryanarera.gov.in",
-            "as_of": "2026-01-31"
+            "as_of": "2026-01-20"
           },
           {
             "label": "HARERA order · Extension 2 · 14 Oct 2026",
@@ -121,7 +121,7 @@
         ]
       }
     ],
-    "what_would_change": "Two consecutive quarters with construction ahead of sales would move this to Elevated.",
+    "what_would_change": "Two consecutive quarters of construction at or ahead of schedule would move this to Elevated.",
     "pending": [
       {
         "code": "qpr_missing",
@@ -188,7 +188,11 @@
     "image_url": "/media/heroCoral.jpg",
     "image_caption": "Images on this page are illustrative",
     "summary_line": "Delivery risk: High · Stale data, progress 187 days old · 22% built · Original completion Aug 2028, extended to Aug 2029",
-    "rera_badge": null
+    "rera_badge": {
+      "number": "GGM/612/344/2022/41",
+      "authority_url": "https://haryanarera.gov.in",
+      "qr_url": null
+    }
   },
   "truth_panel": [
     {
@@ -205,11 +209,11 @@
           "as_of": "2026-10-14"
         },
         {
-          "label": "HARERA order · Extension 1 · Jan 2026",
+          "label": "HARERA order · Extension 1 · 20 Jan 2026",
           "fact_ids": ["a7301216-3430-592a-aa01-1ea9619c813e"],
           "evidence_url": "/evidence/a7301216-3430-592a-aa01-1ea9619c813e",
           "official_url": "https://haryanarera.gov.in",
-          "as_of": "2026-01-31"
+          "as_of": "2026-01-20"
         },
         {
           "label": "HARERA order · Extension 2 · 14 Oct 2026",
@@ -487,10 +491,10 @@
     },
     {
       "fact_id": "a7301216-3430-592a-aa01-1ea9619c813e",
-      "chip": "HARERA order · Extension 1 · Jan 2026",
+      "chip": "HARERA order · Extension 1 · 20 Jan 2026",
       "line": "Extension 1 moved the date from Aug 2028 to Feb 2029.",
       "lane": "records_show",
-      "as_of": "2026-01-31",
+      "as_of": "2026-01-20",
       "evidence_url": "/evidence/a7301216-3430-592a-aa01-1ea9619c813e"
     },
     {

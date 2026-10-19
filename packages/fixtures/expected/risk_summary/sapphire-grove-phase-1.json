@@ -4,7 +4,7 @@
     "slug": "sapphire-grove-phase-1",
     "name": "Sapphire Grove, Phase 1",
     "short_code": null,
-    "rera_number": null,
+    "rera_number": "GGM/867/599/2025/03",
     "authority": {
       "code": "harera_ggm",
       "name": "HARERA Gurugram",
@@ -18,7 +18,7 @@
       "claim": {
         "state": "claimed",
         "line": "claimed developer page, replies here",
-        "since": null
+        "since": "2025-12-05"
       }
     }
   },
@@ -135,7 +135,7 @@
       ]
     }
   ],
-  "what_would_change": "Two consecutive quarters with construction ahead of sales would move this to Low.",
+  "what_would_change": "Two consecutive quarters of construction at or ahead of schedule would move this to Low.",
   "pending": [
     {
       "code": "rescore_due",

@@ -4,7 +4,7 @@
     "slug": "kestrel-park",
     "name": "Kestrel Park",
     "short_code": null,
-    "rera_number": null,
+    "rera_number": "GGM/781/513/2023/64",
     "authority": {
       "code": "harera_ggm",
       "name": "HARERA Gurugram",
@@ -16,9 +16,9 @@
       "slug": "orbis-land",
       "name": "Orbis Land",
       "claim": {
-        "state": "invited",
-        "line": "invited 24 Nov 2025 · not yet claimed",
-        "since": "2025-11-24"
+        "state": "claimed",
+        "line": "claimed developer page, replies here",
+        "since": "2025-12-03"
       }
     }
   },

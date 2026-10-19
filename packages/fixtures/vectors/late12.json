@@ -51,6 +51,55 @@
       "blanket_extension_months": 4,
       "expected_late_after": "2032-08",
       "expected_label": "Aug 2032"
+    },
+    {
+      "phase": "cedar-walk-phase-2",
+      "original_completion": "2027-03",
+      "blanket_extension_months": 4,
+      "expected_late_after": "2028-07",
+      "expected_label": "Jul 2028"
+    },
+    {
+      "phase": "cedar-walk",
+      "original_completion": "2019-06",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2020-06",
+      "expected_label": "Jun 2020"
+    },
+    {
+      "phase": "aurelia-heights-phase-1",
+      "original_completion": "2020-12",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2021-12",
+      "expected_label": "Dec 2021"
+    },
+    {
+      "phase": "wren-court",
+      "original_completion": "2020-12",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2021-12",
+      "expected_label": "Dec 2021"
+    },
+    {
+      "phase": "opaline-residences",
+      "original_completion": "2022-06",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2023-06",
+      "expected_label": "Jun 2023"
+    },
+    {
+      "phase": "heron-point-phase-1",
+      "original_completion": "2023-03",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2024-03",
+      "expected_label": "Mar 2024"
+    },
+    {
+      "phase": "linden-square",
+      "original_completion": "2023-12",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2024-12",
+      "expected_label": "Dec 2024"
     }
   ]
 }
