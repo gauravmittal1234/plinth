@@ -154,7 +154,7 @@ One object, served by `api.risk_summary(p_slug)`. It is embedded in `project_pag
 | `api.evidence(p_fact_id)` | EvidenceItem | M1 |
 | `api.methodology()` | Model versions, factor weights, red-flag rules, calibration table, changelog | M1 |
 | `api.about()` | Coverage today/next, response-time board, holdings register, grievance officer (placeholders until supplied) | M1 |
-| `api.flags()` | `{ key: boolean }` for the caller's audience | M0 |
+| `api.flags()` | `{ "schema": "plinth.flags/1", "flags": { key: boolean } }` for the caller's audience (19 R1 flags; `bands_public` defaults off) | M0 |
 | `api.share_card(p_code)` | The original card + "Changed since this card was sent" diff | M2 |
 | `api.family_invite_preview(p_code)` | Inviter first name, scope, the RERA number. **No phone** | M2 |
 | `api.cost_breakdown(p_slug, p_unit, p_buyer, p_waive)` | CostBreakdown | M3 |
@@ -538,7 +538,7 @@ The booking-form case returns `matched: 3`, `verdict: "matches"`.
   "sources": [ { "n": 1, "label": "HARERA registration", "fact_id": "…" }, { "n": 2, "label": "HARERA QPR · Apr–Jun 2026", "fact_id": "…" }, { "n": 3, "label": "Plinth method v1.2", "fact_id": "…" } ],
   "cards": [ { "…": "ProjectCard" } ], "actions": [ { "label": "Follow this project", "action": "follow" } ],
   "refusal_code": null,
-  "handoff": { "label": "Talk to a Plinth adviser · paid by you, never by developers", "hours_line": "Mon–Sat 10 am–7 pm, usually within 4 working hours" },
+  "handoff": { "label": "Talk to a Plinth adviser · free · developers never pay us", "hours_line": "Mon–Sat 10 am–7 pm, usually within 4 working hours" },
   "as_of_line": "Records as of 14 Oct 2026" }
 ```
 For a refusal: `kind: "refusal"`, a `refusal_code` (e.g. `advice_buy_sell`) and the §5b templated text ("I can't tell you whether to buy…" + the four checks). An offline app client queues the question (§5b offline line).
