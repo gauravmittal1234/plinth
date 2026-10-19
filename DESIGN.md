@@ -552,7 +552,7 @@ Count: **3 parties can reach you**.
   - Invite links: `plinth.in/j/AH2-7KQ` (Aurelia) and `plinth.in/j/RC4-2MW` (all 4). Each link works for one person for 7 days (to 25 Oct) and carries no phone number. The relative's own WhatsApp "JOIN AH2-7KQ" is the opt-in.
   - Payment alerts, follow type, cost sheets, visit passes and "who has my number" stay private to Rohan.
 - **Weekly digest:** Sundays at 9 am. Rohan chose weekly, and the next digest is Sun 25 Oct. Rohan's WhatsApp alerts and digest are ON on every surface.
-- **Old card example:** data as of 26 Jun 2026, model v1.1, showing Moderate.
+- **Old card example:** data as of 30 Sep 2026, model v1.1, showing Moderate (Aurelia moved to Elevated on 2 Oct).
 - **Shared shortlist:** Kestrel Park, Sapphire Grove Ph 1 and Aurelia Heights Ph 2, with dated notes from 12–17 Oct.
 
 **Engineering fixture decisions (19 Oct 2026):**
@@ -581,6 +581,93 @@ Count: **3 parties can reach you**.
   | CL-202 | 18 Oct 2026 | Reply to the heads-up via WhatsApp Flow (Jul–Sep QPR receipt) | Received; we check the HARERA register by 20 Oct 2026 |
 
 - **Planned lender fee:** WebAbout, WebPricing and WebPrivacy may show it only as planned for R2 ("from 2027"), never as live.
+
+**Fixture decisions, round 2 (19 Oct 2026; answers to `packages/fixtures/CONFLICTS.md`):**
+- **C-02 · Registrations:** Sapphire Grove Ph 1 registered Jan 2025. Coral Towers registered Jul 2022.
+- **C-03 · Aurelia's QPRs:** the first QPR is Apr–Jun 2023. That gives 13 filed rows plus the missing Jul–Sep 2026, so 14 rows.
+- **C-04 · RERA numbers (fictional):**
+
+  | Project | RERA number |
+  |---|---|
+  | Kestrel Park | GGM/781/513/2023/64 |
+  | Sapphire Grove Ph 1 | GGM/867/599/2025/03 |
+  | Coral Towers | GGM/612/344/2022/41 |
+  | Laurel Residency | GGM/447/179/2020/52 |
+  | Juniper Enclave | GGM/889/621/2025/22 |
+  | Cedar Walk Ph 2 | GGM/566/298/2022/31 |
+
+- **C-05 · Cedar Walk, Phase 2** (Northfield Estates group; promoter Cedarline Developers):
+  - Location: Sector 99, Dwarka Expressway.
+  - Registered Jan 2022; original completion Mar 2027. 320 units.
+  - Apr–Jun 2026 QPR: 70% built, 92% of time used; QPRs on time in the last 8 quarters.
+  - 3 BHK, 1,350 sq ft carpet, from ₹1.85 Cr. Price list dated 12 Jun 2026; no cost sheet with us, so no all-in.
+  - Band Moderate (low confidence: Northfield has 6 finished projects), "Between 15 and 30 of 100".
+  - Reasons: "70% built with 92% of the promised time used." · "2 of the group's 6 finished RERA projects got OC more than 12 months late." · "QPRs filed on time in each of the last 8 quarters."
+- **C-06 · Other QPR filings:**
+  - Kestrel Apr–Jun 2026: filed 14 Jul 2026, on time.
+  - Laurel's 4 QPRs (Jul–Sep 2025 to Apr–Jun 2026): all filed on time (13 Oct 2025, 12 Jan 2026, 14 Apr 2026, 15 Jul 2026), 34% built each time. The stall is no progress, not lateness.
+  - Juniper's latest is Apr–Jun 2026, filed 10 Jul 2026: 9% built.
+  - Sold % is given for Aurelia only; the others show "Not reported".
+- **C-07, C-08 · Claims:** Orbis Land claimed 3 Dec 2025. Meridian Habitat claimed 5 Dec 2025. Halcyon Homes claimed 9 Dec 2025.
+- **C-09 · Elmstone:** the insolvent group company is "Elmstone Infra Projects Pvt Ltd".
+- **C-10 · Coral's extensions:** Extension 1 granted 20 Jan 2026, order HARERA/GGM/EXT/2026/014. Extension 2 granted 14 Oct 2026, order HARERA/GGM/EXT/2026/219. Both are RERA s.6 extensions.
+- **C-11 · Complaints:** stored as count facts in R1, with no individual orders.
+- **C-12 · Northfield units base:** 2,980 units until Dec 2025; 3,400 after Heron Point Ph 2 registered.
+- **C-13 · All-in figures:** Kestrel, Sapphire and Coral use the rounded all-in shown (₹2.44 / 2.27 / 1.90 Cr).
+- **C-14 · D-118:** raised 14 Aug 2026, upheld 3 Sep 2026.
+- **C-15 · Methodology numbers:**
+  - Band ranges (of 100): Low 5–15, Moderate 15–30, Elevated 30–45, High 45–65, Severe 65–80.
+  - Illustrative calibration: Low 4/46, Moderate 19/61, Elevated 20/52, High 19/34, Severe 14/19; overall 76/212 ≈ 36; Brier 0.19 vs 0.23.
+  - Models: v1.0 15 Jul 2026 (first public bands), v1.1 2 Sep 2026, v1.2 14 Oct 2026.
+  - Weights: 30/30/20/15/5.
+  - Confidence rules: high confidence needs ≥ 8 finished projects; Limited history below 3; Not scored below 6 months since registration; stale after 120 days; re-score within 72 hours.
+- **C-16 · Reasons:** reason texts for the other phases come from the reason catalogue, as listed in CONFLICTS.md C-16. Where sales aren't reported, "what would change" reads "Two consecutive quarters of construction at or ahead of schedule would move this to <band>".
+- **C-17 · Band history:** phases other than Aurelia have held their band since 15 Jul 2026 (v1.0); every band was re-run under v1.2 on 14 Oct 2026.
+- **C-18 · Aurelia's payment plan has 13 stages:**
+
+  | Stage | Share |
+  |---|---|
+  | Booking | 10% |
+  | Agreement | 10% |
+  | Foundation | 10% |
+  | Seven slabs (3, 6, 9, 12, 15, 18, 20) | 7.5% each |
+  | Brickwork | 7.5% |
+  | Finishing | 5% |
+  | Offer of possession | 5% |
+
+- **C-19 · Developer replies:**
+  - Aurelia (project reply, 15 Oct 2026): "Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October." Signed "Ananya Rao, authorised signatory, Northfield Estates".
+  - The developer page carries a separate group-level reply (Heron Point Ph 1 fire NOC), by the same signatory.
+- **C-20 · Map pins:** approximate positions only (fictional projects at real sector locations):
+
+  | Sector | Pin (lat, long) |
+  |---|---|
+  | 37D | 28.437, 76.985 |
+  | 89 | 28.418, 76.946 |
+  | 92 | 28.415, 76.928 |
+  | 99 | 28.479, 76.983 |
+  | 102 | 28.490, 76.996 |
+  | 104 | 28.500, 77.006 |
+  | 106 | 28.507, 77.014 |
+  | 113 | 28.527, 77.034 |
+
+- **C-21 · Search:** the canonical query hides 2 projects (Aurelia, and Heron Point Ph 2, which has no price list): "2 projects hidden by your filters".
+- **C-22 · Afford the wait:** the paid-out share rises in equal monthly steps from 52.5% (Nov 2026) to 95% (Dec 2027). A delay holds the Dec 2027 outgo, so delay cost = months × the rounded Dec 2027 outgo. Published in Methodology → "How we worked this out".
+- **C-24 · Old share card:** see "Old card example" above: 30 Sep 2026, v1.1.
+- **C-26 · AppRisk reason 4:** "2 of the group's 6 finished RERA projects got OC more than 12 months late." The insolvency search is its own evidence record.
+- **C-27 · Northfield's finished projects:**
+
+  | Project | RERA number | Promoter | OC | Timing |
+  |---|---|---|---|---|
+  | Cedar Walk Ph 1 | GGM/118/50/2017/24 | Cedarline Developers | Apr 2019 | 2 months early |
+  | Aurelia Heights Ph 1 | GGM/131/63/2017/38 | Northfield Buildtech | Mar 2023 | 27 months late (21 after the 6-month COVID extension) |
+  | Wren Court | GGM/176/108/2018/09 | — | Nov 2021 | 11 months late |
+  | Opaline Residences | GGM/262/194/2018/71 | Opaline Realtors LLP | May 2023 | 11 months late |
+  | Heron Point Ph 1 | GGM/301/233/2019/15 | Heronstone Projects | Jun 2025 | 27 months late |
+  | Linden Square | GGM/349/281/2019/56 | — | Sep 2024 | 9 months late |
+
+  Northfield Estates Pvt Ltd is the group parent and the promoter of Aurelia Heights Ph 2.
+- **C-29 · AI kill switches:** the fixture world turns `ai_ask`, `ai_doc_check` and `ai_staging` **off** until M5. Screens show their "coming soon" states.
 
 ## 6. Copy rules (short form)
 

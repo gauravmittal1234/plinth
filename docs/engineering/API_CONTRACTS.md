@@ -99,7 +99,7 @@ One object, served by `api.risk_summary(p_slug)`. It is embedded in `project_pag
         "line": "Developer says: filed 12 Oct, not yet verified." },
       "marker_line": "If it is still missing on 25 Oct 2026, this band may change; followers hear first." }
   ],
-  "developer_response": { "text": "…", "signatory_title": "Head of Customer Relations", "published_on": "2026-10-15",
+  "developer_response": { "text": "…", "signatory_title": "Authorised signatory", "published_on": "2026-10-15",
     "check_by": "2026-11-05", "line": "Developer says · not yet verified · 15 Oct 2026 · we check it by 5 Nov 2026" },
   "progress": { "built_pct": 41, "sold_pct": 72, "time_used_pct": 77,
     "latest_qpr": { "quarter": "2026-Q2", "label": "Apr–Jun 2026", "filed_on": "2026-07-15", "age_days": 95 },
@@ -296,7 +296,7 @@ Response:
     { "slug": "kestrel-park", "name": "Kestrel Park", "locality_line": "Sector 113, Dwarka Expressway", "developer_name": "Orbis Land",
       "chip": { "kind": "band", "label": "Low", "step": 1, "meter_filled": 1 }, "state": "scored",
       "price_line": "₹2.44 Cr all-in · quoted ₹2.10 Cr", "pin_label": "₹2.44 Cr", "built_line": "63% built",
-      "completion_line": "Original completion Jun 2027", "image_url": "…", "centroid": [77.0, 28.5] }
+      "completion_line": "Original completion Nov 2028", "image_url": "…", "centroid": [77.034, 28.527] }
   ],
   "hidden_count": 1, "next_cursor": null, "zero_results": null }
 ```
