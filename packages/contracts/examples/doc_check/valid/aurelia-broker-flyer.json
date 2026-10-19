@@ -1,0 +1,104 @@
+{
+  "schema": "plinth.doc_check/1",
+  "id": "6f0e2c1a-0000-4000-8000-000000000201",
+  "kind": "claims",
+  "status": "done",
+  "doc_label": "Flyer",
+  "project_match": {
+    "slug": "aurelia-heights-phase-2",
+    "method": "rera_number",
+    "confirmed": true,
+    "line": "We matched the RERA number on the flyer: GGM/673/405/2022/117."
+  },
+  "summary_line": "4 of 7 claims differ from the records.",
+  "breakdown_line": "1 matches. 1 isn't in any record we read. 1 can't be checked until the Jul–Sep QPR is filed.",
+  "rows": [
+    {
+      "seq": 1,
+      "says_label": "Flyer says",
+      "says_text": "POSSESSION DEC 2026",
+      "verdict": "differs",
+      "verdict_label": "Differs",
+      "records_line": "Original completion Dec 2027, no extensions; 41% built.",
+      "how_checked": "Date compared with the HARERA registration.",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["00000000-0000-4000-8000-000000000010"],
+          "evidence_url": "/evidence/00000000-0000-4000-8000-000000000010",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ],
+      "broker_question": "Which completion date will my agreement carry?",
+      "page": 1,
+      "bbox": [0.08, 0.31, 0.62, 0.38]
+    },
+    {
+      "seq": 2,
+      "says_label": "Flyer says",
+      "says_text": "Structure up to 12th floor",
+      "verdict": "cant_check",
+      "verdict_label": "Can't check",
+      "records_line": "Slab 9 at the last filing. The Jul–Sep QPR, due 15 Oct, is not on HARERA.",
+      "checkable_on": null,
+      "developer_says": {
+        "line": "Developer says “filed 12 Oct”, not verified."
+      }
+    },
+    {
+      "seq": 3,
+      "says_label": "Flyer says",
+      "says_text": "ONLY 20 FLATS LEFT",
+      "verdict": "differs",
+      "verdict_label": "Differs",
+      "records_line": "72% of 500 units booked at the last filing, so about 140 unbooked."
+    },
+    {
+      "seq": 4,
+      "says_label": "Flyer says",
+      "says_text": "₹11,999/sq ft ALL-INCLUSIVE*",
+      "verdict": "differs",
+      "verdict_label": "Differs",
+      "records_line": "All-in ₹18,900 per sq ft carpet; the base alone is ₹11,750 per sq ft super. The flyer's fine print says “Stamp duty and registration extra.”"
+    },
+    {
+      "seq": 5,
+      "says_label": "Flyer says",
+      "says_text": "3 BHK · 2,000 SQ FT",
+      "verdict": "differs",
+      "verdict_label": "Differs",
+      "records_line": "1,450 sq ft carpet as registered; 2,000 is the super area."
+    },
+    {
+      "seq": 6,
+      "says_label": "Flyer says",
+      "says_text": "40,000 sq ft clubhouse",
+      "verdict": "not_in_records",
+      "verdict_label": "Not in records",
+      "records_line": "Not in any record we read."
+    },
+    {
+      "seq": 7,
+      "says_label": "Flyer says",
+      "says_text": "RERA No. GGM/673/405/2022/117",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "The HARERA registration of Aurelia Heights, Phase 2."
+    }
+  ],
+  "actions": {
+    "share_text": "4 of 7 claims on this flyer differ from the records for Aurelia Heights, Phase 2.",
+    "broker_questions": [
+      "Can I see slab 9, and the floor you're casting now?",
+      "Can I see the HARERA receipt for the Jul–Sep 2026 QPR?",
+      "Which completion date will my agreement carry?",
+      "Which charges on the cost sheet are optional?"
+    ]
+  },
+  "notes": [
+    "Not legal advice. We never certify title.",
+    "We keep this file for 30 days, then delete it, unless you save it to your account."
+  ],
+  "rules_version": "2026.10"
+}

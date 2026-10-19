@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-3bhk.json",
+  "why": "Tags are often_negotiable, set_by_law, included_in_base or refundable_deposit.",
+  "expect": "/lines/1/tag",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/lines/1/tag",
+      "value": "discount"
+    }
+  ]
+}

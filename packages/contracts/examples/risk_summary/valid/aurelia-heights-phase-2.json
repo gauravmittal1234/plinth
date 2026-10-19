@@ -1,0 +1,204 @@
+{
+  "schema": "plinth.risk_summary/1",
+  "phase": {
+    "slug": "aurelia-heights-phase-2",
+    "name": "Aurelia Heights, Phase 2",
+    "short_code": "AH2",
+    "rera_number": "GGM/673/405/2022/117",
+    "authority": {
+      "code": "harera_ggm",
+      "name": "HARERA Gurugram",
+      "url": "https://haryanarera.gov.in"
+    },
+    "locality_line": "Sector 37D, Dwarka Expressway",
+    "units": 500,
+    "developer": {
+      "slug": "northfield-estates",
+      "name": "Northfield Estates",
+      "claim": {
+        "state": "claimed",
+        "line": "claimed developer page, replies here",
+        "since": "2025-12-02"
+      }
+    }
+  },
+  "display": {
+    "state": "scored",
+    "overlays": ["pending_change"],
+    "bands_public": true
+  },
+  "band": {
+    "code": "elevated",
+    "label": "Elevated",
+    "step": 3,
+    "since": "2026-10-02",
+    "set_by": "model",
+    "rule": null
+  },
+  "chip": {
+    "kind": "band",
+    "label": "Elevated",
+    "step": 3,
+    "meter_filled": 3
+  },
+  "confidence": {
+    "level": "low",
+    "dots": 1,
+    "line": "We're less certain about this one. Northfield has only 6 finished RERA projects to learn from, so we show a range, not one number."
+  },
+  "frequency": {
+    "kind": "range",
+    "low": 30,
+    "high": 45,
+    "sentence": "Between 30 and 45 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+    "reference_class_line": "Gurugram RERA phases registered 2017–2021 (illustrative backtest).",
+    "icon_array": {
+      "filled": 30,
+      "hatched": 15,
+      "empty": 55
+    },
+    "hatch_legend": "Hatched: the 15 of 100 we're less certain about"
+  },
+  "late12": {
+    "original_completion": "2027-12",
+    "blanket_extension_months": 4,
+    "late_after": "2029-04",
+    "line": "Original completion Dec 2027. More than 12 months late here means an OC after Apr 2029, with the 4-month blanket extension of Jul 2026.",
+    "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+  },
+  "reasons": [
+    {
+      "rank": 1,
+      "factor": "finances",
+      "factor_label": "Finances",
+      "text": "72% of units sold, 41% built.",
+      "sources": [
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["…"],
+          "evidence_url": "/evidence/…",
+          "official_url": "https://haryanarera.gov.in/…",
+          "as_of": "2026-07-15"
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "factor": "timeline",
+      "factor_label": "Timeline",
+      "text": "77% of the promised time used. QPRs filed late in 3 of the last 8 quarters.",
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["…"],
+          "evidence_url": "/evidence/…",
+          "official_url": "…",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "factor": "legal",
+      "factor_label": "Legal",
+      "text": "14 complaints decided against the promoter in 24 months · 2.8 per 100 units. Median count for similar projects: 3.",
+      "sources": [
+        {
+          "label": "HARERA orders · 24 months",
+          "fact_ids": ["…"],
+          "evidence_url": "/evidence/…",
+          "official_url": "…",
+          "as_of": "2026-10-09"
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "factor": "track_record",
+      "factor_label": "Track record",
+      "text": "2 of the group's 6 finished RERA projects got OC more than 12 months late.",
+      "sources": [
+        {
+          "label": "HARERA · DTCP OC records",
+          "fact_ids": ["…"],
+          "evidence_url": "/evidence/…",
+          "official_url": "…",
+          "as_of": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "what_would_change": "Two consecutive quarters with construction ahead of sales would move this to Moderate.",
+  "pending": [
+    {
+      "code": "qpr_missing",
+      "since": "2026-10-15",
+      "line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026.",
+      "developer_says": {
+        "text": "Filed on 12 Oct 2026.",
+        "verified": false,
+        "said_on": "2026-10-15",
+        "check_by": "2026-11-05",
+        "line": "Developer says: filed 12 Oct, not yet verified."
+      },
+      "marker_line": "If it is still missing on 25 Oct 2026, this band may change; followers hear first."
+    }
+  ],
+  "developer_response": {
+    "text": "…",
+    "signatory_title": "Head of Customer Relations",
+    "published_on": "2026-10-15",
+    "check_by": "2026-11-05",
+    "line": "Developer says · not yet verified · 15 Oct 2026 · we check it by 5 Nov 2026"
+  },
+  "progress": {
+    "built_pct": 41,
+    "sold_pct": 72,
+    "time_used_pct": 77,
+    "latest_qpr": {
+      "quarter": "2026-Q2",
+      "label": "Apr–Jun 2026",
+      "filed_on": "2026-07-15",
+      "age_days": 95
+    },
+    "line": "41% built · 77% of the promised time used · 72% sold"
+  },
+  "price": {
+    "all_in_inr": 27400400,
+    "all_in_label": "₹2.74 Cr",
+    "quoted_label": "₹2.35 Cr",
+    "per_sqft_carpet_label": "₹18,900 per sq ft carpet",
+    "basis_line": "3 BHK, 1,450 sq ft carpet, park-facing · cost sheet of 2 Oct 2026",
+    "display_line": "₹2.74 Cr all-in · quoted ₹2.35 Cr"
+  },
+  "complaints": {
+    "count_24m": 14,
+    "per_100_units": 2.8,
+    "units_base": 500,
+    "median_count_similar": 3,
+    "line": "14 complaints · 2.8 per 100 units"
+  },
+  "withheld": null,
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "…",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/aurelia-heights-phase-2",
+    "short_url": "https://plinth.in/r/AH2"
+  },
+  "share": {
+    "card_url": "https://plinth.in/cards/risk/aurelia-heights-phase-2.png?run=…",
+    "card_alt": "Aurelia Heights, Phase 2: Delivery risk Elevated. Between 30 and 45 of 100 similar projects were more than 12 months late.",
+    "lines": [
+      "Delivery risk: Elevated",
+      "Between 30 and 45 of 100 similar Gurugram projects got their OC more than 12 months late.",
+      "41% built with 77% of the promised time used."
+    ],
+    "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+    "caption": "Plinth · No developer pays us. Ever."
+  }
+}

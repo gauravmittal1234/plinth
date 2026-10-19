@@ -1,0 +1,315 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/doc_check.schema.json",
+  "title": "DocCheck",
+  "description": "plinth.doc_check/1, from api.doc_check(p_id) after the doc-check edge function (API_CONTRACTS §4.12; F-90, F-10, F-92, F-94, F-91). Nothing is checked before the buyer confirms the project. Verdicts come from rules, never from AI.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "kind",
+    "status",
+    "doc_label",
+    "project_match",
+    "summary_line",
+    "breakdown_line",
+    "rows",
+    "actions",
+    "notes",
+    "rules_version"
+  ],
+  "properties": {
+    "schema": {
+      "const": "plinth.doc_check/1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "$ref": "#/$defs/DocCheckKind"
+    },
+    "status": {
+      "$ref": "#/$defs/DocCheckStatus"
+    },
+    "doc_label": {
+      "type": ["string", "null"]
+    },
+    "project_match": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProjectMatch"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "summary_line": {
+      "type": ["string", "null"]
+    },
+    "breakdown_line": {
+      "type": ["string", "null"]
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DocCheckRow"
+      }
+    },
+    "actions": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DocCheckActions"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rules_version": {
+      "type": "string",
+      "pattern": "^\\d{4}\\.\\d{2}$"
+    },
+    "cost": {
+      "description": "kind = cost_sheet only.",
+      "$ref": "cost_breakdown.schema.json"
+    },
+    "payee": {
+      "description": "kind = before_you_pay only.",
+      "$ref": "payee_check.schema.json#/$defs/PayeeResult"
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "Rows exist only once the project is confirmed.",
+      "if": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {
+            "enum": ["reading", "confirm_project"]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "array",
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "DocCheckKind": {
+      "title": "DocCheckKind",
+      "type": "string",
+      "enum": ["claims", "cost_sheet", "pay_as_built", "before_you_pay", "visit_recap"]
+    },
+    "DocCheckStatus": {
+      "title": "DocCheckStatus",
+      "description": "Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable or outside_coverage.",
+      "type": "string",
+      "enum": [
+        "reading",
+        "confirm_project",
+        "checking",
+        "done",
+        "unreadable",
+        "partly_readable",
+        "no_claims",
+        "outside_coverage"
+      ]
+    },
+    "MatchMethod": {
+      "title": "MatchMethod",
+      "type": "string",
+      "enum": ["rera_number", "name_sector", "user_pick"]
+    },
+    "ProjectMatch": {
+      "title": "ProjectMatch",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "method", "confirmed", "line"],
+      "properties": {
+        "slug": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/Slug"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "method": {
+          "$ref": "#/$defs/MatchMethod"
+        },
+        "confirmed": {
+          "type": "boolean"
+        },
+        "line": {
+          "type": "string"
+        }
+      }
+    },
+    "DocCheckRow": {
+      "title": "DocCheckRow",
+      "description": "One claim (or stage, amount, payee) against the records.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seq", "says_text", "verdict", "verdict_label", "records_line"],
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "says_label": {
+          "type": "string",
+          "examples": ["Flyer says"]
+        },
+        "says_text": {
+          "type": "string"
+        },
+        "verdict": {
+          "$ref": "common.schema.json#/$defs/Verdict"
+        },
+        "verdict_label": {
+          "type": "string"
+        },
+        "records_line": {
+          "type": "string"
+        },
+        "how_checked": {
+          "type": ["string", "null"]
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/SourceRef"
+          }
+        },
+        "broker_question": {
+          "type": ["string", "null"]
+        },
+        "page": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "bbox": {
+          "description": "[x0, y0, x1, y1] as fractions of the page.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "minItems": 4,
+              "maxItems": 4
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "checkable_on": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/IsoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "developer_says": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/DeveloperSaysLine"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "DocCheckActions": {
+      "title": "DocCheckActions",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["share_text", "broker_questions"],
+      "properties": {
+        "share_text": {
+          "type": "string",
+          "description": "A summary only, never the file."
+        },
+        "broker_questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DocCheckStartRequest": {
+      "title": "DocCheckStartRequest",
+      "description": "POST /functions/v1/doc-check body, after api.create_upload and the PUT of the file.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["upload_id", "kind", "channel", "phase_hint"],
+      "properties": {
+        "upload_id": {
+          "$ref": "common.schema.json#/$defs/Uuid"
+        },
+        "kind": {
+          "$ref": "#/$defs/DocCheckKind"
+        },
+        "channel": {
+          "$ref": "common.schema.json#/$defs/Channel"
+        },
+        "phase_hint": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/Slug"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "DocCheckStarted": {
+      "title": "DocCheckStarted",
+      "description": "202 reply of the doc-check edge function. An acknowledgement, so no schema envelope.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check_id", "status", "poll_after_ms"],
+      "properties": {
+        "check_id": {
+          "$ref": "common.schema.json#/$defs/Uuid"
+        },
+        "status": {
+          "$ref": "#/$defs/DocCheckStatus"
+        },
+        "poll_after_ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

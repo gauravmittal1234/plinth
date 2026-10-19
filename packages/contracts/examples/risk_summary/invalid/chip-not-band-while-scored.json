@@ -1,0 +1,17 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "A visible band uses the band chip.",
+  "expect": "/chip/kind",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/chip",
+      "value": {
+        "kind": "not_scored",
+        "label": "Not scored",
+        "step": null,
+        "meter_filled": 0
+      }
+    }
+  ]
+}

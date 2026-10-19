@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/flags.schema.json",
+  "title": "Flags",
+  "description": "plinth.flags/1, from api.flags(): { \"schema\", \"flags\": { key: boolean } } for the caller's audience (T04's api.flags). A flag outside the caller's audience is absent, so every key is optional; clients treat absent as false. Keys mirror catalogues/flags.json (a test keeps them equal).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "flags"],
+  "properties": {
+    "schema": { "const": "plinth.flags/1" },
+    "flags": { "$ref": "#/$defs/FlagValues" }
+  },
+  "$defs": {
+    "FlagValues": {
+      "title": "FlagValues",
+      "description": "Flag key → on/off. Unknown keys are allowed (a newer server) and must be booleans.",
+      "type": "object",
+      "additionalProperties": { "type": "boolean" },
+      "properties": {
+        "bands_public": { "type": "boolean" },
+        "harera_live_fetch": { "type": "boolean" },
+        "ai_ask": { "type": "boolean" },
+        "ai_doc_check": { "type": "boolean" },
+        "ai_staging": { "type": "boolean" },
+        "wa_outbound": { "type": "boolean" },
+        "wa_inbound": { "type": "boolean" },
+        "push_outbound": { "type": "boolean" },
+        "email_outbound": { "type": "boolean" },
+        "since_replay_slider": { "type": "boolean" },
+        "family_circle": { "type": "boolean" },
+        "dev_workspace": { "type": "boolean" },
+        "visit_booking": { "type": "boolean" },
+        "broker_layer": { "type": "boolean" },
+        "buyer_signals": { "type": "boolean" },
+        "pro_paywall": { "type": "boolean" },
+        "map_tiles": { "type": "boolean" },
+        "facts_only_global": { "type": "boolean" },
+        "maintenance_mode": { "type": "boolean" }
+      }
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/about.schema.json",
+  "title": "About",
+  "description": "plinth.about/1, from api.about() (API_CONTRACTS §3.1): coverage today and next, the response-time board, the holdings register and the grievance officer. Placeholders until the founder supplies real values.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "coverage", "response_times", "holdings", "grievance_officer", "meta"],
+  "properties": {
+    "schema": { "const": "plinth.about/1" },
+    "coverage": { "$ref": "#/$defs/Coverage" },
+    "response_times": { "type": "array", "items": { "$ref": "#/$defs/ResponseTime" } },
+    "holdings": { "type": "array", "items": { "$ref": "#/$defs/HoldingsDeclaration" } },
+    "grievance_officer": { "$ref": "#/$defs/GrievanceOfficer" },
+    "base_rate_line": { "type": ["string", "null"] },
+    "later": { "type": "array", "items": { "$ref": "#/$defs/LaterFeature" } },
+    "meta": { "$ref": "common.schema.json#/$defs/PageMeta" }
+  },
+  "$defs": {
+    "Coverage": {
+      "title": "Coverage",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["today", "next"],
+      "properties": {
+        "today": { "type": "array", "items": { "$ref": "#/$defs/CoverageArea" } },
+        "next": { "type": "array", "items": { "$ref": "#/$defs/CoverageArea" } }
+      }
+    },
+    "CoverageArea": {
+      "title": "CoverageArea",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["name", "line"],
+      "properties": {
+        "name": { "type": "string" },
+        "line": { "type": "string" }
+      }
+    },
+    "ResponseTime": {
+      "title": "ResponseTime",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["key", "label", "sla_line", "actual_line"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "label": { "type": "string" },
+        "sla_line": { "type": "string" },
+        "actual_line": { "type": ["string", "null"] }
+      }
+    },
+    "HoldingsDeclaration": {
+      "title": "HoldingsDeclaration",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["person_role", "declared_on", "holdings_line", "placeholder"],
+      "properties": {
+        "person_role": { "type": "string" },
+        "declared_on": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        },
+        "holdings_line": { "type": ["string", "null"] },
+        "placeholder": { "type": "boolean" }
+      }
+    },
+    "GrievanceOfficer": {
+      "title": "GrievanceOfficer",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["name", "contact_line", "placeholder"],
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "contact_line": { "type": ["string", "null"] },
+        "placeholder": { "type": "boolean" }
+      }
+    },
+    "LaterFeature": {
+      "title": "LaterFeature",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["name", "line"],
+      "properties": {
+        "name": { "type": "string" },
+        "line": { "type": "string" }
+      }
+    }
+  }
+}

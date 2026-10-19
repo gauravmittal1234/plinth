@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "Every fact-bearing item has one of the six lanes.",
+  "expect": "/truth_panel/0/lane",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/truth_panel/0/lane",
+      "value": "rumour"
+    }
+  ]
+}

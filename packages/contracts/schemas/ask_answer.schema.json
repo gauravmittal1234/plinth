@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/ask_answer.schema.json",
+  "title": "AskAnswer",
+  "description": "plinth.ask_answer/1, from the ask edge function (API_CONTRACTS §4.15). Citations or silence: every sentence of an answer cites a source; a refusal is templated and carries a refusal_code (catalogues/ai_tasks.json).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "thread_id",
+    "kind",
+    "disclosure_line",
+    "sentences",
+    "sources",
+    "cards",
+    "actions",
+    "refusal_code",
+    "handoff",
+    "as_of_line"
+  ],
+  "properties": {
+    "schema": {
+      "const": "plinth.ask_answer/1"
+    },
+    "thread_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "$ref": "#/$defs/AskKind"
+    },
+    "disclosure_line": {
+      "type": "string"
+    },
+    "sentences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AskSentence"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AskSource"
+      }
+    },
+    "cards": {
+      "type": "array",
+      "items": {
+        "$ref": "search_results.schema.json#/$defs/ProjectCard"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AskAction"
+      }
+    },
+    "refusal_code": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RefusalCode"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "handoff": {
+      "$ref": "#/$defs/AskHandoff"
+    },
+    "as_of_line": {
+      "type": ["string", "null"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "required": ["kind"],
+        "properties": {
+          "kind": {
+            "const": "answer"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "refusal_code": {
+            "type": "null"
+          },
+          "sentences": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "cite": {
+                  "type": "array",
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "type": "object",
+        "properties": {
+          "refusal_code": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "AskKind": {
+      "title": "AskKind",
+      "type": "string",
+      "enum": ["answer", "refusal"]
+    },
+    "RefusalCode": {
+      "title": "RefusalCode",
+      "description": "BUILD_PLAN §14 rule 3. Each is templated and evaluated (must-refuse accuracy = 100%).",
+      "type": "string",
+      "enum": [
+        "advice_buy_sell",
+        "title_opinion",
+        "guarantee",
+        "discriminatory_filter",
+        "investment_returns",
+        "personal_data",
+        "legal_advice",
+        "outside_coverage",
+        "unknown_project",
+        "loans_r2",
+        "off_topic"
+      ]
+    },
+    "AskSentence": {
+      "title": "AskSentence",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "cite"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cite": {
+          "description": "Source numbers (AskSource.n).",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "AskSource": {
+      "title": "AskSource",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "label", "fact_id"],
+      "properties": {
+        "n": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "label": {
+          "type": "string"
+        },
+        "fact_id": {
+          "$ref": "common.schema.json#/$defs/FactId"
+        }
+      }
+    },
+    "AskAction": {
+      "title": "AskAction",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "action"],
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "examples": ["follow", "request_project"]
+        },
+        "href": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "AskHandoff": {
+      "title": "AskHandoff",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "hours_line"],
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "hours_line": {
+          "type": "string"
+        }
+      }
+    },
+    "AskVoice": {
+      "title": "AskVoice",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["heard"],
+      "properties": {
+        "heard": {
+          "type": "string"
+        }
+      }
+    },
+    "AskRequest": {
+      "title": "AskRequest",
+      "description": "POST /functions/v1/ask body. Hinglish and Hindi in, English out.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question", "channel"],
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "slug": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/Slug"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "thread_id": {
+          "type": ["string", "null"]
+        },
+        "channel": {
+          "$ref": "common.schema.json#/$defs/Channel"
+        },
+        "voice": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AskVoice"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

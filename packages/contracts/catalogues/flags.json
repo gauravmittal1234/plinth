@@ -1,0 +1,183 @@
+{
+  "catalogue": "flags",
+  "version": 1,
+  "source": "BUILD_PLAN §10. Store: ops.feature_flags; read through api.flags() (schemas/flags.schema.json). Adding a flag means an entry here and a migration row.",
+  "notes": [
+    "default is the value T04 seeds (api.flags, PR #4). The task that ships a feature flips its flag in its own migration.",
+    "audience: anon flags reach everyone, user flags only signed-in buyers, internal flags never leave the server.",
+    "Build-time modes (PLINTH_DATA, AI_MODE, META_MODE, PLINTH_FETCH_MODE) and data states (facts-only for a group, claimed, stale, re-scoring) are not flags."
+  ],
+  "flags": [
+    {
+      "key": "bands_public",
+      "description": "Show bands, natural frequencies and reasons. Off = stage S1 (the launch default T04 seeds): band fields are null server-side, truth-panel facts only. The fixture world's expected outputs show bands (display.bands_public true).",
+      "audience": "anon",
+      "surfaces": ["web", "app", "whatsapp", "cards"],
+      "default": false,
+      "kill_switch": false,
+      "milestone": "M0"
+    },
+    {
+      "key": "harera_live_fetch",
+      "description": "Live HARERA fetching. Needs this flag and HARERA_LIVE_FETCH_APPROVED=yes (after the legal memo).",
+      "audience": "internal",
+      "surfaces": ["pipelines"],
+      "default": false,
+      "kill_switch": false,
+      "milestone": "M6"
+    },
+    {
+      "key": "ai_ask",
+      "description": "Kill switch for Ask Plinth (the ask edge function). Off: the templated fallback only.",
+      "audience": "anon",
+      "surfaces": ["web", "app", "whatsapp", "edge"],
+      "default": false,
+      "kill_switch": true,
+      "milestone": "M5"
+    },
+    {
+      "key": "ai_doc_check",
+      "description": "Kill switch for document checks (claims, cost sheet, pay-as-built, before you pay).",
+      "audience": "anon",
+      "surfaces": ["web", "app", "whatsapp", "edge"],
+      "default": false,
+      "kill_switch": true,
+      "milestone": "M3"
+    },
+    {
+      "key": "ai_staging",
+      "description": "Kill switch for Visualise (stage-room). Every image carries \"AI-generated illustration\".",
+      "audience": "user",
+      "surfaces": ["web", "app", "edge"],
+      "default": false,
+      "kill_switch": true,
+      "milestone": "M5"
+    },
+    {
+      "key": "wa_outbound",
+      "description": "Kill switch for WhatsApp sends from outbox-dispatch (mock in local, CI and dev).",
+      "audience": "internal",
+      "surfaces": ["edge"],
+      "default": true,
+      "kill_switch": true,
+      "milestone": "M2"
+    },
+    {
+      "key": "wa_inbound",
+      "description": "Kill switch for routing inbound WhatsApp messages (the webhook still acknowledges and stores them).",
+      "audience": "internal",
+      "surfaces": ["edge"],
+      "default": true,
+      "kill_switch": true,
+      "milestone": "M2"
+    },
+    {
+      "key": "push_outbound",
+      "description": "Kill switch for FCM push sends.",
+      "audience": "internal",
+      "surfaces": ["edge"],
+      "default": true,
+      "kill_switch": true,
+      "milestone": "M2"
+    },
+    {
+      "key": "email_outbound",
+      "description": "Kill switch for email sends.",
+      "audience": "internal",
+      "surfaces": ["edge"],
+      "default": true,
+      "kill_switch": true,
+      "milestone": "M2"
+    },
+    {
+      "key": "since_replay_slider",
+      "description": "The replay slider on Following. R1 ships jump chips; the slider is optional.",
+      "audience": "user",
+      "surfaces": ["web", "app"],
+      "default": false,
+      "kill_switch": false,
+      "milestone": "M2"
+    },
+    {
+      "key": "family_circle",
+      "description": "Family circle: invites, JOIN <code>, shared shortlist notes.",
+      "audience": "user",
+      "surfaces": ["web", "app", "whatsapp"],
+      "default": true,
+      "kill_switch": false,
+      "milestone": "M2"
+    },
+    {
+      "key": "dev_workspace",
+      "description": "The developer workspace (/workspace) and its RPCs.",
+      "audience": "user",
+      "surfaces": ["web", "whatsapp"],
+      "default": false,
+      "kill_switch": false,
+      "milestone": "M4"
+    },
+    {
+      "key": "visit_booking",
+      "description": "Site-visit booking, the visit pass and the co-pilot questions.",
+      "audience": "anon",
+      "surfaces": ["web", "app", "whatsapp"],
+      "default": false,
+      "kill_switch": false,
+      "milestone": "M5"
+    },
+    {
+      "key": "broker_layer",
+      "description": "Agents: agent check, profiles, agent of record. No broker money flows in R1.",
+      "audience": "anon",
+      "surfaces": ["web", "app", "whatsapp"],
+      "default": false,
+      "kill_switch": false,
+      "milestone": "M5"
+    },
+    {
+      "key": "buyer_signals",
+      "description": "Monthly buyer signals for developers (k ≥ 20).",
+      "audience": "user",
+      "surfaces": ["web"],
+      "default": false,
+      "kill_switch": false,
+      "milestone": "M4"
+    },
+    {
+      "key": "pro_paywall",
+      "description": "Pro checkout (₹999 per project · 12 months of written updates). Off until a payment partner exists; alerts are always free.",
+      "audience": "anon",
+      "surfaces": ["web", "app"],
+      "default": false,
+      "kill_switch": false,
+      "milestone": "M6"
+    },
+    {
+      "key": "map_tiles",
+      "description": "MapLibre + PMTiles maps. Off: list views only.",
+      "audience": "anon",
+      "surfaces": ["web", "app"],
+      "default": true,
+      "kill_switch": true,
+      "milestone": "M1"
+    },
+    {
+      "key": "facts_only_global",
+      "description": "Emergency switch: every page shows \"Band withheld · facts only\".",
+      "audience": "anon",
+      "surfaces": ["web", "app", "whatsapp", "cards"],
+      "default": false,
+      "kill_switch": true,
+      "milestone": "M0"
+    },
+    {
+      "key": "maintenance_mode",
+      "description": "Read-only mode: mutations return flag_off.",
+      "audience": "anon",
+      "surfaces": ["web", "app", "whatsapp", "edge"],
+      "default": false,
+      "kill_switch": true,
+      "milestone": "M0"
+    }
+  ]
+}

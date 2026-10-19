@@ -1,0 +1,87 @@
+{
+  "schema": "plinth.methodology/1",
+  "current_version": "v1.2",
+  "models": [
+    {
+      "version": "v1.0",
+      "released_on": "2026-07-15",
+      "status": "retired",
+      "summary_line": null
+    },
+    {
+      "version": "v1.1",
+      "released_on": null,
+      "status": "retired",
+      "summary_line": null
+    },
+    {
+      "version": "v1.2",
+      "released_on": "2026-10-14",
+      "status": "current",
+      "summary_line": "Adds the MoHUA blanket extension of 31 Jul 2026."
+    }
+  ],
+  "factors": [
+    {
+      "factor": "finances",
+      "label": "Finances",
+      "weight_pct": 30
+    },
+    {
+      "factor": "track_record",
+      "label": "Track record",
+      "weight_pct": 30
+    },
+    {
+      "factor": "timeline",
+      "label": "Timeline",
+      "weight_pct": 20
+    },
+    {
+      "factor": "legal",
+      "label": "Legal",
+      "weight_pct": 15
+    },
+    {
+      "factor": "site",
+      "label": "Site",
+      "weight_pct": 5
+    }
+  ],
+  "red_flag_rules": [
+    {
+      "code": "RF1_GROUP_CIRP",
+      "text": "A group company was admitted to insolvency",
+      "published_on": null
+    }
+  ],
+  "calibration": {
+    "model_version": "v1.2",
+    "illustrative": true,
+    "base_rate_line": "76 of 212 past Gurugram projects got their OC more than 12 months late, about 36 of 100.",
+    "rows": []
+  },
+  "changelog": [
+    {
+      "version": "v1.2",
+      "published_on": "2026-10-14",
+      "summary": "Adds the MoHUA blanket extension of 31 Jul 2026.",
+      "minutes_url": null
+    },
+    {
+      "version": "v1.0",
+      "published_on": "2026-07-15",
+      "summary": "First published model.",
+      "minutes_url": null
+    }
+  ],
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "model_version": "v1.2",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/methodology"
+  }
+}

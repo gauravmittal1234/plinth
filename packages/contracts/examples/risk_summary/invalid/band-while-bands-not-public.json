@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "bands_public off (S1): band, frequency and reasons must be null (DATA_MODEL §12 invariant 8).",
+  "expect": "/band",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/display/bands_public",
+      "value": false
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "base": "aurelia.json",
+  "why": "matched_on is name, rera_number, sector or synonym.",
+  "expect": "/items/0/matched_on",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/items/0/matched_on",
+      "value": "fuzzy"
+    }
+  ]
+}

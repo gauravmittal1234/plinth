@@ -1,0 +1,26 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "At most 4 reasons.",
+  "expect": "/reasons",
+  "patch": [
+    {
+      "op": "add",
+      "path": "/reasons/-",
+      "value": {
+        "rank": 1,
+        "factor": "finances",
+        "factor_label": "Finances",
+        "text": "72% of units sold, 41% built.",
+        "sources": [
+          {
+            "label": "HARERA QPR · Apr–Jun 2026",
+            "fact_ids": ["…"],
+            "evidence_url": "/evidence/…",
+            "official_url": "https://haryanarera.gov.in/…",
+            "as_of": "2026-07-15"
+          }
+        ]
+      }
+    }
+  ]
+}

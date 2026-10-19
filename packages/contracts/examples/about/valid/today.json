@@ -1,0 +1,84 @@
+{
+  "schema": "plinth.about/1",
+  "coverage": {
+    "today": [
+      {
+        "name": "Gurugram",
+        "line": "Gurugram today"
+      }
+    ],
+    "next": [
+      {
+        "name": "Golf Course Ext Rd",
+        "line": "Planned for Dec 2026"
+      },
+      {
+        "name": "Noida and Greater Noida West",
+        "line": "Planned for Jul–Sep 2027"
+      }
+    ]
+  },
+  "response_times": [
+    {
+      "key": "error_report",
+      "label": "Report an error",
+      "sla_line": "We answer within 15 working days.",
+      "actual_line": null
+    },
+    {
+      "key": "project_request",
+      "label": "Request a project",
+      "sla_line": "We add it within 14 days or say why not, in writing.",
+      "actual_line": null
+    },
+    {
+      "key": "adviser",
+      "label": "Talk to a Plinth adviser",
+      "sla_line": "Mon–Sat 10 am–7 pm, usually within 4 working hours",
+      "actual_line": null
+    },
+    {
+      "key": "legal_notice",
+      "label": "Formal notices",
+      "sla_line": "48 h / 5 / 15 working days",
+      "actual_line": null
+    }
+  ],
+  "holdings": [
+    {
+      "person_role": "Founder",
+      "declared_on": null,
+      "holdings_line": null,
+      "placeholder": true
+    }
+  ],
+  "grievance_officer": {
+    "name": null,
+    "contact_line": null,
+    "placeholder": true
+  },
+  "base_rate_line": "76 of 212 past Gurugram projects got their OC more than 12 months late, about 36 of 100.",
+  "later": [
+    {
+      "name": "Loans",
+      "line": "Loan checks arrive in 2027"
+    },
+    {
+      "name": "Resale and transfer checks",
+      "line": "R2, planned for Apr–Jun 2027"
+    },
+    {
+      "name": "Help at possession",
+      "line": "R3, planned for Jul–Sep 2027"
+    }
+  ],
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "model_version": "v1.2",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/about"
+  }
+}

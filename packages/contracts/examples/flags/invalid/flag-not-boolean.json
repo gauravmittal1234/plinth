@@ -1,0 +1,12 @@
+{
+  "base": "anon-defaults.json",
+  "why": "Flags are booleans.",
+  "expect": "/flags/bands_public",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/flags/bands_public",
+      "value": "yes"
+    }
+  ]
+}

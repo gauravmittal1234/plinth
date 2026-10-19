@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-eoi.json",
+  "why": "IFSC is 4 letters, 0, then 6 letters or digits.",
+  "expect": "/p_ifsc",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/p_ifsc",
+      "value": "mrgl0000912"
+    }
+  ]
+}

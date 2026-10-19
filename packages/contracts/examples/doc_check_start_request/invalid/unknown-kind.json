@@ -1,0 +1,12 @@
+{
+  "base": "flyer-web.json",
+  "why": "kind is claims, cost_sheet, pay_as_built, before_you_pay or visit_recap.",
+  "expect": "/kind",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/kind",
+      "value": "selfie"
+    }
+  ]
+}

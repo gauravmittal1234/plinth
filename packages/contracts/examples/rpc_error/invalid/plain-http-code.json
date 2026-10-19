@@ -1,0 +1,12 @@
+{
+  "base": "not-found.json",
+  "why": "SQLSTATE is PT<http>.",
+  "expect": "/code",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/code",
+      "value": "404"
+    }
+  ]
+}

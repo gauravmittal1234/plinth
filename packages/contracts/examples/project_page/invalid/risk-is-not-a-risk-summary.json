@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "risk embeds a RiskSummary unchanged.",
+  "expect": "/risk/schema",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/risk/schema",
+      "value": "plinth.project_page/1"
+    }
+  ]
+}

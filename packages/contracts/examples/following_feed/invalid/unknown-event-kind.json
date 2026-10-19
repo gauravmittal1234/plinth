@@ -1,0 +1,12 @@
+{
+  "base": "rohan-since-14-oct.json",
+  "why": "kind is a core.events kind.",
+  "expect": "/changes/0/kind",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/changes/0/kind",
+      "value": "rumour"
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "catalogue": "events",
+  "version": 1,
+  "source": "BUILD_PLAN §11 (product analytics, PostHog). Sent only under analytics consent (purpose analytics), with pseudonymous ids. No session replay on account pages.",
+  "notes": [
+    "Properties are ids, codes, counts and booleans only: never a phone, name, email, address, PAN, free text or a document.",
+    "Domain change events (core.events: band_changed, qpr_missing …) are the EventKind enum in schemas/common.schema.json, not analytics events."
+  ],
+  "common_properties": {
+    "surface": { "type": "string", "enum": ["web", "app", "whatsapp"] },
+    "app_version": { "type": "string" }
+  },
+  "events": [
+    {
+      "name": "report_viewed",
+      "description": "A risk summary was shown (project page, app risk screen or WhatsApp risk card).",
+      "properties": {
+        "slug": { "type": "string" },
+        "state": {
+          "type": "string",
+          "enum": ["scored", "limited_history", "not_scored", "facts_only"]
+        },
+        "band": {
+          "type": ["string", "null"],
+          "enum": ["low", "moderate", "elevated", "high", "severe", null]
+        }
+      },
+      "required": ["slug", "state"],
+      "milestone": "M1"
+    },
+    {
+      "name": "reason_expanded",
+      "description": "A reason under the band was opened.",
+      "properties": {
+        "slug": { "type": "string" },
+        "rank": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "factor": {
+          "type": "string",
+          "enum": ["finances", "track_record", "timeline", "legal", "site"]
+        }
+      },
+      "required": ["slug", "rank"],
+      "milestone": "M1"
+    },
+    {
+      "name": "evidence_opened",
+      "description": "The evidence drawer opened for a fact.",
+      "properties": {
+        "slug": { "type": "string" },
+        "fact_id": { "type": "string" },
+        "lane": {
+          "type": "string",
+          "enum": [
+            "records_show",
+            "developer_says",
+            "from_developer",
+            "our_estimate",
+            "reported_unverified",
+            "buyer_upload"
+          ]
+        }
+      },
+      "required": ["fact_id"],
+      "milestone": "M1"
+    },
+    {
+      "name": "search_submitted",
+      "description": "A search ran (typed or parsed).",
+      "properties": {
+        "has_query": { "type": "boolean" },
+        "filter_count": { "type": "integer", "minimum": 0 },
+        "result_count": { "type": "integer", "minimum": 0 },
+        "zero_results": { "type": "boolean" }
+      },
+      "required": ["has_query", "result_count"],
+      "milestone": "M1"
+    },
+    {
+      "name": "compare_opened",
+      "description": "Compare opened with 2–4 phases.",
+      "properties": {
+        "count": { "type": "integer", "minimum": 2, "maximum": 4 }
+      },
+      "required": ["count"],
+      "milestone": "M1"
+    },
+    {
+      "name": "share_card_shared",
+      "description": "A share card was sent from the share sheet.",
+      "properties": {
+        "slug": { "type": "string" },
+        "kind": { "type": "string", "enum": ["risk", "cost", "visit", "digest"] }
+      },
+      "required": ["kind"],
+      "milestone": "M1"
+    },
+    {
+      "name": "project_followed",
+      "description": "A buyer followed a phase.",
+      "properties": {
+        "slug": { "type": "string" },
+        "source": { "type": "string", "enum": ["web", "app", "whatsapp", "family"] }
+      },
+      "required": ["slug", "source"],
+      "milestone": "M2"
+    },
+    {
+      "name": "project_unfollowed",
+      "description": "A buyer unfollowed a phase.",
+      "properties": {
+        "slug": { "type": "string" }
+      },
+      "required": ["slug"],
+      "milestone": "M2"
+    },
+    {
+      "name": "whatsapp_optin_granted",
+      "description": "WhatsApp utility alerts were turned on.",
+      "properties": {
+        "from": { "type": "string", "enum": ["alert_prefs", "follow", "onboarding", "whatsapp"] }
+      },
+      "required": [],
+      "milestone": "M2"
+    },
+    {
+      "name": "alert_prefs_changed",
+      "description": "Alert preferences were saved.",
+      "properties": {
+        "channel": { "type": "string", "enum": ["push", "whatsapp", "email"] }
+      },
+      "required": [],
+      "milestone": "M2"
+    },
+    {
+      "name": "family_invite_created",
+      "description": "A family invite code was made.",
+      "properties": {
+        "scope": { "type": "string", "enum": ["some", "all"] }
+      },
+      "required": ["scope"],
+      "milestone": "M2"
+    },
+    {
+      "name": "consent_granted",
+      "description": "A consent row was created by the buyer's tap.",
+      "properties": {
+        "purpose": { "type": "string" },
+        "recipient_kind": {
+          "type": "string",
+          "enum": ["site_office", "sales_office", "agent", "plinth"]
+        }
+      },
+      "required": ["purpose"],
+      "milestone": "M2"
+    },
+    {
+      "name": "consent_withdrawn",
+      "description": "A consent was withdrawn.",
+      "properties": {
+        "purpose": { "type": "string" }
+      },
+      "required": ["purpose"],
+      "milestone": "M2"
+    },
+    {
+      "name": "number_shared",
+      "description": "The buyer shared their number by their own tap (api.share_my_number).",
+      "properties": {
+        "recipient_kind": { "type": "string", "enum": ["site_office", "sales_office", "agent"] }
+      },
+      "required": ["recipient_kind"],
+      "milestone": "M5"
+    },
+    {
+      "name": "claims_checked",
+      "description": "A document check finished.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["claims", "cost_sheet", "pay_as_built", "before_you_pay", "visit_recap"]
+        },
+        "status": { "type": "string" },
+        "differs_count": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["kind", "status"],
+      "milestone": "M3"
+    },
+    {
+      "name": "answer_feedback",
+      "description": "Thumbs up or down on an Ask Plinth answer.",
+      "properties": {
+        "helpful": { "type": "boolean" },
+        "kind": { "type": "string", "enum": ["answer", "refusal"] },
+        "refusal_code": { "type": ["string", "null"] }
+      },
+      "required": ["helpful"],
+      "milestone": "M5"
+    }
+  ]
+}

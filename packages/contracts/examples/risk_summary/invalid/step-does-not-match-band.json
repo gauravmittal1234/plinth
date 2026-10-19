@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "Elevated is step 3.",
+  "expect": "/band/step",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/band/step",
+      "value": 4
+    }
+  ]
+}

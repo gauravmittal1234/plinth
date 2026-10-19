@@ -1,0 +1,7 @@
+{
+  "why": "An acknowledgement is always ok: true; failures are errors.",
+  "expect": "/ok",
+  "document": {
+    "ok": false
+  }
+}

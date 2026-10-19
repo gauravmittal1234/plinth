@@ -1,0 +1,744 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/catalogues/catalogue.schema.json",
+  "$comment": "Shape of each catalogue file in this folder. Checked by test/catalogues.test.ts; not an API type.",
+  "$defs": {
+    "Head": {
+      "type": "object",
+      "required": ["catalogue", "version", "source"],
+      "properties": {
+        "catalogue": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Code": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "Milestone": {
+      "type": "string",
+      "pattern": "^M[0-6]$"
+    },
+    "Flags": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Head"
+        }
+      ],
+      "required": ["flags"],
+      "properties": {
+        "catalogue": {
+          "const": "flags"
+        },
+        "flags": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "description",
+              "audience",
+              "surfaces",
+              "default",
+              "kill_switch",
+              "milestone"
+            ],
+            "properties": {
+              "key": {
+                "$ref": "#/$defs/Code"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "audience": {
+                "enum": ["anon", "user", "internal"]
+              },
+              "surfaces": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "enum": ["web", "app", "whatsapp", "cards", "edge", "pipelines", "admin"]
+                }
+              },
+              "default": {
+                "type": "boolean"
+              },
+              "kill_switch": {
+                "type": "boolean"
+              },
+              "milestone": {
+                "$ref": "#/$defs/Milestone"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Events": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Head"
+        }
+      ],
+      "required": ["events", "common_properties"],
+      "properties": {
+        "catalogue": {
+          "const": "events"
+        },
+        "common_properties": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "properties", "required", "milestone"],
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/Code"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "properties": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object"
+                }
+              },
+              "required": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "milestone": {
+                "$ref": "#/$defs/Milestone"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ReasonCodes": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Head"
+        }
+      ],
+      "required": ["factors", "reasons", "red_flag_rules", "pending_codes"],
+      "properties": {
+        "catalogue": {
+          "const": "reason_codes"
+        },
+        "factors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "label", "weight_pct"],
+            "properties": {
+              "code": {
+                "$ref": "#/$defs/Code"
+              },
+              "label": {
+                "type": "string"
+              },
+              "weight_pct": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              }
+            }
+          }
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "factor", "version", "status", "template_en", "params", "example"],
+            "properties": {
+              "code": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              },
+              "factor": {
+                "$ref": "#/$defs/Code"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "status": {
+                "enum": ["draft", "published", "retired"]
+              },
+              "template_en": {
+                "type": "string"
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Code"
+                }
+              },
+              "example": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "red_flag_rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "number",
+              "title",
+              "sets_band",
+              "status",
+              "line_template",
+              "params",
+              "example"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "pattern": "^RF\\d+_[A-Z0-9_]+$"
+              },
+              "number": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "title": {
+                "type": "string"
+              },
+              "sets_band": {
+                "enum": ["low", "moderate", "elevated", "high", "severe", null]
+              },
+              "status": {
+                "enum": ["draft", "published", "retired"]
+              },
+              "line_template": {
+                "type": ["string", "null"]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Code"
+                }
+              },
+              "example": {
+                "type": ["object", "null"],
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "pending_codes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "description", "example_line"],
+            "properties": {
+              "code": {
+                "$ref": "#/$defs/Code"
+              },
+              "description": {
+                "type": "string"
+              },
+              "example_line": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "WaTemplates": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Head"
+        }
+      ],
+      "required": ["templates", "interactive_limits"],
+      "properties": {
+        "catalogue": {
+          "const": "wa_templates"
+        },
+        "templates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "meta_name",
+              "category",
+              "language",
+              "header",
+              "variables",
+              "buttons",
+              "subscription",
+              "artboard",
+              "milestone",
+              "status"
+            ],
+            "properties": {
+              "code": {
+                "$ref": "#/$defs/Code"
+              },
+              "meta_name": {
+                "$ref": "#/$defs/Code"
+              },
+              "category": {
+                "enum": ["UTILITY", "AUTHENTICATION"]
+              },
+              "language": {
+                "const": "en"
+              },
+              "header": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["type"],
+                "properties": {
+                  "type": {
+                    "enum": ["none", "image", "text", "document"]
+                  },
+                  "aspect": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                }
+              },
+              "variables": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Code"
+                }
+              },
+              "buttons": {
+                "type": "array",
+                "maxItems": 3,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["type", "text"],
+                  "properties": {
+                    "type": {
+                      "enum": ["quick_reply", "cta_url", "copy_code"]
+                    },
+                    "text": {
+                      "type": ["string", "null"],
+                      "maxLength": 20
+                    }
+                  }
+                }
+              },
+              "subscription": {
+                "enum": [
+                  "band_change",
+                  "filings",
+                  "orders",
+                  "extensions",
+                  "price",
+                  "digest",
+                  "payment_stage",
+                  null
+                ]
+              },
+              "artboard": {
+                "type": "string"
+              },
+              "milestone": {
+                "$ref": "#/$defs/Milestone"
+              },
+              "status": {
+                "enum": ["draft", "submitted", "approved", "rejected"]
+              }
+            }
+          }
+        },
+        "interactive_limits": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "AiTasks": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Head"
+        }
+      ],
+      "required": ["pii_policies", "tasks", "refusals", "fixed_lines"],
+      "properties": {
+        "catalogue": {
+          "const": "ai_tasks"
+        },
+        "pii_policies": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "version",
+              "key",
+              "used_by",
+              "model_class",
+              "model_id",
+              "fallback_class",
+              "fallback_model_id",
+              "temperature",
+              "max_output_tokens",
+              "budget_inr_per_day",
+              "response_schema",
+              "pii_policy",
+              "eval_set",
+              "recorded_dir",
+              "milestone",
+              "note"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z]+\\.[a-z_]+$"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "key": {
+                "type": "string",
+                "pattern": "^[a-z]+\\.[a-z_]+@\\d+$"
+              },
+              "used_by": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "model_class": {
+                "$ref": "#/$defs/ModelClass"
+              },
+              "model_id": {
+                "type": ["string", "null"]
+              },
+              "fallback_class": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/ModelClass"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "fallback_model_id": {
+                "type": ["string", "null"]
+              },
+              "temperature": {
+                "type": ["number", "null"],
+                "minimum": 0,
+                "maximum": 2
+              },
+              "max_output_tokens": {
+                "type": ["integer", "null"],
+                "minimum": 1
+              },
+              "budget_inr_per_day": {
+                "type": ["number", "null"],
+                "minimum": 0
+              },
+              "response_schema": {
+                "type": ["string", "null"]
+              },
+              "labels": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Code"
+                }
+              },
+              "readers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["id", "model_class", "prompt"],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "model_class": {
+                      "$ref": "#/$defs/ModelClass"
+                    },
+                    "prompt": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "tools": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Code"
+                }
+              },
+              "pii_policy": {
+                "type": "string"
+              },
+              "eval_set": {
+                "type": "string",
+                "pattern": "^evals/"
+              },
+              "recorded_dir": {
+                "type": "string",
+                "pattern": "^packages/fixtures/recorded/ai/"
+              },
+              "milestone": {
+                "$ref": "#/$defs/Milestone"
+              },
+              "note": {
+                "type": ["string", "null"]
+              }
+            }
+          }
+        },
+        "refusals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "template_en",
+              "params",
+              "example",
+              "follow_up",
+              "action_label",
+              "source"
+            ],
+            "properties": {
+              "code": {
+                "$ref": "#/$defs/Code"
+              },
+              "template_en": {
+                "type": ["string", "null"]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Code"
+                }
+              },
+              "example": {
+                "type": ["object", "null"],
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "follow_up": {
+                "type": ["string", "null"]
+              },
+              "action_label": {
+                "type": ["string", "null"]
+              },
+              "source": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "fixed_lines": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ModelClass": {
+      "enum": ["flash", "flash_lite", "flash_vision", "flash_audio", "flash_batch", "image"]
+    },
+    "Purposes": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Head"
+        }
+      ],
+      "required": ["retention_classes", "purposes"],
+      "properties": {
+        "catalogue": {
+          "const": "purposes"
+        },
+        "retention_classes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "kept"],
+            "properties": {
+              "code": {
+                "$ref": "#/$defs/Code"
+              },
+              "kept": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "purposes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "description",
+              "recipient_kinds",
+              "retention_class",
+              "notice_section",
+              "milestone"
+            ],
+            "properties": {
+              "code": {
+                "$ref": "#/$defs/Code"
+              },
+              "description": {
+                "type": "string"
+              },
+              "recipient_kinds": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "enum": ["site_office", "sales_office", "agent", "plinth"]
+                }
+              },
+              "retention_class": {
+                "$ref": "#/$defs/Code"
+              },
+              "notice_section": {
+                "$ref": "#/$defs/Code"
+              },
+              "milestone": {
+                "$ref": "#/$defs/Milestone"
+              }
+            }
+          }
+        }
+      }
+    },
+    "RefFormats": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Head"
+        }
+      ],
+      "required": ["formats"],
+      "properties": {
+        "catalogue": {
+          "const": "ref_formats"
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "prefix",
+              "name",
+              "used_for",
+              "display",
+              "regex",
+              "examples",
+              "invalid_examples"
+            ],
+            "properties": {
+              "prefix": {
+                "type": "string",
+                "pattern": "^[A-Z]{1,2}$"
+              },
+              "name": {
+                "$ref": "#/$defs/Code"
+              },
+              "used_for": {
+                "type": "string"
+              },
+              "display": {
+                "type": "string"
+              },
+              "regex": {
+                "type": "string",
+                "pattern": "^\\^.*\\$$"
+              },
+              "examples": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "invalid_examples": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

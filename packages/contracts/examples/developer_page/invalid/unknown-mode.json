@@ -1,0 +1,12 @@
+{
+  "base": "northfield-estates.json",
+  "why": "mode is scored or facts_only.",
+  "expect": "/group/mode",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/group/mode",
+      "value": "withheld"
+    }
+  ]
+}

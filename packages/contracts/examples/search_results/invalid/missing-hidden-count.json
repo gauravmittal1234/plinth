@@ -1,0 +1,11 @@
+{
+  "base": "3bhk-dwarka-under-2-5-cr-low-risk.json",
+  "why": "hidden_count is always present.",
+  "expect": "",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/hidden_count"
+    }
+  ]
+}
