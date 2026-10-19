@@ -97,21 +97,27 @@ describe("generated files", () => {
   const tmp = mkdtempSync(join(tmpdir(), "plinth-tokens-"));
   afterAll(() => rmSync(tmp, { recursive: true, force: true }));
 
-  it("are what scripts/build.mjs makes from tokens.json today (no drift)", () => {
-    execFileSync(
-      process.execPath,
-      [join(PKG, "scripts/build.mjs"), "--dist", join(tmp, "dist"), "--dart", join(tmp, "dart")],
-      { stdio: "pipe" },
-    );
-    for (const f of readdirSync(join(tmp, "dist")))
-      expect(read(`dist/${f}`), `dist/${f} is stale: run the build`).toBe(
-        readFileSync(join(tmp, "dist", f), "utf8"),
+  // A full Style Dictionary build takes ~5 s on a CI runner while turbo runs the other
+  // workspaces' tests alongside (root verify), so this test gets its own timeout.
+  it(
+    "are what scripts/build.mjs makes from tokens.json today (no drift)",
+    { timeout: 60_000 },
+    () => {
+      execFileSync(
+        process.execPath,
+        [join(PKG, "scripts/build.mjs"), "--dist", join(tmp, "dist"), "--dart", join(tmp, "dart")],
+        { stdio: "pipe" },
       );
-    for (const f of readdirSync(join(tmp, "dart")))
-      expect(read(`dart/lib/${f}`), `dart/lib/${f} is stale: run the build`).toBe(
-        readFileSync(join(tmp, "dart", f), "utf8"),
-      );
-  });
+      for (const f of readdirSync(join(tmp, "dist")))
+        expect(read(`dist/${f}`), `dist/${f} is stale: run the build`).toBe(
+          readFileSync(join(tmp, "dist", f), "utf8"),
+        );
+      for (const f of readdirSync(join(tmp, "dart")))
+        expect(read(`dart/lib/${f}`), `dart/lib/${f} is stale: run the build`).toBe(
+          readFileSync(join(tmp, "dart", f), "utf8"),
+        );
+    },
+  );
 });
 
 describe("CSS and Dart carry identical colours", () => {
