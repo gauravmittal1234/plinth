@@ -1,0 +1,77 @@
+# ci-mobile (owner: T06). BUILD_PLAN §8: flutter analyze → flutter test (widget
+# tests and goldens; Linux is the golden reference) → debug APK in FIXTURES
+# mode, uploaded as an artifact the founder can sideload.
+# Lean on minutes (DECISIONS E-9): runs only when the app or its Dart packages
+# change, one job, cached SDK and Gradle, superseded runs cancelled.
+name: ci-mobile
+
+on:
+  pull_request:
+    paths:
+      - "apps/mobile/**"
+      - "packages/tokens/dart/**"
+      - "packages/contracts/dart/**"
+      - "packages/fixtures/dart/**"
+      - ".github/workflows/ci-mobile.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/mobile/**"
+      - "packages/tokens/dart/**"
+      - "packages/contracts/dart/**"
+      - "packages/fixtures/dart/**"
+      - ".github/workflows/ci-mobile.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-mobile-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mobile:
+    name: mobile (analyze, test, goldens, debug APK)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.5
+          channel: stable
+          cache: true
+      - name: flutter pub get (lockfile is frozen)
+        run: flutter pub get --enforce-lockfile
+      - run: flutter analyze
+      - name: dart format (page width 120, analysis_options.yaml)
+        run: dart format --output=none --set-exit-if-changed lib test
+      - name: flutter test (widget tests, every route, goldens)
+        run: flutter test
+      - name: Upload golden failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-failures
+          path: apps/mobile/test/**/failures/
+          if-no-files-found: ignore
+          retention-days: 7
+      # arm64 only: phones and Apple-silicon emulators. Keeps the artifact small.
+      - name: Debug APK (FIXTURES mode, no accounts, no network)
+        run: flutter build apk --debug --dart-define=FIXTURES=true --target-platform android-arm64
+      - name: Upload the debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: plinth-debug-fixtures-apk
+          path: apps/mobile/build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7
