@@ -22,3 +22,16 @@ Kept by the lead. Handoffs that cross task boundaries, collected from the wave-1
 - **Share card (T03b):** the old card points at Aurelia's v1.1 run of 2 Sep 2026 (Moderate).
 - **Contract tests (T12/T13):** skip the `--facts-only` expected keys.
 - **Canonical search:** returns Kestrel, Cedar Walk Ph 2, Sapphire and Juniper; 2 projects hidden (Aurelia, Heron Point Ph 2).
+
+## From T05 (PR #9), for the T07 gate
+- **Tokens:** after T01 merges, uncomment the tokens import line in `apps/web/app/globals.css`. Until then pages render unstyled.
+- **React versions:** align them (root 19.3.1, `apps/web` 19.3.0); this removes the dual-React workaround in T05's test config. Integrator PR.
+- **Turbo cache:** add `packages/config/eslint/**` to the lint and test inputs in `turbo.json`.
+- **AGENTS.md:** remove the "workflows go in workflows-pending" rule; the token now has the `workflow` scope.
+- **M0 exit, "Elevated chip on Aurelia":** decided. The T07 gate adds a minimal fixture read plus the risk chip on the Aurelia project route, kept to that one thing. T20a replaces it.
+- **Load time:** the 2.5 s budget is a warning on stubs (2.4–2.8 s from the Next runtime plus five preloaded fonts). T20a makes it a hard check on the project page; consider preloading fewer font weights. JS headroom is about 11 KB.
+- **For later tasks:**
+  - T21: the home Ask box needs `id="ask"`.
+  - T16: swap the placeholder types for `@plinth/contracts` and implement `call()`. Production must refuse an unset `PLINTH_DATA`.
+  - T14: needs a `@source` line for `web-ui` in `globals.css`.
+- **Compare route:** `/compare/[pair]`, not `[a]-vs-[b]`.
