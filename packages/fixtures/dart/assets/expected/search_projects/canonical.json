@@ -1,0 +1,107 @@
+{
+  "schema": "plinth.search_results/1",
+  "query": "3 bhk dwarka expresway under 2.5 cr low risk",
+  "parsed": {
+    "bhk": [3],
+    "all_in_max_inr": 25000000,
+    "corridors": ["dwarka-expressway"],
+    "bands": ["low", "moderate"]
+  },
+  "notes": ["“Low delivery risk” shows Low and Moderate.", "2 projects hidden by your filters."],
+  "sort_line": "Sorted by lowest delivery risk. Order never follows money.",
+  "legend_line": "Pins show all-in prices",
+  "items": [
+    {
+      "slug": "kestrel-park",
+      "name": "Kestrel Park",
+      "locality_line": "Sector 113, Dwarka Expressway",
+      "developer_name": "Orbis Land",
+      "chip": {
+        "kind": "band",
+        "label": "Low",
+        "step": 1,
+        "meter_filled": 1
+      },
+      "state": "scored",
+      "chip_note": "Delivery risk · as of 14 Oct 2026",
+      "price_line": "₹2.44 Cr all-in · quoted ₹2.10 Cr",
+      "pin_label": "₹2.44 Cr",
+      "built_line": "63% built",
+      "progress_line": "63% built · 58% of time used",
+      "built_pct": 63,
+      "time_used_pct": 58,
+      "config_line": "3 BHK, 1,400 sq ft carpet",
+      "completion_line": "Original completion Nov 2028",
+      "image_url": "/media/heroKestrel.jpg",
+      "centroid": null
+    },
+    {
+      "slug": "sapphire-grove-phase-1",
+      "name": "Sapphire Grove, Phase 1",
+      "locality_line": "Sector 106, Dwarka Expressway",
+      "developer_name": "Meridian Habitat",
+      "chip": {
+        "kind": "band",
+        "label": "Moderate",
+        "step": 2,
+        "meter_filled": 2
+      },
+      "state": "scored",
+      "chip_note": "Delivery risk · as of 14 Oct 2026",
+      "price_line": "₹2.27 Cr all-in · quoted ₹1.95 Cr",
+      "pin_label": "₹2.27 Cr",
+      "built_line": "48% built",
+      "progress_line": "48% built · 55% of time used",
+      "built_pct": 48,
+      "time_used_pct": 55,
+      "config_line": "3 BHK, 1,400 sq ft carpet",
+      "completion_line": "Original completion Mar 2028",
+      "image_url": "/media/heroSapphire.jpg",
+      "centroid": null
+    },
+    {
+      "slug": "juniper-enclave",
+      "name": "Juniper Enclave",
+      "locality_line": "Sector 102, Dwarka Expressway",
+      "developer_name": "Halcyon Homes",
+      "chip": {
+        "kind": "limited_history",
+        "label": "Not enough history to score · no penalty",
+        "step": null,
+        "meter_filled": 0
+      },
+      "state": "limited_history",
+      "chip_note": "Not enough history to score. No penalty.",
+      "price_line": "Quoted ₹2.25 Cr · all-in not known yet",
+      "pin_label": null,
+      "built_line": "9% built",
+      "progress_line": "9% built · 31% of time used",
+      "built_pct": 9,
+      "time_used_pct": 31,
+      "config_line": "3 BHK, carpet not in our records yet",
+      "completion_line": "Original completion Dec 2029",
+      "image_url": "/media/heroJuniper.jpg",
+      "centroid": null
+    }
+  ],
+  "hidden_count": 2,
+  "hidden": [
+    {
+      "slug": "aurelia-heights-phase-2",
+      "name": "Aurelia Heights, Phase 2",
+      "why_line": "quoted ₹2.35 Cr, but ₹2.74 Cr all-in · delivery risk Elevated"
+    },
+    {
+      "slug": "heron-point-phase-2",
+      "name": "Heron Point, Phase 2",
+      "why_line": "no price list with us"
+    }
+  ],
+  "next_cursor": null,
+  "zero_results": null,
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "generated_at": "2026-10-18T12:00:00+05:30"
+  }
+}

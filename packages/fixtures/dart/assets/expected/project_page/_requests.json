@@ -1,0 +1,34 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "aurelia-heights-phase-2": {
+      "p_slug": "aurelia-heights-phase-2"
+    },
+    "kestrel-park": {
+      "p_slug": "kestrel-park"
+    },
+    "sapphire-grove-phase-1": {
+      "p_slug": "sapphire-grove-phase-1"
+    },
+    "coral-towers": {
+      "p_slug": "coral-towers"
+    },
+    "laurel-residency": {
+      "p_slug": "laurel-residency"
+    },
+    "juniper-enclave": {
+      "p_slug": "juniper-enclave"
+    },
+    "heron-point-phase-2": {
+      "p_slug": "heron-point-phase-2"
+    },
+    "cedar-walk-phase-2": {
+      "p_slug": "cedar-walk-phase-2"
+    },
+    "aurelia-heights-phase-2--facts-only": {
+      "p_slug": "aurelia-heights-phase-2",
+      "state": "facts_only",
+      "note": "Design state (CONFLICTS.md C-23)."
+    }
+  }
+}

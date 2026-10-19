@@ -1,0 +1,24 @@
+{
+  "schema": "plinth.evidence/1",
+  "fact_id": "dff74c62-2384-5736-88b1-02fac3a33a69",
+  "chip": "HARERA QPR register",
+  "lane": "records_show",
+  "document": "HARERA · QPR filing register for this project · every quarter since registration (Dec 2022)",
+  "dates_line": "Register checked live 14 Oct 2026",
+  "page": "register",
+  "extract": "Filed after the due date in 3 of the last 8 quarters: Jul–Sep 2024 (12 days late), Jan–Mar 2025 (41 days) and Oct–Dec 2025 (38 days). Longest delay: 41 days.",
+  "read_line": "Due and filing dates read by software. Checked by a person on 14 Oct 2026. Time used counts from registration (Dec 2022) to the original date (Dec 2027).",
+  "used_in": ["Reason 2 of Delivery risk", "Records → QPR filings"],
+  "developer_says": null,
+  "corrections_line": "Corrected after dispute D-118 (upheld): the Apr–Jun 2026 QPR was first marked late; it was filed 15 Jul 2026, on time.",
+  "snapshot": {
+    "sha256_short": "87798f89…72681db5",
+    "fetched_at": "2026-10-14T00:00:00+05:30"
+  },
+  "official_url": "https://haryanarera.gov.in",
+  "view_label": "View on HARERA",
+  "report_error": {
+    "ref_prefix": "E",
+    "sla_line": "We answer within 15 working days."
+  }
+}

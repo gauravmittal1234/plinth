@@ -1,0 +1,97 @@
+{
+  "schema": "plinth.risk_summary/1",
+  "phase": {
+    "slug": "heron-point-phase-2",
+    "name": "Heron Point, Phase 2",
+    "short_code": null,
+    "rera_number": "GGM/902/634/2026/12",
+    "authority": {
+      "code": "harera_ggm",
+      "name": "HARERA Gurugram",
+      "url": "https://haryanarera.gov.in"
+    },
+    "locality_line": "Sector 104, Dwarka Expressway",
+    "units": null,
+    "developer": {
+      "slug": "northfield-estates",
+      "name": "Northfield Estates",
+      "claim": {
+        "state": "claimed",
+        "line": "claimed developer page, replies here",
+        "since": "2025-12-02"
+      }
+    }
+  },
+  "display": {
+    "state": "not_scored",
+    "overlays": [],
+    "bands_public": true
+  },
+  "band": null,
+  "chip": {
+    "kind": "not_scored",
+    "label": "Not scored",
+    "step": null,
+    "meter_filled": 0
+  },
+  "confidence": null,
+  "frequency": null,
+  "late12": {
+    "original_completion": "2031-04",
+    "blanket_extension_months": 4,
+    "late_after": "2032-08",
+    "line": "Original completion Apr 2031. More than 12 months late here means an OC after Aug 2032, with the 4-month blanket extension of Jul 2026.",
+    "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+  },
+  "reasons": [],
+  "what_would_change": "Enough quarterly reports to compare building with time. We score as soon as there are.",
+  "pending": [
+    {
+      "code": "not_enough_reports",
+      "line": "Registered 28 Apr 2026, less than 6 months ago. We score once there are enough quarterly reports to compare building with time.",
+      "since": "2026-04-28",
+      "developer_says": null,
+      "marker_line": null
+    }
+  ],
+  "developer_response": null,
+  "progress": {
+    "built_pct": null,
+    "sold_pct": null,
+    "time_used_pct": 10,
+    "latest_qpr": null,
+    "line": "Registered Apr 2026 · 10% of the promised time used"
+  },
+  "price": {
+    "all_in_inr": null,
+    "all_in_label": null,
+    "quoted_label": null,
+    "per_sqft_carpet_label": null,
+    "basis_line": null,
+    "display_line": "No price list with us"
+  },
+  "complaints": null,
+  "withheld": null,
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "9cedff31-3d7c-5e3b-bbac-69cf8ae4f582",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/heron-point-phase-2",
+    "short_url": null
+  },
+  "share": {
+    "card_url": "https://plinth.in/cards/risk/heron-point-phase-2.png?run=9cedff31-3d7c-5e3b-bbac-69cf8ae4f582",
+    "card_alt": "Heron Point, Phase 2: not scored yet, registered Apr 2026.",
+    "lines": [
+      "Delivery risk: not scored yet, registered Apr 2026",
+      "Part of the Northfield Estates group: 2 of its 6 finished RERA projects got OC more than 12 months late.",
+      "Original completion Apr 2031."
+    ],
+    "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+    "caption": "Plinth · No developer pays us. Ever."
+  }
+}

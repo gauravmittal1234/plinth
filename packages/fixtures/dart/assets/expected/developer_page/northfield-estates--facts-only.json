@@ -1,0 +1,180 @@
+{
+  "schema": "plinth.developer_page/1",
+  "group": {
+    "slug": "northfield-estates",
+    "name": "Northfield Estates",
+    "linked_companies": 9,
+    "claim": {
+      "state": "claimed",
+      "line": "Claimed by Northfield · verified signatory",
+      "since": "2025-12-02"
+    },
+    "mode": "facts_only"
+  },
+  "summary_line": "A developer group of 9 linked companies. 2 of its 6 finished projects got OC more than 12 months late. 3 projects are ongoing.",
+  "facts_only": {
+    "since": "2026-10-18",
+    "line": "Bands withheld pending review, from 18 Oct 2026",
+    "anchor": "facts-only",
+    "explainer_lines": [
+      "Since 18 Oct 2026 we show facts only for Northfield's projects, while a court considers an application about our bands for this group. Every record below is unchanged and carries its source.",
+      "Still here: dates, progress reports, complaints, OC orders and company links, each with its source.",
+      "Withheld everywhere: the band, its reasons and the “of 100 similar projects” figure, on this page, in search, Compare, alerts and the Live Record.",
+      "Not a finding: this says nothing about Northfield, and no record has changed."
+    ]
+  },
+  "track_record": {
+    "finished": 6,
+    "late": 2,
+    "line": "2 of the group's 6 finished RERA projects got OC more than 12 months late.",
+    "projects": [
+      {
+        "slug": "cedar-walk",
+        "name": "Cedar Walk",
+        "promised": null,
+        "oc_on": null,
+        "late": false
+      },
+      {
+        "slug": "aurelia-heights-phase-1",
+        "name": "Aurelia Heights, Phase 1",
+        "promised": null,
+        "oc_on": null,
+        "late": true
+      },
+      {
+        "slug": "wren-court",
+        "name": "Wren Court",
+        "promised": null,
+        "oc_on": null,
+        "late": false
+      },
+      {
+        "slug": "opaline-residences",
+        "name": "Opaline Residences",
+        "promised": null,
+        "oc_on": null,
+        "late": false
+      },
+      {
+        "slug": "heron-point-phase-1",
+        "name": "Heron Point, Phase 1",
+        "promised": null,
+        "oc_on": null,
+        "late": true
+      },
+      {
+        "slug": "linden-square",
+        "name": "Linden Square",
+        "promised": null,
+        "oc_on": null,
+        "late": false
+      }
+    ],
+    "sources": [
+      {
+        "label": "HARERA · DTCP OC records",
+        "fact_ids": ["145c288f-31dd-5955-9677-170f82ffd80c"],
+        "evidence_url": "/evidence/145c288f-31dd-5955-9677-170f82ffd80c",
+        "official_url": "https://haryanarera.gov.in",
+        "as_of": "2026-10-14"
+      }
+    ]
+  },
+  "ongoing": [
+    {
+      "slug": "aurelia-heights-phase-2",
+      "name": "Aurelia Heights, Phase 2",
+      "state": "facts_only",
+      "chip": {
+        "kind": "withheld",
+        "label": "Band withheld · facts only",
+        "step": null,
+        "meter_filled": 0
+      },
+      "price_line": "₹2.74 Cr all-in · quoted ₹2.35 Cr",
+      "progress_line": "41% built · 77% of the promised time used · 72% sold"
+    },
+    {
+      "slug": "heron-point-phase-2",
+      "name": "Heron Point, Phase 2",
+      "state": "facts_only",
+      "chip": {
+        "kind": "withheld",
+        "label": "Band withheld · facts only",
+        "step": null,
+        "meter_filled": 0
+      },
+      "price_line": "No price list with us",
+      "progress_line": "Registered Apr 2026 · 10% of the promised time used"
+    },
+    {
+      "slug": "cedar-walk-phase-2",
+      "name": "Cedar Walk, Phase 2",
+      "state": "facts_only",
+      "chip": {
+        "kind": "withheld",
+        "label": "Band withheld · facts only",
+        "step": null,
+        "meter_filled": 0
+      },
+      "price_line": null,
+      "progress_line": null
+    }
+  ],
+  "complaints": {
+    "count_24m": 24,
+    "per_100_units": 0.7,
+    "units_base": 3400,
+    "line_24m": "24 decided against the group, or 0.7 per 100 units.",
+    "half_years": [],
+    "fairness_line": "A bigger group isn't penalised for its size."
+  },
+  "insolvency_line": "No insolvency found (checked 14 Oct 2026).",
+  "pre_rera": {
+    "line": "None of this counts in the band.",
+    "intro_line": "The track record counts RERA-era projects only, registered 2017 or later. Northfield built before that too.",
+    "coverage_line": "Before May 2017 there was no public register of promised dates, so this list may be incomplete.",
+    "items": [
+      {
+        "name": "Northfield Greens, Sector 52",
+        "fact_line": "Promised Dec 2011. OC Mar 2014, about 27 months late.",
+        "source_line": "Haryana State Consumer Commission order, Aug 2015 (delay compensation for 38 buyers) · news report, Feb 2013"
+      },
+      {
+        "name": "Alder Court, Sector 49",
+        "fact_line": "Promised Jun 2013. OC Sep 2013.",
+        "source_line": "DTCP OC record · news report, Oct 2013"
+      },
+      {
+        "name": "Larch Enclave, Sector 21 (2004)",
+        "fact_line": "No court order or news found. Absence is not proof.",
+        "source_line": null
+      }
+    ]
+  },
+  "reply": {
+    "text": "Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.",
+    "signatory_title": "Head of Customer Relations",
+    "published_on": "2026-10-15",
+    "check_by": "2026-11-05",
+    "line": "Developer says · not yet verified · 15 Oct 2026 · we check it by 5 Nov 2026"
+  },
+  "claim_explainer_line": "Claiming lets a developer correct facts, reply next to the records and hear from buyers who ask. It never changes a band. A developer that hasn't claimed is shown as “Invited” with the date, and we never call anyone uncooperative.",
+  "how_buyers_find_you": {
+    "lines": [
+      "Order never follows money. The default sort is lowest delivery risk first. No developer pays us, and no fee we earn ever touches ranking. Nobody can buy a place, above or below anyone.",
+      "Only verified facts count. Bands, dates and costs come from records we have matched to HARERA, DTCP or MCA. A price list or photo a developer adds is shown and labelled as theirs, but never used to rank. Claiming a page doesn't move it either.",
+      "Bands show in Compare. Buyers see each band side by side with the all-in cost and progress. A buyer who asks for low delivery risk gets two tiles, Low and Moderate, and can remove either. Buyers always see how many projects their filters hid."
+    ]
+  },
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/developers/northfield-estates"
+  }
+}

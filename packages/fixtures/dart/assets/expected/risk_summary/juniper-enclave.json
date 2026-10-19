@@ -1,0 +1,89 @@
+{
+  "schema": "plinth.risk_summary/1",
+  "phase": {
+    "slug": "juniper-enclave",
+    "name": "Juniper Enclave",
+    "short_code": null,
+    "rera_number": null,
+    "authority": {
+      "code": "harera_ggm",
+      "name": "HARERA Gurugram",
+      "url": "https://haryanarera.gov.in"
+    },
+    "locality_line": "Sector 102, Dwarka Expressway",
+    "units": 280,
+    "developer": {
+      "slug": "halcyon-homes",
+      "name": "Halcyon Homes",
+      "claim": {
+        "state": "claimed",
+        "line": "claimed developer page, replies here",
+        "since": null
+      }
+    }
+  },
+  "display": {
+    "state": "limited_history",
+    "overlays": [],
+    "bands_public": true
+  },
+  "band": null,
+  "chip": {
+    "kind": "limited_history",
+    "label": "Not enough history to score · no penalty",
+    "step": null,
+    "meter_filled": 0
+  },
+  "confidence": null,
+  "frequency": null,
+  "late12": {
+    "original_completion": "2029-12",
+    "blanket_extension_months": 4,
+    "late_after": "2031-04",
+    "line": "Original completion Dec 2029. More than 12 months late here means an OC after Apr 2031, with the 4-month blanket extension of Jul 2026.",
+    "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+  },
+  "reasons": [],
+  "what_would_change": "Halcyon Homes' first finished projects. Each one adds to the record we score from.",
+  "pending": [],
+  "developer_response": null,
+  "progress": {
+    "built_pct": 9,
+    "sold_pct": null,
+    "time_used_pct": 31,
+    "latest_qpr": null,
+    "line": "9% built · 31% of the promised time used"
+  },
+  "price": {
+    "all_in_inr": null,
+    "all_in_label": null,
+    "quoted_label": "₹2.25 Cr",
+    "per_sqft_carpet_label": null,
+    "basis_line": "3 BHK quoted price · no cost sheet with us",
+    "display_line": "Quoted ₹2.25 Cr · all-in not known yet"
+  },
+  "complaints": null,
+  "withheld": null,
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "6847a528-51e1-52d1-9d25-f19b9f0db300",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/juniper-enclave",
+    "short_url": null
+  },
+  "share": {
+    "card_url": "https://plinth.in/cards/risk/juniper-enclave.png?run=6847a528-51e1-52d1-9d25-f19b9f0db300",
+    "card_alt": "Juniper Enclave: not enough history to score, no penalty.",
+    "lines": [
+      "Delivery risk: not enough history to score · no penalty",
+      "Halcyon Homes has no finished RERA project yet.",
+      "9% built with 31% of the promised time used."
+    ],
+    "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+    "caption": "Plinth · No developer pays us. Ever."
+  }
+}

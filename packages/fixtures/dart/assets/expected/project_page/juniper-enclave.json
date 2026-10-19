@@ -1,0 +1,359 @@
+{
+  "schema": "plinth.project_page/1",
+  "risk": {
+    "schema": "plinth.risk_summary/1",
+    "phase": {
+      "slug": "juniper-enclave",
+      "name": "Juniper Enclave",
+      "short_code": null,
+      "rera_number": null,
+      "authority": {
+        "code": "harera_ggm",
+        "name": "HARERA Gurugram",
+        "url": "https://haryanarera.gov.in"
+      },
+      "locality_line": "Sector 102, Dwarka Expressway",
+      "units": 280,
+      "developer": {
+        "slug": "halcyon-homes",
+        "name": "Halcyon Homes",
+        "claim": {
+          "state": "claimed",
+          "line": "claimed developer page, replies here",
+          "since": null
+        }
+      }
+    },
+    "display": {
+      "state": "limited_history",
+      "overlays": [],
+      "bands_public": true
+    },
+    "band": null,
+    "chip": {
+      "kind": "limited_history",
+      "label": "Not enough history to score · no penalty",
+      "step": null,
+      "meter_filled": 0
+    },
+    "confidence": null,
+    "frequency": null,
+    "late12": {
+      "original_completion": "2029-12",
+      "blanket_extension_months": 4,
+      "late_after": "2031-04",
+      "line": "Original completion Dec 2029. More than 12 months late here means an OC after Apr 2031, with the 4-month blanket extension of Jul 2026.",
+      "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+    },
+    "reasons": [],
+    "what_would_change": "Halcyon Homes' first finished projects. Each one adds to the record we score from.",
+    "pending": [],
+    "developer_response": null,
+    "progress": {
+      "built_pct": 9,
+      "sold_pct": null,
+      "time_used_pct": 31,
+      "latest_qpr": null,
+      "line": "9% built · 31% of the promised time used"
+    },
+    "price": {
+      "all_in_inr": null,
+      "all_in_label": null,
+      "quoted_label": "₹2.25 Cr",
+      "per_sqft_carpet_label": null,
+      "basis_line": "3 BHK quoted price · no cost sheet with us",
+      "display_line": "Quoted ₹2.25 Cr · all-in not known yet"
+    },
+    "complaints": null,
+    "withheld": null,
+    "meta": {
+      "data_as_of": "2026-10-14",
+      "model_version": "v1.2",
+      "score_run_id": "6847a528-51e1-52d1-9d25-f19b9f0db300",
+      "generated_at": "2026-10-18T12:00:00+05:30",
+      "methodology_url": "/methodology",
+      "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+      "promise_line": "No developer pays us. Ever.",
+      "live_url": "https://plinth.in/gurugram/projects/juniper-enclave",
+      "short_url": null
+    },
+    "share": {
+      "card_url": "https://plinth.in/cards/risk/juniper-enclave.png?run=6847a528-51e1-52d1-9d25-f19b9f0db300",
+      "card_alt": "Juniper Enclave: not enough history to score, no penalty.",
+      "lines": [
+        "Delivery risk: not enough history to score · no penalty",
+        "Halcyon Homes has no finished RERA project yet.",
+        "9% built with 31% of the promised time used."
+      ],
+      "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+      "caption": "Plinth · No developer pays us. Ever."
+    }
+  },
+  "hero": {
+    "image_url": "/media/heroJuniper.jpg",
+    "image_caption": "Images on this page are illustrative",
+    "summary_line": "Delivery risk: Limited history, not enough history to score · no penalty · 9% built · 31% of the time used · Original completion Dec 2029",
+    "rera_badge": null
+  },
+  "truth_panel": [
+    {
+      "key": "completion",
+      "label": "Original vs current completion",
+      "value_line": "Dec 2029 · no extensions",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["ba03f08e-ffcf-55e9-8dd4-d328b1dbba9f"],
+          "evidence_url": "/evidence/ba03f08e-ffcf-55e9-8dd4-d328b1dbba9f",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "key": "progress",
+      "label": "Built vs time used",
+      "value_line": "9% built · 31% of time used",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "progress.built_pct",
+          "fact_ids": ["4a3cf42f-feb6-51ae-a10b-dc2c5e8b9f50"],
+          "evidence_url": "/evidence/4a3cf42f-feb6-51ae-a10b-dc2c5e8b9f50",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        },
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["4cd879b6-4a49-589b-88ac-dedbb6db85d1"],
+          "evidence_url": "/evidence/4cd879b6-4a49-589b-88ac-dedbb6db85d1",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "progress": {
+    "floors_per_tower": null,
+    "towers": null,
+    "quarters": [],
+    "today": {
+      "time_used_pct": 31,
+      "band": null,
+      "band_since_line": null
+    },
+    "late_filings_line": null
+  },
+  "homes": {
+    "units_line": "280 homes in this phase.",
+    "configurations": [
+      {
+        "label": "3 BHK",
+        "carpet_line": "Carpet not in our records yet",
+        "carpet_lane": null,
+        "super_line": null,
+        "super_lane": null,
+        "loading_line": null,
+        "price_line": "From ₹2.25 Cr",
+        "price_lane": "from_developer",
+        "all_in_line": null,
+        "all_in_note": "No 3 BHK cost sheet, so no all-in yet.",
+        "rooms": []
+      }
+    ],
+    "amenities": null,
+    "getting_around": {
+      "lane": "our_estimate",
+      "source_line": "Our estimate · road distances, Oct 2026",
+      "items": ["Cyber City: 19 km, 40–55 min at 9 am", "IGI Airport T3: 15 km, 25–35 min"]
+    },
+    "waterlogging": null
+  },
+  "from_developer": {
+    "label": "From the developer · not verified by Plinth",
+    "updated_line": null,
+    "note_line": "Halcyon Homes added this in its free Plinth workspace. We show it as given and date every change. It is not a public record, and it never moves the delivery risk.",
+    "price_lists": [
+      {
+        "published_on": "2026-10-01",
+        "label": "Oct 2026",
+        "items": [
+          {
+            "unit_label": "3 BHK",
+            "base_price_inr": 22500000,
+            "price_line": "from ₹2.25 Cr",
+            "per_sqft_line": null
+          }
+        ]
+      }
+    ],
+    "price_basis_line": "Base prices, before charges, GST and stamp duty.",
+    "payment_plan": null,
+    "transfer_policy": null,
+    "draft_agreement_line": null
+  },
+  "cost": null,
+  "wait_defaults": {
+    "take_home_inr": 450000,
+    "rent_inr": 55000,
+    "down_pct": 20,
+    "rate_pct": 8.5,
+    "tenure_years": 20
+  },
+  "afford_default": null,
+  "next_steps": {
+    "intro_line": "Not enough history to score. These are the records to read.",
+    "steps": [
+      {
+        "heading": "Who is behind it",
+        "body": "Halcyon Homes' directors, and their other companies in MCA filings.",
+        "source_label": "MCA company records"
+      },
+      {
+        "heading": "The licence",
+        "body": "The DTCP licence for the Sector 102 site, and that it is in force.",
+        "source_label": "DTCP licence register"
+      },
+      {
+        "heading": "The escrow account",
+        "body": "A CA certificate with each QPR on money taken out of the project account.",
+        "source_label": "HARERA Form 3 · with each QPR"
+      },
+      {
+        "heading": "Progress against time",
+        "body": "9% built with 31% of the time used. Watch that the gap doesn't widen.",
+        "source_label": "HARERA QPR · latest"
+      }
+    ],
+    "base_rate_line": "About 36 of 100 Gurugram projects got their OC more than 12 months late.",
+    "lower_band_nearby": [],
+    "rule_line": "Same corridor, lower band, all-in within 20%. Nobody pays to appear."
+  },
+  "before_booking": {
+    "intro_line": "Four things buyers ask about before the first cheque, with the rules behind them.",
+    "note_line": "General information, not legal, tax or financial advice.",
+    "payment_plans": {
+      "title": "Which payment plan?",
+      "sub": "Construction-linked, down payment or subvention, and what each one risks.",
+      "paras": [
+        {
+          "lead": "Construction-linked.",
+          "text": "You pay each stage once it is built, so your money follows the building. Check each demand against the latest QPR.",
+          "tone": "body"
+        },
+        {
+          "lead": "Down payment.",
+          "text": "You pay most of the price early, often for a discount. If the project is late, more of your money waits with it. Before a registered agreement, the law still caps you at 10%.",
+          "tone": "body"
+        },
+        {
+          "lead": "Subvention, or “no EMI till possession”.",
+          "text": "The bank pays the developer early, and the developer promises to pay your pre-EMI. You are still the borrower: if the developer stops paying, the bank collects from you.",
+          "tone": "body"
+        },
+        {
+          "lead": "Before a subvention booking,",
+          "text": "get the lender's confirmation in writing: what it pays out, when, and who pays the pre-EMI if the developer stops.",
+          "tone": "key"
+        }
+      ]
+    },
+    "loans": {
+      "line": "Loan checks arrive in 2027",
+      "title": "Home loans",
+      "sub": "Loan checks arrive in 2027. What to check with your bank now.",
+      "paras": [
+        {
+          "lead": "Loan checks arrive in 2027.",
+          "text": "Plinth doesn't arrange loans or pass your number to any lender today.",
+          "tone": "body"
+        },
+        {
+          "lead": "Check now:",
+          "text": "is this project approved by your bank? Ask the bank, in writing, not the developer.",
+          "tone": "key"
+        },
+        {
+          "lead": "Banks usually don't lend for stamp duty or registration.",
+          "text": "Plan for those from your own money.",
+          "tone": "body"
+        }
+      ]
+    },
+    "nri": {
+      "title": "Buying from abroad (NRI)",
+      "sub": "Paying from NRE or NRO, a power of attorney, and FEMA basics.",
+      "paras": [
+        {
+          "lead": "Paying.",
+          "text": "From an NRE, FCNR(B) or NRO account, or money sent to India through a bank. FEMA doesn't allow paying in foreign currency notes or traveller's cheques.",
+          "tone": "body"
+        },
+        {
+          "lead": "Loans.",
+          "text": "Indian banks lend to NRIs. EMIs come from an NRE or NRO account.",
+          "tone": "body"
+        },
+        {
+          "lead": "TDS.",
+          "text": "Like any buyer, you deduct 1% from each instalment when the price is ₹50 L or more (s.194-IA). You need a PAN.",
+          "tone": "body"
+        },
+        {
+          "lead": "Power of attorney.",
+          "text": "Make it specific to this flat, and list what your relative may sign: booking form, agreement, payments, registration. One signed abroad is attested at an Indian mission or apostilled, then stamped in India within 3 months.",
+          "tone": "body"
+        }
+      ]
+    },
+    "selling_before_possession": {
+      "title": "Selling before possession",
+      "sub": "Transfer charges, the builder's NOC and what RERA says.",
+      "paras": [
+        {
+          "lead": null,
+          "text": "Selling before possession means transferring your allotment. The developer endorses the new buyer on your agreement and issues a no-objection certificate (NOC).",
+          "tone": "body"
+        },
+        {
+          "lead": "Under RERA,",
+          "text": "whoever takes your allotment becomes the allottee, with your rights, including delay interest (s.2(d)).",
+          "tone": "body"
+        },
+        {
+          "lead": "Ask a CA",
+          "text": "about capital-gains tax, and a lawyer about stamp duty on the transfer.",
+          "tone": "body"
+        },
+        {
+          "lead": null,
+          "text": "Our resale and transfer checks are planned for Apr–Jun 2027.",
+          "tone": "body"
+        }
+      ]
+    }
+  },
+  "pre_rera": null,
+  "records": [
+    {
+      "fact_id": "ba03f08e-ffcf-55e9-8dd4-d328b1dbba9f",
+      "chip": "HARERA registration · 2025",
+      "line": "Registered May 2025. Original completion date: Dec 2029.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/ba03f08e-ffcf-55e9-8dd4-d328b1dbba9f"
+    }
+  ],
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "6847a528-51e1-52d1-9d25-f19b9f0db300",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/juniper-enclave",
+    "short_url": null
+  }
+}
