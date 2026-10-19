@@ -29,6 +29,10 @@ key.properties
 *.keystore
 google-services.json
 
+# agent worktrees live inside the repo; local Claude settings stay local
+.claude/worktrees/
+.claude/settings.local.json
+
 # secrets and env files (T00): only .env.example is committed
 .env.*
 !.env.example
