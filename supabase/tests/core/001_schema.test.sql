@@ -2,7 +2,7 @@
 -- domains, and the constraints that encode DATA_MODEL rules.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(19);
+select plan(23);
 
 select is(
   (
@@ -52,11 +52,11 @@ select is(
 select is(
   (
     select array_agg(d.name order by 1)
-    from unnest(array['core.band', 'core.lane', 'core.factor', 'core.score_state', 'app.verdict']) as d(name)
+    from unnest(array['core.band', 'core.lane', 'core.factor', 'core.score_state', 'app.verdict', 'core.date_precision']) as d(name)
     where to_regtype(d.name) is null
   ),
   null::text[],
-  'domains core.band, core.lane, core.factor, core.score_state, app.verdict exist'
+  'domains core.band, core.lane, core.factor, core.score_state, app.verdict, core.date_precision exist'
 );
 
 select lives_ok($$select 'elevated'::core.band, 'records_show'::core.lane, 'track_record'::core.factor, 'limited_history'::core.score_state, 'cant_check'::app.verdict$$,
@@ -93,10 +93,35 @@ select throws_ok(
   '23505', null,
   'a RERA number is unique per authority'
 );
+select results_eq(
+  $$select registered_on_precision::text, original_completion_precision::text, current_completion_precision::text
+    from core.rera_registrations where id = '00000000-0000-4000-8000-000000000504'$$,
+  $$values ('day'::text, 'month'::text, 'month'::text)$$,
+  'registered_on defaults to day precision; completion dates to month precision'
+);
 select is(
-  (select original_completion_precision from core.rera_registrations where id = '00000000-0000-4000-8000-000000000504'),
-  'month',
-  'month-precision dates default to precision month'
+  (
+    select array_agg(format('%s.%s', c.relname, a.attname) order by 1)
+    from pg_catalog.pg_attribute a
+    join pg_catalog.pg_class c on c.oid = a.attrelid
+    join pg_catalog.pg_namespace n on n.oid = c.relnamespace
+    where n.nspname = 'core' and a.attnum > 0 and not a.attisdropped
+      and a.attname like '%\_precision'
+      and a.atttypid <> 'core.date_precision'::regtype
+  ),
+  null::text[],
+  'every *_precision column uses the core.date_precision domain'
+);
+select ok(
+  to_regclass('core.extensions') is not null
+    and exists (select 1 from pg_catalog.pg_attribute where attrelid = 'core.extensions'::regclass and attname = 'granted_on_precision')
+    and exists (select 1 from pg_catalog.pg_attribute where attrelid = 'core.rera_registrations'::regclass and attname = 'registered_on_precision'),
+  'extensions.granted_on_precision and rera_registrations.registered_on_precision exist (C-28)'
+);
+select throws_ok(
+  $$update core.rera_registrations set registered_on_precision = 'year' where id = '00000000-0000-4000-8000-000000000504'$$,
+  '23514', null,
+  'a precision is day or month'
 );
 
 insert into core.score_models (version, status) values ('t04-sc', 'draft');
@@ -127,6 +152,12 @@ select throws_ok(
   $$insert into core.reported_incidents (kind, reported_on, source_kind, lane) values ('waterlogging', '2026-07-28', 'news', 'records_show')$$,
   '23514', null,
   'reported incidents stay in the reported_unverified lane'
+);
+
+select lives_ok(
+  $$insert into core.facts (subject_type, subject_id, attribute, value, method, method_version)
+    values ('phase', '00000000-0000-4000-8000-000000000503', 'progress.time_used_pct', '77', 'rules', 'time-used rule v1.2')$$,
+  'facts accept method = rules (time used, all-in) with corrections defaulting to []'
 );
 
 select * from finish();

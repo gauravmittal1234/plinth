@@ -4,7 +4,7 @@
 -- content cannot reach scoring.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(18);
+select plan(19);
 
 select ok(
   (select rolcanlogin and not rolsuper and not rolbypassrls and not rolcreaterole and not rolcreatedb
@@ -70,6 +70,11 @@ values ('00000000-0000-4000-8000-0000000004e1', 'phase', '00000000-0000-4000-800
 select lives_ok(
   $$update core.facts set superseded_by = '00000000-0000-4000-8000-0000000004e2' where id = '00000000-0000-4000-8000-0000000004e1'$$,
   'pipeline_writer: insert facts and link the supersede chain'
+);
+select throws_ok(
+  $$update core.facts set corrections = '[{"ref":"D-118"}]' where id = '00000000-0000-4000-8000-0000000004e2'$$,
+  '42501', null,
+  'pipeline_writer: cannot add correction lines (column privilege: supersede only)'
 );
 select lives_ok(
   $$insert into core.score_runs (phase_id, model_version, data_cutoff, status, state, band, set_by)

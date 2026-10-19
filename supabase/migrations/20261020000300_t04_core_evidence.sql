@@ -57,7 +57,7 @@ create table core.facts (
   snapshot_id uuid references core.snapshots (id),
   page_ref text,
   extract_text text,
-  method text not null default 'parser' check (method in ('parser', 'llm_x2', 'manual', 'developer')),
+  method text not null default 'parser' check (method in ('parser', 'llm_x2', 'manual', 'developer', 'rules')),
   method_version text,
   read_note text,
   confidence numeric(4, 3) check (confidence between 0 and 1),
@@ -65,16 +65,19 @@ create table core.facts (
   reviewed_at timestamptz,
   lane core.lane not null default 'records_show',
   superseded_by uuid references core.facts (id),
+  corrections jsonb not null default '[]'::jsonb check (jsonb_typeof(corrections) = 'array'),
   created_at timestamptz not null default now(),
   check (valid_to is null or valid_from is null or valid_to >= valid_from)
 );
 create index facts_current_idx on core.facts (subject_type, subject_id, attribute) where superseded_by is null;
 create index facts_snapshot_idx on core.facts (snapshot_id);
 create index facts_superseded_by_idx on core.facts (superseded_by) where superseded_by is not null;
-comment on table core.facts is 'Bitemporal facts with their evidence (api.evidence). Superseded, never updated: the only allowed UPDATE links superseded_by once.';
+comment on table core.facts is 'Bitemporal facts with their evidence (api.evidence). Superseded, never updated: the only allowed UPDATEs link superseded_by once and append correction lines.';
 comment on column core.facts.subject_id is 'Polymorphic: core.phases / developers / developer_groups / towers / rera_registrations id, per subject_type.';
 comment on column core.facts.attribute is 'Dotted attribute name, e.g. qpr.built_pct.';
 comment on column core.facts.read_note is 'Shown in the evidence drawer, e.g. "Read by two AI extractors; they matched. Checked by a person on 16 Jul 2026."';
+comment on column core.facts.method is 'pii:C0 · parser, llm_x2 (two AI readers agreed), manual, developer, or rules (a published rule''s output from other facts: time used, all-in).';
+comment on column core.facts.corrections is 'pii:C0 · Append-only correction lines for the evidence drawer, oldest first, e.g. {"ref": "D-118", "status": "upheld", "on": "2026-…", "line": "…"}. Existing lines never change (ops.facts_guard).';
 comment on column core.facts.reviewer_id is 'pii:C1';
 comment on column core.facts.extract_text is 'pii:C0 (public-record text; the PII stripper runs before insert)';
 
@@ -92,7 +95,9 @@ alter table core.facts enable row level security;
 
 grant select on core.sources to pipeline_writer;
 grant select, insert on core.snapshots to pipeline_writer;
-grant select, insert, update on core.facts to pipeline_writer;
+grant select, insert on core.facts to pipeline_writer;
+-- Supersede only: pipeline_writer cannot append corrections (they come from dispute decisions).
+grant update (superseded_by, valid_to) on core.facts to pipeline_writer;
 
 create policy pipeline_writer_read on core.sources for select to pipeline_writer using (true);
 create policy pipeline_writer_read on core.snapshots for select to pipeline_writer using (true);

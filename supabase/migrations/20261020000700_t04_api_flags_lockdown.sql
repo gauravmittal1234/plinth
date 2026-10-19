@@ -5,15 +5,16 @@
 -- ---------------------------------------------------------------------------
 -- R1 flags. Defaults are production-safe: anything that publishes risk or
 -- reaches outside is off until its gate; kill switches are on (= allowed).
--- The §5b fixture world turns on what it needs in its seed (T03), e.g. bands_public.
+-- The §5b fixture world sets what it needs in its seed (T03) with UPDATEs: bands_public on;
+-- ai_ask, ai_doc_check and ai_staging off until M5 (DESIGN §5b C-29).
 -- Re-running never overwrites an operator's value (on conflict do nothing).
 -- ---------------------------------------------------------------------------
 insert into ops.feature_flags (key, enabled, rollout_pct, audience, surfaces, note) values
   ('bands_public',        false, 100, 'anon',     '{web,app,whatsapp}', 'S1 → S2 gate. Off: api.risk_summary nulls band, frequency, reasons and what_would_change (DATA_MODEL §12 inv. 8).'),
   ('harera_live_fetch',   false, 100, 'internal', '{pipelines}',        'Live HARERA fetch. Also needs HARERA_LIVE_FETCH_APPROVED=yes; off until the legal memo (BUILD_PLAN §1 rule 8).'),
-  ('ai_ask',              true,  100, 'anon',     '{web,app,whatsapp}', 'Kill switch: Ask Plinth.'),
-  ('ai_doc_check',        true,  100, 'anon',     '{web,app,whatsapp}', 'Kill switch: doc-check (claims, cost sheet, pay-as-built, before you pay).'),
-  ('ai_staging',          true,  100, 'anon',     '{web,app}',          'Kill switch: Visualise (AI room staging).'),
+  ('ai_ask',              true,  100, 'anon',     '{web,app,whatsapp}', 'Kill switch: Ask Plinth. Allowed by default; the §5b fixture world turns it off until M5 (DESIGN §5b C-29).'),
+  ('ai_doc_check',        true,  100, 'anon',     '{web,app,whatsapp}', 'Kill switch: doc-check (claims, cost sheet, pay-as-built, before you pay). The fixture world turns it off until M5 (C-29).'),
+  ('ai_staging',          true,  100, 'anon',     '{web,app}',          'Kill switch: Visualise (AI room staging). The fixture world turns it off until M5 (C-29).'),
   ('wa_outbound',         true,  100, 'internal', '{edge}',             'Kill switch: WhatsApp sends from the outbox.'),
   ('wa_inbound',          true,  100, 'internal', '{edge}',             'Kill switch: WhatsApp webhook processing.'),
   ('push_outbound',       true,  100, 'internal', '{edge}',             'Kill switch: FCM push from the outbox.'),

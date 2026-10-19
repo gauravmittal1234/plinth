@@ -4,7 +4,7 @@
 -- Values may be changed by the fixture seed, so audience rules use probe flags.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(14);
+select plan(15);
 
 select is(
   (
@@ -107,7 +107,16 @@ select ok(
   'api.flags() is STABLE SECURITY DEFINER with search_path = '''' (GET-able through PostgREST)'
 );
 
+-- C-29: the fixture seed turns the AI kill switches off until M5 (as the seed does, with UPDATE).
+update ops.feature_flags set enabled = false where key in ('ai_ask', 'ai_doc_check', 'ai_staging');
 set local role anon;
+select set_config('request.jwt.claims', '', true);
+select is(
+  (select jsonb_build_object('ai_ask', f -> 'ai_ask', 'ai_doc_check', f -> 'ai_doc_check', 'ai_staging', f -> 'ai_staging')
+   from (select api.flags() -> 'flags' as f) x),
+  '{"ai_ask": false, "ai_doc_check": false, "ai_staging": false}'::jsonb,
+  'the AI kill switches can be turned off, and api.flags() then reports them off (C-29)'
+);
 select throws_ok($$select ops.flag('bands_public')$$, '42501', null, 'anon cannot call ops.* directly');
 select throws_ok($$update ops.feature_flags set enabled = true where key = 'bands_public'$$, '42501', null, 'anon cannot change a flag');
 reset role;

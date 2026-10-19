@@ -4,7 +4,7 @@
 -- draft → pending_notice → published → superseded (or withdrawn). Errors are PT409.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(22);
+select plan(27);
 
 -- Fixture ----------------------------------------------------------------------
 insert into core.sources (id, code, name) values ('00000000-0000-4000-8000-000000000601', 't04_im_source', 'T04 immutability source');
@@ -44,6 +44,35 @@ select throws_ok($$update core.facts set superseded_by = '00000000-0000-4000-800
   'PT409', null, 'facts: a supersede link cannot be re-pointed');
 select throws_ok($$update core.facts set superseded_by = '00000000-0000-4000-8000-000000000604', read_note = 'sneaky' where id = '00000000-0000-4000-8000-000000000605'$$,
   'PT409', null, 'facts: nothing else may change alongside the supersede link');
+
+-- Corrections: append-only lines (D-097, CL-201, D-118, D-127) -------------------------
+select is(
+  (select corrections from core.facts where id = '00000000-0000-4000-8000-000000000605'),
+  '[]'::jsonb,
+  'facts: corrections default to an empty list'
+);
+select lives_ok(
+  $$update core.facts set corrections = corrections || '[{"ref":"D-118","status":"upheld","line":"probe line 1"}]'::jsonb
+    where id = '00000000-0000-4000-8000-000000000605'$$,
+  'facts: a correction line can be appended'
+);
+select lives_ok(
+  $$update core.facts set corrections = corrections || '[{"ref":"D-127","status":"open","line":"probe line 2"}]'::jsonb
+    where id = '00000000-0000-4000-8000-000000000605'$$,
+  'facts: a second line is appended after the first'
+);
+select throws_ok(
+  $$update core.facts set corrections = '[{"ref":"D-127","status":"open","line":"probe line 2"}]'::jsonb
+    where id = '00000000-0000-4000-8000-000000000605'$$,
+  'PT409', null,
+  'facts: an existing correction line cannot be removed or rewritten'
+);
+select throws_ok(
+  $$update core.facts set corrections = corrections || '[{"ref":"X"}]'::jsonb, value = '43'
+    where id = '00000000-0000-4000-8000-000000000605'$$,
+  'PT409', null,
+  'facts: appending a correction cannot smuggle in a value change'
+);
 
 -- Audit log ---------------------------------------------------------------------------
 select throws_ok($$update ops.audit_log set reason = 'changed' where entity = 't04.immutability'$$,

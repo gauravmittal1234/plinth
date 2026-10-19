@@ -17,12 +17,15 @@ create domain core.score_state as text
   check (value in ('scored', 'limited_history', 'not_scored'));
 create domain app.verdict as text
   check (value in ('matches', 'differs', 'not_in_records', 'cant_check'));
+create domain core.date_precision as text
+  check (value in ('day', 'month'));
 
 comment on domain core.band is 'Delivery-risk band, low → severe (steps 1–5).';
 comment on domain core.lane is 'Whose voice a fact is in. Clients style by lane (DESIGN §0 tone fields).';
 comment on domain core.factor is 'Scorecard factor; published weights 30/30/20/15/5 (finances, track_record, timeline, legal, site).';
 comment on domain core.score_state is 'scored · limited_history (< 3 finished projects) · not_scored (< 6 months registered).';
 comment on domain app.verdict is 'Claims-vs-records verdict, set by rules, never by AI.';
+comment on domain core.date_precision is 'Precision of the date column it accompanies (<col>_precision): day, or month (the date is then the 1st of the month: Dec 2027 = 2027-12-01).';
 
 -- ---------------------------------------------------------------------------
 -- The clock (BUILD_PLAN §9). All business-date logic calls ops.now().
@@ -459,31 +462,58 @@ end
 $$;
 comment on function ops.forbid_mutation() is 'BEFORE UPDATE/DELETE (row) and BEFORE TRUNCATE (statement) trigger for append-only tables.';
 
--- Facts are bitemporal: the only allowed change is linking an old fact to the
--- fact that supersedes it (superseded_by null → id, optionally closing valid_to).
+-- Facts are bitemporal. Two changes are allowed, alone or together:
+--   1. the one-time supersede link (superseded_by null → id, closing valid_to if open);
+--   2. appending correction lines to `corrections` (D-/CL- outcomes): existing
+--      lines never change, so a cited fact id keeps its history.
+-- Everything else about a fact is frozen; a new value means a new fact.
 create function ops.facts_guard()
 returns trigger
 language plpgsql
 security definer
 set search_path = ''
 as $$
+declare
+  v_supersede_ok boolean;
+  v_corrections_ok boolean;
+  v_old_len integer;
 begin
-  if tg_op = 'UPDATE'
-    and old.superseded_by is null
-    and new.superseded_by is not null
-    and new.superseded_by <> old.id
-    and (old.valid_to is null or new.valid_to is not distinct from old.valid_to)
-    and (pg_catalog.to_jsonb(new) - 'superseded_by' - 'valid_to') = (pg_catalog.to_jsonb(old) - 'superseded_by' - 'valid_to')
-  then
-    return new;
+  if tg_op = 'UPDATE' then
+    v_supersede_ok :=
+      (new.superseded_by is not distinct from old.superseded_by and new.valid_to is not distinct from old.valid_to)
+      or (
+        old.superseded_by is null
+        and new.superseded_by is not null
+        and new.superseded_by <> old.id
+        and (old.valid_to is null or new.valid_to is not distinct from old.valid_to)
+      );
+    v_old_len := pg_catalog.jsonb_array_length(old.corrections);
+    v_corrections_ok :=
+      new.corrections = old.corrections
+      or (
+        pg_catalog.jsonb_typeof(new.corrections) = 'array'
+        and pg_catalog.jsonb_array_length(new.corrections) > v_old_len
+        and (
+          select coalesce(pg_catalog.jsonb_agg(e.value order by e.ord), '[]'::jsonb)
+          from pg_catalog.jsonb_array_elements(new.corrections) with ordinality as e(value, ord)
+          where e.ord <= v_old_len
+        ) = old.corrections
+      );
+    if v_supersede_ok
+      and v_corrections_ok
+      and (pg_catalog.to_jsonb(new) - 'superseded_by' - 'valid_to' - 'corrections')
+        = (pg_catalog.to_jsonb(old) - 'superseded_by' - 'valid_to' - 'corrections')
+    then
+      return new;
+    end if;
   end if;
   raise exception using
     errcode = 'PT409',
-    message = pg_catalog.format('core.facts is append-only: %s is not allowed (only superseded_by null → id and valid_to may be set, once)', tg_op),
-    hint = 'Insert a new fact and point the old one at it.';
+    message = pg_catalog.format('core.facts is append-only: %s is not allowed (only the one-time supersede link and appended correction lines)', tg_op),
+    hint = 'Insert a new fact and point the old one at it, or append to corrections.';
 end
 $$;
-comment on function ops.facts_guard() is 'core.facts: blocks DELETE and every UPDATE except the one-time supersede link.';
+comment on function ops.facts_guard() is 'core.facts: blocks DELETE and every UPDATE except the one-time supersede link and appending correction lines.';
 
 -- Score runs move only along draft → pending_notice → published → superseded
 -- (or withdrawn). Nothing else on a run ever changes after insert.

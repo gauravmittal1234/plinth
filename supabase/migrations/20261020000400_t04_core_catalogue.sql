@@ -1,8 +1,8 @@
 -- T04 · DB core 4/7: the catalogue — developers, projects, phases, RERA (DATA_MODEL §1).
 -- Not here: core.cost_rule_sets (created by T13 with core.all_in()).
 -- Conventions (DATA_MODEL §0): uuid ids; money bigint *_inr; percentages numeric(5,2)
--- *_pct; areas numeric(8,1) *_sqft; month-precision dates are the 1st of the month
--- plus a *_precision column ('day' | 'month').
+-- *_pct; areas numeric(8,1) *_sqft; a date that may be month-precise is the 1st of the
+-- month plus a <col>_precision column of domain core.date_precision ('day' | 'month').
 -- Geography uses PostGIS in `extensions` (SRID 4326).
 -- RLS: api-only. pipeline_writer reads, inserts and updates the public record;
 -- it never deletes, and it cannot change claim or facts-only state.
@@ -139,10 +139,11 @@ create table core.rera_registrations (
   authority text not null,
   rera_number text not null,
   registered_on date,
+  registered_on_precision core.date_precision not null default 'day',
   original_completion date,
-  original_completion_precision text not null default 'month' check (original_completion_precision in ('day', 'month')),
+  original_completion_precision core.date_precision not null default 'month',
   current_completion date,
-  current_completion_precision text not null default 'month' check (current_completion_precision in ('day', 'month')),
+  current_completion_precision core.date_precision not null default 'month',
   status text not null default 'valid' check (status in ('valid', 'lapsed', 'revoked', 'deregistered', 'abeyance')),
   collection_account_name text,
   collection_bank text,
@@ -156,6 +157,7 @@ create table core.rera_registrations (
 );
 create index rera_registrations_phase_idx on core.rera_registrations (phase_id);
 comment on table core.rera_registrations is 'RERA registrations (authority harera_ggm …). The collection account is public record and feeds the payee check.';
+comment on column core.rera_registrations.registered_on_precision is 'pii:C0 · day (HARERA certificate date) or month (registered Dec 2022 → 2022-12-01).';
 comment on column core.rera_registrations.collection_account_name is 'pii:C0 (public record)';
 comment on column core.rera_registrations.collection_account_number is 'pii:C0 (public record on HARERA)';
 
@@ -224,16 +226,18 @@ create table core.extensions (
   registration_id uuid not null references core.rera_registrations (id),
   kind text not null check (kind in ('section6', 'force_majeure')),
   granted_on date,
+  granted_on_precision core.date_precision not null default 'day',
   from_completion date,
-  from_completion_precision text not null default 'month' check (from_completion_precision in ('day', 'month')),
+  from_completion_precision core.date_precision not null default 'month',
   to_completion date,
-  to_completion_precision text not null default 'month' check (to_completion_precision in ('day', 'month')),
+  to_completion_precision core.date_precision not null default 'month',
   order_ref text,
   snapshot_id uuid references core.snapshots (id),
   created_at timestamptz not null default now()
 );
 create index extensions_registration_idx on core.extensions (registration_id);
 comment on table core.extensions is 'Completion-date extensions on a registration (Coral: Jan 2026 → Feb 2029; 14 Oct 2026 → Aug 2029).';
+comment on column core.extensions.granted_on_precision is 'pii:C0 · day (order date) or month (granted Jan 2026 → 2026-01-01).';
 
 create table core.blanket_extensions (
   id uuid primary key default gen_random_uuid(),
@@ -336,7 +340,7 @@ create table core.pre_rera_records (
   project_name text not null,
   sector text,
   promised date,
-  promised_precision text not null default 'month' check (promised_precision in ('day', 'month')),
+  promised_precision core.date_precision not null default 'month',
   oc_on date,
   months_late integer,
   sources jsonb not null default '[]'::jsonb,
