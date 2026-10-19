@@ -1,0 +1,184 @@
+{
+  "schema": "plinth.risk_summary/1",
+  "phase": {
+    "slug": "coral-towers",
+    "name": "Coral Towers",
+    "short_code": null,
+    "rera_number": null,
+    "authority": {
+      "code": "harera_ggm",
+      "name": "HARERA Gurugram",
+      "url": "https://haryanarera.gov.in"
+    },
+    "locality_line": "Sector 89, New Gurugram",
+    "units": 640,
+    "developer": {
+      "slug": "vantage-buildcon",
+      "name": "Vantage Buildcon",
+      "claim": {
+        "state": "invited",
+        "line": "invited 24 Nov 2025 · not yet claimed",
+        "since": "2025-11-24"
+      }
+    }
+  },
+  "display": {
+    "state": "scored",
+    "overlays": ["stale"],
+    "bands_public": true
+  },
+  "band": {
+    "code": "high",
+    "label": "High",
+    "step": 4,
+    "since": "2026-07-15",
+    "set_by": "model",
+    "rule": null
+  },
+  "chip": {
+    "kind": "band",
+    "label": "High",
+    "step": 4,
+    "meter_filled": 4
+  },
+  "confidence": {
+    "level": "low",
+    "dots": 1,
+    "line": "We're less certain about this one. Vantage Buildcon's record is short, and the old building figures widen the range."
+  },
+  "frequency": {
+    "kind": "range",
+    "low": 45,
+    "high": 65,
+    "sentence": "Between 45 and 65 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+    "reference_class_line": "Gurugram RERA phases registered 2017–2021 (illustrative backtest).",
+    "icon_array": {
+      "filled": 45,
+      "hatched": 20,
+      "empty": 35
+    },
+    "hatch_legend": "Hatched: the 20 of 100 we're less certain about"
+  },
+  "late12": {
+    "original_completion": "2028-08",
+    "blanket_extension_months": 4,
+    "late_after": "2029-12",
+    "line": "Original completion Aug 2028. More than 12 months late here means an OC after Dec 2029, with the 4-month blanket extension of Jul 2026.",
+    "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+  },
+  "reasons": [
+    {
+      "rank": 1,
+      "factor": "timeline",
+      "factor_label": "Timeline",
+      "text": "22% built with 70% of the promised time used. 2 extensions on record.",
+      "sources": [
+        {
+          "label": "HARERA QPR · Jan–Mar 2026",
+          "fact_ids": ["d09fcaa8-4400-5d52-8276-a257a0d58528"],
+          "evidence_url": "/evidence/d09fcaa8-4400-5d52-8276-a257a0d58528",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-04-14"
+        },
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["23810d29-c87c-5edf-88e3-6c7d13d49228"],
+          "evidence_url": "/evidence/23810d29-c87c-5edf-88e3-6c7d13d49228",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        },
+        {
+          "label": "HARERA order · Extension 1 · Jan 2026",
+          "fact_ids": ["a7301216-3430-592a-aa01-1ea9619c813e"],
+          "evidence_url": "/evidence/a7301216-3430-592a-aa01-1ea9619c813e",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-01-31"
+        },
+        {
+          "label": "HARERA order · Extension 2 · 14 Oct 2026",
+          "fact_ids": ["2f789ce6-4038-5a21-a34c-afda2f5c3bad"],
+          "evidence_url": "/evidence/2f789ce6-4038-5a21-a34c-afda2f5c3bad",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "factor": "timeline",
+      "factor_label": "Timeline",
+      "text": "The Apr–Jun 2026 QPR, due 15 Jul 2026, is not on HARERA.",
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["966624b0-fb07-53f5-9cd3-aaaf740a5257"],
+          "evidence_url": "/evidence/966624b0-fb07-53f5-9cd3-aaaf740a5257",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-18"
+        }
+      ]
+    }
+  ],
+  "what_would_change": "Two consecutive quarters with construction ahead of sales would move this to Elevated.",
+  "pending": [
+    {
+      "code": "qpr_missing",
+      "line": "The Apr–Jun 2026 QPR is not on HARERA yet. It was due 15 Jul 2026.",
+      "since": "2026-07-15",
+      "developer_says": null,
+      "marker_line": null
+    },
+    {
+      "code": "qpr_missing",
+      "line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026.",
+      "since": "2026-10-15",
+      "developer_says": null,
+      "marker_line": null
+    }
+  ],
+  "developer_response": null,
+  "progress": {
+    "built_pct": 22,
+    "sold_pct": null,
+    "time_used_pct": 70,
+    "latest_qpr": {
+      "quarter": "2026-Q1",
+      "label": "Jan–Mar 2026",
+      "filed_on": "2026-04-14",
+      "age_days": 187
+    },
+    "line": "22% built · 70% of the promised time used · progress 187 days old"
+  },
+  "price": {
+    "all_in_inr": 19000000,
+    "all_in_label": "₹1.90 Cr",
+    "quoted_label": "₹1.62 Cr",
+    "per_sqft_carpet_label": "₹15,300 per sq ft carpet",
+    "basis_line": "3 BHK, 1,240 sq ft carpet · developer cost sheet",
+    "display_line": "₹1.90 Cr all-in · quoted ₹1.62 Cr"
+  },
+  "complaints": null,
+  "withheld": null,
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "d4fada3e-5ed0-58b7-b5eb-53de0611d970",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/coral-towers",
+    "short_url": null
+  },
+  "share": {
+    "card_url": "https://plinth.in/cards/risk/coral-towers.png?run=d4fada3e-5ed0-58b7-b5eb-53de0611d970",
+    "card_alt": "Coral Towers: Delivery risk High. Between 45 and 65 of 100 similar projects were more than 12 months late.",
+    "lines": [
+      "Delivery risk: High",
+      "Between 45 and 65 of 100 similar Gurugram projects got their OC more than 12 months late.",
+      "22% built with 70% of the promised time used."
+    ],
+    "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+    "caption": "Plinth · No developer pays us. Ever."
+  }
+}

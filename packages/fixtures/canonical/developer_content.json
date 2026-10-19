@@ -1,0 +1,546 @@
+{
+  "schema": "plinth.fixtures.developer_content/1",
+  "note": "\"From the developer\" content (ws.*): price lists, payment plans, the Aurelia cost sheet, documents, the Developer says claim and the reply. It never feeds a band. Owner: T03. Generated; edit src/author.",
+  "price_lists": [
+    {
+      "id": "f42c1bf3-d48f-554c-a72c-c0e8a7284110",
+      "phase": "aurelia-heights-phase-2",
+      "published_on": "2023-01-01",
+      "published_precision": "month",
+      "status": "published",
+      "version": 1,
+      "lane": "from_developer",
+      "note": "Launch",
+      "items": [
+        {
+          "unit_type": "ef4aecc0-021f-5580-93a7-4fea84c75544",
+          "unit_label": "3 BHK",
+          "base_price_inr": 15800000,
+          "per_sqft_carpet_inr": null
+        },
+        {
+          "unit_type": "4dd7b05f-283b-5ce2-ae3b-d7e76329397a",
+          "unit_label": "4 BHK",
+          "base_price_inr": 22700000,
+          "per_sqft_carpet_inr": null
+        }
+      ],
+      "source": "DESIGN §5b"
+    },
+    {
+      "id": "a6967405-15a9-5f60-934d-ede8421d5d66",
+      "phase": "aurelia-heights-phase-2",
+      "published_on": "2025-07-01",
+      "published_precision": "day",
+      "status": "published",
+      "version": 1,
+      "lane": "from_developer",
+      "note": null,
+      "items": [
+        {
+          "unit_type": "ef4aecc0-021f-5580-93a7-4fea84c75544",
+          "unit_label": "3 BHK",
+          "base_price_inr": 20300000,
+          "per_sqft_carpet_inr": null
+        },
+        {
+          "unit_type": "4dd7b05f-283b-5ce2-ae3b-d7e76329397a",
+          "unit_label": "4 BHK",
+          "base_price_inr": 29200000,
+          "per_sqft_carpet_inr": null
+        }
+      ],
+      "source": "DESIGN §5b"
+    },
+    {
+      "id": "bde7409c-f229-5b6f-b5ea-69e6ed5bfc1b",
+      "phase": "aurelia-heights-phase-2",
+      "published_on": "2026-04-01",
+      "published_precision": "day",
+      "status": "published",
+      "version": 1,
+      "lane": "from_developer",
+      "note": null,
+      "items": [
+        {
+          "unit_type": "ef4aecc0-021f-5580-93a7-4fea84c75544",
+          "unit_label": "3 BHK",
+          "base_price_inr": 22400000,
+          "per_sqft_carpet_inr": null
+        },
+        {
+          "unit_type": "4dd7b05f-283b-5ce2-ae3b-d7e76329397a",
+          "unit_label": "4 BHK",
+          "base_price_inr": 32200000,
+          "per_sqft_carpet_inr": null
+        }
+      ],
+      "source": "DESIGN §5b"
+    },
+    {
+      "id": "c1f98a29-20c8-5e23-9bf8-10bf0419547f",
+      "phase": "aurelia-heights-phase-2",
+      "published_on": "2026-10-02",
+      "published_precision": "day",
+      "status": "published",
+      "version": 1,
+      "lane": "from_developer",
+      "note": null,
+      "items": [
+        {
+          "unit_type": "ef4aecc0-021f-5580-93a7-4fea84c75544",
+          "unit_label": "3 BHK",
+          "base_price_inr": 23500000,
+          "per_sqft_carpet_inr": 16207
+        },
+        {
+          "unit_type": "4dd7b05f-283b-5ce2-ae3b-d7e76329397a",
+          "unit_label": "4 BHK",
+          "base_price_inr": 33800000,
+          "per_sqft_carpet_inr": 16095
+        }
+      ],
+      "source": "DESIGN §5b"
+    },
+    {
+      "id": "723e8582-34cb-511c-90cc-32edfe0b4f0d",
+      "phase": "kestrel-park",
+      "published_on": "2026-10-01",
+      "published_precision": "month",
+      "status": "published",
+      "version": 1,
+      "lane": "from_developer",
+      "note": null,
+      "items": [
+        {
+          "unit_type": "a827283a-1648-57eb-ab73-c9f0b69b657f",
+          "unit_label": "2 BHK",
+          "base_price_inr": 15800000,
+          "per_sqft_carpet_inr": null
+        },
+        {
+          "unit_type": "89b403d2-3795-597b-a5b1-84614add0702",
+          "unit_label": "3 BHK",
+          "base_price_inr": 21000000,
+          "per_sqft_carpet_inr": null
+        }
+      ],
+      "source": "DESIGN §5b (price lists of Oct 2026)"
+    },
+    {
+      "id": "86c4e45c-151c-543c-be30-8321ce60f77c",
+      "phase": "sapphire-grove-phase-1",
+      "published_on": "2026-10-16",
+      "published_precision": "day",
+      "status": "published",
+      "version": 1,
+      "lane": "from_developer",
+      "note": null,
+      "items": [
+        {
+          "unit_type": "62cc8efb-826a-5892-b26f-0521c67f6118",
+          "unit_label": "3 BHK",
+          "base_price_inr": 19500000,
+          "per_sqft_carpet_inr": null
+        },
+        {
+          "unit_type": "3c27b7d8-723c-5473-b4d6-5b1b03748478",
+          "unit_label": "3 BHK + study",
+          "base_price_inr": 22600000,
+          "per_sqft_carpet_inr": null
+        }
+      ],
+      "source": "DESIGN §5b (3 BHK ₹1.89 Cr → ₹1.95 Cr on 16 Oct 2026; 3 BHK + study from the Oct 2026 lists)"
+    },
+    {
+      "id": "631daf99-36f8-52c2-94e6-1fc09b68ff44",
+      "phase": "coral-towers",
+      "published_on": "2026-10-01",
+      "published_precision": "month",
+      "status": "published",
+      "version": 1,
+      "lane": "from_developer",
+      "note": null,
+      "items": [
+        {
+          "unit_type": "9b470e0d-ed53-5eb7-8c5a-fa2b81ff8134",
+          "unit_label": "2 BHK",
+          "base_price_inr": 12800000,
+          "per_sqft_carpet_inr": null
+        },
+        {
+          "unit_type": "350e5473-9367-559c-9e02-1e3c57293306",
+          "unit_label": "3 BHK",
+          "base_price_inr": 16200000,
+          "per_sqft_carpet_inr": null
+        }
+      ],
+      "source": "DESIGN §5b (price lists of Oct 2026)"
+    },
+    {
+      "id": "f605b808-f3c3-5fd4-8286-ee71cd60cec6",
+      "phase": "juniper-enclave",
+      "published_on": "2026-10-01",
+      "published_precision": "month",
+      "status": "published",
+      "version": 1,
+      "lane": "from_developer",
+      "note": null,
+      "items": [
+        {
+          "unit_type": "559f37a5-402f-5a92-afd5-417fb0ece538",
+          "unit_label": "3 BHK",
+          "base_price_inr": 22500000,
+          "per_sqft_carpet_inr": null
+        }
+      ],
+      "source": "DESIGN §5b (price lists of Oct 2026)"
+    },
+    {
+      "id": "58e2f2d7-0bec-5c7b-81f0-1cfca3bb4a49",
+      "phase": "cedar-walk-phase-2",
+      "published_on": "2026-06-12",
+      "published_precision": "day",
+      "status": "published",
+      "version": 1,
+      "lane": "from_developer",
+      "note": null,
+      "items": [],
+      "source": "DESIGN §5b (dated 12 Jun 2026); items CONFLICTS.md C-05 (proposed; not yet in DESIGN §5b)"
+    }
+  ],
+  "previous_prices": [
+    {
+      "phase": "sapphire-grove-phase-1",
+      "unit_label": "3 BHK",
+      "base_price_inr": 18900000,
+      "superseded_on": "2026-10-16",
+      "source": "DESIGN §5b"
+    }
+  ],
+  "quotes_without_list": [
+    {
+      "phase": "laurel-residency",
+      "unit_label": "3 BHK",
+      "base_price_inr": 14800000,
+      "dated": null,
+      "source": "DESIGN §5b (3 BHK quoted ₹1.48 Cr; no list date in §5b)"
+    }
+  ],
+  "payment_plans": [
+    {
+      "id": "c60aa6a0-8c6f-5c64-a3b7-1e1c03d09cfd",
+      "phase": "aurelia-heights-phase-2",
+      "kind": "construction_linked",
+      "name": "Construction-linked plan",
+      "published_on": "2026-10-02",
+      "status": "published",
+      "lane": "from_developer",
+      "stages": [
+        {
+          "seq": 1,
+          "label": "Booking",
+          "stage_kind": "booking",
+          "slab_no": null,
+          "pct": 10
+        },
+        {
+          "seq": 2,
+          "label": "Registered agreement (within 45 days)",
+          "stage_kind": "agreement",
+          "slab_no": null,
+          "pct": 10
+        },
+        {
+          "seq": 3,
+          "label": "Foundation",
+          "stage_kind": "foundation",
+          "slab_no": null,
+          "pct": 10
+        },
+        {
+          "seq": 4,
+          "label": "Slab 3",
+          "stage_kind": "slab",
+          "slab_no": 3,
+          "pct": 7.5
+        },
+        {
+          "seq": 5,
+          "label": "Slab 6",
+          "stage_kind": "slab",
+          "slab_no": 6,
+          "pct": 7.5
+        },
+        {
+          "seq": 6,
+          "label": "Slab 9",
+          "stage_kind": "slab",
+          "slab_no": 9,
+          "pct": 7.5
+        },
+        {
+          "seq": 7,
+          "label": "Slab 12",
+          "stage_kind": "slab",
+          "slab_no": 12,
+          "pct": 7.5
+        },
+        {
+          "seq": 8,
+          "label": "Slab 15",
+          "stage_kind": "slab",
+          "slab_no": 15,
+          "pct": 7.5
+        },
+        {
+          "seq": 9,
+          "label": "Slab 18",
+          "stage_kind": "slab",
+          "slab_no": 18,
+          "pct": 7.5
+        },
+        {
+          "seq": 10,
+          "label": "Slab 20 (top)",
+          "stage_kind": "slab",
+          "slab_no": 20,
+          "pct": 7.5
+        },
+        {
+          "seq": 11,
+          "label": "Brickwork and plaster",
+          "stage_kind": "brickwork",
+          "slab_no": null,
+          "pct": 7.5
+        },
+        {
+          "seq": 12,
+          "label": "Flooring and finishing",
+          "stage_kind": "finishing",
+          "slab_no": null,
+          "pct": 5
+        },
+        {
+          "seq": 13,
+          "label": "Offer of possession",
+          "stage_kind": "possession",
+          "slab_no": null,
+          "pct": 5
+        }
+      ],
+      "due_by_registration_pct": {
+        "A": 52.5,
+        "B": 45,
+        "C": 37.5
+      },
+      "source": "DESIGN §5b (13 stages, 100% in all); DATA_MODEL's \"11 rows\" CONFLICTS.md C-18 (proposed; not yet in DESIGN §5b)"
+    }
+  ],
+  "cost_sheets": [
+    {
+      "id": "c285cec0-1d98-5ba2-b026-c152e74ffcfe",
+      "phase": "aurelia-heights-phase-2",
+      "unit_type": "ef4aecc0-021f-5580-93a7-4fea84c75544",
+      "unit_label": "3 BHK",
+      "dated": "2026-10-02",
+      "option_label": "park-facing",
+      "carpet_sqft": 1450,
+      "super_sqft": 2000,
+      "lane": "from_developer",
+      "pages": 2,
+      "edc_idc_line": "Included in the base",
+      "lines": [
+        {
+          "seq": 1,
+          "code": "base",
+          "label": "Base",
+          "amount_inr": 23500000,
+          "tag": null
+        },
+        {
+          "seq": 2,
+          "code": "plc",
+          "label": "PLC (park-facing)",
+          "amount_inr": 290000,
+          "tag": "often_negotiable"
+        },
+        {
+          "seq": 3,
+          "code": "club",
+          "label": "Club",
+          "amount_inr": 150000,
+          "tag": "often_negotiable"
+        },
+        {
+          "seq": 4,
+          "code": "parking",
+          "label": "Parking",
+          "amount_inr": 350000,
+          "tag": null
+        },
+        {
+          "seq": 5,
+          "code": "ifms",
+          "label": "IFMS",
+          "amount_inr": 130000,
+          "tag": "refundable_deposit"
+        },
+        {
+          "seq": 6,
+          "code": "gst",
+          "label": "GST 5%",
+          "amount_inr": 1221000,
+          "tag": "set_by_law"
+        },
+        {
+          "seq": 7,
+          "code": "stamp_registration",
+          "label": "Stamp duty + registration",
+          "amount_inr": 1759400,
+          "tag": "set_by_law"
+        }
+      ],
+      "charges_total_inr": 920000,
+      "all_in_inr": 27400400,
+      "per_sqft_carpet_inr": 18900,
+      "source": "DESIGN §5b (§5b rounds the lines); exact rupees derived: rules v2026.10: GST 5% of base + charges, stamp duty 7% of base + charges + ₹50,000 registration (DATA_MODEL core.cost_rule_sets); 7 lines per DESIGN §5b · Final sweep rulings (19 Oct 2026)"
+    }
+  ],
+  "cost_rule_sets": [
+    {
+      "version": "2026.10",
+      "state": "HR",
+      "effective_from": null,
+      "gst_uc_pct": 5,
+      "stamp_duty_pct": {
+        "male": 7,
+        "female": 5,
+        "joint": 6
+      },
+      "registration_fee_inr": 50000,
+      "rounding": {
+        "all_in_per_sqft_carpet_inr": 100,
+        "price_list_per_sqft_inr": 1,
+        "afford_all_in_inr": 100000
+      },
+      "source": "DATA_MODEL §1 core.cost_rule_sets; afford rounding DESIGN §5b · Engineering fixture decisions (19 Oct 2026)"
+    }
+  ],
+  "developer_documents": [
+    {
+      "id": "da1b5e07-c62b-5c9e-81fb-8b8f88e3a252",
+      "phase": "aurelia-heights-phase-2",
+      "kind": "floor_plan",
+      "dated": "2026-10-02",
+      "lane": "from_developer",
+      "storage_key": "media/floorPlan3bhk.jpg",
+      "summary": {
+        "rooms": {
+          "3 BHK": [
+            "Living + dining 22′ × 13′",
+            "Master bedroom 14′ × 14′ with dress and toilet",
+            "Bedroom 2 12′ × 14′",
+            "Bedroom 3 12′ × 12′",
+            "Kitchen 10′ × 11′",
+            "Utility 12′ × 8′",
+            "3 toilets",
+            "Balcony 22′ × 5′"
+          ],
+          "4 BHK": [
+            "Living + dining 27′ × 15′",
+            "Master bedroom 14′ × 16′",
+            "Bedrooms 13′ × 15′, 13′ × 13′ and 12′ × 14′",
+            "Kitchen 9′ × 12′",
+            "Utility",
+            "Store",
+            "4 toilets"
+          ]
+        }
+      },
+      "source": "DESIGN §5b"
+    },
+    {
+      "id": "141e1bb8-8347-55ac-99fe-0acb910e378a",
+      "phase": "aurelia-heights-phase-2",
+      "kind": "brochure",
+      "dated": "2026-10-02",
+      "lane": "from_developer",
+      "storage_key": null,
+      "summary": {
+        "amenities": [
+          "A clubhouse with a pool and a gym",
+          "A central park (park-facing homes pay the PLC)",
+          "Covered parking on two basement levels",
+          "Power back-up for lifts and common areas"
+        ],
+        "lenders_claim": "approved by major banks"
+      },
+      "source": "DESIGN §5b"
+    },
+    {
+      "id": "55d6cfba-97c3-5c24-8aef-3d230b5845bd",
+      "phase": "aurelia-heights-phase-2",
+      "kind": "transfer_policy",
+      "dated": "2026-10-02",
+      "lane": "from_developer",
+      "storage_key": null,
+      "summary": {
+        "fee_per_sqft_super_inr": 150,
+        "fee_3bhk_inr": 300000,
+        "rules": [
+          "All dues to date paid first.",
+          "No transfer before the agreement for sale is registered."
+        ]
+      },
+      "source": "DESIGN §5b"
+    },
+    {
+      "id": "ecaf8121-b09a-5821-9415-5fdc5660d252",
+      "phase": "aurelia-heights-phase-2",
+      "kind": "draft_agreement",
+      "dated": "2026-10-02",
+      "lane": "from_developer",
+      "storage_key": null,
+      "summary": {
+        "edc_idc_increase": "Northfield may bill each buyer a share of any later government EDC/IDC increase, by super area.",
+        "completion_date": "2027-12"
+      },
+      "source": "DESIGN §5b"
+    }
+  ],
+  "developer_claims": [
+    {
+      "id": "2fd1909d-9db4-50e4-ac53-12e5bb604ad4",
+      "phase": "aurelia-heights-phase-2",
+      "text": "Filed on 12 Oct 2026.",
+      "said_on": "2026-10-15",
+      "check_by": "2026-11-05",
+      "verified_state": "unverified",
+      "linked_fact": "bc3ff166-6be3-5805-8401-0dbd4260c1ea",
+      "public": true,
+      "source": "DESIGN §5b (\"filed on 12 Oct 2026\"); dates API_CONTRACTS §2.1"
+    }
+  ],
+  "developer_replies": [
+    {
+      "id": "944f86c1-af0b-5868-9d9f-16be9d905477",
+      "phase": "aurelia-heights-phase-2",
+      "text": "Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.",
+      "signatory_title": "Head of Customer Relations",
+      "published_on": "2026-10-15",
+      "check_by": "2026-11-05",
+      "status": "published",
+      "source": "DESIGN §5b (published 15 Oct 2026; checked by 5 Nov 2026); text artboards AppRisk/WebProject (evidence copy, a T03 input); title API_CONTRACTS §2.1 (CONFLICTS.md C-19 (proposed; not yet in DESIGN §5b))"
+    }
+  ],
+  "live_record_links": [
+    {
+      "id": "c44a9a8b-3430-5131-890c-f70006fb8ac6",
+      "phase": "aurelia-heights-phase-2",
+      "code": "AH2",
+      "short_url": "https://plinth.in/r/AH2",
+      "source": "DESIGN §5b"
+    }
+  ]
+}

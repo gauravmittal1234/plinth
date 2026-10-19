@@ -1,0 +1,16 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "aurelia-heights-phase-2_kestrel-park_sapphire-grove-phase-1": {
+      "p_slugs": ["aurelia-heights-phase-2", "kestrel-park", "sapphire-grove-phase-1"]
+    },
+    "aurelia-heights-phase-2_kestrel-park_sapphire-grove-phase-1_coral-towers": {
+      "p_slugs": [
+        "aurelia-heights-phase-2",
+        "kestrel-park",
+        "sapphire-grove-phase-1",
+        "coral-towers"
+      ]
+    }
+  }
+}

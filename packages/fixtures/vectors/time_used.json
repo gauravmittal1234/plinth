@@ -1,0 +1,127 @@
+{
+  "schema": "plinth.vectors.time_used/1",
+  "source": "DESIGN §5b (Aurelia quarters 10…70%, 77% today; other phases' figures today); formula BUILD_PLAN §7.1",
+  "formula": "round_half_up(100 × months(registration → reference month) ÷ months(registration → original completion)). A QPR's reference month is its quarter's last month; today uses the clock's month (Oct 2026).",
+  "cases": [
+    {
+      "phase": "aurelia-heights-phase-2",
+      "registered": "2022-12",
+      "original_completion": "2027-12",
+      "reference_month": "2023-06",
+      "label": "Apr–Jun 2023",
+      "expected_pct": 10
+    },
+    {
+      "phase": "aurelia-heights-phase-2",
+      "registered": "2022-12",
+      "original_completion": "2027-12",
+      "reference_month": "2023-12",
+      "label": "Oct–Dec 2023",
+      "expected_pct": 20
+    },
+    {
+      "phase": "aurelia-heights-phase-2",
+      "registered": "2022-12",
+      "original_completion": "2027-12",
+      "reference_month": "2024-06",
+      "label": "Apr–Jun 2024",
+      "expected_pct": 30
+    },
+    {
+      "phase": "aurelia-heights-phase-2",
+      "registered": "2022-12",
+      "original_completion": "2027-12",
+      "reference_month": "2024-12",
+      "label": "Oct–Dec 2024",
+      "expected_pct": 40
+    },
+    {
+      "phase": "aurelia-heights-phase-2",
+      "registered": "2022-12",
+      "original_completion": "2027-12",
+      "reference_month": "2025-06",
+      "label": "Apr–Jun 2025",
+      "expected_pct": 50
+    },
+    {
+      "phase": "aurelia-heights-phase-2",
+      "registered": "2022-12",
+      "original_completion": "2027-12",
+      "reference_month": "2025-12",
+      "label": "Oct–Dec 2025",
+      "expected_pct": 60
+    },
+    {
+      "phase": "aurelia-heights-phase-2",
+      "registered": "2022-12",
+      "original_completion": "2027-12",
+      "reference_month": "2026-03",
+      "label": "Jan–Mar 2026",
+      "expected_pct": 65
+    },
+    {
+      "phase": "aurelia-heights-phase-2",
+      "registered": "2022-12",
+      "original_completion": "2027-12",
+      "reference_month": "2026-06",
+      "label": "Apr–Jun 2026",
+      "expected_pct": 70
+    },
+    {
+      "phase": "aurelia-heights-phase-2",
+      "registered": "2022-12",
+      "original_completion": "2027-12",
+      "reference_month": "2026-10",
+      "label": "Today, 18 Oct 2026",
+      "expected_pct": 77
+    },
+    {
+      "phase": "kestrel-park",
+      "registered": "2023-11",
+      "original_completion": "2028-11",
+      "reference_month": "2026-10",
+      "label": "Today, 18 Oct 2026",
+      "expected_pct": 58
+    },
+    {
+      "phase": "sapphire-grove-phase-1",
+      "registered": "2025-01",
+      "original_completion": "2028-03",
+      "reference_month": "2026-10",
+      "label": "Today, 18 Oct 2026",
+      "expected_pct": 55
+    },
+    {
+      "phase": "coral-towers",
+      "registered": "2022-07",
+      "original_completion": "2028-08",
+      "reference_month": "2026-10",
+      "label": "Today, 18 Oct 2026",
+      "expected_pct": 70
+    },
+    {
+      "phase": "laurel-residency",
+      "registered": "2020-11",
+      "original_completion": "2026-06",
+      "reference_month": "2026-10",
+      "label": "Today, 18 Oct 2026",
+      "expected_pct": 106
+    },
+    {
+      "phase": "juniper-enclave",
+      "registered": "2025-05",
+      "original_completion": "2029-12",
+      "reference_month": "2026-10",
+      "label": "Today, 18 Oct 2026",
+      "expected_pct": 31
+    },
+    {
+      "phase": "heron-point-phase-2",
+      "registered": "2026-04",
+      "original_completion": "2031-04",
+      "reference_month": "2026-10",
+      "label": "Today, 18 Oct 2026",
+      "expected_pct": 10
+    }
+  ]
+}

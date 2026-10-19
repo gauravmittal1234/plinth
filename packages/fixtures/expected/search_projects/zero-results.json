@@ -1,0 +1,59 @@
+{
+  "schema": "plinth.search_results/1",
+  "query": "4 bhk dwarka expressway low risk",
+  "parsed": {
+    "bhk": [4],
+    "all_in_max_inr": null,
+    "corridors": ["dwarka-expressway"],
+    "bands": ["low", "moderate"]
+  },
+  "notes": ["“Low delivery risk” shows Low and Moderate.", "5 projects hidden by your filters."],
+  "sort_line": "Sorted by lowest delivery risk. Order never follows money.",
+  "legend_line": "Pins show all-in prices",
+  "items": [],
+  "hidden_count": 5,
+  "hidden": [
+    {
+      "slug": "kestrel-park",
+      "name": "Kestrel Park",
+      "why_line": "no 4 BHK"
+    },
+    {
+      "slug": "sapphire-grove-phase-1",
+      "name": "Sapphire Grove, Phase 1",
+      "why_line": "no 4 BHK"
+    },
+    {
+      "slug": "aurelia-heights-phase-2",
+      "name": "Aurelia Heights, Phase 2",
+      "why_line": "delivery risk Elevated"
+    },
+    {
+      "slug": "juniper-enclave",
+      "name": "Juniper Enclave",
+      "why_line": "no 4 BHK"
+    },
+    {
+      "slug": "heron-point-phase-2",
+      "name": "Heron Point, Phase 2",
+      "why_line": "no price list with us"
+    }
+  ],
+  "next_cursor": null,
+  "zero_results": {
+    "kind": "no_match",
+    "line": "Nothing on Dwarka Expressway fits every word above. The list below says what each project misses.",
+    "action": {
+      "kind": "drop_filter",
+      "label": "Risk: add Elevated",
+      "drop": "bands",
+      "brings_back": ["aurelia-heights-phase-2"]
+    },
+    "detail_line": "It's the only Dwarka Expressway project here with a 4 BHK: 2,100 sq ft carpet, quoted from ₹3.38 Cr, all-in not known yet. Its delivery risk is Elevated."
+  },
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "generated_at": "2026-10-18T12:00:00+05:30"
+  }
+}

@@ -1,0 +1,249 @@
+{
+  "schema": "plinth.methodology/1",
+  "current_version": "v1.2",
+  "published_on": "2026-10-14",
+  "question_line": "One question for every RERA phase in Gurugram: will the OC arrive more than 12 months late?",
+  "bands": [
+    {
+      "code": "low",
+      "label": "Low",
+      "step": 1,
+      "low": 5,
+      "high": 15,
+      "sentence": "Between 5 and 15 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+      "example_slug": "kestrel-park"
+    },
+    {
+      "code": "moderate",
+      "label": "Moderate",
+      "step": 2,
+      "low": 15,
+      "high": 30,
+      "sentence": "Between 15 and 30 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+      "example_slug": "sapphire-grove-phase-1"
+    },
+    {
+      "code": "elevated",
+      "label": "Elevated",
+      "step": 3,
+      "low": 30,
+      "high": 45,
+      "sentence": "Between 30 and 45 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+      "example_slug": "aurelia-heights-phase-2"
+    },
+    {
+      "code": "high",
+      "label": "High",
+      "step": 4,
+      "low": 45,
+      "high": 65,
+      "sentence": "Between 45 and 65 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+      "example_slug": "coral-towers"
+    },
+    {
+      "code": "severe",
+      "label": "Severe",
+      "step": 5,
+      "low": 65,
+      "high": 80,
+      "sentence": "Between 65 and 80 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+      "example_slug": "laurel-residency"
+    }
+  ],
+  "bands_note_line": "Ranges are provisional until our first calibration backtest is published.",
+  "similar_line": "Gurugram RERA phases registered 2017–2021, of comparable size, by developers with a comparable number of finished projects.",
+  "late12": {
+    "line": "Whether a phase gets its OC more than 12 months after its original RERA date. We call this Late12.",
+    "extensions_line": "We add extensions given to every project, such as COVID and the 4-month MoHUA extension of Jul 2026. We don't add extensions granted to one project. Those are part of the delay we predict.",
+    "example": {
+      "slug": "aurelia-heights-phase-2",
+      "original_completion": "2027-12",
+      "blanket_extension_months": 4,
+      "late_after": "2029-04",
+      "line": "Original completion Dec 2027. More than 12 months late here means an OC after Apr 2029, with the 4-month blanket extension of Jul 2026.",
+      "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+    }
+  },
+  "factors": [
+    {
+      "code": "finances",
+      "label": "Finances",
+      "weight_pct": 30
+    },
+    {
+      "code": "track_record",
+      "label": "Track record",
+      "weight_pct": 30
+    },
+    {
+      "code": "timeline",
+      "label": "Timeline",
+      "weight_pct": 20
+    },
+    {
+      "code": "legal",
+      "label": "Legal",
+      "weight_pct": 15
+    },
+    {
+      "code": "site",
+      "label": "Site",
+      "weight_pct": 5
+    }
+  ],
+  "factors_note_line": "These are starting weights. We refit them after each backtest and publish the change.",
+  "how_line": "Red-flag rules come first. Then an interpretable scorecard adds up the five groups. Each score lists up to 4 reasons, ranked by how much they moved it. No AI ever sets a score.",
+  "red_flag_rules": [
+    {
+      "code": "RF1_GROUP_CIRP",
+      "n": 1,
+      "title": "Insolvency (CIRP) admitted against the promoter or a group company",
+      "line": "The band is Severe while the case stands."
+    },
+    {
+      "code": "RF2_REGISTRATION_REVOKED",
+      "n": 2,
+      "title": "RERA registration revoked, de-registered or lapsed without an extension",
+      "line": "Applies from the day HARERA records the revocation, or the day a registration lapses with no extension."
+    },
+    {
+      "code": "RF3_STOP_SALE",
+      "n": 3,
+      "title": "A stop-sale or abeyance order from the regulator",
+      "line": "Applies while the order stands. When it is lifted, the model's band returns and the change is logged."
+    },
+    {
+      "code": "RF4_GROUP_DEFAULT",
+      "n": 4,
+      "title": "The promoter group is rated D or is in default",
+      "line": "We quote the rating agency's own symbol and date, exactly as published."
+    }
+  ],
+  "red_flag_example_line": "Example: Laurel Residency, Sector 92. A group company of Elmstone Developers was admitted to insolvency by NCLT order of 12 Mar 2023.",
+  "confidence": [
+    {
+      "level": "high",
+      "dots": 2,
+      "line": "We're more certain about this one. Many comparable finished projects, in Gurugram and in this group, so the range we show is narrow."
+    },
+    {
+      "level": "low",
+      "dots": 1,
+      "line": "We're less certain about this one. Fewer comparable projects, so we show a wider range. The uncertain part is hatched."
+    },
+    {
+      "level": "limited_history",
+      "dots": 0,
+      "line": "Not enough history to score · no penalty. We score a group once it has 3 finished RERA projects."
+    },
+    {
+      "level": "not_scored",
+      "dots": 0,
+      "line": "Not scored: we always say why on the card, for example registered less than 6 months ago."
+    }
+  ],
+  "data_rules": {
+    "rescore_hours": 72,
+    "stale_days": 120,
+    "line": "We recompute within 72 hours of a new filing or order. Data more than 120 days old gets a stale flag."
+  },
+  "calibration": {
+    "illustrative": true,
+    "rows": [
+      {
+        "band": "low",
+        "label": "Low",
+        "range_low": 5,
+        "range_high": 15,
+        "n_projects": 46,
+        "n_late": 4,
+        "per_100": 9
+      },
+      {
+        "band": "moderate",
+        "label": "Moderate",
+        "range_low": 15,
+        "range_high": 30,
+        "n_projects": 61,
+        "n_late": 19,
+        "per_100": 31
+      },
+      {
+        "band": "elevated",
+        "label": "Elevated",
+        "range_low": 30,
+        "range_high": 45,
+        "n_projects": 52,
+        "n_late": 20,
+        "per_100": 38
+      },
+      {
+        "band": "high",
+        "label": "High",
+        "range_low": 45,
+        "range_high": 65,
+        "n_projects": 34,
+        "n_late": 19,
+        "per_100": 56
+      },
+      {
+        "band": "severe",
+        "label": "Severe",
+        "range_low": 65,
+        "range_high": 80,
+        "n_projects": 19,
+        "n_late": 14,
+        "per_100": 74
+      }
+    ],
+    "base_rate": {
+      "n_projects": 212,
+      "n_late": 76,
+      "per_100": 36
+    },
+    "brier": 0.19,
+    "brier_baseline": 0.23
+  },
+  "versions": [
+    {
+      "version": "v1.2",
+      "released_on": "2026-10-14",
+      "title": "Blanket extensions added to every original date",
+      "items": [
+        "The 4-month MoHUA extension of Jul 2026 is now added to every original RERA date before we measure Late12.",
+        "Extensions granted to a single project are still not added. They are part of what we predict.",
+        "The stale flag now shows when a key input is more than 120 days old, down from 180."
+      ],
+      "note": "Approved by the methodology committee on 9 Oct 2026. Every band was recalculated on 14 Oct 2026.",
+      "current": true
+    },
+    {
+      "version": "v1.1",
+      "released_on": "2026-09-02",
+      "title": "Tighter QPR checks and group linking",
+      "items": [
+        "A QPR whose built share falls from the last quarter now counts as a filing problem.",
+        "Group companies are linked by common directors and shareholding, using MCA data from a licensed vendor."
+      ],
+      "note": "Approved by the methodology committee on 26 Aug 2026.",
+      "current": false
+    },
+    {
+      "version": "v1.0",
+      "released_on": "2026-07-15",
+      "title": "First public bands for Gurugram",
+      "items": [
+        "Five bands with natural frequencies, up to 4 sourced reasons, and a developer reply on every card.",
+        "Replaced v0.9, which published facts only, with no bands."
+      ],
+      "note": "Approved by the methodology committee on 8 Jul 2026.",
+      "current": false
+    }
+  ],
+  "never_line": "No developer pays us. Ever. And no one can pay to change, hide, delay or preview a score.",
+  "meta": {
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever."
+  }
+}

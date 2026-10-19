@@ -1,0 +1,45 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "canonical": {
+      "p_q": "3 bhk dwarka expresway under 2.5 cr low risk",
+      "p_filters": null,
+      "p_sort": "lowest_risk",
+      "p_bbox": null,
+      "p_cursor": null,
+      "p_limit": 20
+    },
+    "zero-results": {
+      "p_q": "4 bhk dwarka expressway low risk",
+      "p_filters": null,
+      "p_sort": "lowest_risk",
+      "p_bbox": null,
+      "p_cursor": null,
+      "p_limit": 20
+    },
+    "unknown-project": {
+      "p_q": "Indigo Terraces",
+      "p_filters": null,
+      "p_sort": "lowest_risk",
+      "p_bbox": null,
+      "p_cursor": null,
+      "p_limit": 20
+    },
+    "outside-coverage": {
+      "p_q": "3 bhk noida",
+      "p_filters": null,
+      "p_sort": "lowest_risk",
+      "p_bbox": null,
+      "p_cursor": null,
+      "p_limit": 20
+    },
+    "all-gurugram": {
+      "p_q": "",
+      "p_filters": null,
+      "p_sort": "lowest_risk",
+      "p_bbox": null,
+      "p_cursor": null,
+      "p_limit": 20
+    }
+  }
+}

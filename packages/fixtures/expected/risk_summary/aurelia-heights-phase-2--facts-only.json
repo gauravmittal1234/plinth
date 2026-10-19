@@ -1,0 +1,125 @@
+{
+  "schema": "plinth.risk_summary/1",
+  "phase": {
+    "slug": "aurelia-heights-phase-2",
+    "name": "Aurelia Heights, Phase 2",
+    "short_code": "AH2",
+    "rera_number": "GGM/673/405/2022/117",
+    "authority": {
+      "code": "harera_ggm",
+      "name": "HARERA Gurugram",
+      "url": "https://haryanarera.gov.in"
+    },
+    "locality_line": "Sector 37D, Dwarka Expressway",
+    "units": 500,
+    "developer": {
+      "slug": "northfield-estates",
+      "name": "Northfield Estates",
+      "claim": {
+        "state": "claimed",
+        "line": "claimed developer page, replies here",
+        "since": "2025-12-02"
+      }
+    }
+  },
+  "display": {
+    "state": "facts_only",
+    "overlays": [],
+    "bands_public": true
+  },
+  "band": null,
+  "chip": {
+    "kind": "withheld",
+    "label": "Band withheld · facts only",
+    "step": null,
+    "meter_filled": 0
+  },
+  "confidence": null,
+  "frequency": null,
+  "late12": {
+    "original_completion": "2027-12",
+    "blanket_extension_months": 4,
+    "late_after": "2029-04",
+    "line": "Original completion Dec 2027. More than 12 months late here means an OC after Apr 2029, with the 4-month blanket extension of Jul 2026.",
+    "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+  },
+  "reasons": [],
+  "what_would_change": null,
+  "pending": [
+    {
+      "code": "qpr_missing",
+      "line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026.",
+      "since": "2026-10-15",
+      "developer_says": {
+        "text": "Filed on 12 Oct 2026.",
+        "verified": false,
+        "said_on": "2026-10-15",
+        "check_by": "2026-11-05",
+        "line": "Developer says: filed 12 Oct, not yet verified."
+      },
+      "marker_line": null
+    }
+  ],
+  "developer_response": {
+    "text": "Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.",
+    "signatory_title": "Head of Customer Relations",
+    "published_on": "2026-10-15",
+    "check_by": "2026-11-05",
+    "line": "Developer says · not yet verified · 15 Oct 2026 · we check it by 5 Nov 2026"
+  },
+  "progress": {
+    "built_pct": 41,
+    "sold_pct": 72,
+    "time_used_pct": 77,
+    "latest_qpr": {
+      "quarter": "2026-Q2",
+      "label": "Apr–Jun 2026",
+      "filed_on": "2026-07-15",
+      "age_days": 95
+    },
+    "line": "41% built · 77% of the promised time used · 72% sold"
+  },
+  "price": {
+    "all_in_inr": 27400400,
+    "all_in_label": "₹2.74 Cr",
+    "quoted_label": "₹2.35 Cr",
+    "per_sqft_carpet_label": "₹18,900 per sq ft carpet",
+    "basis_line": "3 BHK, 1,450 sq ft carpet, park-facing · cost sheet of 2 Oct 2026",
+    "display_line": "₹2.74 Cr all-in · quoted ₹2.35 Cr"
+  },
+  "complaints": {
+    "count_24m": 14,
+    "per_100_units": 2.8,
+    "units_base": 500,
+    "median_count_similar": 3,
+    "line": "14 complaints · 2.8 per 100 units"
+  },
+  "withheld": {
+    "since": "2026-10-18",
+    "line": "Band withheld pending review, from 18 Oct 2026",
+    "explainer_line": "We're not showing a band for this project while a court considers an application about our bands for the Northfield Estates group.",
+    "explainer_url": "/gurugram/developers/northfield-estates#facts-only"
+  },
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "f1bf715a-ccdc-57ca-afcc-b5dcda92abe3",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/aurelia-heights-phase-2",
+    "short_url": "https://plinth.in/r/AH2"
+  },
+  "share": {
+    "card_url": "https://plinth.in/cards/risk/aurelia-heights-phase-2.png?run=f1bf715a-ccdc-57ca-afcc-b5dcda92abe3",
+    "card_alt": "Aurelia Heights, Phase 2: delivery risk band withheld pending review. Facts only.",
+    "lines": [
+      "Delivery risk: band withheld · facts only",
+      "Band withheld pending review, from 18 Oct 2026.",
+      "41% built with 77% of the promised time used."
+    ],
+    "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+    "caption": "Plinth · No developer pays us. Ever."
+  }
+}

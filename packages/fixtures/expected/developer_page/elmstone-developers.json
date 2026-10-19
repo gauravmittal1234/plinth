@@ -1,0 +1,59 @@
+{
+  "schema": "plinth.developer_page/1",
+  "group": {
+    "slug": "elmstone-developers",
+    "name": "Elmstone Developers",
+    "linked_companies": null,
+    "claim": {
+      "state": "invited",
+      "line": "invited 24 Nov 2025 · not yet claimed",
+      "since": "2025-11-24"
+    },
+    "mode": "scored"
+  },
+  "summary_line": null,
+  "facts_only": null,
+  "track_record": {
+    "finished": null,
+    "late": null,
+    "line": null,
+    "projects": [],
+    "sources": []
+  },
+  "ongoing": [
+    {
+      "slug": "laurel-residency",
+      "name": "Laurel Residency",
+      "state": "scored",
+      "chip": {
+        "kind": "band",
+        "label": "Severe",
+        "step": 5,
+        "meter_filled": 5
+      },
+      "price_line": "Quoted ₹1.48 Cr · all-in not known yet",
+      "progress_line": "34% built · 106% of the promised time used"
+    }
+  ],
+  "complaints": null,
+  "insolvency_line": "A group company of Elmstone Developers was admitted to insolvency by NCLT order on 12 Mar 2023.",
+  "pre_rera": null,
+  "reply": null,
+  "claim_explainer_line": "Claiming lets a developer correct facts, reply next to the records and hear from buyers who ask. It never changes a band. A developer that hasn't claimed is shown as “Invited” with the date, and we never call anyone uncooperative.",
+  "how_buyers_find_you": {
+    "lines": [
+      "Order never follows money. The default sort is lowest delivery risk first. No developer pays us, and no fee we earn ever touches ranking. Nobody can buy a place, above or below anyone.",
+      "Only verified facts count. Bands, dates and costs come from records we have matched to HARERA, DTCP or MCA. A price list or photo a developer adds is shown and labelled as theirs, but never used to rank. Claiming a page doesn't move it either.",
+      "Bands show in Compare. Buyers see each band side by side with the all-in cost and progress. A buyer who asks for low delivery risk gets two tiles, Low and Moderate, and can remove either. Buyers always see how many projects their filters hid."
+    ]
+  },
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/developers/elmstone-developers"
+  }
+}

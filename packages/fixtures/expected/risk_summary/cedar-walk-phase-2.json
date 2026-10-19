@@ -1,0 +1,98 @@
+{
+  "schema": "plinth.risk_summary/1",
+  "phase": {
+    "slug": "cedar-walk-phase-2",
+    "name": "Cedar Walk, Phase 2",
+    "short_code": null,
+    "rera_number": null,
+    "authority": {
+      "code": "harera_ggm",
+      "name": "HARERA Gurugram",
+      "url": "https://haryanarera.gov.in"
+    },
+    "locality_line": null,
+    "units": null,
+    "developer": {
+      "slug": "northfield-estates",
+      "name": "Northfield Estates",
+      "claim": {
+        "state": "claimed",
+        "line": "claimed developer page, replies here",
+        "since": "2025-12-02"
+      }
+    }
+  },
+  "display": {
+    "state": "scored",
+    "overlays": [],
+    "bands_public": true
+  },
+  "band": {
+    "code": "moderate",
+    "label": "Moderate",
+    "step": 2,
+    "since": "2026-07-15",
+    "set_by": "model",
+    "rule": null
+  },
+  "chip": {
+    "kind": "band",
+    "label": "Moderate",
+    "step": 2,
+    "meter_filled": 2
+  },
+  "confidence": {
+    "level": "low",
+    "dots": 1,
+    "line": "We're less certain about this one. Northfield has only 6 finished RERA projects to learn from, so we show a range, not one number."
+  },
+  "frequency": {
+    "kind": "range",
+    "low": 15,
+    "high": 30,
+    "sentence": "Between 15 and 30 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+    "reference_class_line": "Gurugram RERA phases registered 2017–2021 (illustrative backtest).",
+    "icon_array": {
+      "filled": 15,
+      "hatched": 15,
+      "empty": 70
+    },
+    "hatch_legend": "Hatched: the 15 of 100 we're less certain about"
+  },
+  "late12": null,
+  "reasons": [],
+  "what_would_change": "Two consecutive quarters with construction ahead of sales would move this to Low.",
+  "pending": [],
+  "developer_response": null,
+  "progress": {
+    "built_pct": null,
+    "sold_pct": null,
+    "time_used_pct": null,
+    "latest_qpr": null,
+    "line": null
+  },
+  "price": null,
+  "complaints": null,
+  "withheld": null,
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "91d86092-0795-58cc-b22d-d4c2ce18baf8",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/cedar-walk-phase-2",
+    "short_url": null
+  },
+  "share": {
+    "card_url": "https://plinth.in/cards/risk/cedar-walk-phase-2.png?run=91d86092-0795-58cc-b22d-d4c2ce18baf8",
+    "card_alt": "Cedar Walk, Phase 2: Delivery risk Moderate. Between 15 and 30 of 100 similar projects were more than 12 months late.",
+    "lines": [
+      "Delivery risk: Moderate",
+      "Between 15 and 30 of 100 similar Gurugram projects got their OC more than 12 months late."
+    ],
+    "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+    "caption": "Plinth · No developer pays us. Ever."
+  }
+}

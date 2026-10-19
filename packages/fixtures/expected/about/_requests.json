@@ -1,0 +1,6 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "default": {}
+  }
+}

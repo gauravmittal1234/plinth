@@ -1,0 +1,178 @@
+{
+  "schema": "plinth.risk_summary/1",
+  "phase": {
+    "slug": "laurel-residency",
+    "name": "Laurel Residency",
+    "short_code": null,
+    "rera_number": null,
+    "authority": {
+      "code": "harera_ggm",
+      "name": "HARERA Gurugram",
+      "url": "https://haryanarera.gov.in"
+    },
+    "locality_line": "Sector 92, New Gurugram",
+    "units": null,
+    "developer": {
+      "slug": "elmstone-developers",
+      "name": "Elmstone Developers",
+      "claim": {
+        "state": "invited",
+        "line": "invited 24 Nov 2025 · not yet claimed",
+        "since": "2025-11-24"
+      }
+    }
+  },
+  "display": {
+    "state": "scored",
+    "overlays": ["stalled"],
+    "bands_public": true
+  },
+  "band": {
+    "code": "severe",
+    "label": "Severe",
+    "step": 5,
+    "since": "2026-07-15",
+    "set_by": "red_flag_rule",
+    "rule": {
+      "code": "RF1_GROUP_CIRP",
+      "line": "Set by red-flag rule 1, not our model: a group company was admitted to insolvency (NCLT order, 12 Mar 2023)."
+    }
+  },
+  "chip": {
+    "kind": "band",
+    "label": "Severe",
+    "step": 5,
+    "meter_filled": 5
+  },
+  "confidence": null,
+  "frequency": null,
+  "late12": {
+    "original_completion": "2026-06",
+    "blanket_extension_months": 4,
+    "late_after": "2027-10",
+    "line": "Original completion Jun 2026. More than 12 months late here means an OC after Oct 2027, with the 4-month blanket extension of Jul 2026.",
+    "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+  },
+  "reasons": [
+    {
+      "rank": 1,
+      "factor": "legal",
+      "factor_label": "Legal",
+      "text": "A group company of Elmstone Developers was admitted to insolvency by NCLT order on 12 Mar 2023.",
+      "sources": [
+        {
+          "label": "IBBI · NCLT order 12 Mar 2023",
+          "fact_ids": ["9f0f09ed-5fda-5c98-b18c-f02ddf1c8c46"],
+          "evidence_url": "/evidence/9f0f09ed-5fda-5c98-b18c-f02ddf1c8c46",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2023-03-12"
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "factor": "timeline",
+      "factor_label": "Timeline",
+      "text": "Original completion was Jun 2026. That date has passed with 34% built.",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["f2020584-2a6a-584f-8926-2e1334ba1182"],
+          "evidence_url": "/evidence/f2020584-2a6a-584f-8926-2e1334ba1182",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        },
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["c640c448-4244-5d92-8506-022c6ef33369"],
+          "evidence_url": "/evidence/c640c448-4244-5d92-8506-022c6ef33369",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-06-30"
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "factor": "site",
+      "factor_label": "Site",
+      "text": "No QPR progress for 4 quarters: 34% built in each QPR from Jul–Sep 2025 to Apr–Jun 2026.",
+      "sources": [
+        {
+          "label": "HARERA QPR · Jul–Sep 2025",
+          "fact_ids": ["bda0d3f0-dac6-5315-b6e9-331d47f48a78"],
+          "evidence_url": "/evidence/bda0d3f0-dac6-5315-b6e9-331d47f48a78",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2025-09-30"
+        },
+        {
+          "label": "HARERA QPR · Oct–Dec 2025",
+          "fact_ids": ["77e91e5a-b9b7-571e-90a4-5d6f17e13c8c"],
+          "evidence_url": "/evidence/77e91e5a-b9b7-571e-90a4-5d6f17e13c8c",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2025-12-31"
+        },
+        {
+          "label": "HARERA QPR · Jan–Mar 2026",
+          "fact_ids": ["b932f577-9426-5fdd-877e-8c02c0a556f9"],
+          "evidence_url": "/evidence/b932f577-9426-5fdd-877e-8c02c0a556f9",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-03-31"
+        },
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["c640c448-4244-5d92-8506-022c6ef33369"],
+          "evidence_url": "/evidence/c640c448-4244-5d92-8506-022c6ef33369",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-06-30"
+        }
+      ]
+    }
+  ],
+  "what_would_change": "The rule applies while the insolvency case stands. If it is closed or set aside, the model sets the band again, and we log the change.",
+  "pending": [],
+  "developer_response": null,
+  "progress": {
+    "built_pct": 34,
+    "sold_pct": null,
+    "time_used_pct": 106,
+    "latest_qpr": {
+      "quarter": "2026-Q2",
+      "label": "Apr–Jun 2026",
+      "filed_on": null,
+      "age_days": null
+    },
+    "line": "34% built · 106% of the promised time used"
+  },
+  "price": {
+    "all_in_inr": null,
+    "all_in_label": null,
+    "quoted_label": "₹1.48 Cr",
+    "per_sqft_carpet_label": null,
+    "basis_line": "3 BHK quoted price · no cost sheet with us",
+    "display_line": "Quoted ₹1.48 Cr · all-in not known yet"
+  },
+  "complaints": null,
+  "withheld": null,
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "6ef63dab-b260-5412-8b9b-af416d6835af",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/laurel-residency",
+    "short_url": null
+  },
+  "share": {
+    "card_url": "https://plinth.in/cards/risk/laurel-residency.png?run=6ef63dab-b260-5412-8b9b-af416d6835af",
+    "card_alt": "Laurel Residency: Delivery risk Severe, set by red-flag rule 1, not our model.",
+    "lines": [
+      "Delivery risk: Severe, set by red-flag rule 1",
+      "A group company of Elmstone Developers was admitted to insolvency (NCLT order, 12 Mar 2023).",
+      "34% built. The original date, Jun 2026, has passed."
+    ],
+    "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+    "caption": "Plinth · No developer pays us. Ever."
+  }
+}

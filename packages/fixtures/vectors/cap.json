@@ -1,0 +1,45 @@
+{
+  "schema": "plinth.vectors.cap/1",
+  "source": "DESIGN §5b (10% of ₹2.44 Cr base + charges = ₹24.4 L; EOI ₹11,00,000)",
+  "rule": "Before a registered agreement for sale, at most 10% of the price (base + charges) may be taken (RERA s.13).",
+  "phase": "aurelia-heights-phase-2",
+  "inputs": {
+    "base_plus_charges_inr": 24420000
+  },
+  "expected": {
+    "limit_inr": 2442000,
+    "limit_label": "₹24.4 L",
+    "price_label": "₹2.44 Cr"
+  },
+  "cases": [
+    {
+      "name": "EOI on WhatsApp",
+      "amount_inr": 1100000,
+      "paid_so_far_inr": 0,
+      "stage": "before_agreement",
+      "expected": {
+        "within": true,
+        "amount_label": "₹11,00,000",
+        "line": "₹11,00,000 is within the ₹24.4 L limit before a registered agreement."
+      }
+    },
+    {
+      "name": "exactly the limit",
+      "amount_inr": 2442000,
+      "paid_so_far_inr": 0,
+      "stage": "before_agreement",
+      "expected": {
+        "within": true
+      }
+    },
+    {
+      "name": "one rupee over",
+      "amount_inr": 2442001,
+      "paid_so_far_inr": 0,
+      "stage": "before_agreement",
+      "expected": {
+        "within": false
+      }
+    }
+  ]
+}
