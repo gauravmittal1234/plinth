@@ -1,20 +1,13 @@
 @import "tailwindcss";
-
 /*
  * Design tokens: @plinth/tokens (T01). The Tailwind theme it generates
  * (dist/theme.css) defines every colour, type, radius and motion utility the
  * shell uses (bg-bg, text-ink, bg-slab, font-display, text-h1, rounded-pill…)
  * and resets Tailwind's default palette, so no colour can be hard-coded.
- *
- * T01 is not merged yet (PR #2), so the import below is parked as a comment;
- * until then those utilities resolve to nothing and the shell renders unstyled.
- * The M0 gate (T07) un-comments it once T01 lands:
- *
- *   @import "@plinth/tokens/theme.css";
- *
  * It must stay right after the tailwindcss import and before the :root rule
  * below, so the font-family overrides here win.
  */
+@import "@plinth/tokens/theme.css";
 
 :root {
   /* next/font serves Bricolage Grotesque and Mukta under generated family names;

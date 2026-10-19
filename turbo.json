@@ -15,13 +15,15 @@
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "lint": {
-      "outputs": []
+      "outputs": [],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/config/eslint/**"]
     },
     "typecheck": {
       "outputs": []
     },
     "test": {
-      "outputs": []
+      "outputs": [],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/config/eslint/**"]
     },
     "validate": {
       "dependsOn": ["^gen"],

@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:plinth_tokens/plinth_tokens.dart';
 
 /// Material 3 themes for Day (the default) and Night (DESIGN §3, §3.2b, §0).
 ///
-/// SKELETON (T06): the colours below are the Day/Night `T` objects of the
-/// phone artboards, held in a private [_Palette] whose field names match the
-/// `PlinthTokens` ThemeExtension that T01 generates. T07 (M0 gate) replaces
-/// [_Palette] with `PlinthTokens.day` / `PlinthTokens.night` and adds the
-/// extension to `ThemeData.extensions`; widgets that read only
-/// `Theme.of(context)` keep working unchanged. Do not add colours here.
+/// Every colour comes from T01's generated [PlinthTokens]
+/// (`PlinthTokens.day` / `PlinthTokens.night`), which is also registered in
+/// `ThemeData.extensions`: widgets read `Theme.of(context)` for Material roles
+/// and `PlinthTokens.of(context)` for the rest (risk ramp, chip fills, slab).
+/// Do not add colours here; change `packages/tokens/tokens.json` and
+/// regenerate.
 abstract final class AppTheme {
   /// Display face: headlines, big numbers, band names.
-  static const displayFamily = 'Bricolage Grotesque';
+  static const displayFamily = PlinthType.displayFamily;
 
   /// Text and UI face; Noto Sans covers missing glyphs.
-  static const textFamily = 'Mukta';
-  static const textFallback = <String>['Noto Sans'];
+  static const textFamily = PlinthType.textFamily;
+  static const textFallback = PlinthType.textFallback;
 
-  static ThemeData day() => _build(_Palette.day);
-  static ThemeData night() => _build(_Palette.night);
+  static ThemeData day() => _build(PlinthTokens.day);
+  static ThemeData night() => _build(PlinthTokens.night);
 
-  static ThemeData _build(_Palette p) {
+  static ThemeData _build(PlinthTokens p) {
+    // The one shadow colour (sheets, menus, dialogs), never used at rest.
+    final shadow = p.sheetShadow.first.color;
     final scheme = ColorScheme(
       brightness: p.brightness,
       primary: p.accent,
@@ -44,7 +47,7 @@ abstract final class AppTheme {
       error: p.error,
       onError: p.onAccent,
       scrim: p.scrim,
-      shadow: p.shadow,
+      shadow: shadow,
       inverseSurface: p.ink,
       onInverseSurface: p.bg,
     );
@@ -132,7 +135,7 @@ abstract final class AppTheme {
         surfaceTintColor: Colors.transparent,
         elevation: 8,
         modalElevation: 8,
-        shadowColor: p.shadow,
+        shadowColor: shadow,
         showDragHandle: true,
         dragHandleColor: p.lineStrong,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
@@ -151,12 +154,13 @@ abstract final class AppTheme {
       splashFactory: InkSparkle.splashFactory,
       visualDensity: VisualDensity.standard,
       materialTapTargetSize: MaterialTapTargetSize.padded,
+      extensions: <ThemeExtension<dynamic>>[p],
     );
   }
 
   /// DESIGN §3.3, Android sp. Tabular, lining numerals throughout.
-  static TextTheme _textTheme(_Palette p) {
-    const numerals = <FontFeature>[FontFeature.tabularFigures(), FontFeature.liningFigures()];
+  static TextTheme _textTheme(PlinthTokens p) {
+    const numerals = PlinthType.numerals;
     TextStyle display(double size, double height) => TextStyle(
       fontFamily: displayFamily,
       fontWeight: FontWeight.w800,
@@ -194,95 +198,4 @@ abstract final class AppTheme {
       labelSmall: body(13, 1.4, color: p.muted),
     );
   }
-}
-
-/// The phone artboards' Day and Night `T` objects (DESIGN §3.2b; translucent
-/// Night values flattened onto the Night ground). Field names follow T01's
-/// `PlinthTokens`. Replaced by `PlinthTokens` in T07.
-class _Palette {
-  const _Palette({
-    required this.brightness,
-    required this.bg,
-    required this.panel,
-    required this.track,
-    required this.nav,
-    required this.navIndicator,
-    required this.sheet,
-    required this.line,
-    required this.lineStrong,
-    required this.ink,
-    required this.ink2,
-    required this.muted,
-    required this.accent,
-    required this.onAccent,
-    required this.accentSoft,
-    required this.onAccentSoft,
-    required this.error,
-    required this.scrim,
-    required this.shadow,
-  });
-
-  final Brightness brightness;
-  final Color bg;
-  final Color panel;
-  final Color track;
-  final Color nav;
-  final Color navIndicator;
-  final Color sheet;
-  final Color line;
-  final Color lineStrong;
-  final Color ink;
-  final Color ink2;
-  final Color muted;
-  final Color accent;
-  final Color onAccent;
-  final Color accentSoft;
-  final Color onAccentSoft;
-  final Color error;
-  final Color scrim;
-  final Color shadow;
-
-  static const day = _Palette(
-    brightness: Brightness.light,
-    bg: Color(0xFFFBFAF7),
-    panel: Color(0xFFFFFFFF),
-    track: Color(0xFFF4F2ED),
-    nav: Color(0xFFEFECE5),
-    navIndicator: Color(0xFFE9F1EC),
-    sheet: Color(0xFFFFFFFF),
-    line: Color(0xFFE7E3DA),
-    lineStrong: Color(0xFFC9C4B9),
-    ink: Color(0xFF1B1A17),
-    ink2: Color(0xFF3F3C36),
-    muted: Color(0xFF5E5A52),
-    accent: Color(0xFF1D5A44),
-    onAccent: Color(0xFFFFFFFF),
-    accentSoft: Color(0xFFE9F1EC),
-    onAccentSoft: Color(0xFF133D2E),
-    error: Color(0xFFB42318),
-    scrim: Color(0x6B1B1A17),
-    shadow: Color(0x1F1B1A17),
-  );
-
-  static const night = _Palette(
-    brightness: Brightness.dark,
-    bg: Color(0xFF0B1411),
-    panel: Color(0xFF16221D),
-    track: Color(0xFF1C2522),
-    nav: Color(0xFF121D19),
-    navIndicator: Color(0xFF213D32),
-    sheet: Color(0xFF111D19),
-    line: Color(0xFF262E2B),
-    lineStrong: Color(0xFF4F5654),
-    ink: Color(0xFFEEF3F0),
-    ink2: Color(0xFFB9C6C0),
-    muted: Color(0xFF93A69D),
-    accent: Color(0xFF6EE7B7),
-    onAccent: Color(0xFF052E1F),
-    accentSoft: Color(0xFF172D25),
-    onAccentSoft: Color(0xFFCFF7E6),
-    error: Color(0xFFFF8A80),
-    scrim: Color(0x94000000),
-    shadow: Color(0x73000000),
-  );
 }
