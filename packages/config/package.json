@@ -6,7 +6,15 @@
   "type": "module",
   "exports": {
     "./tsconfig.base.json": "./tsconfig.base.json",
-    "./eslint": "./eslint/base.mjs"
+    "./eslint": "./eslint/base.mjs",
+    "./eslint/plugin": {
+      "types": "./eslint/plinth-plugin.d.mts",
+      "default": "./eslint/plinth-plugin.mjs"
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "vitest run"
   },
   "dependencies": {
     "@eslint/js": "^9.39.0",
