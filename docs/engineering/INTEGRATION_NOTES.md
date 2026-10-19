@@ -61,3 +61,10 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
   - T13 adds the optional `p_slug` to `api.evidence`, so a shared group fact names the reason for the phase being viewed.
   - T13 re-creates `core.risk_price` once `ws.cost_sheets` exists. That restores Aurelia's "park-facing" in `price.basis_line`.
 - **T03 / T03b:** the claims and replies seedmap requires only 20261101 and inserts `signatory_name` and `scope`.
+- **T11 (PR #14) handoffs:**
+  - T10 registers `add_score_parser` in `plinth/cli.py`. The import tolerates the module being absent, so T10 works on its own branch before T11 merges.
+  - T12 and T13: the published band is the latest run with `published_on <= today`. A `pending_notice` run (Aurelia's High) never surfaces. Frequency fields are null for red-flag and unscored phases.
+  - T13: methodology weights and calibration figures come from `pipelines/plinth/scoring/models/v1.2.yaml`.
+  - **Reason codes (decision):** the scoring engine's codes in `canonical/scoring.json` are canonical. At the T39 gate the integrator aligns `packages/contracts` `reason_codes.json` to them and regenerates.
+  - **OWNERSHIP:** `.github/workflows/ci-scoring.yml` belongs to T11; added at the T39 gate.
+  - **Replay gap (T03b):** the replay audit re-computes 6 of the 10 earlier runs. To reach 10, add the complaint-count history, Sapphire's QPRs before Jul 2026, and Coral's stale QPR state on 15 Jul. Facts come from §5b, and the lead adds any missing ones.
