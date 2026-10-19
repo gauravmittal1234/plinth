@@ -52,3 +52,12 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
 - **Schemas relaxed (nullable):** `phase.short_code` (only Aurelia has one), `latest_qpr.age_days` (filing date unknown), `group.linked_companies`, `track_record.finished/late/line` (no finished RERA project), `insolvency_line`, `progress.towers`, `from_developer`, configuration lanes. `what_would_change` is null only when bands are not public: limited-history and not-scored phases keep their §5b line.
 - **Schemas reshaped to the fixture (M1 pages, no live consumer yet):** `about` and `methodology` follow the WebAbout and WebMethodology payloads; project page `NextStep {heading, body}`, `BookingTopic {title, sub, paras[]}`, `EvidenceSummary.chip`, `PriceList.published_on`, `rooms[]` and `getting_around.items[]` as finished lines, `ReportedIncident {reported_on, line}`.
 - **Examples:** the about, methodology and project-page valid examples are now the fixture payloads; the §2.1 RiskSummary example is unchanged apart from the round-2 signatory.
+
+## Wave 2 (M1) decisions by the lead (19 Oct 2026)
+- **Stacking:** wave-2 PRs are built on `task/T07-m0-gate` (PR #10) and target it. After #10 merges, retarget them to `main`. A wave-2 integration PR (T39 gate) may combine them, the same way #10 combines wave 1.
+- **Scratch files:** agents share the session scratchpad, so every scratch file is task-prefixed (`t16-pr-body.md`). A generic `pr-body.md` collision briefly put T14's text on PR #11; it was restored.
+- **T12 → T13 and the bands-off copy:**
+  - Confirmed: when `bands_public` is off, the chip is `kind: "withheld"` with the copy "Facts only · bands not published yet".
+  - T13 adds the optional `p_slug` to `api.evidence`, so a shared group fact names the reason for the phase being viewed.
+  - T13 re-creates `core.risk_price` once `ws.cost_sheets` exists. That restores Aurelia's "park-facing" in `price.basis_line`.
+- **T03 / T03b:** the claims and replies seedmap requires only 20261101 and inserts `signatory_name` and `scope`.
