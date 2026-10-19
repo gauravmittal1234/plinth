@@ -1,0 +1,135 @@
+/*
+ * @plinth/web-ui styles (T14). Import once in the app's global CSS, right after
+ * Tailwind and the tokens theme:
+ *
+ *   @import "tailwindcss";
+ *   @import "@plinth/tokens/theme.css";
+ *   @import "@plinth/web-ui/styles.css";
+ *
+ * It points Tailwind at the kit's sources, so the token classes the components
+ * use are generated, and adds the few pieces a utility can't express: the
+ * icon-array hatch, the motion keyframes and a `night:` variant. Colours are
+ * tokens only (no hex); every duration is a token that prefers-reduced-motion
+ * sets to 0, and each animated utility also stops under reduced motion.
+ */
+@source "./";
+
+/* Night, on <html> or any subtree (the story's dark stage). */
+@custom-variant night (&:where([data-theme="night"], [data-theme="night"] *));
+
+/* Icon array: the uncertain range, band-ink stripes on the band fill. A data
+   pattern, the one kind of gradient DESIGN §0 allows. */
+@utility ui-hatch {
+  background-image: repeating-linear-gradient(
+    var(--pl-pattern-hatch-angle),
+    var(--ui-band-ink) 0 var(--pl-pattern-hatch-stroke),
+    var(--ui-band-fill) var(--pl-pattern-hatch-stroke) var(--pl-pattern-hatch-period)
+  );
+}
+
+/* Riskometer: the needle sweeps from -90deg to its resting angle, once. */
+@keyframes ui-needle {
+  from {
+    transform: rotate(-90deg);
+  }
+}
+
+@utility ui-needle-sweep {
+  animation: ui-needle var(--pl-motion-duration-needle) var(--pl-motion-ease-needle) both;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+/* 3D tower: built slabs fade in, staggered by the slab's --ui-slab-delay. */
+@keyframes ui-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@utility ui-slab-build {
+  animation: ui-fade-in var(--pl-motion-duration-rise) var(--pl-motion-ease-out) both;
+  animation-delay: var(--ui-slab-delay, 0ms);
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+/* Entrance (DESIGN §0 motion layer): rise 24 px with opacity, once. Stagger a
+   section's heading, text and picture with --ui-stagger: 0, 1, 2 (90 ms steps).
+   Where the browser supports it, the rise is tied to scrolling into view. */
+@keyframes ui-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--pl-motion-distance-rise));
+  }
+}
+
+@utility ui-rise {
+  animation: ui-rise var(--pl-motion-duration-rise) var(--pl-motion-ease-out) both;
+  animation-delay: calc(var(--ui-stagger, 0) * var(--pl-motion-stagger-step));
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility ui-rise-on-view {
+  animation: ui-rise var(--pl-motion-duration-rise) var(--pl-motion-ease-out) both;
+  animation-delay: calc(var(--ui-stagger, 0) * var(--pl-motion-stagger-step));
+  @supports (animation-timeline: view()) {
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-timeline: view();
+    animation-range: entry calc(var(--ui-stagger, 0) * 8%) entry
+      calc(55% + var(--ui-stagger, 0) * 8%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+/* Sheet: rises from the bottom on a phone, slides in from the right on wider
+   screens, fades out. Radix keeps it mounted until the exit animation ends. */
+@keyframes ui-sheet-up {
+  from {
+    opacity: 0;
+    transform: translateY(var(--pl-motion-distance-sheet));
+  }
+}
+
+@keyframes ui-sheet-left {
+  from {
+    opacity: 0;
+    transform: translateX(var(--pl-motion-distance-sheet));
+  }
+}
+
+@keyframes ui-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@utility ui-sheet {
+  animation: ui-sheet-up var(--pl-motion-duration-sheet) var(--pl-motion-ease-out) both;
+  @media (width >= 40rem) {
+    animation-name: ui-sheet-left;
+  }
+  &[data-state="closed"] {
+    animation: ui-fade-out var(--pl-motion-duration-fade) ease-in both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility ui-fade {
+  animation: ui-fade-in var(--pl-motion-duration-fade) ease-out both;
+  &[data-state="closed"] {
+    animation: ui-fade-out var(--pl-motion-duration-fade) ease-in both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
