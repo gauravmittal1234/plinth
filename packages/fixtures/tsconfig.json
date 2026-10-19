@@ -1,4 +1,9 @@
 {
   "extends": "@plinth/config/tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "types": ["node"]
+  },
   "include": ["src"]
 }
