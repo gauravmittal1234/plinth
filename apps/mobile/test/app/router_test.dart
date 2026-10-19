@@ -136,9 +136,9 @@ void main() {
   });
 
   testWidgets('FIXTURES mode previews a project state with ?state=', (tester) async {
-    await pumpPlinth(tester, location: '/gurugram/projects/laurel-residency?state=severe');
+    await pumpPlinth(tester, location: '/gurugram/projects/aurelia-heights-phase-2?state=stale');
     expect(find.text('AppProjectStates'), findsOneWidget);
-    expect(find.textContaining('state  severe'), findsOneWidget);
+    expect(find.textContaining('state  stale'), findsOneWidget);
   });
 
   testWidgets('an unknown link shows the not-found screen with a way back', (tester) async {
