@@ -68,3 +68,9 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
   - **Reason codes (decision):** the scoring engine's codes in `canonical/scoring.json` are canonical. At the T39 gate the integrator aligns `packages/contracts` `reason_codes.json` to them and regenerates.
   - **OWNERSHIP:** `.github/workflows/ci-scoring.yml` belongs to T11; added at the T39 gate.
   - **Replay gap (T03b):** the replay audit re-computes 6 of the 10 earlier runs. To reach 10, add the complaint-count history, Sapphire's QPRs before Jul 2026, and Coral's stale QPR state on 15 Jul. Facts come from §5b, and the lead adds any missing ones.
+- **T14 (PR #13) handoffs, done at the T39 gate:**
+  - Add `@import "@plinth/web-ui/styles.css";` after the tokens import in `apps/web/app/globals.css`.
+  - Add the web-ui lint, typecheck and test steps to `ci-web.yml`.
+  - Expose the kit showcase at a dev-only route (`app/(dev)/kit/page.tsx`, hidden in production), with a `screens.test.ts` row.
+  - Optionally add `@plinth/fixtures` to the web-ui devDependencies.
+  - Screen tasks (T20a–T28): layout copy comes from the artboards and band names from `Methodology.bands`. T20a replaces `src/m0/risk-chip.tsx` with `RiskChip`. T27's OG images use `riskVar` or the tokens, not Tailwind.
