@@ -8,10 +8,13 @@ import 'theme_mode.dart';
 /// be walked on a phone before the screens exist.
 @immutable
 class PlaceholderLink {
-  const PlaceholderLink(this.label, this.location);
+  const PlaceholderLink(this.label, this.location, {this.note});
 
   final String label;
   final String location;
+
+  /// Shown under the label instead of the location (e.g. a fixture chip label).
+  final String? note;
 }
 
 /// The stand-in every route renders until its task builds the real screen
@@ -114,7 +117,7 @@ class ArtboardPlaceholder extends ConsumerWidget {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   title: Text(link.label),
-                  subtitle: Text(link.location, style: text.bodySmall),
+                  subtitle: Text(link.note ?? link.location, style: text.bodySmall),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => context.push(link.location),
                 ),

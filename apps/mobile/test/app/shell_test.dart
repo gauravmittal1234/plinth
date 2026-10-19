@@ -56,7 +56,9 @@ void main() {
 
   testWidgets('a project opens full screen above the tabs, and back returns', (tester) async {
     final container = await pumpPlinth(tester);
-    await tester.tap(find.text('Aurelia Heights, Phase 2'));
+    final aurelia = find.text('Aurelia Heights, Phase 2');
+    await scrollIntoView(tester, aurelia);
+    await tester.tap(aurelia);
     await tester.pumpAndSettle();
     expect(locationOf(container), Routes.projectOf('aurelia-heights-phase-2'));
     expect(find.text('AppProject'), findsOneWidget);

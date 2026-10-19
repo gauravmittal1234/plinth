@@ -33,6 +33,13 @@ Future<ProviderContainer> pumpPlinth(
   return container;
 }
 
+/// Scrolls the page's list until [finder] is built and on screen, then settles,
+/// so a tap lands on it rather than on whatever was there before the scroll.
+Future<void> scrollIntoView(WidgetTester tester, Finder finder) async {
+  await tester.scrollUntilVisible(finder, 120);
+  await tester.pumpAndSettle();
+}
+
 /// The router's current location.
 String locationOf(ProviderContainer container) => container.read(routerProvider).state.uri.toString();
 
