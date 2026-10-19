@@ -80,3 +80,13 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
   - T31a uses `Riskometer(sweep: false)`, because the tower is that page's one animation. T30's map sheet is `PeekSheet`.
   - Once the fonts are bundled, re-run the ci-mobile `update_goldens` dispatch.
 - **gitleaks:** an old T12 commit was flagged as a false positive; T12 rewrote it out of its branch. A stale red check on PR #12 passed on re-run. Rename fixture "key" fields in scripts if gitleaks flags them again.
+- **T16 (PR #15) handoffs:**
+  - **OWNERSHIP:** add `apps/web/test/data/**` to T16's row. T05's stub `test/data.test.ts` is deleted.
+  - **Screens (T20a–T28):**
+    - Import only from `@/src/data`. On `isDataError(e, "not_found")`, call `notFound()` before the first Suspense boundary streams.
+    - Design states: pass `{fixtureState: "facts_only"}`.
+    - T20a replaces `src/m0/fixture-risk.ts` with `riskSummary(slug)`. T21's `suggest("aure")` returns Aurelia first.
+    - T22/T24: a query without a fixture key gives `fixture_missing`; new keys come from the fixtures owner.
+  - **T13:** SQL defaults on every `api.search_projects` argument.
+  - **T41/T47:** `proxy.ts` with `refreshSession`.
+  - **T42/T43:** post `phase:<slug>` tags to `/api/revalidate`.
