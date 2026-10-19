@@ -1,0 +1,118 @@
+# ci-db (owner: T04). BUILD_PLAN §8; WORK_BREAKDOWN T04.
+#   pglite    fast, no Docker: `npm run db:check` (PGlite + the Supabase shim) applies the
+#             migrations and seed and runs the pgTAP files that need no PostGIS/pg_cron.
+#   postgres  authoritative: Supabase Postgres 17 in Docker on the runner →
+#             `supabase db reset` (migrations + seed) → freeze the clock → `supabase test db`
+#             (all pgTAP) → API contract tests (T12 adds `test:api`; skipped until then) →
+#             `supabase db lint --level error`.
+# Lean on minutes (DECISIONS E-9): a path filter, and superseded runs are cancelled.
+# Skipped jobs report success, so this check can be required without blocking other PRs.
+name: ci-db
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-db-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    name: database changed?
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      db: ${{ steps.filter.outputs.db }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            db:
+              - 'supabase/migrations/**'
+              - 'supabase/seed/**'
+              - 'supabase/tests/**'
+              - 'supabase/tools/**'
+              - 'supabase/config.toml'
+              - 'packages/fixtures/**'
+              - 'packages/contracts/**'
+              - 'package-lock.json'
+              - '.github/workflows/ci-db.yml'
+
+  pglite:
+    name: PGlite check (migrations, seed, pgTAP; no Docker)
+    needs: changes
+    if: needs.changes.outputs.db == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: PGlite migration check
+        run: node supabase/tools/pglite-check.mjs
+
+  postgres:
+    name: Supabase Postgres 17 (reset, pgTAP, contract tests, lint)
+    needs: [changes, pglite]
+    if: needs.changes.outputs.db == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      # The local Supabase database the CLI starts on the runner (supabase/config.toml
+      # [db] port). These are the CLI's fixed local defaults, not secrets.
+      PGHOST: 127.0.0.1
+      PGPORT: "54322"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: postgres
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.118.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+
+      - name: Start Postgres 17 (Docker)
+        run: supabase db start
+
+      - name: Reset (every migration + the §5b seed)
+        run: supabase db reset
+
+      - name: Freeze the clock (plinth.env = test → ops.now() is 18 Oct 2026, 12:00 IST)
+        run: |
+          psql -v ON_ERROR_STOP=1 <<'SQL'
+          do $$
+          begin
+            execute 'alter database postgres set plinth.env = ''test''';
+          exception when insufficient_privilege then
+            execute 'alter role postgres set plinth.env = ''test''';
+          end
+          $$;
+          SQL
+
+      - name: pgTAP (supabase test db)
+        run: supabase test db
+
+      - name: API contract tests (T12 adds test:api; skipped until then)
+        run: npm run -w @plinth/fixtures test:api --if-present
+
+      - name: Lint functions (plpgsql_check)
+        run: supabase db lint --level error --fail-on error --schema core,ops,api,ws,app,comms,pii
