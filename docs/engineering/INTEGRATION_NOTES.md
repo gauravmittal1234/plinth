@@ -74,3 +74,9 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
   - Expose the kit showcase at a dev-only route (`app/(dev)/kit/page.tsx`, hidden in production), with a `screens.test.ts` row.
   - Optionally add `@plinth/fixtures` to the web-ui devDependencies.
   - Screen tasks (T20a–T28): layout copy comes from the artboards and band names from `Methodology.bands`. T20a replaces `src/m0/risk-chip.tsx` with `RiskChip`. T27's OG images use `riskVar` or the tokens, not Tailwind.
+- **T15 (PR #12) handoffs:**
+  - **Contract gap:** `ProjectCard` has no confidence level, so app cards can't show confidence dots. Add `confidence` to ProjectCard (T02 schema, plus T13 and the fixtures) at the T39 gate.
+  - **Band names:** T17 exposes a provider for `Methodology.bands`; `BandScale` and `Riskometer` need all five names.
+  - T31a uses `Riskometer(sweep: false)`, because the tower is that page's one animation. T30's map sheet is `PeekSheet`.
+  - Once the fonts are bundled, re-run the ci-mobile `update_goldens` dispatch.
+- **gitleaks:** an old T12 commit was flagged as a false positive; T12 rewrote it out of its branch. A stale red check on PR #12 passed on re-run. Rename fixture "key" fields in scripts if gitleaks flags them again.
