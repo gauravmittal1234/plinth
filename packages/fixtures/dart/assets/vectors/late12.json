@@ -1,0 +1,105 @@
+{
+  "schema": "plinth.vectors.late12/1",
+  "source": "DESIGN §5b (Dec 2027 + 4 months + 12 months = Apr 2029; MoHUA advisory of 31 Jul 2026, completions on or after 28 Feb 2026)",
+  "rule": "late_after = original completion + the blanket extension (4 months, when the original completion is on or after 28 Feb 2026) + 12 months. Extensions granted to one project are not added.",
+  "cases": [
+    {
+      "phase": "aurelia-heights-phase-2",
+      "original_completion": "2027-12",
+      "blanket_extension_months": 4,
+      "expected_late_after": "2029-04",
+      "expected_label": "Apr 2029"
+    },
+    {
+      "phase": "kestrel-park",
+      "original_completion": "2028-11",
+      "blanket_extension_months": 4,
+      "expected_late_after": "2030-03",
+      "expected_label": "Mar 2030"
+    },
+    {
+      "phase": "sapphire-grove-phase-1",
+      "original_completion": "2028-03",
+      "blanket_extension_months": 4,
+      "expected_late_after": "2029-07",
+      "expected_label": "Jul 2029"
+    },
+    {
+      "phase": "coral-towers",
+      "original_completion": "2028-08",
+      "blanket_extension_months": 4,
+      "expected_late_after": "2029-12",
+      "expected_label": "Dec 2029"
+    },
+    {
+      "phase": "laurel-residency",
+      "original_completion": "2026-06",
+      "blanket_extension_months": 4,
+      "expected_late_after": "2027-10",
+      "expected_label": "Oct 2027"
+    },
+    {
+      "phase": "juniper-enclave",
+      "original_completion": "2029-12",
+      "blanket_extension_months": 4,
+      "expected_late_after": "2031-04",
+      "expected_label": "Apr 2031"
+    },
+    {
+      "phase": "heron-point-phase-2",
+      "original_completion": "2031-04",
+      "blanket_extension_months": 4,
+      "expected_late_after": "2032-08",
+      "expected_label": "Aug 2032"
+    },
+    {
+      "phase": "cedar-walk-phase-2",
+      "original_completion": "2027-03",
+      "blanket_extension_months": 4,
+      "expected_late_after": "2028-07",
+      "expected_label": "Jul 2028"
+    },
+    {
+      "phase": "cedar-walk",
+      "original_completion": "2019-06",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2020-06",
+      "expected_label": "Jun 2020"
+    },
+    {
+      "phase": "aurelia-heights-phase-1",
+      "original_completion": "2020-12",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2021-12",
+      "expected_label": "Dec 2021"
+    },
+    {
+      "phase": "wren-court",
+      "original_completion": "2020-12",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2021-12",
+      "expected_label": "Dec 2021"
+    },
+    {
+      "phase": "opaline-residences",
+      "original_completion": "2022-06",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2023-06",
+      "expected_label": "Jun 2023"
+    },
+    {
+      "phase": "heron-point-phase-1",
+      "original_completion": "2023-03",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2024-03",
+      "expected_label": "Mar 2024"
+    },
+    {
+      "phase": "linden-square",
+      "original_completion": "2023-12",
+      "blanket_extension_months": 0,
+      "expected_late_after": "2024-12",
+      "expected_label": "Dec 2024"
+    }
+  ]
+}

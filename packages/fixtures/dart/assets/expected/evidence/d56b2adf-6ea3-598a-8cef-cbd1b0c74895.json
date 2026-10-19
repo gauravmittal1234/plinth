@@ -1,0 +1,24 @@
+{
+  "schema": "plinth.evidence/1",
+  "fact_id": "d56b2adf-6ea3-598a-8cef-cbd1b0c74895",
+  "chip": "HARERA orders · 24 months",
+  "lane": "records_show",
+  "document": "HARERA · complaint orders for this RERA number · Oct 2024 to Oct 2026",
+  "dates_line": "Orders search run 14 Oct 2026 · latest order 9 Oct 2026",
+  "page": "order list",
+  "extract": "Decided against the promoter: 14 orders on 500 units, or 2.8 per 100 units. Peer median count across 212 similar projects: 3.",
+  "read_line": "Each order matched to this project by RERA number. Checked by a person.",
+  "used_in": ["Reason 3 of Delivery risk"],
+  "developer_says": null,
+  "corrections_line": "No corrections. A dispute about this count, D-127 (10 Oct 2026), is under review.",
+  "snapshot": {
+    "sha256_short": "6739dc5c…30379ae5",
+    "fetched_at": "2026-10-14T00:00:00+05:30"
+  },
+  "official_url": "https://haryanarera.gov.in",
+  "view_label": "View on HARERA",
+  "report_error": {
+    "ref_prefix": "E",
+    "sla_line": "We answer within 15 working days."
+  }
+}
