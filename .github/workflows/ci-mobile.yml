@@ -22,6 +22,11 @@ on:
       - "packages/fixtures/dart/**"
       - ".github/workflows/ci-mobile.yml"
   workflow_dispatch:
+    inputs:
+      update_goldens:
+        description: "Re-render every golden on Linux and upload them as the goldens-linux artifact"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -55,6 +60,18 @@ jobs:
       - run: flutter analyze
       - name: dart format (page width 120, analysis_options.yaml)
         run: dart format --output=none --set-exit-if-changed lib test
+      # Goldens are compared on Linux only (test/flutter_test_config.dart).
+      # A manual run with update_goldens re-renders them for the PR's author.
+      - name: Re-render goldens (manual run only)
+        if: inputs.update_goldens
+        run: flutter test --tags golden --update-goldens
+      - name: Upload re-rendered goldens
+        if: inputs.update_goldens
+        uses: actions/upload-artifact@v4
+        with:
+          name: goldens-linux
+          path: apps/mobile/test/**/goldens/**/*.png
+          retention-days: 7
       - name: flutter test (widget tests, every route, goldens)
         run: flutter test
       - name: Upload golden failures

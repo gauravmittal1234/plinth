@@ -35,7 +35,7 @@ Android App Links: `https://plinth.in` paths `/gurugram/projects/`, `/following`
 
 ## Goldens
 
-Tagged `golden` (`dart_test.yaml`). CI on Linux is the reference; a Mac may differ by a few anti-aliased pixels, so `test/flutter_test_config.dart` allows 0.5%. Re-render with `flutter test --tags golden --update-goldens` and review the PNGs. Fonts listed in `pubspec.yaml` are loaded for tests automatically; until the brand fonts are bundled, text renders as the test font's boxes.
+Tagged `golden` (`dart_test.yaml`). Goldens are rendered and compared on **Linux only** (ci-mobile), because a Mac anti-aliases glyph edges differently (about 3% of a text-heavy screen). On a Mac the golden tests still pump their screens but skip the pixel comparison and refuse `--update-goldens` (`test/flutter_test_config.dart`). To re-render: on Linux, `flutter test --tags golden --update-goldens`; otherwise run ci-mobile by hand (`gh workflow run ci-mobile.yml --ref <branch> -f update_goldens=true`) and commit the PNGs from its `goldens-linux` artifact, or take `*_testImage.png` from a failed run's `golden-failures` artifact. Linux tolerance is 0.1%. Fonts listed in `pubspec.yaml` are loaded for tests automatically; until the brand fonts are bundled, text renders as the test font's boxes.
 
 ## Rules
 
