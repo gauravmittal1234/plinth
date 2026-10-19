@@ -45,8 +45,13 @@ fetcher = make_fetcher(cfg, flags=flags, clock=clock, fixtures_dir=FIXTURES)
 snapshots = SnapshotStore(LocalBlobStore(cfg.snapshot_dir), store)
 facts = FactsWriter(store, clock)
 with JobRun("harera.qpr", source_code="harera_qpr", mode=cfg.mode, clock=clock, sink=sink) as run:
-    put = capture(FetchRequest("harera_qpr", url, "POST", data=form),
-                  fetcher=fetcher, snapshots=snapshots, run=run, parser_version="harera@1")
+    put = capture(
+        FetchRequest("harera_qpr", url, "POST", data=form),
+        fetcher=fetcher,
+        snapshots=snapshots,
+        run=run,
+        parser_version="harera@1",
+    )
     if put.changed:
         for draft in parse(snapshots.read(put.record), snapshot_id=put.record.id):
             facts.write(draft)
