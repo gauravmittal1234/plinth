@@ -57,7 +57,7 @@ input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:po
         <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
         <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
         <a href="#top" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">How scores work</a>
-        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask Plinth</a>
       </nav>
       <div style="display: flex; align-items: center; gap: 10px">
         <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
@@ -329,7 +329,7 @@ input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:po
       <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; flex-direction: row-reverse; gap: 48px 72px; align-items: center">
         <div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
           <h2 id="conf-h" class="rv" style="{{u.h2}}">How sure are we?</h2>
-          <p class="rv rv1" style="{{u.lead}}">Every score carries a confidence label. When history is thin, we widen the range, or say we can’t score yet.</p>
+          <p class="rv rv1" style="{{u.lead}}">Every score says how sure we are. When history is thin, we widen the range, or say there’s not enough history to score.</p>
           <p class="rv rv2" style="margin: 0; max-width: 18ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.1; letter-spacing: -0.025em">Limited history is never a penalty.</p>
         </div>
         <div class="rv rv1" style="flex: 1 1 600px; min-width: 0; border-radius: 8px; background: {{t.track}}; padding: 32px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box">
@@ -436,7 +436,7 @@ input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:po
             </li>
           </sc-for>
         </ol>
-        <p class="rv rv2" style="margin: 0; border-radius: 8px; background: {{t.panelSolid}}; padding: 22px 26px; font-size: 19px; line-height: 1.5"><strong>From the public dispute log:</strong> D-118 · Northfield Estates · Aurelia Heights, Phase 2. Filed 14 Aug 2026. Upheld 3 Sep 2026: unit count corrected to 500.</p>
+        <p class="rv rv2" style="margin: 0; border-radius: 8px; background: {{t.panelSolid}}; padding: 22px 26px; font-size: 19px; line-height: 1.5"><strong>From the public dispute log:</strong> D-118 · Northfield Estates · Aurelia Heights, Phase 2. Filed 14 Aug 2026: the Apr–Jun 2026 QPR was marked late. Upheld 3 Sep 2026: it was filed 15 Jul 2026, on time.</p>
       </div>
     </section>
 
@@ -679,8 +679,8 @@ class Component extends DCLogic {
     });
 
     var CF = [
-      {name: 'High confidence', where: 'Kestrel Park, Sector 113 · Orbis Land', band: 'Low', kind: 'band', label: 'Low', dots: 2, conf: 'High confidence', sentence: 'Many comparable finished projects, in Gurugram and in this group, so the range we show is narrow.', caption: 'Delivery risk · high confidence · data as of 14 Oct 2026 · v1.2'},
-      {name: 'Low confidence', where: 'Aurelia Heights, Phase 2, Sector 37D · Northfield Estates', band: 'Elevated', kind: 'band', label: 'Elevated', dots: 1, conf: 'Low confidence', sentence: 'Fewer comparable projects, so we show a wider range: between 30 and 45 of 100. The uncertain part is hatched.', caption: 'Delivery risk · low confidence · data as of 14 Oct 2026 · v1.2'},
+      {name: 'More certain', where: 'Kestrel Park, Sector 113 · Orbis Land', band: 'Low', kind: 'band', label: 'Low', dots: 2, conf: 'We’re more certain about this one', sentence: 'Many comparable finished projects, in Gurugram and in this group, so the range we show is narrow.', caption: 'Delivery risk · data as of 14 Oct 2026 · v1.2'},
+      {name: 'Less certain', where: 'Aurelia Heights, Phase 2, Sector 37D · Northfield Estates', band: 'Elevated', kind: 'band', label: 'Elevated', dots: 1, conf: 'We’re less certain about this one', sentence: 'Fewer comparable projects, so we show a wider range: between 30 and 45 of 100. The uncertain part is hatched.', caption: 'Delivery risk · data as of 14 Oct 2026 · v1.2'},
       {name: 'Limited history', where: 'Juniper Enclave, Sector 102 · Halcyon Homes', band: '', kind: 'limited', label: 'Limited history', dots: 0, conf: '', sentence: 'Halcyon Homes is a new developer with no finished RERA project yet. We don’t guess, and it never counts against them.', caption: 'Registered May 2025. We score a group once it has 3 finished RERA projects.'},
       {name: 'Not scored', where: 'Any phase we can’t score yet', band: '', kind: 'not', label: 'Not scored', dots: 0, conf: '', sentence: 'We always say why on the card, for example: registered less than 6 months ago. Never a blank or a zero.', caption: 'The facts still appear in the project’s truth panel, each with its source.'}
     ];

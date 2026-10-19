@@ -60,7 +60,7 @@ input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:po
         <a href="#projects" class="lk" style="color: {{t.ink}}; text-decoration: none">Projects</a>
         <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
         <a href="#developers" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Developers</a>
-        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask Plinth</a>
       </nav>
       <div style="display: flex; align-items: center; gap: 10px">
         <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
@@ -92,7 +92,7 @@ input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:po
           <button type="button" class="press" onClick="{{toggleFollow}}" aria-pressed="{{followingStr}}" style="height: 56px; display: inline-flex; align-items: center; gap: 10px; padding: 0 28px; border: 0; border-radius: 999px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer">
             <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6.5a4 4 0 0 1 8 0c0 3 1.2 4 1.5 4.5h-11C2.8 10.5 4 9.5 4 6.5zM6.5 13a1.6 1.6 0 0 0 3 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg>{{followLabel}}
           </button>
-          <a href="#ask" class="lk" style="font-size: 18px; font-weight: 600; color: #FFFFFF; text-decoration: underline; text-underline-offset: 5px">Ask about Northfield</a>
+          <a href="#ask" class="lk" style="font-size: 18px; font-weight: 600; color: #FFFFFF; text-decoration: underline; text-underline-offset: 5px">Ask Plinth about Northfield</a>
           <button type="button" class="press" onClick="{{onShare}}" style="min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0; border: 0; background: transparent; color: #FFFFFF; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V2M5 4.5L8 1.8l3 2.7M3 8.5V13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{shareLabel}}</button>
         </div>
         <nav aria-label="Breadcrumb" style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 15px; color: rgba(255,255,255,0.9)">
@@ -384,15 +384,15 @@ input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:po
           <h2 id="fd-h" class="rv" style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em">How do buyers find Northfield’s projects?</h2>
           <p class="rv rv1" style="margin: 0; max-width: 44ch; font-size: 22px; line-height: 1.45">The same way they find anyone’s. Here is what decides it, for buyers and for Northfield.</p>
           <ul class="rv rv1" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px">
-            <li style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 19px">Order never follows money.</strong><span style="font-size: 17px; line-height: 1.55">The default sort is lowest delivery risk first. No developer pays us, and the fees we earn from lenders never touch ranking. Nobody can buy a place, above or below anyone.</span></li>
+            <li style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 19px">Order never follows money.</strong><span style="font-size: 17px; line-height: 1.55">The default sort is lowest delivery risk first. No developer pays us, and no fee we earn ever touches ranking. Nobody can buy a place, above or below anyone.</span></li>
             <li style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 19px">Only verified facts count.</strong><span style="font-size: 17px; line-height: 1.55">Bands, dates and costs come from records we have matched to HARERA, DTCP or MCA. A price list or photo a developer adds is shown and labelled as theirs, but never used to rank. Claiming a page doesn’t move it either.</span></li>
-            <li style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 19px">Bands show in Compare.</strong><span style="font-size: 17px; line-height: 1.55">Buyers see each band side by side with the all-in cost and progress. The “Low delivery risk” filter keeps Low and Moderate, and buyers always see how many projects their filters hid.</span></li>
+            <li style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 19px">Bands show in Compare.</strong><span style="font-size: 17px; line-height: 1.55">Buyers see each band side by side with the all-in cost and progress. A buyer who asks for low delivery risk gets two tiles, Low and Moderate, and can remove either. Buyers always see how many projects their filters hid.</span></li>
           </ul>
         </div>
         <div class="rv rv1" style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
           <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
             <span style="font-size: 17px; font-weight: 600">3 BHK, Dwarka Expressway · lowest delivery risk first</span>
-            <button type="button" class="press" onClick="{{toggleLowOnly}}" aria-pressed="{{lowOnlyStr}}" style="{{lowOnlyStyle}}"><span aria-hidden="true" style="{{lowOnlyBox}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>Low delivery risk only</button>
+            <button type="button" class="press" onClick="{{toggleLowOnly}}" aria-pressed="{{lowOnlyStr}}" style="{{lowOnlyStyle}}"><span aria-hidden="true" style="{{lowOnlyBox}}"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>Risk: Low and Moderate</button>
           </div>
           <ol aria-label="Search results preview" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
             <sc-for list="{{findRows}}" as="fr" hint-placeholder-count="3">
@@ -537,7 +537,7 @@ class Component extends DCLogic {
         return {chipStyle: base + 'background:' + T.bgSolid + ';border:0;color:' + T.ink, segs: segs, label: 'Delivery risk: not scored'};
       }
       for (j = 1; j <= 5; j++) segs.push({style: segBase + (j <= B[band].i ? 'background:' + ink(band) : 'background:' + T.segEmpty + ';border:1px solid ' + T.emptyBorder)});
-      return {chipStyle: base + 'background:' + (night ? B[band].dfill : B[band].fill) + ';border:0', segs: segs, label: 'Delivery risk: ' + band + ', low confidence'};
+      return {chipStyle: base + 'background:' + (night ? B[band].dfill : B[band].fill) + ';border:0', segs: segs, label: 'Delivery risk: ' + band + ', we are less certain'};
     }
 
     // Outcome shapes: work in greyscale (shape carries the meaning). Stripes = under construction.

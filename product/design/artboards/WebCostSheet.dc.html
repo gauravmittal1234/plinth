@@ -140,7 +140,7 @@ input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:po
               <span style="font-size: 14px; color: {{t.ink2}}">Aurelia Heights, Phase 2 · 3 BHK · 2 Oct 2026</span>
             </div>
             <div style="display: flex; flex-direction: column; gap: 4px">
-              <sc-for list="{{docRows}}" as="r" hint-placeholder-count="10">
+              <sc-for list="{{docRows}}" as="r" hint-placeholder-count="9">
                 <div style="{{r.style}}"><span>{{r.label}}</span><span style="white-space: nowrap">{{r.amt}}</span></div>
               </sc-for>
             </div>
@@ -437,7 +437,7 @@ input[type=range]{accent-color:#2F8F6A;width:100%;height:28px;margin:0;cursor:po
             <sc-if value="{{openNeg}}" hint-placeholder-val="{{false}}">
               <div style="display: flex; flex-direction: column; gap: 10px; font-size: 17px">
                 <p style="margin: 0">GST, stamp duty and registration are set by law, and EDC and IDC by the government. They can't be negotiated.</p>
-                <p style="margin: 0">Parking and IFMS are standard on this sheet. EDC, IDC and power backup are already in the base price.</p>
+                <p style="margin: 0">Parking and IFMS are standard on this sheet. EDC and IDC are already in the base price.</p>
                 <p style="margin: 0">Get any change in writing, in the agreement for sale or a signed addendum. The next section lists what to ask for.</p>
               </div>
             </sc-if>
@@ -555,7 +555,7 @@ class Component extends DCLogic {
     var p = props || {};
     var st = map[p.step] != null ? map[p.step] : 2;
     this.state = {
-      step: st, hasFile: st > 0, readN: st === 2 ? 10 : 0,
+      step: st, hasFile: st > 0, readN: st === 2 ? 9 : 0,
       owner: 'male', rateShown: 7, grown: false, sel: 3,
       waivePlc: false, waiveClub: false,
       saved: false, share: false, copied: false, sent: false,
@@ -587,13 +587,13 @@ class Component extends DCLogic {
     this._read = setInterval(function () {
       var n = (self.state.readN || 0) + 1;
       self.setState({readN: n});
-      if (n >= 10) clearInterval(self._read);
+      if (n >= 9) clearInterval(self._read);
     }, this._rm ? 120 : 520);
   }
   goStep(i) {
     clearInterval(this._read);
     if (i === 1) { this.startReading(); return; }
-    if (i === 2) { this.setState({step: 2, hasFile: true, readN: 10}); this.grow(); return; }
+    if (i === 2) { this.setState({step: 2, hasFile: true, readN: 9}); this.grow(); return; }
     this.setState({step: 0});
   }
   setOwner(o) {
@@ -680,20 +680,21 @@ class Component extends DCLogic {
       };
     });
 
+    // The 7 cost lines of DESIGN.md §5b (base, PLC, club, parking, IFMS, GST, stamp duty + registration), plus the EDC/IDC note and the sheet's own total.
     var LINES = [
-      {label: 'Base price', note: '2,000 sq ft super × ₹11,750 · p. 1', amt: '₹2,35,00,000', w: 56},
-      {label: 'PLC, park facing', note: '₹145 per sq ft super · p. 1', amt: '₹2,90,000', w: 44},
-      {label: 'Car parking, 1 covered', note: 'p. 1', amt: '₹3,50,000', w: 50},
-      {label: 'Club membership', note: 'p. 1', amt: '₹1,50,000', w: 40},
-      {label: 'EDC and IDC', note: 'Government charges, included in the base price · p. 1', amt: 'Included', w: 34},
-      {label: 'IFMS', note: 'Refundable maintenance deposit · p. 1', amt: '₹1,30,000', w: 28},
-      {label: 'Power backup, 5 kVA', note: 'Included in the base price · p. 1', amt: 'Included', w: 46},
-      {label: 'GST, 5%', note: 'On ₹2,44,20,000 · p. 2', amt: '₹12,21,000', w: 24},
+      {label: 'Base price', note: '2,000 sq ft super × ₹11,750 · p. 1', amt: '₹2,35,00,000', w: 56, line: true},
+      {label: 'PLC, park facing', note: '₹145 per sq ft super · Often negotiable · p. 1', amt: '₹2,90,000', w: 44, line: true},
+      {label: 'Club membership', note: 'Often negotiable · p. 1', amt: '₹1,50,000', w: 40, line: true},
+      {label: 'Car parking, 1 covered', note: 'p. 1', amt: '₹3,50,000', w: 50, line: true},
+      {label: 'IFMS', note: 'Refundable deposit · p. 1', amt: '₹1,30,000', w: 28, line: true},
+      {label: 'EDC and IDC', note: 'Included in the base · p. 1', amt: 'Included', w: 34},
+      {label: 'GST, 5%', note: 'Set by law · on ₹2,44,20,000 · p. 2', amt: '₹12,21,000', w: 24, line: true},
       {label: 'Total on the sheet', note: 'Adds up: matches our sum of the lines above · p. 2', amt: '₹2,56,41,000', w: 40, total: true},
-      {label: 'Stamp duty and registration', note: 'Not on the sheet. We add it from Haryana rules, Oct 2026.', amt: 'We add it', w: 0, missing: true}
+      {label: 'Stamp duty and registration', note: 'Set by law · not on the sheet. We add it from Haryana rules, Oct 2026.', amt: 'We add it', w: 0, missing: true, line: true}
     ];
-    var readN = Math.max(0, Math.min(10, s.readN || 0));
-    var readDone = readN >= 10;
+    var readN = Math.max(0, Math.min(9, s.readN || 0));
+    var readDone = readN >= 9;
+    var linesRead = LINES.slice(0, readN).filter(function (l) { return l.line; }).length;
     var docRows = LINES.map(function (l, i) {
       var done = i < readN, cur = i === readN && !readDone;
       var st = 'display:flex;justify-content:space-between;align-items:center;gap:12px;height:34px;padding:0 10px;border-radius:4px;box-sizing:border-box;font-size:15px;line-height:1.3;transition:background-color .3s ease;color:' + T.ink + ';';
@@ -703,11 +704,11 @@ class Component extends DCLogic {
       if (l.missing) st += 'font-style:italic;' + ((done || cur) ? '' : 'color:transparent;');
       return {style: st, label: l.label, amt: l.missing ? 'Not on the sheet' : l.amt};
     });
-    var scanTop = 28 + 64 + readN * 38 + (readN >= 9 ? 10 : 0) - 2;
+    var scanTop = 28 + 64 + readN * 38 + (readN >= 8 ? 10 : 0) - 2;
     var found = LINES.slice(0, readN).map(function (l) {
       return {label: l.label, note: l.note, amt: l.amt, amtStyle: 'white-space:nowrap;font-weight:600;' + (l.missing ? 'font-style:italic' : '')};
     });
-    var stageTxt = readDone ? 'Done. All 10 lines read and checked' : (readN === 0 ? 'Finding the price table' : (readN < 8 ? 'Reading line items' : (readN === 8 ? 'Checking the total adds up' : 'Applying Haryana rules, Oct 2026')));
+    var stageTxt = readDone ? 'Done. All 7 lines read and checked' : (readN === 0 ? 'Finding the price table' : (readN < 7 ? 'Reading line items' : (readN === 7 ? 'Checking the total adds up' : 'Applying Haryana rules, Oct 2026')));
 
     var MIN = 20000000, RANGE = 8000000;
     function pc(v) { return (v - MIN) / RANGE * 100; }
@@ -792,20 +793,17 @@ class Component extends DCLogic {
 
     var ledger = [
       {group: 'Paid to the developer · from your cost sheet', rows: [
-        {label: 'Base price', tag: '', note: '2,000 sq ft super × ₹11,750', src: 'Cost sheet p. 1', amt: '₹2,35,00,000'},
+        {label: 'Base price', tag: '', note: '2,000 sq ft super × ₹11,750. EDC and IDC are included in the base on this sheet.', src: 'Cost sheet p. 1', amt: '₹2,35,00,000'},
         {label: 'PLC, park facing', tag: 'Often negotiable', note: '₹145 per sq ft super', src: 'Cost sheet p. 1', amt: '₹2,90,000'},
-        {label: 'Car parking, 1 covered', tag: '', note: 'Mandatory on this sheet', src: 'Cost sheet p. 1', amt: '₹3,50,000'},
         {label: 'Club membership', tag: 'Often negotiable', note: 'One-time fee', src: 'Cost sheet p. 1', amt: '₹1,50,000'},
-        {label: 'EDC and IDC', tag: '', note: 'Government development charges, included in the base price on this sheet', src: 'Cost sheet p. 1', amt: 'Included'},
-        {label: 'IFMS', tag: '', note: 'Refundable maintenance deposit', src: 'Cost sheet p. 1', amt: '₹1,30,000'},
-        {label: 'Power backup, 5 kVA', tag: '', note: 'Included in the base price on this sheet', src: 'Cost sheet p. 1', amt: 'Included'}
+        {label: 'Car parking, 1 covered', tag: '', note: 'Mandatory on this sheet', src: 'Cost sheet p. 1', amt: '₹3,50,000'},
+        {label: 'IFMS', tag: 'Refundable deposit', note: 'Interest-free maintenance security', src: 'Cost sheet p. 1', amt: '₹1,30,000'}
       ]},
       {group: 'Tax · from your cost sheet', rows: [
-        {label: 'GST, 5%', tag: '', note: 'Under construction. Nil once the OC is granted.', src: 'Cost sheet p. 2', amt: inr(GST)}
+        {label: 'GST, 5%', tag: 'Set by law', note: 'Under construction. Nil once the OC is granted.', src: 'Cost sheet p. 2', amt: inr(GST)}
       ]},
       {group: 'Government · our calculation', rows: [
-        {label: 'Stamp duty, ' + rateFinal + '%', tag: '', note: 'Owner: ' + ownerShort + ' · on ₹2,44,20,000', src: 'Haryana rules Oct 2026', amt: inr(stampF - REG)},
-        {label: 'Registration fee', tag: '', note: 'Fixed fee', src: 'Haryana rules Oct 2026', amt: '₹50,000'}
+        {label: 'Stamp duty and registration', tag: 'Set by law', note: rateFinal + '% stamp duty on ₹2,44,20,000 (owner: ' + ownerShort + '), plus the ₹50,000 registration fee', src: 'Haryana rules Oct 2026', amt: inr(stampF)}
       ]},
       {group: 'Not in this total', rows: [
         {label: 'Move-in costs: maintenance advance, connections, fit-outs', tag: 'Estimate', note: 'Not on your sheet. Paid around the offer of possession. See the move-in number below.', src: 'Plinth estimate, Oct 2026', amt: '₹12–18 L'},
@@ -865,9 +863,9 @@ class Component extends DCLogic {
 
       docRows: docRows, found: found,
       scanStyle: 'position:absolute;left:14px;right:14px;top:0;height:2px;border-radius:1px;background:' + T.accent + ';transform:translateY(' + scanTop + 'px);opacity:' + (readDone ? 0 : 1) + ';transition:transform .45s ease,opacity .3s ease',
-      readPct: readN * 10,
-      readBar: 'display:block;height:100%;width:100%;border-radius:4px;background:' + T.accent + ';transform-origin:0 50%;transform:scaleX(' + (readN / 10) + ');transition:transform .45s ease',
-      readStage: stageTxt, readCount: readN + ' of 10 lines',
+      readPct: Math.round(readN / 9 * 100),
+      readBar: 'display:block;height:100%;width:100%;border-radius:4px;background:' + T.accent + ';transform-origin:0 50%;transform:scaleX(' + (readN / 9) + ');transition:transform .45s ease',
+      readStage: stageTxt, readCount: linesRead + ' of 7 lines',
       readBusy: !readDone, readDone: readDone,
       readTitle: readDone ? 'Your cost sheet is read' : 'Reading your cost sheet',
       readSub: readDone ? 'Every line matched between the two AI readers, and the total on the sheet adds up.' : 'Two AI readers read each line and check each other. Then we check the total on the sheet adds up.',

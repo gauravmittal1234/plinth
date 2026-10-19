@@ -93,7 +93,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
           <p class="rise rise1" style="margin: 0; max-width: 40ch; font-size: 22px; line-height: 1.45">Priya Khanna’s firm. New launches along Dwarka Expressway, and resale in two societies there.</p>
           <span class="rise rise1" style="{{u.pill}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Verified agent since 6 Apr 2026 · verified, never endorsed</span>
           <dl class="rise rise2" aria-label="Who pays this agent" style="margin: 0; padding: 22px 24px; border-radius: 8px; background: {{t.track}}; display: grid; grid-template-columns: auto 1fr; gap: 10px 24px; font-size: 17px; line-height: 1.5">
-            <dt style="font-weight: 700">Registration</dt><dd style="margin: 0">HARERA RC/REA/HARERA/GGM/2023/487 · valid until 21 Jun 2028 · checked 1 Oct 2026</dd>
+            <dt style="font-weight: 700">Registration</dt><dd style="margin: 0">HARERA RC/REA/HARERA/GGM/2023/487 · valid until 21 Jun 2028 · checked 14 Oct 2026</dd>
             <dt style="font-weight: 700">Paid by</dt><dd style="margin: 0">On a new launch, the developer, if you book. On a resale, the seller; and you, if you hire them.</dd>
             <dt style="font-weight: 700">Pays Plinth</dt><dd style="margin: 0">Nothing to appear here. On resale deals through our desk, Larkspur shares our fee for the field work.</dd>
           </dl>
@@ -545,7 +545,7 @@ class Component extends DCLogic {
       ['project', 'Project', 'Kestrel Park, 3 BHK'],
       ['budget', 'Budget, all-in', '₹2.3–2.6 Cr'],
       ['timing', 'Timing', 'Buying in 3–6 months'],
-      ['loan', 'Home loan', 'Eligibility checked; lender not shared']
+      ['loan', 'Home loan', 'Will need a loan']
     ];
     var picked = s.brief || {};
     var briefOpts = BO.map(function (b) {
@@ -573,7 +573,7 @@ class Component extends DCLogic {
         ledger: [['12 Oct 2026', 'Visit to Kestrel Park, Orbis Land’s site office, with you named as agent of record', 'Consent C-1012-04'], ['12 Oct 2026', 'Orbis Land’s site office received “Agent of record: Larkspur Realty”', ''], ['12 Oct 2026', 'Rohan tapped to share his number with you', 'Consent C-1012-05']],
         uc: 'New launch: any commission is between you and Orbis Land. Plinth takes no part of it and never rules on tagging. If Rohan wants, he can share a dated first-contact receipt with Orbis.'},
       ishita: {name: 'Ishita', when: '17 Oct', project: 'Aurelia Heights, Phase 2 · Northfield Estates · new launch', role: 'Agent of record, named by Ishita in her price-list request', relayShort: 'Relay active', live: true,
-        brief: [['Project', 'Aurelia Heights, Phase 2, 3 BHK', true], ['Budget, all-in', '₹2.6–2.9 Cr', true], ['Timing', 'Buying in 3–6 months', true], ['Home loan', 'Eligibility checked; lender not shared', true]],
+        brief: [['Project', 'Aurelia Heights, Phase 2, 3 BHK', true], ['Budget, all-in', '₹2.6–2.9 Cr', true], ['Timing', 'Buying in 3–6 months', true], ['Home loan', 'Will need a loan', true]],
         questions: ['Is the price list dated after 2 Oct 2026?', 'Is PLC negotiable for park-facing units?', 'When will Tower A reach slab 12?'],
         relayTitle: 'Relay active · her number stays hidden', relayText: 'You reach Ishita through Plinth’s relay number, 8 am to 9 pm, her choice. It stays on while a deal is active. If there’s no visit by 11 Nov, day 25, we ask her whether to keep you connected.',
         actions: [['Message Ishita', 'Sent through the relay. Ishita sees it in her Plinth chat on WhatsApp.'], ['Call through the relay', 'Calling Ishita through the relay. Neither of you sees the other’s number.'], ['Offer 3 visit slots', 'Pick 3 slots and we send them to Ishita to choose from. (Arrives with resale listings.)']],

@@ -27,7 +27,6 @@ a{color:#1D5A44}a:hover{color:#12402F}
 
   <div style="flex: none; height: 28px; padding: 0 12px 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 16px; color: {{t.muted}}">
     <span>WhatsApp conversation (illustrative)</span>
-    <button type="button" class="pl-press" onClick="{{replay}}" style="height: 28px; padding: 0 6px; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-weight: 600; cursor: pointer">Replay the check</button>
   </div>
 
   <header style="flex: none; height: 56px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
@@ -64,7 +63,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
     <sc-if value="{{showConfirm}}" hint-placeholder-val="{{true}}">
       <div class="pl-rise" style="align-self: flex-start; width: 296px; display: flex; flex-direction: column; gap: 4px">
         <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
-          <p style="margin: 0">I'm Plinth's AI assistant. I read 7 claims on this flyer. Is it for <strong>Aurelia Heights, Phase 2</strong>?</p>
+          <p style="margin: 0">This is Ask Plinth, an AI. I read 7 claims on this flyer. Is it for <strong>Aurelia Heights, Phase 2</strong>?</p>
           <p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: {{t.ink2}}">Sector 37D · RERA GGM/673/405/2022/117<span style="float: right; margin: 2px 0 0 10px; font-size: 13px; line-height: 16px; color: {{t.muted}}">11:02 am</span></p>
         </div>
         <sc-if value="{{confirmOpen}}" hint-placeholder-val="{{false}}">
@@ -133,7 +132,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
 
           <div style="padding: 8px 8px 2px">
             <p style="margin: 0"><strong>4 of 7 claims differ from the records.</strong> The biggest: the flyer says possession Dec 2026. HARERA shows completion Dec 2027, with 41% built.</p>
-            <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">Read by AI; I can make mistakes. Type human for a person. I removed the broker's number from my copy.<span style="float: right; margin-left: 10px">11:03 am</span></p>
+            <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">Read by AI; I can make mistakes. Type human to talk to a Plinth adviser · free · developers never pay us. I removed the broker's number from my copy.<span style="float: right; margin-left: 10px">11:03 am</span></p>
           </div>
         </div>
 
@@ -350,7 +349,7 @@ class Component extends DCLogic {
     var replyDefs = [
       {key: 'all', label: 'See all claims'},
       {key: 'follow', label: 'Follow project'},
-      {key: 'ask', label: 'Ask'}
+      {key: 'ask', label: 'Ask Plinth'}
     ];
     var replies = replyDefs.map(function (r) {
       var on = r.key === turn;
@@ -378,7 +377,7 @@ class Component extends DCLogic {
     return {
       t: T, qr: qr, strip: strip, cardRows: cardRows, flyerType: flyerType,
       btn: btnStyle(false),
-      subtitle: typing ? 'typing…' : 'Business account · AI assistant',
+      subtitle: typing ? 'typing…' : 'Business account · Ask Plinth is an AI',
       replay: function () { self.read(); },
       showConfirm: ph !== 'reading',
       confirmOpen: ph === 'confirm' && !s.answer,
@@ -393,7 +392,7 @@ class Component extends DCLogic {
       cardLabel: 'Claims card image. Broker flyer, Aurelia Heights, Phase 2. 4 of 7 claims differ from the records. Flyer says possession Dec 2026; records show completion Dec 2027, 41% built. Flyer says 11,999 rupees a square foot, all-inclusive; records show 18,900 rupees a square foot of carpet, all-in. Flyer says only 20 flats left; records show about 140 unbooked in June 2026. Flyer says 3 BHK, 2,000 square feet; records show 1,450 square feet carpet, and 2,000 is the super area. Plinth. No developer pays us. Ever. HARERA and cost sheet, as of 14 Oct 2026. QR code: the live check.',
       replies: replies,
       hasTurn: ph === 'card' && !!turn,
-      turnLabel: turn === 'follow' ? 'Follow project' : (turn === 'ask' ? 'Ask' : 'See all claims'),
+      turnLabel: turn === 'follow' ? 'Follow project' : (turn === 'ask' ? 'Ask Plinth' : 'See all claims'),
       isAll: ph === 'card' && turn === 'all', isFollow: ph === 'card' && turn === 'follow', isAsk: ph === 'card' && turn === 'ask',
       all: all,
       followReplies: followReplies,

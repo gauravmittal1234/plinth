@@ -115,7 +115,7 @@ input::placeholder,textarea::placeholder{color:currentColor;opacity:.62}
             <span role="cell" style="display: flex; flex-direction: column; min-width: 0"><a href="#project" class="lk" style="font-weight: 600; color: {{t.ink}}; text-decoration: underline; text-underline-offset: 4px">Aurelia Heights, Phase 2</a><span style="font-size: 15px; color: {{t.ink2}}">Sector 37D · GGM/673/405/2022/117</span></span>
             <span role="cell" style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start">
               <span style="{{elevChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{elevMeter}}" as="em" hint-placeholder-count="5"><span style="{{em.style}}"></span></sc-for></span>Elevated</span>
-              <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 14px; color: {{t.ink2}}"><span aria-hidden="true" style="{{dotFull}}"></span><span aria-hidden="true" style="{{dotHollow}}"></span>Low confidence · since 2 Oct 2026</span>
+              <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 14px; color: {{t.ink2}}"><span aria-hidden="true" style="{{dotFull}}"></span><span aria-hidden="true" style="{{dotHollow}}"></span>We’re less certain about this one · since 2 Oct 2026</span>
               <span style="{{u.pubPill}}">Public now · Jul–Sep 2026 QPR not on HARERA</span>
             </span>
             <span role="cell" style="font-size: 15px; line-height: 1.45">{{auPending}}</span>
@@ -354,7 +354,7 @@ input::placeholder,textarea::placeholder{color:currentColor;opacity:.62}
             </div>
           </div>
         </div>
-        <p style="margin: 0; max-width: 72ch; font-size: 15px; line-height: 1.5">Questions are grouped by our AI from what buyers typed or said; we never show anyone’s words or who asked. “Saw the band” counts visitors whose screen showed it. Signals never feed a score, search order or an AI answer.</p>
+        <p style="margin: 0; max-width: 72ch; font-size: 15px; line-height: 1.5">Questions are grouped by Ask Plinth from what buyers typed or said; we never show anyone’s words or who asked. “Saw the band” counts visitors whose screen showed it. Signals never feed a score, search order or an Ask Plinth answer.</p>
       </section>
 
       <section id="evidence" aria-labelledby="di-h" style="display: flex; flex-direction: column; gap: 32px; scroll-margin-top: 96px">
@@ -489,7 +489,7 @@ input::placeholder,textarea::placeholder{color:currentColor;opacity:.62}
                 <span style="font-size: 15px; color: {{t.ink2}}">Delivery risk · Aurelia Heights, Phase 2</span>
                 <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
                   <span style="{{elevChip}}"><span aria-hidden="true" style="display: flex; gap: 2px"><sc-for list="{{elevMeter}}" as="em3" hint-placeholder-count="5"><span style="{{em3.style}}"></span></sc-for></span>Elevated</span>
-                  <span style="font-size: 14px; color: {{t.ink2}}">Low confidence · 14 Oct 2026 · v1.2</span>
+                  <span style="font-size: 14px; color: {{t.ink2}}">We’re less certain about this one · data as of 14 Oct 2026 · v1.2</span>
                 </div>
               </div>
               <sc-if value="{{pvNotice}}" hint-placeholder-val="{{false}}">
@@ -595,7 +595,7 @@ input::placeholder,textarea::placeholder{color:currentColor;opacity:.62}
                   <p style="margin: 0; font-size: 17px; line-height: 1.5; overflow-wrap: anywhere">“{{previewText}}”</p>
                 </sc-if>
                 <sc-if value="{{noReply}}" hint-placeholder-val="{{false}}">
-                  <p style="margin: 0; font-size: 17px; line-height: 1.5; color: {{t.ink2}}">We invited Northfield Estates to respond on 3 Oct 2026. No response yet.</p>
+                  <p style="margin: 0; font-size: 17px; line-height: 1.5; color: {{t.ink2}}">Your reply published on 15 Oct 2026 stays live until you publish an update.</p>
                 </sc-if>
                 <div style="display: flex; flex-wrap: wrap; gap: 6px">
                   <sc-for list="{{previewAttach}}" as="pa" hint-placeholder-count="1">
@@ -1151,7 +1151,7 @@ class Component extends DCLogic {
     var PB = {
       au: {
         band: 'Elevated', chipStyle: chip('Elevated'), meter: meter('Elevated'),
-        now: 'Low confidence · since 2 Oct 2026 · a proposed move to High is pending',
+        now: 'Since 2 Oct 2026 · we’re less certain about this one · a proposed move to High is pending',
         publicLine: 'Two consecutive quarters with construction ahead of sales would move this to Moderate.',
         steps: [
           heldItem ? {title: 'Get the Jul–Sep 2026 QPR on record before 25 Oct 2026', check: 'Keeps the band at Elevated instead of High.', status: 'Receipt sent · ' + heldItem.ref + ' · checking by 20 Oct', source: 'HARERA QPR register', st: 'urgent'}

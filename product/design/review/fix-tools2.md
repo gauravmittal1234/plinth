@@ -20,23 +20,19 @@
 | `WebSearch.dc.html` | Web | Plinth web: Search results | 64 KB | 1280 × **2480** (was 2340) | `theme`, `mode` (Scored · Facts-only), `screen` (Results · Zero results · Unknown project · Noida · HARERA down) | Ask Plinth's reading of your search, as tiles you can drop | All-in first; Low and Moderate as two tiles; zero-results fix; request and waitlist; Band withheld |
 | `WebCompare.dc.html` | Web | Compare: 3 Dwarka Expressway projects | 65 KB | 1280 × **4100** (was 3400) | `theme`, `band`, `mode` (Scored · Facts-only) | Highlight differences, with a live "12 of 14 rows differ" | Carpet, loading, configurations and commute rows; complaint rates; Band withheld; share card |
 | `WebCostSheet.dc.html` | Web | Cost sheet normaliser: What will I really pay? | 82 KB | 1280 × **8600** (was 6900) | `theme`, `step` | The all-in recalculates as you set buyer type and loan | New "What should I know before I negotiate?" and "What will moving in cost?" sections; "Often negotiable" tags; plain share card |
-| `WebVisualise.dc.html` | Web | *(visualise row: see §1b)* | | | | Before/after compare | |
+| `WebVisualise.dc.html` | Web | Picture it furnished: the full tool | 77 KB | 1280 × **4440** (was 4320) | `theme`, `step` (Preview · Which home · Your room · Style · Generating), `home` (Being built · Ready or resale), `start` (Floor plan · Sample flat) | Before/after compare | Starts with "Which home are you picturing?"; under-construction paths start from the floor plan or the sample flat; "AI-generated illustration" everywhere |
 | `WebPrivacy.dc.html` | Web | Privacy centre | 47 KB | 1280 × 5550 | `theme` | The "who can reach me" count | D13 relay copy; Renew 30 days; the C-1018-11 relay-only line; Ask Plinth naming |
 | `AppVoice.dc.html` | Android | Plinth app: Voice assistant | 64 KB | 390 × 844 | `theme`, `start`, `screen` (Conversation · Should I buy? · Unknown project · Noida · HARERA down · Offline) | Idle → listening waveform → thinking → streaming, cited answer | Named Ask Plinth; pending QPR fact; complaint rate; five designed edge answers |
 | `AppScan.dc.html` | Android | Plinth app: Camera identify | 43 KB | 390 × 844 | `theme`, `screen` (Scan QR · Where am I? · Reading · Match · No match · Search by name) | QR frame tightening, then the result sheet rising | Prototype levers removed; real actions only; match sheet matches §5b; Request it on no match |
 | `AppExplore.dc.html` | Android | Explore: home (phone) | 84 KB | 390 × 844 | `theme`, `screen` (Home · Request a project · Requested · Noida waitlist) | Ask out loud: the voice sheet | All-in first; hero theme toggle gone; scan card matches §5b; adviser label; request and waitlist sheets |
 | `AppMap.dc.html` | Android | Map results: Dwarka Expressway (phone) | 61 KB | 390 × 844 | `theme` | Pins flip between price and risk | Pins show the all-in price with a legend; "Quoted" pins look different; cards lead with the all-in |
-| `AppVisualiseCapture.dc.html` | Android | *(see §1b)* | | | | | |
-| `AppVisualiseResult.dc.html` | Android | *(see §1b)* | | | | | |
+| `AppVisualiseCapture.dc.html` | Android | Plinth app: Picture it furnished, capture | 34 KB | 390 × 844 | `theme`, `screen` (Which home · Floor plan · Sample flat · Photo · Uploading) | Live camera guides (level, floor and window) | New "Which home" and "Floor plan" screens; camera only for a sample-flat photo or a ready/resale room |
+| `AppVisualiseResult.dc.html` | Android | Plinth app: Picture it furnished, result | 36 KB | 390 × 844 | `theme`, `screen` (Result · Generating · From the floor plan) | Before/after compare | "show generating" switch removed; floor-plan result; "AI-generated illustration" labels; plain share text |
 | `AppYou.dc.html` | Android | Plinth app: You tab | 45 KB | 390 × 844 | `theme`, `screen` (You · Consent history · Download my data) | The "who can reach me" count | "I'm an agent" row; consent history and data download screens; money lines; alerts and digest on |
 | `WaCost.dc.html` | WhatsApp | WhatsApp cost sheet | 28 KB | 390 × **1460** (was 1400) | `theme` | The cost card | Ask Plinth naming; "Talk to an adviser" button; plain-English summary; move-in line |
 | **`AppCostSheet.dc.html` (new)** | Android | Plinth app: Cost sheet, camera to line by line | 60 KB | 390 × 844 | `theme`, `screen` (Allow camera · Camera · Check photo · Reading · Line by line · Saved; default Line by line) | Lines land one by one and the running all-in counts up to ₹2.74 Cr | G-28: camera capture of a cost sheet, then a line-by-line read |
 
 All 15 files have `is_interactive: true`.
-
-### 1b. Visualise files
-
-*(Filled in below, in §2 G-34 and the visualise table at the end of this section.)*
 
 ---
 
@@ -54,7 +50,7 @@ All 15 files have `is_interactive: true`.
 | **G-29** Compare covers the whole decision | WebCompare table | **Four new rows for all 5 projects:** Carpet area (3 BHK); Loading ("38% · 2,000 super / 1,450 carpet"); Configurations (carpet and from-price per BHK, plus units); Commute to Cyber City at 9 am, with an IGI T3 line.<br>**Blanks:** Juniper's read "Not in our records yet".<br>**Source chips:** "Developer price list · Oct 2026" (From the developer, not verified) and "Plinth estimate · road distance, Oct 2026".<br>**Signature:** the rows fold into Highlight differences and its live count. Ask Plinth's explanation adds carpet, loading and commute. |
 | **G-30** Request a project; Noida waitlist | **AppExplore:** "Can't find a project?" and "Looking in Noida?" rows, a Noida corridor chip ("Noida · from 2027"), Golf Course Ext Rd planned for Dec 2026 with Notify me, and two bottom sheets. **WebSearch:** unknown-project and Noida states. **Also:** AppVoice, AppScan (Request it on no match) and WebHome. | **Request:** name or RERA number (minimum 3 letters) and an unticked "Also tell me on WhatsApp" → "Requested · R-1018-07. We'll add Indigo Terraces, Sector 79 by 1 Nov 2026, or tell you why not." The published reasons for "not": no RERA registration, outside Gurugram, or a lapsed registration.<br>**Noida waitlist:** "planned for Jul–Sep 2027", then "One WhatsApp message… Nothing else", with Leave the list. |
 | **G-31** Move-in number | WebCostSheet, new section "What will moving in cost?" (`#move-in`), the last band before the footer. Pointers from the hero note and the ledger's "Not in this total" row. **Also:** WaCost (one line), AppCostSheet (a row and its sheet). | **Label:** "Move-in number · Plinth estimate, Oct 2026". It is never added to the all-in.<br>**Items:** maintenance advance ₹2.8 L (24 months × ₹5/sq ft super × 2,000 + 18% GST) · IFMS already in the all-in, ₹0 more · connections and deposits ₹0.9–1.4 L · fit-outs ₹8–14 L, your choice.<br>**Total:** "₹12–18 L", "paid around the offer of possession". |
-| **G-34** Reposition Visualise | WebVisualise, AppVisualiseCapture, AppVisualiseResult | *(see the visualise table at the end of this section)* |
+| **G-34** Reposition Visualise | **WebVisualise:** a new first step, "Which home are you picturing?", and a one-line path note under the stepper. **AppVisualiseCapture:** "Which home" and "Floor plan" screens. **AppVisualiseResult:** a "From the floor plan" state. | **A flat being built** (for under-construction projects like Aurelia Ph 2, where there's no room to photograph yet) starts in one of two ways:<br>• **The brochure floor plan.** `floorPlan3bhk` carries the pill "Brochure plan · From the developer, not verified". Pick a room with its §5b size: living + dining 22′ × 13′, master 14′ × 14′, bedroom 2 12′ × 14′, bedroom 3 12′ × 12′. The output is "Empty room, drawn from the plan", then styles. Caption: "Drawn from the brochure plan of 2 Oct 2026 · From the developer, not verified · your unit may differ".<br>• **Your photo of the sample flat**, which may not match your unit.<br>**A ready or resale flat** keeps the bare-room photo flow.<br>**Labels:** every staged image, alt text, share caption and About label says "AI-generated illustration". "Items are illustrative", "Structure is never altered" and the original-first default stay.<br>**Price:** the plan caption reads "₹2.74 Cr all-in · quoted ₹2.35 Cr". |
 | **G-36** No silent widening | **WebSearch:** Ask Plinth's tiles, the filter row and the note. **AppMap:** filter chip. | **WebSearch:** "delivery risk [Low] [Moderate]" are two tiles, each removable and restorable. The filter row shows "Risk: Low" and "Risk: Moderate" separately. The note reads "I showed 'low delivery risk' as two tiles, Low and Moderate; remove either one."<br>**AppMap:** its single chip now says "Low or Moderate risk". |
 | **G-37** One AI name: Ask Plinth | All 15 files | **Replaced:** "Home Advisor", "AI assistant", "I'm Plinth's AI assistant", "Ask AI", and the bare "Ask" nav links and tab labels.<br>**Disclosure line:** "Ask Plinth is an AI. It answers from public records like HARERA and shows its sources."<br>**WhatsApp:** the subtitle reads "Business account · Ask Plinth is an AI".<br>**Human handoff:** "Talk to a Plinth adviser" ("Talk to an adviser" on the 20-character WhatsApp button). |
 | **G-38** No prototype levers in the UI | **AppScan:** "Simulate match", "Prototype: next scan…" and "Tap Simulate match" removed. **AppVisualiseResult:** "show generating" removed. **AppExplore:** hero theme toggle removed. **AppMap:** the dead flip-theme code removed. | **AppScan:** states move to the `screen` tweak. The real UI keeps real actions only: QR scans on its own, "Scan a QR from a photo", and "Check where I am".<br>**AppVisualiseResult:** moved to the `screen` tweak.<br>**AppExplore:** Night comes only from the `theme` tweak. |
@@ -137,6 +133,7 @@ They sit under one sub-heading, "Discovery, cost and Ask Plinth (added 18 Oct 20
 | `WebCompare.dc.html` | h 3400 → **4100** |
 | `WebCostSheet.dc.html` | h 6900 → **8600** (Result step) |
 | `WaCost.dc.html` | h 1400 → **1460** |
+| `WebVisualise.dc.html` | h 4320 → **4440** (Preview step) |
 | `AppVoice.dc.html` | title "Voice assistant (Ask)" → "Ask Plinth · voice" |
 
 `$preview` heights are estimates; nothing was rendered.
@@ -166,3 +163,79 @@ They sit under one sub-heading, "Discovery, cost and Ask Plinth (added 18 Oct 20
 9. **From the web discovery pass:**
    - fix-trust §4.2 suggested the loan row read "from R2, Jan–Mar 2027". §5b and the brief say "Loan checks arrive in 2027", and I used that.
    - Please confirm the share-card phrase "N of 100 like it finished over a year late" as the plain version of "OC more than 12 months late".
+10. **Visualise:**
+    - Rooms are picked from a list beside the floor plan, not from hotspots, because the generated plan's room positions aren't fixed. Add hotspots once the plan image is final.
+    - Bedrooms still use the living-room illustrations. Request bedroom slots?
+
+---
+
+## 8. Checks run (nothing rendered; no browser opened)
+
+**Per file:** `scratchpad/tools2/check.py`, run on all 15 files. Text-input files ran with `EV` = "Noida", "Indigo Terraces" and "Should I buy?". It checks:
+- HTML tag balance, unquoted attributes, and self-closing non-void elements;
+- the exact `support.js` line, a valid `data-props` JSON, and the `theme` default (Day);
+- that every `data-slot` div is empty;
+- the consent-reference format (`C-MMDD-NN`);
+- banned words (including "home advisor", "ai assistant", "simulate match", "prototype:", "loan referral", "12 months of alerts" and "too early to score"), plus emoji;
+- a Node run of `renderVals()` in Day and Night under every enum tweak, firing every top-level and per-item handler for 3 rounds with timers flushed. Every `{{hole}}`, including loop items, must resolve with no `undefined` or `NaN`.
+
+**Result:** all clean (`tag/attr errors: []`, `banned: []`, runtime `probs: []`). Two known false positives remain, both from older code:
+- **WebPrivacy:** a computed `'C-1018-0' + n` reference, which produces C-1018-01 to C-1018-05.
+- **WebCostSheet:** two separate loops that both use the alias `o`.
+
+| File | States exercised |
+|---|---|
+| WebHome | 4,376 |
+| WebSearch | 12,673 |
+| WebCompare | 2,880 |
+| WebCostSheet | 4,085 |
+| WebVisualise | 14,233 |
+| WebPrivacy | 662 |
+| AppVoice | 3,756 |
+| AppScan | 320 |
+| AppExplore | 2,058 |
+| AppMap | 50 |
+| AppVisualiseCapture | 2,023 |
+| AppVisualiseResult | 950 |
+| AppYou | 2,735 |
+| WaCost | 266 |
+| AppCostSheet | 2,600 |
+
+**Flows, stepped by script** (`scratchpad/tools2/flow.js`, `scratchpad/webdisc/flows.js`, `scratchpad/visflow/flow.js`, `scratchpad/flow_costsheet.js`):
+- **AppScan:** "Search by name" → Request; Where am I? → Check where I am → match.
+- **AppVoice:** typed "Is Saffron Vista Residences any good?" → request card with the extracted name; "noida me kya hai" → waitlist → joined; Offline → mic disabled, question queued; HARERA down → stale line, and the [5] source re-dated.
+- **AppExplore:** Request a project with WhatsApp ticked → Requested; a 2-letter name is blocked; Noida waitlist → joined → closed; Golf Course → Notify me.
+- **AppYou:** Consent history → revoke Meridian → the count drops to 2 and the status updates; Download → Preparing.
+- **WebPrivacy:** Renew on Orbis → "until 17 Nov 2026 · renewed today".
+- **WebHome, WebSearch, WebCompare:** 103 checks.
+- **Visualise:** 192 checks.
+- **AppCostSheet:** 59 checks.
+
+**Audit across files** (`scratchpad/tools2/audit.py`): none of the 15 files contains "Home Advisor", "AI assistant", "Talk to a person", "Talk to our team", "too early to score", Tamarind, a loan referral, "12 months of alerts", a prototype lever or "AI-generated preview". Every required string is present in each file.
+
+**Headlines.** Every new or changed heading was checked by arithmetic (characters × size × 0.55 ≤ 2 × column width). One heading failed and was fixed: WebCostSheet's "What will moving in cost?" had a 12ch cap that would have run to three lines.
+
+## 9. Critique gate (§8; 1–5 each)
+
+| Screen | Q | Ev | Hi | Rd | A11y | Trust | India | Cons | States | Delight | Total |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| WebHome | 5 | 4 | 4 | 4 | 4 | 5 | 4 | 5 | 5 | 4 | **44** |
+| WebSearch | 5 | 4 | 4 | 4 | 4 | 5 | 4 | 5 | 5 | 4 | **44** |
+| WebCompare | 5 | 5 | 4 | 4 | 4 | 5 | 4 | 5 | 4 | 4 | **44** |
+| WebCostSheet | 5 | 4 | 4 | 4 | 4 | 5 | 5 | 5 | 4 | 4 | **44** |
+| WebVisualise | 5 | 4 | 4 | 4 | 4 | 5 | 4 | 5 | 5 | 5 | **45** |
+| WebPrivacy | 5 | 4 | 4 | 4 | 4 | 5 | 4 | 5 | 4 | 4 | **43** |
+| AppVoice | 5 | 5 | 4 | 4 | 4 | 5 | 5 | 5 | 5 | 4 | **46** |
+| AppScan | 5 | 5 | 4 | 4 | 4 | 5 | 4 | 5 | 5 | 4 | **45** |
+| AppExplore | 5 | 4 | 4 | 4 | 4 | 5 | 4 | 5 | 5 | 4 | **44** |
+| AppMap | 4 | 4 | 4 | 4 | 4 | 5 | 4 | 5 | 4 | 4 | **42** |
+| AppVisualiseCapture | 5 | 4 | 4 | 4 | 4 | 5 | 4 | 5 | 5 | 4 | **44** |
+| AppVisualiseResult | 5 | 4 | 4 | 4 | 4 | 5 | 4 | 5 | 4 | 5 | **44** |
+| AppYou | 5 | 4 | 4 | 4 | 4 | 5 | 4 | 5 | 5 | 4 | **44** |
+| WaCost | 5 | 4 | 4 | 5 | 4 | 5 | 5 | 5 | 4 | 4 | **45** |
+| AppCostSheet | 5 | 5 | 4 | 4 | 4 | 5 | 5 | 5 | 5 | 5 | **47** |
+
+**Known weaknesses:**
+- **WebCostSheet** is now about 8,600 px. "Before you negotiate" and "Move-in number" each answer a separate question, but the page is long. A later pass could fold the TDS band into the ledger.
+- **AppMap's risk chip** doesn't use the two-tile pattern yet.
+- **Visualise bedrooms** still reuse the living-room images.

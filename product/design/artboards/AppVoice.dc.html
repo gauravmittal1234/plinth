@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Plinth app: Voice assistant</title>
+<title>Plinth app: Ask Plinth by voice</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -267,7 +267,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
       <sc-if value="{{handoff}}" hint-placeholder-val="{{false}}">
         <div role="status" class="pl-rise" style="border-radius: 8px; background: {{t.claimBg}}; padding: 16px 16px 4px; display: flex; flex-direction: column; gap: 6px">
           <strong style="font-size: 18px; font-weight: 700">A Plinth adviser will take over</strong>
-          <span style="font-size: 16px; line-height: 1.5; color: {{t.ink}}">Free to ask. Advisers are paid by you, never by developers. They explain records; they don't sell, book or negotiate. They reply Mon–Sat, 10 am–7 pm IST, usually within 4 working hours. We'll share this chat with them.</span>
+          <span style="font-size: 16px; line-height: 1.5; color: {{t.ink}}">Free · developers never pay us. Advisers explain records; they don't sell, book or negotiate. They reply Mon–Sat, 10 am–7 pm IST, usually within 4 working hours. We'll share this chat with them.</span>
           <button type="button" class="pl-press" onClick="{{toggleHandoff}}" style="align-self: flex-start; min-height: 48px; padding: 0; border: 0; background: transparent; color: {{t.ink}}; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 3px">Cancel request</button>
         </div>
       </sc-if>
@@ -537,7 +537,7 @@ class Component extends DCLogic {
     var needleStyle = 'transform-origin:150px 150px;transform:rotate(' + angle + 'deg);transition:' + (s.reduced ? 'none' : 'transform 1.4s cubic-bezier(.2,.8,.2,1)');
 
     var cmpData = [
-      {name: 'Kestrel Park', band: 'Low', built: 63, time: 58, price: '₹2.44 Cr all-in · quoted ₹2.10 Cr', due: 'Jun 2027'},
+      {name: 'Kestrel Park', band: 'Low', built: 63, time: 58, price: '₹2.44 Cr all-in · quoted ₹2.10 Cr', due: 'Nov 2028'},
       {name: 'Aurelia Heights, Phase 2', band: 'Elevated', built: 41, time: 77, price: '₹2.74 Cr all-in · quoted ₹2.35 Cr', due: 'Dec 2027'}
     ];
     var cmpRows = cmpData.map(function (c) {

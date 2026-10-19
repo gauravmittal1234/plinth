@@ -27,7 +27,6 @@ a{color:#1D5A44}a:hover{color:#12402F}
 
   <div style="flex: none; height: 28px; padding: 0 12px 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 16px; color: {{t.muted}}">
     <span>WhatsApp conversation (illustrative)</span>
-    <button type="button" class="pl-press" onClick="{{startOver}}" style="height: 28px; padding: 0 6px; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-weight: 600; cursor: pointer">Start over</button>
   </div>
 
   <header style="flex: none; height: 56px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
@@ -39,7 +38,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
       <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 17px; line-height: 22px; font-weight: 600">Plinth
         <svg width="16" height="16" viewBox="0 0 16 16" role="img" aria-label="Verified business"><circle cx="8" cy="8" r="8" fill="{{t.accent}}"></circle><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </span>
-      <span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">Business account · AI assistant</span>
+      <span style="font-size: 13px; line-height: 16px; color: {{t.muted}}">Business account · Ask Plinth is an AI</span>
     </div>
     <button type="button" class="pl-press" aria-label="More options" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer">
       <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="5" r="1.7" fill="currentColor"></circle><circle cx="11" cy="11" r="1.7" fill="currentColor"></circle><circle cx="11" cy="17" r="1.7" fill="currentColor"></circle></svg>
@@ -50,7 +49,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
 
     <div style="align-self: flex-end; max-width: 280px; padding: 8px 12px 6px; border-radius: 16px 4px 16px 16px; background: {{t.bubbleOut}}">Aurelia Heights<span style="float: right; display: inline-flex; align-items: center; gap: 4px; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:41 am<svg width="18" height="12" viewBox="0 0 18 12" role="img" aria-label="Read"><path d="M1.5 6.5l3 3 6.5-7.5M8.5 9.5l6.5-7.5" fill="none" stroke="{{t.accentText}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div>
 
-    <div style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">I'm Plinth's AI assistant. I answer from public records like HARERA, with sources. I can make mistakes. Type <strong>human</strong> for a person.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:41 am</span></div>
+    <div style="align-self: flex-start; max-width: 300px; padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">Ask Plinth is an AI. It answers from public records like HARERA, with sources, and can make mistakes. Type <strong>human</strong> to talk to a Plinth adviser · free · developers never pay us.<span style="float: right; margin: 5px 0 0 12px; font-size: 13px; line-height: 16px; color: {{t.muted}}">10:41 am</span></div>
 
     <div style="align-self: flex-start; width: 296px; display: flex; flex-direction: column; gap: 4px">
       <div class="pl-rise" style="padding: 4px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
@@ -75,7 +74,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
             <span style="margin-top: 6px; display: flex; align-items: center; gap: 4px; font-size: 13px; line-height: 16px; color: #3F3C36">Delivery risk ·
               <span style="margin-left: 2px; width: 7px; height: 7px; border-radius: 50%; background: #3F3C36"></span>
               <span style="width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid #3F3C36; box-sizing: border-box"></span>
-              <span style="padding-left: 2px">low confidence</span>
+              <span style="padding-left: 2px">less certain</span>
             </span>
             <p style="margin: 10px 0 0; font-size: 15px; line-height: 19px">Between <strong>{{lo}} and {{hi}} of 100</strong> similar projects got their OC more than 12 months late.</p>
 
@@ -98,7 +97,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
         </div>
 
         <div style="padding: 8px 8px 2px">
-          <p style="margin: 0"><strong>{{band}}</strong> delivery risk for Aurelia Heights, Phase 2, low confidence.</p>
+          <p style="margin: 0"><strong>{{band}}</strong> delivery risk for Aurelia Heights, Phase 2. We're less certain about this one, so we show a range.</p>
           <ul style="margin: 6px 0 0; padding: 0 0 0 20px">
             <li>72% of units sold, 41% built</li>
             <li>77% of the promised time used</li>
@@ -259,7 +258,7 @@ class Component extends DCLogic {
       t: T,
       band: band, bandText: bandText, lo: b.lo, hi: b.hi,
       meter: meter, qr: qr,
-      cardLabel: 'Risk card image. Photo of Aurelia Heights, Phase 2, Sector 37D, RERA GGM/673/405/2022/117 (illustrative image). Delivery risk ' + band + ', step ' + b.i + ' of 5, low confidence. Between ' + b.lo + ' and ' + b.hi + ' of 100 similar projects got their OC more than 12 months late. Plinth. No developer pays us. Ever. Data as of 14 Oct 2026, model v1.2. Not a credit rating. QR code: the live card.',
+      cardLabel: 'Risk card image. Photo of Aurelia Heights, Phase 2, Sector 37D, RERA GGM/673/405/2022/117 (illustrative image). Delivery risk ' + band + ', step ' + b.i + ' of 5; we are less certain about this one. Between ' + b.lo + ' and ' + b.hi + ' of 100 similar projects got their OC more than 12 months late. Plinth. No developer pays us. Ever. Data as of 14 Oct 2026, model v1.2. Not a credit rating. QR code: the live card.',
       replies: replies,
       hasTurn: !!turn,
       turnLabel: turn === 'cost' ? 'All-in cost' : (turn === 'follow' ? 'Follow' : 'Why this band'),

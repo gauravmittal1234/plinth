@@ -171,7 +171,7 @@ button:active{transform:scale(.97)}
             <sc-if value="{{requested}}" hint-placeholder-val="{{false}}">
               <p role="status" style="margin: 0; display: flex; gap: 10px; align-items: flex-start; padding: 14px 18px; border-radius: 8px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; font-size: 17px; line-height: 1.45"><svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true" style="flex: none; margin-top: 5px"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg><span><strong style="font-weight: 700">Requested · R-1018-07.</strong> We’ll add it by 1 Nov 2026 or tell you why not. {{waConfirm}}</span></p>
             </sc-if>
-            <p style="margin: 0; font-size: 16px; color: {{t.ink2}}">Prefer a person? <a href="#adviser" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline">Talk to a Plinth adviser</a>, paid by you, never by developers. Free to ask.</p>
+            <p style="margin: 0; font-size: 16px; color: {{t.ink2}}">Prefer a person? <a href="#adviser" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline">Talk to a Plinth adviser · free · developers never pay us</a>.</p>
           </div>
         </sc-if>
         <sc-if value="{{isNoida}}" hint-placeholder-val="{{false}}">
@@ -183,7 +183,7 @@ button:active{transform:scale(.97)}
             <sc-if value="{{waitlisted}}" hint-placeholder-val="{{false}}">
               <p role="status" style="margin: 0; display: flex; gap: 10px; align-items: flex-start; padding: 14px 18px; border-radius: 8px; background: {{t.accentSoft}}; color: {{t.onAccentSoft}}; font-size: 17px; line-height: 1.45"><svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true" style="flex: none; margin-top: 5px"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg><span><strong style="font-weight: 700">On the waitlist.</strong> One WhatsApp message when Noida opens, planned for Jul–Sep 2027. Nothing else.</span></p>
             </sc-if>
-            <p style="margin: 0; font-size: 16px; color: {{t.ink2}}">Prefer a person? <a href="#adviser" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline">Talk to a Plinth adviser</a>, paid by you, never by developers. Free to ask.</p>
+            <p style="margin: 0; font-size: 16px; color: {{t.ink2}}">Prefer a person? <a href="#adviser" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline">Talk to a Plinth adviser · free · developers never pay us</a>.</p>
           </div>
         </sc-if>
         <ol style="margin: 0 -20px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
@@ -425,7 +425,7 @@ class Component extends DCLogic {
 
     // Fictional data (DESIGN.md §5, §5b "Homes, size and units"; From the developer, price lists of Oct 2026)
     var P = [
-      {id: 'kestrel', name: 'Kestrel Park', dev: 'Orbis Land', sector: 'Sector 113', corridor: 'dxp', band: 'Low', conf: 'high', built: 63, time: 58, orig: 'Jun 2027', chipNote: 'Delivery risk · as of 14 Oct 2026', px: 40, py: 12.5,
+      {id: 'kestrel', name: 'Kestrel Park', dev: 'Orbis Land', sector: 'Sector 113', corridor: 'dxp', band: 'Low', conf: 'high', built: 63, time: 58, orig: 'Nov 2028', chipNote: 'Delivery risk · as of 14 Oct 2026', px: 40, py: 12.5,
         homes: {2: {carpet: '1,050', quoted: 1.58, allIn: null}, 3: {carpet: '1,400', quoted: 2.10, allIn: 2.44}}},
       {id: 'sapphire', name: 'Sapphire Grove, Phase 1', dev: 'Meridian Habitat', sector: 'Sector 106', corridor: 'dxp', band: 'Moderate', conf: 'high', built: 48, time: 55, orig: 'Mar 2028', chipNote: 'Delivery risk · as of 14 Oct 2026', px: 40, py: 24.5,
         homes: {3: {carpet: '1,400', quoted: 1.95, allIn: 2.27}}},

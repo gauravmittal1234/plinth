@@ -38,7 +38,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
       <img class="pl-drift" data-slot="costSheetDesk" src="/_blob/0df253c9bcc49614197e2e73dc9444e4" alt="Live camera view: page 1 of a printed cost sheet on a desk" style="position: absolute; left: 0; top: 0; width: 390px; height: 552px; background: #E7E3DA; object-fit: cover; display: block">
     </sc-if>
     <sc-if value="{{vf2}}" hint-placeholder-val="{{false}}">
-      <div data-slot="costSheetPage2" role="img" aria-label="Live camera view: page 2 of the printed cost sheet on a desk" style="position: absolute; left: 0; top: 0; width: 390px; height: 552px; background: #E7E3DA"></div>
+      <img data-slot="costSheetPage2" src="/_blob/b4b9fa00a43772a64dcad9473fd4cce0" alt="Live camera view: page 2 of the printed cost sheet on a desk" style="position: absolute; left: 0; top: 0; width: 390px; height: 552px; background: #E7E3DA; object-fit: cover; display: block">
     </sc-if>
     <sc-if value="{{camOff}}" hint-placeholder-val="{{false}}">
       <div style="position: absolute; left: 0; right: 0; top: 168px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: #FFFFFF">
@@ -153,7 +153,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
           </figure>
           <figure style="margin: 0; display: flex; flex-direction: column; gap: 6px">
             <div style="position: relative; aspect-ratio: 3 / 4; overflow: hidden; background: #E7E3DA">
-              <div data-slot="costSheetPage2" role="img" aria-label="Your photo of page 2 of the cost sheet" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #E7E3DA"></div>
+              <img data-slot="costSheetPage2" src="/_blob/b4b9fa00a43772a64dcad9473fd4cce0" alt="Your photo of page 2 of the cost sheet" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block">
               <span style="position: absolute; left: 8px; top: 8px; display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; background: #FFFFFF; color: #1B1A17; font-size: 13px; font-weight: 600">Page 2</span>
               <sc-if value="{{q2Bad}}" hint-placeholder-val="{{true}}"><span style="position: absolute; left: 8px; bottom: 8px; display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; background: #111D19; color: #FFFFFF; font-size: 13px; font-weight: 600">{{q2Pill}}</span></sc-if>
             </div>
@@ -360,7 +360,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
           </a>
           <p style="margin: 0; font-size: 14px; line-height: 1.45; color: {{t.ink2}}">Ask Plinth is an AI. It answers from public records like HARERA and shows its sources.</p>
         </div>
-        <p style="margin: 0; font-size: 15px; line-height: 1.5"><a href="#adviser" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 4px">Talk to a Plinth adviser</a> · paid by you, never by developers. Free to ask.</p>
+        <p style="margin: 0; font-size: 15px; line-height: 1.5"><a href="#adviser" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 4px">Talk to a Plinth adviser · free · developers never pay us</a>.</p>
       </div>
     </section>
   </sc-if>
@@ -550,7 +550,8 @@ class Component extends DCLogic {
     var shown = typeof s.shown === 'number' ? s.shown : k.ALL;
     var runCr = shown < 50000 ? '₹0' : '₹' + (shown / 1e7).toFixed(2) + ' Cr';
     var stages = ['Reading page 1', 'Reading page 1', 'Reading page 1', 'Reading page 1', 'Reading page 1', 'Reading page 1', 'Reading page 2', 'Checking the sheet’s total adds up', 'Adding stamp duty, Haryana rules Oct 2026'];
-    var readStatus = sending ? 'Sending 2 pages · ' + (s.upl || 0) + '%' : (readDone ? 'Done. 9 of 9 read, and the sheet’s total adds up.' : stages[readN] + ' · ' + readN + ' of 9');
+    var linesRead = READ.slice(0, readN).filter(function (r) { return r.label !== 'EDC and IDC' && r.label !== 'Total on the sheet adds up'; }).length;
+    var readStatus = sending ? 'Sending 2 pages · ' + (s.upl || 0) + '%' : (readDone ? 'Done. All 7 lines read, and the sheet’s total adds up.' : stages[readN] + ' · ' + linesRead + ' of 7 lines');
     var progPct = sending ? (s.upl || 0) : Math.round(readN / k.N * 100);
     var found = READ.slice(0, sending ? 0 : readN);
 

@@ -217,7 +217,7 @@ input::placeholder{color:currentColor;opacity:.62}
                   <input id="code-in" type="text" inputmode="numeric" maxlength="4" autocomplete="off" value="{{code}}" onChange="{{onCode}}" placeholder="4 digits" style="flex: 1; min-width: 0; height: 56px; padding: 0 18px; border-radius: 999px; border: 1px solid {{t.lineStrong}}; background: {{t.panelSolid}}; color: {{t.ink}}; font: inherit; font-size: 26px; font-weight: 700; letter-spacing: 0.24em; box-sizing: border-box">
                   <button type="button" class="press" onClick="{{findVisit}}" aria-disabled="{{findDisabled}}" style="{{findStyle}}">Find</button>
                 </div>
-                <span style="font-size: 14px; color: {{t.ink2}}">Preview: Rohan’s pass shows 4821.</span>
+                <span style="font-size: 14px; color: {{t.ink2}}">The buyer shows a 4-digit code on their pass. Their number isn’t on it.</span>
 
                 <sc-if value="{{ckFound}}" hint-placeholder-val="{{false}}">
                   <div role="status" class="rise" style="border-radius: 8px; background: {{t.track}}; padding: 16px; display: flex; flex-direction: column; gap: 10px">
@@ -308,7 +308,7 @@ input::placeholder{color:currentColor;opacity:.62}
     <div style="width: 100%; max-width: 1264px; margin: 0 auto; padding: 112px 32px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
       <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px">
         <p style="margin: 0; max-width: 15ch; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
-        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">Every enquiry and visit on this page stands on a consent record the buyer gave, for one purpose. We never sell buyers to anyone, and nothing here changes a score, a ranking or what our AI says.</p>
+        <p style="margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: {{t.onSlab2}}">Every enquiry and visit on this page stands on a consent record the buyer gave, for one purpose. We never sell buyers to anyone, and nothing here changes a score, a ranking or what Ask Plinth says.</p>
       </div>
       <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; font-size: 15px; color: {{t.onSlab2}}">
         <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
@@ -377,7 +377,7 @@ class Component extends DCLogic {
         questions: ['Can I see the HARERA receipt for the Jul–Sep 2026 QPR?', 'Which charges on the cost sheet are optional?'],
         agent: '', contact: 'code', code: '4821', consent: 'C-1018-11', purpose: 'share Rohan’s first name, visit time and the questions he chooses to send ahead with Northfield Estates’ site office for this visit', given: '18 Oct 2026, 09:15'},
       {key: 'ishita', name: 'Ishita', type: 'enquiry', project: 'Aurelia Heights, Phase 2', headline: 'Ishita asked for the official price list', listLine: 'Asked for the official price list', when: '17 Oct 2026, 19:42', whenShort: '17 Oct', status: 'reply',
-        brief: [['Configuration', '3 BHK'], ['Budget, all-in', '₹2.6–2.9 Cr'], ['Timeline', 'Buying in 3–6 months'], ['Home loan', 'Eligibility checked, lender not shared']],
+        brief: [['Configuration', '3 BHK'], ['Budget, all-in', '₹2.6–2.9 Cr'], ['Timeline', 'Buying in 3–6 months'], ['Home loan', 'Will need a loan']],
         questions: ['Is the price list dated after 2 Oct 2026?', 'Is PLC negotiable for park-facing units?', 'When will Tower A reach slab 12?'],
         agent: 'Larkspur Realty', agentWhen: '17 Oct 2026', contact: 'relay', consent: 'C-1017-06', purpose: 'send the official price list for Aurelia Heights, Phase 2', given: '17 Oct 2026, 19:42'},
       {key: 'nisha', name: 'Nisha', type: 'visit', project: 'Cedar Walk, Phase 2', headline: 'Nisha booked a site visit', listLine: 'Visit · Sun 25 Oct, 4 pm · code 3376', when: '17 Oct 2026, 12:40', whenShort: '17 Oct', status: 'booked',
@@ -385,7 +385,7 @@ class Component extends DCLogic {
         questions: ['Is the club charge optional?'],
         agent: 'Bluegate Homes', agentWhen: '17 Oct 2026', contact: 'code', code: '3376', consent: 'C-1017-05', purpose: 'share Nisha’s first name and visit time with Northfield Estates’ Cedar Walk site office for this visit', given: '17 Oct 2026, 12:40'},
       {key: 'aman', name: 'Aman', type: 'visit', project: 'Aurelia Heights, Phase 2', headline: 'Aman booked a site visit', listLine: 'Visit · Sat 24 Oct, 3 pm · code 5190', when: '17 Oct 2026, 08:58', whenShort: '17 Oct', status: 'booked',
-        brief: [['Visit', 'Sat 24 Oct 2026, 3 pm, sales gallery'], ['Visitors', '3'], ['Visit code', '5190'], ['Configuration', '3 BHK'], ['Budget, all-in', '₹2.6–2.9 Cr'], ['Timeline', 'Buying in 6–12 months'], ['Home loan', 'Eligibility checked']],
+        brief: [['Visit', 'Sat 24 Oct 2026, 3 pm, sales gallery'], ['Visitors', '3'], ['Visit code', '5190'], ['Configuration', '3 BHK'], ['Budget, all-in', '₹2.6–2.9 Cr'], ['Timeline', 'Buying in 6–12 months'], ['Home loan', 'Will need a loan']],
         questions: [],
         agent: '', contact: 'code', code: '5190', consent: 'C-1017-03', purpose: 'share Aman’s first name and visit time with Northfield Estates’ site office for this visit', given: '17 Oct 2026, 08:58'},
       {key: 'farah', name: 'Farah', type: 'enquiry', project: 'Cedar Walk, Phase 2', headline: 'Farah asked about the payment plan', listLine: 'Payment plan questions', when: '16 Oct 2026, 18:20', whenShort: '16 Oct', status: 'reply',
@@ -461,7 +461,7 @@ class Component extends DCLogic {
       primaryLabel = 'Open site check-in'; primaryHref = '#checkin';
     }
     var actNote = '';
-    if (sent[r.key]) actNote = 'Sent to ' + (s.mail || 'your CRM address') + ' · 18 Oct 2026, 11:32';
+    if (sent[r.key]) actNote = 'Sent to ' + (s.mail || 'your CRM address') + ' · 18 Oct 2026, 11:34';
     if (r.contact === 'shared' && s.copied) actNote = 'Number copied. It stays in your CRM only with this consent reference.';
     var sel = {
       name: r.name, headline: r.headline, project: r.project,
@@ -545,7 +545,7 @@ class Component extends DCLogic {
       ['configuration', '3 BHK', '4 BHK'],
       ['budget_all_in', '₹2.6–2.9 Cr', '₹3.6–4.0 Cr'],
       ['timeline', '3–6 months', 'Within 3 months'],
-      ['home_loan', 'Eligibility checked', 'Self-funded'],
+      ['home_loan', 'Will need a loan', 'Self-funded'],
       ['questions', '3 (in full)', '2 (in full)'],
       ['agent_of_record', 'Larkspur Realty', 'None'],
       ['contact', 'Plinth relay only', '+91 90000 12412 (shared by buyer)'],
@@ -577,7 +577,7 @@ class Component extends DCLogic {
       routes: routes, isEmail: route === 'email', isCsv: route === 'csv',
       mail: s.mail, onMail: function (e) { self.setState({mail: e.target.value}); },
       sendTest: function () { self.setState({crmNote: 'Test record sent to ' + (String(self.state.mail || '').trim() || 'your address') + ' · 18 Oct 2026, 11:31'}); },
-      downloadCsv: function () { self.setState({crmNote: 'northfield-plinth-records-2026-10-18.csv · 7 rows · prepared 18 Oct 2026, 11:32'}); },
+      downloadCsv: function () { self.setState({crmNote: 'northfield-plinth-records-2026-10-18.csv · 7 rows · prepared 18 Oct 2026, 11:34'}); },
       crmNote: s.crmNote || '',
       csvRows: csvRows
     };

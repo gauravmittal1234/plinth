@@ -91,7 +91,7 @@ html{scroll-behavior:smooth}
         <p class="pl-in pl-d2" style="margin: 0; font-size: 22px; line-height: 1.45; font-weight: 500; max-width: 920px">Delivery risk: {{bandName}} · All-in ₹2.74 Cr · 41% built · Original completion Dec 2027</p>
         <div class="pl-in pl-d3" style="display: flex; gap: 12px 14px; flex-wrap: wrap; align-items: center; margin-top: 8px">
           <button type="button" onClick="{{toggleFollow}}" aria-pressed="{{following}}" style="{{heroFollowStyle}}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="{{followIcon}}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{followLabel}}</button>
-          <a href="#ask" style="display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 24px; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.94); color: #1B1A17; text-decoration: none; font-size: 18px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="2.5" width="6" height="10" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"></rect><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v2.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg>Ask about it</a>
+          <a href="#ask" style="display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 24px; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.94); color: #1B1A17; text-decoration: none; font-size: 18px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="2.5" width="6" height="10" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"></rect><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v2.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg>Ask Plinth</a>
           <button type="button" onClick="{{share}}" style="height: 52px; display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; border: 0; background: transparent; color: #FFFFFF; font: inherit; font-size: 18px; font-weight: 600; text-decoration: underline; text-underline-offset: .2em; cursor: pointer"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12.5V3M6.5 6.5L10 3l3.5 3.5M4 11v4.5c0 .6.4 1 1 1h10c.6 0 1-.4 1-1V11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Share the live page</button>
           <sc-if value="{{following}}" hint-placeholder-val="{{false}}"><span style="font-size: 16px; color: rgba(255,255,255,0.94)">Alerts on: band changes, QPR filings, extensions and orders.</span></sc-if>
         </div>
@@ -655,13 +655,13 @@ html{scroll-behavior:smooth}
     <section id="picture" aria-labelledby="pic-h" style="scroll-margin-top: 120px; background: {{t.track}}; padding: 72px 0 72px">
       <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-wrap: wrap-reverse; align-items: center; gap: 40px 64px">
         <div class="pl-rv pl-d1" style="flex: 1 1 560px; min-width: 0; position: relative; height: 420px; overflow: hidden; background: #E7E3DA">
-          <img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="Empty 3 BHK living room, original photo. Illustrative image." style="position: absolute; inset: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block">
+          <img data-slot="roomBare" src="/_blob/9e10fb57e43386355d222d092a572def" alt="Empty 3 BHK living room in the sample flat, original photo. Illustrative image." style="position: absolute; inset: 0; width: 100%; height: 100%; background: #E7E3DA; object-fit: cover; display: block">
           <span style="position: absolute; left: 16px; top: 16px; font-size: 14px; color: #1B1A17; background: rgba(255,255,255,0.92); padding: 4px 12px; border-radius: 999px">Original photo</span>
           <div style="{{afterStyle}}">
-            <img data-slot="roomModernIndian" src="/_blob/6b062f16f5d7632569e4c012811473c2" alt="The same room staged in Modern Indian style. AI-generated preview." style="{{slotMI}}; width: 100%; height: 100%; object-fit: cover">
-            <img data-slot="roomMinimal" src="/_blob/e1a0cb38dadcfa3321ba3cc1854b53bc" alt="The same room staged in Minimal style. AI-generated preview." style="{{slotMin}}; width: 100%; height: 100%; object-fit: cover">
-            <img data-slot="roomWarmWood" src="/_blob/d7c665ef54bd23149ee299cecb0fd15e" alt="The same room staged in Warm wood style. AI-generated preview." style="{{slotWW}}; width: 100%; height: 100%; object-fit: cover">
-            <span style="position: absolute; right: 16px; top: 16px; font-size: 14px; font-weight: 600; color: #FFFFFF; background: #1B1A17; padding: 4px 12px; border-radius: 999px">AI-generated preview</span>
+            <img data-slot="roomModernIndian" src="/_blob/6b062f16f5d7632569e4c012811473c2" alt="The same room staged in Modern Indian style. AI-generated illustration." style="{{slotMI}}; width: 100%; height: 100%; object-fit: cover">
+            <img data-slot="roomMinimal" src="/_blob/e1a0cb38dadcfa3321ba3cc1854b53bc" alt="The same room staged in Minimal style. AI-generated illustration." style="{{slotMin}}; width: 100%; height: 100%; object-fit: cover">
+            <img data-slot="roomWarmWood" src="/_blob/d7c665ef54bd23149ee299cecb0fd15e" alt="The same room staged in Warm wood style. AI-generated illustration." style="{{slotWW}}; width: 100%; height: 100%; object-fit: cover">
+            <span style="position: absolute; right: 16px; top: 16px; font-size: 14px; font-weight: 600; color: #FFFFFF; background: #1B1A17; padding: 4px 12px; border-radius: 999px">AI-generated illustration</span>
             <span style="position: absolute; right: 16px; bottom: 16px; font-size: 14px; color: #1B1A17; background: rgba(255,255,255,0.92); padding: 4px 12px; border-radius: 999px">{{styleName}} · furniture added</span>
           </div>
           <div aria-hidden="true" style="{{dividerStyle}}"></div>
@@ -669,12 +669,12 @@ html{scroll-behavior:smooth}
         </div>
         <div style="flex: 1 1 380px; max-width: 480px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
           <h2 id="pic-h" class="pl-rv" style="{{h2}}">Picture yourself here</h2>
-          <p class="pl-rv pl-d1" style="margin: 0; font-size: 21px; line-height: 1.5">Photograph a bare room on your site visit. AI furnishes it to scale. Walls, windows and floors never move.</p>
+          <p class="pl-rv pl-d1" style="margin: 0; font-size: 21px; line-height: 1.5">Start from the brochure floor plan, or photograph the sample flat on your site visit. AI furnishes it to scale. Walls, windows and floors never move.</p>
           <div role="group" aria-label="View" style="align-self: flex-start; display: inline-flex; padding: 4px; border-radius: 999px; background: {{t.chipFillOnTrack}}">
             <sc-for list="{{views}}" as="v" hint-placeholder-count="3"><button type="button" onClick="{{v.pick}}" aria-pressed="{{v.on}}" style="{{v.style}}">{{v.label}}</button></sc-for>
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px">
-            <label for="vis-range" style="font-size: 16px">Or drag to compare the original photo and the AI preview</label>
+            <label for="vis-range" style="font-size: 16px">Or drag to compare the original photo and the AI-generated illustration</label>
             <input id="vis-range" type="range" min="0" max="100" step="1" value="{{vis}}" onChange="{{onVis}}" aria-valuetext="{{visText}}">
           </div>
           <div role="group" aria-label="Furnishing style" style="display: flex; flex-wrap: wrap; gap: 8px">
@@ -764,9 +764,9 @@ html{scroll-behavior:smooth}
       <div style="max-width: 1264px; margin: 0 auto; padding: 0 32px; box-sizing: border-box">
         <div style="display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start">
           <div style="flex: 1 1 360px; max-width: 440px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
-            <h2 id="ask-h" class="pl-rv" style="{{h2}}">Ask anything</h2>
+            <h2 id="ask-h" class="pl-rv" style="{{h2}}">Ask Plinth anything</h2>
             <p class="pl-rv pl-d1" style="margin: 0; font-size: 21px; line-height: 1.5">Type or speak, in English or Hinglish. Every answer cites the records it used.</p>
-            <p style="margin: 0; font-size: 17px; line-height: 1.55">I’m Plinth’s AI assistant. I can be wrong, so I show my sources. <a href="#handoff" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline">Talk to a Plinth adviser · paid by you, never by developers</a></p>
+            <p style="margin: 0; font-size: 17px; line-height: 1.55">Ask Plinth is an AI. It answers from public records like HARERA and shows its sources. It can be wrong, so check them. <a href="#handoff" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline">Talk to a Plinth adviser · free · developers never pay us</a></p>
             <div role="group" aria-label="Suggested questions" style="display: flex; flex-direction: column; gap: 8px">
               <sc-for list="{{prompts}}" as="pp" hint-placeholder-count="3"><button type="button" onClick="{{pp.pick}}" aria-pressed="{{pp.on}}" style="{{pp.style}}">{{pp.text}}</button></sc-for>
               <p style="margin: 8px 0 0; font-size: 15px; color: {{t.ink2}}">Or ask your own question in the box.</p>
@@ -791,6 +791,13 @@ html{scroll-behavior:smooth}
                   <p style="margin: 0; font-size: 19px; line-height: 1.6">{{answerText}}</p>
                   <sc-if value="{{answerDone}}" hint-placeholder-val="{{true}}">
                     <div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{answerSources}}" as="asx" hint-placeholder-count="3"><button type="button" onClick="{{asx.open}}" aria-label="{{asx.aria}}" style="{{chipStyleOnTrack}}">{{asx.label}}</button></sc-for></div>
+                  </sc-if>
+                  <sc-if value="{{showDecide}}" hint-placeholder-val="{{false}}">
+                    <ul aria-label="How to decide" style="list-style: none; margin: 0; padding: 4px 0; border-radius: 8px; background: {{t.bgSolid}}">
+                      <sc-for list="{{decideRows}}" as="dr" hint-placeholder-count="4">
+                        <li><a href="{{dr.href}}" style="min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 18px; color: {{t.ink}}; text-decoration: none"><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 17px; font-weight: 700; line-height: 1.3">{{dr.title}}</strong><span style="font-size: 15px; line-height: 1.4; color: {{t.ink2}}">{{dr.sub}}</span></span><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></a></li>
+                      </sc-for>
+                    </ul>
                   </sc-if>
                 </div>
               </sc-if>
@@ -1021,7 +1028,8 @@ class Component extends DCLogic {
       {q: 'What should I ask the developer?', a: 'Ask for the CA certificate on escrow withdrawals for 2026 [1]. Ask for the slab schedule for Towers A–C, and why 3 QPRs were late [2]. The law caps payments at 10% of the price before a registered agreement for sale [3].', src: ['qprDec25', 'qprReg', 'reraAct']},
       {q: 'Compare with Kestrel Park', a: 'Kestrel Park is 63% built with 58% of its time used [1]. Aurelia Phase 2 is 41% built with 77% used [2]. All-in, Kestrel is about ₹2.44 Cr against ₹2.74 Cr here, for a similar 3 BHK [3].', src: ['kestrelQpr', 'qpr', 'costSheets']},
       {q: this.words().join(' '), a: 'Records show 41% of Phase 2 is built, with 77% of the promised time used [1]. The original completion date is Dec 2027, with no extensions so far [2]. Our delivery risk is ' + band + ': between ' + R + ' of 100 similar projects finished more than 12 months late [3].', src: ['qpr', 'ext', 'method']},
-      {q: 'What will I really pay?', a: 'All-in, a 3 BHK here costs about ₹2.74 Cr, 17% more than the quoted ₹2.35 Cr [1]. GST, stamp duty and registration add ₹29.8 L [2]. That works out to ₹18,900 per sq ft of carpet area [3].', src: ['costSheet', 'rules', 'reg']}
+      {q: 'What will I really pay?', a: 'All-in, a 3 BHK here costs about ₹2.74 Cr, 17% more than the quoted ₹2.35 Cr [1]. GST, stamp duty and registration add ₹29.8 L [2]. That works out to ₹18,900 per sq ft of carpet area [3].', src: ['costSheet', 'rules', 'reg']},
+      {q: 'Should I buy it?', a: 'I can’t tell you whether to buy. That’s your call, and no developer pays us to steer it. Here’s how to decide:', src: [], decide: true}
     ];
   }
   flash(msg) {
@@ -1103,7 +1111,8 @@ class Component extends DCLogic {
     if (!text) return;
     var low = text.toLowerCase();
     var i = 3;
-    if (/cost|pay|price|emi|all-in|paisa|budget|₹/.test(low)) i = 4;
+    if (/should i (buy|book)|buy (it|karu|karun|karna)|lena chahiye|le lu|worth (it|buying)|good (buy|investment)/.test(low)) i = 5;
+    else if (/cost|pay|price|emi|all-in|paisa|budget|₹/.test(low)) i = 4;
     else if (/kestrel|compare/.test(low)) i = 2;
     else if (/developer|builder|should i ask/.test(low)) i = 1;
     else if (/why|elevated|risk|band|moderate|severe/.test(low)) i = 0;
@@ -1189,7 +1198,7 @@ class Component extends DCLogic {
       method: {kind: 'op', chip: 'Methodology v1.2', fact: 'Delivery risk is our opinion, from published rules and a scorecard.', auth: 'Plinth', doc: 'Delivery risk methodology, version 1.2, with the calibration table', d1l: 'Recalculated', d1: '15 Oct 2026', snap: 'Data as of 14 Oct 2026', hash: 'sha256 7c2f90ab 1b6e…d47a 31e8d4b6', extract: 'Bands come from published override rules and an interpretable scorecard. No AI sets a score.', read: 'Published with a changelog and a quarterly calibration check.', used: 'Delivery risk band · AI answers', status: 'Current version', view: 'Read the methodology', href: '#methodology'},
       devPhotos: {kind: 'dev', chip: 'Developer upload · Sep 2026', fact: 'Tower B structure was completed in September 2026.', auth: 'Northfield Estates', doc: 'Site photos sent through the Evidence and Reply portal', d1l: 'Uploaded', d1: '15 Oct 2026', snap: '15 Oct 2026', hash: 'sha256 b5d1e830 92af…3e60 6a27f94c', extract: '12 dated photos of Tower B. Not yet matched to a filing.', read: 'Under review since 15 Oct 2026. Decision due by 5 Nov 2026.', used: 'Developer says · Story chapter 5', status: 'Under review', view: 'View the upload', href: '#reply'},
       reraAct: {chip: 'RERA Act 2016 · s.13', fact: 'A promoter cannot take more than 10% of the cost before a registered agreement for sale.', auth: 'Government of India', doc: 'Real Estate (Regulation and Development) Act, 2016, Section 13', d1l: 'In force', d1: '1 May 2017', snap: '14 Oct 2026', hash: 'sha256 2d84f6b1 07ce…b5a3 e19c4a70', extract: '“A promoter shall not accept a sum more than ten per cent of the cost…”', read: 'Quoted from the Act. Checked by a person.', used: 'AI answers', status: 'In force', view: 'Read the Act', href: '#act'},
-      kestrelQpr: {chip: 'HARERA QPR · Kestrel Park', fact: 'Kestrel Park: 63% built, with 58% of the promised time used.', doc: 'Quarterly Progress Report, Apr–Jun 2026, Kestrel Park', d1: '11 Jul 2026', snap: '16 Jul 2026', hash: 'sha256 85e0c3d7 4b19…e8f2 0a6d91c4', extract: '“Percentage of work completed: 63%.” Page 3', used: 'AI answers · Compare'},
+      kestrelQpr: {chip: 'HARERA QPR · Kestrel Park · Jul–Sep 2026', fact: 'Kestrel Park: 63% built, with 58% of the promised time used.', doc: 'Quarterly Progress Report, Jul–Sep 2026, Kestrel Park', d1: '12 Oct 2026', snap: '14 Oct 2026', hash: 'sha256 85e0c3d7 4b19…e8f2 0a6d91c4', extract: '“Percentage of work completed: 63%.” Page 3', used: 'AI answers · Compare'},
       priceList: {kind: 'dev', chip: 'Developer price list · 2 Oct 2026', fact: '3 BHK from ₹2.35 Cr. 4 BHK from ₹3.38 Cr. Base prices.', auth: 'Northfield Estates', doc: 'Price list for Phase 2, sent through the developer workspace', d1l: 'Dated', d1: '2 Oct 2026', snap: '2 Oct 2026', hash: 'sha256 4be1c07d 90a2…7f3e 52c8b1a9', extract: '“3 BHK (1,450 sq ft carpet) from ₹2,35,00,000. 4 BHK (2,100 sq ft carpet) from ₹3,38,00,000.”', read: 'Shown as given. Earlier lists kept with their dates.', used: 'Homes · From the developer', status: 'Shared by the developer; not a public filing', view: 'View the price list', href: '#from-dev'},
       brochure: {kind: 'dev', chip: 'Developer brochure · plans', fact: 'Room sizes for the 3 BHK and 4 BHK layouts.', auth: 'Northfield Estates', doc: 'Phase 2 brochure, unit plans pages 14–17', d1l: 'Dated', d1: '2 Oct 2026', snap: '2 Oct 2026', hash: 'sha256 e93a5b20 1cd4…08b6 c47f2e13', extract: 'Unit plans with room sizes in feet and inches.', read: 'Redrawn by Plinth. Room sizes are the developer’s; carpet totals come from the HARERA registration.', used: 'Homes · floor plans', status: 'Shared by the developer; not a public filing', view: 'View the brochure', href: '#from-dev'},
       flood1: {kind: 'news', chip: 'News report · 28 Jul 2026', fact: 'Waterlogging reported on the Dwarka Expressway service road at the Sector 37D turn.', auth: 'News report', doc: 'Local news report on monsoon waterlogging, Sector 37D', d1l: 'Published', d1: '28 Jul 2026', snap: '29 Jul 2026', hash: 'sha256 6e2a91c4 b03d…77f1 2c9e58a0', extract: 'Standing water on the service road after heavy rain, reported by residents and commuters.', read: 'Matched to Sector 37D by the place named. Not checked on the ground.', used: 'Homes → reported waterlogging', status: 'Reported, not verified by Plinth', view: 'Open the report', href: '#news'},
@@ -1221,7 +1230,7 @@ class Component extends DCLogic {
     var drawerStyle = 'position:fixed;right:16px;top:clamp(16px, ' + evY + 'px, calc(100vh - 780px));z-index:60;width:min(440px, calc(100vw - 32px));max-height:calc(100vh - 32px);overflow-y:auto;box-sizing:border-box;padding:24px 26px 28px;border-radius:8px;background:' + T.drawerBg + ';color:' + T.ink + ';' + (night ? 'border:1px solid ' + T.lineStrong + ';' : 'box-shadow:0 8px 24px rgba(27,26,23,.12);') + 'display:flex;flex-direction:column;gap:16px';
 
     // G-18: a sticky "On this page" chapter rail. The current chapter carries an ink bar.
-    var RAIL = [['risk', 'Delivery risk'], ['next', 'What to do'], ['book', 'Before booking'], ['story', 'Built'], ['homes', 'Homes'], ['cost', 'Cost'], ['wait', 'The wait'], ['picture', 'Picture it'], ['records', 'Records'], ['ask', 'Ask']];
+    var RAIL = [['risk', 'Delivery risk'], ['next', 'What to do'], ['book', 'Before booking'], ['story', 'Built'], ['homes', 'Homes'], ['cost', 'Cost'], ['wait', 'The wait'], ['picture', 'Picture it'], ['records', 'Records'], ['ask', 'Ask Plinth']];
     var rail = RAIL.map(function (x) {
       var on = s.active === x[0];
       return {href: '#' + x[0], label: x[1], current: on ? 'location' : 'false', pick: function () { self.setState({active: x[0]}); },
@@ -1388,7 +1397,8 @@ class Component extends DCLogic {
     var aw = ans.a.split(' ');
     var shown = Math.min(aw.length, Number(s.shown) || 0);
     var voice = s.voice || 'idle';
-    var prompts = A.slice(0, 3).map(function (x, i) {
+    var prompts = [0, 1, 2, 5].map(function (i) {
+      var x = A[i];
       var on = i === aiIdx && !s.userQ;
       return {text: x.q, on: on, pick: function () { clearInterval(self._wave); clearInterval(self._hear); clearTimeout(self._hearDone); clearTimeout(self._think); self.ask(i, {userQ: '', spoken: false, voice: 'idle'}); },
         style: 'width:100%;min-height:56px;padding:12px 20px;box-sizing:border-box;border:0;border-radius:8px;font:inherit;font-size:17px;font-weight:600;line-height:1.35;text-align:left;cursor:pointer;color:' + (on ? T.bg : T.ink) + ';background:' + (on ? T.ink : T.chipFillOnTrack)};
@@ -1798,6 +1808,13 @@ class Component extends DCLogic {
       answerText: aw.slice(0, shown).join(' ') + (shown < aw.length ? ' …' : ''),
       answerDone: shown >= aw.length,
       answerSources: ans.src.map(function (id, i) { var c = chip(id); c.label = '[' + (i + 1) + '] ' + c.label; return c; }),
+      showDecide: !!ans.decide && shown >= aw.length,
+      decideRows: [
+        {title: 'Can you carry a 12–24-month delay?', sub: 'Afford the wait: rent plus pre-EMI while it is built', href: '#wait'},
+        {title: 'Read the 4 reasons', sub: 'and what would change the band', href: '#risk-detail'},
+        {title: 'Look at lower-band projects nearby', sub: 'Kestrel Park, Low, ₹2.44 Cr all-in · Sapphire Grove Ph 1, Moderate, ₹2.27 Cr all-in', href: '#next'},
+        {title: 'Before you pay anything', sub: 'Check the payee against the RERA collection account', href: '#before-you-pay'}
+      ],
       listening: listening, speaking: voice === 'speaking', waveBars: waveBars, voiceStatus: VS[voice] || VS.idle,
       micOn: micActive,
       micLabel: listening ? 'Stop listening' : (voice === 'speaking' ? 'Stop reading aloud' : 'Ask by voice'),

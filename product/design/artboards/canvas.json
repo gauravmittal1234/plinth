@@ -82,7 +82,7 @@
       "x": 0,
       "y": 0,
       "w": 1280,
-      "h": 5040,
+      "h": 5160,
       "title": "Home",
       "expand": "fill",
       "is_interactive": true,
@@ -92,7 +92,7 @@
       "x": 6800,
       "y": 0,
       "w": 1280,
-      "h": 6900,
+      "h": 8600,
       "title": "Cost-sheet normaliser",
       "expand": "fill",
       "is_interactive": true,
@@ -130,7 +130,7 @@
       "x": 470,
       "y": 0,
       "w": 390,
-      "h": 1400,
+      "h": 1460,
       "title": "WhatsApp · cost sheet",
       "is_interactive": true,
       "page": "whatsapp"
@@ -175,7 +175,7 @@
       "x": 1360,
       "y": 0,
       "w": 1280,
-      "h": 2340,
+      "h": 2480,
       "title": "Search results",
       "expand": "fill",
       "is_interactive": true,
@@ -250,7 +250,7 @@
       "x": 4080,
       "y": 0,
       "w": 1280,
-      "h": 3400,
+      "h": 4100,
       "title": "Compare · 3 projects",
       "expand": "fill",
       "is_interactive": true,
@@ -269,7 +269,7 @@
       "x": 8160,
       "y": 0,
       "w": 1280,
-      "h": 4320,
+      "h": 4440,
       "title": "Picture it furnished",
       "expand": "fill",
       "is_interactive": true,
@@ -570,6 +570,15 @@
       "title": "WhatsApp · before you pay",
       "is_interactive": true,
       "page": "whatsapp"
+    },
+    "AppCostSheet.dc.html": {
+      "x": 8460,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Cost sheet · camera to line by line",
+      "is_interactive": true,
+      "page": "android"
     }
   },
   "order": [
@@ -629,7 +638,8 @@
     "AppVisitPass.dc.html",
     "AppPayAsBuilt.dc.html",
     "WaVisitPass.dc.html",
-    "WaBeforePay.dc.html"
+    "WaBeforePay.dc.html",
+    "AppCostSheet.dc.html"
   ],
   "notes": {
     "dirTitle": {
@@ -661,7 +671,7 @@
       "y": -300,
       "text": "Android app · R1",
       "kind": "title1",
-      "maxW": 8380,
+      "maxW": 8850,
       "page": "android"
     },
     "waTitle": {

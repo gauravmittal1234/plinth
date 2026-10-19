@@ -186,7 +186,7 @@ Every artboard declares `"theme":{"editor":"enum","options":["Day","Night"],"def
 
 The canonical implementation of components 1–9 is `DirectionC.dc.html` on the canvas (a copy sits in the canvas working folder). Copy its markup.
 
-1. **Header (web):** logo mark (forest rounded square with a white plinth line) + "Plinth" wordmark in Bricolage 800 at 23 px. Search pill 48 px tall, radius 999, `line-strong` border. Nav links: Following, Ask, plus a dark "Sign in" pill.
+1. **Header (web):** logo mark (forest rounded square with a white plinth line) + "Plinth" wordmark in Bricolage 800 at 23 px. Search pill 48 px tall, radius 999, `line-strong` border. Nav links: Following, Ask Plinth, plus a dark "Sign in" pill.
 2. **Buttons:**
    - Primary: `accent` fill, white text, 52 px, radius 999, Mukta 600.
    - Secondary: `ink` 1 px outline on white.
@@ -194,7 +194,7 @@ The canonical implementation of components 1–9 is `DirectionC.dc.html` on the 
    - One primary action per screen.
 3. **Question tile:** `surface-soft`, radius 20, padding 22, min-height 150. A question line (15 px, `ink-3`), the answer in Bricolage 30 px, then a caption.
 4. **Risk chip (S):** pill height 28, band fill background, 1 px band-ink border, mini 5-segment meter (each segment 6×10, 2 px gap), band name in Mukta 600 at 14 px. Used in cards, map pins, compare and chat.
-5. **Risk header (M):** 5 × 16×12 meter, band name in Bricolage 30, caption "Delivery risk · low confidence · 14 Oct 2026".
+5. **Risk header (M):** 5 × 16×12 meter, band name in Bricolage 30, caption "Delivery risk · 18 Oct 2026", with a separate "We're less certain about this one" line when confidence is low (never attached to the band name).
 6. **Band scale (L):** 5 pills in a grid. The current band is a 22 px bar in band ink with a 2 px `ink` outline at 3 px offset; the others are 12 px bars in band fill with a band-ink border. Labels sit underneath.
 7. **Icon array:** 10×10 circles at 18 px with a 4 px gap. Filled = band ink. Hatched (45°, band ink on band fill) = uncertain range. Empty = `surface-sunk` with a `#8C9199` border. Blocks fill row-major. Always shown next to the sentence "Between X and Y of 100 similar … projects finished more than 12 months after their original RERA date. The rest finished within 12 months." plus a reference-class caption.
 8. **Reason item:** outlined card (radius 18): number badge (36 px, `surface-soft`, radius 12), factor group in 14 px muted, a fact sentence, and a source chip link with a document icon.
@@ -230,7 +230,7 @@ The bento grid in `LiveDay.dc.html` felt scattered and dashboard-like. **Keep it
    - A full-bleed photo (image slot, ≥ 560 px tall on web), with a bottom gradient scrim for legibility.
    - Title in display 56–64 px.
    - **One plain summary line**: "Delivery risk: Elevated · All-in ₹2.74 Cr · 41% built · Original completion Dec 2027".
-   - One primary button (Follow) and one secondary (Ask).
+   - One primary button (Follow) and one secondary (Ask Plinth).
 6. **A slim sticky action bar.** Web: a floating pill bottom-centre after the hero, with Follow · Ask · Share. Phone: a bottom bar.
 7. **Bigger, calmer type.** Body 19 px web / 17 sp phone. Line-height 1.6. Generous whitespace. Fewer chips and pills per screen.
 8. **Motion lives inside sections** (needle sweep, slab build, number transitions, scroll story), never as layout chrome.
@@ -267,7 +267,7 @@ Every photo spot is an EMPTY placeholder element that we swap for a real `<img>`
 | **AI answer** | Prompt chips plus an input. The answer streams word by word (45 ms), then numbered source chips appear | Label: "AI answer · checked against our records before showing". It always discloses that it's AI and offers a human handoff |
 | **Voice** | A mic button in the Ask bar and in the app. States: idle → listening (live waveform bars plus partial transcript) → thinking → speaking (the answer streams as text and is read aloud). Card results appear under the text | English-first and understands Hinglish. Shows "Recording only while the mic is on". A tap stops it |
 | **Camera identify** | App plus web upload. Two modes: **Scan RERA QR** (on hoardings and brochures) and **Where am I?** (GPS within a project's footprint). The result sheet shows the project, risk chip, truth-panel highlights and Follow | Ask for permission just in time. If nothing matches: "We couldn't match this. Search by name instead." |
-| **Picture it furnished** | Before/after `clip-path` compare with a drag slider, style chips with a furnishing budget range, and an "AI-generated preview" label baked into the image | The original shows first. Structure is never altered; "Items are illustrative" |
+| **Picture it furnished** | Before/after `clip-path` compare with a drag slider, style chips with a furnishing budget range, and an "AI-generated illustration" label baked into the image | The original shows first. Structure is never altered; "Items are illustrative" |
 | **Live strip** | "HARERA synced 2 hours ago · 17,938 orders read · next QPR due 15 Jan 2027" with a static dot (no pulsing) | — |
 
 Motion: purposeful only, meaning needle sweep, slab build, number transitions and streaming text. Honour `prefers-reduced-motion` (in code: no sweep, final state shown). Never bounce or play confetti.
@@ -326,7 +326,7 @@ Today is **18 Oct 2026**. Data is as of **14 Oct 2026**. Model **v1.2**. Every a
 - **Consent references used in screens:** C-1012-04 (Orbis site visit), C-1012-05 (Larkspur agent of record), C-1015-02 (Meridian Habitat site office, Sapphire Grove visit), C-0902-01 (Meridian price list, ended).
 - **Pending public fact (show to buyers NOW):** the Jul–Sep 2026 QPR was due 15 Oct 2026 and is **not on HARERA as of 18 Oct 2026**. Developer says (claim, not verified): "filed on 12 Oct 2026".
 - **Band history:**
-  - **Moderate** from first scoring until **2 Oct 2026**, then **Elevated** (low confidence) since 2 Oct 2026. The trigger was the Apr–Jun 2026 QPR together with new complaint orders.
+  - **Moderate** from first scoring until **2 Oct 2026**, then **Elevated** since 2 Oct 2026 (shown with the separate "less certain" line). The trigger was the Apr–Jun 2026 QPR together with new complaint orders.
   - Replays and timelines must NOT show Elevated before 2 Oct 2026.
 - **Pending band change:** a private 7-day notice went to Northfield on 18 Oct 2026. Elevated → High would take effect **25 Oct 2026** if the Jul–Sep QPR is still missing. Buyers see the missing-QPR fact now; the band change waits for the notice.
 - **Complaints:** 14 decided against the promoter in the last 24 months (median for similar projects: 3). The latest order is dated **9 Oct 2026**. Normalised: 2.8 per 100 units (500 units).
@@ -523,7 +523,7 @@ Count: **3 parties can reach you**.
 - **Facts-only state in search and compare** (pairs with WebDeveloper `mode = Facts-only`): Northfield projects show a neutral chip "Band withheld · facts only" (no risk colour, no meter fill) and the link "Facts only: see why" to the explainer (`#facts-only`). They stay in risk-filtered results, listed with Not scored projects, never hidden.
 - **Request a project:** any Gurugram project with a RERA number. Plinth adds it within 14 days or says why not, in writing. A request made 18 Oct 2026 reads "We'll add it by 1 Nov 2026 or tell you why not." Reference format `R-MMDD-NN`; the example is R-1018-07 for "Indigo Terraces, Sector 79", a fictional project not in our records. Published reasons for "not": no RERA registration, outside Gurugram, registration lapsed.
 - **Coverage:** Gurugram today. Golf Course Ext Rd planned for Dec 2026 (Notify me). Noida and Greater Noida West: R3, planned for Jul–Sep 2027, with a waitlist that sends one WhatsApp message when it opens and nothing else. Answers never guess about places we don't cover.
-- **Ask Plinth** is the AI's only name on every surface. Disclosure line: "Ask Plinth is an AI. It answers from public records like HARERA and shows its sources." The human handoff is "Talk to a Plinth adviser · paid by you, never by developers" (WhatsApp button: "Talk to an adviser"): free to ask, Mon–Sat 10 am–7 pm, usually within 4 working hours; advisers explain records and don't sell, book or negotiate.
+- **Ask Plinth** is the AI's only name on every surface. Disclosure line: "Ask Plinth is an AI. It answers from public records like HARERA and shows its sources." The human handoff is "Talk to a Plinth adviser · free · developers never pay us" (WhatsApp button: "Talk to an adviser"): free to ask, Mon–Sat 10 am–7 pm, usually within 4 working hours; advisers explain records and don't sell, book or negotiate.
 - **Ask Plinth edge answers:**
   - "Should I buy?": never yes or no. "I can't tell you whether to buy. That's your call, and no developer pays us to steer it. Here's how to decide:" then four checks: can you carry a 12–24-month delay (Afford the wait); read the 4 reasons and what would change the band; look at the lower-band projects nearby (Kestrel Park, Sapphire Grove Ph 1); before paying anything, check the payee against the RERA collection account (Before you pay).
   - Unknown project: "I can't find Indigo Terraces in our records. If it has a Gurugram RERA number, we'll add it by 1 Nov 2026 or tell you why not." Action: "Request it".
@@ -564,6 +564,24 @@ Count: **3 parties can reach you**.
 - **Consent refs:** displayed as `C-MMDD-NN`. Stored as year + display ref + a sequence; the sequence widens past 99 in display ("C-1018-104").
 - **Relay in R1:** a WhatsApp text relay. A call-masking vendor is decided at M5.
 
+**Final sweep rulings (19 Oct 2026; details in `product/design/review/final-sweep.md`):**
+- **Cost sheet:** Aurelia's sheet has **7 lines**: base, PLC, club, parking, IFMS, GST, and stamp duty + registration. "Charges" (₹9.2 L) is a subtotal and the all-in (₹2.74 Cr) is the total; neither is counted as a line.
+- **Compact buttons** (WhatsApp quick replies have a 20-character limit) may say "Talk to an adviser". The message it opens carries the full label.
+- **Who has my number:** "3 parties can reach you" counts only active parties: Orbis Land site office, Larkspur Realty and Meridian Habitat site office. The Meridian sales office has ended.
+- **Dispute and clerical log (Northfield; every ID used on screens):**
+
+  | ID | Raised | About | Outcome |
+  |---|---|---|---|
+  | D-097 | 12 Jan 2026 | Registration month shown as Jan 2023 | Upheld; corrected to Dec 2022 (decided 28 Jan) |
+  | D-104 | 26 Feb 2026 | Oct–Dec 2025 QPR marked late | Not upheld, decided in 11 working days |
+  | D-118 | — | Apr–Jun 2026 QPR marked late | Upheld: it was filed 15 Jul 2026, on time |
+  | CL-196 | 22 Sep 2026 | Developer office address | Fixed the same day |
+  | CL-201 | 6 Oct 2026 | "Tower A shown with 21 floors" | Fixed 7 Oct; our error |
+  | D-127 | 10 Oct 2026 | Complaint count, Aurelia Heights Ph 2 | Under review |
+  | CL-202 | 18 Oct 2026 | Reply to the heads-up via WhatsApp Flow (Jul–Sep QPR receipt) | Received; we check the HARERA register by 20 Oct 2026 |
+
+- **Planned lender fee:** WebAbout, WebPricing and WebPrivacy may show it only as planned for R2 ("from 2027"), never as live.
+
 ## 6. Copy rules (short form)
 
 - Headings are questions. Sentences are ≤ 20 words. One fact per sentence, number first.
@@ -571,7 +589,7 @@ Count: **3 parties can reach you**.
 - Probabilities are natural frequencies ("Between 30 and 45 of 100…"), never "%" chance and never "1 in X".
 - Money: ₹85,000 · ₹95 L · ₹2.35 Cr · ₹1,23,45,678 for exact amounts · ranges in one unit (₹1.8–2.2 Cr) · always "carpet" or "super".
 - Dates: "18 Oct 2026", "Apr–Jun 2026".
-- AI: disclose it ("I'm Plinth's AI assistant…"), cite sources, offer a human handoff.
+- AI: disclose it ("Ask Plinth is an AI. It answers from public records like HARERA and shows its sources."), cite sources, offer the human handoff "Talk to a Plinth adviser · free · developers never pay us".
 - Brand promise line, where relevant: **"No developer pays us. Ever."**
 
 ## 7. Canvas artboard format (for anyone writing `.dc.html` files)

@@ -407,7 +407,7 @@ class Component extends DCLogic {
 
     var bandInk = night ? '#F08A4B' : '#A9480C';
     var chip = {
-      name: 'Elevated', sr: 'Delivery risk: Elevated, step 3 of 5, low confidence',
+      name: 'Elevated', sr: 'Delivery risk: Elevated, step 3 of 5, we are less certain',
       style: 'flex:none;display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:600;line-height:1;white-space:nowrap;background:' + (night ? '#3A2210' : '#FBE6D8') + ';color:' + T.ink,
       meter: [1, 2, 3, 4, 5].map(function (j) {
         return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= 3 ? 'background:' + bandInk : 'background:' + T.segOff + ';border:1px solid ' + T.emptyBorder)};
@@ -622,7 +622,7 @@ class Component extends DCLogic {
       return {
         name: tg.name, sub: tg.sub, isPlinth: pl, isMsg: tg.k === 'msg', isFiles: tg.k === 'files', isCopy: tg.k === 'copy',
         aria: pl ? 'Share to Plinth: check the claims on this image' : 'Share to ' + tg.name,
-        pick: function () { if (pl) self.startReading('flyer'); else self.set({shareNote: 'Prototype: only Plinth is wired here.'}); },
+        pick: function () { if (pl) self.startReading('flyer'); else self.set({shareNote: 'That opens ' + tg.name + '. To check the claims on this flyer, share it to Plinth.'}); },
         style: 'display:flex;flex-direction:column;align-items:center;gap:4px;min-height:112px;padding:10px 0 8px;border:0;border-radius:16px;font:inherit;color:' + T.ink + ';cursor:pointer;background:' + (pl ? T.track : 'transparent'),
         iconStyle: 'width:56px;height:56px;border-radius:999px;display:grid;place-items:center;margin-bottom:4px;' + (pl ? 'background:' + T.accent + ';color:' + T.onAccent : 'background:' + T.track + ';color:' + T.ink)
       };
@@ -665,7 +665,7 @@ class Component extends DCLogic {
       confirmNo: function () { self.set({picking: true, pick: 'p2', query: ''}); },
       picks: picks, query: s.query, onQuery: function (e) { self.set({query: e.target.value}); },
       hasPickNote: !!s.pickNote, pickNote: s.pickNote,
-      confirmPicked: function () { if (self.st().pick !== 'p2') { self.set({pickNote: 'In this prototype, only Aurelia Heights, Phase 2 has a sample check.'}); return; } self.startChecking(); },
+      confirmPicked: function () { if (self.st().pick !== 'p2') { self.set({pickNote: 'The RERA number on this flyer is Aurelia Heights, Phase 2’s. Pick it, or check a flyer for the other project.'}); return; } self.startChecking(); },
       showReadNote: ph === 'reading' || ph === 'checking',
       readNote: ph === 'reading' ? 'Reading every line. Then we ask which project it is, before checking anything.' : 'Each claim lights up on the ' + docW + ' as it is checked against its record.',
 

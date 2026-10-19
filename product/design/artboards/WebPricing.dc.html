@@ -58,7 +58,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
         <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
         <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
         <a href="#method" class="lk" style="color: {{t.ink}}; text-decoration: none">How scores work</a>
-        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask Plinth</a>
       </nav>
       <div style="display: flex; align-items: center; gap: 10px">
         <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
@@ -395,7 +395,7 @@ class Component extends DCLogic {
     var notify = s.notify || {};
     var NX = [
       {k: 'vfc', name: 'Verified Flat Check', price: '₹6,999, planned', text: 'For a resale flat in Gurugram. An independent advocate reads the documents and signs the result; we flag problems with their sources.', when: 'R2 · planned for Apr–Jun 2027'},
-      {k: 'loan', name: 'Home-loan help', price: 'Free to you', text: 'If you take a loan through us, the lender pays us about 0.35% of it. We show that before you apply, and it never affects a band.', when: 'R2 · planned for Jan–Mar 2027'}
+      {k: 'loan', name: 'Loan checks', price: 'Free to you', text: 'If you take a loan through us, the lender pays us about 0.35% of it. We show that before you apply, and it never affects a band.', when: 'R2 · planned for Jan–Mar 2027'}
     ];
     var nextItems = NX.map(function (x) {
       var on = !!notify[x.k];
@@ -434,7 +434,7 @@ class Component extends DCLogic {
       reasons: [
         {group: 'Finances', fact: '72% of units sold, 41% built.', src: ['HARERA QPR · Apr–Jun 2026']},
         {group: 'Timeline', fact: '77% of the promised time used. QPRs filed late in 3 of the last 8 quarters.', src: ['HARERA QPR register']},
-        {group: 'Legal', fact: '14 complaints decided against the promoter in 24 months. Median for similar projects: 3.', src: ['HARERA orders · 24 months']},
+        {group: 'Legal', fact: '14 complaints decided against the promoter in 24 months · 2.8 per 100 units. Median count for similar projects: 3.', src: ['HARERA orders · 24 months']},
         {group: 'Track record', fact: '2 of the group’s 6 finished RERA projects got OC more than 12 months late. No insolvency found.', src: ['HARERA · DTCP OC records', 'IBBI · NCLT search']}
       ],
       srcChip: srcChip,

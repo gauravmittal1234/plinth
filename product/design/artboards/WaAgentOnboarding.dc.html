@@ -29,14 +29,6 @@ a{color:#1D5A44}a:hover{color:#12402F}
 <div style="position: relative; width: 390px; height: 1300px; overflow: hidden; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 16px; line-height: 22px; font-variant-numeric: tabular-nums lining-nums">
 
   <div style="flex: none; padding: 8px 12px 6px 12px; display: flex; flex-direction: column; gap: 6px">
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
-      <div role="radiogroup" aria-label="Which flow" style="display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: {{t.track}}">
-        <sc-for list="{{views}}" as="vw" hint-placeholder-count="2">
-          <button type="button" class="pl-press" role="radio" aria-checked="{{vw.on}}" onClick="{{vw.pick}}" style="{{vw.style}}">{{vw.label}}</button>
-        </sc-for>
-      </div>
-      <button type="button" class="pl-press" onClick="{{startOver}}" style="height: 36px; padding: 0 6px; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Start over</button>
-    </div>
     <p style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; font-size: 13px; line-height: 18px; color: {{t.muted}}">
       <span>{{stripNote}}</span>
       <sc-if value="{{demoMatch}}" hint-placeholder-val="{{true}}">

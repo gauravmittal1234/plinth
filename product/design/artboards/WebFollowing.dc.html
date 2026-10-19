@@ -54,7 +54,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
         <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
         <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
         <a href="#top" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Following</a>
-        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask Plinth</a>
       </nav>
       <div style="display: flex; align-items: center; gap: 10px">
         <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
@@ -812,7 +812,7 @@ class Component extends DCLogic {
       {id: 'miss', d: 106, date: '15 Oct', kind: 'QPR', k: 'A', type: 'missing', sentence: 'Not on HARERA yet. New records are under review, so the band may change.', diffLabel: 'Jul–Sep 2026 QPR', was: 'Due 15 Oct', now: 'Not on HARERA as of 18 Oct', claim: true, src: ['HARERA QPR register · checked 18 Oct 2026']},
       {id: 'ext', d: 105, date: '14 Oct', kind: 'Extension', k: 'C', type: 'extension', sentence: 'HARERA granted a 2nd extension, of 6 months. The original date was Aug 2028.', diffLabel: 'Completion date', was: 'Feb 2029', now: 'Aug 2029', src: ['HARERA order · 14 Oct 2026']},
       {id: 'kqpr', d: 103, date: '12 Oct', kind: 'QPR', k: 'K', type: 'ontime', sentence: 'Jul–Sep 2026 QPR filed on time: 63% built, 58% of time used.', diffLabel: 'Built', was: '59%', now: '63%', src: ['HARERA QPR · Jul–Sep 2026']},
-      {id: 'comp', d: 100, date: '9 Oct', kind: 'Complaint order', k: 'A', type: 'order', sentence: 'One more complaint decided against the promoter, with delay interest. The median is 3.', diffLabel: 'Decided against it in 24 months', was: '13', now: '14', src: ['HARERA order · 9 Oct 2026']},
+      {id: 'comp', d: 100, date: '9 Oct', kind: 'Complaint order', k: 'A', type: 'order', sentence: 'One more complaint decided against the promoter, with delay interest. That makes 14 in 24 months, or 2.8 per 100 units; the median count is 3.', diffLabel: 'Decided against it in 24 months', was: '13', now: '14', src: ['HARERA order · 9 Oct 2026']},
       {id: 'band', d: 93, date: '2 Oct', kind: 'Delivery risk', k: 'A', type: 'band', isBand: true, sentence: 'Delivery risk moved from Moderate to Elevated. Trigger: new records, the Apr–Jun 2026 QPR and new complaint orders.', src: ['HARERA QPR · Apr–Jun 2026', 'HARERA complaint orders', 'Method v1.1']},
       {id: 'sqpr', d: 26, date: '27 Jul', kind: 'QPR', k: 'S', type: 'late', sentence: 'Apr–Jun 2026 QPR filed 12 days late: 48% built, 55% of time used.', diffLabel: 'Filed', was: 'Due 15 Jul', now: '27 Jul', src: ['HARERA QPR register · 27 Jul 2026']},
       {id: 'lqpr', d: 14, date: '15 Jul', kind: 'QPR', k: 'A', type: 'ontime', sentence: 'Apr–Jun 2026 QPR filed on time: 72% of units sold, Tower A at slab 9.', diffLabel: 'Built', was: '38%', now: '41%', src: ['HARERA QPR · Apr–Jun 2026']},
@@ -927,7 +927,7 @@ class Component extends DCLogic {
     });
     var PROG = {
       A: 'Latest QPR: Tower A at slab 9 (Apr–Jun 2026). The Jul–Sep 2026 QPR is not on HARERA yet. Completion on record: Dec 2027.',
-      K: 'Latest QPR: 63% built (Jul–Sep 2026, filed 12 Oct). Completion on record: Jun 2027.',
+      K: 'Latest QPR: 63% built (Jul–Sep 2026, filed 12 Oct). Completion on record: Nov 2028.',
       S: 'Latest QPR read: 48% built (Apr–Jun 2026). The Jul–Sep 2026 QPR is in and being read, by 19 Oct. Completion on record: Mar 2028.',
       C: 'Newest QPR on HARERA: 22% built (Jan–Mar 2026); the next two are missing. Completion on record: Aug 2029, after 2 extensions.'
     };
@@ -1101,7 +1101,7 @@ class Component extends DCLogic {
         body: ['This week in your 4 projects, 12–18 Oct 2026:', 'Aurelia Heights Ph 2: the Jul–Sep 2026 QPR was due 15 Oct and is not on HARERA. The developer says it filed on 12 Oct (not verified).', 'Sapphire Grove Ph 1: Jul–Sep 2026 QPR filed on time. We’re reading it; any band change by 19 Oct.', 'Coral Towers: completion extended to Aug 2029 (HARERA order, 14 Oct). Its Jul–Sep 2026 QPR is not on HARERA either.', 'Kestrel Park: Jul–Sep 2026 QPR filed on time on 12 Oct. 63% built.', 'No band changed. Also 1 price-list update, for Sapphire Grove Ph 1.']},
       {label: '5–11 Oct', range: '5–11 Oct 2026', count: '1 change on record',
         floors: [{p: 'Aurelia Ph 2', c: '1 more complaint order'}, {p: 'Sapphire Ph 1', c: 'Nothing new', quiet: true}, {p: 'Coral Towers', c: 'Nothing new', quiet: true}, {p: 'Kestrel Park', c: 'Nothing new', quiet: true}],
-        body: ['This week in your 4 projects, 5–11 Oct 2026:', 'Aurelia Heights Ph 2: HARERA decided 1 more complaint against the promoter (order of 9 Oct). That makes 14 in 24 months; the median is 3.', 'Nothing new for the other 3. No band changed.']},
+        body: ['This week in your 4 projects, 5–11 Oct 2026:', 'Aurelia Heights Ph 2: HARERA decided 1 more complaint against the promoter (order of 9 Oct). That makes 14 in 24 months, or 2.8 per 100 units; the median count is 3.', 'Nothing new for the other 3. No band changed.']},
       {label: '28 Sep–4 Oct', range: '28 Sep–4 Oct 2026', count: '1 band change',
         floors: [{p: 'Aurelia Ph 2', c: 'Moderate → Elevated'}, {p: 'Sapphire Ph 1', c: 'Nothing new', quiet: true}, {p: 'Coral Towers', c: 'Nothing new', quiet: true}, {p: 'Kestrel Park', c: 'Nothing new', quiet: true}],
         body: ['This week in your 4 projects, 28 Sep–4 Oct 2026:', 'Aurelia Heights Ph 2: delivery risk moved from Moderate to Elevated on 2 Oct. Trigger: the Apr–Jun 2026 QPR and new complaint orders.', 'You got this alert on the day. Nothing new for the other 3.']}

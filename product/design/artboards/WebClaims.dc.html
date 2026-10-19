@@ -57,7 +57,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
         <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
         <a href="#cost" class="lk" style="color: {{t.ink}}; text-decoration: none">Cost sheet</a>
         <a href="#claims" aria-current="page" class="lk" style="color: {{t.ink}}; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">Claims</a>
-        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask Plinth</a>
       </nav>
       <div style="display: flex; align-items: center; gap: 10px">
         <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer; display: inline-flex; align-items: center; justify-content: center">
@@ -155,7 +155,6 @@ a{color:#1D5A44}a:hover{color:#12402F}
                 <button type="button" class="press" onClick="{{toggleSave}}" aria-pressed="{{savedPressed}}" style="{{u.secondary}}">{{saveLabel}}</button>
               </div>
               <div style="display: flex; flex-wrap: wrap; gap: 4px 24px">
-                <button type="button" onClick="{{replay}}" style="{{u.tertiarySm}}">Replay the check</button>
                 <button type="button" onClick="{{checkAnother}}" style="{{u.tertiarySm}}">Check another file</button>
               </div>
             </sc-if>
@@ -575,7 +574,7 @@ class Component extends DCLogic {
     var BI = {Elevated: {i: 3, light: '#A9480C', dark: '#F08A4B', fill: '#FBE6D8', fillD: '#3A2210'}};
     var bandInk = night ? BI.Elevated.dark : BI.Elevated.light;
     var chip = {
-      name: 'Elevated', sr: 'Delivery risk: Elevated, step 3 of 5, low confidence',
+      name: 'Elevated', sr: 'Delivery risk: Elevated, step 3 of 5, we are less certain',
       style: 'display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border-radius:999px;box-sizing:border-box;font-size:14px;font-weight:600;line-height:1;white-space:nowrap;background:' + (night ? BI.Elevated.fillD : BI.Elevated.fill) + ';color:' + T.ink,
       meter: [1, 2, 3, 4, 5].map(function (j) {
         return {style: 'display:block;width:6px;height:10px;border-radius:2px;box-sizing:border-box;' + (j <= 3 ? 'background:' + bandInk : 'background:' + T.segOff + ';border:1px solid ' + T.emptyBorder)};
@@ -819,9 +818,9 @@ class Component extends DCLogic {
     var EDGE = {
       noclaims: {title: 'Nothing here we can check.', body: 'We read the whole page. It has pictures and amenity names, but no date, price, area or RERA number to compare with the records.',
         hasList: true, list: [{text: 'Possession and completion dates'}, {text: 'Prices and "all-inclusive" totals'}, {text: 'Carpet and super area'}, {text: 'RERA numbers'}, {text: '"Ready to move" and OC claims'}, {text: '"Sold out" and "only a few left"'}],
-        primary: 'Try another page', secondary: 'Ask about this project', sentNote: 'Opening Ask with Aurelia Heights, Phase 2.'},
+        primary: 'Try another page', secondary: 'Ask Plinth about this project', sentNote: 'Opening Ask Plinth with Aurelia Heights, Phase 2.'},
       unreadable: {title: "We couldn't read this photo.", body: 'The small print is too blurred to read. Try again flat on a table, in daylight, with the whole page in the frame. A PDF with a password can\'t be opened; a screenshot of it works.',
-        hasList: false, list: [], primary: 'Try another photo', secondary: 'Ask a person to read it', sentNote: "Sent to our team. A person will read it and reply on this page, usually the same day."}
+        hasList: false, list: [], primary: 'Try another photo', secondary: 'Ask a Plinth adviser to read it', sentNote: "Sent to a Plinth adviser · free · developers never pay us. They will read it and reply on this page, usually the same day."}
     };
     var edge = EDGE[cs] || EDGE.noclaims;
 
@@ -937,7 +936,7 @@ class Component extends DCLogic {
       hasPickNote: !!s.pickNote, pickNote: s.pickNote,
       pickCta: 'Check against ' + pickName,
       confirmPicked: function () {
-        if (self.st().pick !== 'p2') { self.set({pickNote: 'In this prototype, only Aurelia Heights, Phase 2 has a sample check.'}); return; }
+        if (self.st().pick !== 'p2') { self.set({pickNote: 'The RERA number on this file is Aurelia Heights, Phase 2’s. Pick it, or check a file for the other project.'}); return; }
         self.startChecking();
       },
 

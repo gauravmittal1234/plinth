@@ -26,10 +26,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
 <div style="width: 390px; height: 1340px; overflow: hidden; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Mukta', 'Noto Sans', system-ui, sans-serif; font-size: 16px; line-height: 22px; font-variant-numeric: tabular-nums lining-nums">
 
   <div style="flex: none; padding: 6px 12px 6px 16px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 16px; color: {{t.muted}}">
-    <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><span>WhatsApp conversation (illustrative) · {{stageNote}}</span><sc-if value="{{isAfter}}" hint-placeholder-val="{{false}}"><button type="button" class="pl-press" onClick="{{replay}}" style="flex: none; height: 28px; padding: 0 6px; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-weight: 600; cursor: pointer">Replay</button></sc-if></span>
-    <div role="group" aria-label="Show the conversation on" style="display: flex; gap: 4px; padding: 3px; border-radius: 999px; background: {{t.pillBg}}">
-      <sc-for list="{{stages}}" as="sg" hint-placeholder-count="3"><button type="button" class="pl-press" onClick="{{sg.pick}}" aria-pressed="{{sg.on}}" style="{{sg.style}}">{{sg.label}}</button></sc-for>
-    </div>
+    <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><span>WhatsApp conversation (illustrative) · {{stageNote}}</span></span>
   </div>
 
   <header style="flex: none; height: 56px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
@@ -240,7 +237,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
             </div>
             <div data-review="legal" style="padding: 8px 8px 2px">
               <p style="margin: 0"><strong>1 of 5 things they told you differs from the records.</strong> They said possession Dec 2026. Records show original completion Dec 2027, with 41% built.</p>
-              <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">I wrote your note down and deleted the audio. Saved privately on your Aurelia card as Developer says, sales office, unverified. Read by AI; I can make mistakes. Type human for a person.<span style="float: right; margin-left: 10px">2:05 pm</span></p>
+              <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: {{t.muted}}">I wrote your note down and deleted the audio. Saved privately on your Aurelia card as Developer says, sales office, unverified. Read by AI; I can make mistakes. Type human to talk to a Plinth adviser · free · developers never pay us.<span style="float: right; margin-left: 10px">2:05 pm</span></p>
             </div>
           </div>
           <div role="group" aria-label="Reply options" style="display: flex; flex-direction: column; gap: 4px">
@@ -445,7 +442,7 @@ class Component extends DCLogic {
     return {
       t: T, stages: stages, stageNote: NOTES[st],
       isPass: st === 'pass', isDay: st === 'day', isAfter: st === 'after',
-      subtitle: typing ? 'typing…' : 'Business account · AI assistant',
+      subtitle: typing ? 'typing…' : 'Business account · Ask Plinth is an AI',
       btn: btnStyle(false), btnSpent: btnStyle(true),
       btnHalf: 'flex:1 1 0;height:44px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;color:' + T.accentText + ';background:' + T.bubbleIn,
       qrP: makeQr(29), qrR: makeQr(53),

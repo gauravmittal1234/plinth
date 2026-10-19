@@ -13,7 +13,7 @@ import os
 import re
 import sys
 
-PAT = re.compile(r'<div\b([^>]*?\bdata-slot="([A-Za-z]+)"[^>]*)>(\s*)</div>')
+PAT = re.compile(r'<div\b([^>]*?\bdata-slot="([A-Za-z0-9]+)"[^>]*)>(\s*)</div>')
 
 
 def attr(attrs, name):

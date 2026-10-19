@@ -27,7 +27,6 @@ a{color:#1D5A44}a:hover{color:#12402F}
 
   <div style="flex: none; height: 28px; padding: 0 12px 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 16px; color: {{t.muted}}">
     <span>WhatsApp conversation (illustrative) · {{caseNote}}</span>
-    <button type="button" class="pl-press" onClick="{{replay}}" style="flex: none; height: 28px; padding: 0 6px; border: 0; background: transparent; color: {{t.accentText}}; font: inherit; font-weight: 600; cursor: pointer">Replay</button>
   </div>
 
   <header style="flex: none; height: 56px; padding: 0 4px; display: flex; align-items: center; gap: 6px; background: {{t.headerBg}}; border-bottom: 1px solid {{t.line}}">
@@ -83,7 +82,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
     <sc-if value="{{showConfirm}}" hint-placeholder-val="{{true}}">
       <div class="pl-rise" style="align-self: flex-start; width: 296px; display: flex; flex-direction: column; gap: 4px">
         <div style="padding: 8px 12px 6px; border-radius: 4px 16px 16px 16px; background: {{t.bubbleIn}}">
-          <p style="margin: 0">I'm Plinth's AI assistant. {{confirmLead}} <strong>{{confirmProject}}</strong>{{confirmTail}}</p>
+          <p style="margin: 0">This is Ask Plinth, an AI. {{confirmLead}} <strong>{{confirmProject}}</strong>{{confirmTail}}</p>
           <p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: {{t.ink2}}">Sector 37D · RERA GGM/673/405/2022/117<span style="float: right; margin: 2px 0 0 10px; font-size: 13px; line-height: 16px; color: {{t.muted}}">{{tIn}}</span></p>
         </div>
         <sc-if value="{{confirmOpen}}" hint-placeholder-val="{{false}}">
@@ -322,8 +321,8 @@ class Component extends DCLogic {
         cardLabel: 'Payee check image. Aurelia Heights, Phase 2. 0 of 3 match the account registered with HARERA. Payee: message says Northfield Realty Services LLP; HARERA shows Northfield Estates Pvt Ltd. Account: message says ending 8082; HARERA shows ending 4417. Bank: message says Marigold Bank, IFSC MRGL0000912; HARERA shows Peepal Bank, IFSC PEPL0000418. Plinth. No developer pays us. Ever. HARERA registration, 14 Oct 2026. QR code: the live check.',
         body: {strong: 'This account doesn’t match the one Northfield registered with HARERA for Phase 2.', rest: 'Pause before you pay. Ask Northfield to confirm the account in writing, on its letterhead. Call the number listed on HARERA, not one from a message.',
           second: '₹11,00,000 is within the ₹24.4 L Northfield can ask for before a registered agreement.',
-          small: 'I keep the result, not the bank details. Plinth never takes, holds or moves money. Read by AI, checked by rules. Type human for a person.'},
-        replies: [['draft', 'Draft a message'], ['account', 'See HARERA account'], ['human', 'Talk to a person']]
+          small: 'I keep the result, not the bank details. Plinth never takes, holds or moves money. Read by AI, checked by rules. Type human to talk to a Plinth adviser · free · developers never pay us.'},
+        replies: [['draft', 'Draft a message'], ['account', 'See HARERA account'], ['human', 'Talk to an adviser']]
       },
       'Booking form': {
         note: 'a photo of the booking form', tIn: '10:40 am', tOut: '10:41 am', tCard: '10:41 am', tTurn: '10:42 am',
@@ -332,8 +331,8 @@ class Component extends DCLogic {
         cardLabel: 'Payee check image. Aurelia Heights, Phase 2. 3 of 3 match the account registered with HARERA: Northfield Estates Pvt Ltd, account ending 4417, Peepal Bank, IFSC PEPL0000418. Plinth. No developer pays us. Ever. HARERA registration, 14 Oct 2026. QR code: the live check.',
         body: {strong: 'This matches the account Northfield registered with HARERA.', rest: 'Pay by transfer or a cheque in this account’s name, from your own account. Then send me a photo of the receipt.',
           second: '₹11,00,000 is within the ₹24.4 L Northfield can ask for before a registered agreement.',
-          small: 'I keep the result, not the bank details. Plinth never takes, holds or moves money. Read by AI, checked by rules. Type human for a person.'},
-        replies: [['receipt', 'Send the receipt'], ['amount', 'Check the amount'], ['human', 'Talk to a person']]
+          small: 'I keep the result, not the bank details. Plinth never takes, holds or moves money. Read by AI, checked by rules. Type human to talk to a Plinth adviser · free · developers never pay us.'},
+        replies: [['receipt', 'Send the receipt'], ['amount', 'Check the amount'], ['human', 'Talk to an adviser']]
       },
       'Demand letter': {
         note: 'a forwarded demand letter', tIn: '9:03 am', tOut: '9:03 am', tCard: '9:04 am', tTurn: '9:05 am',
@@ -343,11 +342,11 @@ class Component extends DCLogic {
         body: {strong: 'The latest filing shows slab 9. This letter asks for the slab 12 instalment:', rest: '₹13,16,700, due 30 Oct 2026. The Jul–Sep QPR isn’t on HARERA yet, so nothing newer is on record.',
           second: 'What you can do: ask Northfield for the architect’s certificate for slab 12. If it shows slab 12, pay on time into the account ending 4417; that payee matches HARERA.',
           small: 'Paying on time is your duty under the agreement (RERA s.19(6)). Not legal advice. I keep the result, not the bank details.'},
-        replies: [['draft', 'Draft the request'], ['alert', 'Tell me when filed'], ['human', 'Talk to a person']]
+        replies: [['draft', 'Draft the request'], ['alert', 'Tell me when filed'], ['human', 'Talk to an adviser']]
       }
     };
     var c = C[key] || C['Payment request'];
-    var HUMAN = {lead: 'A person from our team will take over this chat.', after: 'They reply Mon–Sat, 10 am–7 pm, usually within 4 working hours. They can’t pay or move money for you either.'};
+    var HUMAN = {lead: 'A Plinth adviser will take over this chat · free · developers never pay us.', after: 'They reply Mon–Sat, 10 am–7 pm, usually within 4 working hours. They can’t pay or move money for you either.'};
     var TURN = {
       draft: isLetter
         ? {lead: 'Here’s a short draft. Edit it as you like:', quote: 'Dear Northfield Estates,\nYour demand letter of 10 Oct 2026 asks for the Tower A slab 12 instalment for unit A-1104, Aurelia Heights, Phase 2. The latest QPR on HARERA (Apr–Jun 2026) shows slab 9.\nBefore 30 Oct 2026, please send the architect’s certificate that slab 12 is cast, with the date, and the HARERA receipt for the Jul–Sep 2026 QPR. I want to pay on time.\nKavya Nair', after: 'Long-press to copy. Send it from your own email to the address on Northfield’s HARERA registration.'}
@@ -358,7 +357,7 @@ class Component extends DCLogic {
       alert: {lead: 'Done. When the Jul–Sep QPR is on HARERA, I’ll check this letter again and tell you here.', after: 'At most 1 message a day. Reply STOP anytime.'},
       human: HUMAN
     };
-    var LABELS = {draft: isLetter ? 'Draft the request' : 'Draft a message', account: 'See HARERA account', receipt: 'Send the receipt', amount: 'Check the amount', alert: 'Tell me when filed', human: 'Talk to a person'};
+    var LABELS = {draft: isLetter ? 'Draft the request' : 'Draft a message', account: 'See HARERA account', receipt: 'Send the receipt', amount: 'Check the amount', alert: 'Tell me when filed', human: 'Talk to an adviser'};
     function btnStyle(on) {
       return 'height:44px;width:100%;border:0;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;color:' + T.accentText + ';background:' + (on ? T.pressed : T.bubbleIn) + ';';
     }
@@ -374,7 +373,7 @@ class Component extends DCLogic {
     return {
       t: T, qr: qr, caseNote: c.note,
       isRequest: isRequest, isForm: isForm, isLetter: isLetter,
-      subtitle: typing ? 'typing…' : 'Business account · AI assistant',
+      subtitle: typing ? 'typing…' : 'Business account · Ask Plinth is an AI',
       replay: function () { self.replay(); },
       btn: btnStyle(false),
       showConfirm: true, confirmOpen: ph === 'confirm' && !s.answer,

@@ -58,7 +58,7 @@ a{color:#1D5A44}a:hover{color:#12402F}
         <a href="#compare" class="lk" style="color: {{t.ink}}; text-decoration: none">Compare</a>
         <a href="#developers" class="lk" style="color: {{t.ink}}; text-decoration: none">Developers</a>
         <a href="#method" class="lk" style="color: {{t.ink}}; text-decoration: none">How scores work</a>
-        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask</a>
+        <a href="#ask" class="lk" style="color: {{t.ink}}; text-decoration: none">Ask Plinth</a>
       </nav>
       <div style="display: flex; align-items: center; gap: 10px">
         <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeBtnLabel}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: {{t.track}}; color: {{t.ink}}; cursor: pointer">
@@ -252,14 +252,14 @@ a{color:#1D5A44}a:hover{color:#12402F}
         <div style="flex: 1 1 600px; min-width: 0; padding: 136px 0 136px clamp(0px, 5vw, 72px); box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
           <h2 id="money-h" class="rv" style="{{u.h2}}">How do we make money?</h2>
           <p class="rv rv1" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 36px; line-height: 1.08; letter-spacing: -0.03em">No developer pays us. Ever.</p>
-          <p class="rv rv1" style="{{u.lead}}; max-width: 38ch">We earn from services you choose to buy. From 2027, lenders pay us too, only if you take a loan through us.</p>
+          <p class="rv rv1" style="{{u.lead}}; max-width: 38ch">We earn from services you choose to buy. Loan checks arrive in 2027; no lender pays us today.</p>
           <div class="rv rv2" style="display: flex; flex-direction: column; gap: 36px; padding-top: 16px">
             <div style="display: flex; flex-direction: column; gap: 10px">
               <h3 style="margin: 0; font-size: 19px; font-weight: 700">Today</h3>
               <dl style="margin: 0; display: flex; flex-direction: column; gap: 4px">
                 <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px">
                   <dt style="flex: 0 0 168px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.025em">₹999</dt>
-                  <dd style="flex: 1 1 280px; margin: 0; font-size: 19px; line-height: 1.5">Risk Report Pro for one project, paid by you. Bands, reasons and sources stay free. <a href="#pricing" class="lk" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 4px">What’s free and what’s Pro</a></dd>
+                  <dd style="flex: 1 1 280px; margin: 0; font-size: 19px; line-height: 1.5">Risk Report Pro for one project, paid by you: 12 months of written updates. Bands, reasons, sources and alerts stay free. <a href="#pricing" class="lk" style="color: {{t.ink}}; font-weight: 600; text-decoration: underline; text-underline-offset: 4px">What’s free and what’s Pro</a></dd>
                 </div>
               </dl>
             </div>
@@ -639,7 +639,7 @@ class Component extends DCLogic {
 
     var LATER = [
       {k: 'gcer', what: 'Golf Course Extension Road', when: 'Planned for Dec 2026', note: 'Until then, search shows these projects as not covered yet.'},
-      {k: 'loans', what: 'Home-loan help', when: 'R2 · planned for Jan–Mar 2027', note: 'Until then, no lender pays us anything.'},
+      {k: 'loans', what: 'Loan checks', when: 'R2 · planned for Jan–Mar 2027', note: 'Loan checks arrive in 2027. Until then, no lender pays us anything.'},
       {k: 'resale', what: 'Resale flats, Verified Flat Check and transfer checks', when: 'R2 · planned for Apr–Jun 2027', note: 'Ready-to-move projects show their RERA records meanwhile.'},
       {k: 'ios', what: 'The iPhone app', when: 'R2 · planned for Apr–Jun 2027', note: 'Until then, the website works on iPhone and can sit on your home screen.'},
       {k: 'noida', what: 'Noida and Greater Noida West', when: 'R3 · planned for Jul–Sep 2027', note: 'Nothing outside Gurugram is rated yet.'},
