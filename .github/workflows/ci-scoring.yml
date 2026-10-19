@@ -67,15 +67,17 @@ jobs:
 
       - name: score --fixtures --as-of 2026-10-14 --emit json reproduces canonical/scoring.json
         run: |
-          # `plinth-pipe score` once T10's CLI registers the subcommand; the module entry
-          # point runs the same parser until then.
-          if pipelines/.venv/bin/plinth-pipe score --help >/dev/null 2>&1; then
-            score=(pipelines/.venv/bin/plinth-pipe score)
+          # `plinth-pipe score` once T10's CLI registers the subcommand (the T00 placeholder
+          # rejects it); the module entry point runs the same parser until then.
+          out="$RUNNER_TEMP/scoring.json"
+          args=(score --fixtures --as-of 2026-10-14 --emit json)
+          if pipelines/.venv/bin/plinth-pipe "${args[@]}" >"$out" 2>/dev/null; then
+            echo "via plinth-pipe score"
           else
-            score=(pipelines/.venv/bin/python -m plinth.scoring score)
+            echo "plinth-pipe has no score subcommand yet (T10 handoff): python -m plinth.scoring"
+            pipelines/.venv/bin/python -m plinth.scoring "${args[@]}" >"$out"
           fi
-          "${score[@]}" --fixtures --as-of 2026-10-14 --emit json \
-            | diff - packages/fixtures/canonical/scoring.json
+          diff "$out" packages/fixtures/canonical/scoring.json
           echo "identical to packages/fixtures/canonical/scoring.json"
 
       - name: Explain and replay audit (log only)
