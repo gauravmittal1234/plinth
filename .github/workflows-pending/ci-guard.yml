@@ -1,0 +1,110 @@
+# ci-guard (owner: T00, then the lead). The one check every PR must pass.
+#   gitleaks       full-history secret scan (pinned binary, checksum-verified)
+#   guard          copy lint (BUILD_PLAN §12.11), secret patterns, no .env files,
+#                  OWNERSHIP check (warn-only) on task/Txx-… branches
+#   root-verify    npm ci + turbo lint/typecheck/test, only when root tooling changes
+# Lean on minutes (DECISIONS E-9): no path filter on the guards (they take seconds),
+# a path filter on root-verify, and superseded runs are cancelled.
+name: ci-guard
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-guard-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gitleaks:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GITLEAKS_VERSION: 8.30.1
+      GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Install gitleaks ${{ env.GITLEAKS_VERSION }}
+        run: |
+          curl -sSfL -o "$RUNNER_TEMP/gitleaks.tgz" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/gitleaks.tgz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/gitleaks.tgz" -C "$RUNNER_TEMP" gitleaks
+      - name: Scan the full git history
+        run: |
+          "$RUNNER_TEMP/gitleaks" git --redact --no-banner --verbose --exit-code 1 .
+
+  guard:
+    name: guard (copy lint, secret patterns, ownership)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Copy lint (banned trust words, probability wording, stock phrases)
+        run: |
+          node scripts/ci/lint-copy.mjs --self-test
+          node scripts/ci/lint-copy.mjs
+      - name: Secret patterns and committed env files
+        run: node scripts/ci/guard-secrets.mjs
+      - name: Ownership (warn-only)
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: origin/${{ github.base_ref }}
+        run: |
+          node scripts/ci/check-ownership.mjs --self-test
+          node scripts/ci/check-ownership.mjs
+
+  changes:
+    name: root tooling changed?
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      root: ${{ steps.filter.outputs.root }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            root:
+              - 'package.json'
+              - 'package-lock.json'
+              - 'turbo.json'
+              - '.nvmrc'
+              - 'scripts/ci/**'
+              - 'packages/config/**'
+              - '.github/workflows/ci-guard.yml'
+
+  root-verify:
+    name: root verify (npm ci + turbo lint/typecheck/test)
+    needs: changes
+    if: needs.changes.outputs.root == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      TURBO_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run verify:js

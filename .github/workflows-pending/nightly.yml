@@ -1,0 +1,108 @@
+# nightly (owner: T00, then the lead). BUILD_PLAN §7, §8, §11.
+# Weekday mornings IST only, to stay inside the free private-repo minutes (DECISIONS E-9).
+# Every job skips cleanly until the area it checks exists, so this file needs no edits
+# as tasks land:
+#   - deps:   npm audit (prod deps) and flutter pub outdated (report only)
+#   - web:    full Playwright suite, once apps/web defines an `e2e` script (T05+)
+#   - evals:  live AI evals, only when the GEMINI_API_KEY secret exists (founder, later)
+# Synthetic health checks of the dev environment arrive once plinth-dev exists.
+name: nightly
+
+on:
+  schedule:
+    - cron: "30 21 * * 0-4" # 03:00 IST, Monday to Friday
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nightly
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+  TURBO_TELEMETRY_DISABLED: "1"
+
+jobs:
+  deps:
+    name: dependency audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: npm audit (production dependencies)
+        run: npm audit --omit=dev --audit-level=high
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.5
+          channel: stable
+          cache: true
+      - name: flutter pub outdated (report only)
+        working-directory: apps/mobile
+        run: |
+          flutter pub get
+          flutter pub outdated || true
+
+  web-e2e:
+    name: web e2e (full Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Does apps/web have an e2e script yet?
+        id: has
+        run: |
+          if node -e "process.exit(require('./apps/web/package.json').scripts?.e2e ? 0 : 1)"; then
+            echo "e2e=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "e2e=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::apps/web has no e2e script yet (T05 adds it); skipping."
+          fi
+      - if: steps.has.outputs.e2e == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - if: steps.has.outputs.e2e == 'true'
+        run: npm ci --no-audit --no-fund
+      - if: steps.has.outputs.e2e == 'true'
+        run: npx playwright install --with-deps chromium
+      - if: steps.has.outputs.e2e == 'true'
+        env:
+          PLINTH_DATA: fixtures
+        run: npm run -w @plinth/web e2e
+
+  ai-evals:
+    name: live AI evals
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      HAS_GEMINI_KEY: ${{ secrets.GEMINI_API_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Skip unless the key and evals/ exist
+        id: gate
+        run: |
+          if [ "$HAS_GEMINI_KEY" = "true" ] && [ -f evals/package.json ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No GEMINI_API_KEY secret or no evals/ yet; live evals skipped (recorded evals run on PRs)."
+          fi
+      - if: steps.gate.outputs.run == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - if: steps.gate.outputs.run == 'true'
+        run: npm ci --no-audit --no-fund
+      - if: steps.gate.outputs.run == 'true'
+        env:
+          AI_MODE: live
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: npm run --prefix evals live
