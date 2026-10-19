@@ -1,0 +1,95 @@
+# ci-contracts (owner: T02). BUILD_PLAN §8: ajv compiles every schema → codegen
+# → diff check → dart analyze → validate fixtures/expected/**.
+#   contracts   npm ci; Python env from pipelines/uv.lock (datamodel-codegen pinned);
+#               vitest (schemas, examples, catalogues, TS/Dart/OpenAPI drift);
+#               full codegen + git diff; lint + typecheck; Dart analyze + test;
+#               Python import + pytest; fixtures validate (T03's script).
+name: ci-contracts
+
+on:
+  pull_request:
+    paths:
+      - "packages/contracts/**"
+      - "packages/fixtures/expected/**"
+      - "packages/fixtures/scripts/validate.mjs"
+      - "docs/engineering/API_CONTRACTS.md"
+      - "pipelines/uv.lock"
+      - "package-lock.json"
+      - ".github/workflows/ci-contracts.yml"
+  push:
+    branches: [main]
+    paths:
+      - "packages/contracts/**"
+      - "packages/fixtures/expected/**"
+      - "docs/engineering/API_CONTRACTS.md"
+      - "pipelines/uv.lock"
+      - "package-lock.json"
+      - ".github/workflows/ci-contracts.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-contracts-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: contracts (schemas, codegen drift, Dart, Python)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TURBO_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci --no-audit --no-fund
+
+      - uses: astral-sh/setup-uv@v10
+
+      - name: Python env from pipelines/uv.lock (datamodel-codegen, pytest)
+        run: |
+          uv sync --project pipelines --frozen --extra dev
+          uv pip install --python pipelines/.venv/bin/python -e packages/contracts/python
+
+      - name: Schemas compile; examples, catalogues, TS/Dart/OpenAPI drift (vitest)
+        run: npm run -w @plinth/contracts test
+
+      - name: Codegen leaves zero diff (TS, Dart, Python, OpenAPI)
+        run: |
+          npm run -w @plinth/contracts gen
+          git status --porcelain -- packages/contracts
+          git diff --exit-code -- packages/contracts
+          test -z "$(git status --porcelain -- packages/contracts)"
+
+      - name: Lint and typecheck
+        run: |
+          npm run -w @plinth/contracts lint
+          npm run -w @plinth/contracts typecheck
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.5
+          channel: stable
+          cache: true
+
+      - name: Dart package plinth_contracts (analyze + round-trip tests)
+        working-directory: packages/contracts/dart
+        run: |
+          dart pub get
+          dart analyze --fatal-infos
+          dart test
+
+      - name: Python package plinth_contracts (import + pytest)
+        run: |
+          pipelines/.venv/bin/python -c "import plinth_contracts"
+          pipelines/.venv/bin/python -m pytest -q packages/contracts/python/tests
+
+      - name: Validate packages/fixtures/expected against the schemas (T03)
+        run: npm run -w @plinth/fixtures validate
