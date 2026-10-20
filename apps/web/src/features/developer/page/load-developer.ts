@@ -12,8 +12,9 @@ export type DeveloperData = { page: DeveloperPage };
  * `developer_page(slug)`. `state` previews a design state the fixture world
  * carries alongside the default payload (e.g. `"facts_only"` for Northfield's
  * `northfield-estates--facts-only` fixture; T16's fixture adapter already
- * understands a `fixtureState` option, INTEGRATION_NOTES), the same way
- * WebProjectStates is planned to read `?state=` (src/features/project/states).
+ * understands a `fixtureState` option, INTEGRATION_NOTES). `?state=` reaches
+ * here through the `~preview/state/[state]` route (preview.ts); the
+ * canonical page always passes `null`.
  */
 export async function loadDeveloper(slug: string, state: string | null): Promise<DeveloperData> {
   try {

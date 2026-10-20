@@ -119,7 +119,10 @@ test.describe("WebSearch", { tag: "@smoke" }, () => {
 
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(want.zero_results!.line);
     await page.getByRole("button", { name: "Join the Noida waitlist" }).click();
-    await expect(page.getByText("On the waitlist")).toBeVisible();
+    await expect(page.getByRole("status")).toContainText(
+      "Waitlists aren’t open yet, so nothing was saved.",
+    );
+    await expect(page.getByText("On the waitlist")).not.toBeVisible();
     await expect(page.getByText(want.zero_results!.detail_line!)).toBeVisible();
 
     await expectNoSeriousA11yViolations(page);

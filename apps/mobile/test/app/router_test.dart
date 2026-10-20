@@ -8,6 +8,7 @@ import 'package:plinth/app/not_found_screen.dart';
 import 'package:plinth/app/router.dart';
 import 'package:plinth/app/routes.dart';
 import 'package:plinth/data/session.dart';
+import 'package:plinth/features/risk/risk_screen.dart' show riskScreenKey;
 
 import '../helpers/app_harness.dart';
 
@@ -18,9 +19,11 @@ typedef Sample = ({String location, String artboard, bool tabs});
 /// Every path in WORK_BREAKDOWN §2.2. A new route without a row here fails
 /// "every registered path has a sample".
 const samples = <String, Sample>{
-  '/': (location: '/', artboard: 'AppExplore', tabs: true),
-  Routes.explore: (location: '/explore', artboard: 'AppExplore', tabs: true),
-  Routes.map: (location: '/explore/map', artboard: 'AppMap', tabs: true),
+  // AppExplore and AppMap are filled (T30): the sample's "artboard" is the
+  // real screen's own stable heading/line, not a placeholder name.
+  '/': (location: '/', artboard: 'Which home are you buying?', tabs: true),
+  Routes.explore: (location: '/explore', artboard: 'Which home are you buying?', tabs: true),
+  Routes.map: (location: '/explore/map', artboard: '"Quoted" means no cost sheet yet.', tabs: true),
   Routes.following: (location: '/following', artboard: 'AppFollowing', tabs: true),
   Routes.family: (location: '/following/family', artboard: 'AppFamily', tabs: true),
   Routes.ask: (location: '/ask', artboard: 'AppVoice', tabs: true),
@@ -80,10 +83,14 @@ void main() {
       routerOf(container).go(s.location);
       await tester.pumpAndSettle();
       if (pattern == Routes.project) {
-        // T31a replaced this placeholder with the real AppProject screen;
-        // AppProjectStates (T31b) is still a placeholder, reached only
-        // through `?state=` (see the dedicated test below).
+        // T31a replaced this placeholder with the real AppProject screen.
+        // AppProjectStates (T31b) is reached only through `?state=` on the
+        // same path (see the dedicated test below), so it never shows here.
         expect(find.text('Will it be delivered on time?'), findsOneWidget, reason: '$pattern should show AppProject');
+      } else if (pattern == Routes.risk) {
+        // AppRisk (T32) is filled in: its own tests cover its content; here we
+        // only confirm the route resolves to it, by its root key.
+        expect(find.byKey(riskScreenKey), findsOneWidget, reason: '$pattern should show AppRisk');
       } else {
         expect(find.text(s.artboard), findsOneWidget, reason: '$pattern should show ${s.artboard}');
       }
@@ -96,7 +103,7 @@ void main() {
   testWidgets('the app opens on Explore', (tester) async {
     final container = await pumpPlinth(tester);
     expect(locationOf(container), Routes.explore);
-    expect(find.text('AppExplore'), findsOneWidget);
+    expect(find.text('Which home are you buying?'), findsOneWidget);
   });
 
   testWidgets('browsing never redirects to sign-in', (tester) async {
@@ -144,8 +151,10 @@ void main() {
 
   testWidgets('FIXTURES mode previews a project state with ?state=', (tester) async {
     await pumpPlinth(tester, location: '/gurugram/projects/aurelia-heights-phase-2?state=stale');
-    expect(find.text('AppProjectStates'), findsOneWidget);
-    expect(find.textContaining('state  stale'), findsOneWidget);
+    await tester.pumpAndSettle();
+    // AppProjectStates (T31b) takes over for ?state=; its app bar names the
+    // design state regardless of the slug's own data (ProjectDesignState).
+    expect(find.descendant(of: find.byType(AppBar), matching: find.text('Stale')), findsOneWidget);
   });
 
   testWidgets('an unknown link shows the not-found screen with a way back', (tester) async {

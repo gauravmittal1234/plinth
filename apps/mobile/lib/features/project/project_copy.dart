@@ -40,6 +40,10 @@ abstract final class ProjectCopy {
   static const timeUsed = 'Time used';
   static const onRecordThatQuarter = 'On record that quarter';
 
+  /// A project with no QPR on file yet (not scored; WebCompare's own copy
+  /// for the same gap, DESIGN product/design/artboards/WebCompare.dc.html).
+  static const noQprOnFile = 'No QPR figures on file';
+
   // Homes.
   static const whatAreHomesLike = 'What are the homes like?';
   static const amenitiesAndGettingAround = 'Amenities and getting around';

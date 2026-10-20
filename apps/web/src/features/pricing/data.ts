@@ -1,28 +1,15 @@
-// WebPricing's own reads (T26; AGENTS.md "pages import only from @/src/data").
-// The Aurelia sample is the same phase WebHome defaults to (T21), read fresh
-// here so this page never depends on another feature's module.
+// WebPricing's own read (T26; AGENTS.md "pages import only from @/src/data").
+// Free at launch (founder, 20 Oct 2026): the page is short, server-rendered
+// copy plus `api.about().money` — no sample, no payment flow, so no other
+// read is needed.
 import "server-only";
-import { about, flags, riskSummary } from "@/src/data";
-import type { About, RiskSummary } from "@/src/data";
-
-export const SAMPLE_SLUG = "aurelia-heights-phase-2";
+import { about } from "@/src/data";
+import type { About } from "@/src/data";
 
 export type PricingData = {
   about: About;
-  sample: RiskSummary;
-  /** `flags().flags.pro_paywall` — off until a payment partner exists (contracts/catalogues/flags.json). */
-  proPaywallOn: boolean;
 };
 
 export async function loadPricingData(): Promise<PricingData> {
-  const [aboutPage, sample, flagsResult] = await Promise.all([
-    about(),
-    riskSummary(SAMPLE_SLUG),
-    flags(),
-  ]);
-  return {
-    about: aboutPage,
-    sample,
-    proPaywallOn: flagsResult.flags.pro_paywall === true,
-  };
+  return { about: await about() };
 }
