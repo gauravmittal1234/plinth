@@ -73,17 +73,19 @@ export interface CallOptions {
   request: GeminiRequest;
   fetch: typeof fetch;
   timeoutMs: number;
-  base?: string;
 }
 
 const MODEL_ID = /^[a-z0-9][a-z0-9.-]{1,80}$/;
 
-/** One generateContent call. Errors carry the HTTP status, never the body or the key. */
+/**
+ * One generateContent call. Errors carry the HTTP status, never the body or the key. The host is
+ * fixed: no variable can point the gateway (and a document) at another server.
+ */
 export async function callGemini(o: CallOptions): Promise<GeminiAnswer> {
   if (!MODEL_ID.test(o.model)) {
     throw new AiError("config", "the model id is not a Gemini model name");
   }
-  const url = `${o.base ?? GEMINI_BASE}/models/${o.model}:generateContent`;
+  const url = `${GEMINI_BASE}/models/${o.model}:generateContent`;
   let res: Response;
   try {
     res = await o.fetch(url, {

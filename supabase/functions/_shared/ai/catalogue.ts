@@ -100,11 +100,6 @@ export function killSwitchFor(task: AiTask): FlagKey {
   return flag;
 }
 
-/** True for the document readers (OCR, classify, extract): data in, schema out, no tools. */
-export function isExtractor(task: AiTask): boolean {
-  return /^(ocr|classify|extract|transcribe|parse)\./.test(task.id);
-}
-
 /** The reader a call uses: required when the task lists readers, refused otherwise. */
 export function readerFor(task: AiTask, readerId: string | undefined): AiReader | null {
   const readers = task.readers ?? [];
