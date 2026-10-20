@@ -1,0 +1,191 @@
+{
+  "schema": "plinth.compare/1",
+  "columns": [
+    {
+      "slug": "aurelia-heights-phase-2",
+      "name": "Aurelia Heights, Phase 2",
+      "chip": {
+        "kind": "band",
+        "label": "Elevated",
+        "step": 3,
+        "meter_filled": 3
+      },
+      "state": "scored",
+      "locality_line": "Sector 37D, Dwarka Expressway",
+      "developer_name": "Northfield Estates",
+      "price_line": "₹2.74 Cr all-in · quoted ₹2.35 Cr",
+      "image_url": "/media/heroAurelia.jpg"
+    },
+    {
+      "slug": "kestrel-park",
+      "name": "Kestrel Park",
+      "chip": {
+        "kind": "band",
+        "label": "Low",
+        "step": 1,
+        "meter_filled": 1
+      },
+      "state": "scored",
+      "locality_line": "Sector 113, Dwarka Expressway",
+      "developer_name": "Orbis Land",
+      "price_line": "₹2.44 Cr all-in · quoted ₹2.10 Cr",
+      "image_url": "/media/heroKestrel.jpg"
+    },
+    {
+      "slug": "sapphire-grove-phase-1",
+      "name": "Sapphire Grove, Phase 1",
+      "chip": {
+        "kind": "band",
+        "label": "Moderate",
+        "step": 2,
+        "meter_filled": 2
+      },
+      "state": "scored",
+      "locality_line": "Sector 106, Dwarka Expressway",
+      "developer_name": "Meridian Habitat",
+      "price_line": "₹2.27 Cr all-in · quoted ₹1.95 Cr",
+      "image_url": "/media/heroSapphire.jpg"
+    },
+    {
+      "slug": "coral-towers",
+      "name": "Coral Towers",
+      "chip": {
+        "kind": "band",
+        "label": "High",
+        "step": 4,
+        "meter_filled": 4
+      },
+      "state": "scored",
+      "locality_line": "Sector 89, New Gurugram",
+      "developer_name": "Vantage Buildcon",
+      "price_line": "₹1.90 Cr all-in · quoted ₹1.62 Cr",
+      "image_url": "/media/heroCoral.jpg"
+    }
+  ],
+  "rows": [
+    {
+      "key": "frequency",
+      "label": "Out of 100 similar projects",
+      "source_line": "Methodology v1.2 · 14 Oct 2026",
+      "cells": [
+        "Between 30 and 45 were more than 12 months late",
+        "About 10 were more than 12 months late",
+        "About 20 were more than 12 months late",
+        "Between 45 and 65 were more than 12 months late"
+      ]
+    },
+    {
+      "key": "all_in",
+      "label": "All-in, 3 BHK",
+      "source_line": "Cost sheets + rules v2026.10",
+      "cells": [
+        "₹2.74 Cr · ₹18,900 per sq ft carpet",
+        "₹2.44 Cr · ₹17,400 per sq ft carpet",
+        "₹2.27 Cr · ₹16,200 per sq ft carpet",
+        "₹1.90 Cr · ₹15,300 per sq ft carpet"
+      ]
+    },
+    {
+      "key": "built",
+      "label": "Built vs time used",
+      "source_line": "Latest HARERA QPR for each project",
+      "cells": [
+        "41% built · 77% of time used",
+        "63% built · 58% of time used",
+        "48% built · 55% of time used",
+        "22% built · 70% of time used"
+      ]
+    },
+    {
+      "key": "carpet",
+      "label": "Carpet area, 3 BHK",
+      "source_line": "HARERA registration (Aurelia) · developer price lists, Oct 2026",
+      "cells": ["1,450 sq ft", "1,400 sq ft", "1,400 sq ft", "1,240 sq ft"]
+    },
+    {
+      "key": "loading",
+      "label": "Loading, 3 BHK (super vs carpet)",
+      "source_line": "Developer cost sheets",
+      "cells": [
+        "38% · 2,000 sq ft super",
+        "34% · 1,880 sq ft super",
+        "40% · 1,960 sq ft super",
+        "41% · 1,750 sq ft super"
+      ]
+    },
+    {
+      "key": "completion",
+      "label": "Original completion (RERA)",
+      "source_line": "HARERA registration certificates",
+      "cells": [
+        "Dec 2027 · no extensions so far",
+        "Nov 2028",
+        "Mar 2028",
+        "Aug 2028 · extended twice: Feb 2029, then Aug 2029"
+      ]
+    },
+    {
+      "key": "complaints",
+      "label": "Complaints, 24 months",
+      "source_line": "HARERA orders · to 14 Oct 2026",
+      "cells": [
+        "14 · 2.8 per 100 units",
+        "2 · 0.5 per 100 units",
+        "5 · 1.4 per 100 units",
+        "Not in our records yet"
+      ]
+    },
+    {
+      "key": "commute",
+      "label": "Commute to Cyber City, 9 am",
+      "source_line": "Plinth estimate · road distance, Oct 2026",
+      "cells": ["18 km, 35–55 min", "19 km, 35–50 min", "20 km, 40–60 min", "24 km, 45–70 min"]
+    },
+    {
+      "key": "top_reason",
+      "label": "Top reason for the band",
+      "source_line": "Methodology v1.2",
+      "cells": [
+        "72% of units sold, 41% built.",
+        "63% built with 58% of the promised time used.",
+        "48% built with 55% of the promised time used.",
+        "22% built with 70% of the promised time used. 2 extensions on record."
+      ]
+    },
+    {
+      "key": "track_record",
+      "label": "Developer track record",
+      "source_line": "HARERA + DTCP OC records",
+      "cells": [
+        "2 of 6 finished projects got OC more than 12 months late",
+        "1 of 9 finished projects got OC more than 12 months late",
+        "2 of 11 finished projects got OC more than 12 months late",
+        "Not in our records yet"
+      ]
+    },
+    {
+      "key": "pending",
+      "label": "On record now",
+      "source_line": "HARERA QPR register · 18 Oct 2026",
+      "cells": [
+        "Jul–Sep 2026 QPR not on HARERA yet (due 15 Oct)",
+        "Jul–Sep 2026 QPR filed on time, 12 Oct 2026",
+        "Jul–Sep 2026 QPR filed 15 Oct 2026 · re-score due by 19 Oct 2026, 7:40 pm",
+        "Apr–Jun and Jul–Sep 2026 QPRs not on HARERA yet · progress 187 days old"
+      ],
+      "developer_says": ["Developer says: filed 12 Oct, not yet verified.", null, null, null]
+    }
+  ],
+  "notes": [
+    "3 BHK on each. Every row names its source.",
+    "Facts-only projects show “Band withheld · facts only”.",
+    "Blank cells say “Not in our records yet” rather than guess."
+  ],
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever."
+  }
+}

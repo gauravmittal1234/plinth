@@ -1,0 +1,199 @@
+{
+  "schema": "plinth.risk_summary/1",
+  "phase": {
+    "slug": "sapphire-grove-phase-1",
+    "name": "Sapphire Grove, Phase 1",
+    "short_code": null,
+    "rera_number": "GGM/867/599/2025/03",
+    "authority": {
+      "code": "harera_ggm",
+      "name": "HARERA Gurugram",
+      "url": "https://haryanarera.gov.in"
+    },
+    "locality_line": "Sector 106, Dwarka Expressway",
+    "units": 360,
+    "developer": {
+      "slug": "meridian-habitat",
+      "name": "Meridian Habitat",
+      "claim": {
+        "state": "claimed",
+        "line": "claimed developer page, replies here",
+        "since": "2025-12-05"
+      }
+    }
+  },
+  "display": {
+    "state": "scored",
+    "overlays": ["rescoring"],
+    "bands_public": true
+  },
+  "band": {
+    "code": "moderate",
+    "label": "Moderate",
+    "step": 2,
+    "since": "2026-07-15",
+    "set_by": "model",
+    "rule": null
+  },
+  "chip": {
+    "kind": "band",
+    "label": "Moderate",
+    "step": 2,
+    "meter_filled": 2
+  },
+  "confidence": {
+    "level": "high",
+    "dots": 2,
+    "line": "We're more certain about this one. Meridian Habitat has 11 finished RERA projects to learn from."
+  },
+  "frequency": {
+    "kind": "point",
+    "low": 20,
+    "high": 20,
+    "sentence": "About 20 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+    "reference_class_line": "Gurugram RERA phases registered 2017–2021 (illustrative backtest).",
+    "icon_array": {
+      "filled": 20,
+      "hatched": 0,
+      "empty": 80
+    },
+    "hatch_legend": null
+  },
+  "late12": {
+    "original_completion": "2028-03",
+    "blanket_extension_months": 4,
+    "late_after": "2029-07",
+    "line": "Original completion Mar 2028. More than 12 months late here means an OC after Jul 2029, with the 4-month blanket extension of Jul 2026.",
+    "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+  },
+  "reasons": [
+    {
+      "rank": 1,
+      "factor": "timeline",
+      "factor_label": "Timeline",
+      "text": "48% built with 55% of the promised time used.",
+      "sources": [
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["bcbeac16-a68a-587d-a18b-c83ab2cd672e"],
+          "evidence_url": "/evidence/bcbeac16-a68a-587d-a18b-c83ab2cd672e",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-27"
+        },
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["4070ee84-2622-578f-8bb6-2e605e103e94"],
+          "evidence_url": "/evidence/4070ee84-2622-578f-8bb6-2e605e103e94",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "factor": "legal",
+      "factor_label": "Legal",
+      "text": "5 complaints decided against the promoter in 24 months · 1.4 per 100 units. Median count for similar projects: 3.",
+      "sources": [
+        {
+          "label": "HARERA orders · 24 months",
+          "fact_ids": ["e5b0c43a-518c-5c39-8b5a-d712debe364a"],
+          "evidence_url": "/evidence/e5b0c43a-518c-5c39-8b5a-d712debe364a",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "factor": "timeline",
+      "factor_label": "Timeline",
+      "text": "The Apr–Jun 2026 QPR was filed 12 days late.",
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["fc2e6392-b9da-5aea-9c72-3f9b9e8c48c1"],
+          "evidence_url": "/evidence/fc2e6392-b9da-5aea-9c72-3f9b9e8c48c1",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-27"
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "factor": "track_record",
+      "factor_label": "Track record",
+      "text": "2 of the group's 11 finished RERA projects got OC more than 12 months late.",
+      "sources": [
+        {
+          "label": "HARERA · DTCP OC records",
+          "fact_ids": ["a5f17432-e654-5866-a9a4-7de0202d7591"],
+          "evidence_url": "/evidence/a5f17432-e654-5866-a9a4-7de0202d7591",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "what_would_change": "Two consecutive quarters of construction at or ahead of schedule would move this to Low.",
+  "pending": [
+    {
+      "code": "rescore_due",
+      "line": "The Jul–Sep 2026 QPR was filed 15 Oct and fetched 16 Oct, 7:40 pm. We update this by 19 Oct 2026, 7:40 pm.",
+      "since": "2026-10-16",
+      "developer_says": null,
+      "marker_line": "If the new figures move the band, followers hear first, with what changed and why."
+    }
+  ],
+  "developer_response": null,
+  "progress": {
+    "built_pct": 48,
+    "sold_pct": null,
+    "time_used_pct": 55,
+    "latest_qpr": {
+      "quarter": "2026-Q2",
+      "label": "Apr–Jun 2026",
+      "filed_on": "2026-07-27",
+      "age_days": 83
+    },
+    "line": "48% built · 55% of the promised time used"
+  },
+  "price": {
+    "all_in_inr": 22700000,
+    "all_in_label": "₹2.27 Cr",
+    "quoted_label": "₹1.95 Cr",
+    "per_sqft_carpet_label": "₹16,200 per sq ft carpet",
+    "basis_line": "3 BHK, 1,400 sq ft carpet · developer cost sheet",
+    "display_line": "₹2.27 Cr all-in · quoted ₹1.95 Cr"
+  },
+  "complaints": {
+    "count_24m": 5,
+    "per_100_units": 1.4,
+    "units_base": 360,
+    "median_count_similar": 3,
+    "line": "5 complaints · 1.4 per 100 units"
+  },
+  "withheld": null,
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "0cbf78fd-3b74-5440-bb85-2cefde33f927",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/sapphire-grove-phase-1",
+    "short_url": null
+  },
+  "share": {
+    "card_url": "https://plinth.in/cards/risk/sapphire-grove-phase-1.png?run=0cbf78fd-3b74-5440-bb85-2cefde33f927",
+    "card_alt": "Sapphire Grove, Phase 1: Delivery risk Moderate. About 20 of 100 similar projects were more than 12 months late.",
+    "lines": [
+      "Delivery risk: Moderate",
+      "About 20 of 100 similar Gurugram projects got their OC more than 12 months late.",
+      "48% built with 55% of the promised time used."
+    ],
+    "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+    "caption": "Plinth · No developer pays us. Ever."
+  }
+}

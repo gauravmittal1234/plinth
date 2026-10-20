@@ -1,0 +1,544 @@
+{
+  "schema": "plinth.project_page/1",
+  "risk": {
+    "schema": "plinth.risk_summary/1",
+    "phase": {
+      "slug": "coral-towers",
+      "name": "Coral Towers",
+      "short_code": null,
+      "rera_number": "GGM/612/344/2022/41",
+      "authority": {
+        "code": "harera_ggm",
+        "name": "HARERA Gurugram",
+        "url": "https://haryanarera.gov.in"
+      },
+      "locality_line": "Sector 89, New Gurugram",
+      "units": 640,
+      "developer": {
+        "slug": "vantage-buildcon",
+        "name": "Vantage Buildcon",
+        "claim": {
+          "state": "invited",
+          "line": "invited 24 Nov 2025 · not yet claimed",
+          "since": "2025-11-24"
+        }
+      }
+    },
+    "display": {
+      "state": "scored",
+      "overlays": ["stale"],
+      "bands_public": true
+    },
+    "band": {
+      "code": "high",
+      "label": "High",
+      "step": 4,
+      "since": "2026-07-15",
+      "set_by": "model",
+      "rule": null
+    },
+    "chip": {
+      "kind": "band",
+      "label": "High",
+      "step": 4,
+      "meter_filled": 4
+    },
+    "confidence": {
+      "level": "low",
+      "dots": 1,
+      "line": "We're less certain about this one. Vantage Buildcon's record is short, and the old building figures widen the range."
+    },
+    "frequency": {
+      "kind": "range",
+      "low": 45,
+      "high": 65,
+      "sentence": "Between 45 and 65 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+      "reference_class_line": "Gurugram RERA phases registered 2017–2021 (illustrative backtest).",
+      "icon_array": {
+        "filled": 45,
+        "hatched": 20,
+        "empty": 35
+      },
+      "hatch_legend": "Hatched: the 20 of 100 we're less certain about"
+    },
+    "late12": {
+      "original_completion": "2028-08",
+      "blanket_extension_months": 4,
+      "late_after": "2029-12",
+      "line": "Original completion Aug 2028. More than 12 months late here means an OC after Dec 2029, with the 4-month blanket extension of Jul 2026.",
+      "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+    },
+    "reasons": [
+      {
+        "rank": 1,
+        "factor": "timeline",
+        "factor_label": "Timeline",
+        "text": "22% built with 70% of the promised time used. 2 extensions on record.",
+        "sources": [
+          {
+            "label": "HARERA QPR · Jan–Mar 2026",
+            "fact_ids": ["d09fcaa8-4400-5d52-8276-a257a0d58528"],
+            "evidence_url": "/evidence/d09fcaa8-4400-5d52-8276-a257a0d58528",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-04-14"
+          },
+          {
+            "label": "HARERA registration",
+            "fact_ids": ["23810d29-c87c-5edf-88e3-6c7d13d49228"],
+            "evidence_url": "/evidence/23810d29-c87c-5edf-88e3-6c7d13d49228",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          },
+          {
+            "label": "HARERA order · Extension 1 · 20 Jan 2026",
+            "fact_ids": ["a7301216-3430-592a-aa01-1ea9619c813e"],
+            "evidence_url": "/evidence/a7301216-3430-592a-aa01-1ea9619c813e",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-01-20"
+          },
+          {
+            "label": "HARERA order · Extension 2 · 14 Oct 2026",
+            "fact_ids": ["2f789ce6-4038-5a21-a34c-afda2f5c3bad"],
+            "evidence_url": "/evidence/2f789ce6-4038-5a21-a34c-afda2f5c3bad",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
+      },
+      {
+        "rank": 2,
+        "factor": "timeline",
+        "factor_label": "Timeline",
+        "text": "The Apr–Jun 2026 QPR, due 15 Jul 2026, is not on HARERA.",
+        "sources": [
+          {
+            "label": "HARERA QPR register",
+            "fact_ids": ["966624b0-fb07-53f5-9cd3-aaaf740a5257"],
+            "evidence_url": "/evidence/966624b0-fb07-53f5-9cd3-aaaf740a5257",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-18"
+          }
+        ]
+      }
+    ],
+    "what_would_change": "Two consecutive quarters of construction at or ahead of schedule would move this to Elevated.",
+    "pending": [
+      {
+        "code": "qpr_missing",
+        "line": "The Apr–Jun 2026 QPR is not on HARERA yet. It was due 15 Jul 2026.",
+        "since": "2026-07-15",
+        "developer_says": null,
+        "marker_line": null
+      },
+      {
+        "code": "qpr_missing",
+        "line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026.",
+        "since": "2026-10-15",
+        "developer_says": null,
+        "marker_line": null
+      }
+    ],
+    "developer_response": null,
+    "progress": {
+      "built_pct": 22,
+      "sold_pct": null,
+      "time_used_pct": 70,
+      "latest_qpr": {
+        "quarter": "2026-Q1",
+        "label": "Jan–Mar 2026",
+        "filed_on": "2026-04-14",
+        "age_days": 187
+      },
+      "line": "22% built · 70% of the promised time used · progress 187 days old"
+    },
+    "price": {
+      "all_in_inr": 19000000,
+      "all_in_label": "₹1.90 Cr",
+      "quoted_label": "₹1.62 Cr",
+      "per_sqft_carpet_label": "₹15,300 per sq ft carpet",
+      "basis_line": "3 BHK, 1,240 sq ft carpet · developer cost sheet",
+      "display_line": "₹1.90 Cr all-in · quoted ₹1.62 Cr"
+    },
+    "complaints": null,
+    "withheld": null,
+    "meta": {
+      "data_as_of": "2026-10-14",
+      "model_version": "v1.2",
+      "score_run_id": "d4fada3e-5ed0-58b7-b5eb-53de0611d970",
+      "generated_at": "2026-10-18T12:00:00+05:30",
+      "methodology_url": "/methodology",
+      "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+      "promise_line": "No developer pays us. Ever.",
+      "live_url": "https://plinth.in/gurugram/projects/coral-towers",
+      "short_url": null
+    },
+    "share": {
+      "card_url": "https://plinth.in/cards/risk/coral-towers.png?run=d4fada3e-5ed0-58b7-b5eb-53de0611d970",
+      "card_alt": "Coral Towers: Delivery risk High. Between 45 and 65 of 100 similar projects were more than 12 months late.",
+      "lines": [
+        "Delivery risk: High",
+        "Between 45 and 65 of 100 similar Gurugram projects got their OC more than 12 months late.",
+        "22% built with 70% of the promised time used."
+      ],
+      "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+      "caption": "Plinth · No developer pays us. Ever."
+    }
+  },
+  "hero": {
+    "image_url": "/media/heroCoral.jpg",
+    "image_caption": "Images on this page are illustrative",
+    "summary_line": "Delivery risk: High · Stale data, progress 187 days old · 22% built · Original completion Aug 2028, extended to Aug 2029",
+    "rera_badge": {
+      "number": "GGM/612/344/2022/41",
+      "authority_url": "https://haryanarera.gov.in",
+      "qr_url": null
+    }
+  },
+  "truth_panel": [
+    {
+      "key": "completion",
+      "label": "Original vs current completion",
+      "value_line": "Aug 2028 · extended to Aug 2029 (2 extensions)",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["9e7f8c1b-633b-504d-8689-912698f633cc"],
+          "evidence_url": "/evidence/9e7f8c1b-633b-504d-8689-912698f633cc",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        },
+        {
+          "label": "HARERA order · Extension 1 · 20 Jan 2026",
+          "fact_ids": ["a7301216-3430-592a-aa01-1ea9619c813e"],
+          "evidence_url": "/evidence/a7301216-3430-592a-aa01-1ea9619c813e",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-01-20"
+        },
+        {
+          "label": "HARERA order · Extension 2 · 14 Oct 2026",
+          "fact_ids": ["2f789ce6-4038-5a21-a34c-afda2f5c3bad"],
+          "evidence_url": "/evidence/2f789ce6-4038-5a21-a34c-afda2f5c3bad",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "key": "progress",
+      "label": "Built vs time used",
+      "value_line": "22% built · 70% of time used",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA QPR · Jan–Mar 2026",
+          "fact_ids": ["d09fcaa8-4400-5d52-8276-a257a0d58528"],
+          "evidence_url": "/evidence/d09fcaa8-4400-5d52-8276-a257a0d58528",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-04-14"
+        },
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["23810d29-c87c-5edf-88e3-6c7d13d49228"],
+          "evidence_url": "/evidence/23810d29-c87c-5edf-88e3-6c7d13d49228",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "progress": {
+    "floors_per_tower": null,
+    "towers": null,
+    "quarters": [
+      {
+        "quarter": "2026-Q1",
+        "label": "Jan–Mar 2026",
+        "sold_pct": null,
+        "built_pct": 22,
+        "time_used_pct": null,
+        "band_then": "high",
+        "towers": null,
+        "filed_on": "2026-04-14",
+        "status": "on_time",
+        "note_line": "Filed 14 Apr 2026. The Apr–Jun and Jul–Sep 2026 QPRs are not on HARERA."
+      }
+    ],
+    "today": {
+      "time_used_pct": 70,
+      "band": "high",
+      "band_since_line": "High since 15 Jul 2026"
+    },
+    "late_filings_line": null
+  },
+  "homes": {
+    "units_line": "640 homes in this phase.",
+    "configurations": [
+      {
+        "label": "2 BHK",
+        "carpet_line": "980 sq ft carpet",
+        "carpet_lane": "from_developer",
+        "super_line": null,
+        "super_lane": null,
+        "loading_line": null,
+        "price_line": "From ₹1.28 Cr",
+        "price_lane": "from_developer",
+        "all_in_line": null,
+        "all_in_note": "No 2 BHK cost sheet, so no all-in yet.",
+        "rooms": []
+      },
+      {
+        "label": "3 BHK",
+        "carpet_line": "1,240 sq ft carpet",
+        "carpet_lane": "from_developer",
+        "super_line": "1,750 sq ft super",
+        "super_lane": "from_developer",
+        "loading_line": "41% loading",
+        "price_line": "From ₹1.62 Cr",
+        "price_lane": "from_developer",
+        "all_in_line": "₹1.90 Cr all-in",
+        "all_in_note": null,
+        "rooms": []
+      }
+    ],
+    "amenities": null,
+    "getting_around": {
+      "lane": "our_estimate",
+      "source_line": "Our estimate · road distances, Oct 2026",
+      "items": ["Cyber City: 24 km, 45–70 min at 9 am", "IGI Airport T3: 27 km, 40–60 min"]
+    },
+    "waterlogging": null
+  },
+  "from_developer": {
+    "label": "From the developer · not verified by Plinth",
+    "updated_line": null,
+    "note_line": "Vantage Buildcon added this in its free Plinth workspace. We show it as given and date every change. It is not a public record, and it never moves the delivery risk.",
+    "price_lists": [
+      {
+        "published_on": "2026-10-01",
+        "label": "Oct 2026",
+        "items": [
+          {
+            "unit_label": "2 BHK",
+            "base_price_inr": 12800000,
+            "price_line": "from ₹1.28 Cr",
+            "per_sqft_line": null
+          },
+          {
+            "unit_label": "3 BHK",
+            "base_price_inr": 16200000,
+            "price_line": "from ₹1.62 Cr",
+            "per_sqft_line": null
+          }
+        ]
+      }
+    ],
+    "price_basis_line": "Base prices, before charges, GST and stamp duty.",
+    "payment_plan": null,
+    "transfer_policy": null,
+    "draft_agreement_line": null
+  },
+  "cost": null,
+  "wait_defaults": {
+    "take_home_inr": 450000,
+    "rent_inr": 55000,
+    "down_pct": 20,
+    "rate_pct": 8.5,
+    "tenure_years": 20
+  },
+  "afford_default": null,
+  "next_steps": {
+    "intro_line": "We never say buy or don't buy. At High, these steps keep less of your money at stake.",
+    "steps": [
+      {
+        "heading": "Ask for it in writing.",
+        "body": "The slab schedule, the CA escrow certificate and any extension application.",
+        "source_label": null
+      },
+      {
+        "heading": "Pay no more than the law allows.",
+        "body": "10% before a registered agreement; after that, only stages on record.",
+        "source_label": null
+      },
+      {
+        "heading": "Keep a longer buffer.",
+        "body": "About 24 months of rent and pre-EMI, in case keys come late.",
+        "source_label": null
+      },
+      {
+        "heading": "Read the complaint orders.",
+        "body": "They show what buyers before you went through, and what HARERA decided.",
+        "source_label": null
+      }
+    ],
+    "base_rate_line": "About 36 of 100 Gurugram projects got their OC more than 12 months late. High sits above that.",
+    "lower_band_nearby": [],
+    "rule_line": "Same corridor, lower band, all-in within 20%. Nobody pays to appear."
+  },
+  "before_booking": {
+    "intro_line": "Four things buyers ask about before the first cheque, with the rules behind them.",
+    "note_line": "General information, not legal, tax or financial advice.",
+    "payment_plans": {
+      "title": "Which payment plan?",
+      "sub": "Construction-linked, down payment or subvention, and what each one risks.",
+      "paras": [
+        {
+          "lead": "Construction-linked.",
+          "text": "You pay each stage once it is built, so your money follows the building. Check each demand against the latest QPR.",
+          "tone": "body"
+        },
+        {
+          "lead": "Down payment.",
+          "text": "You pay most of the price early, often for a discount. If the project is late, more of your money waits with it. Before a registered agreement, the law still caps you at 10%.",
+          "tone": "body"
+        },
+        {
+          "lead": "Subvention, or “no EMI till possession”.",
+          "text": "The bank pays the developer early, and the developer promises to pay your pre-EMI. You are still the borrower: if the developer stops paying, the bank collects from you.",
+          "tone": "body"
+        },
+        {
+          "lead": "Before a subvention booking,",
+          "text": "get the lender's confirmation in writing: what it pays out, when, and who pays the pre-EMI if the developer stops.",
+          "tone": "key"
+        }
+      ]
+    },
+    "loans": {
+      "line": "Loan checks arrive in 2027",
+      "title": "Home loans",
+      "sub": "Loan checks arrive in 2027. What to check with your bank now.",
+      "paras": [
+        {
+          "lead": "Loan checks arrive in 2027.",
+          "text": "Plinth doesn't arrange loans or pass your number to any lender today.",
+          "tone": "body"
+        },
+        {
+          "lead": "Check now:",
+          "text": "is this project approved by your bank? Ask the bank, in writing, not the developer.",
+          "tone": "key"
+        },
+        {
+          "lead": "Banks usually don't lend for stamp duty or registration.",
+          "text": "Plan for those from your own money.",
+          "tone": "body"
+        }
+      ]
+    },
+    "nri": {
+      "title": "Buying from abroad (NRI)",
+      "sub": "Paying from NRE or NRO, a power of attorney, and FEMA basics.",
+      "paras": [
+        {
+          "lead": "Paying.",
+          "text": "From an NRE, FCNR(B) or NRO account, or money sent to India through a bank. FEMA doesn't allow paying in foreign currency notes or traveller's cheques.",
+          "tone": "body"
+        },
+        {
+          "lead": "Loans.",
+          "text": "Indian banks lend to NRIs. EMIs come from an NRE or NRO account.",
+          "tone": "body"
+        },
+        {
+          "lead": "TDS.",
+          "text": "Like any buyer, you deduct 1% from each instalment when the price is ₹50 L or more (s.194-IA). You need a PAN.",
+          "tone": "body"
+        },
+        {
+          "lead": "Power of attorney.",
+          "text": "Make it specific to this flat, and list what your relative may sign: booking form, agreement, payments, registration. One signed abroad is attested at an Indian mission or apostilled, then stamped in India within 3 months.",
+          "tone": "body"
+        }
+      ]
+    },
+    "selling_before_possession": {
+      "title": "Selling before possession",
+      "sub": "Transfer charges, the builder's NOC and what RERA says.",
+      "paras": [
+        {
+          "lead": null,
+          "text": "Selling before possession means transferring your allotment. The developer endorses the new buyer on your agreement and issues a no-objection certificate (NOC).",
+          "tone": "body"
+        },
+        {
+          "lead": "Under RERA,",
+          "text": "whoever takes your allotment becomes the allottee, with your rights, including delay interest (s.2(d)).",
+          "tone": "body"
+        },
+        {
+          "lead": "Ask a CA",
+          "text": "about capital-gains tax, and a lawyer about stamp duty on the transfer.",
+          "tone": "body"
+        },
+        {
+          "lead": null,
+          "text": "Our resale and transfer checks are planned for Apr–Jun 2027.",
+          "tone": "body"
+        }
+      ]
+    }
+  },
+  "pre_rera": null,
+  "records": [
+    {
+      "fact_id": "9e7f8c1b-633b-504d-8689-912698f633cc",
+      "chip": "HARERA registration · 2022",
+      "line": "Registered Jul 2022. Original completion date: Aug 2028.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/9e7f8c1b-633b-504d-8689-912698f633cc"
+    },
+    {
+      "fact_id": "a7301216-3430-592a-aa01-1ea9619c813e",
+      "chip": "HARERA order · Extension 1 · 20 Jan 2026",
+      "line": "Extension 1 moved the date from Aug 2028 to Feb 2029.",
+      "lane": "records_show",
+      "as_of": "2026-01-20",
+      "evidence_url": "/evidence/a7301216-3430-592a-aa01-1ea9619c813e"
+    },
+    {
+      "fact_id": "2f789ce6-4038-5a21-a34c-afda2f5c3bad",
+      "chip": "HARERA order · Extension 2 · 14 Oct 2026",
+      "line": "Extension 2 moved the date from Feb 2029 to Aug 2029.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/2f789ce6-4038-5a21-a34c-afda2f5c3bad"
+    },
+    {
+      "fact_id": "d09fcaa8-4400-5d52-8276-a257a0d58528",
+      "chip": "HARERA QPR · Jan–Mar 2026",
+      "line": "22% built.",
+      "lane": "records_show",
+      "as_of": "2026-04-14",
+      "evidence_url": "/evidence/d09fcaa8-4400-5d52-8276-a257a0d58528"
+    },
+    {
+      "fact_id": "966624b0-fb07-53f5-9cd3-aaaf740a5257",
+      "chip": "HARERA QPR register · 18 Oct 2026",
+      "line": "The Apr–Jun 2026 QPR is not on HARERA yet.",
+      "lane": "records_show",
+      "as_of": "2026-10-18",
+      "evidence_url": "/evidence/966624b0-fb07-53f5-9cd3-aaaf740a5257"
+    },
+    {
+      "fact_id": "bb180ccb-bb22-558c-b834-e70deec8f7b3",
+      "chip": "HARERA QPR register · 18 Oct 2026",
+      "line": "The Jul–Sep 2026 QPR is not on HARERA yet.",
+      "lane": "records_show",
+      "as_of": "2026-10-18",
+      "evidence_url": "/evidence/bb180ccb-bb22-558c-b834-e70deec8f7b3"
+    }
+  ],
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "d4fada3e-5ed0-58b7-b5eb-53de0611d970",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/coral-towers",
+    "short_url": null
+  }
+}

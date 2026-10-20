@@ -1,0 +1,238 @@
+{
+  "schema": "plinth.vectors.formatting/1",
+  "source": "DESIGN §5b and AGENTS.md §5 (money as ₹2.74 Cr / ₹24.1 L / ₹1,67,20,000; dates as 18 Oct 2026 / Apr–Jun 2026)",
+  "rules": {
+    "inr_short": "From ₹1 crore: 2 decimals + ' Cr' (half up). From ₹1 lakh: 1 decimal + ' L' (half up). Below: exact, with Indian grouping.",
+    "inr_exact": "₹ + Indian digit grouping (the last 3 digits, then pairs).",
+    "date": "D Mon YYYY, no leading zero.",
+    "month": "Mon YYYY.",
+    "quarter": "Mon–Mon YYYY, an en dash, calendar quarters."
+  },
+  "inr": [
+    {
+      "inr": 27400400,
+      "short": "₹2.74 Cr",
+      "exact": "₹2,74,00,400"
+    },
+    {
+      "inr": 27400000,
+      "short": "₹2.74 Cr",
+      "exact": "₹2,74,00,000"
+    },
+    {
+      "inr": 23500000,
+      "short": "₹2.35 Cr",
+      "exact": "₹2,35,00,000"
+    },
+    {
+      "inr": 33800000,
+      "short": "₹3.38 Cr",
+      "exact": "₹3,38,00,000"
+    },
+    {
+      "inr": 21000000,
+      "short": "₹2.10 Cr",
+      "exact": "₹2,10,00,000"
+    },
+    {
+      "inr": 19000000,
+      "short": "₹1.90 Cr",
+      "exact": "₹1,90,00,000"
+    },
+    {
+      "inr": 24420000,
+      "short": "₹2.44 Cr",
+      "exact": "₹2,44,20,000"
+    },
+    {
+      "inr": 2406756,
+      "short": "₹24.1 L",
+      "exact": "₹24,06,756"
+    },
+    {
+      "inr": 4813512,
+      "short": "₹48.1 L",
+      "exact": "₹48,13,512"
+    },
+    {
+      "inr": 2442000,
+      "short": "₹24.4 L",
+      "exact": "₹24,42,000"
+    },
+    {
+      "inr": 1221000,
+      "short": "₹12.2 L",
+      "exact": "₹12,21,000"
+    },
+    {
+      "inr": 1759400,
+      "short": "₹17.6 L",
+      "exact": "₹17,59,400"
+    },
+    {
+      "inr": 920000,
+      "short": "₹9.2 L",
+      "exact": "₹9,20,000"
+    },
+    {
+      "inr": 440000,
+      "short": "₹4.4 L",
+      "exact": "₹4,40,000"
+    },
+    {
+      "inr": 492800,
+      "short": "₹4.9 L",
+      "exact": "₹4,92,800"
+    },
+    {
+      "inr": 290000,
+      "short": "₹2.9 L",
+      "exact": "₹2,90,000"
+    },
+    {
+      "inr": 300000,
+      "short": "₹3.0 L",
+      "exact": "₹3,00,000"
+    },
+    {
+      "inr": 16720000,
+      "short": "₹1.67 Cr",
+      "exact": "₹1,67,20,000"
+    },
+    {
+      "inr": 8778000,
+      "short": "₹87.8 L",
+      "exact": "₹87,78,000"
+    },
+    {
+      "inr": 1254000,
+      "short": "₹12.5 L",
+      "exact": "₹12,54,000"
+    },
+    {
+      "inr": 62700,
+      "short": "₹62,700",
+      "exact": "₹62,700"
+    },
+    {
+      "inr": 1316700,
+      "short": "₹13.2 L",
+      "exact": "₹13,16,700"
+    },
+    {
+      "inr": 118077,
+      "short": "₹1.2 L",
+      "exact": "₹1,18,077"
+    },
+    {
+      "inr": 200563,
+      "short": "₹2.0 L",
+      "exact": "₹2,00,563"
+    },
+    {
+      "inr": 190227,
+      "short": "₹1.9 L",
+      "exact": "₹1,90,227"
+    },
+    {
+      "inr": 1100000,
+      "short": "₹11.0 L",
+      "exact": "₹11,00,000"
+    },
+    {
+      "inr": 55000,
+      "short": "₹55,000",
+      "exact": "₹55,000"
+    },
+    {
+      "inr": 11999,
+      "short": "₹11,999",
+      "exact": "₹11,999"
+    },
+    {
+      "inr": 100000,
+      "short": "₹1.0 L",
+      "exact": "₹1,00,000"
+    },
+    {
+      "inr": 99999,
+      "short": "₹99,999",
+      "exact": "₹99,999"
+    },
+    {
+      "inr": 0,
+      "short": "₹0",
+      "exact": "₹0"
+    }
+  ],
+  "dates": [
+    {
+      "iso": "2026-10-18",
+      "label": "18 Oct 2026"
+    },
+    {
+      "iso": "2026-10-02",
+      "label": "2 Oct 2026"
+    },
+    {
+      "iso": "2026-07-15",
+      "label": "15 Jul 2026"
+    },
+    {
+      "iso": "2023-03-12",
+      "label": "12 Mar 2023"
+    },
+    {
+      "iso": "2026-11-01",
+      "label": "1 Nov 2026"
+    },
+    {
+      "iso": "2027-01-05",
+      "label": "5 Jan 2027"
+    }
+  ],
+  "months": [
+    {
+      "iso": "2027-12",
+      "label": "Dec 2027"
+    },
+    {
+      "iso": "2029-04",
+      "label": "Apr 2029"
+    },
+    {
+      "iso": "2026-06",
+      "label": "Jun 2026"
+    },
+    {
+      "iso": "2031-04",
+      "label": "Apr 2031"
+    }
+  ],
+  "quarters": [
+    {
+      "quarter": "2023-Q2",
+      "label": "Apr–Jun 2023"
+    },
+    {
+      "quarter": "2024-Q3",
+      "label": "Jul–Sep 2024"
+    },
+    {
+      "quarter": "2025-Q4",
+      "label": "Oct–Dec 2025"
+    },
+    {
+      "quarter": "2026-Q1",
+      "label": "Jan–Mar 2026"
+    },
+    {
+      "quarter": "2026-Q2",
+      "label": "Apr–Jun 2026"
+    },
+    {
+      "quarter": "2026-Q3",
+      "label": "Jul–Sep 2026"
+    }
+  ]
+}

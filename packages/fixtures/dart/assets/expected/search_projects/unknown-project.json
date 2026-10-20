@@ -1,0 +1,28 @@
+{
+  "schema": "plinth.search_results/1",
+  "query": "Indigo Terraces",
+  "parsed": {
+    "name": "Indigo Terraces"
+  },
+  "notes": [],
+  "sort_line": "Sorted by lowest delivery risk. Order never follows money.",
+  "legend_line": "Pins show all-in prices",
+  "items": [],
+  "hidden_count": 0,
+  "hidden": [],
+  "next_cursor": null,
+  "zero_results": {
+    "kind": "unknown_project",
+    "line": "We can't find Indigo Terraces in our records. If it has a Gurugram RERA number, we'll add it by 1 Nov 2026 or tell you why not.",
+    "action": {
+      "kind": "request_project",
+      "label": "Request it"
+    },
+    "detail_line": "We add any Gurugram project with a RERA number within 14 days, or say why not in writing: no RERA registration, outside Gurugram, or registration lapsed."
+  },
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "generated_at": "2026-10-18T12:00:00+05:30"
+  }
+}

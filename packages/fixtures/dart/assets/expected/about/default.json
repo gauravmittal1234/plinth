@@ -1,0 +1,175 @@
+{
+  "schema": "plinth.about/1",
+  "identity": {
+    "placeholder_note": "Founder details are placeholders until the founder supplies them.",
+    "photo_line": "A real photo, supplied by the founder. Never AI-generated.",
+    "register": [
+      {
+        "label": "Company",
+        "value": "[COMPANY NAME] Private Limited"
+      },
+      {
+        "label": "Company number",
+        "value": "CIN [CIN]"
+      },
+      {
+        "label": "Registered office",
+        "value": "[REGISTERED ADDRESS], Gurugram, Haryana [PIN]"
+      },
+      {
+        "label": "GST",
+        "value": "GSTIN [GSTIN]"
+      },
+      {
+        "label": "Founder and director",
+        "value": "[FOUNDER NAME]"
+      },
+      {
+        "label": "Who funds us",
+        "value": "[FUNDING: the founder, or investor names]. No developer owns any part of Plinth, and none ever will."
+      },
+      {
+        "label": "HARERA agent number",
+        "value": "None yet. We don't broker any sale."
+      }
+    ]
+  },
+  "calibration": {
+    "pill": "Illustrative numbers",
+    "rows": [
+      {
+        "band": "low",
+        "label": "Low",
+        "said_low": 5,
+        "said_high": 15,
+        "n_projects": 46,
+        "n_late": 4,
+        "per_100": 9,
+        "inside_range": true
+      },
+      {
+        "band": "moderate",
+        "label": "Moderate",
+        "said_low": 15,
+        "said_high": 30,
+        "n_projects": 61,
+        "n_late": 19,
+        "per_100": 31,
+        "inside_range": false
+      },
+      {
+        "band": "elevated",
+        "label": "Elevated",
+        "said_low": 30,
+        "said_high": 45,
+        "n_projects": 52,
+        "n_late": 20,
+        "per_100": 38,
+        "inside_range": true
+      },
+      {
+        "band": "high",
+        "label": "High",
+        "said_low": 45,
+        "said_high": 65,
+        "n_projects": 34,
+        "n_late": 19,
+        "per_100": 56,
+        "inside_range": true
+      },
+      {
+        "band": "severe",
+        "label": "Severe",
+        "said_low": 65,
+        "said_high": 80,
+        "n_projects": 19,
+        "n_late": 14,
+        "per_100": 74,
+        "inside_range": true
+      }
+    ],
+    "base_rate": {
+      "n_projects": 212,
+      "n_late": 76,
+      "per_100": 36,
+      "line": "About 36 of 100 past Gurugram projects got their OC more than 12 months late (76 of 212)."
+    },
+    "brier_line": "With a Brier score: 0.19 on these 212 projects. Lower is better. Saying “36 of 100” for every project would score 0.23.",
+    "first_public_bands_on": "2026-07-15"
+  },
+  "money": {
+    "never_line": "No developer pays us. Ever.",
+    "lines": [
+      "Pro: ₹999 per project · 12 months of written updates. Alerts are always free.",
+      "Loans: Loan checks arrive in 2027. No lender pays us in R1.",
+      "Agents: a published fee split, only when you choose them."
+    ]
+  },
+  "response_times": [
+    {
+      "what": "Report an error, from any page",
+      "promise_line": "We answer within 15 working days.",
+      "ref_prefix": "E"
+    },
+    {
+      "what": "Clerical fix, for developers",
+      "promise_line": "Fix in 2 working days.",
+      "ref_prefix": "CL"
+    },
+    {
+      "what": "Grievance",
+      "promise_line": "Acknowledge in 24 hours. Resolve in 7 days.",
+      "ref_prefix": "G"
+    },
+    {
+      "what": "Download my data",
+      "promise_line": "Ready within 24 hours; the link works for 7 days.",
+      "ref_prefix": null
+    }
+  ],
+  "grievance": {
+    "officer": "[NAME]",
+    "contact": "[GRIEVANCE EMAIL]",
+    "line": "We acknowledge within 24 hours and resolve within 7 days."
+  },
+  "coverage": {
+    "today": {
+      "line": "Gurugram today.",
+      "items": [
+        "Gurugram, under-construction RERA projects on Dwarka Expressway and in New Gurugram."
+      ]
+    },
+    "next": [
+      {
+        "name": "Golf Course Extension Road",
+        "when_line": "Planned for Dec 2026",
+        "notify": true
+      },
+      {
+        "name": "Loans",
+        "when_line": "Loan checks arrive in 2027",
+        "notify": true
+      },
+      {
+        "name": "Resale and transfer checks",
+        "when_line": "R2 · planned for Apr–Jun 2027",
+        "notify": true
+      },
+      {
+        "name": "Help at possession: OC, final demand, delay interest",
+        "when_line": "R3 · planned for Jul–Sep 2027",
+        "notify": true
+      },
+      {
+        "name": "Noida and Greater Noida West",
+        "when_line": "R3 · planned for Jul–Sep 2027",
+        "notify": true
+      }
+    ]
+  },
+  "meta": {
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "promise_line": "No developer pays us. Ever.",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA."
+  }
+}

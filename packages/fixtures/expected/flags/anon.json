@@ -1,0 +1,21 @@
+{
+  "bands_public": true,
+  "harera_live_fetch": false,
+  "ai_ask": false,
+  "ai_doc_check": false,
+  "ai_staging": false,
+  "wa_outbound": false,
+  "wa_inbound": false,
+  "push_outbound": false,
+  "email_outbound": false,
+  "since_replay_slider": false,
+  "family_circle": false,
+  "dev_workspace": false,
+  "visit_booking": false,
+  "broker_layer": false,
+  "buyer_signals": false,
+  "pro_paywall": false,
+  "map_tiles": false,
+  "facts_only_global": false,
+  "maintenance_mode": false
+}
