@@ -209,7 +209,7 @@ One object, served by `api.risk_summary(p_slug)`. It is embedded in `project_pag
 | `doc-check` | POST · buyer JWT, or internal from wa-webhook | OCR → classify → 2 readers → rules → `app.doc_checks` | M3 |
 | `ask` | POST · anon (rate-limited) or buyer JWT | Ask Plinth | M5 (stub M2 for WhatsApp fallback) |
 | `export-data` | POST · buyer JWT + fresh OTP | DPDP export ZIP (PDF + JSON), 7-day link | M2 |
-| `delete-account` | POST · buyer JWT | Erasure with legal-hold exceptions (pet_app pattern) | M2 |
+| `delete-account` | POST · buyer JWT + a sign-in code from the last 10 minutes (else 401 `insufficient_user_authentication`; lead decision, T53) | Erasure with legal-hold exceptions (pet_app pattern); consent rows kept, pointing at an anonymised subject | M2 |
 | `retention-sweep` | POST · dispatch secret, daily | Deletes expired uploads, voice and exports; anonymises old messages | M2 |
 | `capture` | POST · capture token | Site photo: time check, footprint check (PostGIS), SHA-256 seal | M4 |
 | `stage-room` | POST · buyer JWT | Visualise: Gemini image, structure check, label, C2PA | M5 |
