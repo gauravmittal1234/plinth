@@ -3,9 +3,10 @@
 // nothing here is composed. Not one of T25's four named Build items, but the
 // id this section carries is already linked from the shell footer (nav.ts)
 // and from WebHome (home/money-section.tsx), so About keeps the anchor alive.
+// Free at launch (founder, 20 Oct 2026): no Pro plan, no agent fee split.
 import type { About } from "@/src/data";
 
-/** `about().money.lines` reads "Who: what" ("Pro: ₹999 per project · …"). */
+/** `about().money.lines` reads "Who: what" ("Buyers: free. Every band, reason, …"). */
 function splitLine(line: string): [string, string] {
   const i = line.indexOf(": ");
   return i < 0 ? [line, ""] : [line.slice(0, i), line.slice(i + 2)];
