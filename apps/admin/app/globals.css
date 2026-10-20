@@ -1,1 +1,30 @@
 @import "tailwindcss";
+/* Design tokens (T01) and the shared web UI kit (T14), same order as apps/web's
+ * globals.css: tokens right after tailwindcss, then the kit's component utilities. */
+@import "@plinth/tokens/theme.css";
+@import "@plinth/web-ui/styles.css";
+
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+    font-variant-numeric: tabular-nums lining-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--pl-color-bg, Canvas);
+    color: var(--pl-color-ink, CanvasText);
+    font-size: var(--pl-type-body-public-size, 1rem);
+    line-height: 1.5;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--pl-color-focus, Highlight);
+    outline-offset: 2px;
+  }
+}
