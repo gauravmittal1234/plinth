@@ -9,7 +9,7 @@
 -- (not just a check), so the existing ops.feature_flags audit trigger (T04) logs it in the
 -- same transaction, and the RPC returns the row that was actually written.
 --
--- Soft dependency, unmerged (PR #63, "M2 wave 4 backend"): T42's comms.outbox table. admin_outbox
+-- Soft dependency (T42's comms.outbox, merged in #63). admin_outbox
 -- guards every reference with to_regclass() and a dynamic query (pg_catalog.format(), never a
 -- literal "comms.outbox") so `supabase db lint` (plpgsql_check) never statically resolves a
 -- table that may not exist yet (same pattern as T41's custom_access_token_hook), and so this

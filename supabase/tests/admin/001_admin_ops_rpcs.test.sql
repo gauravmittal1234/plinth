@@ -78,8 +78,8 @@ set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"00000000-0000-4000-8000-0000005400a1","role":"authenticated","plinth_roles":["admin"],"aal":"aal2"}', true);
 
 select is(api.admin_outbox() ->> 'schema', 'plinth.admin_outbox/1', 'admin at aal2: admin_outbox returns its schema tag');
-select is(api.admin_outbox() ->> 'available', 'false', 'admin_outbox: comms.outbox does not exist yet (T42 unmerged) so available is false');
-select is(api.admin_outbox() -> 'recent_failures', '[]'::jsonb, 'admin_outbox: recent_failures is empty while comms.outbox is unavailable');
+select is(api.admin_outbox() ->> 'available', 'true', 'admin_outbox: comms.outbox (T42) exists and its columns match, so available is true');
+select is(api.admin_outbox() -> 'recent_failures', '[]'::jsonb, 'admin_outbox: no failed sends in the seeded outbox');
 
 select is(
   (select s ->> 'code' from jsonb_array_elements(api.admin_source_freshness() -> 'sources') s where s ->> 'code' = 't54-src'),
