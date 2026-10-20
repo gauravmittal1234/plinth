@@ -50,6 +50,16 @@ const nextConfig: NextConfig = {
     "@plinth/tokens",
     "@plinth/web-ui",
   ],
+  experimental: {
+    // M1 perf gate: merge the small client chunks Turbopack emits by default
+    // (raised from 50 KB of raw source). Same code, fewer requests: measured
+    // 11 -> 8 script requests on / and /methodology, 14 -> 10 on the project
+    // page, and 2.4-2.9 KB less JS transfer (headers and merged prefetch
+    // chunks). `optimizePackageImports: ["@plinth/web-ui"]` was also tried
+    // and left out: it produced byte-identical chunks, because web-ui's
+    // `sideEffects` field already lets Turbopack drop unused barrel exports.
+    turbopackChunking: { minChunkSize: 200000 },
+  },
   turbopack: {
     rules: {
       "*.css": {

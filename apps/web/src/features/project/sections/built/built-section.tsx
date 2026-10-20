@@ -21,11 +21,23 @@ import {
 import { useMemo, useState } from "react";
 import { BUILT_COPY } from "../../page/copy";
 
+/**
+ * Only the two slices this section reads. It is a client component, so
+ * whatever it is passed is serialised into the page's RSC payload: passing the
+ * whole ProjectPage put ~31 KB of JSON (homes, cost, records, ...) into the
+ * HTML a second time, and the bigger HTML delayed every request after it
+ * (M1 perf gate). project-page.tsx passes exactly this.
+ */
+export type BuiltSectionPage = {
+  risk: Pick<ProjectPage["risk"], "progress">;
+  progress: ProjectPage["progress"];
+};
+
 export function BuiltSection({
   page,
   bands,
 }: {
-  page: ProjectPage;
+  page: BuiltSectionPage;
   bands: readonly BandRange[];
 }) {
   const { risk, progress } = page;

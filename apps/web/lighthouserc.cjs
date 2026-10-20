@@ -96,6 +96,33 @@
 // node_modules/next/dist/docs/.../optimizePackageImports.md); or give
 // `packages/web-ui/package.json` a subpath export for the evidence drawer
 // specifically, so the dynamic import target is unambiguous to the bundler.
+//
+// M1 perf gate, part 2 (lead, 20 Oct 2026). Same tool, 3 runs per URL, local.
+// Changes: home explore thumbnails get `sizes="128px"` (they were fetched at
+// w=3840: 612 -> 92 KB of images on /); BuiltSection gets only the two
+// slices it reads instead of the whole ProjectPage (project HTML 45.0 ->
+// 40.4 KB gzip); turbopackChunking.minChunkSize 200 KB (fewer, merged chunks).
+// Before -> after, all three runs:
+//   /             LCP 1.70/3.49/3.55 -> 2.95/3.09/3.09 s   JS 176.0 -> 173.6 KB
+//   project page  LCP 3.32/3.32/3.54 -> 3.16/3.16/3.24 s   JS 196.1 -> 193.2 KB
+//   /methodology  LCP 2.48/2.48/2.49 -> 2.48/2.48/2.48 s   JS 176.0 -> 173.6 KB
+// (/'s 1.70 s was one run where the scripts stalled until after first paint;
+// the other runs, before and after, are the real figure.)
+// Why neither gate is reached, so both stay as they are below:
+// - JS: ~139 KB of every page is Next/React itself (react-dom + app
+//   bootstrap ~70.7, router/segment cache ~45.0, other Next client code
+//   ~10.5, runtime ~4.2, layout router ~3.9, next/link + ThemeToggle ~4.3).
+//   The project page adds ~15.8 KB of its own, and ~38.8 KB more arrives
+//   after load because the links in view are prefetched and the router
+//   preloads their routes' client chunks (search/compare ~21.4, home ~13.7,
+//   developer ~3.7). The shared layout pulls in no web-ui code; barrel
+//   imports are already tree-shaken (optimizePackageImports changed nothing).
+// - LCP: in Lighthouse's simulation everything that finished before the real
+//   paint counts. Here that is always the document, five preloaded font
+//   files (~77 KB), the CSS and all ~139 KB of framework JS, so even
+//   /methodology (no page JS) sits at 2.48 s. `next start` also serves
+//   HTTP/1.1. Re-auditing the same saved runs with the protocol set to h2
+//   (what Vercel serves) gave / 2.25, project 2.48, /methodology 1.88 s.
 const BASE = "http://127.0.0.1:3200";
 const PROJECT_URL = `${BASE}/gurugram/projects/aurelia-heights-phase-2`;
 

@@ -49,8 +49,22 @@ function CorridorPanel({ group, whenLine }: { group: CorridorGroup; whenLine: st
               className="grid grid-cols-[8rem_minmax(0,1fr)] items-start gap-5 rounded-panel p-4 text-ink no-underline hover:bg-track"
             >
               <span className="block aspect-[4/3] w-32 overflow-hidden bg-track">
+                {/*
+                 * The box is always w-32 (128 CSS px). Without `sizes`, a
+                 * static import's intrinsic width (~2400 px) made Next ask
+                 * for w=3840 on a phone: ~558 KB for four thumbnails on every
+                 * home load (M1 perf gate). `sizes` lets the browser pick the
+                 * smallest srcset width that still covers 128 px at the
+                 * screen's density, so it looks the same. Not `priority`:
+                 * these sit below the hero, and the hero heading is the LCP.
+                 */}
                 {photo ? (
-                  <Image src={photo.src} alt={photo.alt} className="size-full object-cover" />
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    sizes="128px"
+                    className="size-full object-cover"
+                  />
                 ) : null}
               </span>
               <span className="flex min-w-0 flex-col gap-2">

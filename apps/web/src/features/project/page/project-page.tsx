@@ -44,7 +44,10 @@ export function ProjectPageView({
       <ProjectStatesSection risk={page.risk} records={page.records} nextSteps={page.next_steps} />
       <NextSection nextSteps={page.next_steps} />
       <BookingSection beforeBooking={page.before_booking} />
-      <BuiltSection page={page} bands={bands} />
+      <BuiltSection
+        page={{ risk: { progress: page.risk.progress }, progress: page.progress }}
+        bands={bands}
+      />
       <HomesSection homes={page.homes} />
       <CostSection
         cost={page.cost}
