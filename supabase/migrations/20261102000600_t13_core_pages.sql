@@ -1147,6 +1147,7 @@ begin
   else
     return null;
   end case;
+  return null;
 end
 $$;
 comment on function core.compare_cell(jsonb, text) is 'One Compare cell for a phase, or null (shown as "Not in our records yet").';

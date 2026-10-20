@@ -1,4 +1,4 @@
--- T13 · API reads B 1/6: "From the developer" tables and the cost rules (DATA_MODEL §1, §4).
+-- T13 · API reads B 1/7: "From the developer" tables and the cost rules (DATA_MODEL §1, §4).
 -- Sources: WORK_BREAKDOWN T13 ("it creates ws.price_lists, price_list_items, payment_plans,
 -- payment_plan_stages, cost_sheets, cost_sheet_lines, developer_documents and
 -- core.cost_rule_sets"); DATA_MODEL §0 conventions, §12 inv. 6; API_CONTRACTS §4.2, §4.13;

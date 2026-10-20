@@ -1,4 +1,4 @@
--- T13 · API reads B 4/6: core.all_in(), the cost breakdown and core.afford_the_wait().
+-- T13 · API reads B 4/7: core.all_in(), the cost breakdown and core.afford_the_wait().
 -- Sources: API_CONTRACTS §4.13 (CostBreakdown, AffordTheWait); DATA_MODEL §1
 -- (core.cost_rule_sets), §4 (cost sheets, payment plans); BUILD_PLAN D-6 (round the all-in to
 -- the lakh before loan arithmetic); packages/fixtures/vectors/{cost,afford_the_wait}.json;

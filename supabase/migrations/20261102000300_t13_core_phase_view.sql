@@ -1,4 +1,4 @@
--- T13 · API reads B 3/6: shared helpers and the phase view behind every M1 page.
+-- T13 · API reads B 3/7: shared helpers and the phase view behind every M1 page.
 -- Sources: API_CONTRACTS §1 (copy from the server), §2 (chip, display state, overlays),
 -- §4.2–§4.5; DATA_MODEL §1–§3, §12 inv. 2 and 8; INTEGRATION_NOTES (T11: the published band
 -- is the latest run with published_on ≤ today; a pending_notice run never surfaces).

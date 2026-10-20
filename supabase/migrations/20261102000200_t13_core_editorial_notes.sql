@@ -1,4 +1,4 @@
--- T13 · API reads B 2/6: core.editorial_notes, Plinth's own short notes on a record.
+-- T13 · API reads B 2/7: core.editorial_notes, Plinth's own short notes on a record.
 -- Sources: API_CONTRACTS §4.2–§4.4 (hero image, getting around, QPR notes, the developer
 -- line on a card); DESIGN §4c (image slots), §5b (the values below); DATA_MODEL §0 (lanes).
 --
