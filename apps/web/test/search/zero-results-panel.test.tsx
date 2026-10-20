@@ -49,11 +49,15 @@ describe("ZeroResultsPanel: unknown_project (G-30)", () => {
 describe("ZeroResultsPanel: outside_coverage (G-30)", () => {
   const zr = outsideCoverage.zero_results as ZeroResultsPayload;
 
-  it("offers the Noida waitlist with the fixture's own detail line", async () => {
+  it("offers the Noida waitlist, and clicking it never claims to have recorded anything", async () => {
     render(<ZeroResultsPanel zeroResults={zr} name={null} hidden={[]} />);
     expect(screen.getByRole("heading", { level: 1, name: zr.line })).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "Join the Noida waitlist" }));
-    expect(screen.getByText("On the waitlist")).toBeInTheDocument();
+    const status = await screen.findByRole("status");
+    expect(status).toHaveTextContent(
+      "Waitlists aren’t open yet, so nothing was saved. We’ll publish the opening date on this page.",
+    );
+    expect(screen.queryByText("On the waitlist")).not.toBeInTheDocument();
     expect(screen.getByText(zr.detail_line!)).toBeInTheDocument();
   });
 });
