@@ -18,6 +18,10 @@ export const BAND_CHANGE_ALERT: TemplateMirror = {
   ],
 };
 
+/** The quick replies' payloads, in button order: router.ts's own reply ids. outbox-dispatch
+ * gives a session alert the same ids, so a tap routes the same way inside the 24-hour window. */
+export const BAND_CHANGE_ALERT_REPLY_IDS = ["open_full_card", "stop_alerts"] as const;
+
 export interface BandChangeAlertVars {
   headerImageUrl: string;
   project: string;
@@ -31,7 +35,7 @@ export function renderBandChangeAlert(vars: BandChangeAlertVars) {
   return templateMessage(BAND_CHANGE_ALERT, [
     imageHeader(vars.headerImageUrl),
     bodyComponent(vars.project, vars.fromBand, vars.toBand, vars.trigger, vars.date),
-    quickReplyButton(0, "open_full_card"),
-    quickReplyButton(1, "stop_alerts"),
+    quickReplyButton(0, BAND_CHANGE_ALERT_REPLY_IDS[0]),
+    quickReplyButton(1, BAND_CHANGE_ALERT_REPLY_IDS[1]),
   ]);
 }

@@ -15,6 +15,7 @@ import {
   dispatchHandler,
   isTestBlockNumber,
   MAX_ATTEMPTS,
+  renderOutboxTemplate,
   type ResolveOutcome,
 } from "./logic.ts";
 
@@ -176,35 +177,183 @@ Deno.test("buildFcmMessage: drops non-primitive payload fields rather than sendi
 // WhatsApp request shape (template vs. session), channel flags and backoff.
 // ---------------------------------------------------------------------------
 
-Deno.test("buildWhatsAppRequest: template fills body parameters from the row's payload", () => {
+Deno.test("buildWhatsAppRequest: a template with no renderer fills body parameters from the payload", () => {
   const body = buildWhatsAppRequest(
     "919900000101",
     "whatsapp_template",
     {
-      meta_name: "band_change_alert",
+      meta_name: "export_ready",
       category: "utility",
       language: "en",
       header: {},
-      variables: ["project", "to_band"],
+      variables: ["expiry_date", "note"],
       buttons: [],
     },
-    { project: "Aurelia Heights", to_band: "elevated" },
+    { expiry_date: "25 Oct 2026", note: "elevated" },
   );
   assertEquals(body.type, "template");
-  assertEquals((body.template as { name: string }).name, "band_change_alert");
+  assertEquals((body.template as { name: string }).name, "export_ready");
   assertEquals(
     (body.template as { components: Array<{ parameters: Array<{ type: string; text: string }> }> })
       .components[0]!.parameters,
-    [{ type: "text", text: "Aurelia Heights" }, { type: "text", text: "elevated" }],
+    [{ type: "text", text: "25 Oct 2026" }, { type: "text", text: "elevated" }],
   );
 });
 
-Deno.test("buildWhatsAppRequest: template without variables sends no components", () => {
+// M2 gate gap 3: band_change_alert goes out as Meta approved it, through T46b's renderer.
+const BAND_CHANGE_TEMPLATE = {
+  code: "band_change_alert",
+  meta_name: "band_change_alert",
+  category: "utility",
+  language: "en",
+  header: { type: "image", aspect: "1.91:1" },
+  variables: ["project", "from_band", "to_band", "trigger", "date"],
+  buttons: [{ type: "quick_reply", text: "Open full card" }, {
+    type: "quick_reply",
+    text: "Stop alerts",
+  }],
+};
+const BAND_CHANGE_PAYLOAD = {
+  project: "Test Phase One",
+  from_band: "Moderate",
+  to_band: "Elevated",
+  trigger: "new HARERA records",
+  date: "2 Oct 2026",
+  header_image_url: "https://plinth.test/cards/risk/test-phase-one.png?run=r1",
+  session_text: "Test Phase One: delivery risk moved from Moderate to Elevated",
+  deep_link: "/gurugram/projects/test-phase-one",
+};
+
+Deno.test("buildWhatsAppRequest: band_change_alert is [header (image), body, button, button]", () => {
+  const body = buildWhatsAppRequest(
+    "919900000101",
+    "whatsapp_template",
+    BAND_CHANGE_TEMPLATE,
+    BAND_CHANGE_PAYLOAD,
+  );
+  assertEquals(body, {
+    messaging_product: "whatsapp",
+    to: "919900000101",
+    type: "template",
+    template: {
+      name: "band_change_alert",
+      language: { code: "en" },
+      components: [
+        {
+          type: "header",
+          parameters: [{
+            type: "image",
+            image: { link: "https://plinth.test/cards/risk/test-phase-one.png?run=r1" },
+          }],
+        },
+        {
+          type: "body",
+          parameters: [
+            { type: "text", text: "Test Phase One" },
+            { type: "text", text: "Moderate" },
+            { type: "text", text: "Elevated" },
+            { type: "text", text: "new HARERA records" },
+            { type: "text", text: "2 Oct 2026" },
+          ],
+        },
+        {
+          type: "button",
+          sub_type: "quick_reply",
+          index: "0",
+          parameters: [{ type: "payload", payload: "open_full_card" }],
+        },
+        {
+          type: "button",
+          sub_type: "quick_reply",
+          index: "1",
+          parameters: [{ type: "payload", payload: "stop_alerts" }],
+        },
+      ],
+    },
+  });
+});
+
+Deno.test("buildWhatsAppRequest: a claim without `code` still finds the renderer by meta_name", () => {
+  const { code: _code, ...older } = BAND_CHANGE_TEMPLATE;
+  const body = buildWhatsAppRequest(
+    "919900000101",
+    "whatsapp_template",
+    older,
+    BAND_CHANGE_PAYLOAD,
+  );
+  assertEquals(
+    (body.template as { components: { type: string }[] }).components.map((c) => c.type),
+    ["header", "body", "button", "button"],
+  );
+});
+
+Deno.test("buildWhatsAppRequest: band_change_alert without its header image throws (never a send Meta rejects)", () => {
+  const { header_image_url: _url, ...payload } = BAND_CHANGE_PAYLOAD;
+  let threw = false;
+  try {
+    buildWhatsAppRequest("919900000101", "whatsapp_template", BAND_CHANGE_TEMPLATE, payload);
+  } catch {
+    threw = true;
+  }
+  assertEquals(threw, true);
+});
+
+Deno.test("renderOutboxTemplate: weekly_digest carries its card as the image header", () => {
+  const msg = renderOutboxTemplate("weekly_digest", {
+    week_range: "19–25 Oct 2026",
+    change_count: 3,
+    band_moving_fact: null,
+    header_image_url: "https://plinth.test/cards/digest/0123456789abcdef0123456789abcdef.png",
+  });
+  assertEquals(msg?.template.components.map((c) => c.type), ["header", "body", "button", "button"]);
+  assertEquals(msg?.template.components[1], {
+    type: "body",
+    parameters: [
+      { type: "text", text: "19–25 Oct 2026" },
+      { type: "text", text: "3" },
+      { type: "text", text: "" },
+    ],
+  });
+  assertEquals(renderOutboxTemplate("export_ready", {}), null);
+});
+
+Deno.test("buildWhatsAppRequest: a session band alert names the change; its buttons carry router.ts's ids", () => {
+  const body = buildWhatsAppRequest(
+    "919900000101",
+    "whatsapp_session",
+    BAND_CHANGE_TEMPLATE,
+    BAND_CHANGE_PAYLOAD,
+  );
+  assertEquals(body.interactive, {
+    type: "button",
+    body: { text: "Test Phase One: delivery risk moved from Moderate to Elevated" },
+    action: {
+      buttons: [
+        { type: "reply", reply: { id: "open_full_card", title: "Open full card" } },
+        { type: "reply", reply: { id: "stop_alerts", title: "Stop alerts" } },
+      ],
+    },
+  });
+});
+
+Deno.test("buildWhatsAppRequest: a session for a template with no known reply ids sends plain text", () => {
+  const body = buildWhatsAppRequest("919900000101", "whatsapp_session", {
+    meta_name: "some_new_template",
+    category: "utility",
+    language: "en",
+    header: {},
+    variables: [],
+    buttons: [{ type: "quick_reply", text: "Tap me" }],
+  }, { session_text: "hi" });
+  assertEquals(body.type, "text");
+});
+
+Deno.test("buildWhatsAppRequest: a template with no renderer and no variables sends no components", () => {
   const body = buildWhatsAppRequest(
     "919900000101",
     "whatsapp_template",
     {
-      meta_name: "family_removed",
+      meta_name: "some_new_template",
       category: "utility",
       language: "en",
       header: {},
@@ -240,6 +389,10 @@ Deno.test("buildWhatsAppRequest: session with quick-reply buttons becomes an int
   };
   assertEquals(interactive.body.text, "Aurelia Heights moved to Elevated.");
   assertEquals(interactive.action.buttons.length, 2); // cta_url is dropped; session buttons are quick-reply only
+  assertEquals(
+    (interactive.action.buttons as { reply: { id: string } }[]).map((b) => b.reply.id),
+    ["open_full_card", "stop_alerts"],
+  );
 });
 
 Deno.test("buildWhatsAppRequest: session with no buttons falls back to plain text", () => {
@@ -458,14 +611,8 @@ Deno.test("dispatchHandler: whatsapp picks template outside 24h", async () => {
           channel: "whatsapp_template",
           contact_id: "c1",
           template_code: "band_change_alert",
-          template: {
-            meta_name: "band_change_alert",
-            category: "utility",
-            language: "en",
-            header: {},
-            variables: [],
-            buttons: [],
-          },
+          template: BAND_CHANGE_TEMPLATE,
+          payload: BAND_CHANGE_PAYLOAD,
         }),
       ]),
     getWaContact: () =>

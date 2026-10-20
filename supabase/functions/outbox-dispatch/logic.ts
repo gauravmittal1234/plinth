@@ -16,6 +16,15 @@ import type { FlagKey } from "../_shared/core/flags.ts";
 import type { Logger } from "../_shared/core/log.ts";
 import { errorFields } from "../_shared/core/log.ts";
 import type { FcmMessage } from "../_shared/outbox/fcm.ts";
+import type { RenderedTemplate } from "../_shared/wa/templates/mod.ts";
+import {
+  renderBandChangeAlert,
+  renderDailyDigest,
+  renderFamilyRemoved,
+  renderFilingAlert,
+  renderWeeklyDigest,
+  TEMPLATE_REPLY_IDS,
+} from "../_shared/wa/templates/mod.ts";
 
 // ---------------------------------------------------------------------------
 // Shapes (as api.outbox_claim_due / api.outbox_wa_contact return them).
@@ -31,6 +40,8 @@ export const OUTBOX_CHANNELS = [
 export type OutboxChannel = typeof OUTBOX_CHANNELS[number];
 
 export interface ClaimedTemplate {
+  /** comms.templates.code (the renderer key); older claims carry only meta_name, the same value. */
+  code?: string;
   meta_name: string;
   category: string;
   language: string;
@@ -184,19 +195,88 @@ function stringify(value: unknown): string {
   return typeof value === "string" ? value : String(value);
 }
 
-/** Up to 3 quick-reply buttons (API_CONTRACTS §5.2 interactive limits), ≤ 20 chars each. */
+/** The template's comms.templates.code: `code` when the claim names it, else meta_name (equal in R1). */
+function templateCode(template: ClaimedTemplate | null): string | null {
+  return template ? template.code ?? template.meta_name : null;
+}
+
+/**
+ * Up to 3 quick-reply buttons (API_CONTRACTS §5.2 interactive limits), ≤ 20 chars each. Each
+ * button's id is the reply id the template's own quick reply carries (TEMPLATE_REPLY_IDS, T46b's
+ * renderers), so a tap inside the 24-hour window routes exactly like a tap on the template
+ * (wa-webhook/router.ts). A button with no known reply id is left out: never an unroutable button.
+ */
 function sessionButtons(
+  code: string | null,
   buttons: unknown[],
 ): Array<{ type: "reply"; reply: { id: string; title: string } }> {
+  const ids = (code && TEMPLATE_REPLY_IDS[code]) || [];
   const out: Array<{ type: "reply"; reply: { id: string; title: string } }> = [];
+  let quickReply = 0;
   for (const b of buttons) {
     if (out.length >= 3) break;
     if (!b || typeof b !== "object") continue;
     const entry = b as { type?: unknown; text?: unknown };
     if (entry.type !== "quick_reply" || typeof entry.text !== "string") continue;
-    out.push({ type: "reply", reply: { id: String(out.length), title: entry.text.slice(0, 20) } });
+    const id = ids[quickReply++];
+    if (!id) continue;
+    out.push({ type: "reply", reply: { id, title: entry.text.slice(0, 20) } });
   }
   return out;
+}
+
+/** A payload field a template cannot be sent without (an image header's link). */
+function required(payload: Record<string, unknown>, key: string, code: string): string {
+  const value = stringify(payload[key]);
+  if (value === "") throw new Error(`${code}: the row's payload has no ${key}`);
+  return value;
+}
+
+/**
+ * The approved template, built by T46b's renderer (_shared/wa/templates) from the row's own
+ * payload, so its header and quick replies go out with the body: band_change_alert is
+ * [header (image), body, button, button], as Meta approved it. null for a template this file has
+ * no renderer for (login_code goes out through auth-sms-hook; export_ready's URL button suffix is
+ * not in its row yet), which keeps the body-only shape below.
+ */
+export function renderOutboxTemplate(
+  code: string,
+  payload: Record<string, unknown>,
+): RenderedTemplate | null {
+  const text = (key: string) => stringify(payload[key]);
+  switch (code) {
+    case "band_change_alert":
+      return renderBandChangeAlert({
+        headerImageUrl: required(payload, "header_image_url", code),
+        project: text("project"),
+        fromBand: text("from_band"),
+        toBand: text("to_band"),
+        trigger: text("trigger"),
+        date: text("date"),
+      });
+    case "filing_alert":
+      return renderFilingAlert({
+        project: text("project"),
+        eventLine: text("event_line"),
+        date: text("date"),
+      });
+    case "weekly_digest":
+      return renderWeeklyDigest({
+        headerImageUrl: required(payload, "header_image_url", code),
+        weekRange: text("week_range"),
+        changeCount: text("change_count"),
+        bandMovingFact: text("band_moving_fact"),
+      });
+    case "daily_digest":
+      return renderDailyDigest({ date: text("date"), changeCount: text("change_count") });
+    case "family_removed":
+      return renderFamilyRemoved({
+        inviterFirstName: text("inviter_first_name"),
+        project: text("project"),
+      });
+    default:
+      return null;
+  }
 }
 
 /** The Graph API `POST /{WA_PHONE_NUMBER_ID}/messages` body (API_CONTRACTS §5.2). */
@@ -206,8 +286,13 @@ export function buildWhatsAppRequest(
   template: ClaimedTemplate | null,
   payload: Record<string, unknown>,
 ): Record<string, unknown> {
+  const code = templateCode(template);
   if (channel === "whatsapp_template") {
-    if (!template) throw new Error("a whatsapp_template send needs its comms.templates row");
+    if (!template || !code) {
+      throw new Error("a whatsapp_template send needs its comms.templates row");
+    }
+    const rendered = renderOutboxTemplate(code, payload);
+    if (rendered) return { messaging_product: "whatsapp", to, ...rendered };
     const parameters = template.variables.map((name) => ({
       type: "text",
       text: stringify(payload[name]),
@@ -224,7 +309,7 @@ export function buildWhatsAppRequest(
     };
   }
   const text = stringify(payload.session_text);
-  const buttons = sessionButtons(template?.buttons ?? []);
+  const buttons = sessionButtons(code, template?.buttons ?? []);
   if (!buttons.length) {
     return { messaging_product: "whatsapp", to, type: "text", text: { body: text } };
   }

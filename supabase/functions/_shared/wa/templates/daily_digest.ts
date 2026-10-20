@@ -17,6 +17,10 @@ export const DAILY_DIGEST: TemplateMirror = {
   ],
 };
 
+/** The quick replies' payloads, in button order: router.ts's own reply ids. outbox-dispatch
+ * gives a session alert the same ids, so a tap routes the same way inside the 24-hour window. */
+export const DAILY_DIGEST_REPLY_IDS = ["see_changes", "stop_daily"] as const;
+
 export interface DailyDigestVars {
   date: string;
   changeCount: string;
@@ -25,7 +29,7 @@ export interface DailyDigestVars {
 export function renderDailyDigest(vars: DailyDigestVars) {
   return templateMessage(DAILY_DIGEST, [
     bodyComponent(vars.date, vars.changeCount),
-    quickReplyButton(0, "see_changes"),
-    quickReplyButton(1, "stop_daily"),
+    quickReplyButton(0, DAILY_DIGEST_REPLY_IDS[0]),
+    quickReplyButton(1, DAILY_DIGEST_REPLY_IDS[1]),
   ]);
 }

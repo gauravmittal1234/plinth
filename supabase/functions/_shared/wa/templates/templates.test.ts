@@ -10,7 +10,7 @@ import { renderExportReady } from "./export_ready.ts";
 import { renderFamilyRemoved } from "./family_removed.ts";
 import { renderFilingAlert } from "./filing_alert.ts";
 import { renderLoginCode } from "./login_code.ts";
-import { TEMPLATE_MIRRORS } from "./mod.ts";
+import { TEMPLATE_MIRRORS, TEMPLATE_REPLY_IDS } from "./mod.ts";
 import { renderWeeklyDigest } from "./weekly_digest.ts";
 
 interface CatalogueButton {
@@ -49,6 +49,14 @@ Deno.test("every M2 template mirror matches packages/contracts/catalogues/wa_tem
     assertEquals(mirror.variables, row.variables, code);
     assertEquals(mirror.buttons, row.buttons, code);
   }
+});
+
+Deno.test("TEMPLATE_REPLY_IDS: one router reply id per quick-reply button, for every template", () => {
+  for (const [code, mirror] of Object.entries(TEMPLATE_MIRRORS)) {
+    const quickReplies = mirror.buttons.filter((b) => b.type === "quick_reply").length;
+    assertEquals(TEMPLATE_REPLY_IDS[code]?.length ?? 0, quickReplies, code);
+  }
+  assertEquals(TEMPLATE_REPLY_IDS.band_change_alert, ["open_full_card", "stop_alerts"]);
 });
 
 Deno.test("every UTILITY template's buttons are ≤ 20 chars; AUTHENTICATION's copy-code too", () => {

@@ -20,6 +20,10 @@ export const WEEKLY_DIGEST: TemplateMirror = {
   ],
 };
 
+/** The quick replies' payloads, in button order: router.ts's own reply ids. outbox-dispatch
+ * gives a session alert the same ids, so a tap routes the same way inside the 24-hour window. */
+export const WEEKLY_DIGEST_REPLY_IDS = ["see_changes", "stop_weekly"] as const;
+
 export interface WeeklyDigestVars {
   headerImageUrl: string;
   weekRange: string;
@@ -31,7 +35,7 @@ export function renderWeeklyDigest(vars: WeeklyDigestVars) {
   return templateMessage(WEEKLY_DIGEST, [
     imageHeader(vars.headerImageUrl),
     bodyComponent(vars.weekRange, vars.changeCount, vars.bandMovingFact),
-    quickReplyButton(0, "see_changes"),
-    quickReplyButton(1, "stop_weekly"),
+    quickReplyButton(0, WEEKLY_DIGEST_REPLY_IDS[0]),
+    quickReplyButton(1, WEEKLY_DIGEST_REPLY_IDS[1]),
   ]);
 }
