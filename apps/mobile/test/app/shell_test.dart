@@ -61,7 +61,8 @@ void main() {
     await tester.tap(aurelia);
     await tester.pumpAndSettle();
     expect(locationOf(container), Routes.projectOf('aurelia-heights-phase-2'));
-    expect(find.text('AppProject'), findsOneWidget);
+    // T31a replaced the AppProject placeholder with the real screen.
+    expect(find.text('Will it be delivered on time?'), findsOneWidget);
     expect(find.byType(NavigationBar), findsNothing);
 
     await tester.tap(find.byType(BackButton));

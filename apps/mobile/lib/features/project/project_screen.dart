@@ -1,16 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-import '../../app/artboard_placeholder.dart';
-import '../../app/routes.dart';
+import 'project_content.dart';
+import 'states/project_states_screen.dart';
 
-// Owned by T31a (AppProject); the seven state variants in states/ go to T31b.
-// Placeholder from T06.
-
-/// One project phase: hero, risk, what now, built, homes, pay, afford the wait.
+/// One project phase: hero, risk, so what now, before booking, built, homes,
+/// pay, afford the wait and furnish (WORK_BREAKDOWN T31a).
 ///
 /// [previewState] is the `?state=` query value: FIXTURES mode previews the
-/// AppProjectStates variants with it (WORK_BREAKDOWN §2). In production the
-/// state always comes from `RiskSummary.display`.
+/// AppProjectStates variants with it (T31b). In production the state always
+/// comes from `RiskSummary.display`.
 class ProjectScreen extends StatelessWidget {
   const ProjectScreen({super.key, required this.slug, this.previewState});
 
@@ -20,13 +18,7 @@ class ProjectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final preview = previewState;
-    return ArtboardPlaceholder(
-      title: 'Project',
-      artboard: preview == null ? 'AppProject' : 'AppProjectStates',
-      task: preview == null ? 'T31a' : 'T31b',
-      milestone: 'M1',
-      details: {'slug': slug, 'state': ?preview},
-      links: [PlaceholderLink('Delivery risk', Routes.riskOf(slug))],
-    );
+    if (preview != null) return ProjectStatesScreen(slug: slug, state: preview);
+    return ProjectContent(slug: slug);
   }
 }
