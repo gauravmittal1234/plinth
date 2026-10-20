@@ -406,7 +406,9 @@ begin
   v_items := v_items || core.following_fact_changes(p_phase_ids, p_from, p_to);
 
   return coalesce((
-    select pg_catalog.jsonb_agg(x.item order by (x.item ->> 'occurred_on')::date desc, (x.item ->> '_detected_at')::timestamptz desc)
+    -- event_id last: two changes found by the same run (same day, same detected_at, e.g. Coral's
+    -- and Aurelia's missing Jul-Sep QPRs) must not depend on row order; the ids are stable uuid5s.
+    select pg_catalog.jsonb_agg(x.item order by (x.item ->> 'occurred_on')::date desc, (x.item ->> '_detected_at')::timestamptz desc, x.item ->> 'event_id' desc nulls last)
     from pg_catalog.jsonb_array_elements(v_items) as x(item)
   ), '[]'::jsonb);
 end
