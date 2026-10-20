@@ -26,7 +26,8 @@ export function HeroSection({ page }: { page: ProjectPage }) {
             src={hero.image_url}
             alt=""
             fill
-            priority
+            preload
+            fetchPriority="high"
             sizes={IMAGE_SIZES}
             className="object-cover"
           />

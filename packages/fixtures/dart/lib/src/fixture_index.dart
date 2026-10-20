@@ -48,9 +48,13 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
     'visit-recap',
   ],
   'evidence': <String>[
+    '145c288f-31dd-5955-9677-170f82ffd80c--aurelia-heights-phase-2',
     '145c288f-31dd-5955-9677-170f82ffd80c',
+    '196cb4f5-27eb-57a5-99f8-e5ab1b599c93--aurelia-heights-phase-2',
     '196cb4f5-27eb-57a5-99f8-e5ab1b599c93',
+    'd56b2adf-6ea3-598a-8cef-cbd1b0c74895--aurelia-heights-phase-2',
     'd56b2adf-6ea3-598a-8cef-cbd1b0c74895',
+    'dff74c62-2384-5736-88b1-02fac3a33a69--aurelia-heights-phase-2',
     'dff74c62-2384-5736-88b1-02fac3a33a69',
   ],
   'family_invite_cancel': <String>[

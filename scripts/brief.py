@@ -20,6 +20,8 @@ RULES = """## Budget rules (read first)
 - Run only the affected workspace's tests locally; CI runs the full suite.
 - Max 3 attempts on any one failure, then stop and report the blocker with the error lines.
 - No screenshots or browser sessions unless you are fixing a visual bug.
+- Artboard copy is layout, never data: every name, count, date, code and band word comes from the payload.
+  No field or fixture for it? Show an honest empty state and add a Handoff (AGENTS.md rule 10).
 - Commit in small steps. When acceptance passes locally: push, open the PR against `main`, and STOP.
   Do not wait for or poll CI; the lead watches CI and sends back failures.
 """

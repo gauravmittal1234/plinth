@@ -1,29 +1,17 @@
-"use client";
-
 // "What do the records show?" (DESIGN §4 item 8, WebProject.dc.html Records):
 // a compact at-a-glance row (TruthPanelRow), then every sourced record, each a
 // source chip into the one evidence drawer (page/evidence-context.tsx). A
 // native <details> holds the pre-RERA history (fix-project2.md §1 G-16): real
 // disclosure semantics, no extra script.
+//
+// Only the chip's click handler needs the client (useEvidence), so it is the
+// one piece that ships JS: `RecordRow` lives in its own "use client" module
+// (record-row.tsx) and this section stays server-rendered (project-page JS
+// budget, lighthouserc.cjs), same split as states/evidence-chip.tsx.
 import type { EvidenceSummary, PreRera, TruthPanelRow } from "@plinth/contracts";
-import { FactTile, FactTiles, SectionBand, SourceChip } from "@plinth/web-ui";
+import { FactTile, FactTiles, SectionBand } from "@plinth/web-ui";
 import { RECORDS_COPY } from "../../page/copy";
-import { useEvidence } from "../../page/evidence-context";
-
-function RecordRow({ row }: { row: EvidenceSummary }) {
-  const { has, open } = useEvidence();
-  const available = has(row.fact_id);
-  return (
-    <li className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4">
-      <SourceChip
-        source={{ label: row.chip, evidence_url: available ? row.evidence_url : null }}
-        onOpen={available ? () => open(row.fact_id) : undefined}
-        ariaLabel={available ? `Source: ${row.chip}. Open evidence.` : undefined}
-      />
-      <p className="m-0 min-w-0 flex-1 text-ink2">{row.line}</p>
-    </li>
-  );
-}
+import { RecordRow } from "./record-row";
 
 /** A finished line the fixture adds beside PreRera's typed fields (the contract leaves the object open). */
 function textField(v: unknown): string | null {

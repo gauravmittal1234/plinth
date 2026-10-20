@@ -100,6 +100,16 @@ test.describe("WebDeveloper: Northfield Estates", { tag: "@smoke" }, () => {
     await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
   });
 
+  test("carries a BreadcrumbList, server-rendered (M1 polish)", async ({ page }) => {
+    await page.goto(NORTHFIELD);
+    const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+    const breadcrumb = blocks
+      .map((b) => JSON.parse(b) as Record<string, unknown>)
+      .find((b) => b["@type"] === "BreadcrumbList");
+    const items = breadcrumb?.itemListElement as { name: string }[] | undefined;
+    expect(items?.map((i) => i.name)).toEqual(["Home", "Northfield Estates"]);
+  });
+
   test("axe finds no serious or critical violations", async ({ page }) => {
     await page.goto(NORTHFIELD);
     const { violations } = await new AxeBuilder({ page })

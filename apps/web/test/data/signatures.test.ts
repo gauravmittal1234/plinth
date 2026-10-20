@@ -141,4 +141,13 @@ describe("data layer signatures (T05 → T16)", () => {
     expect(name).toBe(rpc);
     expect(args).toEqual(wire);
   });
+
+  it("evidence sends p_slug when the page it was opened from is given (api.evidence(p_fact_id, p_slug), T13)", async () => {
+    const spy = vi.spyOn(invokeModule, "invoke").mockResolvedValue({ ok: true });
+    await data.evidence("f-1", "aurelia-heights-phase-2").catch(() => null);
+    expect(spy).toHaveBeenCalledTimes(1);
+    const [, name, args] = spy.mock.calls[0]!;
+    expect(name).toBe("evidence");
+    expect(args).toEqual({ p_fact_id: "f-1", p_slug: "aurelia-heights-phase-2" });
+  });
 });
