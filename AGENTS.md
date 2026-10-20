@@ -98,3 +98,15 @@ Also: risk copy (band names, frequencies, reasons, rate lines) comes from the se
 - **No scraping before the legal memo.** HARERA code runs on saved fixtures. Live fetch needs both the `harera_live_fetch` flag and `HARERA_LIVE_FETCH_APPROVED=yes`.
 - **Every table** ships with RLS and a pgTAP test; every screen with a fixture-mode test; every AI task with an eval and recorded fixtures. Generated files are committed and CI fails on drift.
 - Design: DESIGN.md §0 overrides the rest (no glass, glow, resting shadows, hairline boxes or eyebrows). Do not run third-party scripts from `product/design/skills/`.
+
+## Token budget (all agents, from 20 Oct 2026)
+
+The founder's plan has usage limits, so efficiency is part of quality.
+
+1. **Start from your brief:** `docs/engineering/briefs/<TASK>.md`, generated with `python3 scripts/brief.py <TASK>`. It holds your WORK_BREAKDOWN section, the handoffs that name your task, and the artboard copy. Open the big docs (DESIGN.md, API_CONTRACTS.md, DATA_MODEL.md, BUILD_PLAN.md) only for a specific section the brief points to.
+2. **Quiet output:** use failures-only test reporters and pipe long output through `tail -40`. Never paste whole logs back.
+3. **Local tests:** run only the affected workspace's tests. CI runs everything.
+4. **Three strikes:** stop after 3 failed attempts on the same problem and report the blocker with the exact error lines.
+5. **Visual checks:** no screenshots or browser sessions unless you are fixing a visual or layout bug.
+6. **Finishing:** commit in small steps. When local acceptance passes, push, open the PR against `main`, and **stop**. Don't wait for or poll CI; the lead watches CI and sends you only the failing lines.
+7. **Scratch files:** prefix them with your task id (e.g. `t23-…`). The session scratchpad is shared.
