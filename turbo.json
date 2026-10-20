@@ -1,0 +1,43 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "stream",
+  "globalDependencies": [".nvmrc", "packages/config/tsconfig.base.json"],
+  "globalEnv": ["CI", "NODE_ENV", "PLINTH_DATA", "AI_MODE", "META_MODE", "PLINTH_FETCH_MODE"],
+  "globalPassThroughEnv": ["HOME", "PLAYWRIGHT_BROWSERS_PATH", "NEXT_TELEMETRY_DISABLED"],
+  "tasks": {
+    "gen": {
+      "dependsOn": ["^gen"],
+      "cache": false
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "env": ["NEXT_PUBLIC_*", "PLINTH_*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "test": {
+      "outputs": []
+    },
+    "validate": {
+      "dependsOn": ["^gen"],
+      "outputs": []
+    },
+    "e2e": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "e2e:smoke": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

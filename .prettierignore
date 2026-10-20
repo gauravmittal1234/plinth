@@ -1,0 +1,26 @@
+# Prettier formats code and config only. Docs, research and design files keep
+# their own hand formatting.
+node_modules/
+package-lock.json
+**/.next/
+**/dist/
+**/gen/
+**/build/
+coverage/
+.turbo/
+
+*.md
+*.dc.html
+DESIGN.md
+docs/
+product/
+reports/
+research_notes/
+scripts/*.py
+
+apps/mobile/
+pipelines/
+supabase/config.toml
+supabase/seed/
+packages/*/dart/
+packages/*/python/

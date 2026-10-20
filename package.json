@@ -1,0 +1,50 @@
+{
+  "name": "plinth",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Plinth: buyer-side, AI-first home-buying platform for Gurugram. Monorepo root (npm workspaces + Turborepo).",
+  "license": "UNLICENSED",
+  "packageManager": "npm@10.8.2",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "workspaces": [
+    "apps/web",
+    "apps/admin",
+    "packages/*"
+  ],
+  "scripts": {
+    "verify": "node scripts/ci/verify.mjs all",
+    "verify:js": "node scripts/ci/verify.mjs js",
+    "gen": "turbo run gen",
+    "db:check": "node scripts/ci/verify.mjs db",
+    "mobile:verify": "node scripts/ci/verify.mjs mobile",
+    "py:setup": "node scripts/ci/verify.mjs py-setup",
+    "py:verify": "node scripts/ci/verify.mjs py",
+    "edge:verify": "node scripts/ci/verify.mjs edge",
+    "guard": "node scripts/ci/verify.mjs guard",
+    "lint:copy": "node scripts/ci/lint-copy.mjs",
+    "ownership": "node scripts/ci/check-ownership.mjs",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.16",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "~6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^22",
+    "@vitejs/plugin-react": "^5.2.0",
+    "@vitest/coverage-v8": "^4.1.12",
+    "jsdom": "^27.4.0",
+    "prettier": "^3.6.0",
+    "turbo": "^2.11.9",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.12"
+  }
+}

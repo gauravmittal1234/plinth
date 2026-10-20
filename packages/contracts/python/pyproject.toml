@@ -1,0 +1,13 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "plinth-contracts"
+version = "0.0.0"
+description = "Plinth API contract models (Pydantic v2), generated from packages/contracts/schemas by T02."
+requires-python = ">=3.14"
+dependencies = ["pydantic>=2.11,<3"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["plinth_contracts"]

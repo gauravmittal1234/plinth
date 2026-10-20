@@ -1,0 +1,11 @@
+name: plinth_contracts
+description: "Plinth API contract models for Dart, generated from packages/contracts/schemas by T02."
+version: 0.0.1
+publish_to: 'none'
+
+environment:
+  sdk: ^3.13.4
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.26.0

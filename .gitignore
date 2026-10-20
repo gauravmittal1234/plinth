@@ -28,3 +28,42 @@ key.properties
 *.jks
 *.keystore
 google-services.json
+
+# agent worktrees live inside the repo; local Claude settings stay local
+.claude/worktrees/
+.claude/settings.local.json
+
+# secrets and env files (T00): only .env.example is committed
+.env.*
+!.env.example
+.env.json
+.env.keys
+supabase/functions/.env
+*.pem
+*.p12
+*.pfx
+*service-account*.json
+*service_account*.json
+
+# JS tooling
+*.tsbuildinfo
+next-env.d.ts
+playwright-report/
+test-results/
+blob-report/
+.lighthouseci/
+
+# Python tooling
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+*.egg-info/
+
+# Supabase and Deno local state
+supabase/.branches/
+.deno/
+
+# Flutter path packages (libraries do not commit a lockfile)
+packages/*/dart/pubspec.lock
+packages/*/dart/.flutter-plugins-dependencies
