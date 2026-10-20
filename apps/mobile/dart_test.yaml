@@ -1,0 +1,7 @@
+# Test tags for `flutter test` (see test/flutter_test_config.dart).
+tags:
+  golden:
+    description: >-
+      Pixel comparisons against PNGs next to the test. CI (ci-mobile, Linux)
+      is the reference renderer. Re-render with
+      `flutter test --tags golden --update-goldens` and review the images.

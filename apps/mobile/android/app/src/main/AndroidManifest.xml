@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Supabase (api RPCs, edge functions) in release builds; debug and
+         profile manifests add it for development already. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="plinth"
+        android:label="Plinth"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -24,6 +27,25 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Android App Links (WORK_BREAKDOWN §2.2): web URLs whose path has an
+                 app screen open the app on that same path through go_router.
+                 plinth.in is the placeholder domain (SETUP_FOR_FOUNDER 0.3);
+                 verification needs the web's /.well-known/assetlinks.json (T05)
+                 with the signing fingerprints. Add a prefix here only when its
+                 screen exists; test/app/router_test.dart checks every prefix. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https"/>
+                <data android:host="plinth.in"/>
+                <data android:host="www.plinth.in"/>
+                <data android:pathPrefix="/gurugram/projects/"/>
+                <data android:pathPrefix="/following"/>
+                <data android:pathPrefix="/j/"/>
+            </intent-filter>
+            <!-- Hand incoming links to go_router (Flutter deep linking). -->
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="true"/>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
