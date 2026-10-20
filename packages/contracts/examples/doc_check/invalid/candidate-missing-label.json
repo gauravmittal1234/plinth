@@ -1,0 +1,11 @@
+{
+  "base": "confirm-project-pick.json",
+  "why": "every pick-list row needs a label to show the buyer.",
+  "expect": "/project_candidates/0",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/project_candidates/0/label"
+    }
+  ]
+}

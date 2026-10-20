@@ -185,7 +185,7 @@ export type Overlay = "stale" | "rescoring" | "stalled" | "pending_change";
 export type DocCheckKind =
   "claims" | "cost_sheet" | "pay_as_built" | "before_you_pay" | "visit_recap";
 /**
- * Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable or outside_coverage.
+ * Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable, outside_coverage or checks_paused. checks_paused is the ai_doc_check kill switch (T61; catalogues/flags.json).
  */
 export type DocCheckStatus =
   | "reading"
@@ -195,7 +195,8 @@ export type DocCheckStatus =
   | "unreadable"
   | "partly_readable"
   | "no_claims"
-  | "outside_coverage";
+  | "outside_coverage"
+  | "checks_paused";
 export type MatchMethod = "rera_number" | "name_sector" | "user_pick";
 /**
  * app.verdict. Labels are only Matches · Differs · Not in records · Can't check.
@@ -1331,6 +1332,27 @@ export interface DocCheck {
   rules_version: string;
   cost?: CostBreakdown1;
   payee?: PayeeResult;
+  /**
+   * Set for an edge status (unreadable, partly_readable, no_claims, outside_coverage, checks_paused); null once status is confirm_project or done.
+   */
+  edge?: DocCheckEdge | null;
+  /**
+   * The pick list, when the match needs the buyer's confirmation (project_match.method user_pick and not yet confirmed).
+   */
+  project_candidates?: ProjectCandidate[];
+  /**
+   * kind = pay_as_built only: the tower chart (letter slab against filed slab).
+   */
+  stage?: DocCheckStage | null;
+  /**
+   * Set once a later filing could change this check's answer (FOUNDER_QUESTIONS M3-11).
+   */
+  recheck?: DocCheckRecheck | null;
+  /**
+   * True once api.doc_check_save was called; an unsaved check is deleted after 30 days.
+   */
+  saved?: boolean;
+  share?: DocCheckShare | null;
 }
 export interface ProjectMatch {
   slug: Slug | null;
@@ -1348,7 +1370,15 @@ export interface DocCheckRow {
   verdict: Verdict;
   verdict_label: string;
   records_line: string;
+  /**
+   * INTEGRATION_NOTES round 3: optional, e.g. "Records show", "Price list shows", "Your plan shows" (API_CONTRACTS §4.12).
+   */
+  records_label?: string | null;
   how_checked?: string | null;
+  /**
+   * Set while a person checks this reading (concierge-first, FOUNDER_QUESTIONS M3-7): "Can't check yet" + "A person is checking this reading."
+   */
+  review?: DocCheckReview | null;
   sources?: SourceRef[];
   broker_question?: string | null;
   page?: number | null;
@@ -1358,6 +1388,9 @@ export interface DocCheckRow {
   bbox?: [number, number, number, number, ...number[]] | null;
   checkable_on?: IsoDate | null;
   developer_says?: DeveloperSaysLine | null;
+}
+export interface DocCheckReview {
+  line: string;
 }
 export interface DocCheckActions {
   /**
@@ -1414,6 +1447,54 @@ export interface PayeeRow {
   entered_line: string;
   registered_line: string;
   result: Verdict;
+}
+/**
+ * Unreadable, partly readable, no claims, outside coverage or checks paused (FOUNDER_QUESTIONS M3-7, M3-13).
+ */
+export interface DocCheckEdge {
+  title: string;
+  body: string;
+  primary: EdgeAction | null;
+  secondary: EdgeAction | null;
+}
+export interface EdgeAction {
+  label: string;
+  /**
+   * A code the client switches on, e.g. "retry_upload", "pick_project", "talk_to_adviser".
+   */
+  action: string;
+}
+/**
+ * One row of the pick list; the buyer's tap becomes api.doc_check_confirm(p_id, p_slug).
+ */
+export interface ProjectCandidate {
+  slug: Slug;
+  label: string;
+  sector_line?: string | null;
+}
+/**
+ * kind = pay_as_built: the letter's claimed slab against the latest filed slab.
+ */
+export interface DocCheckStage {
+  letter_slab_line: string;
+  filed_slab_line: string;
+  floors: number | null;
+  as_of_line: string;
+}
+export interface DocCheckRecheck {
+  /**
+   * True once a later filing changed this check's answer; the re-check line and the check_updated alert follow.
+   */
+  armed: boolean;
+  line: string | null;
+}
+export interface DocCheckShare {
+  card_url: string;
+  card_alt: string;
+  /**
+   * A summary only, never the file.
+   */
+  share_text: string;
 }
 /**
  * POST /functions/v1/doc-check body, after api.create_upload and the PUT of the file.

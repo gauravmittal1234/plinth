@@ -143,7 +143,7 @@ abstract final class DataExportStatus {
 }
 
 abstract final class DemandLetterClaimQualifier {
-  static const String super = 'super';
+  static const String super_ = 'super';
   static const String carpet = 'carpet';
   static const String allIn = 'all_in';
   static const String base = 'base';
@@ -195,7 +195,7 @@ abstract final class DocCheckKind {
   static const List<String> values = ['claims', 'cost_sheet', 'pay_as_built', 'before_you_pay', 'visit_recap'];
 }
 
-/// Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable or outside_coverage.
+/// Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable, outside_coverage or checks_paused. checks_paused is the ai_doc_check kill switch (T61; catalogues/flags.json).
 abstract final class DocCheckStatus {
   static const String reading = 'reading';
   static const String confirmProject = 'confirm_project';
@@ -205,7 +205,8 @@ abstract final class DocCheckStatus {
   static const String partlyReadable = 'partly_readable';
   static const String noClaims = 'no_claims';
   static const String outsideCoverage = 'outside_coverage';
-  static const List<String> values = ['reading', 'confirm_project', 'checking', 'done', 'unreadable', 'partly_readable', 'no_claims', 'outside_coverage'];
+  static const String checksPaused = 'checks_paused';
+  static const List<String> values = ['reading', 'confirm_project', 'checking', 'done', 'unreadable', 'partly_readable', 'no_claims', 'outside_coverage', 'checks_paused'];
 }
 
 abstract final class DocumentLabel {
@@ -287,7 +288,7 @@ abstract final class Lane {
 }
 
 abstract final class MarketingClaimQualifier {
-  static const String super = 'super';
+  static const String super_ = 'super';
   static const String carpet = 'carpet';
   static const String allIn = 'all_in';
   static const String base = 'base';
@@ -344,7 +345,7 @@ abstract final class PaymentMethod {
 }
 
 abstract final class PaymentRequestClaimQualifier {
-  static const String super = 'super';
+  static const String super_ = 'super';
   static const String carpet = 'carpet';
   static const String allIn = 'all_in';
   static const String base = 'base';

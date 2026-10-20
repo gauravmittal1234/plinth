@@ -2865,16 +2865,34 @@ class DocCheck {
     ///kind = cost_sheet only.
     final CostBreakdownClass? cost;
     final String? docLabel;
+    
+    ///Set for an edge status (unreadable, partly_readable, no_claims, outside_coverage,
+    ///checks_paused); null once status is confirm_project or done.
+    final DocCheckEdge? edge;
     final String id;
     final String kind;
     final List<String> notes;
     
     ///kind = before_you_pay only.
     final PayeeResult? payee;
+    
+    ///The pick list, when the match needs the buyer's confirmation (project_match.method
+    ///user_pick and not yet confirmed).
+    final List<ProjectCandidate>? projectCandidates;
     final ProjectMatch? projectMatch;
+    
+    ///Set once a later filing could change this check's answer (FOUNDER_QUESTIONS M3-11).
+    final DocCheckRecheck? recheck;
     final List<DocCheckRow> rows;
     final String rulesVersion;
+    
+    ///True once api.doc_check_save was called; an unsaved check is deleted after 30 days.
+    final bool? saved;
     final String schema;
+    final DocCheckShare? share;
+    
+    ///kind = pay_as_built only: the tower chart (letter slab against filed slab).
+    final DocCheckStage? stage;
     final String status;
     final String? summaryLine;
 
@@ -2883,14 +2901,20 @@ class DocCheck {
         required this.breakdownLine,
         this.cost,
         required this.docLabel,
+        this.edge,
         required this.id,
         required this.kind,
         required this.notes,
         this.payee,
+        this.projectCandidates,
         required this.projectMatch,
+        this.recheck,
         required this.rows,
         required this.rulesVersion,
+        this.saved,
         required this.schema,
+        this.share,
+        this.stage,
         required this.status,
         required this.summaryLine,
     });
@@ -2900,14 +2924,20 @@ class DocCheck {
         breakdownLine: json["breakdown_line"],
         cost: json["cost"] == null ? null : CostBreakdownClass.fromJson(json["cost"]),
         docLabel: json["doc_label"],
+        edge: json["edge"] == null ? null : DocCheckEdge.fromJson(json["edge"]),
         id: json["id"],
         kind: json["kind"],
         notes: List<String>.from(json["notes"].map((x) => x)),
         payee: json["payee"] == null ? null : PayeeResult.fromJson(json["payee"]),
+        projectCandidates: json["project_candidates"] == null ? null : List<ProjectCandidate>.from(json["project_candidates"]!.map((x) => ProjectCandidate.fromJson(x))),
         projectMatch: json["project_match"] == null ? null : ProjectMatch.fromJson(json["project_match"]),
+        recheck: json["recheck"] == null ? null : DocCheckRecheck.fromJson(json["recheck"]),
         rows: List<DocCheckRow>.from(json["rows"].map((x) => DocCheckRow.fromJson(x))),
         rulesVersion: json["rules_version"],
+        saved: json["saved"],
         schema: json["schema"],
+        share: json["share"] == null ? null : DocCheckShare.fromJson(json["share"]),
+        stage: json["stage"] == null ? null : DocCheckStage.fromJson(json["stage"]),
         status: json["status"],
         summaryLine: json["summary_line"],
     );
@@ -2917,14 +2947,20 @@ class DocCheck {
         "breakdown_line": breakdownLine,
         "cost": cost?.toJson(),
         "doc_label": docLabel,
+        "edge": edge?.toJson(),
         "id": id,
         "kind": kind,
         "notes": List<dynamic>.from(notes.map((x) => x)),
         "payee": payee?.toJson(),
+        "project_candidates": projectCandidates == null ? null : List<dynamic>.from(projectCandidates!.map((x) => x.toJson())),
         "project_match": projectMatch?.toJson(),
+        "recheck": recheck?.toJson(),
         "rows": List<dynamic>.from(rows.map((x) => x.toJson())),
         "rules_version": rulesVersion,
+        "saved": saved,
         "schema": schema,
+        "share": share?.toJson(),
+        "stage": stage?.toJson(),
         "status": status,
         "summary_line": summaryLine,
     };
@@ -3034,6 +3070,58 @@ class CostBreakdownClass {
     };
 }
 
+///Unreadable, partly readable, no claims, outside coverage or checks paused
+///(FOUNDER_QUESTIONS M3-7, M3-13).
+class DocCheckEdge {
+    final String body;
+    final EdgeAction? primary;
+    final EdgeAction? secondary;
+    final String title;
+
+    DocCheckEdge({
+        required this.body,
+        required this.primary,
+        required this.secondary,
+        required this.title,
+    });
+
+    factory DocCheckEdge.fromJson(Map<String, dynamic> json) => DocCheckEdge(
+        body: json["body"],
+        primary: json["primary"] == null ? null : EdgeAction.fromJson(json["primary"]),
+        secondary: json["secondary"] == null ? null : EdgeAction.fromJson(json["secondary"]),
+        title: json["title"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "body": body,
+        "primary": primary?.toJson(),
+        "secondary": secondary?.toJson(),
+        "title": title,
+    };
+}
+
+class EdgeAction {
+    
+    ///A code the client switches on, e.g. "retry_upload", "pick_project", "talk_to_adviser".
+    final String action;
+    final String label;
+
+    EdgeAction({
+        required this.action,
+        required this.label,
+    });
+
+    factory EdgeAction.fromJson(Map<String, dynamic> json) => EdgeAction(
+        action: json["action"],
+        label: json["label"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "action": action,
+        "label": label,
+    };
+}
+
 ///kind = before_you_pay only.
 ///
 ///The entered payee against the RERA collection account on record.
@@ -3101,6 +3189,31 @@ class PayeeRow {
     };
 }
 
+///One row of the pick list; the buyer's tap becomes api.doc_check_confirm(p_id, p_slug).
+class ProjectCandidate {
+    final String label;
+    final String? sectorLine;
+    final String slug;
+
+    ProjectCandidate({
+        required this.label,
+        this.sectorLine,
+        required this.slug,
+    });
+
+    factory ProjectCandidate.fromJson(Map<String, dynamic> json) => ProjectCandidate(
+        label: json["label"],
+        sectorLine: json["sector_line"],
+        slug: json["slug"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "label": label,
+        "sector_line": sectorLine,
+        "slug": slug,
+    };
+}
+
 class ProjectMatch {
     final bool confirmed;
     final String line;
@@ -3129,6 +3242,29 @@ class ProjectMatch {
     };
 }
 
+class DocCheckRecheck {
+    
+    ///True once a later filing changed this check's answer; the re-check line and the
+    ///check_updated alert follow.
+    final bool armed;
+    final String? line;
+
+    DocCheckRecheck({
+        required this.armed,
+        required this.line,
+    });
+
+    factory DocCheckRecheck.fromJson(Map<String, dynamic> json) => DocCheckRecheck(
+        armed: json["armed"],
+        line: json["line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "armed": armed,
+        "line": line,
+    };
+}
+
 ///One claim (or stage, amount, payee) against the records.
 class DocCheckRow {
     
@@ -3139,7 +3275,15 @@ class DocCheckRow {
     final DeveloperSaysLine? developerSays;
     final String? howChecked;
     final int? page;
+    
+    ///INTEGRATION_NOTES round 3: optional, e.g. "Records show", "Price list shows", "Your plan
+    ///shows" (API_CONTRACTS §4.12).
+    final String? recordsLabel;
     final String recordsLine;
+    
+    ///Set while a person checks this reading (concierge-first, FOUNDER_QUESTIONS M3-7): "Can't
+    ///check yet" + "A person is checking this reading."
+    final DocCheckReview? review;
     final String? saysLabel;
     final String saysText;
     final int seq;
@@ -3154,7 +3298,9 @@ class DocCheckRow {
         this.developerSays,
         this.howChecked,
         this.page,
+        this.recordsLabel,
         required this.recordsLine,
+        this.review,
         this.saysLabel,
         required this.saysText,
         required this.seq,
@@ -3170,7 +3316,9 @@ class DocCheckRow {
         developerSays: json["developer_says"] == null ? null : DeveloperSaysLine.fromJson(json["developer_says"]),
         howChecked: json["how_checked"],
         page: json["page"],
+        recordsLabel: json["records_label"],
         recordsLine: json["records_line"],
+        review: json["review"] == null ? null : DocCheckReview.fromJson(json["review"]),
         saysLabel: json["says_label"],
         saysText: json["says_text"],
         seq: json["seq"],
@@ -3186,7 +3334,9 @@ class DocCheckRow {
         "developer_says": developerSays?.toJson(),
         "how_checked": howChecked,
         "page": page,
+        "records_label": recordsLabel,
         "records_line": recordsLine,
+        "review": review?.toJson(),
         "says_label": saysLabel,
         "says_text": saysText,
         "seq": seq,
@@ -3205,6 +3355,22 @@ class DeveloperSaysLine {
     });
 
     factory DeveloperSaysLine.fromJson(Map<String, dynamic> json) => DeveloperSaysLine(
+        line: json["line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "line": line,
+    };
+}
+
+class DocCheckReview {
+    final String line;
+
+    DocCheckReview({
+        required this.line,
+    });
+
+    factory DocCheckReview.fromJson(Map<String, dynamic> json) => DocCheckReview(
         line: json["line"],
     );
 
@@ -3244,6 +3410,61 @@ class SourceRef {
         "fact_ids": List<dynamic>.from(factIds.map((x) => x)),
         "label": label,
         "official_url": officialUrl,
+    };
+}
+
+class DocCheckShare {
+    final String cardAlt;
+    final String cardUrl;
+    
+    ///A summary only, never the file.
+    final String shareText;
+
+    DocCheckShare({
+        required this.cardAlt,
+        required this.cardUrl,
+        required this.shareText,
+    });
+
+    factory DocCheckShare.fromJson(Map<String, dynamic> json) => DocCheckShare(
+        cardAlt: json["card_alt"],
+        cardUrl: json["card_url"],
+        shareText: json["share_text"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "card_alt": cardAlt,
+        "card_url": cardUrl,
+        "share_text": shareText,
+    };
+}
+
+///kind = pay_as_built: the letter's claimed slab against the latest filed slab.
+class DocCheckStage {
+    final String asOfLine;
+    final String filedSlabLine;
+    final int? floors;
+    final String letterSlabLine;
+
+    DocCheckStage({
+        required this.asOfLine,
+        required this.filedSlabLine,
+        required this.floors,
+        required this.letterSlabLine,
+    });
+
+    factory DocCheckStage.fromJson(Map<String, dynamic> json) => DocCheckStage(
+        asOfLine: json["as_of_line"],
+        filedSlabLine: json["filed_slab_line"],
+        floors: json["floors"],
+        letterSlabLine: json["letter_slab_line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "as_of_line": asOfLine,
+        "filed_slab_line": filedSlabLine,
+        "floors": floors,
+        "letter_slab_line": letterSlabLine,
     };
 }
 

@@ -511,6 +511,24 @@ class DocCheckKind(StrEnum):
     visit_recap = "visit_recap"
 
 
+class DocCheckRecheck(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    armed: bool
+    """
+    True once a later filing changed this check's answer; the re-check line and the check_updated alert follow.
+    """
+    line: str | None
+
+
+class DocCheckReview(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    line: Annotated[str, Field(min_length=1)]
+
+
 class Bbox1Item(RootModel[float]):
     root: Annotated[float, Field(ge=0.0, le=1.0)]
 
@@ -522,9 +540,39 @@ class Bbox1(RootModel[list[Bbox1Item]]):
     """
 
 
+class DocCheckShare(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    card_url: Annotated[str, Field(min_length=1)]
+    card_alt: Annotated[str, Field(min_length=1)]
+    share_text: str
+    """
+    A summary only, never the file.
+    """
+
+
+class Floors(RootModel[int]):
+    root: Annotated[int, Field(ge=1)]
+
+
+class DocCheckStage(BaseModel):
+    """
+    kind = pay_as_built: the letter's claimed slab against the latest filed slab.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    letter_slab_line: str
+    filed_slab_line: str
+    floors: Floors | None
+    as_of_line: str
+
+
 class DocCheckStatus(StrEnum):
     """
-    Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable or outside_coverage.
+    Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable, outside_coverage or checks_paused. checks_paused is the ai_doc_check kill switch (T61; catalogues/flags.json).
     """
 
     reading = "reading"
@@ -535,6 +583,7 @@ class DocCheckStatus(StrEnum):
     partly_readable = "partly_readable"
     no_claims = "no_claims"
     outside_coverage = "outside_coverage"
+    checks_paused = "checks_paused"
 
 
 class DocumentLabel(StrEnum):
@@ -546,6 +595,17 @@ class DocumentLabel(StrEnum):
     payment_request = "payment_request"
     receipt = "receipt"
     other = "other"
+
+
+class EdgeAction(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    label: Annotated[str, Field(min_length=1)]
+    action: Annotated[str, Field(pattern="^[a-z][a-z0-9_]*$")]
+    """
+    A code the client switches on, e.g. "retry_upload", "pick_project", "talk_to_adviser".
+    """
 
 
 class ErrorReportStatus(StrEnum):
@@ -2230,6 +2290,20 @@ class Display(BaseModel):
     bands_public: bool
 
 
+class DocCheckEdge(BaseModel):
+    """
+    Unreadable, partly readable, no claims, outside coverage or checks paused (FOUNDER_QUESTIONS M3-7, M3-13).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    title: Annotated[str, Field(min_length=1)]
+    body: str
+    primary: EdgeAction | None
+    secondary: EdgeAction | None
+
+
 class DocCheckRow(BaseModel):
     """
     One claim (or stage, amount, payee) against the records.
@@ -2244,7 +2318,15 @@ class DocCheckRow(BaseModel):
     verdict: Verdict
     verdict_label: str
     records_line: str
+    records_label: str | None = None
+    """
+    INTEGRATION_NOTES round 3: optional, e.g. "Records show", "Price list shows", "Your plan shows" (API_CONTRACTS §4.12).
+    """
     how_checked: str | None = None
+    review: DocCheckReview | None = None
+    """
+    Set while a person checks this reading (concierge-first, FOUNDER_QUESTIONS M3-7): "Can't check yet" + "A person is checking this reading."
+    """
     sources: list[SourceRef] | None = None
     broker_question: str | None = None
     page: Annotated[int | None, Field(ge=1)] = None
@@ -3120,6 +3202,22 @@ class Progress(BaseModel):
     """
     latest_qpr: LatestQpr | None
     line: str
+
+
+class ProjectCandidate(BaseModel):
+    """
+    One row of the pick list; the buyer's tap becomes api.doc_check_confirm(p_id, p_slug).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    label: Annotated[str, Field(min_length=1)]
+    sector_line: str | None = None
 
 
 class ProjectCard(BaseModel):
@@ -4290,6 +4388,27 @@ class DocCheck(BaseModel):
     """
     kind = before_you_pay only.
     """
+    edge: DocCheckEdge | None = None
+    """
+    Set for an edge status (unreadable, partly_readable, no_claims, outside_coverage, checks_paused); null once status is confirm_project or done.
+    """
+    project_candidates: list[ProjectCandidate] | None = None
+    """
+    The pick list, when the match needs the buyer's confirmation (project_match.method user_pick and not yet confirmed).
+    """
+    stage: DocCheckStage | None = None
+    """
+    kind = pay_as_built only: the tower chart (letter slab against filed slab).
+    """
+    recheck: DocCheckRecheck | None = None
+    """
+    Set once a later filing could change this check's answer (FOUNDER_QUESTIONS M3-11).
+    """
+    saved: bool | None = None
+    """
+    True once api.doc_check_save was called; an unsaved check is deleted after 30 days.
+    """
+    share: DocCheckShare | None = None
 
 
 class FromDeveloper(BaseModel):

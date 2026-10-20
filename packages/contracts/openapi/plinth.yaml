@@ -3649,10 +3649,20 @@ components:
       $ref: ../schemas/doc_check.schema.json
     DocCheckActions:
       $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckActions
+    DocCheckEdge:
+      $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckEdge
     DocCheckKind:
       $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckKind
+    DocCheckRecheck:
+      $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckRecheck
+    DocCheckReview:
+      $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckReview
     DocCheckRow:
       $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckRow
+    DocCheckShare:
+      $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckShare
+    DocCheckStage:
+      $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckStage
     DocCheckStartRequest:
       $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckStartRequest
     DocCheckStarted:
@@ -3663,6 +3673,8 @@ components:
       $ref: ../schemas/ai/document_class.schema.json
     DocumentLabel:
       $ref: ../schemas/ai/document_class.schema.json#/$defs/DocumentLabel
+    EdgeAction:
+      $ref: ../schemas/doc_check.schema.json#/$defs/EdgeAction
     EndedParty:
       $ref: ../schemas/who_has_my_number.schema.json#/$defs/EndedParty
     ErrorReport:
@@ -3863,6 +3875,8 @@ components:
       $ref: ../schemas/risk_summary.schema.json#/$defs/Progress
     ProgressToday:
       $ref: ../schemas/project_page.schema.json#/$defs/ProgressToday
+    ProjectCandidate:
+      $ref: ../schemas/doc_check.schema.json#/$defs/ProjectCandidate
     ProjectCard:
       $ref: ../schemas/search_results.schema.json#/$defs/ProjectCard
     ProjectHero:

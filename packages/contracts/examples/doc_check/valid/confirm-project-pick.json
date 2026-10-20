@@ -1,0 +1,31 @@
+{
+  "schema": "plinth.doc_check/1",
+  "id": "6f0e2c1a-0000-4000-8000-000000000503",
+  "kind": "claims",
+  "status": "confirm_project",
+  "doc_label": "Flyer",
+  "project_match": {
+    "slug": null,
+    "method": "name_sector",
+    "confirmed": false,
+    "line": "We found a few projects that might match. Which one is this?"
+  },
+  "summary_line": null,
+  "breakdown_line": null,
+  "rows": [],
+  "project_candidates": [
+    {
+      "slug": "aurelia-heights-phase-2",
+      "label": "Aurelia Heights, Phase 2",
+      "sector_line": "Sector 108, Dwarka Expressway"
+    },
+    {
+      "slug": "aurelia-heights-phase-1",
+      "label": "Aurelia Heights, Phase 1",
+      "sector_line": "Sector 108, Dwarka Expressway"
+    }
+  ],
+  "actions": null,
+  "notes": ["Not legal advice. We never certify title."],
+  "rules_version": "2026.10"
+}

@@ -1,0 +1,84 @@
+{
+  "schema": "plinth.doc_check/1",
+  "id": "6f0e2c1a-0000-4000-8000-000000000501",
+  "kind": "pay_as_built",
+  "status": "done",
+  "doc_label": "Demand letter",
+  "project_match": {
+    "slug": "aurelia-heights-phase-2",
+    "method": "user_pick",
+    "confirmed": true,
+    "line": "You confirmed Aurelia Heights, Phase 2."
+  },
+  "summary_line": "The latest filing shows slab 9. This letter asks for the slab 12 instalment.",
+  "breakdown_line": "1 can't be checked yet. 3 match.",
+  "rows": [
+    {
+      "seq": 1,
+      "says_label": "Letter says",
+      "says_text": "On casting of Tower A slab 12",
+      "verdict": "cant_check",
+      "verdict_label": "Can't check yet",
+      "records_line": "Slab 9 at the last filing.",
+      "records_label": "Records show",
+      "checkable_on": null,
+      "review": {
+        "line": "A person is checking this reading."
+      }
+    },
+    {
+      "seq": 2,
+      "says_label": "Letter says",
+      "says_text": "Instalment 7.5% = Rs 12,54,000; GST 5% = Rs 62,700; total Rs 13,16,700",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "7.5% of the all-in, as the payment plan sets out.",
+      "records_label": "Your plan shows"
+    },
+    {
+      "seq": 3,
+      "says_label": "Letter says",
+      "says_text": "Pay to the Aurelia Heights Ph 2 RERA Collection Account",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd, Peepal Bank, ending 4417.",
+      "records_label": "Records show"
+    },
+    {
+      "seq": 4,
+      "says_label": "Letter says",
+      "says_text": "Due by 30 Oct 2026",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "Within the plan's demand window."
+    }
+  ],
+  "stage": {
+    "letter_slab_line": "This letter: slab 12",
+    "filed_slab_line": "Latest filing: slab 9",
+    "floors": 14,
+    "as_of_line": "As of the Apr–Jun 2026 QPR, due 15 Jul 2026, not on HARERA."
+  },
+  "recheck": {
+    "armed": false,
+    "line": null
+  },
+  "saved": true,
+  "share": {
+    "card_url": "https://plinth.in/cards/stage/6f0e2c1a-0000-4000-8000-000000000501.abc123.png",
+    "card_alt": "Pay-as-built check: this letter asks for slab 12, the latest filing shows slab 9.",
+    "share_text": "The latest filing for Aurelia Heights, Phase 2 shows slab 9. This letter asks for the slab 12 instalment."
+  },
+  "actions": {
+    "share_text": "The latest filing shows slab 9. This letter asks for the slab 12 instalment.",
+    "broker_questions": [
+      "Can I see the architect's or engineer's certificate for slab 12?",
+      "Can I see the HARERA receipt for the Apr–Jun 2026 QPR?"
+    ]
+  },
+  "notes": [
+    "Not legal advice. We never certify title.",
+    "We keep this file for 30 days, then delete it, unless you save it to your account."
+  ],
+  "rules_version": "2026.10"
+}

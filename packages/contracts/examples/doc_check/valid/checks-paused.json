@@ -1,0 +1,26 @@
+{
+  "schema": "plinth.doc_check/1",
+  "id": "6f0e2c1a-0000-4000-8000-000000000504",
+  "kind": "claims",
+  "status": "checks_paused",
+  "doc_label": null,
+  "project_match": null,
+  "summary_line": null,
+  "breakdown_line": null,
+  "rows": [],
+  "edge": {
+    "title": "Checks are paused",
+    "body": "Document checks are paused for a few minutes. Nothing was lost; try again shortly.",
+    "primary": {
+      "label": "Try again",
+      "action": "retry_upload"
+    },
+    "secondary": {
+      "label": "Talk to an adviser",
+      "action": "talk_to_adviser"
+    }
+  },
+  "actions": null,
+  "notes": [],
+  "rules_version": "2026.10"
+}
