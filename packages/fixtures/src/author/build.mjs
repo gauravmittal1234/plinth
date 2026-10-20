@@ -223,7 +223,7 @@ export async function buildAll() {
   const note0 = B.family.shortlist.notes.find((n) => n.author === "rohan" && n.phase === AH2);
   exp("shortlist_note_add", AH2, W.OK, {
     p_slug: AH2,
-    p_body: note0.body,
+    p_text: note0.body,
     p_client_id: client(`shortlist_note/${note0.id}`),
     as: R,
     note: "Replays Rohan's seeded note of 17 Oct 2026.",

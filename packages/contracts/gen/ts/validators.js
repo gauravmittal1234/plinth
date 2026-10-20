@@ -30830,8 +30830,8 @@ return errors === 0;
 }
 
 export const validateSavedSearch = validate785;
-const schema333 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://plinth.in/schemas/saved_search.schema.json","title":"SavedSearch","description":"plinth.saved_search/1, from api.saved_search_save(p_filters, p_label, p_in_digest, p_id, p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved (app.saved_searches). The same filters saved again update the one saved search; at most 25 per buyer. Matches are digest material, never utility alerts.","type":"object","additionalProperties":false,"required":["schema","search","line"],"properties":{"schema":{"const":"plinth.saved_search/1"},"search":{"$ref":"#/$defs/SavedSearchItem"},"line":{"type":"string"}},"$defs":{"SavedSearchItem":{"title":"SavedSearchItem","type":"object","additionalProperties":false,"required":["id","label","filters","in_digest","saved_at","updated_at"],"properties":{"id":{"$ref":"common.schema.json#/$defs/Uuid"},"label":{"description":"The buyer's own name for it (at most 80 characters).","anyOf":[{"type":"string"},{"type":"null"}]},"filters":{"description":"The search's arguments as the client sent them (api.search_projects p_* args).","type":"object"},"in_digest":{"type":"boolean"},"saved_at":{"$ref":"common.schema.json#/$defs/Timestamp"},"updated_at":{"$ref":"common.schema.json#/$defs/Timestamp"}}}}};
-const schema334 = {"title":"SavedSearchItem","type":"object","additionalProperties":false,"required":["id","label","filters","in_digest","saved_at","updated_at"],"properties":{"id":{"$ref":"common.schema.json#/$defs/Uuid"},"label":{"description":"The buyer's own name for it (at most 80 characters).","anyOf":[{"type":"string"},{"type":"null"}]},"filters":{"description":"The search's arguments as the client sent them (api.search_projects p_* args).","type":"object"},"in_digest":{"type":"boolean"},"saved_at":{"$ref":"common.schema.json#/$defs/Timestamp"},"updated_at":{"$ref":"common.schema.json#/$defs/Timestamp"}}};
+const schema333 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://plinth.in/schemas/saved_search.schema.json","title":"SavedSearch","description":"plinth.saved_search/1, from api.saved_search_save(p_query, p_name, p_in_digest, p_id, p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved (app.saved_searches). The same query saved again updates the one saved search; at most 25 per buyer. Matches are digest material, never utility alerts.","type":"object","additionalProperties":false,"required":["schema","search","line"],"properties":{"schema":{"const":"plinth.saved_search/1"},"search":{"$ref":"#/$defs/SavedSearchItem"},"line":{"type":"string"}},"$defs":{"SavedSearchItem":{"title":"SavedSearchItem","type":"object","additionalProperties":false,"required":["id","name","query","in_digest","saved_at","updated_at"],"properties":{"id":{"$ref":"common.schema.json#/$defs/Uuid"},"name":{"description":"The buyer's own name for it (at most 80 characters).","anyOf":[{"type":"string"},{"type":"null"}]},"query":{"description":"The search as the client sent it in p_query (what was asked, without the page: q, filters, sort, bbox).","type":"object"},"in_digest":{"type":"boolean"},"saved_at":{"$ref":"common.schema.json#/$defs/Timestamp"},"updated_at":{"$ref":"common.schema.json#/$defs/Timestamp"}}}}};
+const schema334 = {"title":"SavedSearchItem","type":"object","additionalProperties":false,"required":["id","name","query","in_digest","saved_at","updated_at"],"properties":{"id":{"$ref":"common.schema.json#/$defs/Uuid"},"name":{"description":"The buyer's own name for it (at most 80 characters).","anyOf":[{"type":"string"},{"type":"null"}]},"query":{"description":"The search as the client sent it in p_query (what was asked, without the page: q, filters, sort, bbox).","type":"object"},"in_digest":{"type":"boolean"},"saved_at":{"$ref":"common.schema.json#/$defs/Timestamp"},"updated_at":{"$ref":"common.schema.json#/$defs/Timestamp"}}};
 
 function validate787(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
 let vErrors = null;
@@ -30883,14 +30883,14 @@ let errors = 0;
 if(errors === 0){
 if(data && typeof data == "object" && !Array.isArray(data)){
 let missing0;
-if(((((((data.id === undefined) && (missing0 = "id")) || ((data.label === undefined) && (missing0 = "label"))) || ((data.filters === undefined) && (missing0 = "filters"))) || ((data.in_digest === undefined) && (missing0 = "in_digest"))) || ((data.saved_at === undefined) && (missing0 = "saved_at"))) || ((data.updated_at === undefined) && (missing0 = "updated_at"))){
+if(((((((data.id === undefined) && (missing0 = "id")) || ((data.name === undefined) && (missing0 = "name"))) || ((data.query === undefined) && (missing0 = "query"))) || ((data.in_digest === undefined) && (missing0 = "in_digest"))) || ((data.saved_at === undefined) && (missing0 = "saved_at"))) || ((data.updated_at === undefined) && (missing0 = "updated_at"))){
 validate786.errors = [{instancePath,schemaPath:"#/required",keyword:"required",params:{missingProperty: missing0},message:"must have required property '"+missing0+"'"}];
 return false;
 }
 else {
 const _errs1 = errors;
 for(const key0 in data){
-if(!((((((key0 === "id") || (key0 === "label")) || (key0 === "filters")) || (key0 === "in_digest")) || (key0 === "saved_at")) || (key0 === "updated_at"))){
+if(!((((((key0 === "id") || (key0 === "name")) || (key0 === "query")) || (key0 === "in_digest")) || (key0 === "saved_at")) || (key0 === "updated_at"))){
 validate786.errors = [{instancePath,schemaPath:"#/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key0},message:"must NOT have additional properties"}];
 return false;
 break;
@@ -30909,14 +30909,14 @@ else {
 var valid0 = true;
 }
 if(valid0){
-if(data.label !== undefined){
-let data1 = data.label;
+if(data.name !== undefined){
+let data1 = data.name;
 const _errs3 = errors;
 const _errs4 = errors;
 let valid1 = false;
 const _errs5 = errors;
 if(typeof data1 !== "string"){
-const err0 = {instancePath:instancePath+"/label",schemaPath:"#/properties/label/anyOf/0/type",keyword:"type",params:{type: "string"},message:"must be string"};
+const err0 = {instancePath:instancePath+"/name",schemaPath:"#/properties/name/anyOf/0/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err0];
 }
@@ -30930,7 +30930,7 @@ valid1 = valid1 || _valid0;
 if(!valid1){
 const _errs7 = errors;
 if(data1 !== null){
-const err1 = {instancePath:instancePath+"/label",schemaPath:"#/properties/label/anyOf/1/type",keyword:"type",params:{type: "null"},message:"must be null"};
+const err1 = {instancePath:instancePath+"/name",schemaPath:"#/properties/name/anyOf/1/type",keyword:"type",params:{type: "null"},message:"must be null"};
 if(vErrors === null){
 vErrors = [err1];
 }
@@ -30943,7 +30943,7 @@ var _valid0 = _errs7 === errors;
 valid1 = valid1 || _valid0;
 }
 if(!valid1){
-const err2 = {instancePath:instancePath+"/label",schemaPath:"#/properties/label/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
+const err2 = {instancePath:instancePath+"/name",schemaPath:"#/properties/name/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
 if(vErrors === null){
 vErrors = [err2];
 }
@@ -30971,11 +30971,11 @@ else {
 var valid0 = true;
 }
 if(valid0){
-if(data.filters !== undefined){
-let data2 = data.filters;
+if(data.query !== undefined){
+let data2 = data.query;
 const _errs9 = errors;
 if(!(data2 && typeof data2 == "object" && !Array.isArray(data2))){
-validate786.errors = [{instancePath:instancePath+"/filters",schemaPath:"#/properties/filters/type",keyword:"type",params:{type: "object"},message:"must be object"}];
+validate786.errors = [{instancePath:instancePath+"/query",schemaPath:"#/properties/query/type",keyword:"type",params:{type: "object"},message:"must be object"}];
 return false;
 }
 var valid0 = _errs9 === errors;
@@ -31116,14 +31116,14 @@ let errors = 0;
 if(errors === 0){
 if(data && typeof data == "object" && !Array.isArray(data)){
 let missing0;
-if(((((((data.id === undefined) && (missing0 = "id")) || ((data.label === undefined) && (missing0 = "label"))) || ((data.filters === undefined) && (missing0 = "filters"))) || ((data.in_digest === undefined) && (missing0 = "in_digest"))) || ((data.saved_at === undefined) && (missing0 = "saved_at"))) || ((data.updated_at === undefined) && (missing0 = "updated_at"))){
+if(((((((data.id === undefined) && (missing0 = "id")) || ((data.name === undefined) && (missing0 = "name"))) || ((data.query === undefined) && (missing0 = "query"))) || ((data.in_digest === undefined) && (missing0 = "in_digest"))) || ((data.saved_at === undefined) && (missing0 = "saved_at"))) || ((data.updated_at === undefined) && (missing0 = "updated_at"))){
 validate794.errors = [{instancePath,schemaPath:"#/required",keyword:"required",params:{missingProperty: missing0},message:"must have required property '"+missing0+"'"}];
 return false;
 }
 else {
 const _errs1 = errors;
 for(const key0 in data){
-if(!((((((key0 === "id") || (key0 === "label")) || (key0 === "filters")) || (key0 === "in_digest")) || (key0 === "saved_at")) || (key0 === "updated_at"))){
+if(!((((((key0 === "id") || (key0 === "name")) || (key0 === "query")) || (key0 === "in_digest")) || (key0 === "saved_at")) || (key0 === "updated_at"))){
 validate794.errors = [{instancePath,schemaPath:"#/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key0},message:"must NOT have additional properties"}];
 return false;
 break;
@@ -31142,14 +31142,14 @@ else {
 var valid0 = true;
 }
 if(valid0){
-if(data.label !== undefined){
-let data1 = data.label;
+if(data.name !== undefined){
+let data1 = data.name;
 const _errs3 = errors;
 const _errs4 = errors;
 let valid1 = false;
 const _errs5 = errors;
 if(typeof data1 !== "string"){
-const err0 = {instancePath:instancePath+"/label",schemaPath:"#/properties/label/anyOf/0/type",keyword:"type",params:{type: "string"},message:"must be string"};
+const err0 = {instancePath:instancePath+"/name",schemaPath:"#/properties/name/anyOf/0/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err0];
 }
@@ -31163,7 +31163,7 @@ valid1 = valid1 || _valid0;
 if(!valid1){
 const _errs7 = errors;
 if(data1 !== null){
-const err1 = {instancePath:instancePath+"/label",schemaPath:"#/properties/label/anyOf/1/type",keyword:"type",params:{type: "null"},message:"must be null"};
+const err1 = {instancePath:instancePath+"/name",schemaPath:"#/properties/name/anyOf/1/type",keyword:"type",params:{type: "null"},message:"must be null"};
 if(vErrors === null){
 vErrors = [err1];
 }
@@ -31176,7 +31176,7 @@ var _valid0 = _errs7 === errors;
 valid1 = valid1 || _valid0;
 }
 if(!valid1){
-const err2 = {instancePath:instancePath+"/label",schemaPath:"#/properties/label/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
+const err2 = {instancePath:instancePath+"/name",schemaPath:"#/properties/name/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
 if(vErrors === null){
 vErrors = [err2];
 }
@@ -31204,11 +31204,11 @@ else {
 var valid0 = true;
 }
 if(valid0){
-if(data.filters !== undefined){
-let data2 = data.filters;
+if(data.query !== undefined){
+let data2 = data.query;
 const _errs9 = errors;
 if(!(data2 && typeof data2 == "object" && !Array.isArray(data2))){
-validate794.errors = [{instancePath:instancePath+"/filters",schemaPath:"#/properties/filters/type",keyword:"type",params:{type: "object"},message:"must be object"}];
+validate794.errors = [{instancePath:instancePath+"/query",schemaPath:"#/properties/query/type",keyword:"type",params:{type: "object"},message:"must be object"}];
 return false;
 }
 var valid0 = _errs9 === errors;

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://plinth.in/schemas/saved_search.schema.json",
   "title": "SavedSearch",
-  "description": "plinth.saved_search/1, from api.saved_search_save(p_filters, p_label, p_in_digest, p_id, p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved (app.saved_searches). The same filters saved again update the one saved search; at most 25 per buyer. Matches are digest material, never utility alerts.",
+  "description": "plinth.saved_search/1, from api.saved_search_save(p_query, p_name, p_in_digest, p_id, p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved (app.saved_searches). The same query saved again updates the one saved search; at most 25 per buyer. Matches are digest material, never utility alerts.",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema", "search", "line"],
@@ -16,15 +16,15 @@
       "title": "SavedSearchItem",
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "label", "filters", "in_digest", "saved_at", "updated_at"],
+      "required": ["id", "name", "query", "in_digest", "saved_at", "updated_at"],
       "properties": {
         "id": { "$ref": "common.schema.json#/$defs/Uuid" },
-        "label": {
+        "name": {
           "description": "The buyer's own name for it (at most 80 characters).",
           "anyOf": [{ "type": "string" }, { "type": "null" }]
         },
-        "filters": {
-          "description": "The search's arguments as the client sent them (api.search_projects p_* args).",
+        "query": {
+          "description": "The search as the client sent it in p_query (what was asked, without the page: q, filters, sort, bbox).",
           "type": "object"
         },
         "in_digest": { "type": "boolean" },

@@ -416,8 +416,8 @@ set search_path = ''
 as $$
   select pg_catalog.jsonb_build_object(
     'id', p_row.id,
-    'label', p_row.label,
-    'filters', p_row.filters,
+    'name', p_row.label,
+    'query', p_row.filters,
     'in_digest', p_row.in_digest,
     'saved_at', core.fmt_timestamp(p_row.created_at),
     'updated_at', core.fmt_timestamp(p_row.updated_at)
@@ -449,8 +449,8 @@ $$;
 comment on function api.saved_searches() is 'plinth.saved_searches/1: the caller''s saved searches, newest first (at most 25). Errors: auth_required, forbidden.';
 
 create function api.saved_search_save(
-  p_filters jsonb,
-  p_label text default null,
+  p_query jsonb,
+  p_name text default null,
   p_in_digest boolean default false,
   p_id uuid default null,
   p_client_id uuid default null
@@ -463,7 +463,7 @@ set search_path = ''
 as $$
 declare
   v_uid uuid := app.buyer_caller(false);
-  v_label text := nullif(pg_catalog.btrim(coalesce(p_label, '')), '');
+  v_label text := nullif(pg_catalog.btrim(coalesce(p_name, '')), '');
   v_row app.saved_searches;
   v_out jsonb;
 begin
@@ -471,8 +471,8 @@ begin
   if v_out is not null then
     return v_out;
   end if;
-  if p_filters is null or pg_catalog.jsonb_typeof(p_filters) <> 'object'
-     or pg_catalog.length(p_filters::text) > 4000 then
+  if p_query is null or pg_catalog.jsonb_typeof(p_query) <> 'object'
+     or pg_catalog.length(p_query::text) > 4000 then
     perform ops.raise_api_error('invalid_input', 'Send the search to save as an object of filters.');
   end if;
   if v_label is not null and pg_catalog.length(v_label) > 80 then
@@ -481,7 +481,7 @@ begin
 
   if p_id is not null then
     update app.saved_searches s
-       set filters = p_filters, label = v_label, in_digest = coalesce(p_in_digest, false)
+       set filters = p_query, label = v_label, in_digest = coalesce(p_in_digest, false)
      where s.id = p_id and s.user_id = v_uid
     returning * into v_row;
     if v_row.id is null then
@@ -490,7 +490,7 @@ begin
   else
     -- The same filters saved again update the one saved search.
     select s.* into v_row from app.saved_searches s
-    where s.user_id = v_uid and s.filters = p_filters
+    where s.user_id = v_uid and s.filters = p_query
     order by s.created_at limit 1 for update;
     if found then
       update app.saved_searches s
@@ -503,7 +503,7 @@ begin
         perform ops.raise_api_error('conflict', 'You can save up to 25 searches. Delete one to save another.');
       end if;
       insert into app.saved_searches (user_id, filters, label, in_digest)
-      values (v_uid, p_filters, v_label, coalesce(p_in_digest, false))
+      values (v_uid, p_query, v_label, coalesce(p_in_digest, false))
       returning * into v_row;
     end if;
   end if;

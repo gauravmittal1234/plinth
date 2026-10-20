@@ -2009,7 +2009,7 @@ export interface RpcError {
   hint: string | null;
 }
 /**
- * plinth.saved_search/1, from api.saved_search_save(p_filters, p_label, p_in_digest, p_id, p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved (app.saved_searches). The same filters saved again update the one saved search; at most 25 per buyer. Matches are digest material, never utility alerts.
+ * plinth.saved_search/1, from api.saved_search_save(p_query, p_name, p_in_digest, p_id, p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved (app.saved_searches). The same query saved again updates the one saved search; at most 25 per buyer. Matches are digest material, never utility alerts.
  */
 export interface SavedSearch {
   schema: "plinth.saved_search/1";
@@ -2021,11 +2021,11 @@ export interface SavedSearchItem {
   /**
    * The buyer's own name for it (at most 80 characters).
    */
-  label: string | null;
+  name: string | null;
   /**
-   * The search's arguments as the client sent them (api.search_projects p_* args).
+   * The search as the client sent it in p_query (what was asked, without the page: q, filters, sort, bbox).
    */
-  filters: {};
+  query: {};
   in_digest: boolean;
   saved_at: Timestamp;
   updated_at: Timestamp;

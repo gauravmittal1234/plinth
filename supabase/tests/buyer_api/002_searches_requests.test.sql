@@ -43,7 +43,7 @@ insert into t45a_out values ('s1', api.saved_search_save(
   '{"p_q": "3 bhk dwarka expressway", "p_sort": "lowest_risk"}'::jsonb, 'Dwarka 3 BHK', false, null,
   '00000000-0000-4000-8000-00000045ac11'));
 select is((select v ->> 'schema' from t45a_out where k = 's1'), 'plinth.saved_search/1', 'saved_search_save: plinth.saved_search/1');
-select is((select v #>> '{search,label}' from t45a_out where k = 's1'), 'Dwarka 3 BHK', 'the label is kept');
+select is((select v #>> '{search,name}' from t45a_out where k = 's1'), 'Dwarka 3 BHK', 'the name is kept');
 select is(
   api.saved_search_save('{"p_q": "anything else"}'::jsonb, null, false, null, '00000000-0000-4000-8000-00000045ac11'),
   (select v from t45a_out where k = 's1'),
@@ -52,10 +52,10 @@ select is(
 select is(
   api.saved_search_save('{"p_q": "3 bhk dwarka expressway", "p_sort": "lowest_risk"}'::jsonb, null, true) #>> '{search,id}',
   (select v #>> '{search,id}' from t45a_out where k = 's1'),
-  'the same filters saved again update the one saved search'
+  'the same query saved again updates the one saved search'
 );
 select is(jsonb_array_length(api.saved_searches() -> 'items'), 1, 'A has one saved search');
-select throws_ok($$select api.saved_search_save('"text"'::jsonb)$$, 'PT422', 'invalid_input', 'filters are an object');
+select throws_ok($$select api.saved_search_save('"text"'::jsonb)$$, 'PT422', 'invalid_input', 'the query is an object');
 
 select set_config('request.jwt.claims', '{"sub":"00000000-0000-4000-8000-00000045a002","role":"authenticated"}', true);
 select is(api.saved_searches() -> 'items', '[]'::jsonb, 'B sees none of A''s saved searches');

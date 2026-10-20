@@ -6021,10 +6021,10 @@ class RpcError {
     };
 }
 
-///plinth.saved_search/1, from api.saved_search_save(p_filters, p_label, p_in_digest, p_id,
+///plinth.saved_search/1, from api.saved_search_save(p_query, p_name, p_in_digest, p_id,
 ///p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved
-///(app.saved_searches). The same filters saved again update the one saved search; at most
-///25 per buyer. Matches are digest material, never utility alerts.
+///(app.saved_searches). The same query saved again updates the one saved search; at most 25
+///per buyer. Matches are digest material, never utility alerts.
 class SavedSearch {
     final String line;
     final String schema;
@@ -6050,40 +6050,41 @@ class SavedSearch {
 }
 
 class SavedSearchItem {
-    
-    ///The search's arguments as the client sent them (api.search_projects p_* args).
-    final Map<String, dynamic> filters;
     final String id;
     final bool inDigest;
     
     ///The buyer's own name for it (at most 80 characters).
-    final String? label;
+    final String? name;
+    
+    ///The search as the client sent it in p_query (what was asked, without the page: q,
+    ///filters, sort, bbox).
+    final Map<String, dynamic> query;
     final String savedAt;
     final String updatedAt;
 
     SavedSearchItem({
-        required this.filters,
         required this.id,
         required this.inDigest,
-        required this.label,
+        required this.name,
+        required this.query,
         required this.savedAt,
         required this.updatedAt,
     });
 
     factory SavedSearchItem.fromJson(Map<String, dynamic> json) => SavedSearchItem(
-        filters: Map.from(json["filters"]).map((k, v) => MapEntry<String, dynamic>(k, v)),
         id: json["id"],
         inDigest: json["in_digest"],
-        label: json["label"],
+        name: json["name"],
+        query: Map.from(json["query"]).map((k, v) => MapEntry<String, dynamic>(k, v)),
         savedAt: json["saved_at"],
         updatedAt: json["updated_at"],
     );
 
     Map<String, dynamic> toJson() => {
-        "filters": Map.from(filters).map((k, v) => MapEntry<String, dynamic>(k, v)),
         "id": id,
         "in_digest": inDigest,
-        "label": label,
+        "name": name,
+        "query": Map.from(query).map((k, v) => MapEntry<String, dynamic>(k, v)),
         "saved_at": savedAt,
         "updated_at": updatedAt,
     };

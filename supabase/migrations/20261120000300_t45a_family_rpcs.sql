@@ -731,7 +731,7 @@ comment on function api.whatsapp_family_join(uuid, text, text) is 'wa-webhook (s
 -- ---------------------------------------------------------------------------
 create function api.shortlist_note_add(
   p_slug text,
-  p_body text,
+  p_text text,
   p_client_id uuid default null,
   p_circle_id uuid default null
 )
@@ -743,7 +743,7 @@ set search_path = ''
 as $$
 declare
   v_uid uuid := app.buyer_caller(false);
-  v_body text := pg_catalog.btrim(coalesce(p_body, ''));
+  v_body text := pg_catalog.btrim(coalesce(p_text, ''));
   v_phase core.phases;
   v_circle uuid;
   v_owner uuid;

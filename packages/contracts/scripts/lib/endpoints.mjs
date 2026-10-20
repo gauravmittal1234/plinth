@@ -187,16 +187,16 @@ export const BUYER_RPCS = [
     m: "M2",
     request: args(
       {
-        p_filters: { type: "object" },
-        p_label: { type: ["string", "null"], maxLength: 80 },
+        p_query: { type: "object" },
+        p_name: { type: ["string", "null"], maxLength: 80 },
         p_in_digest: { type: "boolean", default: false },
         p_id: { type: ["string", "null"], format: "uuid" },
         p_client_id: clientId,
       },
-      ["p_filters"],
+      ["p_query"],
     ),
     response: "SavedSearch",
-    note: "The same filters saved again update the one saved search; p_id edits one. At most 25.",
+    note: "The same query saved again updates the one saved search; p_id edits one. At most 25.",
   },
   {
     fn: "saved_search_delete",
@@ -251,11 +251,11 @@ export const BUYER_RPCS = [
     request: args(
       {
         p_slug: slug,
-        p_body: { type: "string", minLength: 1, maxLength: 1000 },
+        p_text: { type: "string", minLength: 1, maxLength: 1000 },
         p_client_id: clientId,
         p_circle_id: { type: ["string", "null"], format: "uuid" },
       },
-      ["p_slug", "p_body"],
+      ["p_slug", "p_text"],
     ),
     response: "Ok",
     note: "The circle owner, or a joined member with can_add_notes.",

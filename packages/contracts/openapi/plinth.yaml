@@ -1778,7 +1778,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      description: The same filters saved again update the one saved search; p_id edits one. At most 25.
+      description: The same query saved again updates the one saved search; p_id edits one. At most 25.
       requestBody:
         required: true
         content:
@@ -1787,11 +1787,11 @@ paths:
               type: object
               additionalProperties: false
               required:
-                - p_filters
+                - p_query
               properties:
-                p_filters:
+                p_query:
                   type: object
-                p_label:
+                p_name:
                   type:
                     - string
                     - "null"
@@ -2146,11 +2146,11 @@ paths:
               additionalProperties: false
               required:
                 - p_slug
-                - p_body
+                - p_text
               properties:
                 p_slug:
                   $ref: "#/components/schemas/Slug"
-                p_body:
+                p_text:
                   type: string
                   minLength: 1
                   maxLength: 1000

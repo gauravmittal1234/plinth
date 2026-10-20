@@ -1,11 +1,11 @@
 {
   "base": "canonical-search.json",
-  "why": "filters are the search's arguments, an object.",
-  "expect": "/search/filters",
+  "why": "query is the search as the client sent it, an object.",
+  "expect": "/search/query",
   "patch": [
     {
       "op": "replace",
-      "path": "/search/filters",
+      "path": "/search/query",
       "value": "3 bhk dwarka expresway"
     }
   ]
