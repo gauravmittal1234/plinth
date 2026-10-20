@@ -79,7 +79,14 @@ void main() {
     for (final MapEntry(key: pattern, value: s) in samples.entries) {
       routerOf(container).go(s.location);
       await tester.pumpAndSettle();
-      expect(find.text(s.artboard), findsOneWidget, reason: '$pattern should show ${s.artboard}');
+      if (pattern == Routes.project) {
+        // T31a replaced this placeholder with the real AppProject screen;
+        // AppProjectStates (T31b) is still a placeholder, reached only
+        // through `?state=` (see the dedicated test below).
+        expect(find.text('Will it be delivered on time?'), findsOneWidget, reason: '$pattern should show AppProject');
+      } else {
+        expect(find.text(s.artboard), findsOneWidget, reason: '$pattern should show ${s.artboard}');
+      }
       expect(find.byType(NavigationBar), s.tabs ? findsOneWidget : findsNothing, reason: '$pattern tabs');
       expect(find.byType(NotFoundScreen), findsNothing, reason: pattern);
       expect(tester.takeException(), isNull, reason: pattern);
