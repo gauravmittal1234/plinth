@@ -1,17 +1,11 @@
 "use client";
 
-// "Request it" (G-30): name or RERA number, "Also tell me on WhatsApp", then
-// "Requested · R-1018-07…" (DESIGN §5b, the worked example for this exact
-// unknown-project state: "Indigo Terraces, Sector 79"). Fixture mode has no
-// api.request_project payload yet (apps/web/src/data/registry.ts: `returns:
-// null`, no packages/fixtures/expected/request_project folder) — a write with
-// no fixture key throws `fixture_missing` by design (INTEGRATION_NOTES: "a
-// query with no fixture key gives fixture_missing, and new keys come from the
-// fixtures owner, so don't invent them"). This calls the real function first;
-// for this one documented example, a fixture_missing response still ends in
-// the published confirmation, because that sentence is already a published
-// fact, not a guess. Handoff: the fixtures owner can add
-// packages/fixtures/expected/request_project/ to make the call itself answer it.
+// "Request it" (G-30): name or RERA number, then the server's own reference
+// ("Requested · R-MMDD-NN…", DESIGN §5b). The reference is only ever the one
+// api.request_project returned; fixture mode has no request_project payload
+// yet, so it says so instead of showing a reference no system issued.
+// Handoff: "Also tell me on WhatsApp" (artboard) needs a consent parameter on
+// api.request_project before it can be offered; the contract has none today.
 import { useId, useState } from "react";
 import { Button } from "@plinth/web-ui";
 import { requestProjectAction } from "./actions";
@@ -26,16 +20,14 @@ type Status = "idle" | "sending" | "done" | "error";
 
 export function RequestProjectForm({ name }: RequestProjectFormProps) {
   const [rera, setRera] = useState("");
-  const [whatsapp, setWhatsapp] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
-  const [confirmation, setConfirmation] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const reraId = useId();
-  const waId = useId();
 
-  if (status === "done" && confirmation) {
+  if (status === "done" && message) {
     return (
       <p role="status" className="m-0 text-body font-semibold">
-        {confirmation}
+        {message}
       </p>
     );
   }
@@ -47,16 +39,16 @@ export function RequestProjectForm({ name }: RequestProjectFormProps) {
         e.preventDefault();
         setStatus("sending");
         void requestProjectAction(name, rera.trim() || null).then((result) => {
-          // Either `result.ok`, or `fixture_missing` for this one documented
-          // example (see file header): both end in the same published
-          // sentence, because that outcome is already a fact, not a guess.
-          void result;
-          setConfirmation(
-            `Requested · R-1018-07. We’ll add it by 1 Nov 2026 or tell you why not.${
-              whatsapp ? " We’ll also message you on WhatsApp." : ""
-            }`,
-          );
-          setStatus("done");
+          if (result.ok) {
+            setMessage(SEARCH_COPY.requested(result.ref));
+            setStatus("done");
+          } else if (result.code === "fixture_missing") {
+            setMessage(SEARCH_COPY.requestFixtureMode);
+            setStatus("done");
+          } else {
+            setMessage(SEARCH_COPY.requestFailed);
+            setStatus("error");
+          }
         });
       }}
     >
@@ -72,15 +64,11 @@ export function RequestProjectForm({ name }: RequestProjectFormProps) {
           className="h-11 min-w-64 rounded-panel bg-track px-3.5 text-body text-ink outline-none"
         />
       </div>
-      <label htmlFor={waId} className="flex items-center gap-2 text-small">
-        <input
-          id={waId}
-          type="checkbox"
-          checked={whatsapp}
-          onChange={(e) => setWhatsapp(e.target.checked)}
-        />
-        {SEARCH_COPY.alsoWhatsapp}
-      </label>
+      {status === "error" && message ? (
+        <p role="alert" className="m-0 text-small">
+          {message}
+        </p>
+      ) : null}
       <Button type="submit" disabled={status === "sending"}>
         {SEARCH_COPY.requestIt}
       </Button>

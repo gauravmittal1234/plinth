@@ -97,7 +97,7 @@ test.describe("WebSearch", { tag: "@smoke" }, () => {
     await expectNoSeriousA11yViolations(page);
   });
 
-  test("an unknown project: Request it ends in the published R-1018-07 confirmation", async ({
+  test("an unknown project: Request it never shows a reference the server did not issue", async ({
     page,
   }) => {
     const want = expected("unknown-project");
@@ -106,7 +106,10 @@ test.describe("WebSearch", { tag: "@smoke" }, () => {
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(want.zero_results!.line);
     await page.getByRole("button", { name: want.zero_results!.action!.label }).click();
 
-    await expect(page.getByRole("status")).toContainText("Requested · R-1018-07");
+    // Fixture mode has no api.request_project payload yet, so it says so
+    // rather than inventing an R-MMDD-NN reference.
+    await expect(page.getByRole("status")).toContainText("Fixture mode doesn’t record requests yet");
+    await expect(page.getByRole("status")).not.toContainText("R-1018-07");
     await expectNoSeriousA11yViolations(page);
   });
 

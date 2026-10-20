@@ -35,14 +35,14 @@ describe("ZeroResultsPanel: no_match (G-39)", () => {
 describe("ZeroResultsPanel: unknown_project (G-30)", () => {
   const zr = unknownProject.zero_results as ZeroResultsPayload;
 
-  it("offers Request it for the name the search already parsed", async () => {
+  it("offers Request it, and never shows a reference the server did not issue", async () => {
     render(<ZeroResultsPanel zeroResults={zr} name="Indigo Terraces" hidden={[]} />);
     expect(screen.getByRole("heading", { level: 1, name: zr.line })).toBeInTheDocument();
     expect(screen.getByText(zr.detail_line!)).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "Request it" }));
-    expect(
-      await screen.findByText(/Requested · R-1018-07\. We’ll add it by 1 Nov 2026/),
-    ).toBeInTheDocument();
+    const status = await screen.findByRole("status");
+    expect(status).toHaveTextContent("Fixture mode doesn’t record requests yet");
+    expect(status).not.toHaveTextContent("R-1018-07");
   });
 });
 

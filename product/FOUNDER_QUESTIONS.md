@@ -3,11 +3,7 @@
 Collected while closing the design gaps (18 Oct 2026). None of these block design or the first build: screens use clearly marked placeholders. Decisions I took as acting PM are listed so you can overturn them.
 
 ## Needed from you to unblock coding
-1. **Review and merge the PRs, in order.**
-   - **PR #1 `[T00] Repo bootstrap`:** https://github.com/gauravmittal1234/plinth/pull/1
-   - **Wave-1 PRs (T01–T06):** these are stacked on PR #1's branch. Merge #1 first; GitHub will then offer to retarget them to `main`.
-
-   My session isn't allowed to merge without a human review. If you'd rather I merge PRs that pass CI, add that permission in your Claude Code settings.
+1. **Merging (20 Oct 2026).** The auto-mode safety check still blocks `gh pr merge` for me, despite the settings grant. Until you re-allow it, merge the PRs on the lead's ready list, which have green CI and a lead review. Anything touching money or legal copy is flagged for your own read.
 2. ~~Let CI workflows be pushed.~~ **Done 19 Oct 2026:** the `workflow` scope was granted and the T00 workflows are active on PR #1.
 
 ## Decisions taken as acting PM (overturn any)
@@ -19,6 +15,7 @@ Collected while closing the design gaps (18 Oct 2026). None of these block desig
 | P3 | **Price tests run one after another, one public price at a time**, never split by visitor | Splitting prices by visitor breaks the "the price is the price" promise and is risky under the CCPA dark-pattern rules |
 | P4 | **One consent-reference format**, `C-MMDD-NN`, on every screen | The developer inbox had invented a second format |
 | P5 | **Flyers and letters in images are greeked** (placeholder bars), with the real claim text overlaid as live type | AI images produced half-readable nonsense text |
+| P6 | **No confirmation without a record.** A screen confirms only what the server confirmed. "Notify me" and "Join the waitlist" now say "Waitlists aren't open yet, so nothing was saved" until a waitlist API exists. Request references (R-MMDD-NN) come only from the API's answer | M1 screens had shown "On the waitlist" and a fixed R-1018-07 without recording anything (#36, #38) |
 
 ## Start this week (long lead times; steps in `docs/engineering/SETUP_FOR_FOUNDER.md`)
 - **Meta Business verification**, needed for the WhatsApp Business API and its templates.
@@ -94,6 +91,11 @@ Collected while closing the design gaps (18 Oct 2026). None of these block desig
 - **"Request a project".** We promise an answer within 14 days. Who staffs that queue? The Noida waitlist also needs a WhatsApp utility template approved.
 - **Adviser label.** I set "Talk to a Plinth adviser · free · developers never pay us". Confirm that an adviser is free in R1.
 - **Move-in estimate.** It assumes 24 months of maintenance at ₹5/sq ft plus ranges for fit-out and utility connections. It is labelled as an estimate; confirm or replace the assumptions.
+- **Waitlists (new, 20 Oct 2026).**
+  - Home, Search and About offer "Notify me" / "Join the Noida waitlist", but no API records them.
+  - Proposal: an `api.waitlist_join(area, WhatsApp consent)` in M2 with the T45 buyer writes, sending one WhatsApp utility message on opening.
+  - Confirm the scope.
+- **Pricing copy (#38).** WebPricing states "Full refund within 7 days, for any reason", "money back within 5 working days" and ₹999 "GST included". None of these is in DESIGN.md §5b; they come from the artboard. Confirm them, or give the real terms, before launch.
 
 ## For the lawyer (copy currently states these as fact)
 - Pay-as-built and the site-visit recap: 10 flags in `fix-visitpay.md` §4. They include the s.19(6)/(7) wording, the draft letter the buyer sends themselves, and how we label what a salesperson said.

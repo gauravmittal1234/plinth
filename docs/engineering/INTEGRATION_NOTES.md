@@ -124,3 +124,22 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
 - **T45a/T45b:** define the result schemas for `saved_search_save`, `request_project`, `family_join`, `consent_history`, `me`, `link_whatsapp_follows`, `data_export_request` and `account_delete_request`.
 - **T43b:** the following feed lists changes newest first. **T49:** add the `/guides/booked-buyer` route.
 - **`main` is the integration branch** (#10 merged 20 Oct). `task/T07-m0-gate` is retired.
+
+## Lead review of M1 screens (20 Oct 2026)
+- **No confirmation without a record (all UI tasks).** A UI confirms only what an RPC confirmed.
+  - References (R-, C-, CL-…) are shown only from an RPC result, never as literals.
+  - Without a backing RPC, say "nothing was saved" (FOUNDER_QUESTIONS P6).
+  - Fixed in #36 (Request it; home and search waitlists) and #38 (About).
+- **`api.request_project`:**
+  - It has no consent parameter, so "Also tell me on WhatsApp" stays off.
+  - T45a/T45b: add WhatsApp consent when the result schema is defined.
+  - Fixtures: add `expected/request_project/` for §5b's Indigo Terraces example.
+- **Waitlists:** there is no RPC. Proposal: `api.waitlist_join(p_area, p_whatsapp_consent)` (M2, T45a), pending the founder's decision.
+- **SEO routes: no soft 404s.**
+  - `not_found` → `notFound()`. A fixture gap renders, but with `robots: noindex`.
+  - Titles name the entity, with a canonical URL (#35).
+  - Under Cache Components, `notFound()` inside `<Suspense>` runs after streaming starts. The status stays 200, but Next injects `<meta name="robots" content="noindex">` (Next docs, streaming.md). That is the accepted behaviour.
+  - E2E asserts the not-found UI plus noindex, not the status. T20c adds this for the project route.
+- **`evidence(p_fact_id, p_slug)`:** the SQL overload exists (T13), but `src/data` `evidence()` doesn't pass `p_slug`. Fix it after T20b lands; the call site is `features/project/page/evidence.ts`, and fixture `_requests` need slug variants.
+- **Stub tests:** filling a stub may break T06/T07 tests that assert placeholder text (`test/gates/m0_test.dart`, `test/app/router_test.dart`, `shell_test.dart`). The filling task updates them minimally and lists them in its PR.
+
