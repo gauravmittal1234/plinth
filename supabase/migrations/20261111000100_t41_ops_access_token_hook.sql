@@ -4,7 +4,8 @@
 -- issues every access token (config.toml [auth.hook.custom_access_token]). It adds two claims:
 --   plinth_roles  text[]               the user's rows in app.user_roles, sorted
 --                                      (buyer, agent, developer_member, reviewer, methodology,
---                                      admin, support); [] when there are none
+--                                      admin, support); ["buyer"] when a signed-in user has
+--                                      none (every account is at least a buyer: lead, T40/T41)
 --   org_roles     {org_id: role}       the user's active ws.org_members rows
 --                                      (admin, sales, compliance, marketing, site); {} when none
 -- Every other claim is kept as Auth sent it. ops.has_role() (T04) reads plinth_roles and still
@@ -55,6 +56,12 @@ begin
     $q$
     into v_roles
     using v_user_id;
+  end if;
+
+  -- Sign-up creates no role row (T40's handle_new_user makes only the profile), so a
+  -- signed-in user with none is a buyer. Explicit roles (admin, developer_member, ...) stand alone.
+  if v_user_id is not null and v_roles = '[]'::jsonb then
+    v_roles := '["buyer"]'::jsonb;
   end if;
 
   if v_user_id is not null and pg_catalog.to_regclass('ws.org_members') is not null then

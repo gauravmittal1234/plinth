@@ -178,8 +178,8 @@ select is(
 );
 select is(
   (select event -> 'claims' -> 'plinth_roles' from t41_out where who = 'nobody'),
-  '[]'::jsonb,
-  'a user with no role rows gets plinth_roles = [] (no implicit role)'
+  '["buyer"]'::jsonb,
+  'a signed-in user with no role rows is a buyer (sign-up creates no role row)'
 );
 select is(
   (select event -> 'claims' -> 'org_roles' from t41_out where who = 'nobody'),
