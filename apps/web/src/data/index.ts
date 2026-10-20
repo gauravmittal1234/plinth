@@ -38,6 +38,7 @@ import type {
   ConsentWithdrawal,
   DeveloperPage,
   DevicePlatform,
+  DigestCard,
   Evidence,
   FamilyInvite,
   FamilyInvitePreview,
@@ -171,6 +172,14 @@ export function flags(): Promise<Flags> {
 /** The original card plus "Changed since this card was sent". */
 export function shareCard(code: string): Promise<ShareCard> {
   return call("share_card", { p_code: code });
+}
+
+/**
+ * The weekly digest's header card (plinth.digest_card/1), by the unguessable card code the digest's
+ * WhatsApp row carries (/cards/digest/<code>.png). An unknown code is not_found.
+ */
+export function digestCard(code: string): Promise<DigestCard> {
+  return call("digest_card", { p_code: code });
 }
 
 /** Powers /j/[code]. Carries no phone number. */

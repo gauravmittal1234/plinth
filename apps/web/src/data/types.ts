@@ -4,6 +4,7 @@
 import type {
   AlertPrefsMap,
   Bbox,
+  Chip as ContractChip,
   FamilyInviteScope,
   FollowSource,
   SearchFilters as ContractSearchFilters,
@@ -37,6 +38,18 @@ export type {
 
 /** A response with no contract schema yet (API_CONTRACTS §3.2 rows without a §4 shape). */
 export type Untyped = { readonly [field: string]: unknown };
+
+/**
+ * plinth.digest_card/1 (api.digest_card; the lead's M2 gate gap 5). Its contract schema is
+ * pending (openapi x-plinth-shape: pending): this is the shape the SQL returns, local until
+ * @plinth/contracts exports a DigestCard.
+ */
+export type DigestCard = {
+  readonly schema: "plinth.digest_card/1";
+  /** Server copy: "This week in your projects · <week> · <n> changes on record". */
+  readonly heading_line: string;
+  readonly projects: readonly { slug: string; name: string; chip: ContractChip }[];
+};
 
 // Arguments
 

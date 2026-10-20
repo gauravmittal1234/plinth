@@ -69,6 +69,13 @@ export const PUBLIC_RPCS = [
     stable: true,
   },
   {
+    fn: "digest_card",
+    m: "M2",
+    request: args({ p_code: { type: "string", pattern: "^[0-9a-f]{32}$" } }),
+    response: null,
+    stable: true,
+  },
+  {
     fn: "resolve_short_link",
     m: "M2",
     request: args({ p_code: { type: "string" } }),

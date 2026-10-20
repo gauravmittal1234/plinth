@@ -61,6 +61,12 @@ const _untypedFolders = {'family_circle', 'saved_searches'};
 /// Reads the app has no repository for yet (T45b added the RPC; the app reads who_has_my_number).
 const _noAppRepository = {'consent_history'};
 
+/// Payloads whose contract schema is still pending (openapi x-plinth-shape: pending;
+/// packages/fixtures/scripts/validate.mjs PENDING_SHAPE), so there is no model to parse with:
+/// api.digest_card (the lead's M2 gate gap 5), the weekly digest's header image the web serves
+/// to WhatsApp. The app never reads it.
+const _pendingSchemaFolders = {'digest_card'};
+
 /// Calls the fixture repository that serves [folder] with the request's
 /// arguments, as a screen would, and returns the contract model.
 Future<Object> _viaRepository(ProviderContainer c, String folder, JsonMap request) {
@@ -127,6 +133,10 @@ void main() {
             final request = (await world.requests(folder))[key];
             expect(request, isNotNull, reason: '_requests.json has no "$key"');
             expect(await world.write(folder, request!), isNotNull);
+            return;
+          }
+          if (_pendingSchemaFolders.contains(folder)) {
+            expect(schemaIds[payload['schema']], isNull, reason: 'drop $folder from _pendingSchemaFolders');
             return;
           }
           final type = schemaIds[payload['schema']];

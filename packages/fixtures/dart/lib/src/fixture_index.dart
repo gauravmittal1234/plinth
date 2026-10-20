@@ -41,6 +41,9 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
     'orbis-land',
     'vantage-buildcon',
   ],
+  'digest_card': <String>[
+    'rohan-2026-10-18',
+  ],
   'doc_check': <String>[
     'booking-form',
     'demand-letter',

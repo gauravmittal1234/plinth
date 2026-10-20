@@ -113,16 +113,20 @@ test.describe(
       expect(pngDimensions(await res.body())).toEqual({ width: 1080, height: 1350 });
     });
 
-    test("WaDigest's header: the weekly digest card is served at 1080×570", async ({ request }) => {
-      test.fixme(
-        true,
-        "Gate gap: weekly_digest's template has an image header (comms.templates: 1080x570) and " +
-          "src/features/cards/digest-card.tsx renders it, but app/cards/[...card]/route.ts serves no " +
-          "digest kind (404) and ops.enqueue_digests puts no image URL in the row.",
+    test("WaDigest's header: the weekly digest card is served at 1080×570, by its token only", async ({
+      request,
+    }) => {
+      // The digest row names /cards/digest/<card_token>.png (ops.enqueue_digests; gates/m2.sql F).
+      const req = readJson<{ requests: Record<string, { p_code: string }> }>(
+        join(EXPECTED, "digest_card", "_requests.json"),
       );
-      const res = await request.get("/cards/digest/rohan.png");
+      const token = Object.values(req.requests)[0]!.p_code;
+      const res = await request.get(`/cards/digest/${token}.png`);
       expect(res.status()).toBe(200);
+      expect(res.headers()["content-type"]).toContain("image/png");
       expect(pngDimensions(await res.body())).toEqual({ width: 1080, height: 570 });
+      // A digest is personal: a name is never a card address.
+      expect((await request.get("/cards/digest/rohan.png")).status()).toBe(404);
     });
   },
 );
@@ -232,7 +236,13 @@ test.describe("M2 gate: live mode against CI's seeded stack", { tag: "@live" }, 
     );
 
     type Rendered = {
-      wa: { channel: string; refused: boolean; body: unknown; session: unknown };
+      wa: {
+        channel: string;
+        refused: boolean;
+        body: unknown;
+        session: unknown;
+        header_image_url: string;
+      };
       export: {
         files: string[];
         request_id: string;
@@ -263,7 +273,13 @@ const payload = diag("export_payload");
 const built = await render.buildExportZip(render.parseExportPayload(payload, payload.request_id));
 const files = zip.readZip(built.bytes);
 console.log(JSON.stringify({
-  wa: { channel, refused: dispatch.isTestBlockNumber(wa.contact.wa_id_e164), body, session },
+  wa: {
+    channel,
+    refused: dispatch.isTestBlockNumber(wa.contact.wa_id_e164),
+    body,
+    session,
+    header_image_url: wa.row.payload.header_image_url,
+  },
   export: {
     files: [...files.keys()].sort(),
     request_id: payload.request_id,
@@ -312,6 +328,10 @@ console.log(JSON.stringify({
           language: { code: "en" },
           components: [
             {
+              type: "header",
+              parameters: [{ type: "image", image: { link: rendered.wa.header_image_url } }],
+            },
+            {
               type: "body",
               parameters: [
                 { type: "text", text: "Aurelia Heights, Phase 2" },
@@ -320,6 +340,18 @@ console.log(JSON.stringify({
                 { type: "text", text: "new HARERA records" },
                 { type: "text", text: "25 Oct 2026" },
               ],
+            },
+            {
+              type: "button",
+              sub_type: "quick_reply",
+              index: "0",
+              parameters: [{ type: "payload", payload: "open_full_card" }],
+            },
+            {
+              type: "button",
+              sub_type: "quick_reply",
+              index: "1",
+              parameters: [{ type: "payload", payload: "stop_alerts" }],
             },
           ],
         },
@@ -330,24 +362,16 @@ console.log(JSON.stringify({
     });
 
     test("the template body carries its image header and quick-reply payloads", () => {
-      test.fixme(
-        true,
-        "Gate gap: buildWhatsAppRequest sends body parameters only; band_change_alert's approved " +
-          "template has an image header and two quick replies (_shared/wa/templates/" +
-          "band_change_alert.ts renders them, but the dispatcher never uses it, and the row has no image URL).",
-      );
       const components = (rendered.wa.body as { template: { components: { type: string }[] } })
         .template.components;
       expect(components.map((c) => c.type)).toEqual(["header", "body", "button", "button"]);
+      // The header is the RiskSummary card for the run just published (gates/m2.sql E).
+      expect(rendered.wa.header_image_url).toMatch(
+        /^https:\/\/[^ ]+\/cards\/risk\/aurelia-heights-phase-2\.png\?run=[0-9a-f-]{36}$/,
+      );
     });
 
     test("inside the 24-hour window, the session alert names the change and routes its buttons", () => {
-      test.fixme(
-        true,
-        "Gate gap: for band_changed, ops.alert_event_line has no case, so session_text is " +
-          '"Something changed"; and the dispatcher\'s session buttons carry ids "0"/"1", which ' +
-          "wa-webhook/router.ts never matches (it expects open_full_card / stop_alerts).",
-      );
       const session = rendered.wa.session as {
         interactive: { body: { text: string }; action: { buttons: { reply: { id: string } }[] } };
       };

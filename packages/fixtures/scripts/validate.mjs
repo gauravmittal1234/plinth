@@ -108,6 +108,7 @@ export const REQUIRED = {
   family_invite: ["schema", "code", "link", "expires_on", "rules", "private_line"],
   alert_prefs: ["schema", "prefs", "whatsapp_optin", "lines", "number_line"],
   share_card: ["schema", "kind", "phase", "sent", "now", "changed", "changes", "live_url"],
+  digest_card: ["schema", "heading_line", "projects"],
   doc_check: ["schema", "id", "kind", "status", "rows", "notes", "rules_version"],
   cost_breakdown: ["schema", "rules_version", "lines", "all_in_inr", "all_in_label"],
   afford_the_wait: ["schema", "answer_line", "now", "by_completion", "delay", "series"],
@@ -147,6 +148,7 @@ const FN_TYPE = {
   family_invite_preview: "family_invite_preview",
   alert_prefs: "alert_prefs",
   share_card: "share_card",
+  digest_card: "digest_card",
   doc_check: "doc_check",
   cost_breakdown: "cost_breakdown",
   afford_the_wait: "afford_the_wait",
@@ -179,10 +181,11 @@ const DEF_REF = {
  * yet, by design — the owning milestone task hasn't defined the real one).
  * Their fixture payloads still get every structural check above; only the
  * ajv "no JSON Schema" check is expected here, not a failure, until that
- * task adds the real schema and this entry comes out. Empty since T45a gave
- * api.link_whatsapp_follows its real schema.
+ * task adds the real schema and this entry comes out. T45a gave
+ * api.link_whatsapp_follows its real schema; api.digest_card (the lead's M2 gate gap 5) waits
+ * for its contract schema (a Handoff to the contracts owner).
  */
-const PENDING_SHAPE = new Set([]);
+const PENDING_SHAPE = new Set(["digest_card"]);
 const LANES = new Set([
   "records_show",
   "developer_says",

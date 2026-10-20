@@ -6,7 +6,7 @@
 -- guessable key: ops.enqueue_digests mints a random card_token per digest row (32 hex digits,
 -- 122 random bits from gen_random_uuid) and puts the card's URL in the row,
 --   header_image_url = https://plinth.in/cards/digest/<card_token>.png
--- the web's /cards/digest/<token>.png reads it back through api.digest_card(p_token), the same
+-- the web's /cards/digest/<token>.png reads it back through api.digest_card(p_code), the same
 -- way /cards/changed/<code>.png reads api.share_card(p_code). An unknown or malformed token is
 -- one neutral not_found.
 --
@@ -105,7 +105,7 @@ comment on function ops.enqueue_digests(text) is 'Queues one whatsapp_template o
 create index outbox_digest_card_token_idx on comms.outbox ((payload ->> 'card_token'))
   where template_code = 'weekly_digest';
 
-create function api.digest_card(p_token text)
+create function api.digest_card(p_code text)
 returns jsonb
 language plpgsql
 stable
@@ -113,7 +113,7 @@ security definer
 set search_path = ''
 as $$
 declare
-  v_token text := pg_catalog.lower(pg_catalog.btrim(coalesce(p_token, '')));
+  v_token text := pg_catalog.lower(pg_catalog.btrim(coalesce(p_code, '')));
   v_row record;
   v_n integer;
 begin

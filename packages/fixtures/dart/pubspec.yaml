@@ -28,6 +28,7 @@ flutter:
     - assets/expected/consent_withdraw/
     - assets/expected/cost_breakdown/
     - assets/expected/developer_page/
+    - assets/expected/digest_card/
     - assets/expected/doc_check/
     - assets/expected/evidence/
     - assets/expected/family_circle/

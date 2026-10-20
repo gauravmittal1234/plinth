@@ -156,6 +156,7 @@ One object, served by `api.risk_summary(p_slug)`. It is embedded in `project_pag
 | `api.about()` | Coverage today/next, response-time board, holdings register, grievance officer (placeholders until supplied) | M1 |
 | `api.flags()` | `{ "schema": "plinth.flags/1", "flags": { key: boolean } }` for the caller's audience (19 R1 flags; `bands_public` defaults off) | M0 |
 | `api.share_card(p_code)` | The original card + "Changed since this card was sent" diff | M2 |
+| `api.digest_card(p_code)` | `plinth.digest_card/1` for `/cards/digest/<token>.png` (1080×570): the weekly digest's heading and one floor per followed project, by the unguessable card token `ops.enqueue_digests` put in that digest's row. Personal, so never cached. Schema pending | M2 |
 | `api.family_invite_preview(p_code)` | Inviter first name, scope, the RERA number. **No phone** | M2 |
 | `api.cost_breakdown(p_slug, p_unit, p_buyer, p_waive)` | CostBreakdown | M3 |
 | `api.afford_the_wait(...)` | AffordTheWait | M3 |

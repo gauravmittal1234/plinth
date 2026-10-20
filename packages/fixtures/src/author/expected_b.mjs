@@ -901,7 +901,22 @@ export function makeExpectedB({ cat, ev, sc, dc, vec, X, B }) {
     cost_sheets: SIGN_IN_WA.cost_sheets,
   });
 
+  // ------------------------------------------------------------- digest_card (lead, M2 gate gap 5)
+  // plinth.digest_card/1: the weekly digest's 1080×570 header for /cards/digest/<card_token>.png,
+  // for the digest Rohan got on Sun 18 Oct 2026 at 9 am (§5b: weekly, Sundays at 9 am). Its
+  // heading is the digest's own week line; one floor per followed project, by name, with the
+  // chip every surface shows on the fixture clock. A token names the card (a digest is personal):
+  // the live token is random per digest row, so this fixture is not reachable from the seed.
+  const digestCard = () => ({
+    schema: "plinth.digest_card/1",
+    heading_line: P.following.digest.week_line,
+    projects: P.follows
+      .map((f) => ({ slug: f.phase, name: phase(f.phase).name, chip: chipOf(f.phase) }))
+      .sort((a, b) => a.name.localeCompare(b.name) || a.slug.localeCompare(b.slug)),
+  });
+
   return {
+    digestCard,
     writes: {
       follow,
       OK,

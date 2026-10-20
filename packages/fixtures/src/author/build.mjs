@@ -131,6 +131,13 @@ export async function buildAll() {
     p_code: card.short_code,
     note: "The old Aurelia card: v1.1 run of 2 Sep 2026, data as of 30 Sep 2026 (CONFLICTS C-24, C-37).",
   });
+  exp("digest_card", "rohan-2026-10-18", XB.digestCard(), {
+    p_code: uuid5("digest_card", "rohan/2026-10-18").replace(/-/g, ""),
+    seeded: false,
+    note: "Rohan's weekly digest header of Sun 18 Oct 2026, 9 am (/cards/digest/<p_code>.png, 1080×570).",
+    source:
+      "Lead, M2 gate gap 5. The live code is random per digest row (ops.enqueue_digests), so the contract runner skips this key (seeded: false); web and app fixture modes serve it.",
+  });
   const DC = {
     flyer: {},
     "flyer--confirm-project": {
@@ -316,6 +323,8 @@ export const OWNED_EXPECTED = [
   "saved_searches",
   "request_project",
   "link_whatsapp_follows",
+  // Lead (M2 gate gap 5)
+  "digest_card",
 ];
 
 function listJson(dir) {

@@ -1,0 +1,11 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "rohan-2026-10-18": {
+      "p_code": "535e12ac2ca2572fb955f978136fc007",
+      "seeded": false,
+      "note": "Rohan's weekly digest header of Sun 18 Oct 2026, 9 am (/cards/digest/<p_code>.png, 1080×570).",
+      "source": "Lead, M2 gate gap 5. The live code is random per digest row (ops.enqueue_digests), so the contract runner skips this key (seeded: false); web and app fixture modes serve it."
+    }
+  }
+}
