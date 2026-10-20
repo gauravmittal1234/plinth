@@ -83,9 +83,15 @@ function joinParts(parts: readonly string[]): string {
   return parts.filter((p) => p !== "").join(" · ");
 }
 
-/** "Aurelia Heights, Phase 2" */
-function place(project: unknown, phase: unknown): string {
-  return [str(project), str(phase)].filter((p) => p !== "").join(", ");
+/**
+ * Where a row is: the phase's own name when it already starts with the project's (a phase is
+ * named "<project>, Phase 2"), so the project never prints twice; else "<project>, <phase>".
+ */
+export function place(project: unknown, phase: unknown): string {
+  const p = str(project);
+  const ph = str(phase);
+  if (p !== "" && ph.toLowerCase().startsWith(p.toLowerCase())) return ph;
+  return [p, ph].filter((x) => x !== "").join(", ");
 }
 
 function section(lines: PdfLine[], heading: string, rows: readonly string[], empty: string): void {
