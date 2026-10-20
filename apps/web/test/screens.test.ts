@@ -8,10 +8,15 @@ import { SCREENS, hasShell } from "@/src/shell/screens";
 const WEB = resolve(__dirname, "..");
 const ARTBOARDS = resolve(WEB, "../../product/design/artboards");
 
+// `~preview` folders hold internal fixture-preview routes that next.config.ts
+// rewrites `?state=` / `?view=simple` to; they serve their §2.1 row's own
+// public URL, so they are not rows of their own.
 function pages(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
     const p = join(dir, name);
-    if (statSync(p).isDirectory()) return name.startsWith("__") ? [] : pages(p);
+    if (statSync(p).isDirectory()) {
+      return name.startsWith("__") || name === "~preview" ? [] : pages(p);
+    }
     return name === "page.tsx" ? [relative(WEB, p).split("\\").join("/")] : [];
   });
 }

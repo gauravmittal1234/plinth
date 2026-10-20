@@ -90,6 +90,16 @@ test.describe("WebDeveloper: Northfield Estates", { tag: "@smoke" }, () => {
     );
   });
 
+  test("the ?state= preview is noindex; the canonical page is not", async ({ page }) => {
+    // `?state=` is a next.config.ts rewrite to the internal `~preview` route,
+    // so the canonical page stays static and indexable.
+    await page.goto(`${NORTHFIELD}?state=facts_only`);
+    await expect(page).toHaveURL(`${NORTHFIELD}?state=facts_only`);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex");
+    await page.goto(NORTHFIELD);
+    await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+  });
+
   test("axe finds no serious or critical violations", async ({ page }) => {
     await page.goto(NORTHFIELD);
     const { violations } = await new AxeBuilder({ page })

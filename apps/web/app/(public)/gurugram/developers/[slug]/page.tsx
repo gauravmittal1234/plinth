@@ -3,16 +3,16 @@
 // 404s through `loadDeveloper`'s `notFound()` when the fixtures (or, in time,
 // the backend) have no such group.
 //
-// `?state=` previews a design state in fixture mode (e.g. `facts_only`), the
-// same mechanism WebProjectStates is planned to use (src/features/project/states).
-// Reading `searchParams` is a Next "Runtime API" under Cache Components, so
-// only the subtree that needs it is dynamic, behind its own `<Suspense>` —
-// the slug-only parts above it (and every prerendered group) stay static.
+// This page never reads `searchParams`, so it stays fully static. The
+// `?state=<state>` fixture preview (e.g. `facts_only`) keeps its public URL
+// through a next.config.ts rewrite to the internal `~preview/state/[state]`
+// route beside this file (src/features/developer/page/preview.ts), which is
+// noindex.
 import { GROUP_SLUGS } from "@plinth/fixtures";
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { DeveloperPageView } from "@/src/features/developer/page/developer-page";
 import { loadDeveloper } from "@/src/features/developer/page/load-developer";
+import { developerMetadata } from "@/src/features/developer/page/preview";
 
 export function generateStaticParams() {
   return GROUP_SLUGS.map((slug) => ({ slug }));
@@ -24,33 +24,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const { page } = await loadDeveloper(slug, null);
-  return {
-    title: page.group.name,
-    description: page.summary_line ?? undefined,
-    alternates: { canonical: page.meta.live_url },
-  };
-}
-
-async function DeveloperRoute({
-  slug,
-  searchParams,
-}: {
-  slug: string;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  const sp = await searchParams;
-  const rawState = sp.state;
-  const state = typeof rawState === "string" && rawState.length > 0 ? rawState : null;
-  const data = await loadDeveloper(slug, state);
-  return <DeveloperPageView data={data} />;
+  return developerMetadata(await loadDeveloper(slug, null));
 }
 
 export default async function Page(props: PageProps<"/gurugram/developers/[slug]">) {
   const { slug } = await props.params;
-  return (
-    <Suspense fallback={null}>
-      <DeveloperRoute slug={slug} searchParams={props.searchParams} />
-    </Suspense>
-  );
+  const data = await loadDeveloper(slug, null);
+  return <DeveloperPageView data={data} />;
 }
