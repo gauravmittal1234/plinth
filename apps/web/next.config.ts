@@ -12,8 +12,7 @@ const projectPreviewRewrites = [
       {
         type: "query" as const,
         key: "state",
-        value:
-          "(?<state>severe|stalled|limited_history|not_scored|stale|rescoring|facts_only)",
+        value: "(?<state>severe|stalled|limited_history|not_scored|stale|rescoring|facts_only)",
       },
     ],
     destination: "/gurugram/projects/:slug/~preview/state/:state",
