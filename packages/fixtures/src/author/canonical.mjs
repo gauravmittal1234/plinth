@@ -936,6 +936,19 @@ export function buildCatalogue() {
       latest_order_on: "2026-10-09",
       previous_count: 13,
       units_history: null,
+      // Replay input (T11 handoff): the count on record at each published run's cutoff, where
+      // §5b gives it. 13 held until the 9 Oct 2026 order made it 14 ("Aurelia complaints:
+      // 13 → 14"), so the 30 Sep 2026 run saw 13. The counts at 15 Jul and 2 Sep 2026 are not
+      // in §5b (CONFLICTS.md C-30).
+      count_history: [
+        {
+          as_of: "2026-09-30",
+          count: 13,
+          per_100_units: 2.6,
+          source: `${S5B} (Aurelia complaints 13 → 14, latest order 9 Oct 2026); rate ${derived("13 per 500 units")}`,
+        },
+        { as_of: "2026-10-09", count: 14, per_100_units: 2.8, source: S5B },
+      ],
       source: `${S5B}; ${R2("C-11")}`,
     },
     {
@@ -977,7 +990,12 @@ export function buildCatalogue() {
       ],
       source: `${S5B} (24 complaints, 0.7 per 100 units); units base ${R2("C-12")}`,
     },
-  ].map((c) => ({ id: id("complaint_count", c.subject), ...c, window_to: "2026-10-14" }));
+  ].map((c) => ({
+    id: id("complaint_count", c.subject),
+    ...c,
+    count_history: c.count_history ?? null,
+    window_to: "2026-10-14",
+  }));
 
   const insolvency_events = [
     {
@@ -1152,7 +1170,7 @@ export function buildEvidence(cat) {
       value: f.value,
       as_of: f.as_of,
       valid_from: f.as_of,
-      valid_to: null,
+      valid_to: f.valid_to ?? null,
       learned_at: f.learned_at ?? IST(f.as_of),
       snapshot: f.snapshot ?? null,
       page_ref: f.page_ref ?? null,
@@ -1162,7 +1180,7 @@ export function buildEvidence(cat) {
       read_note: f.read_note ?? null,
       reviewed_at: f.reviewed_at ?? null,
       lane: f.lane ?? "records_show",
-      superseded_by: null,
+      superseded_by: f.superseded_by ?? null,
       corrections: f.corrections ?? [],
       evidence_copy: f.evidence_copy ?? null,
       source: f.source,
@@ -1567,6 +1585,33 @@ export function buildEvidence(cat) {
           }
         : null,
       source: isA ? `${c.source}; D-127 ${S5B_SWEEP}` : c.source,
+    });
+  }
+  // The count on record before the 9 Oct 2026 order (replay input, T11 handoff): superseded by the
+  // current fact, so the cited fact id keeps its history and only the current one is live.
+  {
+    const cur = facts.find((f) => f.key === `${AH2}/complaints-24m`);
+    const h = cat.complaint_counts.find((c) => c.subject === AH2).count_history[0];
+    snap(`harera_orders/${AH2}/2026-09-30`, "harera_orders", IST("2026-09-30"));
+    fact({
+      key: `${AH2}/complaints-24m/2026-09-30`,
+      subject_type: "phase",
+      subject: AH2,
+      attribute: "orders.complaints_against_promoter_24m",
+      value: {
+        count: h.count,
+        units_base: 500,
+        per_100_units: h.per_100_units,
+        median_count_similar: null,
+        latest_order_on: null,
+      },
+      as_of: h.as_of,
+      valid_to: "2026-10-09",
+      learned_at: IST(h.as_of),
+      snapshot: `harera_orders/${AH2}/2026-09-30`,
+      method: "manual",
+      superseded_by: cur.id,
+      source: h.source,
     });
   }
 

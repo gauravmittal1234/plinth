@@ -132,6 +132,22 @@
       "source": "derived: synthetic fixture snapshot; sha256 of its key"
     },
     {
+      "id": "7dca4a29-efe5-5e42-b425-644651cd169e",
+      "key": "harera_orders/aurelia-heights-phase-2/2026-09-30",
+      "source_code": "harera_orders",
+      "url": "fixture://harera_orders/aurelia-heights-phase-2/2026-09-30",
+      "method": "GET",
+      "fetched_at": "2026-09-30T00:00:00+05:30",
+      "http_status": 200,
+      "sha256": "99fd6b31b0b7670d771fb7a4791a77bea0ff5f0ec486c98c791a15f78c4795d5",
+      "storage_key": "fixtures/snapshots/99fd6b31b0b7670d771fb7a4791a77bea0ff5f0ec486c98c791a15f78c4795d5",
+      "content_type": "text/html",
+      "bytes": null,
+      "parser_version": "fixture",
+      "fixture": true,
+      "source": "derived: synthetic fixture snapshot; sha256 of its key"
+    },
+    {
       "id": "24a977b7-bb27-5152-9111-0032a10c0b4c",
       "key": "harera_orders/aurelia-heights-phase-2/2026-10-14",
       "source_code": "harera_orders",
@@ -2450,6 +2466,36 @@
       "corrections": [],
       "evidence_copy": null,
       "source": "DESIGN §5b (24 complaints, 0.7 per 100 units); units base DESIGN §5b · Fixture decisions, round 2 (C-12)"
+    },
+    {
+      "id": "7dd8cc2e-346a-5ebc-9273-b4541772db17",
+      "key": "aurelia-heights-phase-2/complaints-24m/2026-09-30",
+      "subject_type": "phase",
+      "subject": "aurelia-heights-phase-2",
+      "attribute": "orders.complaints_against_promoter_24m",
+      "value": {
+        "count": 13,
+        "units_base": 500,
+        "per_100_units": 2.6,
+        "median_count_similar": null,
+        "latest_order_on": null
+      },
+      "as_of": "2026-09-30",
+      "valid_from": "2026-09-30",
+      "valid_to": "2026-10-09",
+      "learned_at": "2026-09-30T00:00:00+05:30",
+      "snapshot": "harera_orders/aurelia-heights-phase-2/2026-09-30",
+      "page_ref": null,
+      "extract_text": null,
+      "method": "manual",
+      "method_version": "fixture",
+      "read_note": null,
+      "reviewed_at": null,
+      "lane": "records_show",
+      "superseded_by": "d56b2adf-6ea3-598a-8cef-cbd1b0c74895",
+      "corrections": [],
+      "evidence_copy": null,
+      "source": "DESIGN §5b (Aurelia complaints 13 → 14, latest order 9 Oct 2026); rate derived: 13 per 500 units"
     },
     {
       "id": "145c288f-31dd-5955-9677-170f82ffd80c",

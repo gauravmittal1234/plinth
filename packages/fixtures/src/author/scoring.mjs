@@ -606,7 +606,12 @@ export function buildScoring(cat, ev) {
       status: "superseded",
       what_would_change: null,
       reasons: [],
-      source: histSrc,
+      // Stale is judged on the run's own cutoff. On 15 Jul 2026 Coral's newest QPR (Jan–Mar
+      // 2026, filed 14 Apr 2026) was 92 days old, under v1.0's 180-day line (replay gap, T11).
+      stale: false,
+      source: o.stale
+        ? `${histSrc}; not stale ${derived("newest QPR filed 14 Apr 2026 (DESIGN §5b) was 92 days old on 15 Jul 2026; v1.0 stale line 180 days")}`
+        : histSrc,
     });
     const r12 = run({
       ...o,
