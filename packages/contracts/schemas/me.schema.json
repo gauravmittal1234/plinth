@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/me.schema.json",
+  "title": "Me",
+  "description": "plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The number itself never leaves auth: only the masked form.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "user_id", "first_name", "phone_masked", "adult_attested_at", "roles"],
+  "properties": {
+    "schema": { "const": "plinth.me/1" },
+    "user_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+    "first_name": {
+      "description": "The only name a site office ever sees (with a visit consent).",
+      "anyOf": [{ "type": "string" }, { "type": "null" }]
+    },
+    "phone_masked": {
+      "description": "\"+91 99••• ••318\" (app.profiles.phone_masked).",
+      "anyOf": [{ "type": "string" }, { "type": "null" }]
+    },
+    "adult_attested_at": {
+      "description": "When the user confirmed they are 18 or over; null until then.",
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/Timestamp" }, { "type": "null" }]
+    },
+    "roles": {
+      "description": "Platform roles (app.user_roles; plinth_roles in the JWT).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/PlatformRole" }
+    }
+  },
+  "$defs": {
+    "PlatformRole": {
+      "title": "PlatformRole",
+      "type": "string",
+      "enum": ["buyer", "agent", "developer_member", "reviewer", "methodology", "admin", "support"]
+    }
+  }
+}

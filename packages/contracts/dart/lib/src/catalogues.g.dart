@@ -4,11 +4,14 @@
 /// Envelope id → type name (API_CONTRACTS §1).
 const Map<String, String> schemaIds = {
   'plinth.about/1': 'About',
+  'plinth.account_delete_request/1': 'AccountDeletion',
   'plinth.afford_the_wait/1': 'AffordTheWait',
   'plinth.alert_prefs/1': 'AlertPrefs',
   'plinth.ask_answer/1': 'AskAnswer',
   'plinth.compare/1': 'Compare',
+  'plinth.consent_history/1': 'ConsentHistory',
   'plinth.cost_breakdown/1': 'CostBreakdown',
+  'plinth.data_export_request/1': 'DataExport',
   'plinth.developer_page/1': 'DeveloperPage',
   'plinth.doc_check/1': 'DocCheck',
   'plinth.evidence/1': 'Evidence',
@@ -17,6 +20,7 @@ const Map<String, String> schemaIds = {
   'plinth.flags/1': 'Flags',
   'plinth.follow/1': 'Follow',
   'plinth.following_feed/1': 'FollowingFeed',
+  'plinth.me/1': 'Me',
   'plinth.methodology/1': 'Methodology',
   'plinth.payee_check/1': 'PayeeCheck',
   'plinth.project_page/1': 'ProjectPage',

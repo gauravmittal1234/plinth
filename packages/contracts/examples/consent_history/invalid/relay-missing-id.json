@@ -1,0 +1,11 @@
+{
+  "base": "rohan.json",
+  "why": "A relay carries the id api.relay_renew takes.",
+  "expect": "/items/0/relay",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/items/0/relay/relay_id"
+    }
+  ]
+}

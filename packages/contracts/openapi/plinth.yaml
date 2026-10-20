@@ -1269,18 +1269,17 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: Me
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/Me"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
@@ -1986,6 +1985,32 @@ paths:
               additionalProperties: false
               required: []
               properties: {}
+    get:
+      operationId: who_has_my_number_get
+      summary: api.who_has_my_number
+      tags:
+        - Buyer API
+      x-plinth-milestone: M2
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: WhoHasMyNumber
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WhoHasMyNumber"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: "STABLE: the same arguments as query parameters."
   /rest/v1/rpc/consent_history:
     post:
       operationId: consent_history
@@ -2001,18 +2026,17 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: ConsentHistory
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ConsentHistory"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
@@ -2022,6 +2046,32 @@ paths:
               additionalProperties: false
               required: []
               properties: {}
+    get:
+      operationId: consent_history_get
+      summary: api.consent_history
+      tags:
+        - Buyer API
+      x-plinth-milestone: M2
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: ConsentHistory
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentHistory"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: "STABLE: the same arguments as query parameters."
   /rest/v1/rpc/consent_withdraw:
     post:
       operationId: consent_withdraw
@@ -2048,6 +2098,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
+      description: Ends the shares, closes the relay and queues the partner deletion request. A replay returns the first withdrawal.
       requestBody:
         required: true
         content:
@@ -2060,6 +2111,12 @@ paths:
               properties:
                 p_ref:
                   $ref: "#/components/schemas/ConsentRef"
+                p_channel:
+                  type: string
+                  enum:
+                    - web
+                    - app
+                  default: web
   /rest/v1/rpc/relay_renew:
     post:
       operationId: relay_renew
@@ -2075,18 +2132,17 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: RelayRenewal
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/RelayRenewal"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
@@ -2115,18 +2171,18 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: DataExport
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/DataExport"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
+      description: One open request at a time; a repeat call returns it. export-data (T53) fulfils it.
       requestBody:
         required: true
         content:
@@ -2151,18 +2207,18 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: AccountDeletion
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/AccountDeletion"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
+      description: One open request at a time; a repeat call returns it. delete-account (T53) fulfils it.
       requestBody:
         required: true
         content:
@@ -2875,6 +2931,10 @@ components:
       $ref: ../schemas/about.schema.json#/$defs/AboutIdentity
     AboutMoney:
       $ref: ../schemas/about.schema.json#/$defs/AboutMoney
+    AccountDeletion:
+      $ref: ../schemas/account_delete_request.schema.json
+    AccountDeletionStatus:
+      $ref: ../schemas/account_delete_request.schema.json#/$defs/AccountDeletionStatus
     AffordInputs:
       $ref: ../schemas/afford_the_wait.schema.json#/$defs/AffordInputs
     AffordLoan:
@@ -2983,8 +3043,16 @@ components:
       $ref: ../schemas/risk_summary.schema.json#/$defs/ConfidenceLevel
     ConfidenceLevelLine:
       $ref: ../schemas/methodology.schema.json#/$defs/ConfidenceLevelLine
+    ConsentChannel:
+      $ref: ../schemas/consent_history.schema.json#/$defs/ConsentChannel
+    ConsentHistory:
+      $ref: ../schemas/consent_history.schema.json
+    ConsentHistoryItem:
+      $ref: ../schemas/consent_history.schema.json#/$defs/ConsentHistoryItem
     ConsentRef:
       $ref: ../schemas/common.schema.json#/$defs/ConsentRef
+    ConsentRelay:
+      $ref: ../schemas/consent_history.schema.json#/$defs/ConsentRelay
     ConsentWithdrawal:
       $ref: ../schemas/who_has_my_number.schema.json#/$defs/ConsentWithdrawal
     ContactParty:
@@ -3005,6 +3073,10 @@ components:
       $ref: ../schemas/about.schema.json#/$defs/CoverageNext
     CoverageToday:
       $ref: ../schemas/about.schema.json#/$defs/CoverageToday
+    DataExport:
+      $ref: ../schemas/data_export_request.schema.json
+    DataExportStatus:
+      $ref: ../schemas/data_export_request.schema.json#/$defs/DataExportStatus
     DataRules:
       $ref: ../schemas/methodology.schema.json#/$defs/DataRules
     DateOrMonth:
@@ -3139,6 +3211,8 @@ components:
       $ref: ../schemas/risk_summary.schema.json#/$defs/LatestQpr
     MatchMethod:
       $ref: ../schemas/doc_check.schema.json#/$defs/MatchMethod
+    Me:
+      $ref: ../schemas/me.schema.json
     Methodology:
       $ref: ../schemas/methodology.schema.json
     MethodologyVersion:
@@ -3187,6 +3261,8 @@ components:
       $ref: ../schemas/risk_summary.schema.json#/$defs/PendingFact
     PhaseSummary:
       $ref: ../schemas/risk_summary.schema.json#/$defs/PhaseSummary
+    PlatformRole:
+      $ref: ../schemas/me.schema.json#/$defs/PlatformRole
     PreRera:
       $ref: ../schemas/common.schema.json#/$defs/PreRera
     PreReraItem:
@@ -3229,6 +3305,8 @@ components:
       $ref: ../schemas/about.schema.json#/$defs/RegisterRow
     RelayParty:
       $ref: ../schemas/who_has_my_number.schema.json#/$defs/RelayParty
+    RelayRenewal:
+      $ref: ../schemas/who_has_my_number.schema.json#/$defs/RelayRenewal
     Replay:
       $ref: ../schemas/following_feed.schema.json#/$defs/Replay
     ReplayMark:
