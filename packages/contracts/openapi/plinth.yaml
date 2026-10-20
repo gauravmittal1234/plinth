@@ -3326,6 +3326,10 @@ components:
       $ref: ../schemas/cost_breakdown.schema.json#/$defs/CostBreakdownRequest
     CostLine:
       $ref: ../schemas/cost_breakdown.schema.json#/$defs/CostLine
+    CostSheetLine:
+      $ref: ../schemas/ai/cost_sheet_lines.schema.json#/$defs/CostSheetLine
+    CostSheetLines:
+      $ref: ../schemas/ai/cost_sheet_lines.schema.json
     CostTag:
       $ref: ../schemas/cost_breakdown.schema.json#/$defs/CostTag
     Coverage:
@@ -3344,6 +3348,14 @@ components:
       $ref: ../schemas/common.schema.json#/$defs/DateOrMonth
     DelayCost:
       $ref: ../schemas/afford_the_wait.schema.json#/$defs/DelayCost
+    DemandLetter:
+      $ref: ../schemas/ai/demand_letter.schema.json
+    DemandLetterClaim:
+      $ref: ../schemas/ai/demand_letter.schema.json#/$defs/DemandLetterClaim
+    DemandLetterClaimQualifier:
+      $ref: ../schemas/ai/demand_letter.schema.json#/$defs/DemandLetterClaimQualifier
+    DemandLetterClaimType:
+      $ref: ../schemas/ai/demand_letter.schema.json#/$defs/DemandLetterClaimType
     DeveloperClaim:
       $ref: ../schemas/risk_summary.schema.json#/$defs/DeveloperClaim
     DeveloperGroup:
@@ -3382,6 +3394,10 @@ components:
       $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckStarted
     DocCheckStatus:
       $ref: ../schemas/doc_check.schema.json#/$defs/DocCheckStatus
+    DocumentClass:
+      $ref: ../schemas/ai/document_class.schema.json
+    DocumentLabel:
+      $ref: ../schemas/ai/document_class.schema.json#/$defs/DocumentLabel
     EndedParty:
       $ref: ../schemas/who_has_my_number.schema.json#/$defs/EndedParty
     EventKind:
@@ -3484,6 +3500,14 @@ components:
       $ref: ../schemas/link_whatsapp_follows.schema.json
     LinkedFollow:
       $ref: ../schemas/link_whatsapp_follows.schema.json#/$defs/LinkedFollow
+    MarketingClaim:
+      $ref: ../schemas/ai/marketing_claims.schema.json#/$defs/MarketingClaim
+    MarketingClaimQualifier:
+      $ref: ../schemas/ai/marketing_claims.schema.json#/$defs/MarketingClaimQualifier
+    MarketingClaimType:
+      $ref: ../schemas/ai/marketing_claims.schema.json#/$defs/MarketingClaimType
+    MarketingClaims:
+      $ref: ../schemas/ai/marketing_claims.schema.json
     MatchMethod:
       $ref: ../schemas/doc_check.schema.json#/$defs/MatchMethod
     Me:
@@ -3502,6 +3526,10 @@ components:
       $ref: ../schemas/project_page.schema.json#/$defs/NextStep
     NextSteps:
       $ref: ../schemas/project_page.schema.json#/$defs/NextSteps
+    OcrLine:
+      $ref: ../schemas/ai/ocr_page.schema.json#/$defs/OcrLine
+    OcrPage:
+      $ref: ../schemas/ai/ocr_page.schema.json
     Ok:
       $ref: ../schemas/common.schema.json#/$defs/Ok
     OngoingPhase:
@@ -3528,6 +3556,14 @@ components:
       $ref: ../schemas/payee_check.schema.json#/$defs/PaymentMethodCheck
     PaymentPlan:
       $ref: ../schemas/project_page.schema.json#/$defs/PaymentPlan
+    PaymentRequest:
+      $ref: ../schemas/ai/payment_request.schema.json
+    PaymentRequestClaim:
+      $ref: ../schemas/ai/payment_request.schema.json#/$defs/PaymentRequestClaim
+    PaymentRequestClaimQualifier:
+      $ref: ../schemas/ai/payment_request.schema.json#/$defs/PaymentRequestClaimQualifier
+    PaymentRequestClaimType:
+      $ref: ../schemas/ai/payment_request.schema.json#/$defs/PaymentRequestClaimType
     PaymentStage:
       $ref: ../schemas/project_page.schema.json#/$defs/PaymentStage
     Pct:

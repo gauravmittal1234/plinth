@@ -18,11 +18,14 @@
 //     final consentWithdrawal = consentWithdrawalFromJson(jsonString);
 //     final costBreakdown = costBreakdownFromJson(jsonString);
 //     final costBreakdownRequest = costBreakdownRequestFromJson(jsonString);
+//     final costSheetLines = costSheetLinesFromJson(jsonString);
 //     final dataExport = dataExportFromJson(jsonString);
+//     final demandLetter = demandLetterFromJson(jsonString);
 //     final developerPage = developerPageFromJson(jsonString);
 //     final docCheck = docCheckFromJson(jsonString);
 //     final docCheckStartRequest = docCheckStartRequestFromJson(jsonString);
 //     final docCheckStarted = docCheckStartedFromJson(jsonString);
+//     final documentClass = documentClassFromJson(jsonString);
 //     final evidence = evidenceFromJson(jsonString);
 //     final familyCircle = familyCircleFromJson(jsonString);
 //     final familyInvite = familyInviteFromJson(jsonString);
@@ -34,11 +37,14 @@
 //     final followRequest = followRequestFromJson(jsonString);
 //     final followingFeed = followingFeedFromJson(jsonString);
 //     final linkWhatsappFollows = linkWhatsappFollowsFromJson(jsonString);
+//     final marketingClaims = marketingClaimsFromJson(jsonString);
 //     final me = meFromJson(jsonString);
 //     final methodology = methodologyFromJson(jsonString);
+//     final ocrPage = ocrPageFromJson(jsonString);
 //     final ok = okFromJson(jsonString);
 //     final payeeCheck = payeeCheckFromJson(jsonString);
 //     final payeeCheckRequest = payeeCheckRequestFromJson(jsonString);
+//     final paymentRequest = paymentRequestFromJson(jsonString);
 //     final projectPage = projectPageFromJson(jsonString);
 //     final relayRenewal = relayRenewalFromJson(jsonString);
 //     final requestProject = requestProjectFromJson(jsonString);
@@ -115,9 +121,17 @@ CostBreakdownRequest costBreakdownRequestFromJson(String str) => CostBreakdownRe
 
 String costBreakdownRequestToJson(CostBreakdownRequest data) => json.encode(data.toJson());
 
+CostSheetLines costSheetLinesFromJson(String str) => CostSheetLines.fromJson(json.decode(str));
+
+String costSheetLinesToJson(CostSheetLines data) => json.encode(data.toJson());
+
 DataExport dataExportFromJson(String str) => DataExport.fromJson(json.decode(str));
 
 String dataExportToJson(DataExport data) => json.encode(data.toJson());
+
+DemandLetter demandLetterFromJson(String str) => DemandLetter.fromJson(json.decode(str));
+
+String demandLetterToJson(DemandLetter data) => json.encode(data.toJson());
 
 DeveloperPage developerPageFromJson(String str) => DeveloperPage.fromJson(json.decode(str));
 
@@ -134,6 +148,10 @@ String docCheckStartRequestToJson(DocCheckStartRequest data) => json.encode(data
 DocCheckStarted docCheckStartedFromJson(String str) => DocCheckStarted.fromJson(json.decode(str));
 
 String docCheckStartedToJson(DocCheckStarted data) => json.encode(data.toJson());
+
+DocumentClass documentClassFromJson(String str) => DocumentClass.fromJson(json.decode(str));
+
+String documentClassToJson(DocumentClass data) => json.encode(data.toJson());
 
 Evidence evidenceFromJson(String str) => Evidence.fromJson(json.decode(str));
 
@@ -179,6 +197,10 @@ LinkWhatsappFollows linkWhatsappFollowsFromJson(String str) => LinkWhatsappFollo
 
 String linkWhatsappFollowsToJson(LinkWhatsappFollows data) => json.encode(data.toJson());
 
+MarketingClaims marketingClaimsFromJson(String str) => MarketingClaims.fromJson(json.decode(str));
+
+String marketingClaimsToJson(MarketingClaims data) => json.encode(data.toJson());
+
 Me meFromJson(String str) => Me.fromJson(json.decode(str));
 
 String meToJson(Me data) => json.encode(data.toJson());
@@ -186,6 +208,10 @@ String meToJson(Me data) => json.encode(data.toJson());
 Methodology methodologyFromJson(String str) => Methodology.fromJson(json.decode(str));
 
 String methodologyToJson(Methodology data) => json.encode(data.toJson());
+
+OcrPage ocrPageFromJson(String str) => OcrPage.fromJson(json.decode(str));
+
+String ocrPageToJson(OcrPage data) => json.encode(data.toJson());
 
 Ok okFromJson(String str) => Ok.fromJson(json.decode(str));
 
@@ -198,6 +224,10 @@ String payeeCheckToJson(PayeeCheck data) => json.encode(data.toJson());
 PayeeCheckRequest payeeCheckRequestFromJson(String str) => PayeeCheckRequest.fromJson(json.decode(str));
 
 String payeeCheckRequestToJson(PayeeCheckRequest data) => json.encode(data.toJson());
+
+PaymentRequest paymentRequestFromJson(String str) => PaymentRequest.fromJson(json.decode(str));
+
+String paymentRequestToJson(PaymentRequest data) => json.encode(data.toJson());
 
 ProjectPage projectPageFromJson(String str) => ProjectPage.fromJson(json.decode(str));
 
@@ -1943,6 +1973,65 @@ class CostBreakdownRequest {
     };
 }
 
+///Response schema of extract.cost_sheet@1, one reader's answer (BUILD_PLAN §14, F-10). The
+///raw lines of a photographed cost sheet, feeding app.cost_sheet_reads.lines; the rules
+///(core.cost_rule_sets) turn them into CostBreakdown, never a reader. No envelope:
+///validated by the AI gateway directly.
+class CostSheetLines {
+    final List<CostSheetLine> lines;
+
+    CostSheetLines({
+        required this.lines,
+    });
+
+    factory CostSheetLines.fromJson(Map<String, dynamic> json) => CostSheetLines(
+        lines: List<CostSheetLine>.from(json["lines"].map((x) => CostSheetLine.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "lines": List<dynamic>.from(lines.map((x) => x.toJson())),
+    };
+}
+
+class CostSheetLine {
+    final int? amountInr;
+    
+    ///A guess at the matching cost_breakdown.schema.json CostLine.code, when the label is
+    ///recognisable.
+    final String? code;
+    final double confidence;
+    
+    ///ai/ocr_page.schema.json OcrLine ids the line was read from.
+    final List<String> lineIds;
+    
+    ///The line label as printed, e.g. "PLC (Park facing)".
+    final String rawText;
+
+    CostSheetLine({
+        required this.amountInr,
+        this.code,
+        required this.confidence,
+        required this.lineIds,
+        required this.rawText,
+    });
+
+    factory CostSheetLine.fromJson(Map<String, dynamic> json) => CostSheetLine(
+        amountInr: json["amount_inr"],
+        code: json["code"],
+        confidence: json["confidence"]?.toDouble(),
+        lineIds: List<String>.from(json["line_ids"].map((x) => x)),
+        rawText: json["raw_text"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "amount_inr": amountInr,
+        "code": code,
+        "confidence": confidence,
+        "line_ids": List<dynamic>.from(lineIds.map((x) => x)),
+        "raw_text": rawText,
+    };
+}
+
 ///plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2;
 ///BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request
 ///(app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24
@@ -1993,6 +2082,74 @@ class DataExport {
         "schema": schema,
         "status": status,
         "status_line": statusLine,
+    };
+}
+
+///Response schema of extract.demand_letter@1, one reader's answer (BUILD_PLAN §14, F-92;
+///pii_policy strip_and_redact_bank). A payment-demand letter read as a list of claims
+///(stage, plan, amount, payee), the same shape as ai/marketing_claims.schema.json so
+///agree() compares every extract.* reader uniformly (app.extracted_claims.claim_type,
+///DATA_MODEL §7). No envelope: validated by the AI gateway directly.
+class DemandLetter {
+    final List<DemandLetterClaim> claims;
+
+    DemandLetter({
+        required this.claims,
+    });
+
+    factory DemandLetter.fromJson(Map<String, dynamic> json) => DemandLetter(
+        claims: List<DemandLetterClaim>.from(json["claims"].map((x) => DemandLetterClaim.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "claims": List<dynamic>.from(claims.map((x) => x.toJson())),
+    };
+}
+
+class DemandLetterClaim {
+    final double confidence;
+    
+    ///ai/ocr_page.schema.json OcrLine ids the claim was read from.
+    final List<String> lineIds;
+    final String? qualifier;
+    
+    ///The claim exactly as printed, before any normalisation.
+    final String rawText;
+    final String type;
+    final String? unit;
+    
+    ///Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never
+    ///a raw digit.
+    final dynamic value;
+
+    DemandLetterClaim({
+        required this.confidence,
+        required this.lineIds,
+        this.qualifier,
+        required this.rawText,
+        required this.type,
+        this.unit,
+        required this.value,
+    });
+
+    factory DemandLetterClaim.fromJson(Map<String, dynamic> json) => DemandLetterClaim(
+        confidence: json["confidence"]?.toDouble(),
+        lineIds: List<String>.from(json["line_ids"].map((x) => x)),
+        qualifier: json["qualifier"],
+        rawText: json["raw_text"],
+        type: json["type"],
+        unit: json["unit"],
+        value: json["value"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "confidence": confidence,
+        "line_ids": List<dynamic>.from(lineIds.map((x) => x)),
+        "qualifier": qualifier,
+        "raw_text": rawText,
+        "type": type,
+        "unit": unit,
+        "value": value,
     };
 }
 
@@ -2841,6 +2998,28 @@ class DocCheckStarted {
         "check_id": checkId,
         "poll_after_ms": pollAfterMs,
         "status": status,
+    };
+}
+
+///Response schema of classify.document@1 (BUILD_PLAN §14; catalogues/ai_tasks.json labels).
+///No envelope: validated by the AI gateway directly.
+class DocumentClass {
+    final double confidence;
+    final String label;
+
+    DocumentClass({
+        required this.confidence,
+        required this.label,
+    });
+
+    factory DocumentClass.fromJson(Map<String, dynamic> json) => DocumentClass(
+        confidence: json["confidence"]?.toDouble(),
+        label: json["label"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "confidence": confidence,
+        "label": label,
     };
 }
 
@@ -3833,6 +4012,75 @@ class LinkedFollow {
     };
 }
 
+///Response schema of extract.marketing_claims@1, one reader's answer (BUILD_PLAN §14,
+///F-90/F-91; schema-locked per the hard rules). A flyer, brochure or hoarding read as a
+///list of claims; app.extracted_claims.claim_type names the same set. No envelope: the AI
+///gateway validates each reader's raw answer directly, then agree() compares reader A and
+///reader B before any rule runs (rules decide, never a single reader).
+class MarketingClaims {
+    final List<MarketingClaim> claims;
+
+    MarketingClaims({
+        required this.claims,
+    });
+
+    factory MarketingClaims.fromJson(Map<String, dynamic> json) => MarketingClaims(
+        claims: List<MarketingClaim>.from(json["claims"].map((x) => MarketingClaim.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "claims": List<dynamic>.from(claims.map((x) => x.toJson())),
+    };
+}
+
+class MarketingClaim {
+    final double confidence;
+    
+    ///ai/ocr_page.schema.json OcrLine ids the claim was read from. Never a bounding box: that
+    ///comes from the cited OCR lines.
+    final List<String> lineIds;
+    final String? qualifier;
+    
+    ///The claim exactly as printed, before any normalisation.
+    final String rawText;
+    final String type;
+    final String? unit;
+    
+    ///Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never
+    ///a raw digit.
+    final dynamic value;
+
+    MarketingClaim({
+        required this.confidence,
+        required this.lineIds,
+        this.qualifier,
+        required this.rawText,
+        required this.type,
+        this.unit,
+        required this.value,
+    });
+
+    factory MarketingClaim.fromJson(Map<String, dynamic> json) => MarketingClaim(
+        confidence: json["confidence"]?.toDouble(),
+        lineIds: List<String>.from(json["line_ids"].map((x) => x)),
+        qualifier: json["qualifier"],
+        rawText: json["raw_text"],
+        type: json["type"],
+        unit: json["unit"],
+        value: json["value"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "confidence": confidence,
+        "line_ids": List<dynamic>.from(lineIds.map((x) => x)),
+        "qualifier": qualifier,
+        "raw_text": rawText,
+        "type": type,
+        "unit": unit,
+        "value": value,
+    };
+}
+
 ///plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b
 ///per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The
 ///number itself never leaves auth: only the masked form.
@@ -4263,6 +4511,62 @@ class MethodologyVersion {
     };
 }
 
+///Response schema of ocr.document@1 (BUILD_PLAN §14). Every line gets a stable id and a
+///bounding box; readers cite line ids and never produce their own coordinates (Wave 6 M3
+///rules, PII before models). No envelope: this is validated by the AI gateway directly,
+///never sent over an api.* contract.
+class OcrPage {
+    final List<OcrLine> lines;
+    final int pageCount;
+
+    OcrPage({
+        required this.lines,
+        required this.pageCount,
+    });
+
+    factory OcrPage.fromJson(Map<String, dynamic> json) => OcrPage(
+        lines: List<OcrLine>.from(json["lines"].map((x) => OcrLine.fromJson(x))),
+        pageCount: json["page_count"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "lines": List<dynamic>.from(lines.map((x) => x.toJson())),
+        "page_count": pageCount,
+    };
+}
+
+class OcrLine {
+    
+    ///[x0, y0, x1, y1] as fractions of the page.
+    final List<double> bbox;
+    
+    ///Stable within the document; the only thing a reader may cite.
+    final String id;
+    final int page;
+    final String text;
+
+    OcrLine({
+        required this.bbox,
+        required this.id,
+        required this.page,
+        required this.text,
+    });
+
+    factory OcrLine.fromJson(Map<String, dynamic> json) => OcrLine(
+        bbox: List<double>.from(json["bbox"].map((x) => x?.toDouble())),
+        id: json["id"],
+        page: json["page"],
+        text: json["text"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "bbox": List<dynamic>.from(bbox.map((x) => x)),
+        "id": id,
+        "page": page,
+        "text": text,
+    };
+}
+
 ///Acknowledgement of a mutation that returns nothing else (api.unfollow,
 ///api.mark_following_seen).
 class Ok {
@@ -4410,6 +4714,75 @@ class PayeeCheckRequest {
         "p_payee_name": pPayeeName,
         "p_slug": pSlug,
         "p_stage": pStage,
+    };
+}
+
+///Response schema of extract.payment_request@1, one reader's answer (BUILD_PLAN §14, F-94;
+///pii_policy strip_and_redact_bank). A forwarded payment request (WhatsApp image or text)
+///read as a list of claims (payee, account, IFSC, amount), the same shape as
+///ai/marketing_claims.schema.json so agree() compares every extract.* reader uniformly
+///(app.extracted_claims.claim_type, DATA_MODEL §7). The rules (before_you_pay_check) decide
+///the verdict, never a reader. No envelope: validated by the AI gateway directly.
+class PaymentRequest {
+    final List<PaymentRequestClaim> claims;
+
+    PaymentRequest({
+        required this.claims,
+    });
+
+    factory PaymentRequest.fromJson(Map<String, dynamic> json) => PaymentRequest(
+        claims: List<PaymentRequestClaim>.from(json["claims"].map((x) => PaymentRequestClaim.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "claims": List<dynamic>.from(claims.map((x) => x.toJson())),
+    };
+}
+
+class PaymentRequestClaim {
+    final double confidence;
+    
+    ///ai/ocr_page.schema.json OcrLine ids the claim was read from.
+    final List<String> lineIds;
+    final String? qualifier;
+    
+    ///The claim exactly as printed, before any normalisation.
+    final String rawText;
+    final String type;
+    final String? unit;
+    
+    ///Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never
+    ///a raw digit.
+    final dynamic value;
+
+    PaymentRequestClaim({
+        required this.confidence,
+        required this.lineIds,
+        this.qualifier,
+        required this.rawText,
+        required this.type,
+        this.unit,
+        required this.value,
+    });
+
+    factory PaymentRequestClaim.fromJson(Map<String, dynamic> json) => PaymentRequestClaim(
+        confidence: json["confidence"]?.toDouble(),
+        lineIds: List<String>.from(json["line_ids"].map((x) => x)),
+        qualifier: json["qualifier"],
+        rawText: json["raw_text"],
+        type: json["type"],
+        unit: json["unit"],
+        value: json["value"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "confidence": confidence,
+        "line_ids": List<dynamic>.from(lineIds.map((x) => x)),
+        "qualifier": qualifier,
+        "raw_text": rawText,
+        "type": type,
+        "unit": unit,
+        "value": value,
     };
 }
 

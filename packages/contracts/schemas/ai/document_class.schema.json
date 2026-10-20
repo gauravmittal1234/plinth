@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/ai/document_class.schema.json",
+  "title": "DocumentClass",
+  "description": "Response schema of classify.document@1 (BUILD_PLAN §14; catalogues/ai_tasks.json labels). No envelope: validated by the AI gateway directly.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["label", "confidence"],
+  "properties": {
+    "label": {
+      "$ref": "#/$defs/DocumentLabel"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "$defs": {
+    "DocumentLabel": {
+      "title": "DocumentLabel",
+      "type": "string",
+      "enum": [
+        "flyer",
+        "brochure",
+        "hoarding",
+        "cost_sheet",
+        "demand_letter",
+        "payment_request",
+        "receipt",
+        "other"
+      ]
+    }
+  }
+}

@@ -119,6 +119,7 @@ describe("WhatsApp templates", () => {
         "dev_capture_link",
         "dev_stale_price_list",
         "agent_verified",
+        "check_updated",
       ].sort(),
     );
   });

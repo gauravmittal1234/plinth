@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-broker-flyer.json",
+  "why": "type is app.extracted_claims.claim_type; it never becomes a verdict here (rules decide).",
+  "expect": "/claims/0/type",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/claims/0/type",
+      "value": "completion_date"
+    }
+  ]
+}

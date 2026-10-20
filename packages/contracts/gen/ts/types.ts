@@ -144,6 +144,26 @@ export type DataExportStatus = "preparing" | "ready";
  */
 export type DateOrMonth = string;
 /**
+ * app.extracted_claims.claim_type (DATA_MODEL §7).
+ */
+export type DemandLetterClaimType =
+  | "possession_date"
+  | "price"
+  | "all_in"
+  | "area"
+  | "rera_number"
+  | "oc_status"
+  | "sold_left"
+  | "amenity"
+  | "demand_stage"
+  | "plan_stage"
+  | "amount"
+  | "payee_name"
+  | "account_number"
+  | "ifsc"
+  | "banned_phrase";
+export type DemandLetterClaimQualifier = "super" | "carpet" | "all_in" | "base";
+/**
  * Facts-only is data on the group (core.developer_groups.facts_only_since), not a flag.
  */
 export type DeveloperPageMode = "scored" | "facts_only";
@@ -168,6 +188,15 @@ export type MatchMethod = "rera_number" | "name_sector" | "user_pick";
  */
 export type Verdict = "matches" | "differs" | "not_in_records" | "cant_check";
 export type PayeeField = "payee_name" | "account" | "ifsc";
+export type DocumentLabel =
+  | "flyer"
+  | "brochure"
+  | "hoarding"
+  | "cost_sheet"
+  | "demand_letter"
+  | "payment_request"
+  | "receipt"
+  | "other";
 /**
  * Opaque id of a core.facts row (a uuid in the database). Clients never parse it.
  */
@@ -225,9 +254,49 @@ export type Quarter = string;
  * A calendar date, YYYY-MM-DD (IST business date).
  */
 export type IsoDate2 = string;
+/**
+ * app.extracted_claims.claim_type (DATA_MODEL §7).
+ */
+export type MarketingClaimType =
+  | "possession_date"
+  | "price"
+  | "all_in"
+  | "area"
+  | "rera_number"
+  | "oc_status"
+  | "sold_left"
+  | "amenity"
+  | "demand_stage"
+  | "plan_stage"
+  | "amount"
+  | "payee_name"
+  | "account_number"
+  | "ifsc"
+  | "banned_phrase";
+export type MarketingClaimQualifier = "super" | "carpet" | "all_in" | "base";
 export type PlatformRole =
   "buyer" | "agent" | "developer_member" | "reviewer" | "methodology" | "admin" | "support";
 export type PaymentMethod = "transfer" | "cheque" | "cash";
+/**
+ * app.extracted_claims.claim_type (DATA_MODEL §7).
+ */
+export type PaymentRequestClaimType =
+  | "possession_date"
+  | "price"
+  | "all_in"
+  | "area"
+  | "rera_number"
+  | "oc_status"
+  | "sold_left"
+  | "amenity"
+  | "demand_stage"
+  | "plan_stage"
+  | "amount"
+  | "payee_name"
+  | "account_number"
+  | "ifsc"
+  | "banned_phrase";
+export type PaymentRequestClaimQualifier = "super" | "carpet" | "all_in" | "base";
 export type ProjectRequestStatus = "open" | "added" | "declined";
 /**
  * core.score_state.
@@ -910,6 +979,28 @@ export interface CostBreakdownRequest {
   p_buyer?: BuyerKind;
   p_waive?: string[];
 }
+export interface CostSheetLine {
+  /**
+   * The line label as printed, e.g. "PLC (Park facing)".
+   */
+  raw_text: string;
+  /**
+   * A guess at the matching cost_breakdown.schema.json CostLine.code, when the label is recognisable.
+   */
+  code?: string | null;
+  amount_inr: number | null;
+  /**
+   * ai/ocr_page.schema.json OcrLine ids the line was read from.
+   */
+  line_ids: string[];
+  confidence: number;
+}
+/**
+ * Response schema of extract.cost_sheet@1, one reader's answer (BUILD_PLAN §14, F-10). The raw lines of a photographed cost sheet, feeding app.cost_sheet_reads.lines; the rules (core.cost_rule_sets) turn them into CostBreakdown, never a reader. No envelope: validated by the AI gateway directly.
+ */
+export interface CostSheetLines {
+  lines: CostSheetLine[];
+}
 /**
  * plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2; BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request (app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24 hours); the link works for 7 days and opens only after a fresh sign-in code (export-data, T53). One open request at a time: a repeat call returns it.
  */
@@ -934,6 +1025,30 @@ export interface DataRules {
   stale_days: number;
   line: string;
   [k: string]: unknown | undefined;
+}
+/**
+ * Response schema of extract.demand_letter@1, one reader's answer (BUILD_PLAN §14, F-92; pii_policy strip_and_redact_bank). A payment-demand letter read as a list of claims (stage, plan, amount, payee), the same shape as ai/marketing_claims.schema.json so agree() compares every extract.* reader uniformly (app.extracted_claims.claim_type, DATA_MODEL §7). No envelope: validated by the AI gateway directly.
+ */
+export interface DemandLetter {
+  claims: DemandLetterClaim[];
+}
+export interface DemandLetterClaim {
+  type: DemandLetterClaimType;
+  /**
+   * The claim exactly as printed, before any normalisation.
+   */
+  raw_text: string;
+  /**
+   * Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+   */
+  value: string | number | null;
+  unit?: string | null;
+  qualifier?: DemandLetterClaimQualifier | null;
+  /**
+   * ai/ocr_page.schema.json OcrLine ids the claim was read from.
+   */
+  line_ids: string[];
+  confidence: number;
 }
 /**
  * line is "claimed developer page, replies here" or "invited 24 Nov 2025 · not yet claimed".
@@ -1220,6 +1335,13 @@ export interface DocCheckStarted {
   check_id: Uuid;
   status: DocCheckStatus;
   poll_after_ms: number;
+}
+/**
+ * Response schema of classify.document@1 (BUILD_PLAN §14; catalogues/ai_tasks.json labels). No envelope: validated by the AI gateway directly.
+ */
+export interface DocumentClass {
+  label: DocumentLabel;
+  confidence: number;
 }
 export interface EndedParty {
   ref: ConsentRef;
@@ -1700,6 +1822,30 @@ export interface SavedCostSheet {
   label: string;
   saved_on: IsoDate;
 }
+export interface MarketingClaim {
+  type: MarketingClaimType;
+  /**
+   * The claim exactly as printed, before any normalisation.
+   */
+  raw_text: string;
+  /**
+   * Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+   */
+  value: string | number | null;
+  unit?: string | null;
+  qualifier?: MarketingClaimQualifier | null;
+  /**
+   * ai/ocr_page.schema.json OcrLine ids the claim was read from. Never a bounding box: that comes from the cited OCR lines.
+   */
+  line_ids: string[];
+  confidence: number;
+}
+/**
+ * Response schema of extract.marketing_claims@1, one reader's answer (BUILD_PLAN §14, F-90/F-91; schema-locked per the hard rules). A flyer, brochure or hoarding read as a list of claims; app.extracted_claims.claim_type names the same set. No envelope: the AI gateway validates each reader's raw answer directly, then agree() compares reader A and reader B before any rule runs (rules decide, never a single reader).
+ */
+export interface MarketingClaims {
+  claims: MarketingClaim[];
+}
 /**
  * plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The number itself never leaves auth: only the masked form.
  */
@@ -1801,6 +1947,28 @@ export interface NextSteps {
   rule_line: string | null;
   [k: string]: unknown | undefined;
 }
+export interface OcrLine {
+  /**
+   * Stable within the document; the only thing a reader may cite.
+   */
+  id: string;
+  page: number;
+  text: string;
+  /**
+   * [x0, y0, x1, y1] as fractions of the page.
+   *
+   * @minItems 4
+   * @maxItems 4
+   */
+  bbox: [number, number, number, number, ...number[]];
+}
+/**
+ * Response schema of ocr.document@1 (BUILD_PLAN §14). Every line gets a stable id and a bounding box; readers cite line ids and never produce their own coordinates (Wave 6 M3 rules, PII before models). No envelope: this is validated by the AI gateway directly, never sent over an api.* contract.
+ */
+export interface OcrPage {
+  lines: OcrLine[];
+  page_count: number;
+}
 /**
  * Acknowledgement of a mutation that returns nothing else (api.unfollow, api.mark_following_seen).
  */
@@ -1854,6 +2022,30 @@ export interface PayeeCheckRequest {
   p_stage: AgreementStage;
   p_paid_so_far_inr: number;
   p_method: PaymentMethod;
+}
+/**
+ * Response schema of extract.payment_request@1, one reader's answer (BUILD_PLAN §14, F-94; pii_policy strip_and_redact_bank). A forwarded payment request (WhatsApp image or text) read as a list of claims (payee, account, IFSC, amount), the same shape as ai/marketing_claims.schema.json so agree() compares every extract.* reader uniformly (app.extracted_claims.claim_type, DATA_MODEL §7). The rules (before_you_pay_check) decide the verdict, never a reader. No envelope: validated by the AI gateway directly.
+ */
+export interface PaymentRequest {
+  claims: PaymentRequestClaim[];
+}
+export interface PaymentRequestClaim {
+  type: PaymentRequestClaimType;
+  /**
+   * The claim exactly as printed, before any normalisation.
+   */
+  raw_text: string;
+  /**
+   * Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+   */
+  value: string | number | null;
+  unit?: string | null;
+  qualifier?: PaymentRequestClaimQualifier | null;
+  /**
+   * ai/ocr_page.schema.json OcrLine ids the claim was read from.
+   */
+  line_ids: string[];
+  confidence: number;
 }
 /**
  * A public fact that may move the band (catalogues/reason_codes.json pending_codes). Never carries the proposed band.

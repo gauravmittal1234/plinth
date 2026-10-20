@@ -74,7 +74,28 @@ describe("openapi/plinth.yaml", () => {
       (m) => m[1]!,
     );
     for (const r of refs) expect(schemas[r], r).toBeTruthy();
-    for (const name of loaded.exported) expect(refs, name).toContain(name);
+    for (const name of loaded.exported) {
+      // schemas/ai/** (T61): the AI gateway resolves these straight off disk as a task's
+      // response_schema (catalogues/ai_tasks.json); no api.* RPC or edge function returns one
+      // directly, so they never appear on an OpenAPI path. Checked below instead.
+      if (loaded.types.get(name)!.file.startsWith("ai/")) continue;
+      expect(refs, name).toContain(name);
+    }
+  });
+
+  it("every schemas/ai/** reader-output type is some AI task's response_schema", () => {
+    const aiTasks = JSON.parse(read("catalogues/ai_tasks.json")) as {
+      tasks: { response_schema: string | null }[];
+    };
+    const referenced = new Set(
+      aiTasks.tasks
+        .map((t) => t.response_schema)
+        .filter((s): s is string => typeof s === "string" && s.startsWith("ai/")),
+    );
+    for (const name of loaded.exported) {
+      const t = loaded.types.get(name)!;
+      if (t.file.startsWith("ai/")) expect(referenced, name).toContain(t.file);
+    }
   });
 
   it("covers the RPCs of API_CONTRACTS §3.1–§3.2 and the edge functions of §3.5", () => {

@@ -1,0 +1,12 @@
+{
+  "base": "eoi-whatsapp-forward.json",
+  "why": "additionalProperties is false: a reader cannot add a field a bbox or a verdict would need (rules decide, never a reader).",
+  "expect": "/claims/0",
+  "patch": [
+    {
+      "op": "add",
+      "path": "/claims/0/verdict",
+      "value": "matches"
+    }
+  ]
+}

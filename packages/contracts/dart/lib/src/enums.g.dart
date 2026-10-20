@@ -134,6 +134,34 @@ abstract final class DataExportStatus {
   static const List<String> values = ['preparing', 'ready'];
 }
 
+abstract final class DemandLetterClaimQualifier {
+  static const String super = 'super';
+  static const String carpet = 'carpet';
+  static const String allIn = 'all_in';
+  static const String base = 'base';
+  static const List<String> values = ['super', 'carpet', 'all_in', 'base'];
+}
+
+/// app.extracted_claims.claim_type (DATA_MODEL §7).
+abstract final class DemandLetterClaimType {
+  static const String possessionDate = 'possession_date';
+  static const String price = 'price';
+  static const String allIn = 'all_in';
+  static const String area = 'area';
+  static const String reraNumber = 'rera_number';
+  static const String ocStatus = 'oc_status';
+  static const String soldLeft = 'sold_left';
+  static const String amenity = 'amenity';
+  static const String demandStage = 'demand_stage';
+  static const String planStage = 'plan_stage';
+  static const String amount = 'amount';
+  static const String payeeName = 'payee_name';
+  static const String accountNumber = 'account_number';
+  static const String ifsc = 'ifsc';
+  static const String bannedPhrase = 'banned_phrase';
+  static const List<String> values = ['possession_date', 'price', 'all_in', 'area', 'rera_number', 'oc_status', 'sold_left', 'amenity', 'demand_stage', 'plan_stage', 'amount', 'payee_name', 'account_number', 'ifsc', 'banned_phrase'];
+}
+
 /// Facts-only is data on the group (core.developer_groups.facts_only_since), not a flag.
 abstract final class DeveloperPageMode {
   static const String scored = 'scored';
@@ -170,6 +198,18 @@ abstract final class DocCheckStatus {
   static const String noClaims = 'no_claims';
   static const String outsideCoverage = 'outside_coverage';
   static const List<String> values = ['reading', 'confirm_project', 'checking', 'done', 'unreadable', 'partly_readable', 'no_claims', 'outside_coverage'];
+}
+
+abstract final class DocumentLabel {
+  static const String flyer = 'flyer';
+  static const String brochure = 'brochure';
+  static const String hoarding = 'hoarding';
+  static const String costSheet = 'cost_sheet';
+  static const String demandLetter = 'demand_letter';
+  static const String paymentRequest = 'payment_request';
+  static const String receipt = 'receipt';
+  static const String other = 'other';
+  static const List<String> values = ['flyer', 'brochure', 'hoarding', 'cost_sheet', 'demand_letter', 'payment_request', 'receipt', 'other'];
 }
 
 /// core.events.kind. Drives alerts, Since you last looked, the digest and the replay.
@@ -231,6 +271,34 @@ abstract final class Lane {
   static const List<String> values = ['records_show', 'developer_says', 'from_developer', 'our_estimate', 'reported_unverified', 'buyer_upload'];
 }
 
+abstract final class MarketingClaimQualifier {
+  static const String super = 'super';
+  static const String carpet = 'carpet';
+  static const String allIn = 'all_in';
+  static const String base = 'base';
+  static const List<String> values = ['super', 'carpet', 'all_in', 'base'];
+}
+
+/// app.extracted_claims.claim_type (DATA_MODEL §7).
+abstract final class MarketingClaimType {
+  static const String possessionDate = 'possession_date';
+  static const String price = 'price';
+  static const String allIn = 'all_in';
+  static const String area = 'area';
+  static const String reraNumber = 'rera_number';
+  static const String ocStatus = 'oc_status';
+  static const String soldLeft = 'sold_left';
+  static const String amenity = 'amenity';
+  static const String demandStage = 'demand_stage';
+  static const String planStage = 'plan_stage';
+  static const String amount = 'amount';
+  static const String payeeName = 'payee_name';
+  static const String accountNumber = 'account_number';
+  static const String ifsc = 'ifsc';
+  static const String bannedPhrase = 'banned_phrase';
+  static const List<String> values = ['possession_date', 'price', 'all_in', 'area', 'rera_number', 'oc_status', 'sold_left', 'amenity', 'demand_stage', 'plan_stage', 'amount', 'payee_name', 'account_number', 'ifsc', 'banned_phrase'];
+}
+
 abstract final class MatchMethod {
   static const String reraNumber = 'rera_number';
   static const String nameSector = 'name_sector';
@@ -258,6 +326,34 @@ abstract final class PaymentMethod {
   static const String cheque = 'cheque';
   static const String cash = 'cash';
   static const List<String> values = ['transfer', 'cheque', 'cash'];
+}
+
+abstract final class PaymentRequestClaimQualifier {
+  static const String super = 'super';
+  static const String carpet = 'carpet';
+  static const String allIn = 'all_in';
+  static const String base = 'base';
+  static const List<String> values = ['super', 'carpet', 'all_in', 'base'];
+}
+
+/// app.extracted_claims.claim_type (DATA_MODEL §7).
+abstract final class PaymentRequestClaimType {
+  static const String possessionDate = 'possession_date';
+  static const String price = 'price';
+  static const String allIn = 'all_in';
+  static const String area = 'area';
+  static const String reraNumber = 'rera_number';
+  static const String ocStatus = 'oc_status';
+  static const String soldLeft = 'sold_left';
+  static const String amenity = 'amenity';
+  static const String demandStage = 'demand_stage';
+  static const String planStage = 'plan_stage';
+  static const String amount = 'amount';
+  static const String payeeName = 'payee_name';
+  static const String accountNumber = 'account_number';
+  static const String ifsc = 'ifsc';
+  static const String bannedPhrase = 'banned_phrase';
+  static const List<String> values = ['possession_date', 'price', 'all_in', 'area', 'rera_number', 'oc_status', 'sold_left', 'amenity', 'demand_stage', 'plan_stage', 'amount', 'payee_name', 'account_number', 'ifsc', 'banned_phrase'];
 }
 
 abstract final class PlatformRole {

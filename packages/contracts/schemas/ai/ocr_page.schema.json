@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/ai/ocr_page.schema.json",
+  "title": "OcrPage",
+  "description": "Response schema of ocr.document@1 (BUILD_PLAN §14). Every line gets a stable id and a bounding box; readers cite line ids and never produce their own coordinates (Wave 6 M3 rules, PII before models). No envelope: this is validated by the AI gateway directly, never sent over an api.* contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["lines", "page_count"],
+  "properties": {
+    "lines": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/OcrLine" }
+    },
+    "page_count": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "$defs": {
+    "OcrLine": {
+      "title": "OcrLine",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "page", "text", "bbox"],
+      "properties": {
+        "id": {
+          "description": "Stable within the document; the only thing a reader may cite.",
+          "type": "string",
+          "minLength": 1
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "text": {
+          "type": "string"
+        },
+        "bbox": {
+          "description": "[x0, y0, x1, y1] as fractions of the page.",
+          "type": "array",
+          "items": { "type": "number", "minimum": 0, "maximum": 1 },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    }
+  }
+}

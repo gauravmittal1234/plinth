@@ -320,6 +320,41 @@ class PWaiveItem(RootModel[str]):
     root: Annotated[str, Field(pattern="^[a-z][a-z0-9_]*$")]
 
 
+class LineId(RootModel[str]):
+    root: Annotated[str, Field(min_length=1)]
+
+
+class CostSheetLine(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    raw_text: str
+    """
+    The line label as printed, e.g. "PLC (Park facing)".
+    """
+    code: Annotated[str | None, Field(pattern="^[a-z][a-z0-9_]*$")] = None
+    """
+    A guess at the matching cost_breakdown.schema.json CostLine.code, when the label is recognisable.
+    """
+    amount_inr: int | None
+    line_ids: list[LineId]
+    """
+    ai/ocr_page.schema.json OcrLine ids the line was read from.
+    """
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
+
+
+class CostSheetLines(BaseModel):
+    """
+    Response schema of extract.cost_sheet@1, one reader's answer (BUILD_PLAN §14, F-10). The raw lines of a photographed cost sheet, feeding app.cost_sheet_reads.lines; the rules (core.cost_rule_sets) turn them into CostBreakdown, never a reader. No envelope: validated by the AI gateway directly.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    lines: list[CostSheetLine]
+
+
 class CostTag(StrEnum):
     often_negotiable = "often_negotiable"
     set_by_law = "set_by_law"
@@ -372,6 +407,35 @@ class DateOrMonth(RootModel[str]):
     """
     YYYY-MM-DD or, for month precision, YYYY-MM.
     """
+
+
+class DemandLetterClaimQualifier(StrEnum):
+    super = "super"
+    carpet = "carpet"
+    all_in = "all_in"
+    base = "base"
+
+
+class DemandLetterClaimType(StrEnum):
+    """
+    app.extracted_claims.claim_type (DATA_MODEL §7).
+    """
+
+    possession_date = "possession_date"
+    price = "price"
+    all_in = "all_in"
+    area = "area"
+    rera_number = "rera_number"
+    oc_status = "oc_status"
+    sold_left = "sold_left"
+    amenity = "amenity"
+    demand_stage = "demand_stage"
+    plan_stage = "plan_stage"
+    amount = "amount"
+    payee_name = "payee_name"
+    account_number = "account_number"
+    ifsc = "ifsc"
+    banned_phrase = "banned_phrase"
 
 
 class DeveloperPageMode(StrEnum):
@@ -456,6 +520,17 @@ class DocCheckStatus(StrEnum):
     partly_readable = "partly_readable"
     no_claims = "no_claims"
     outside_coverage = "outside_coverage"
+
+
+class DocumentLabel(StrEnum):
+    flyer = "flyer"
+    brochure = "brochure"
+    hoarding = "hoarding"
+    cost_sheet = "cost_sheet"
+    demand_letter = "demand_letter"
+    payment_request = "payment_request"
+    receipt = "receipt"
+    other = "other"
 
 
 class EventKind(StrEnum):
@@ -678,6 +753,35 @@ class Late12Explainer(BaseModel):
     """
 
 
+class MarketingClaimQualifier(StrEnum):
+    super = "super"
+    carpet = "carpet"
+    all_in = "all_in"
+    base = "base"
+
+
+class MarketingClaimType(StrEnum):
+    """
+    app.extracted_claims.claim_type (DATA_MODEL §7).
+    """
+
+    possession_date = "possession_date"
+    price = "price"
+    all_in = "all_in"
+    area = "area"
+    rera_number = "rera_number"
+    oc_status = "oc_status"
+    sold_left = "sold_left"
+    amenity = "amenity"
+    demand_stage = "demand_stage"
+    plan_stage = "plan_stage"
+    amount = "amount"
+    payee_name = "payee_name"
+    account_number = "account_number"
+    ifsc = "ifsc"
+    banned_phrase = "banned_phrase"
+
+
 class MatchMethod(StrEnum):
     rera_number = "rera_number"
     name_sector = "name_sector"
@@ -699,6 +803,38 @@ class NextStep(BaseModel):
     body: str
     source_label: str | None = None
     href: str | None = None
+
+
+class BboxItem(RootModel[float]):
+    root: Annotated[float, Field(ge=0.0, le=1.0)]
+
+
+class OcrLine(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[str, Field(min_length=1)]
+    """
+    Stable within the document; the only thing a reader may cite.
+    """
+    page: Annotated[int, Field(ge=1)]
+    text: str
+    bbox: Annotated[list[BboxItem], Field(max_length=4, min_length=4)]
+    """
+    [x0, y0, x1, y1] as fractions of the page.
+    """
+
+
+class OcrPage(BaseModel):
+    """
+    Response schema of ocr.document@1 (BUILD_PLAN §14). Every line gets a stable id and a bounding box; readers cite line ids and never produce their own coordinates (Wave 6 M3 rules, PII before models). No envelope: this is validated by the AI gateway directly, never sent over an api.* contract.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    lines: list[OcrLine]
+    page_count: Annotated[int, Field(ge=1)]
 
 
 class Ok(BaseModel):
@@ -755,6 +891,35 @@ class PaymentMethodCheck(BaseModel):
     )
     ok: bool
     line: str | None
+
+
+class PaymentRequestClaimQualifier(StrEnum):
+    super = "super"
+    carpet = "carpet"
+    all_in = "all_in"
+    base = "base"
+
+
+class PaymentRequestClaimType(StrEnum):
+    """
+    app.extracted_claims.claim_type (DATA_MODEL §7).
+    """
+
+    possession_date = "possession_date"
+    price = "price"
+    all_in = "all_in"
+    area = "area"
+    rera_number = "rera_number"
+    oc_status = "oc_status"
+    sold_left = "sold_left"
+    amenity = "amenity"
+    demand_stage = "demand_stage"
+    plan_stage = "plan_stage"
+    amount = "amount"
+    payee_name = "payee_name"
+    account_number = "account_number"
+    ifsc = "ifsc"
+    banned_phrase = "banned_phrase"
 
 
 class Pct(RootModel[float]):
@@ -1785,6 +1950,28 @@ class DelayCost(BaseModel):
     cost_label: str
 
 
+class DemandLetterClaim(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    type: DemandLetterClaimType
+    raw_text: str
+    """
+    The claim exactly as printed, before any normalisation.
+    """
+    value: str | float | None
+    """
+    Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+    """
+    unit: str | None = None
+    qualifier: DemandLetterClaimQualifier | None = None
+    line_ids: list[LineId]
+    """
+    ai/ocr_page.schema.json OcrLine ids the claim was read from.
+    """
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
+
+
 class DeveloperClaim(BaseModel):
     """
     line is "claimed developer page, replies here" or "invited 24 Nov 2025 · not yet claimed".
@@ -1915,6 +2102,18 @@ class DocCheckStarted(BaseModel):
     check_id: Annotated[UUID, Field(title="Uuid")]
     status: DocCheckStatus
     poll_after_ms: Annotated[int, Field(ge=0)]
+
+
+class DocumentClass(BaseModel):
+    """
+    Response schema of classify.document@1 (BUILD_PLAN §14; catalogues/ai_tasks.json labels). No envelope: validated by the AI gateway directly.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    label: DocumentLabel
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
 
 
 class EndedParty(BaseModel):
@@ -2357,6 +2556,39 @@ class LinkedFollow(BaseModel):
     """
 
 
+class MarketingClaim(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    type: MarketingClaimType
+    raw_text: str
+    """
+    The claim exactly as printed, before any normalisation.
+    """
+    value: str | float | None
+    """
+    Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+    """
+    unit: str | None = None
+    qualifier: MarketingClaimQualifier | None = None
+    line_ids: list[LineId]
+    """
+    ai/ocr_page.schema.json OcrLine ids the claim was read from. Never a bounding box: that comes from the cited OCR lines.
+    """
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
+
+
+class MarketingClaims(BaseModel):
+    """
+    Response schema of extract.marketing_claims@1, one reader's answer (BUILD_PLAN §14, F-90/F-91; schema-locked per the hard rules). A flyer, brochure or hoarding read as a list of claims; app.extracted_claims.claim_type names the same set. No envelope: the AI gateway validates each reader's raw answer directly, then agree() compares reader A and reader B before any rule runs (rules decide, never a single reader).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    claims: list[MarketingClaim]
+
+
 class Me(BaseModel):
     """
     plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The number itself never leaves auth: only the masked form.
@@ -2525,6 +2757,28 @@ class PayeeRow(BaseModel):
     entered_line: str
     registered_line: str
     result: Verdict
+
+
+class PaymentRequestClaim(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    type: PaymentRequestClaimType
+    raw_text: str
+    """
+    The claim exactly as printed, before any normalisation.
+    """
+    value: str | float | None
+    """
+    Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+    """
+    unit: str | None = None
+    qualifier: PaymentRequestClaimQualifier | None = None
+    line_ids: list[LineId]
+    """
+    ai/ocr_page.schema.json OcrLine ids the claim was read from.
+    """
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
 
 
 class PaymentStage(BaseModel):
@@ -3253,6 +3507,17 @@ class CostBreakdown(BaseModel):
     """
 
 
+class DemandLetter(BaseModel):
+    """
+    Response schema of extract.demand_letter@1, one reader's answer (BUILD_PLAN §14, F-92; pii_policy strip_and_redact_bank). A payment-demand letter read as a list of claims (stage, plan, amount, payee), the same shape as ai/marketing_claims.schema.json so agree() compares every extract.* reader uniformly (app.extracted_claims.claim_type, DATA_MODEL §7). No envelope: validated by the AI gateway directly.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    claims: list[DemandLetterClaim]
+
+
 class DeveloperGroup(BaseModel):
     model_config = ConfigDict(
         extra="allow",
@@ -3493,6 +3758,17 @@ class PaymentPlan(BaseModel):
     name: str | None = None
     stages: list[PaymentStage]
     due_by_registration_line: str | None = None
+
+
+class PaymentRequest(BaseModel):
+    """
+    Response schema of extract.payment_request@1, one reader's answer (BUILD_PLAN §14, F-94; pii_policy strip_and_redact_bank). A forwarded payment request (WhatsApp image or text) read as a list of claims (payee, account, IFSC, amount), the same shape as ai/marketing_claims.schema.json so agree() compares every extract.* reader uniformly (app.extracted_claims.claim_type, DATA_MODEL §7). The rules (before_you_pay_check) decide the verdict, never a reader. No envelope: validated by the AI gateway directly.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    claims: list[PaymentRequestClaim]
 
 
 class ProjectHero(BaseModel):

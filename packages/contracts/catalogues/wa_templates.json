@@ -39,6 +39,19 @@
       "status": "draft"
     },
     {
+      "code": "check_updated",
+      "meta_name": "check_updated",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["project", "check_kind", "what_changed"],
+      "buttons": [{ "type": "quick_reply", "text": "Open the check" }],
+      "subscription": "filings",
+      "artboard": "WaAlerts",
+      "milestone": "M3",
+      "status": "draft"
+    },
+    {
       "code": "filing_alert",
       "meta_name": "filing_alert",
       "category": "UTILITY",

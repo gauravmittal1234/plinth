@@ -499,6 +499,11 @@
                 "type": ["number", "null"],
                 "minimum": 0
               },
+              "daily_call_cap": {
+                "description": "The free-tier daily cap per task (T61; FOUNDER_QUESTIONS M3-13). Optional: absent on a task the lead has not sized yet.",
+                "type": ["integer", "null"],
+                "minimum": 1
+              },
               "response_schema": {
                 "type": ["string", "null"]
               },

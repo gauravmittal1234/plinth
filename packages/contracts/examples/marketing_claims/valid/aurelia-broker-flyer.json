@@ -1,0 +1,31 @@
+{
+  "claims": [
+    {
+      "type": "possession_date",
+      "raw_text": "POSSESSION DEC 2026",
+      "value": "2026-12",
+      "unit": null,
+      "qualifier": null,
+      "line_ids": ["l1"],
+      "confidence": 0.96
+    },
+    {
+      "type": "sold_left",
+      "raw_text": "ONLY 20 FLATS LEFT",
+      "value": 20,
+      "unit": "flats",
+      "qualifier": null,
+      "line_ids": ["l2"],
+      "confidence": 0.9
+    },
+    {
+      "type": "rera_number",
+      "raw_text": "RERA No. GGM/673/405/2022/117",
+      "value": "GGM/673/405/2022/117",
+      "unit": null,
+      "qualifier": null,
+      "line_ids": ["l3"],
+      "confidence": 0.99
+    }
+  ]
+}
