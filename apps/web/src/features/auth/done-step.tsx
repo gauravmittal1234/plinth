@@ -45,7 +45,7 @@ export function DoneStep({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 id="flow-h" className="m-0 font-display text-h2 leading-tight font-extrabold">
+      <h1 id="flow-h" className="m-0 font-display text-h2 leading-tight font-bold">
         {COPY.doneHeading}
       </h1>
       <p className="m-0 text-lead">{COPY.doneLine(outcome)}</p>

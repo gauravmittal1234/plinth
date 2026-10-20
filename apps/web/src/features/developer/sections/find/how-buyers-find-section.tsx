@@ -10,7 +10,7 @@ export function HowBuyersFindSection({ name, data }: { name: string; data: HowBu
   return (
     <SectionBand id="how-buyers-find" tone="bg">
       <div className="flex flex-col gap-6">
-        <h2 className="m-0 max-w-[24ch] text-balance font-display text-h2 font-extrabold">
+        <h2 className="m-0 max-w-[24ch] text-balance font-display text-section font-bold">
           {FIND_COPY.heading(name)}
         </h2>
         {data.line ? <p className="m-0 max-w-measure text-lead">{data.line}</p> : null}

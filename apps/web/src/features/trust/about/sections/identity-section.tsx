@@ -22,7 +22,7 @@ export function IdentitySection({ identity }: { identity: About["identity"] }) {
         </div>
 
         <div className="flex flex-col gap-5">
-          <h2 id="who-runs-h" className="m-0 font-display text-h2 font-extrabold">
+          <h2 id="who-runs-h" className="m-0 font-display text-section font-bold">
             Who runs Plinth?
           </h2>
           <p className="m-0 max-w-measure text-body text-ink2">

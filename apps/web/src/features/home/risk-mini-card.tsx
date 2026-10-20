@@ -39,7 +39,7 @@ export function RiskMiniCard({ summary }: { summary: RiskSummary }) {
   return (
     <div data-hero-card={phase.slug} className="flex flex-col gap-4.5">
       <div className="flex flex-col gap-0.5">
-        <strong className="font-display text-h3 leading-[1.08] font-extrabold tracking-[-0.025em]">
+        <strong className="font-sans text-h3 leading-[1.08] font-bold tracking-[-0.025em]">
           {phase.name}
         </strong>
         <span className="text-small text-ink2">
@@ -67,7 +67,7 @@ export function RiskMiniCard({ summary }: { summary: RiskSummary }) {
 
       {price ? (
         <div className="flex flex-wrap items-baseline gap-2.5">
-          <strong className="font-display text-number font-extrabold tracking-[-0.02em]">
+          <strong className="font-sans text-number font-bold tracking-[-0.02em]">
             {price.display_line}
           </strong>
         </div>

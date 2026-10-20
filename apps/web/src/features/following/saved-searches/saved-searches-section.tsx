@@ -12,7 +12,7 @@ export function SavedSearchesSection() {
   return (
     <SectionBand id="saved-searches" tone="bg">
       <div className="flex flex-col gap-4">
-        <h2 className="m-0 font-display text-h2 font-extrabold">{SAVED_SEARCHES_COPY.heading}</h2>
+        <h2 className="m-0 font-display text-section font-bold">{SAVED_SEARCHES_COPY.heading}</h2>
         <p className="m-0 max-w-[60ch] text-body text-ink2">{SAVED_SEARCHES_COPY.subheading}</p>
         <div>
           <Button asChild variant="secondary">

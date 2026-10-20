@@ -14,7 +14,7 @@ export function PrivacyScreen({ data }: { data: PrivacyData }) {
     <>
       <SectionBand tone="bg" innerClassName="flex flex-col gap-4">
         <p className="m-0 text-small text-ink2">Privacy centre</p>
-        <h1 className="m-0 font-display text-h1 font-extrabold">Who has my number?</h1>
+        <h1 className="m-0 font-display text-h1 font-bold">Who has my number?</h1>
         <p className="m-0 max-w-measure text-lead text-ink2">
           Your number is never shared without your tap. You choose who can reach you and why, and
           you can take it back anytime.
@@ -30,7 +30,7 @@ export function PrivacyScreen({ data }: { data: PrivacyData }) {
       </SectionBand>
 
       <SectionBand tone="track" innerClassName="flex flex-col gap-4">
-        <h2 className="m-0 font-display text-h3 font-extrabold">How do we make money?</h2>
+        <h2 className="m-0 font-sans text-h3 font-bold">How do we make money?</h2>
         <p className="m-0 max-w-measure text-body text-ink2">
           {money.never_line} Not to agents, lenders, developers or anyone else. Others see a relay
           number unless you tap to share yours.
@@ -43,7 +43,7 @@ export function PrivacyScreen({ data }: { data: PrivacyData }) {
       </SectionBand>
 
       <SectionBand tone="bg" innerClassName="flex flex-col gap-2">
-        <h2 className="m-0 font-display text-h3 font-extrabold">
+        <h2 className="m-0 font-sans text-h3 font-bold">
           Who do I contact if something goes wrong?
         </h2>
         <p className="m-0 max-w-measure text-body text-ink2">

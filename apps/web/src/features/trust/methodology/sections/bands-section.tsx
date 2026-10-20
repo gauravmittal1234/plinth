@@ -8,7 +8,7 @@ export function BandsSection({ methodology }: { methodology: Methodology }) {
   return (
     <section aria-labelledby="bands-h" className="bg-track py-18 text-ink md:py-30">
       <div className="mx-auto flex w-full max-w-[79rem] flex-col gap-6 px-4 sm:px-8">
-        <h2 id="bands-h" className="m-0 font-display text-h2 font-extrabold">
+        <h2 id="bands-h" className="m-0 font-display text-section font-bold">
           What does each band mean?
         </h2>
         {methodology.similar_line ? (

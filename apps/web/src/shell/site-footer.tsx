@@ -11,7 +11,7 @@ export function SiteFooter() {
     <footer className="flex flex-col overflow-hidden bg-slab text-on-slab">
       <div className="mx-auto flex w-full max-w-[79rem] flex-col gap-10 px-4 pt-22 sm:px-8 sm:pt-30">
         <div className="flex flex-wrap items-end justify-between gap-x-16 gap-y-6">
-          <p className="m-0 max-w-[15ch] font-display text-[2.25rem] leading-[1.08] font-extrabold tracking-[-0.03em]">
+          <p className="m-0 max-w-[15ch] font-display text-[2.25rem] leading-[1.08] font-bold tracking-[-0.03em]">
             No developer pays us. Ever.
           </p>
           <p className="m-0 max-w-[54ch] text-[1.0625rem] leading-[1.55] text-on-slab2">
@@ -28,7 +28,7 @@ export function SiteFooter() {
       </div>
       <p
         aria-hidden="true"
-        className="m-0 mt-14 translate-y-[0.06em] px-4 text-center font-display text-[length:clamp(7.5rem,36vw,32.5rem)] leading-[0.74] font-extrabold tracking-[-0.06em] whitespace-nowrap"
+        className="m-0 mt-14 translate-y-[0.06em] px-4 text-center font-display text-[length:clamp(7.5rem,36vw,32.5rem)] leading-[0.74] font-bold tracking-[-0.06em] whitespace-nowrap"
       >
         Plinth
       </p>

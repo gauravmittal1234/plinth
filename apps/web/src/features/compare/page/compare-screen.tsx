@@ -26,7 +26,7 @@ export async function CompareScreen({
     if (unknownIs404 && load.reason === "not_found") notFound();
     return (
       <div className="mx-auto flex max-w-[48rem] flex-col gap-4 px-4 py-16 sm:px-8">
-        <h1 className="m-0 font-display text-h2 font-extrabold text-ink">
+        <h1 className="m-0 font-display text-h2 font-bold text-ink">
           {COPY.notAvailableHeading}
         </h1>
         <p className="m-0 text-body text-ink2">{load.message}</p>
@@ -40,7 +40,7 @@ export async function CompareScreen({
   return (
     <div className="mx-auto flex max-w-[79rem] flex-col gap-8 px-4 py-10 sm:px-8">
       <header className="flex flex-col gap-2">
-        <h1 className="m-0 font-display text-h2 font-extrabold text-ink">
+        <h1 className="m-0 font-display text-h2 font-bold text-ink">
           {COPY.heading(data.columns.length)}
         </h1>
         <p className="m-0 text-lead text-ink2">{data.columns.map((c) => c.name).join(" vs ")}</p>
