@@ -392,6 +392,42 @@ Deno.test("POST /delete-account: a fresh sign-in code goes through (confirm, the
   assertEquals(w.state.calls.at(-1), "complete:true:true");
 });
 
+// Lead (M2 gate, auth batch): the code's age is wall time. The deployed handler reads it from
+// its own clock (systemClock, as index.ts deploys it: no clock passed), whatever the business
+// clock says; PLINTH_ENV=test freezes the business clock at 18 Oct 2026 (FROZEN_AT).
+Deno.test("POST /delete-account, deployed clock: a 2-minute-old code passes, a 2-hour-old one fails, whatever the business clock says", async () => {
+  const at = (ageS: number) =>
+    token([{ method: "otp", timestamp: Math.floor(Date.now() / 1000) - ageS }]);
+  const deployed = (w = world()) => ({
+    w,
+    fn: makeDeleteAccount({
+      env: testEnv({ PLINTH_ENV: "test" }),
+      sink: captureLogs().sink,
+      deps: () => w.deps,
+    }),
+  });
+
+  const fresh = deployed();
+  const ok = await fresh.fn(fakeRequest("delete-account", { method: "POST", bearer: at(120) }));
+  assertEquals(ok.status, 200);
+  assertEquals(fresh.w.state.calls[0], "confirm");
+
+  const stale = deployed();
+  const res = await stale.fn(fakeRequest("delete-account", { method: "POST", bearer: at(7200) }));
+  assertEquals(await assertApiError(res, "auth_required"), FRESH_CODE_LINE);
+  assertEquals(stale.w.state.calls, [], "nothing filed or erased");
+
+  // A code stamped at the business clock's "now" (18 Oct 2026, 12:00 IST) is days old on the
+  // wall clock, so it is not fresh.
+  assert(Date.now() > NOW.getTime() + 11 * 60_000, "the wall clock is past the frozen day");
+  const frozen = deployed();
+  const atFrozen = await frozen.fn(
+    fakeRequest("delete-account", { method: "POST", bearer: FRESH }),
+  );
+  await assertApiError(atFrozen, "auth_required");
+  assertEquals(frozen.w.state.calls, []);
+});
+
 Deno.test("POST /delete-account: 200 with both records; logs carry no user id", async () => {
   const { fn, logs } = handler();
   const res = await fn(fakeRequest("delete-account", { method: "POST", bearer: FRESH }));

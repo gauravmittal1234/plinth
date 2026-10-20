@@ -180,6 +180,7 @@ export const FRESH_CODE_LINE = "Enter a fresh sign-in code to delete your accoun
 export async function deleteAccount(
   deps: DeleteDeps,
   token: string,
+  /** Wall time (the handler's ctx.clock), never businessClock: a code's age is a security window. */
   now: Date,
   channel: ErasureChannel,
   log: Logger,

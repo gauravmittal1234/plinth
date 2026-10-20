@@ -21,6 +21,7 @@
 // PLINTH_HASH_SALT) and NEXT_PUBLIC_SITE_URL for CORS. Logic: logic.ts, render.ts, pdf.ts,
 // zip.ts, storage.ts.
 
+import { businessClock } from "../_shared/core/clock.ts";
 import { processEnv, readVar } from "../_shared/core/env.ts";
 import { callRpc, secretClient, userClient } from "../_shared/core/supabase.ts";
 import { jwtRejected, makeExportData, parsePending } from "./logic.ts";
@@ -51,7 +52,9 @@ const handler = makeExportData({
     const buyer = userClient(ctx.env.supabase, token, { requestId: ctx.requestId, fn: ctx.fn });
     const service = secretClient(ctx.env.supabase, { requestId: ctx.requestId, fn: ctx.fn });
     return {
+      // Wall time for the sign-in code's age; business time for the 7-day link (logic.ts).
       now: () => ctx.clock.now(),
+      businessNow: () => businessClock(ctx.env.plinthEnv).now(),
       storage: supabaseStorage(service),
       link: async (id) => {
         try {
