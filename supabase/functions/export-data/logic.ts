@@ -118,30 +118,53 @@ export interface BuildDeps {
   payload(requestId: string): Promise<unknown>;
   /** api.dpdp_export_complete(request_id, key, bytes, sha256). */
   complete(requestId: string, key: string, bytes: number, sha256: string): Promise<unknown>;
-  storage: Pick<StorageAdapter, "upload">;
+  storage: Pick<StorageAdapter, "upload" | "remove">;
   log: Logger;
 }
 
 export interface BuildSummary {
   pending: number;
   built: number;
+  /** Stored, but the request had closed meanwhile (an erasure): the file was removed again. */
+  discarded: number;
   failed: number;
+}
+
+/** The key api.dpdp_export_complete says the request now records (null when none). */
+function recordedKey(answer: unknown): string | null {
+  const key = (answer as { export_key?: unknown } | null)?.export_key;
+  return typeof key === "string" ? key : null;
 }
 
 export async function runBuild(deps: BuildDeps, limit = BUILD_BATCH): Promise<BuildSummary> {
   const ids = await deps.pending(limit);
-  const summary: BuildSummary = { pending: ids.length, built: 0, failed: 0 };
+  const summary: BuildSummary = { pending: ids.length, built: 0, discarded: 0, failed: 0 };
   for (const id of ids) {
+    let stored: string | null = null;
     try {
       const payload = parseExportPayload(await deps.payload(id), id);
       const { bytes, sha256 } = await buildExportZip(payload);
       const key = exportKey(id);
       await deps.storage.upload(EXPORT_BUCKET, key, bytes, "application/zip");
-      await deps.complete(id, key, bytes.length, sha256);
-      summary.built++;
+      stored = key;
+      const answer = await deps.complete(id, key, bytes.length, sha256);
+      if (recordedKey(answer) === key) {
+        summary.built++;
+      } else {
+        // No record points at this file, so no one may keep it: remove it now.
+        await deps.storage.remove(EXPORT_BUCKET, [key]);
+        summary.discarded++;
+      }
     } catch (err) {
       summary.failed++;
       deps.log.error("export build failed", { request_id: id, ...errorFields(err) });
+      if (stored) {
+        // Not recorded: never leave an unlisted copy of someone's data behind. The request stays
+        // open, so the next run builds it again.
+        await deps.storage.remove(EXPORT_BUCKET, [stored]).catch((e) =>
+          deps.log.error("export cleanup failed", { request_id: id, ...errorFields(e) })
+        );
+      }
     }
   }
   return summary;

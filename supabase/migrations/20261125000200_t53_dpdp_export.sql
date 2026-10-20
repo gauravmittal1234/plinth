@@ -421,15 +421,18 @@ begin
     );
   end if;
 
+  -- export_key is the key this request now records: when it is not the file just stored (the
+  -- request was closed meanwhile, e.g. by an erasure), the builder removes that file.
   return pg_catalog.jsonb_build_object(
     'request_id', v_req.id,
     'status', case when v_req.link_expires_at > v_now and v_req.export_key is not null then 'ready' else 'expired' end,
+    'export_key', v_req.export_key,
     'completed_at', core.fmt_timestamp(v_req.completed_at),
     'link_expires_at', core.fmt_timestamp(v_req.link_expires_at)
   );
 end
 $$;
-comment on function api.dpdp_export_complete(uuid, text, integer, text) is 'Service-only. Records a stored export: completed_at, export_key (must be app.dpdp_export_key), link_expires_at = +7 days; queues export_ready (push, and WhatsApp when opted in). A replay returns the first record. Errors: not_found, invalid_input, conflict.';
+comment on function api.dpdp_export_complete(uuid, text, integer, text) is 'Service-only. Records a stored export: completed_at, export_key (must be app.dpdp_export_key), link_expires_at = +7 days; queues export_ready (push, and WhatsApp when opted in). A replay returns the first record; export_key tells the builder whether its file is the one on record. Errors: not_found, invalid_input, conflict.';
 
 -- ---------------------------------------------------------------------------
 -- Buyer: open the download (export-data, buyer JWT + a fresh sign-in code).

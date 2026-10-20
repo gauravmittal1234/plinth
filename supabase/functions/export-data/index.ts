@@ -9,7 +9,7 @@
 //   422 invalid_input    the body is not { request_id }
 //
 // POST /functions/v1/export-data/build · auth: x-plinth-dispatch-secret (pg_cron every 15 minutes,
-// ops.dpdp_kick) → 200 { pending, built, failed }. Builds the open requests' ZIPs (PDF + JSON)
+// ops.dpdp_kick) → 200 { pending, built, discarded, failed }. Builds the open requests' ZIPs
 // into the private `exports` bucket.
 //
 // Deploy without gateway JWT verification (config.toml [functions.export-data] verify_jwt =

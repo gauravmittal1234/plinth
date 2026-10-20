@@ -84,24 +84,29 @@ const freshToken = (at = NOW) =>
 function buildDeps(over: Partial<BuildDeps> = {}) {
   const uploads: Array<{ bucket: string; key: string; bytes: Uint8Array; type: string }> = [];
   const completes: Array<[string, string, number, string]> = [];
+  const removed: string[] = [];
   const logs = captureLogs();
   const deps: BuildDeps = {
     pending: () => Promise.resolve([REQUEST_ID]),
     payload: () => rohanPayload(),
     complete: (id, key, bytes, sha) => {
       completes.push([id, key, bytes, sha]);
-      return Promise.resolve({ status: "ready" });
+      return Promise.resolve({ status: "ready", export_key: key });
     },
     storage: {
       upload: (bucket, key, bytes, type) => {
         uploads.push({ bucket, key, bytes, type });
         return Promise.resolve();
       },
+      remove: (bucket, keys) => {
+        removed.push(...keys.map((k) => `${bucket}/${k}`));
+        return Promise.resolve();
+      },
     },
     log: createLogger({ fn: "export-data", sink: logs.sink, minLevel: "debug" }),
     ...over,
   };
-  return { deps, uploads, completes, logs };
+  return { deps, uploads, completes, removed, logs };
 }
 
 // ---------------------------------------------------------------------------
@@ -114,7 +119,7 @@ Deno.test("Accept: Rohan's export ZIP carries his 5 consent refs, in the JSON an
   assertEquals(refs.length, 5);
 
   const { deps, uploads, completes } = buildDeps();
-  assertEquals(await runBuild(deps), { pending: 1, built: 1, failed: 0 });
+  assertEquals(await runBuild(deps), { pending: 1, built: 1, discarded: 0, failed: 0 });
   assertEquals(uploads.length, 1);
   const upload = uploads[0]!;
   assertEquals(upload.bucket, "exports");
@@ -162,7 +167,7 @@ Deno.test("runBuild: one failing request never stops the others, and nothing is 
     pending: () => Promise.resolve([REQUEST_ID, other]),
     payload: (id) => id === REQUEST_ID ? Promise.reject(new Error("boom")) : rohanPayload(other),
   });
-  assertEquals(await runBuild(deps), { pending: 2, built: 1, failed: 1 });
+  assertEquals(await runBuild(deps), { pending: 2, built: 1, discarded: 0, failed: 1 });
   assertEquals(uploads.map((u) => u.key), [`${other}/plinth-my-data.zip`]);
   assertEquals(completes.map((c) => c[0]), [other]);
   assertEquals(logs.find("export build failed")?.request_id, REQUEST_ID);
@@ -178,10 +183,31 @@ Deno.test("runBuild: a payload for another request is refused (never stored unde
 
 Deno.test("runBuild: a failed upload is not recorded as stored", async () => {
   const { deps, completes } = buildDeps({
-    storage: { upload: () => Promise.reject(new Error("storage down")) },
+    storage: {
+      upload: () => Promise.reject(new Error("storage down")),
+      remove: () => Promise.resolve(),
+    },
   });
   assertEquals((await runBuild(deps)).failed, 1);
   assertEquals(completes.length, 0);
+});
+
+Deno.test("runBuild: a file the database did not record is removed at once (no stray copy)", async () => {
+  // The request was closed meanwhile (an erasure): the completion records no key.
+  const closed = buildDeps({
+    complete: () => Promise.resolve({ status: "expired", export_key: null }),
+  });
+  assertEquals(await runBuild(closed.deps), { pending: 1, built: 0, discarded: 1, failed: 0 });
+  assertEquals(closed.removed, [`exports/${REQUEST_ID}/plinth-my-data.zip`]);
+
+  // The completion failed: the request stays open for the next run, the file goes now.
+  const failed = buildDeps({ complete: () => Promise.reject(new Error("db down")) });
+  assertEquals(await runBuild(failed.deps), { pending: 1, built: 0, discarded: 0, failed: 1 });
+  assertEquals(failed.removed, [`exports/${REQUEST_ID}/plinth-my-data.zip`]);
+
+  const kept = buildDeps();
+  await runBuild(kept.deps);
+  assertEquals(kept.removed, [], "a recorded file stays");
 });
 
 Deno.test("parsePending and exportKey", () => {
@@ -371,7 +397,7 @@ Deno.test("POST /export-data/build: the dispatch secret only", async () => {
   await assertApiError(await build("wrong"), "forbidden");
   assertEquals(built.uploads.length, 0);
   const res = await build(DISPATCH_SECRET);
-  assertEquals(await readBody(res), { pending: 1, built: 1, failed: 0 });
+  assertEquals(await readBody(res), { pending: 1, built: 1, discarded: 0, failed: 0 });
   assertEquals(built.uploads.length, 1);
 });
 
