@@ -7,12 +7,7 @@
 import { createLogger } from "../../_shared/core/log.ts";
 import { flagsReader } from "../../_shared/core/flags.ts";
 import type { ShareCard } from "../../_shared/core/contracts.ts";
-import {
-  assertEquals,
-  captureLogs,
-  fakeRpc,
-  frozenClock,
-} from "../../_shared/testing/mod.ts";
+import { assertEquals, captureLogs, fakeRpc, frozenClock } from "../../_shared/testing/mod.ts";
 import type { RpcAnswer, RpcCall } from "../../_shared/testing/rpc.ts";
 import { limitProblems, replyButtons } from "../../_shared/wa/graph.ts";
 import type { OutboundMessage } from "../../_shared/wa/graph.ts";
@@ -85,7 +80,10 @@ function harness(serviceAnswers: Record<string, RpcAnswer> = {}): Harness {
 
 Deno.test("a forwarded old card is matched by its content hash, then the diff is relayed verbatim", async () => {
   const message = await recordedImageMessage();
-  const route = await routeInbound(message, { session: IDLE, findProject: () => Promise.resolve(null) });
+  const route = await routeInbound(message, {
+    session: IDLE,
+    findProject: () => Promise.resolve(null),
+  });
   assertEquals(route, {
     handler: "card_changed",
     rule: "image",
@@ -224,7 +222,10 @@ Deno.test("the changed-card image caption and its button hold WhatsApp's limits"
   assertEquals(limitProblems(image), []);
   assertEquals(
     limitProblems(
-      replyButtons({ body: OLD_CARD.phase.name, buttons: [{ id: "open_full_card", title: "Open full card" }] }),
+      replyButtons({
+        body: OLD_CARD.phase.name,
+        buttons: [{ id: "open_full_card", title: "Open full card" }],
+      }),
     ),
     [],
   );

@@ -38,7 +38,8 @@ const DEFAULT_DEFERRED_LINE =
 const NO_QUESTION_LINE = "Send a project name, a Gurugram RERA number, or type your question.";
 
 /** DESIGN §5b "Ask Plinth edge answers": "Should I buy?" never gets yes or no. */
-const SHOULD_I_BUY_RE = /\bshould i buy\b|\bis it (?:a )?good (?:investment|buy)\b|\bworth buying\b/;
+const SHOULD_I_BUY_RE =
+  /\bshould i buy\b|\bis it (?:a )?good (?:investment|buy)\b|\bworth buying\b/;
 const SHOULD_I_BUY_LINES = [
   "We can't tell you whether to buy. That's your call, and no developer pays us to steer it. Here's how to decide:",
   "Can you carry a 12 to 24 month delay? (Afford the wait)",
@@ -92,7 +93,9 @@ export const askFallback: WaHandler = async (input, tools) => {
 
   let zero: ZeroResults | null = null;
   try {
-    const result = await callRpc<SearchResults>(tools.service, "search_projects", { p_q: question });
+    const result = await callRpc<SearchResults>(tools.service, "search_projects", {
+      p_q: question,
+    });
     zero = isObj(result.zero_results) ? result.zero_results : null;
   } catch (err) {
     tools.log.warn("wa ask_fallback: search_projects failed", {

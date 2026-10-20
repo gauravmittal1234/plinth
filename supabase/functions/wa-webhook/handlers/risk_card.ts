@@ -123,7 +123,9 @@ async function confirmFollow(risk: RiskSummary, tools: HandlerTools): Promise<Ha
       p_client_id: crypto.randomUUID(),
     });
     await tools.reply(
-      textMessage(`Done. You will get alerts for ${risk.phase.name}. Manage them at plinth.in/you.`),
+      textMessage(
+        `Done. You will get alerts for ${risk.phase.name}. Manage them at plinth.in/you.`,
+      ),
     );
     return { outcome: "followed", session: { type: "done" } };
   } catch (err) {

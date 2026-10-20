@@ -101,7 +101,10 @@ async function fallbackRouteFor(text: string, session: WaSession = IDLE) {
 
 Deno.test("a forwarded document gets the honest doc_check 'not yet', never a guessed answer", async () => {
   const message = await recordedMessage("document-demand-letter.json");
-  const route = await routeInbound(message, { session: IDLE, findProject: () => Promise.resolve(null) });
+  const route = await routeInbound(message, {
+    session: IDLE,
+    findProject: () => Promise.resolve(null),
+  });
   assertEquals(route.args.deferred, "doc_check");
   const h = harness();
   const result = await askFallback({ route, message, contact: ROHAN, session: IDLE }, h.tools);
@@ -121,7 +124,10 @@ Deno.test("a forwarded document gets the honest doc_check 'not yet', never a gue
 
 Deno.test("a voice note gets the honest transcribe 'not yet'", async () => {
   const message = await recordedMessage("audio-voice-note.json");
-  const route = await routeInbound(message, { session: IDLE, findProject: () => Promise.resolve(null) });
+  const route = await routeInbound(message, {
+    session: IDLE,
+    findProject: () => Promise.resolve(null),
+  });
   assertEquals(route.args.deferred, "transcribe");
   const h = harness();
   const result = await askFallback({ route, message, contact: ROHAN, session: IDLE }, h.tools);
@@ -129,7 +135,9 @@ Deno.test("a voice note gets the honest transcribe 'not yet'", async () => {
   assertEquals(result, { outcome: "deferred" });
   assertEquals(h.replies.length, 1);
   assertEquals(
-    (h.replies[0] as { text: { body: string } }).text.body.startsWith("We can't listen to voice notes"),
+    (h.replies[0] as { text: { body: string } }).text.body.startsWith(
+      "We can't listen to voice notes",
+    ),
     true,
   );
 });
@@ -207,7 +215,11 @@ Deno.test("a question with no zero-result gets the M2 generic refusal, and retur
   assertEquals(route.rule, "ask_session");
   const h = harness({
     search_projects: {
-      data: { schema: "plinth.search_results/1", query: "When is possession due?", zero_results: null },
+      data: {
+        schema: "plinth.search_results/1",
+        query: "When is possession due?",
+        zero_results: null,
+      },
     },
   });
   const result = await askFallback({ route, message, contact: ROHAN, session }, h.tools);
@@ -257,7 +269,10 @@ Deno.test("no question at all (a non-text message nothing else matched) asks for
 
   assertEquals(result, { outcome: "no_question" });
   assertEquals(h.replies, [
-    { type: "text", text: { body: "Send a project name, a Gurugram RERA number, or type your question." } },
+    {
+      type: "text",
+      text: { body: "Send a project name, a Gurugram RERA number, or type your question." },
+    },
   ]);
   assertEquals(h.service.calls.length, 0);
 });

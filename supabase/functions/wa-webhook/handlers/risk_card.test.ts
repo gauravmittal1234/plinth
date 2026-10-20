@@ -152,7 +152,10 @@ Deno.test("a project-name match sends the risk card image, caption and the 3 but
     session: { type: "card_sent", slug: "aurelia-heights-phase-2" },
   });
   assertEquals(h.replies, [
-    { type: "image", image: { link: AURELIA_RISK.share.card_url, caption: expectedCaption(AURELIA_RISK) } },
+    {
+      type: "image",
+      image: { link: AURELIA_RISK.share.card_url, caption: expectedCaption(AURELIA_RISK) },
+    },
     expectedButtons(AURELIA_RISK),
   ]);
   assertEquals(h.service.calls.map((c) => c.fn), ["risk_summary"]);
@@ -210,7 +213,12 @@ Deno.test("a RERA number api.suggest can't match gets the honest not-found line,
 
 Deno.test("a short link code (no resolver RPC yet) gets the same honest not-found line", async () => {
   const session = IDLE;
-  const route: Route = { handler: "risk_card", rule: "link", action: "card", args: { short_code: "AH2" } };
+  const route: Route = {
+    handler: "risk_card",
+    rule: "link",
+    action: "card",
+    args: { short_code: "AH2" },
+  };
   const message = await recordedMessage("text-aurelia.json");
   const h = harness();
   const result = await riskCard(inputFor(route, message, session), h.tools);
@@ -237,7 +245,9 @@ Deno.test('"Why this band" sends the reasons text with sources, nothing composed
   assert(reply.text.body.startsWith("Why Elevated? The 4 reasons:"));
   for (const r of AURELIA_RISK.reasons) {
     assert(reply.text.body.includes(r.text), `missing reason: ${r.text}`);
-    for (const s of r.sources) assert(reply.text.body.includes(s.label), `missing source: ${s.label}`);
+    for (const s of r.sources) {
+      assert(reply.text.body.includes(s.label), `missing source: ${s.label}`);
+    }
   }
   assert(reply.text.body.includes(AURELIA_RISK.what_would_change!));
   assert(reply.text.body.includes(AURELIA_RISK.meta.live_url));
@@ -293,7 +303,8 @@ Deno.test('"Yes, alert me" confirms only after api.follow (acted as the tapper) 
     {
       type: "text",
       text: {
-        body: "Done. You will get alerts for Aurelia Heights, Phase 2. Manage them at plinth.in/you.",
+        body:
+          "Done. You will get alerts for Aurelia Heights, Phase 2. Manage them at plinth.in/you.",
       },
     },
   ]);
@@ -314,7 +325,9 @@ Deno.test('"Yes, alert me" never confirms a follow that api.follow did not recor
   };
   const h = harness({
     serviceAnswers: { risk_summary: { data: AURELIA_RISK } },
-    userAnswers: { follow: { error: { code: "PGRST202", message: "Could not find the function" } } },
+    userAnswers: {
+      follow: { error: { code: "PGRST202", message: "Could not find the function" } },
+    },
   });
   const result = await riskCard(inputFor(route, message, session), h.tools);
 
@@ -322,7 +335,9 @@ Deno.test('"Yes, alert me" never confirms a follow that api.follow did not recor
   assertEquals(h.replies, [
     {
       type: "text",
-      text: { body: "We couldn't turn on alerts just now. Try again in a minute, or follow from the app." },
+      text: {
+        body: "We couldn't turn on alerts just now. Try again in a minute, or follow from the app.",
+      },
     },
   ]);
 });
@@ -392,12 +407,16 @@ Deno.test('"Open full card" re-sends the live card for the session\'s own slug',
 // ---------------------------------------------------------------------------------------------
 
 Deno.test("the card image caption and the reply buttons hold WhatsApp's limits", () => {
-  const image = { type: "image" as const, image: { link: AURELIA_RISK.share.card_url, caption: expectedCaption(AURELIA_RISK) } };
+  const image = {
+    type: "image" as const,
+    image: { link: AURELIA_RISK.share.card_url, caption: expectedCaption(AURELIA_RISK) },
+  };
   assertEquals(limitProblems(image), []);
   assertEquals(limitProblems(expectedButtons(AURELIA_RISK)), []);
   assertEquals(
     limitProblems(replyButtons({
-      body: "Get alerts here when this project's band changes, its date is extended, or it files or misses a QPR? At most 1 message a day. Reply STOP anytime.",
+      body:
+        "Get alerts here when this project's band changes, its date is extended, or it files or misses a QPR? At most 1 message a day. Reply STOP anytime.",
       buttons: [
         { id: "yes_alert_me", title: "Yes, alert me" },
         { id: "not_now", title: "Not now" },
