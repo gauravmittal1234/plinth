@@ -3,8 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plinth_tokens/plinth_tokens.dart';
 
 import '../../../core/widgets/widgets.dart';
+import '../../../data/trust.dart';
 import '../onboarding_controller.dart';
 import '../onboarding_copy.dart';
+import '../onboarding_format.dart';
+
+/// `about().coverage.next`'s own name for the resale/ready-flat row
+/// (API_CONTRACTS §3.1, `packages/fixtures/expected/about/default.json`) —
+/// the only key that row carries (AGENTS.md rule 10's comment on
+/// `coverageNextByName`).
+const _resaleCoverageName = 'Resale and transfer checks';
 
 /// "What are you buying?" — nothing preselected (the brief); stays on this
 /// phone only, never sent anywhere.
@@ -16,6 +24,7 @@ class BuyingStep extends ConsumerWidget {
     final tokens = PlinthTokens.of(context);
     final kind = ref.watch(onboardingControllerProvider.select((s) => s.kind));
     final notifier = ref.read(onboardingControllerProvider.notifier);
+    final resale = coverageNextByName(ref.watch(aboutProvider).value?.coverage.next, _resaleCoverageName);
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         PlinthLayout.gutterApp,
@@ -43,7 +52,9 @@ class BuyingStep extends ConsumerWidget {
                 ),
                 _Kind(
                   title: OnboardingCopy.kindReadyTitle,
-                  sub: OnboardingCopy.kindReadySub,
+                  sub: resale == null
+                      ? OnboardingCopy.kindReadySubGeneric
+                      : OnboardingCopy.kindReadySub(resale.whenLine),
                   on: kind == 'ready',
                   onTap: () => notifier.pickKind('ready'),
                 ),

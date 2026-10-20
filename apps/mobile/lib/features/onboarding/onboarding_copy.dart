@@ -34,9 +34,15 @@ abstract final class OnboardingCopy {
   static const kindUcTitle = 'A flat being built';
   static const kindUcSub = 'Under construction. This is what Plinth rates today.';
   static const kindReadyTitle = 'A ready flat';
-  static const kindReadySub =
-      'Ready to move in, or resale. Full checks arrive in R2, planned Apr–Jun 2027. Until then you see the '
-      'project’s RERA records.';
+
+  /// Shown alone when `about().coverage.next`'s "Resale and transfer checks"
+  /// row isn't available (not loaded, failed, or not listed yet) — never a
+  /// guess at when R2 ships (AGENTS.md rule 10).
+  static const kindReadySubGeneric = 'Ready to move in, or resale. Until then you see the project’s RERA records.';
+
+  /// The full line once that row's own `when_line` is known.
+  static String kindReadySub(String whenLine) =>
+      'Ready to move in, or resale. Full checks arrive $whenLine. Until then you see the project’s RERA records.';
   static const kindCheckTitle = 'Just checking';
   static const kindCheckSub = 'A project someone sent you, or one you have already booked.';
   static const buyingPrimary = 'Next: where you’re looking';
@@ -46,8 +52,16 @@ abstract final class OnboardingCopy {
   static const locationBody = 'Pick a corridor, use your location, or both. Each is optional.';
   static const corridorDwarkaExpressway = 'Dwarka Expressway';
   static const corridorNewGurugram = 'New Gurugram';
-  static const corridorGolfCourseExtRd = 'Golf Course Ext Rd · from Dec 2026';
-  static const corridorSoonToast = 'Golf Course Ext Rd is planned for Dec 2026. We’ll show it here then.';
+
+  /// The "coming soon" corridor chip's label, built from the server's own
+  /// `about().coverage.next` row for it (`name` · `when_line`) — never a
+  /// date typed into code (AGENTS.md rule 10). The chip is hidden entirely
+  /// when that row isn't available yet (see LocationStep), rather than
+  /// shown with a stale guess.
+  static String corridorSoonChip(String name, String whenLine) => '$name · $whenLine';
+
+  /// The toast shown when that chip is tapped, from the same row.
+  static String corridorSoonToast(String name, String whenLine) => '$name: $whenLine. We’ll show it here then.';
   static const useMyLocation = 'Use my location';
   static const locationHint =
       'Only while the app is open: for “Near me”, and for “Where am I?” at a site. Never stored with your number. '

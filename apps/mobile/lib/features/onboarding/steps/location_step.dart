@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:plinth_contracts/plinth_contracts.dart' show CoverageNext;
 import 'package:plinth_tokens/plinth_tokens.dart';
 
 import '../../../core/widgets/widgets.dart';
+import '../../../data/trust.dart';
 import '../onboarding_controller.dart';
 import '../onboarding_copy.dart';
+import '../onboarding_format.dart';
+
+/// `about().coverage.next`'s own name for the Golf Course Ext Rd row
+/// (API_CONTRACTS §3.1, `packages/fixtures/expected/about/default.json`) —
+/// the only key that row carries (AGENTS.md rule 10's comment on
+/// `coverageNextByName`).
+const _soonCorridorName = 'Golf Course Extension Road';
 
 /// "Where are you looking?" — a corridor, "use my location", or both; each
 /// optional (the brief). The location permission is real (`geolocator`); with
@@ -20,6 +29,7 @@ class LocationStep extends ConsumerWidget {
     final tokens = PlinthTokens.of(context);
     final state = ref.watch(onboardingControllerProvider);
     final notifier = ref.read(onboardingControllerProvider.notifier);
+    final soon = coverageNextByName(ref.watch(aboutProvider).value?.coverage.next, _soonCorridorName);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -47,7 +57,17 @@ class LocationStep extends ConsumerWidget {
               PlinthChipRow(
                 children: [
                   for (final key in onboardingCorridors)
-                    _CorridorChip(corridorKey: key, on: state.corridors.contains(key), notifier: notifier),
+                    // The "soon" corridor is a fact (its own name + when it
+                    // opens): hidden entirely rather than shown with a stale
+                    // guess when `about()` hasn't supplied that row yet
+                    // (AGENTS.md rule 10).
+                    if (key != onboardingSoonCorridor || soon != null)
+                      _CorridorChip(
+                        corridorKey: key,
+                        on: state.corridors.contains(key),
+                        notifier: notifier,
+                        soon: soon,
+                      ),
                 ],
               ),
               const SizedBox(height: PlinthSpace.s16),
@@ -67,28 +87,32 @@ class LocationStep extends ConsumerWidget {
 }
 
 class _CorridorChip extends StatelessWidget {
-  const _CorridorChip({required this.corridorKey, required this.on, required this.notifier});
+  const _CorridorChip({required this.corridorKey, required this.on, required this.notifier, required this.soon});
 
   final String corridorKey;
   final bool on;
   final OnboardingController notifier;
 
-  static const _names = {
-    'dxp': OnboardingCopy.corridorDwarkaExpressway,
-    'ng': OnboardingCopy.corridorNewGurugram,
-    'gcer': OnboardingCopy.corridorGolfCourseExtRd,
-  };
+  /// The "coming soon" row from `about()`, for the one corridor that needs
+  /// it. Null for every other corridor, and never read by them.
+  final CoverageNext? soon;
 
-  bool get _soon => corridorKey == onboardingSoonCorridor;
+  static const _names = {'dxp': OnboardingCopy.corridorDwarkaExpressway, 'ng': OnboardingCopy.corridorNewGurugram};
+
+  bool get _isSoon => corridorKey == onboardingSoonCorridor;
+
+  /// Only reached when [_isSoon] — the caller never builds this chip
+  /// otherwise (`soon == null` hides it instead).
+  String get _label => _isSoon ? OnboardingCopy.corridorSoonChip(soon!.name, soon!.whenLine) : _names[corridorKey]!;
 
   @override
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
-    final selected = on && !_soon;
+    final selected = on && !_isSoon;
     return Semantics(
       button: true,
       selected: selected,
-      label: _names[corridorKey],
+      label: _label,
       excludeSemantics: true,
       onTap: () => _onTap(context),
       child: Pressable(
@@ -101,9 +125,9 @@ class _CorridorChip extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Text(
-                _names[corridorKey]!,
+                _label,
                 style: PlinthType.label.copyWith(
-                  color: selected ? tokens.onInverse : (_soon ? tokens.ink2 : tokens.ink),
+                  color: selected ? tokens.onInverse : (_isSoon ? tokens.ink2 : tokens.ink),
                 ),
               ),
             ),
@@ -114,8 +138,8 @@ class _CorridorChip extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    if (_soon) {
-      showPlinthToast(context, OnboardingCopy.corridorSoonToast);
+    if (_isSoon) {
+      showPlinthToast(context, OnboardingCopy.corridorSoonToast(soon!.name, soon!.whenLine));
       return;
     }
     notifier.toggleCorridor(corridorKey);

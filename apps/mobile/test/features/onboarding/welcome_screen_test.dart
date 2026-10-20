@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:plinth/app/routes.dart';
 import 'package:plinth/data/alerts.dart';
 import 'package:plinth/data/follow.dart';
 import 'package:plinth/data/session.dart';
+import 'package:plinth/data/trust.dart';
 import 'package:plinth/features/onboarding/onboarding_copy.dart';
 
 import '../../helpers/app_harness.dart';
+
+/// `about()` failing outright (not just missing a `coverage.next` row) —
+/// `aboutProvider.overrideWith`, not a fake `TrustRepository`, so
+/// `methodologyProvider`/`bandsProvider` (the Welcome card's own risk chip)
+/// keep working; only the Buying/Location facts this review is about go
+/// missing.
+Override _failingAbout() => aboutProvider.overrideWith((ref) => Future<Never>.error(Exception('about: test failure')));
 
 /// AppOnboarding (WORK_BREAKDOWN T48): walks the full 8-step first run in
 /// FIXTURES mode — Welcome, Buying, Location, Phone, Code, Follow, Alerts,
@@ -203,6 +212,23 @@ void main() {
     expect(find.text(OnboardingCopy.codeHeadline), findsNothing);
   });
 
+  testWidgets('the ready-flat option names the real resale timing from about(), not a typed-in date', (tester) async {
+    await pumpPlinth(tester, location: Routes.welcome);
+    await tapPrimary(tester); // -> Buying
+    // packages/fixtures/expected/about/default.json, coverage.next, "Resale
+    // and transfer checks".
+    expect(find.text(OnboardingCopy.kindReadySub('R2 · planned for Apr–Jun 2027')), findsOneWidget);
+  });
+
+  testWidgets('the ready-flat option falls back to the generic line when about() fails, never a stale guess', (
+    tester,
+  ) async {
+    await pumpPlinth(tester, location: Routes.welcome, overrides: [_failingAbout()]);
+    await tapPrimary(tester); // -> Buying
+    expect(find.text(OnboardingCopy.kindReadySubGeneric), findsOneWidget);
+    expect(find.textContaining('Full checks arrive'), findsNothing);
+  });
+
   testWidgets('Skip on Buying goes straight to Location', (tester) async {
     await pumpPlinth(tester, location: Routes.welcome);
     await tapPrimary(tester); // Welcome -> Buying
@@ -233,5 +259,36 @@ void main() {
     // can't be granted, so this must fail honestly rather than pretend a
     // sector it has no fact for (AGENTS.md rule 10).
     expect(find.text(OnboardingCopy.locationOnHeadline), findsNothing);
+  });
+
+  testWidgets('the "coming soon" corridor chip and toast name the real corridor and date from about()', (tester) async {
+    await pumpPlinth(tester, location: Routes.welcome);
+    await tapPrimary(tester); // Buying
+    await tapPrimary(tester); // -> Location
+
+    // packages/fixtures/expected/about/default.json, coverage.next, "Golf
+    // Course Extension Road".
+    final label = OnboardingCopy.corridorSoonChip('Golf Course Extension Road', 'Planned for Dec 2026');
+    expect(find.text(label), findsOneWidget);
+
+    // The combined name + when_line is long enough that the chip row's own
+    // horizontal scroll carries it past the right edge; the outer screen
+    // scroll alone won't bring it on screen.
+    await tester.ensureVisible(find.text(label));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(label));
+    await tester.pumpAndSettle();
+    expect(
+      find.text(OnboardingCopy.corridorSoonToast('Golf Course Extension Road', 'Planned for Dec 2026')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('the "coming soon" corridor chip is hidden, not shown stale, when about() fails', (tester) async {
+    await pumpPlinth(tester, location: Routes.welcome, overrides: [_failingAbout()]);
+    await tapPrimary(tester); // Buying
+    await tapPrimary(tester); // -> Location
+    expect(find.text(OnboardingCopy.corridorDwarkaExpressway), findsOneWidget, reason: 'the open corridors stay');
+    expect(find.textContaining('Golf Course'), findsNothing);
   });
 }
