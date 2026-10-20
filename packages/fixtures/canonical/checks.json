@@ -1,0 +1,369 @@
+{
+  "schema": "plinth.fixtures.checks/1",
+  "note": "Buyer checks (M3): the sample flyer and hoarding (claims vs records), Kavya's booking and demand letter (Pay-as-built), the payment requests (Before you pay), the EOI receipt and the cost-sheet photo. Verdicts are rules, not AI. Fact keys in `facts` are evidence keys. Owner: T03b. Generated; edit src/author.",
+  "retention_line": "We keep this file for 30 days, then delete it, unless you save it to your account.",
+  "retention_source": "DESIGN §5b · Discovery, cost and Ask Plinth (cost-sheet photo: one retention rule everywhere)",
+  "doc_checks": [
+    {
+      "id": "9764ce45-f950-537c-8fe9-0e85d45c239f",
+      "upload": "d5a827f7-4597-59e3-9ea1-d055d9afa4f9",
+      "kind": "claims",
+      "doc_kind": "flyer",
+      "doc_label": "Flyer",
+      "image_slot": "brokerFlyer",
+      "phase": "aurelia-heights-phase-2",
+      "match_method": "rera_number",
+      "match_line": "We matched the RERA number on the flyer: GGM/673/405/2022/117.",
+      "headline_not_claim": "AURELIA HEIGHTS · PHASE 2",
+      "claims": [
+        {
+          "seq": 1,
+          "says_text": "POSSESSION DEC 2026",
+          "claim_type": "possession_date",
+          "verdict": "differs",
+          "records_label": "Records show",
+          "records_line": "Original completion Dec 2027, no extensions; 41% built.",
+          "how_checked": "Date compared with the HARERA registration.",
+          "facts": [
+            "aurelia-heights-phase-2/registration",
+            "aurelia-heights-phase-2/extensions",
+            "aurelia-heights-phase-2/qpr/2026-Q2/progress"
+          ],
+          "broker_question": "Which completion date will my agreement carry?",
+          "developer_says_line": null
+        },
+        {
+          "seq": 2,
+          "says_text": "Structure up to 12th floor",
+          "claim_type": "oc_status",
+          "verdict": "cant_check",
+          "records_label": "Records show",
+          "records_line": "Slab 9 at the last filing. The Jul–Sep QPR, due 15 Oct, is not on HARERA.",
+          "how_checked": "Slab compared with the latest QPR.",
+          "facts": [
+            "aurelia-heights-phase-2/qpr/2026-Q2/towers",
+            "aurelia-heights-phase-2/qpr/2026-Q3/missing"
+          ],
+          "broker_question": "Can I see slab 9, and the floor you're casting now?",
+          "developer_says_line": "Developer says “filed 12 Oct 2026”, not verified."
+        },
+        {
+          "seq": 3,
+          "says_text": "ONLY 20 FLATS LEFT",
+          "claim_type": "sold_left",
+          "verdict": "differs",
+          "records_label": "Records show",
+          "records_line": "72% of 500 units booked at the last filing, so about 140 unbooked.",
+          "how_checked": "Booked share compared with the latest QPR.",
+          "facts": [
+            "aurelia-heights-phase-2/qpr/2026-Q2/progress",
+            "aurelia-heights-phase-2/registration"
+          ],
+          "broker_question": null,
+          "developer_says_line": null
+        },
+        {
+          "seq": 4,
+          "says_text": "₹11,999/sq ft ALL-INCLUSIVE*",
+          "claim_type": "all_in",
+          "verdict": "differs",
+          "records_label": "Records show",
+          "records_line": "All-in ₹18,900 per sq ft carpet; the base alone is ₹11,750 per sq ft super. The flyer's fine print says “Stamp duty and registration extra.”",
+          "how_checked": "Price put on one basis with Plinth cost rules v2026.10.",
+          "facts": ["aurelia-heights-phase-2/price/all-in-3bhk"],
+          "broker_question": "Which charges on the cost sheet are optional?",
+          "developer_says_line": null
+        },
+        {
+          "seq": 5,
+          "says_text": "3 BHK · 2,000 SQ FT",
+          "claim_type": "area",
+          "verdict": "differs",
+          "records_label": "Records show",
+          "records_line": "1,450 sq ft carpet as registered; 2,000 is the super area.",
+          "how_checked": "Area compared with the carpet area on the HARERA registration.",
+          "facts": ["aurelia-heights-phase-2/registration"],
+          "broker_question": null,
+          "developer_says_line": null
+        },
+        {
+          "seq": 6,
+          "says_text": "40,000 sq ft clubhouse",
+          "claim_type": "amenity",
+          "verdict": "not_in_records",
+          "records_label": "Records show",
+          "records_line": "Not in any record we read.",
+          "how_checked": "Searched the HARERA registration and QPRs, 14 Oct 2026.",
+          "facts": [],
+          "broker_question": null,
+          "developer_says_line": null
+        },
+        {
+          "seq": 7,
+          "says_text": "RERA No. GGM/673/405/2022/117",
+          "claim_type": "rera_number",
+          "verdict": "matches",
+          "records_label": "Records show",
+          "records_line": "The HARERA registration of Aurelia Heights, Phase 2.",
+          "how_checked": "Number looked up on the HARERA register.",
+          "facts": ["aurelia-heights-phase-2/registration"],
+          "broker_question": null,
+          "developer_says_line": null
+        }
+      ],
+      "not_claims": [
+        "Infinity pool",
+        "Gym",
+        "Central park",
+        "*Images are artistic impressions. Conditions apply."
+      ],
+      "fine_print": "Stamp duty and registration extra.",
+      "summary_line": "4 of 7 claims differ from the records.",
+      "breakdown_line": "1 matches. 1 isn't in any record we read. 1 can't be checked until the Jul–Sep QPR is filed.",
+      "source": "DESIGN §5b · Claims vs records example (the sample broker flyer: 7 claims, 4 of 7 differ); broker questions DESIGN §5b · Site-visit co-pilot and Pay-as-built; flow product/design/review/fix-claims.md"
+    },
+    {
+      "id": "d12ab48e-e721-521a-9248-e5b7adcd46ad",
+      "upload": "7087dc09-93e7-53c9-8f51-5481ff361c05",
+      "kind": "claims",
+      "doc_kind": "hoarding_photo",
+      "doc_label": "Hoarding",
+      "image_slot": "hoardingClaim",
+      "phase": "aurelia-heights-phase-2",
+      "match_method": "rera_number",
+      "match_line": "We matched the RERA number on the hoarding: GGM/673/405/2022/117.",
+      "claims": [
+        {
+          "seq": 1,
+          "says_text": "AURELIA HEIGHTS · PHASE 2 · POSSESSION DEC 2026",
+          "claim_type": "possession_date",
+          "verdict": "differs",
+          "records_label": "Records show",
+          "records_line": "Original completion Dec 2027, no extensions; 41% built.",
+          "how_checked": "Date compared with the HARERA registration.",
+          "facts": [
+            "aurelia-heights-phase-2/registration",
+            "aurelia-heights-phase-2/extensions",
+            "aurelia-heights-phase-2/qpr/2026-Q2/progress"
+          ],
+          "broker_question": "Which completion date will my agreement carry?",
+          "developer_says_line": null
+        },
+        {
+          "seq": 2,
+          "says_text": "3 BHK FROM ₹2.35 CR*",
+          "claim_type": "price",
+          "verdict": "matches",
+          "records_label": "Price list shows",
+          "records_line": "The developer's price list of 2 Oct 2026. All-in ₹2.74 Cr.",
+          "how_checked": "Price compared with the developer's latest price list.",
+          "facts": [
+            "aurelia-heights-phase-2/price/quoted-3bhk",
+            "aurelia-heights-phase-2/price/all-in-3bhk"
+          ],
+          "broker_question": null,
+          "developer_says_line": null
+        },
+        {
+          "seq": 3,
+          "says_text": "RERA No. GGM/673/405/2022/117",
+          "claim_type": "rera_number",
+          "verdict": "matches",
+          "records_label": "Records show",
+          "records_line": "The HARERA registration of Aurelia Heights, Phase 2.",
+          "how_checked": "Number looked up on the HARERA register.",
+          "facts": ["aurelia-heights-phase-2/registration"],
+          "broker_question": null,
+          "developer_says_line": null
+        }
+      ],
+      "summary_line": "1 of 3 claims differs from the records.",
+      "breakdown_line": "2 match: the price list's 3 BHK price and the RERA number.",
+      "source": "DESIGN §5b · Claims vs records example (the sample hoarding: 1 of 3 differs)"
+    },
+    {
+      "id": "b067e9cf-9fb2-5421-987b-21d49aac0304",
+      "upload": "35173645-f963-5c4b-8b49-8fe603f23fed",
+      "kind": "pay_as_built",
+      "doc_kind": "demand_letter",
+      "doc_label": "Demand letter",
+      "booking": "f2c27d3d-bc68-5937-857b-7e04d241d0e5",
+      "phase": "aurelia-heights-phase-2",
+      "ref": "NE/AH2/A-1104/12",
+      "dated": "2026-10-10",
+      "stage_text": "On casting of Tower A slab 12",
+      "instalment_pct": 7.5,
+      "instalment_inr": 1254000,
+      "gst_inr": 62700,
+      "total_inr": 1316700,
+      "due_on": "2026-10-30",
+      "pay_to": "Aurelia Heights Ph 2 RERA Collection Account, Peepal Bank, ending 4417",
+      "rows": [
+        {
+          "seq": 1,
+          "field": "stage",
+          "says_text": "On casting of Tower A slab 12",
+          "verdict": "cant_check",
+          "records_label": "Records show",
+          "records_line": "Tower A at slab 9 at the latest filing, as of 30 Jun 2026. Nothing newer is on HARERA.",
+          "facts": [
+            "aurelia-heights-phase-2/qpr/2026-Q2/towers",
+            "aurelia-heights-phase-2/qpr/2026-Q3/missing"
+          ]
+        },
+        {
+          "seq": 2,
+          "field": "plan",
+          "says_text": "7.5% of the price at this stage",
+          "verdict": "matches",
+          "records_label": "Your plan shows",
+          "records_line": "7.5% at each of slabs 3, 6, 9, 12, 15, 18 and 20.",
+          "facts": []
+        },
+        {
+          "seq": 3,
+          "field": "amount",
+          "says_text": "₹12,54,000 plus GST ₹62,700: ₹13,16,700",
+          "verdict": "matches",
+          "records_label": "Your price shows",
+          "records_line": "7.5% of ₹1,67,20,000 is ₹12,54,000. GST at 5% is ₹62,700.",
+          "facts": []
+        },
+        {
+          "seq": 4,
+          "field": "payee",
+          "says_text": "RERA Collection Account, Peepal Bank, ending 4417",
+          "verdict": "matches",
+          "records_label": "Records show",
+          "records_line": "The account Northfield registered with HARERA for Phase 2.",
+          "facts": ["aurelia-heights-phase-2/collection-account"]
+        }
+      ],
+      "summary_line": "The latest filing shows slab 9. This letter asks for the slab 12 instalment.",
+      "breakdown_line": "Plan, amount and payee match. The stage can't be checked yet: the latest filing shows Tower A 3 slabs below.",
+      "actions": [
+        "Ask for the architect's or engineer's certificate for slab 12.",
+        "Write to Northfield: a draft you copy and send.",
+        "Pay on time if the stage is reached (RERA s.19(6); interest for delay, s.19(7))."
+      ],
+      "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (the demand letter and its check); row copy WebPayAsBuilt artboard"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "f2c27d3d-bc68-5937-857b-7e04d241d0e5",
+      "user": "kavya-nair",
+      "phase": "aurelia-heights-phase-2",
+      "tower": "A",
+      "floor": 11,
+      "unit_no": "A-1104",
+      "unit_label": "3 BHK",
+      "carpet_sqft": 1450,
+      "booked_on": "2023-01",
+      "agreement_registered_on": "2023-02",
+      "price_inr": 16720000,
+      "base_inr": 15800000,
+      "charges_inr": 920000,
+      "paid_stages": ["booking", "agreement", "foundation", "slab 3", "slab 6", "slab 9"],
+      "paid_to_date_pct": 52.5,
+      "paid_to_date_inr": 8778000,
+      "paid_to_date_line": "52.5% = ₹87,78,000 plus GST",
+      "family_visible": false,
+      "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (Pay-as-built example allottee)"
+    }
+  ],
+  "payee_checks": [
+    {
+      "id": "45c8be4e-fce3-5aab-bd33-73fa038946d8",
+      "doc_check": "36ab2a7a-8513-5241-9905-d8f02d56aab1",
+      "phase": "aurelia-heights-phase-2",
+      "channel": "whatsapp",
+      "received_at": "2026-10-18T10:14:00+05:30",
+      "purpose_line": "EOI to block a 3 BHK",
+      "amount_inr": 1100000,
+      "stage": "before_agreement",
+      "paid_so_far_inr": 0,
+      "method": "transfer",
+      "entered": {
+        "payee_name": "Northfield Realty Services LLP",
+        "account_number": "919020045118082",
+        "account_last4": "8082",
+        "ifsc": "MRGL0000912",
+        "bank": "Marigold Bank"
+      },
+      "registered": {
+        "payee_name": "Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd",
+        "account_last4": "4417",
+        "ifsc": "PEPL0000418",
+        "bank": "Peepal Bank"
+      },
+      "matched": 0,
+      "of": 3,
+      "cap_limit_inr": 2442000,
+      "within_cap": true,
+      "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (Before you pay on WhatsApp: 0 of 3 match; within the ₹24.4 L limit); DESIGN §5b · Aurelia Heights, Phase 2 (collection account); message WaBeforePay artboard"
+    },
+    {
+      "id": "5353f41a-4d6d-53e5-8944-c9f25e783878",
+      "doc_check": "750f1165-e668-5556-98dd-4c83a116726f",
+      "phase": "aurelia-heights-phase-2",
+      "channel": "whatsapp",
+      "received_at": "2026-10-18T10:40:00+05:30",
+      "purpose_line": "EOI, bank page of the booking form",
+      "amount_inr": 1100000,
+      "stage": "before_agreement",
+      "paid_so_far_inr": 0,
+      "method": "transfer",
+      "entered": {
+        "payee_name": "Northfield Estates Pvt Ltd",
+        "account_number": "50200071824417",
+        "account_last4": "4417",
+        "ifsc": "PEPL0000418",
+        "bank": "Peepal Bank"
+      },
+      "registered": {
+        "payee_name": "Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd",
+        "account_last4": "4417",
+        "ifsc": "PEPL0000418",
+        "bank": "Peepal Bank"
+      },
+      "matched": 3,
+      "of": 3,
+      "cap_limit_inr": 2442000,
+      "within_cap": true,
+      "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (the booking-form case matches 3 of 3); amount and time WaBeforePay artboard (\"OK to pay the EOI here?\", 10:40 am)"
+    }
+  ],
+  "receipts": [
+    {
+      "id": "4b68d0c0-196b-5b56-8a8a-5b0ccd2f02ea",
+      "user": null,
+      "phase": "aurelia-heights-phase-2",
+      "amount_inr": 1100000,
+      "paid_on": "2026-10-18",
+      "utr_last4": "7731",
+      "source": "DESIGN §5b · Aurelia Heights, Phase 2 (10% cap example: EOI ₹11,00,000, receipt dated 18 Oct 2026, UTR ending 7731)"
+    }
+  ],
+  "uploads": [
+    {
+      "id": "db41d883-3a48-55fc-a02d-bd5fed915412",
+      "kind": "cost_sheet",
+      "phase": "aurelia-heights-phase-2",
+      "pages": 2,
+      "dated": "2026-10-02",
+      "photographed_on": "2026-10-18",
+      "saved": false,
+      "source": "DESIGN §5b · Discovery, cost and Ask Plinth (cost-sheet photo in the app: 2 pages, photographed 18 Oct 2026)"
+    }
+  ],
+  "cap": {
+    "phase": "aurelia-heights-phase-2",
+    "base_plus_charges_inr": 24420000,
+    "limit_inr": 2442000,
+    "rule": "Before a registered agreement for sale, at most 10% of the price (base + charges), RERA s.13.",
+    "source": "DESIGN §5b · Aurelia Heights, Phase 2 (10% of ₹2.44 Cr = ₹24.4 L)"
+  },
+  "sources_note": "Collection account: DESIGN §5b. DESIGN §5b · Fixture decisions, round 2 (C-18) for the 13 payment stages.",
+  "source": "DESIGN §5b"
+}

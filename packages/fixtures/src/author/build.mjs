@@ -4,7 +4,8 @@
 //   node src/author/build.mjs           # write files
 //   node src/author/build.mjs --check   # exit 1 if any file would change (CI drift check)
 //
-// Owner: T03. Facts come only from DESIGN.md §5/§5b; gaps are null and listed in CONFLICTS.md.
+// Owner: T03 (T03b adds people, consents, family, workspace, agents, visits, checks, their
+// expected outputs and the recorded WhatsApp payloads). Facts come only from DESIGN.md §5/§5b; gaps are null and listed in CONFLICTS.md.
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,8 +13,10 @@ import { buildCatalogue, buildEvidence } from "./canonical.mjs";
 import { GROUP_SLUGS, SLUGS, makeExpected } from "./expected.mjs";
 import { format } from "prettier";
 import { json } from "./lib.mjs";
+import { buildConsents, buildFamily, buildPeople } from "./people.mjs";
 import { buildDeveloperContent, buildScoring } from "./scoring.mjs";
 import { buildVectors } from "./vectors.mjs";
+import { buildAgents, buildChecks, buildVisits, buildWorkspace } from "./workspace.mjs";
 
 export const PKG = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -34,6 +37,17 @@ export async function buildAll() {
   put("canonical/evidence.json", ev);
   put("canonical/scoring.json", sc);
   put("canonical/developer_content.json", dc);
+  // T03b: people, consents, family, workspace, agents, visits, checks.
+  const B = {
+    people: buildPeople(sc),
+    consents: buildConsents(),
+    family: buildFamily(),
+    workspace: buildWorkspace(cat, sc, dc),
+    agents: buildAgents(),
+    visits: buildVisits(),
+    checks: buildChecks(),
+  };
+  for (const [name, v] of Object.entries(B)) put(`canonical/${name}.json`, v);
   for (const [name, v] of Object.entries(vec)) put(`vectors/${name}.json`, v);
 
   const requests = {};

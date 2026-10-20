@@ -1,0 +1,221 @@
+{
+  "schema": "plinth.fixtures.visits/1",
+  "note": "Site visits (M5): Rohan's visit pass with its 5 questions from the records, the visit messages, the illustrative visit-day frames and the recap check; the other booked visits in Northfield's inbox. Owner: T03b. Generated; edit src/author.",
+  "visits": [
+    {
+      "id": "212c85d7-1aac-56d6-bdf7-ec0bd8d9ca17",
+      "key": "rohan/aurelia/2026-10-24",
+      "buyer": "rohan",
+      "phase": "aurelia-heights-phase-2",
+      "site_office": "Sector 37D sales gallery",
+      "slot_at": "2026-10-24T11:00:00+05:30",
+      "visited_on": null,
+      "visitors": null,
+      "code": "4821",
+      "consent": "C-1018-11",
+      "agent_of_record": null,
+      "agent_answer": "none",
+      "status": "booked",
+      "booked_at": "2026-10-18T09:15:00+05:30",
+      "source": "DESIGN §5b · Aurelia Heights, Phase 2 (visit pass Sat 24 Oct 2026, 11 am, sales gallery, code 4821); DESIGN §5b · Consent references (booked 9:15 am); DESIGN §5b · Site-visit co-pilot and Pay-as-built (agent of record: none)"
+    },
+    {
+      "id": "36912051-f4da-5cda-9e68-5cf338a05d80",
+      "key": "aman/aurelia/2026-10-24",
+      "buyer": "aman",
+      "phase": "aurelia-heights-phase-2",
+      "site_office": null,
+      "slot_at": "2026-10-24T15:00:00+05:30",
+      "visited_on": null,
+      "visitors": null,
+      "code": "5190",
+      "consent": "C-1017-03",
+      "agent_of_record": null,
+      "agent_answer": null,
+      "status": "booked",
+      "booked_at": null,
+      "source": "DESIGN §5b · Developer workspace (inbox)"
+    },
+    {
+      "id": "b1a46278-e362-5e56-bb1c-5c16d55848f5",
+      "key": "nisha/cedar-walk-phase-2/2026-10-25",
+      "buyer": "nisha",
+      "phase": "cedar-walk-phase-2",
+      "site_office": null,
+      "slot_at": "2026-10-25T16:00:00+05:30",
+      "visited_on": null,
+      "visitors": null,
+      "code": "3376",
+      "consent": "C-1017-05",
+      "agent_of_record": "bluegate-homes",
+      "agent_answer": null,
+      "status": "booked",
+      "booked_at": null,
+      "source": "DESIGN §5b · Developer workspace (inbox; agent Bluegate Homes)"
+    },
+    {
+      "id": "88fdeef6-a3bb-570e-a292-7598a23338f3",
+      "key": "kabir/2026-10-16",
+      "buyer": "kabir",
+      "phase": null,
+      "site_office": null,
+      "slot_at": null,
+      "visited_on": "2026-10-16",
+      "visitors": null,
+      "code": null,
+      "consent": "C-1016-08",
+      "agent_of_record": null,
+      "agent_answer": null,
+      "status": "done",
+      "booked_at": null,
+      "source": "DESIGN §5b · Developer workspace (inbox: visited 16 Oct)"
+    }
+  ],
+  "pass": {
+    "visit": "212c85d7-1aac-56d6-bdf7-ec0bd8d9ca17",
+    "line": "You don't have to give your number at the gate.",
+    "questions": [
+      {
+        "seq": 1,
+        "record_line": "Latest QPR shows Tower A at slab 9",
+        "question": "Can I see slab 9, and the floor you're casting now?",
+        "source_label": "QPR Apr–Jun 2026",
+        "facts": ["aurelia-heights-phase-2/qpr/2026-Q2/towers"],
+        "sent_ahead": false
+      },
+      {
+        "seq": 2,
+        "record_line": "The Jul–Sep QPR was due 15 Oct and isn't on HARERA",
+        "question": "Can I see the HARERA receipt for the Jul–Sep 2026 QPR?",
+        "source_label": "QPR register, 18 Oct 2026",
+        "facts": ["aurelia-heights-phase-2/qpr/2026-Q3/missing"],
+        "sent_ahead": true
+      },
+      {
+        "seq": 3,
+        "record_line": "HARERA lists one collection account for Phase 2",
+        "question": "Can you give me the RERA collection account in writing?",
+        "source_label": "HARERA registration",
+        "facts": ["aurelia-heights-phase-2/collection-account"],
+        "sent_ahead": false
+      },
+      {
+        "seq": 4,
+        "record_line": "Original completion Dec 2027, 41% built",
+        "question": "Which completion date will my agreement carry?",
+        "source_label": "registration; QPR Apr–Jun 2026",
+        "facts": [
+          "aurelia-heights-phase-2/registration",
+          "aurelia-heights-phase-2/qpr/2026-Q2/progress"
+        ],
+        "sent_ahead": false
+      },
+      {
+        "seq": 5,
+        "record_line": "The cost sheet adds ₹9.2 L in charges",
+        "question": "Which charges on the cost sheet are optional?",
+        "source_label": "cost sheet, 2 Oct 2026",
+        "facts": ["aurelia-heights-phase-2/price/all-in-3bhk"],
+        "sent_ahead": true
+      }
+    ],
+    "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built"
+  },
+  "messages": [
+    {
+      "visit": "212c85d7-1aac-56d6-bdf7-ec0bd8d9ca17",
+      "kind": "booked",
+      "send_at": "2026-10-18T09:15:00+05:30",
+      "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (visit messages)"
+    },
+    {
+      "visit": "212c85d7-1aac-56d6-bdf7-ec0bd8d9ca17",
+      "kind": "reminder",
+      "send_at": "2026-10-23T18:00:00+05:30",
+      "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (visit messages)"
+    },
+    {
+      "visit": "212c85d7-1aac-56d6-bdf7-ec0bd8d9ca17",
+      "kind": "reminder",
+      "send_at": "2026-10-24T09:00:00+05:30",
+      "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (visit messages)"
+    },
+    {
+      "visit": "212c85d7-1aac-56d6-bdf7-ec0bd8d9ca17",
+      "kind": "recap_prompt",
+      "send_at": "2026-10-24T14:00:00+05:30",
+      "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (visit messages)"
+    }
+  ],
+  "visit_day": {
+    "illustrative": true,
+    "assumes": "No new filing since 18 Oct: the Jul–Sep QPR is still not on HARERA and the band is still Elevated.",
+    "check_in_at": "2026-10-24T10:52:00+05:30",
+    "photo_checklist": [
+      "RERA board",
+      "Tower A from the gate",
+      "Sample flat",
+      "The cost sheet they hand over",
+      "Bank details on the booking form"
+    ],
+    "recap": {
+      "recorded_at": "2026-10-24T12:25:00+05:30",
+      "duration_s": 72,
+      "audio_deleted": "after transcription"
+    },
+    "whatsapp_voice_note_at": "2026-10-24T14:04:00+05:30",
+    "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (visit-day frames, illustrative)"
+  },
+  "recap_check": {
+    "check": "2ad2a3e0-ebc0-5a01-9c49-a78fe3634e78",
+    "headline": "1 of 5 things they told you differs from the records.",
+    "saved_as": "Developer says · sales office · unverified · 24 Oct 2026",
+    "items": [
+      {
+        "seq": 1,
+        "said": "Possession Dec 2026",
+        "verdict": "differs",
+        "records_line": "Original completion Dec 2027, no extensions, 41% built.",
+        "facts": [
+          "aurelia-heights-phase-2/registration",
+          "aurelia-heights-phase-2/extensions",
+          "aurelia-heights-phase-2/qpr/2026-Q2/progress"
+        ]
+      },
+      {
+        "seq": 2,
+        "said": "Tower A at slab 12",
+        "verdict": "cant_check",
+        "records_line": "Slab 9 at the last filing.",
+        "facts": ["aurelia-heights-phase-2/qpr/2026-Q2/towers"]
+      },
+      {
+        "seq": 3,
+        "said": "Jul–Sep QPR filed 12 Oct",
+        "verdict": "cant_check",
+        "records_line": "Not on HARERA. The same as the developer's public claim.",
+        "facts": ["aurelia-heights-phase-2/qpr/2026-Q3/missing"]
+      },
+      {
+        "seq": 4,
+        "said": "3 BHK from ₹2.35 Cr",
+        "verdict": "matches",
+        "records_label": "Price list shows",
+        "records_line": "The developer's price list of 2 Oct 2026. All-in ₹2.74 Cr.",
+        "facts": [
+          "aurelia-heights-phase-2/price/quoted-3bhk",
+          "aurelia-heights-phase-2/price/all-in-3bhk"
+        ]
+      },
+      {
+        "seq": 5,
+        "said": "PLC and club waived if booked this week",
+        "verdict": "not_in_records",
+        "records_line": "An offer: get it in writing. PLC and club come to ₹4.4 L.",
+        "facts": ["aurelia-heights-phase-2/price/all-in-3bhk"]
+      }
+    ],
+    "rule": "Never published; never moves the band.",
+    "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (recap check, 5 items)"
+  }
+}

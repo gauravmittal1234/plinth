@@ -45,6 +45,11 @@ describe("seed", () => {
       "30_scoring.sql",
       "33_developer_says.sql",
       "35_developer_content.sql",
+      "40_share_cards.sql",
+      "50_people.sql",
+      "51_consents.sql",
+      "52_family.sql",
+      "53_comms.sql",
     ]);
     for (const c of Object.values(a))
       expect(c).not.toMatch(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/);
