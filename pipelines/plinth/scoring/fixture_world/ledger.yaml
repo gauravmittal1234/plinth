@@ -93,8 +93,11 @@ runs:
     rule_code: null
     confidence: low
     stall: false
-    stale: true
-    source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+    # R3 C-30: not stale at 15 Jul 2026 (newest QPR 92 days old, under v1.0's 180-day line).
+    # Flipped together with src/author/scoring.mjs so the byte-for-byte check holds; the source
+    # string below must match that file's exactly.
+    stale: false
+    source: "DESIGN §5b · Fixture decisions, round 2 (C-17); not stale at 15 Jul 2026 DESIGN §5b · Fixture decisions, round 3 (C-30) (newest QPR 92 days old, under v1.0's 180-day line)"
     history_source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
   - phase: laurel-residency
     model_version: v1.0

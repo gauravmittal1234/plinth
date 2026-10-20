@@ -16,6 +16,7 @@ export const S5B = "DESIGN §5b";
 export const S5B_ENG = "DESIGN §5b · Engineering fixture decisions (19 Oct 2026)";
 export const S5B_SWEEP = "DESIGN §5b · Final sweep rulings (19 Oct 2026)";
 export const R2 = (c) => `DESIGN §5b · Fixture decisions, round 2 (${c})`;
+export const R3 = (c) => `DESIGN §5b · Fixture decisions, round 3 (${c})`;
 export const ART_EVIDENCE = "artboards AppRisk/WebProject (evidence copy, a T03 input)";
 export const derived = (rule) => `derived: ${rule}`;
 export const proposed = (id) => `CONFLICTS.md ${id} (proposed; not yet in DESIGN §5b)`;
@@ -807,6 +808,22 @@ export function buildCatalogue() {
       snapshot: "harera_qpr/kestrel-park/2026-Q3",
       source: S5B,
     }),
+    // Sapphire Grove Ph 1's QPRs before Apr–Jun 2026, the 15 Jul 2026 v1.0 run's replay input
+    // (R3 C-30): all filed on time.
+    ...[
+      ["2025-Q1", "2025-04-14", 4],
+      ["2025-Q2", "2025-07-15", 10],
+      ["2025-Q3", "2025-10-14", 18],
+      ["2025-Q4", "2026-01-14", 27],
+      ["2026-Q1", "2026-04-15", 38],
+    ].map(([q, filed, built]) =>
+      qpr("sapphire-grove-phase-1", q, {
+        ...onTime(filed),
+        built_pct: built,
+        snapshot: `harera_qpr/sapphire-grove-phase-1/${q}`,
+        source: `${R3("C-30")} (filed dates and built %)`,
+      }),
+    ),
     qpr("sapphire-grove-phase-1", "2026-Q2", {
       status: "late",
       days_late: 12,
@@ -823,6 +840,25 @@ export function buildCatalogue() {
       snapshot: "harera_qpr/sapphire-grove-phase-1/2026-Q3",
       source: S5B,
     }),
+    // Coral Towers' QPRs before Jan–Mar 2026, the 15 Jul 2026 v1.0 run's replay input (R3 C-30):
+    // on time unless a lateness is named.
+    ...[
+      ["2024-Q3", null, 12],
+      ["2024-Q4", null, 14],
+      ["2025-Q1", 30, 15],
+      ["2025-Q2", null, 17],
+      ["2025-Q3", 22, 18],
+      ["2025-Q4", null, 20],
+    ].map(([q, late, built]) =>
+      qpr("coral-towers", q, {
+        ...(late
+          ? { status: "late", days_late: late, filed_on: addDays(qprDue(q), late) }
+          : { status: "on_time" }),
+        built_pct: built,
+        snapshot: `harera_qpr/coral-towers/${q}`,
+        source: `${R3("C-30")} (${late ? `filed ${late} days late` : "filed on time"}; built %)`,
+      }),
+    ),
     qpr("coral-towers", "2026-Q1", {
       ...onTime("2026-04-14"),
       built_pct: 22,
@@ -936,18 +972,35 @@ export function buildCatalogue() {
       latest_order_on: "2026-10-09",
       previous_count: 13,
       units_history: null,
-      // Replay input (T11 handoff): the count on record at each published run's cutoff, where
-      // §5b gives it. 13 held until the 9 Oct 2026 order made it 14 ("Aurelia complaints:
-      // 13 → 14"), so the 30 Sep 2026 run saw 13. The counts at 15 Jul and 2 Sep 2026 are not
-      // in §5b (CONFLICTS.md C-30).
+      // Replay input (T11 handoff, R3 C-30): the count on record at each published run's cutoff.
+      // 11 on 15 Jul 2026 (first scoring); an order of 28 Aug 2026 made it 12, seen by the 2 Sep
+      // 2026 run; an order of 24 Sep 2026 made it 13, in effect through 30 Sep 2026; the 9 Oct
+      // 2026 order made it 14 (the current count above).
       count_history: [
         {
-          as_of: "2026-09-30",
+          as_of: "2026-07-15",
+          count: 11,
+          per_100_units: 2.2,
+          source: `${R3("C-30")} (11 complaints at first scoring, 15 Jul 2026); rate ${derived("11 per 500 units")}`,
+        },
+        {
+          as_of: "2026-08-28",
+          count: 12,
+          per_100_units: 2.4,
+          source: `${R3("C-30")} (an order of 28 Aug 2026 made it 12, seen by the 2 Sep 2026 run); rate ${derived("12 per 500 units")}`,
+        },
+        {
+          as_of: "2026-09-24",
           count: 13,
           per_100_units: 2.6,
-          source: `${S5B} (Aurelia complaints 13 → 14, latest order 9 Oct 2026); rate ${derived("13 per 500 units")}`,
+          source: `${R3("C-30")} (an order of 24 Sep 2026 made it 13, in effect through 30 Sep 2026); rate ${derived("13 per 500 units")}`,
         },
-        { as_of: "2026-10-09", count: 14, per_100_units: 2.8, source: S5B },
+        {
+          as_of: "2026-10-09",
+          count: 14,
+          per_100_units: 2.8,
+          source: `${S5B} (the 9 Oct 2026 order made it 14); ${R3("C-30")}`,
+        },
       ],
       source: `${S5B}; ${R2("C-11")}`,
     },
@@ -1587,32 +1640,38 @@ export function buildEvidence(cat) {
       source: isA ? `${c.source}; D-127 ${S5B_SWEEP}` : c.source,
     });
   }
-  // The count on record before the 9 Oct 2026 order (replay input, T11 handoff): superseded by the
-  // current fact, so the cited fact id keeps its history and only the current one is live.
+  // The counts on record before the 9 Oct 2026 order (replay input, T11 handoff, R3 C-30): a
+  // chain of superseded facts, one per order (15 Jul 11 -> 28 Aug 12 -> 24 Sep 13 -> 9 Oct 14),
+  // each live only until the next one supersedes it.
   {
     const cur = facts.find((f) => f.key === `${AH2}/complaints-24m`);
-    const h = cat.complaint_counts.find((c) => c.subject === AH2).count_history[0];
-    snap(`harera_orders/${AH2}/2026-09-30`, "harera_orders", IST("2026-09-30"));
-    fact({
-      key: `${AH2}/complaints-24m/2026-09-30`,
-      subject_type: "phase",
-      subject: AH2,
-      attribute: "orders.complaints_against_promoter_24m",
-      value: {
-        count: h.count,
-        units_base: 500,
-        per_100_units: h.per_100_units,
-        median_count_similar: null,
-        latest_order_on: null,
-      },
-      as_of: h.as_of,
-      valid_to: "2026-10-09",
-      learned_at: IST(h.as_of),
-      snapshot: `harera_orders/${AH2}/2026-09-30`,
-      method: "manual",
-      superseded_by: cur.id,
-      source: h.source,
-    });
+    const hist = cat.complaint_counts.find((c) => c.subject === AH2).count_history;
+    const past = hist.slice(0, -1); // the last entry duplicates the current (live) fact.
+    let next = cur;
+    for (let i = past.length - 1; i >= 0; i--) {
+      const h = past[i];
+      snap(`harera_orders/${AH2}/${h.as_of}`, "harera_orders", IST(h.as_of));
+      next = fact({
+        key: `${AH2}/complaints-24m/${h.as_of}`,
+        subject_type: "phase",
+        subject: AH2,
+        attribute: "orders.complaints_against_promoter_24m",
+        value: {
+          count: h.count,
+          units_base: 500,
+          per_100_units: h.per_100_units,
+          median_count_similar: null,
+          latest_order_on: null,
+        },
+        as_of: h.as_of,
+        valid_to: next.as_of,
+        learned_at: IST(h.as_of),
+        snapshot: `harera_orders/${AH2}/${h.as_of}`,
+        method: "manual",
+        superseded_by: next.id,
+        source: h.source,
+      });
+    }
   }
 
   // Track records (reason 4 for Aurelia) and Northfield's finished projects
