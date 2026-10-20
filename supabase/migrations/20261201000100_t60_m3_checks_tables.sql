@@ -260,7 +260,7 @@ create table app.extracted_claims (
   -- the token, the last 4 and the salted hash only (M3 rules: PII before models).
   constraint extracted_claims_no_account_number check (
     not app.has_digit_run(
-      pg_catalog.concat_ws(' | ', raw_text, value::text, reader_a::text, reader_b::text,
+      pg_catalog.concat_ws(' | ', raw_text, value::text, reader_a::text, reader_b::text, bbox::text,
         pg_catalog.array_to_string(line_ids, ' | ')),
       case when claim_type = 'account_number' then 9 else 11 end
     )
