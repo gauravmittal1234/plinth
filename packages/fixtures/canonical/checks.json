@@ -155,7 +155,7 @@
           "claim_type": "price",
           "verdict": "matches",
           "records_label": "Price list shows",
-          "records_line": "The developer's price list of 2 Oct 2026. All-in ₹2.74 Cr.",
+          "records_line": "The developer's price list of 2 Oct 2026 shows 3 BHK from ₹2.35 Cr. All-in ₹2.74 Cr.",
           "how_checked": "Price compared with the developer's latest price list.",
           "facts": [
             "aurelia-heights-phase-2/price/quoted-3bhk",

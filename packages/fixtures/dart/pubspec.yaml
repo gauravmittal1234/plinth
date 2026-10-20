@@ -20,12 +20,31 @@ dev_dependencies:
 flutter:
   assets:
     - assets/expected/about/
+    - assets/expected/afford_the_wait/
+    - assets/expected/alert_prefs/
+    - assets/expected/alert_prefs_set/
     - assets/expected/compare/
+    - assets/expected/consent_withdraw/
+    - assets/expected/cost_breakdown/
     - assets/expected/developer_page/
+    - assets/expected/doc_check/
     - assets/expected/evidence/
+    - assets/expected/family_invite_cancel/
+    - assets/expected/family_invite_create/
+    - assets/expected/family_invite_preview/
+    - assets/expected/family_member_remove/
+    - assets/expected/family_member_undo/
     - assets/expected/flags/
+    - assets/expected/follow/
+    - assets/expected/following_feed/
+    - assets/expected/mark_following_seen/
     - assets/expected/methodology/
+    - assets/expected/payee_check/
     - assets/expected/project_page/
     - assets/expected/risk_summary/
     - assets/expected/search_projects/
+    - assets/expected/share_card/
+    - assets/expected/shortlist_note_add/
+    - assets/expected/unfollow/
+    - assets/expected/who_has_my_number/
     - assets/vectors/

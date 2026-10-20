@@ -1,0 +1,53 @@
+{
+  "schema": "plinth.cost_breakdown/1",
+  "rules_version": "2026.10",
+  "basis_line": "3 BHK, 1,450 sq ft carpet / 2,000 super · park-facing · cost sheet of 2 Oct 2026",
+  "lines": [
+    {
+      "code": "base",
+      "label": "Base",
+      "amount_inr": 23500000,
+      "amount_label": "₹2.35 Cr",
+      "tag": null
+    },
+    {
+      "code": "parking",
+      "label": "Parking",
+      "amount_inr": 350000,
+      "amount_label": "₹3.5 L",
+      "tag": null
+    },
+    {
+      "code": "ifms",
+      "label": "IFMS",
+      "amount_inr": 130000,
+      "amount_label": "₹1.3 L",
+      "tag": "refundable_deposit"
+    },
+    {
+      "code": "gst",
+      "label": "GST 5%",
+      "amount_inr": 1199000,
+      "amount_label": "₹12.0 L",
+      "tag": "set_by_law"
+    },
+    {
+      "code": "stamp_registration",
+      "label": "Stamp duty + registration",
+      "amount_inr": 1728600,
+      "amount_label": "₹17.3 L",
+      "tag": "set_by_law"
+    }
+  ],
+  "charges_total_label": "₹4.8 L",
+  "all_in_inr": 26907600,
+  "all_in_label": "₹2.69 Cr",
+  "per_sqft_carpet_label": "₹18,600 per sq ft carpet",
+  "vs_quoted_line": "15% more than quoted",
+  "negotiable_line": null,
+  "edc_idc_line": "EDC and IDC: included in the base.",
+  "area_line": "You pay for 2,000 sq ft of super area. You can use 1,450 sq ft of carpet area. Loading is 38%.",
+  "move_in_line": "About ₹12–18 L on top, around the offer of possession (Plinth estimate).",
+  "waived": ["plc", "club"],
+  "waived_line": "₹4.9 L less"
+}

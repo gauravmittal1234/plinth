@@ -1,0 +1,47 @@
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "100000000000000",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "910000000000",
+              "phone_number_id": "100000000000001"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Rohan"
+                },
+                "wa_id": "919900000318"
+              }
+            ],
+            "messages": [
+              {
+                "from": "919900000318",
+                "id": "wamid.fixture.03296aa6-ab7a-579f-bae0-1569dfd9188d",
+                "timestamp": "1792305000",
+                "context": {
+                  "from": "910000000000",
+                  "id": "wamid.fixture.2d2417ae-c1bf-5c8f-884b-8613a341e97d"
+                },
+                "type": "interactive",
+                "interactive": {
+                  "type": "button_reply",
+                  "button_reply": {
+                    "id": "why_this_band",
+                    "title": "Why this band"
+                  }
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}

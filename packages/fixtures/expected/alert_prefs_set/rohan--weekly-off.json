@@ -1,0 +1,23 @@
+{
+  "schema": "plinth.alert_prefs/1",
+  "prefs": {
+    "push": {
+      "band_change": "instant",
+      "filings": "instant"
+    },
+    "whatsapp": {
+      "band_change": "instant",
+      "digest": "off"
+    },
+    "quiet_hours": {
+      "from": "22:00",
+      "to": "08:00"
+    }
+  },
+  "whatsapp_optin": true,
+  "lines": [
+    "Utility alerts only. No offers, no ads, and nothing from developers.",
+    "Reply STOP to end alerts."
+  ],
+  "number_line": "3 parties can reach you now. Family in your circle never see it."
+}

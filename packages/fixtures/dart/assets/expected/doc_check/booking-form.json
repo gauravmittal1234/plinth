@@ -1,0 +1,122 @@
+{
+  "schema": "plinth.doc_check/1",
+  "rules_version": "2026.10",
+  "id": "750f1165-e668-5556-98dd-4c83a116726f",
+  "kind": "before_you_pay",
+  "status": "done",
+  "doc_label": "Booking form",
+  "project_match": {
+    "slug": "aurelia-heights-phase-2",
+    "method": "name_sector",
+    "confirmed": true,
+    "line": "We matched the project named in the form: Aurelia Heights, Phase 2."
+  },
+  "summary_line": "3 of 3 match the account registered with HARERA.",
+  "breakdown_line": "₹11,00,000 is within the ₹24.4 L limit before a registered agreement.",
+  "rows": [
+    {
+      "seq": 1,
+      "says_label": "Booking form says",
+      "says_text": "Northfield Estates Pvt Ltd",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd",
+      "how_checked": "Compared with the RERA collection account on the HARERA registration.",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["364b3691-3068-5e22-a17f-e4e49bbeee90"],
+          "evidence_url": "/evidence/364b3691-3068-5e22-a17f-e4e49bbeee90",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    },
+    {
+      "seq": 2,
+      "says_label": "Booking form says",
+      "says_text": "ending 4417",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "ending 4417",
+      "how_checked": "Compared with the RERA collection account on the HARERA registration.",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["364b3691-3068-5e22-a17f-e4e49bbeee90"],
+          "evidence_url": "/evidence/364b3691-3068-5e22-a17f-e4e49bbeee90",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    },
+    {
+      "seq": 3,
+      "says_label": "Booking form says",
+      "says_text": "PEPL0000418 · Peepal Bank",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "PEPL0000418 · Peepal Bank",
+      "how_checked": "Compared with the RERA collection account on the HARERA registration.",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["364b3691-3068-5e22-a17f-e4e49bbeee90"],
+          "evidence_url": "/evidence/364b3691-3068-5e22-a17f-e4e49bbeee90",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    }
+  ],
+  "actions": {
+    "share_text": "3 of 3 payee details on this form match the account registered with HARERA for Aurelia Heights, Phase 2.",
+    "broker_questions": []
+  },
+  "notes": [
+    "Plinth never takes, holds or moves your money.",
+    "We keep this file for 30 days, then delete it, unless you save it to your account."
+  ],
+  "payee": {
+    "matched": 3,
+    "of": 3,
+    "verdict": "matches",
+    "verdict_line": "Matches the account registered with HARERA",
+    "rows": [
+      {
+        "field": "payee_name",
+        "entered_line": "Northfield Estates Pvt Ltd",
+        "registered_line": "Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd",
+        "result": "matches"
+      },
+      {
+        "field": "account",
+        "entered_line": "ending 4417",
+        "registered_line": "ending 4417",
+        "result": "matches"
+      },
+      {
+        "field": "ifsc",
+        "entered_line": "PEPL0000418 · Peepal Bank",
+        "registered_line": "PEPL0000418 · Peepal Bank",
+        "result": "matches"
+      }
+    ],
+    "advice": []
+  }
+}

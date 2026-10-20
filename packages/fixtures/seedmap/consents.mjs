@@ -23,7 +23,12 @@ export function build({ load, sql }) {
     `${insert(
       "app.purposes",
       ["code", "description", "retention_class", "notice_section"],
-      k.purposes.map((x) => [q(x.code), q(x.description), q(x.retention_class), q(x.notice_section)]),
+      k.purposes.map((x) => [
+        q(x.code),
+        q(x.description),
+        q(x.retention_class),
+        q(x.notice_section),
+      ]),
     ).replace(/;\n$/, "")}\non conflict (code) do nothing;\n`,
   );
   const asBuyer = (user) =>

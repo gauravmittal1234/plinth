@@ -176,8 +176,7 @@ export function buildPeople(sc) {
       phone_masked: p.phone_masked,
       following_seen_at: p.key === "rohan" ? at("2026-10-14", "08:40:00") : null,
       adult_attested_at: null,
-      source:
-        p.key === "rohan" ? `${SEC.following} (last look 14 Oct 2026, 8:40 am)` : p.source,
+      source: p.key === "rohan" ? `${SEC.following} (last look 14 Oct 2026, 8:40 am)` : p.source,
     }));
 
   // Rohan's 4 follows since 1 Jul 2026 (the 4 projects of the 12–18 Oct digest: Aurelia, Kestrel,
@@ -242,7 +241,6 @@ export function buildPeople(sc) {
       before_pill: "₹1.89 Cr",
       after_pill: "₹1.95 Cr",
       facts: [`${SG1}/price/quoted-3bhk`],
-      source_label: "Developer price list · 16 Oct 2026",
       lane: "from_developer",
       summary_kind: "price change",
       source: `${SEC.following} (3 BHK ₹1.89 Cr → ₹1.95 Cr, all-in ≈ ₹2.27 Cr)`,
@@ -358,7 +356,6 @@ export function buildPeople(sc) {
     band: null,
     lane: "records_show",
     summary_kind: null,
-    source_label: null,
     ...e,
   }));
   const following = {

@@ -11,7 +11,8 @@ const SG1 = "sapphire-grove-phase-1";
 const CW2 = "cedar-walk-phase-2";
 const id = (kind, key) => uuid5(kind, key);
 const at = (date, time = "00:00:00") => IST(date, time);
-const RETENTION = "We keep this file for 30 days, then delete it, unless you save it to your account.";
+const RETENTION =
+  "We keep this file for 30 days, then delete it, unless you save it to your account.";
 
 // ---------------------------------------------------------------- workspace
 export function buildWorkspace(cat, sc, dc) {
@@ -265,8 +266,10 @@ export function buildWorkspace(cat, sc, dc) {
     notices: {
       heads_up: notice("heads_up_48h").id,
       pending: notice("notice_7day").id,
-      heads_up_line: "Heads-up sent 30 Sep 2026 for the 2 Oct Moderate → Elevated change, 48 hours before buyers saw it.",
-      pending_line: "Elevated → High, effective 25 Oct 2026 unless the Jul–Sep QPR is on record before then.",
+      heads_up_line:
+        "Heads-up sent 30 Sep 2026 for the 2 Oct Moderate → Elevated change, 48 hours before buyers saw it.",
+      pending_line:
+        "Elevated → High, effective 25 Oct 2026 unless the Jul–Sep QPR is on record before then.",
       source: `${SEC.workspace} (heads-up, pending notice); rows canonical/scoring.json band_notices`,
     },
     developer_reply: {
@@ -638,7 +641,8 @@ export function buildVisits() {
           said: "3 BHK from ₹2.35 Cr",
           verdict: "matches",
           records_label: "Price list shows",
-          records_line: "The developer's price list of 2 Oct 2026. All-in ₹2.74 Cr.",
+          records_line:
+            "The developer's price list of 2 Oct 2026 shows 3 BHK from ₹2.35 Cr. All-in ₹2.74 Cr.",
           facts: [`${AH2}/price/quoted-3bhk`, `${AH2}/price/all-in-3bhk`],
         },
         {
@@ -681,12 +685,18 @@ export function buildChecks() {
     match_line: "We matched the RERA number on the flyer: GGM/673/405/2022/117.",
     headline_not_claim: "AURELIA HEIGHTS · PHASE 2",
     claims: [
-      claim(1, "POSSESSION DEC 2026", "differs", "Original completion Dec 2027, no extensions; 41% built.", {
-        type: "possession_date",
-        how: "Date compared with the HARERA registration.",
-        facts: [`${AH2}/registration`, `${AH2}/extensions`, `${AH2}/qpr/2026-Q2/progress`],
-        question: "Which completion date will my agreement carry?",
-      }),
+      claim(
+        1,
+        "POSSESSION DEC 2026",
+        "differs",
+        "Original completion Dec 2027, no extensions; 41% built.",
+        {
+          type: "possession_date",
+          how: "Date compared with the HARERA registration.",
+          facts: [`${AH2}/registration`, `${AH2}/extensions`, `${AH2}/qpr/2026-Q2/progress`],
+          question: "Which completion date will my agreement carry?",
+        },
+      ),
       claim(
         2,
         "Structure up to 12th floor",
@@ -789,7 +799,7 @@ export function buildChecks() {
         2,
         "3 BHK FROM ₹2.35 CR*",
         "matches",
-        "The developer's price list of 2 Oct 2026. All-in ₹2.74 Cr.",
+        "The developer's price list of 2 Oct 2026 shows 3 BHK from ₹2.35 Cr. All-in ₹2.74 Cr.",
         {
           type: "price",
           records_label: "Price list shows",
@@ -891,7 +901,8 @@ export function buildChecks() {
       },
     ],
     summary_line: "The latest filing shows slab 9. This letter asks for the slab 12 instalment.",
-    breakdown_line: "Plan, amount and payee match. The stage can't be checked yet: the latest filing shows Tower A 3 slabs below.",
+    breakdown_line:
+      "Plan, amount and payee match. The stage can't be checked yet: the latest filing shows Tower A 3 slabs below.",
     actions: [
       "Ask for the architect's or engineer's certificate for slab 12.",
       "Write to Northfield: a draft you copy and send.",

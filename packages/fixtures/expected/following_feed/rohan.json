@@ -1,0 +1,397 @@
+{
+  "schema": "plinth.following_feed/1",
+  "since": "2026-10-14T08:40:00+05:30",
+  "heading": "What changed since 14 Oct?",
+  "last_looked_line": "Last looked 14 Oct 2026, 8:40 am · 5 unread",
+  "summary_line": "5 changes across your 4 projects: 1 extension, 1 filing on time, 2 missing filings and 1 price change. No band moved.",
+  "changes": [
+    {
+      "event_id": "707c008d-01a8-5512-bf69-84881d932cf9",
+      "slug": "sapphire-grove-phase-1",
+      "kind": "price_list_published",
+      "occurred_on": "2026-10-16",
+      "line": "New price list from the developer: 3 BHK quoted ₹1.95 Cr. All-in is now about ₹2.27 Cr.",
+      "before_pill": "₹1.89 Cr",
+      "after_pill": "₹1.95 Cr",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "Developer price list · 16 Oct 2026",
+          "fact_ids": ["98184172-4ba3-54f3-8936-aca2cd4bcea6"],
+          "evidence_url": "/evidence/98184172-4ba3-54f3-8936-aca2cd4bcea6",
+          "official_url": null,
+          "as_of": "2026-10-16"
+        }
+      ]
+    },
+    {
+      "event_id": "3d06d71c-ff28-5ec4-987a-d3581696446a",
+      "slug": "sapphire-grove-phase-1",
+      "kind": "qpr_filed",
+      "occurred_on": "2026-10-15",
+      "line": "The Jul–Sep 2026 QPR was filed on time on 15 Oct and is on HARERA since 16 Oct. We update the band by 19 Oct 2026, 7:40 pm.",
+      "before_pill": "Due 15 Oct",
+      "after_pill": "Filed 15 Oct, on time",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["56a520eb-f5c1-582d-a9ca-a79ec018333e"],
+          "evidence_url": "/evidence/56a520eb-f5c1-582d-a9ca-a79ec018333e",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-16"
+        }
+      ]
+    },
+    {
+      "event_id": "27a269ba-ec4e-5ccc-acdb-7602cce61e7f",
+      "slug": "coral-towers",
+      "kind": "qpr_missing",
+      "occurred_on": "2026-10-15",
+      "line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026. The Apr–Jun QPR is missing too, so the newest figures are 187 days old.",
+      "before_pill": "Due 15 Oct",
+      "after_pill": "Not on HARERA as of 18 Oct",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["bb180ccb-bb22-558c-b834-e70deec8f7b3"],
+          "evidence_url": "/evidence/bb180ccb-bb22-558c-b834-e70deec8f7b3",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "event_id": "6166d123-3592-5ce1-9b9a-04496ba56870",
+      "slug": "aurelia-heights-phase-2",
+      "kind": "qpr_missing",
+      "occurred_on": "2026-10-15",
+      "line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026.",
+      "before_pill": "Due 15 Oct",
+      "after_pill": "Not on HARERA as of 18 Oct",
+      "developer_says": {
+        "line": "Developer says: filed 12 Oct, not yet verified."
+      },
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["bc3ff166-6be3-5805-8401-0dbd4260c1ea"],
+          "evidence_url": "/evidence/bc3ff166-6be3-5805-8401-0dbd4260c1ea",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "event_id": "23fce41f-b542-57f0-b3dd-c431714a17ac",
+      "slug": "coral-towers",
+      "kind": "extension_granted",
+      "occurred_on": "2026-10-14",
+      "line": "Coral Towers got a second extension, to Aug 2029.",
+      "before_pill": "Feb 2029",
+      "after_pill": "Aug 2029",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "HARERA order · Extension 2 · 14 Oct 2026",
+          "fact_ids": ["2f789ce6-4038-5a21-a34c-afda2f5c3bad"],
+          "evidence_url": "/evidence/2f789ce6-4038-5a21-a34c-afda2f5c3bad",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "quiet": [
+    {
+      "slug": "kestrel-park",
+      "line": "Nothing new for Kestrel Park since 14 Oct."
+    }
+  ],
+  "projects": [
+    {
+      "slug": "sapphire-grove-phase-1",
+      "name": "Sapphire Grove, Phase 1",
+      "chip": {
+        "kind": "band",
+        "label": "Moderate",
+        "step": 2,
+        "meter_filled": 2
+      },
+      "follow_type": "watching",
+      "row_line": "New QPR in · re-score due by 19 Oct",
+      "freshness_line": "From the Apr–Jun 2026 QPR · the new one is being read",
+      "family_line": "Meera follows too"
+    },
+    {
+      "slug": "coral-towers",
+      "name": "Coral Towers",
+      "chip": {
+        "kind": "band",
+        "label": "High",
+        "step": 4,
+        "meter_filled": 4
+      },
+      "follow_type": "watching",
+      "row_line": "Extended again on 14 Oct · 2 QPRs missing",
+      "freshness_line": "From the Jan–Mar 2026 QPR · 187 days old",
+      "family_line": "Meera follows too"
+    },
+    {
+      "slug": "aurelia-heights-phase-2",
+      "name": "Aurelia Heights, Phase 2",
+      "chip": {
+        "kind": "band",
+        "label": "Elevated",
+        "step": 3,
+        "meter_filled": 3
+      },
+      "follow_type": "watching",
+      "row_line": "Was Moderate until 2 Oct · Jul–Sep QPR not on HARERA yet",
+      "freshness_line": "From the Apr–Jun 2026 QPR",
+      "family_line": "Meera follows too · her father is invited"
+    },
+    {
+      "slug": "kestrel-park",
+      "name": "Kestrel Park",
+      "chip": {
+        "kind": "band",
+        "label": "Low",
+        "step": 1,
+        "meter_filled": 1
+      },
+      "follow_type": "watching",
+      "row_line": "QPR filed on time · no band change",
+      "freshness_line": "From the Jul–Sep 2026 QPR",
+      "family_line": "Meera follows too"
+    }
+  ],
+  "replay": {
+    "from": "2026-07-01",
+    "to": "2026-10-18",
+    "jump_chips": [
+      {
+        "label": "Your last look · 14 Oct",
+        "date": "2026-10-14"
+      },
+      {
+        "label": "1 Oct",
+        "date": "2026-10-01"
+      },
+      {
+        "label": "1 Sep",
+        "date": "2026-09-01"
+      },
+      {
+        "label": "When you followed · 1 Jul",
+        "date": "2026-07-01"
+      }
+    ],
+    "marks": [
+      {
+        "date": "2026-07-15",
+        "kind": "qpr_filed",
+        "band": null
+      },
+      {
+        "date": "2026-07-15",
+        "kind": "qpr_missing",
+        "band": null
+      },
+      {
+        "date": "2026-07-27",
+        "kind": "qpr_late",
+        "band": null
+      },
+      {
+        "date": "2026-10-02",
+        "kind": "band_changed",
+        "band": "elevated"
+      },
+      {
+        "date": "2026-10-09",
+        "kind": "order_decided",
+        "band": null
+      },
+      {
+        "date": "2026-10-12",
+        "kind": "qpr_filed",
+        "band": null
+      },
+      {
+        "date": "2026-10-14",
+        "kind": "extension_granted",
+        "band": null
+      },
+      {
+        "date": "2026-10-15",
+        "kind": "qpr_missing",
+        "band": null
+      },
+      {
+        "date": "2026-10-15",
+        "kind": "qpr_missing",
+        "band": null
+      },
+      {
+        "date": "2026-10-15",
+        "kind": "qpr_filed",
+        "band": null
+      },
+      {
+        "date": "2026-10-16",
+        "kind": "price_list_published",
+        "band": null
+      }
+    ]
+  },
+  "record": [
+    {
+      "event_id": "b7627bbc-1290-5506-a412-6815b13f1374",
+      "slug": "kestrel-park",
+      "kind": "qpr_filed",
+      "occurred_on": "2026-10-12",
+      "line": "The Jul–Sep 2026 QPR was filed on time: 63% built, 58% of the promised time used.",
+      "before_pill": "59%",
+      "after_pill": "63%",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["2c634407-36a0-5e02-927a-5661f10c5856"],
+          "evidence_url": "/evidence/2c634407-36a0-5e02-927a-5661f10c5856",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-12"
+        },
+        {
+          "label": "HARERA QPR · Jul–Sep 2026",
+          "fact_ids": ["5acedd26-bae2-501c-aba0-635c4732b353"],
+          "evidence_url": "/evidence/5acedd26-bae2-501c-aba0-635c4732b353",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "event_id": "6519b63f-89c3-5d79-a9a5-66d3aec3b84d",
+      "slug": "aurelia-heights-phase-2",
+      "kind": "order_decided",
+      "occurred_on": "2026-10-09",
+      "line": "One more complaint decided against the promoter. That makes 14 in 24 months · 2.8 per 100 units. Median count for similar projects: 3.",
+      "before_pill": "13",
+      "after_pill": "14",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "HARERA orders · 24 months",
+          "fact_ids": ["d56b2adf-6ea3-598a-8cef-cbd1b0c74895"],
+          "evidence_url": "/evidence/d56b2adf-6ea3-598a-8cef-cbd1b0c74895",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-09"
+        }
+      ]
+    },
+    {
+      "event_id": "2595e9f7-87c1-5e57-ae58-28d40e75fc78",
+      "slug": "aurelia-heights-phase-2",
+      "kind": "band_changed",
+      "occurred_on": "2026-10-02",
+      "line": "Delivery risk moved from Moderate to Elevated. The trigger: the Apr–Jun 2026 QPR together with new complaint orders.",
+      "before_pill": "Moderate",
+      "after_pill": "Elevated",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["196cb4f5-27eb-57a5-99f8-e5ab1b599c93"],
+          "evidence_url": "/evidence/196cb4f5-27eb-57a5-99f8-e5ab1b599c93",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-15"
+        },
+        {
+          "label": "HARERA orders · 24 months",
+          "fact_ids": ["d56b2adf-6ea3-598a-8cef-cbd1b0c74895"],
+          "evidence_url": "/evidence/d56b2adf-6ea3-598a-8cef-cbd1b0c74895",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-09"
+        }
+      ]
+    },
+    {
+      "event_id": "39f0caf3-a32a-5f59-9684-32ca85d2653e",
+      "slug": "sapphire-grove-phase-1",
+      "kind": "qpr_late",
+      "occurred_on": "2026-07-27",
+      "line": "The Apr–Jun 2026 QPR was filed 12 days late: 48% built.",
+      "before_pill": "Due 15 Jul",
+      "after_pill": "Filed 27 Jul",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["fc2e6392-b9da-5aea-9c72-3f9b9e8c48c1"],
+          "evidence_url": "/evidence/fc2e6392-b9da-5aea-9c72-3f9b9e8c48c1",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-27"
+        },
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["bcbeac16-a68a-587d-a18b-c83ab2cd672e"],
+          "evidence_url": "/evidence/bcbeac16-a68a-587d-a18b-c83ab2cd672e",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-27"
+        }
+      ]
+    },
+    {
+      "event_id": "abf8aa21-385a-59c7-9e37-90758937efbe",
+      "slug": "aurelia-heights-phase-2",
+      "kind": "qpr_filed",
+      "occurred_on": "2026-07-15",
+      "line": "The Apr–Jun 2026 QPR was filed on time: 72% of units sold, 41% built, Tower A at slab 9.",
+      "before_pill": "38%",
+      "after_pill": "41%",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["ab21f63d-8226-5b22-bc58-193d4c560b5f"],
+          "evidence_url": "/evidence/ab21f63d-8226-5b22-bc58-193d4c560b5f",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-15"
+        },
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["196cb4f5-27eb-57a5-99f8-e5ab1b599c93"],
+          "evidence_url": "/evidence/196cb4f5-27eb-57a5-99f8-e5ab1b599c93",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-15"
+        }
+      ]
+    },
+    {
+      "event_id": "2b5d64e6-53d9-5d48-b2d9-47d9b5c9ef79",
+      "slug": "coral-towers",
+      "kind": "qpr_missing",
+      "occurred_on": "2026-07-15",
+      "line": "The Apr–Jun 2026 QPR is not on HARERA. It was due 15 Jul 2026. The newest QPR is Jan–Mar 2026, filed 14 Apr: 22% built.",
+      "before_pill": "Due 15 Jul",
+      "after_pill": "Not on HARERA as of 18 Oct",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["966624b0-fb07-53f5-9cd3-aaaf740a5257"],
+          "evidence_url": "/evidence/966624b0-fb07-53f5-9cd3-aaaf740a5257",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-18"
+        }
+      ]
+    }
+  ],
+  "digest": {
+    "cadence": "weekly_sun_9am",
+    "next_line": "Next digest Sun 25 Oct, 9 am"
+  }
+}

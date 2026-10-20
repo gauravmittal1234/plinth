@@ -1,0 +1,19 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "rohan": {
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      }
+    },
+    "rohan--withdrawn-c-1012-04": {
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "state": "after_withdraw",
+      "note": "Design state: after api.consent_withdraw('C-1012-04') at the clock (WORK_BREAKDOWN T51, T45b)."
+    }
+  }
+}

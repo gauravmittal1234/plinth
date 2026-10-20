@@ -1,0 +1,50 @@
+{
+  "schema": "plinth.who_has_my_number/1",
+  "count_line": "2 parties can reach you",
+  "rule_line": "Your number is never shared without your tap.",
+  "parties": [
+    {
+      "ref": "C-1012-05",
+      "party": "Larkspur Realty",
+      "detail": "Your agent of record for Kestrel Park (you added them; shared by your tap after the visit)",
+      "shared_on": "2026-10-12",
+      "access_until": null,
+      "pays_line": "Agent · paid by the developer or you, never by Plinth",
+      "number_shared": true,
+      "status": "active"
+    },
+    {
+      "ref": "C-1015-02",
+      "party": "Meridian Habitat site office",
+      "detail": "Sapphire Grove Ph 1 site visit",
+      "shared_on": "2026-10-15",
+      "access_until": "2026-11-14",
+      "pays_line": "Developer · pays us nothing",
+      "number_shared": true,
+      "status": "active"
+    }
+  ],
+  "relays": [
+    {
+      "ref": "C-1018-11",
+      "party": "Northfield Estates site office",
+      "line": "Aurelia visit Sat 24 Oct, 11 am, code 4821: the site office gets your first name and a relay, not your number.",
+      "counts_toward_cap": false
+    }
+  ],
+  "ended": [
+    {
+      "ref": "C-1012-04",
+      "party": "Orbis Land site office",
+      "detail": "Kestrel Park site visit",
+      "ended_on": "2026-10-18"
+    },
+    {
+      "ref": "C-0902-01",
+      "party": "Meridian Habitat sales office",
+      "detail": "Price list",
+      "ended_on": "2026-10-02"
+    }
+  ],
+  "family_line": "Family in your circle can't see your number and aren't counted here."
+}

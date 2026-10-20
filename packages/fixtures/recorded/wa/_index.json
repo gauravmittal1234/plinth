@@ -1,0 +1,177 @@
+{
+  "schema": "plinth.fixtures.recorded_wa/1",
+  "note": "Recorded WhatsApp Cloud API webhook bodies (API_CONTRACTS §5.1). Each file is the raw JSON body; sign it in tests with a test app secret. Senders are fixture test numbers (canonical/people.json). Owner: T03b. Generated; edit src/author/recorded_wa.mjs.",
+  "business": {
+    "waba_id": "100000000000000",
+    "display_phone_number": "910000000000",
+    "phone_number_id": "100000000000001"
+  },
+  "payloads": [
+    {
+      "file": "text-aurelia.json",
+      "wa_message_id": "wamid.fixture.dbc14e44-507d-5ef2-b84d-38bbf28e4b3b",
+      "from": "rohan",
+      "kind": "text",
+      "route": "risk_card",
+      "expect": {
+        "slug": "aurelia-heights-phase-2"
+      },
+      "description": "A project name, lower case.",
+      "source": "WORK_BREAKDOWN T03b, T44 (\"aurelia\" routes to risk_card); WaRisk artboard"
+    },
+    {
+      "file": "text-rera-number.json",
+      "wa_message_id": "wamid.fixture.b80ec0aa-2ee0-5c30-b4b0-2039649b54b2",
+      "from": "rohan",
+      "kind": "text",
+      "route": "risk_card",
+      "expect": {
+        "slug": "aurelia-heights-phase-2"
+      },
+      "description": "A RERA number (DESIGN §5b: Aurelia Heights Ph 2).",
+      "source": "WORK_BREAKDOWN T03b; API_CONTRACTS §5.1 intent router"
+    },
+    {
+      "file": "text-join-ah2-7kq.json",
+      "wa_message_id": "wamid.fixture.439a3653-529f-52b9-a5bd-5a77d069858f",
+      "from": "meera-father",
+      "kind": "text",
+      "route": "family_join",
+      "expect": {
+        "code": "AH2-7KQ",
+        "circle_owner": "rohan",
+        "scope": ["aurelia-heights-phase-2"]
+      },
+      "description": "The relative's own opt-in: his first message to Plinth, from the /j/ page's wa.me link.",
+      "source": "DESIGN §5b · Following, digest and family (JOIN AH2-7KQ is the opt-in); WORK_BREAKDOWN T44, T46b"
+    },
+    {
+      "file": "text-stop.json",
+      "wa_message_id": "wamid.fixture.45c51c4b-0474-52a1-b527-401049f4b67f",
+      "from": "rohan",
+      "kind": "text",
+      "route": "prefs",
+      "expect": {
+        "action": "stop_all"
+      },
+      "description": "STOP ends alerts.",
+      "source": "WORK_BREAKDOWN T44 (\"STOP\" routes to prefs); API_CONTRACTS §5.1"
+    },
+    {
+      "file": "button-stop-weekly.json",
+      "wa_message_id": "wamid.fixture.5a8ca1ab-84d2-5088-ad84-92ec73799616",
+      "from": "rohan",
+      "kind": "button",
+      "route": "prefs",
+      "expect": {
+        "action": "stop_weekly",
+        "band_change_alerts": "still_on"
+      },
+      "description": "The weekly digest template's quick reply. Band changes still come.",
+      "source": "API_CONTRACTS §5.2 (weekly_digest buttons); WORK_BREAKDOWN T46b (\"Stop weekly\" keeps band-change alerts on)"
+    },
+    {
+      "file": "button-see-changes.json",
+      "wa_message_id": "wamid.fixture.9c2971e4-f895-53c2-95b2-9ae9eeb2c561",
+      "from": "rohan",
+      "kind": "button",
+      "route": "digest",
+      "expect": {
+        "changes": 5
+      },
+      "description": "The weekly digest template's quick reply: lists the 5 changes.",
+      "source": "API_CONTRACTS §5.2 (weekly_digest buttons); WORK_BREAKDOWN T46b (\"See changes\" lists the 5 changes)"
+    },
+    {
+      "file": "interactive-why-this-band.json",
+      "wa_message_id": "wamid.fixture.03296aa6-ab7a-579f-bae0-1569dfd9188d",
+      "from": "rohan",
+      "kind": "interactive.button_reply",
+      "route": "risk_card",
+      "expect": {
+        "slug": "aurelia-heights-phase-2",
+        "action": "why_this_band"
+      },
+      "description": "Reply button under the Aurelia risk card.",
+      "source": "WORK_BREAKDOWN T46a (replies \"Why this band\" · \"Follow project\" · \"Ask\")"
+    },
+    {
+      "file": "interactive-follow-project.json",
+      "wa_message_id": "wamid.fixture.5348e8da-449b-5d63-bfd2-781ab1d04d13",
+      "from": "rohan",
+      "kind": "interactive.button_reply",
+      "route": "risk_card",
+      "expect": {
+        "slug": "aurelia-heights-phase-2",
+        "action": "follow_project"
+      },
+      "description": "Reply button under the Aurelia risk card: opens the follow opt-in.",
+      "source": "WORK_BREAKDOWN T46a"
+    },
+    {
+      "file": "image-old-card.json",
+      "wa_message_id": "wamid.fixture.2fda182e-b260-529c-9e63-a39f67efec67",
+      "from": "rohan",
+      "kind": "image",
+      "route": "card_changed",
+      "expect": {
+        "share_card": "ce57248d",
+        "changed": true
+      },
+      "description": "A forwarded old Plinth risk card (data as of 30 Sep 2026, v1.1, Moderate). Matched by perceptual hash to core.share_cards.",
+      "source": "DESIGN §5b · Following, digest and family (old card example); WaDigest artboard; WORK_BREAKDOWN T46a"
+    },
+    {
+      "file": "image-flyer.json",
+      "wa_message_id": "wamid.fixture.1c9361aa-52a1-5643-be85-793f83b9afe8",
+      "from": "rohan",
+      "kind": "image",
+      "route": "claims",
+      "expect": {
+        "doc_check": "flyer",
+        "milestone": "M3"
+      },
+      "description": "A photo of the sample broker flyer: 7 claims, 4 differ.",
+      "source": "DESIGN §5b · Claims vs records example; API_CONTRACTS §5.1 (image → claims, M3)"
+    },
+    {
+      "file": "audio-voice-note.json",
+      "wa_message_id": "wamid.fixture.7e9aa551-471c-51f4-a052-2085c84ed77f",
+      "from": "rohan",
+      "kind": "audio",
+      "route": "visit_recap",
+      "expect": {
+        "doc_check": "visit-recap",
+        "milestone": "M5"
+      },
+      "description": "Rohan's WhatsApp voice note after the Aurelia visit (illustrative frame, Sat 24 Oct 2026, 2:04 pm).",
+      "source": "DESIGN §5b · Site-visit co-pilot (WhatsApp voice note 2:04 pm); API_CONTRACTS §5.1 (audio)"
+    },
+    {
+      "file": "document-demand-letter.json",
+      "wa_message_id": "wamid.fixture.3d0744f5-0424-50e2-81e3-487355e68d5a",
+      "from": "kavya-nair",
+      "kind": "document",
+      "route": "pay_as_built",
+      "expect": {
+        "doc_check": "demand-letter",
+        "milestone": "M3"
+      },
+      "description": "Kavya's demand letter NE/AH2/A-1104/12 (10 Oct 2026, Tower A slab 12) as a PDF.",
+      "source": "DESIGN §5b · Site-visit co-pilot and Pay-as-built (the demand letter); file name derived from its ref"
+    },
+    {
+      "file": "status-delivered.json",
+      "wa_message_id": "wamid.fixture.4511eca3-adb4-5497-b864-34d6edde159f",
+      "from": null,
+      "kind": "status",
+      "route": "status",
+      "expect": {
+        "status": "delivered",
+        "outbox_status": "delivered"
+      },
+      "description": "A delivery status for an outbound utility message to Rohan.",
+      "source": "API_CONTRACTS §5.1 (statuses update comms.outbox and comms.wa_messages)"
+    }
+  ]
+}
