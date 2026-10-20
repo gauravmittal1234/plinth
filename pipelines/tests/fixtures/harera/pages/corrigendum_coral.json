@@ -1,0 +1,19 @@
+{
+  "schema": "harera.corrigendum/1",
+  "note": "SYNTHETIC fixture for plinth.sources.harera (T18). Not a copy of any HARERA page (AGENTS.md §7). Doc types follow research_notes/.../ncr_risk_data_sources.md (Q1, 'The corrigendum popup is a JSON endpoint... Extension (EXT), Occupation Certificate, Part Completion Certificate, Completion Certificate, Cancel Order and Sale Ban'). Coral Towers / Vantage Buildcon are the fictional entities of DESIGN.md §5b ('Original completion Aug 2028. Extension 1 (Jan 2026) moved it to Feb 2029. Extension 2 was granted 14 Oct 2026 and moved it to Aug 2029.').",
+  "registration_no": "GGM/610/290/2019/45",
+  "entries": [
+    {
+      "doc_type": "Extension (EXT)",
+      "entry_date": "2026-01-12",
+      "file_url": "fixture://pages/corrigendum_coral_ext1.pdf",
+      "remarks": "Revised completion 28 Feb 2029 (from Aug 2028)."
+    },
+    {
+      "doc_type": "Extension (EXT)",
+      "entry_date": "2026-10-14",
+      "file_url": "fixture://pages/corrigendum_coral_ext2.pdf",
+      "remarks": "Revised completion 31 Aug 2029 (from Feb 2029)."
+    }
+  ]
+}

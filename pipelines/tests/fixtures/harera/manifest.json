@@ -1,0 +1,125 @@
+{
+  "schema": "plinth.fetch_fixtures/1",
+  "note": "SYNTHETIC fixtures for plinth.sources.harera (T18). Shaped from the field lists in research_notes/Developer and project risk scoring/ncr_risk_data_sources.md (Q1) and platform_architecture.md §4.2-4.3. None of this is a copy of any HARERA page: the portal was never fetched for this task (AGENTS.md §7, the hard 'no live network access to HARERA' rule). URLs use the reserved .test domain, as T10's own fixtures do. Projects, promoters and complaint parties are the fictional entities of DESIGN.md §5b.",
+  "entries": [
+    {
+      "source": "harera_registration",
+      "url": "https://harera.example.test/admincontrol/registered_projects/2",
+      "file": "pages/registered_list.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:00:00+05:30"
+    },
+    {
+      "source": "harera_registration",
+      "url": "https://harera.example.test/view_project/project_preview_open/1444",
+      "params": { "registration": "GGM/673/405/2022/117" },
+      "file": "pages/form_a_h_aurelia.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:00:05+05:30"
+    },
+    {
+      "source": "harera_qpr_register",
+      "url": "https://harera.example.test/assistancecontrol/print_quarterly_schedules",
+      "params": { "registration": "GGM/673/405/2022/117" },
+      "file": "pages/qpr_register_aurelia.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:00:10+05:30"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-673-405-2022-117/2023-Q2",
+      "method": "POST",
+      "data": { "registration": "GGM/673/405/2022/117", "quarter": "2023-Q2" },
+      "file": "qpr/aurelia-2023-Q2.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:01:00+05:30"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-673-405-2022-117/2023-Q4",
+      "method": "POST",
+      "data": { "registration": "GGM/673/405/2022/117", "quarter": "2023-Q4" },
+      "file": "qpr/aurelia-2023-Q4.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:01:05+05:30"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-673-405-2022-117/2024-Q2",
+      "method": "POST",
+      "data": { "registration": "GGM/673/405/2022/117", "quarter": "2024-Q2" },
+      "file": "qpr/aurelia-2024-Q2.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:01:10+05:30"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-673-405-2022-117/2024-Q4",
+      "method": "POST",
+      "data": { "registration": "GGM/673/405/2022/117", "quarter": "2024-Q4" },
+      "file": "qpr/aurelia-2024-Q4.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:01:15+05:30"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-673-405-2022-117/2025-Q2",
+      "method": "POST",
+      "data": { "registration": "GGM/673/405/2022/117", "quarter": "2025-Q2" },
+      "file": "qpr/aurelia-2025-Q2.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:01:20+05:30"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-673-405-2022-117/2025-Q4",
+      "method": "POST",
+      "data": { "registration": "GGM/673/405/2022/117", "quarter": "2025-Q4" },
+      "file": "qpr/aurelia-2025-Q4.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:01:25+05:30"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-673-405-2022-117/2026-Q1",
+      "method": "POST",
+      "data": { "registration": "GGM/673/405/2022/117", "quarter": "2026-Q1" },
+      "file": "qpr/aurelia-2026-Q1.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:01:30+05:30"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-673-405-2022-117/2026-Q2",
+      "method": "POST",
+      "data": { "registration": "GGM/673/405/2022/117", "quarter": "2026-Q2" },
+      "file": "qpr/aurelia-2026-Q2.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:01:35+05:30"
+    },
+    {
+      "source": "harera_qpr",
+      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-332-104-2018-22/2026-Q2",
+      "method": "POST",
+      "data": { "registration": "GGM/332/104/2018/22", "quarter": "2026-Q2" },
+      "file": "qpr/laurel-2026-Q2-dirty.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:01:40+05:30"
+    },
+    {
+      "source": "harera_corrigendum",
+      "url": "https://harera.example.test/assistancecontrol/view_corrigendums_popup",
+      "params": { "registration": "GGM/610/290/2019/45" },
+      "file": "pages/corrigendum_coral.json",
+      "content_type": "application/json",
+      "fetched_at": "2026-10-14T09:02:00+05:30"
+    },
+    {
+      "source": "harera_orders",
+      "url": "https://harera.example.test/admincontrol/judgements/2",
+      "file": "pages/judgments.html",
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-14T09:02:30+05:30"
+    }
+  ]
+}
