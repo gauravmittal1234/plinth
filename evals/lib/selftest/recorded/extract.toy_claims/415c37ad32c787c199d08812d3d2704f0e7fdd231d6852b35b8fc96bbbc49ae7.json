@@ -1,0 +1,43 @@
+{
+  "format": "plinth.ai_recorded/1",
+  "task": "extract.toy_claims@1",
+  "prompt_version": "b@1",
+  "input_sha256": "415c37ad32c787c199d08812d3d2704f0e7fdd231d6852b35b8fc96bbbc49ae7",
+  "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "model": "gemini-toy-lite",
+  "recorded_at": "2026-10-18T12:00:00+05:30",
+  "attempts": [
+    {
+      "output": {
+        "claims": [
+          {
+            "type": "rera_number",
+            "value": "ggm/toy/2026/01",
+            "confidence": 0.95,
+            "line_ids": [
+              "L1"
+            ]
+          },
+          {
+            "type": "price",
+            "value": "Rs 1,95,00,000",
+            "confidence": 0.9,
+            "line_ids": [
+              "L2"
+            ]
+          },
+          {
+            "type": "possession",
+            "value": "December 2028",
+            "confidence": 0.85,
+            "line_ids": [
+              "L3"
+            ]
+          }
+        ]
+      },
+      "tokens_in": 175,
+      "tokens_out": 70
+    }
+  ]
+}

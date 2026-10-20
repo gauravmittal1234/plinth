@@ -1,0 +1,34 @@
+{
+  "lock": false,
+  "nodeModulesDir": "none",
+  "unstable": ["sloppy-imports"],
+  "imports": {
+    "ajv": "npm:ajv@8.20.0"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true
+  },
+  "fmt": {
+    "include": ["lib/", "README.md", "deno.json"],
+    "lineWidth": 100,
+    "indentWidth": 2,
+    "semiColons": true,
+    "singleQuote": false
+  },
+  "lint": {
+    "include": ["lib/"],
+    "rules": {
+      "tags": ["recommended"],
+      "exclude": ["no-import-prefix"]
+    }
+  },
+  "tasks": {
+    "eval": "deno run --allow-read --allow-env --no-prompt lib/run.ts",
+    "test": "deno test --allow-read --allow-env --no-prompt lib/",
+    "guard": "deno run --allow-read --no-prompt lib/guard.ts",
+    "record": "deno run --allow-read --allow-write --allow-env --allow-net --no-prompt lib/record.ts",
+    "verify": "deno fmt --check && deno lint && deno check lib/ && deno task test && deno task guard && deno task eval self-test"
+  }
+}

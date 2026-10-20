@@ -1,0 +1,20 @@
+{
+  "format": "plinth.eval_golden/1",
+  "id": "flyer-2",
+  "note": "Toy flyer for the harness self-test: the readers disagree on the area's basis.",
+  "input": {
+    "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "lines": [
+      { "id": "L1", "text": "Lakeview Towers · RERA GGM/TOY/2026/02" },
+      { "id": "L2", "text": "2 BHK at ₹98 L onwards" },
+      { "id": "L3", "text": "1,250 sq ft carpet" }
+    ]
+  },
+  "expected": {
+    "claims": [
+      { "type": "rera_number", "value": "GGM/TOY/2026/02" },
+      { "type": "price", "value": "₹98 L" },
+      { "type": "area", "value": "1,250 sq ft carpet" }
+    ]
+  }
+}
