@@ -73,6 +73,24 @@ export function makeExpectedB({ cat, ev, sc, dc, vec, X, B }) {
     const fw = P.following;
     const since = fw.last_look_at;
     const sinceDay = since.slice(0, 10);
+    // price_list_published's source (core.following_change_item, T43b): always the phase's
+    // *current* price.quoted fact (today's price, not whichever list this particular event is
+    // about — a buyer reads the price that applies now), labelled with this event's own
+    // occurred_on rather than that fact's as_of, which can differ (a phase's price.quoted as_of
+    // is its cost sheet's date, not every price list's publish date). srcRefs/DEV_LABEL's generic
+    // "from_developer" path uses the fact's as_of, so this kind reads its source directly instead.
+    const priceListSources = (e) => {
+      const f = fact(e.facts[0]);
+      return [
+        {
+          label: `Developer price list · ${fmtDate(e.occurred_on)}`,
+          fact_ids: [f.id],
+          evidence_url: `/evidence/${f.id}`,
+          official_url: null,
+          as_of: e.occurred_on,
+        },
+      ];
+    };
     const item = (e) => ({
       event_id: e.id,
       slug: e.phase,
@@ -82,7 +100,7 @@ export function makeExpectedB({ cat, ev, sc, dc, vec, X, B }) {
       before_pill: e.before_pill,
       after_pill: e.after_pill,
       developer_says: e.developer_says_line ? { line: e.developer_says_line } : null,
-      sources: srcRefs(e.facts),
+      sources: e.kind === "price_list_published" ? priceListSources(e) : srcRefs(e.facts),
     });
     // Newest first (R3 C-41; events are already authored newest-first, but sort explicitly so
     // the order is an invariant, not an accident of src/author/people.mjs's array order).

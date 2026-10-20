@@ -849,6 +849,17 @@ export function buildDeveloperContent(cat, ev) {
       ],
       `${S5B} (price lists of Oct 2026)`,
     ),
+    // The previous list (T43b §5b addition): superseded by the one below, 16 Oct 2026. Backfilled
+    // so core.events_from_price_list's before-price lookup (core.following_change_item) has a
+    // real row to read instead of inventing "before". It never gets its own price_list_published
+    // (that function only logs a phase's newest published list; DATA_MODEL/20261122000500_t43b).
+    pl(
+      "sapphire-grove-phase-1",
+      "2026-09-01",
+      "day",
+      [["3 BHK", 18900000, null]],
+      `${S5B} (previous list, 1 Sep 2026, superseded 16 Oct 2026)`,
+    ),
     pl(
       "sapphire-grove-phase-1",
       "2026-10-16",
@@ -883,15 +894,6 @@ export function buildDeveloperContent(cat, ev) {
       [["3 BHK", 18500000, null]],
       `${S5B} (dated 12 Jun 2026); 3 BHK from ₹1.85 Cr ${R2("C-05")}`,
     ),
-  ];
-  const previous_prices = [
-    {
-      phase: "sapphire-grove-phase-1",
-      unit_label: "3 BHK",
-      base_price_inr: 18900000,
-      superseded_on: "2026-10-16",
-      source: S5B,
-    },
   ];
   const quotes_without_list = [
     {
@@ -1137,7 +1139,6 @@ export function buildDeveloperContent(cat, ev) {
     schema: "plinth.fixtures.developer_content/1",
     note: '"From the developer" content (ws.*): price lists, payment plans, the Aurelia cost sheet, documents, the Developer says claim and the reply. It never feeds a band. Owner: T03. Generated; edit src/author.',
     price_lists,
-    previous_prices,
     quotes_without_list,
     payment_plans,
     cost_sheets,
