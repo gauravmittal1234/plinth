@@ -230,6 +230,42 @@ export async function buildAll() {
   });
   for (const ref of ["C-1012-04", "C-1012-05", "C-1015-02"])
     exp("consent_withdraw", ref, W.consentWithdraw(ref), { p_ref: ref, as: R });
+  // T45a: the rest of the buyer API's fixture answers.
+  for (const f of B.people.follows)
+    for (const type of ["booked", "watching"])
+      exp("set_follow_type", `${f.phase}--${type}`, W.setFollowType(f.phase, type), {
+        p_slug: f.phase,
+        p_follow_type: type,
+        p_client_id: client(`set_follow_type/${f.id}/${type}`),
+        as: R,
+        note:
+          type === "booked"
+            ? "Have you booked any of these? Booked: payment-stage alerts and the Pay-as-built links."
+            : "Back to watching (Rohan's follows are all watching in DESIGN §5b).",
+      });
+  exp("family_circle", "rohan", XB.familyCircle(), { as: R });
+  exp("saved_searches", "rohan", XB.savedSearches(), { as: R });
+  const req0 = B.people.project_requests[0];
+  exp("request_project", "indigo-terraces", W.requestProject(req0.ref), {
+    p_name: req0.name_text,
+    p_rera: req0.rera_text,
+    p_client_id: client(`project_request/${req0.ref}`),
+    as: R,
+    note: "Replays Rohan's request of 18 Oct 2026 (DESIGN §5b Request a project: R-1018-07).",
+  });
+  for (const [key, accept] of [
+    ["preview", false],
+    ["confirmed", true],
+  ])
+    exp("link_whatsapp_follows", key, W.linkWhatsappFollows(accept), {
+      p_accept: accept,
+      seeded: false,
+      note: accept
+        ? 'WebSignIn\'s "Bring them here": the follows brought into the account.'
+        : "WebSignIn's Bring step: what this number follows on WhatsApp, shown before any tap.",
+      source:
+        "T47's interim WebSignIn fixture (#69), kept for web sign-in; not yet a DESIGN §5b fact (proposed in the T45a PR). Not reachable from the seed, so the contract runner skips it (seeded: false); web and app fixture modes serve it.",
+    });
   for (const [p, v] of Object.entries(buildRecordedWa(B))) put(p, v);
 
   for (const [fn, map] of Object.entries(requests))
@@ -272,6 +308,12 @@ export const OWNED_EXPECTED = [
   "family_member_undo",
   "shortlist_note_add",
   "consent_withdraw",
+  // T45a
+  "set_follow_type",
+  "family_circle",
+  "saved_searches",
+  "request_project",
+  "link_whatsapp_follows",
 ];
 
 function listJson(dir) {

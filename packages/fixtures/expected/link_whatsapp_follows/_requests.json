@@ -1,13 +1,17 @@
 {
-  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload. api.link_whatsapp_follows' response is still x-plinth-shape: pending (T45a/T45b own the real schema, INTEGRATION_NOTES.md); this fixture's shape is T47's own interim one, read defensively by apps/web/src/features/auth/actions.ts and dropped once the real schema lands.",
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
   "requests": {
     "preview": {
       "p_accept": false,
-      "note": "WebSignIn's Bring step: what this number has on WhatsApp, shown before any tap."
+      "seeded": false,
+      "note": "WebSignIn's Bring step: what this number follows on WhatsApp, shown before any tap.",
+      "source": "T47's interim WebSignIn fixture (#69), kept for web sign-in; not yet a DESIGN §5b fact (proposed in the T45a PR). Not reachable from the seed, so the contract runner skips it (seeded: false); web and app fixture modes serve it."
     },
     "confirmed": {
       "p_accept": true,
-      "note": "WebSignIn's \"Bring them here\": the record its success line needs."
+      "seeded": false,
+      "note": "WebSignIn's \"Bring them here\": the follows brought into the account.",
+      "source": "T47's interim WebSignIn fixture (#69), kept for web sign-in; not yet a DESIGN §5b fact (proposed in the T45a PR). Not reachable from the seed, so the contract runner skips it (seeded: false); web and app fixture modes serve it."
     }
   }
 }
