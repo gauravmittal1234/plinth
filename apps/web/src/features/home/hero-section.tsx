@@ -15,7 +15,7 @@ export function HeroSection({ defaultSummary }: { defaultSummary: RiskSummary })
         priority
         fill
         sizes="100vw"
-        className="object-cover"
+        className="t21-hero-drift object-cover"
       />
       <div
         aria-hidden="true"

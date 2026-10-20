@@ -14,3 +14,23 @@
 @import "@plinth/tokens/theme.css";
 @import "@plinth/web-ui/styles.css";
 @source "./";
+
+/*
+ * The hero's one moving picture (DESIGN §0 motion layer: "slow 1.04 scale
+ * drift on the hero photo"). `--pl-motion-duration-drift` is already 0ms
+ * under `prefers-reduced-motion: reduce` (@plinth/tokens), so this needs no
+ * media query of its own.
+ */
+@keyframes t21-hero-drift {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(var(--pl-motion-scale-drift));
+  }
+}
+
+.t21-hero-drift {
+  animation: t21-hero-drift var(--pl-motion-duration-drift) var(--pl-motion-ease-drift) infinite
+    alternate;
+}
