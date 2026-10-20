@@ -105,7 +105,7 @@ create table core.check_rules (
   unique (version, rule_code)
 );
 create index check_rules_kind_idx on core.check_rules (version, kind, claim_type);
-comment on table core.check_rules is 'The rules that decide every check (M3 rules: AI reads; rules decide). Version 2026.10; params hold the tolerances and the confidence bar both readers must clear. Public data, read through api functions only. Rows arrive with T73–T75; a new reading is a new version, never an edit.';
+comment on table core.check_rules is 'The rules that decide every check (M3 rules: AI reads; rules decide). Version 2026.10; params hold the tolerances and the confidence bar both readers must clear. Public data, read through api functions only. Rows arrive with T73–T75. Every change is audited, and a verdict''s (version, rule_code) must exist here, so a rule a verdict names cannot be deleted; a new reading of the law gets a new version.';
 comment on column core.check_rules.id is 'pii:C0';
 comment on column core.check_rules.version is 'pii:C0 · e.g. 2026.10 (the doc_check payload''s rules_version).';
 comment on column core.check_rules.kind is 'pii:C0 · The check kind the rule decides.';
