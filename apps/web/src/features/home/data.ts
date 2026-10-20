@@ -3,7 +3,8 @@
 // stays in the prerendered shell under `cacheComponents`.
 import "server-only";
 import { about, methodology, riskSummary, searchProjects } from "@/src/data";
-import type { About, Methodology, ProjectCard, RiskSummary } from "@/src/data";
+import type { About, Methodology, RiskSummary } from "@/src/data";
+import type { ProjectCard } from "@plinth/contracts";
 
 /** The hero's default card on first paint (DESIGN §0 critique: "it assembles once for Aurelia on load"). */
 export const DEFAULT_SLUG = "aurelia-heights-phase-2";

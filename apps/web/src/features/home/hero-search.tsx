@@ -27,15 +27,15 @@ export function HeroSearch({ defaultSummary }: { defaultSummary: RiskSummary }) 
 
   useEffect(() => {
     if (timer.current) clearTimeout(timer.current);
-    if (query.trim() === "") {
-      setResult(null); // back to the default Aurelia card, already on the page
-      return;
-    }
-    timer.current = setTimeout(() => run(query), DEBOUNCE_MS);
+    timer.current = setTimeout(() => {
+      // An empty box goes back to the default Aurelia card already on the
+      // page, with no round trip.
+      if (query.trim() === "") startTransition(() => setResult(null));
+      else run(query);
+    }, DEBOUNCE_MS);
     return () => {
       if (timer.current) clearTimeout(timer.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- `run` is stable enough for a debounce
   }, [query]);
 
   return (
