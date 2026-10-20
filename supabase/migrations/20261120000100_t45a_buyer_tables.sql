@@ -62,7 +62,7 @@ create table app.wa_follows (
   unique (wa_contact_id, phase_id)
 );
 create index wa_follows_linked_user_idx on app.wa_follows (linked_user_id) where linked_user_id is not null;
-comment on table app.wa_follows is 'Follows a WhatsApp number made by its own tap ("Follow project") before it had an account (DATA_MODEL §9: a contact is linked only after "Bring them here"). api.link_whatsapp_follows(true) moves them into app.follows (source whatsapp). Written by api.wa_follow_record (service role). No policy.';
+comment on table app.wa_follows is 'Follows a WhatsApp number made by its own tap ("Follow project") before it had an account (DATA_MODEL §9: a contact is linked only after "Bring them here"). api.link_whatsapp_follows(true) moves them into app.follows (source whatsapp). Written by api.whatsapp_follow_record (service role). No policy.';
 comment on column app.wa_follows.wa_contact_id is 'pii:C1 · pii.wa_contacts.';
 comment on column app.wa_follows.phase_id is 'pii:C1';
 comment on column app.wa_follows.wa_message_id is 'pii:C1 · The inbound tap that made the follow (the buyer''s own act).';
