@@ -81,7 +81,7 @@ export function RiskSection({
 
           {risk.reasons.length > 0 ? (
             <div className="flex flex-col gap-4">
-              <h3 className="m-0 font-display text-h4 font-bold">
+              <h3 className="m-0 font-display text-section font-bold">
                 {RISK_COPY.whyHeading} {bandLabel}?
               </h3>
               <p className="m-0 text-small text-ink2">{RISK_COPY.whyNote}</p>

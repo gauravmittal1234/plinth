@@ -154,7 +154,7 @@ function NoteComposer({ projects }: { projects: readonly FollowedProject[] }) {
         });
       }}
     >
-      <h3 className="m-0 font-display text-h4 font-bold">{FAMILY_COPY.shortlistHeading}</h3>
+      <h3 className="m-0 font-display text-section font-bold">{FAMILY_COPY.shortlistHeading}</h3>
       <p className="m-0 text-small text-ink2">{FAMILY_COPY.shortlistSub}</p>
       <label htmlFor={selectId} className="text-small font-semibold">
         {FAMILY_COPY.noteLabel}

@@ -47,7 +47,7 @@ function Topic({
   return (
     <div className="flex flex-col gap-3 rounded-panel bg-bg-solid p-5 sm:p-7">
       <div className="flex flex-col gap-1">
-        <h3 className="m-0 font-display text-h4 font-bold">{title}</h3>
+        <h3 className="m-0 font-display text-section font-bold">{title}</h3>
         {sub ? <p className="m-0 text-small text-ink2">{sub}</p> : null}
         {line ? <p className="m-0 font-semibold">{line}</p> : null}
       </div>

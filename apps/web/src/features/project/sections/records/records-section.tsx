@@ -78,7 +78,7 @@ export function RecordsSection({
 
         {records.length > 0 ? (
           <div className="flex flex-col gap-4">
-            <h3 className="m-0 font-display text-h4 font-bold">
+            <h3 className="m-0 font-display text-section font-bold">
               {RECORDS_COPY.listHeading}
             </h3>
             <ul role="list" className="m-0 flex flex-col gap-4 p-0">

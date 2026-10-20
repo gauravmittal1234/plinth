@@ -62,7 +62,7 @@ export function CostSection({
 
         {cost ? (
           <div className="flex flex-col gap-3">
-            <h3 className="m-0 font-display text-h4 font-bold">
+            <h3 className="m-0 font-display text-section font-bold">
               Where the {cost.all_in_label} goes
             </h3>
             <p className="m-0 max-w-measure text-ink2">{cost.basis_line}</p>
@@ -80,7 +80,7 @@ export function CostSection({
 
         {affordDefault ? (
           <div className="flex flex-col gap-3 rounded-panel bg-bg-solid p-5 sm:p-7">
-            <h3 className="m-0 font-display text-h4 font-bold">{COST_COPY.emiHeading}</h3>
+            <h3 className="m-0 font-display text-section font-bold">{COST_COPY.emiHeading}</h3>
             <dl className="m-0 grid grid-cols-2 gap-4 sm:grid-cols-4">
               <div>
                 <dt className="text-small text-ink2">Monthly EMI</dt>

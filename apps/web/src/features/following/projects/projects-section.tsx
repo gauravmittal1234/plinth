@@ -19,7 +19,7 @@ function ProjectRow({ project }: { project: FollowedProject }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <Link
           href={`/gurugram/projects/${project.slug}`}
-          className="m-0 font-display text-h4 font-bold text-ink no-underline hover:underline"
+          className="m-0 font-display text-section font-bold text-ink no-underline hover:underline"
         >
           {project.name ?? project.slug}
         </Link>

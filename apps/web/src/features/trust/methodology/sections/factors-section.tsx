@@ -21,7 +21,7 @@ export function FactorsSection({ methodology }: { methodology: Methodology }) {
               className="flex items-center justify-between gap-6 rounded-panel bg-track px-6 py-4"
             >
               <span className="font-semibold">{factor.label}</span>
-              <span className="font-display text-h4 font-bold" aria-hidden="true">
+              <span className="font-display text-section font-bold" aria-hidden="true">
                 {factor.weight_pct}%
               </span>
               <span className="sr-only">{factor.weight_pct}% of the score</span>

@@ -20,7 +20,7 @@ export function CoverageSection({ coverage }: { coverage: About["coverage"] }) {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h3 className="m-0 font-display text-h4 font-bold">Not yet, and when</h3>
+          <h3 className="m-0 font-display text-section font-bold">Not yet, and when</h3>
           <ul role="list" className="m-0 flex flex-col gap-4 p-0">
             {coverage.next.map((next) => (
               <li

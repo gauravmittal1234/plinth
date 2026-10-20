@@ -33,7 +33,7 @@ function textOf(v: unknown): string | null {
 function ConfigCard({ config }: { config: HomeConfiguration }) {
   return (
     <div className="flex min-w-0 flex-col gap-6 rounded-panel bg-bg-solid p-5 sm:p-7">
-      <h3 className="m-0 font-display text-h4 font-bold">{config.label}</h3>
+      <h3 className="m-0 font-display text-section font-bold">{config.label}</h3>
 
       {config.rooms && config.rooms.length > 0 ? (
         <div className="flex flex-col gap-2">
@@ -99,7 +99,7 @@ function Waterlogging({
   const tone = laneTone(waterlogging.lane);
   return (
     <div className="flex flex-col gap-4 rounded-panel bg-bg-solid p-5 sm:p-7">
-      <h3 className="m-0 font-display text-h4 font-bold">{HOMES_COPY.waterloggingHeading}</h3>
+      <h3 className="m-0 font-display text-section font-bold">{HOMES_COPY.waterloggingHeading}</h3>
       <ul role="list" className="m-0 flex flex-col gap-3 p-0">
         {waterlogging.reports.map((report, i) => (
           <li key={`${report.reported_on}-${i}`} className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:gap-3">

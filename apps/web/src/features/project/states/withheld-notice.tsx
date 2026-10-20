@@ -38,7 +38,7 @@ export function WithheldNotice({
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-3 rounded-panel bg-claim-bg p-5 sm:p-7">
-        <p className="m-0 font-display text-h4 font-bold">{withheld.line}</p>
+        <p className="m-0 font-display text-section font-bold">{withheld.line}</p>
         <p className="m-0 text-small text-ink2">Since {formatDate(withheld.since)}.</p>
         <p className="m-0 max-w-measure text-body">{withheld.explainer_line}</p>
         <p className="m-0 max-w-measure text-body">{WITHHELD_COPY.stillHereLine}</p>
