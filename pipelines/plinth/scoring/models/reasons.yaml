@@ -1,0 +1,68 @@
+# Reason catalogue v1.2: the only sentences a band can carry (PRD §6.2; DATA_MODEL §3
+# core.reason_templates). The engine fills {placeholders} with already-formatted values from
+# the features it scored; an LLM never adds a fact. Order is the published order.
+#
+# How a reason is chosen (plinth/scoring/reasons.py):
+#   - one candidate per scored feature that moved the score (|contribution| > 0) and has at
+#     least one evidence fact to cite; ranked by |contribution| (Reg B style), at most 4;
+#   - a red-flag rule's reason always comes first;
+#   - when sales are reported, built% is stated in the finances reason, so the timeline
+#     reason states time used with the late-QPR count (TIM_TIME_USED_LATE_QPRS);
+#   - otherwise the progress reason states built and time used (TIM_BUILT_VS_TIME), with the
+#     extensions count when there are any, or the passed original date when time used >= 100%.
+version: v1.2
+source: "Aurelia texts BUILD_PLAN §7.1; others DESIGN §5b · Fixture decisions, round 2 (C-05, C-16)"
+templates:
+  - code: FIN_SOLD_AHEAD_BUILT
+    factor: finances
+    template_en: "{sold}% of units sold, {built}% built."
+  - code: TIM_TIME_USED_LATE_QPRS
+    factor: timeline
+    template_en: "{time_used}% of the promised time used. QPRs filed late in {late} of the last 8 quarters."
+  - code: TIM_BUILT_VS_TIME
+    factor: timeline
+    template_en: "{built}% built with {time_used}% of the promised time used."
+  - code: TIM_BUILT_VS_TIME_EXTENSIONS
+    factor: timeline
+    template_en: "{built}% built with {time_used}% of the promised time used. {extensions} extensions on record."
+  - code: TIM_QPR_LATE
+    factor: timeline
+    template_en: "The {quarter} QPR was filed {days} days late."
+  - code: TIM_QPR_MISSING
+    factor: timeline
+    template_en: "The {quarter} QPR, due {due}, is not on HARERA."
+  - code: TIM_PAST_ORIGINAL_DATE
+    factor: timeline
+    template_en: "Original completion was {month}. That date has passed with {built}% built."
+  - code: LEG_COMPLAINTS
+    factor: legal
+    template_en: "{count} complaints decided against the promoter in 24 months · {rate} per 100 units. Median count for similar projects: {median}."
+  - code: LEG_GROUP_CIRP
+    factor: legal
+    template_en: "A group company of {group} was admitted to insolvency by NCLT order on {date}."
+  - code: TRK_GROUP_LATE12
+    factor: track_record
+    template_en: "{late} of the group's {finished} finished RERA projects got OC more than 12 months late."
+  - code: TIM_QPR_ON_TIME
+    factor: timeline
+    template_en: "QPRs filed on time in each of the last {n} quarters."
+  - code: SITE_STALL
+    factor: site
+    template_en: "No QPR progress for {n} quarters: {built}% built in each QPR from {from} to {to}."
+
+# "What would change this" (PRD §6.2; DESIGN §5b · C-16). {band} is the band a counterfactual
+# actually reaches; the engine checks it by re-scoring (plinth/scoring/change.py).
+what_would_change:
+  lowest_band: "Low is the lowest band. Late QPRs, an extension or more complaints decided against the promoter would move it up."
+  catch_up_sales: "Two consecutive quarters with construction ahead of sales would move this to {band}."
+  catch_up_schedule: "Two consecutive quarters of construction at or ahead of schedule would move this to {band}."
+  file_missing: "The missing QPRs on HARERA, once filed, would move this to {band}."
+  file_on_time: "Eight quarters of QPRs filed on time would move this to {band}."
+  catch_up_all: "Construction catching up with the promised time, with every QPR filed on time, would move this to {band}."
+  no_single_change: "No one change on the public record would move this band today. The group's delivery record and complaint orders weigh most; each new filing or order is re-scored within 72 hours."
+  limited_history: "{group_possessive} first finished projects. Each one adds to the record we score from."
+  not_scored: "Enough quarterly reports to compare building with time. We score as soon as there are."
+
+# Band-notice lines (PRD §6.2 developer due process).
+notices:
+  qpr_missing_marker: "If it is still missing on {date}, this band may change; followers hear first."

@@ -22,7 +22,8 @@
     "validate": "node scripts/validate.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:api": "node scripts/api-contract-test.mjs"
   },
   "devDependencies": {
     "@plinth/config": "*",

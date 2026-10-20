@@ -1,0 +1,147 @@
+# Delivery Risk model v1.1 (retired 14 Oct 2026). Frozen: kept so history can be re-run.
+# Released 2 Sep 2026 (DESIGN §5b · C-15). Same scorecard as v1.2; no blanket extensions in
+# Late12, stale after 180 days. Group linking is an input change (entity resolution, T10+).
+version: v1.1
+released_on: 2026-09-02
+approved_on: 2026-08-26
+title: "Tighter QPR checks and group linking"
+changelog:
+  - "A QPR whose built share falls from the last quarter now counts as a filing problem."
+  - "Group companies are linked by common directors and shareholding, using MCA data from a licensed vendor."
+note: "Approved by the methodology committee on 26 Aug 2026."
+source: "DESIGN §5b · Fixture decisions, round 2 (C-15); changelog lines and committee dates: WebMethodology artboard"
+
+# Published as score_models[].config (key order is the published order).
+config:
+  target: "late12: OC more than 12 months after the original RERA date plus blanket extensions"
+  factor_weights: { finances: 30, track_record: 30, timeline: 20, legal: 15, site: 5 }
+  band_ranges:
+    low: { low: 5, high: 15 }
+    moderate: { low: 15, high: 30 }
+    elevated: { low: 30, high: 45 }
+    high: { low: 45, high: 65 }
+    severe: { low: 65, high: 80 }
+  high_confidence_points: { low: 10, moderate: 20 }
+  confidence: { min_finished: 8 }
+  limited_history: { min_finished: 3 }
+  not_scored: { min_months_registered: 6 }
+  stale_days: 180
+  rescore_hours: 72
+  blanket_extensions: false
+  late_filings_window_quarters: 8
+  red_flag_rules: [RF1_GROUP_CIRP, RF2_REGISTRATION_REVOKED, RF3_STOP_SALE, RF4_GROUP_DEFAULT]
+
+# Behaviour that is not part of the published numbers.
+rules:
+  # v1.1: a QPR whose built share falls from the last quarter counts as a filing problem.
+  built_share_drop_is_filing_problem: true
+  # Stall (PRD §6.2): no built progress across this many consecutive QPRs.
+  stall_quarters: 4
+  # PRD §6.2 due process: 7 days' notice before a downgrade into High or Severe; any other
+  # worsening gets a 48-hour heads-up before buyers see it.
+  notice: { downgrade_into: [high, severe], notice_days: 7, heads_up_hours: 48 }
+
+# Expert-set scorecard (BUILD_PLAN §7.1): weight-of-evidence bins -> logistic -> p(Late12).
+#   logit p = intercept + sum(coef x WoE of the feature's bin)
+#   band    = the band whose published range holds p (thresholds 15 / 30 / 45 / 65 of 100)
+# WoE is the judged log-odds shift of a bin against the reference phase (every feature in
+# its WoE-0 bin, about 15 of 100). Missing data sits at WoE 0: it lowers confidence, never
+# moves the band. Coefficients stay 1.0 until the M6 fit on HARERA outcomes replaces both.
+# Factor weights are each factor's share of the scorecard's total spread (max - min
+# contribution, summed over its features): 30 / 30 / 20 / 15 / 5, checked by a test.
+scorecard:
+  intercept: -1.7
+  features:
+    - code: sold_minus_built_pct
+      factor: finances
+      title: "Units sold minus share built, latest QPR (percentage points)"
+      kind: numeric
+      coef: 1.0
+      missing_woe: 0.0
+      bins:
+        - { label: "built ahead of sales by more than 10", max: -10, woe: -2.4 }
+        - { label: "built level with or ahead of sales", max: 0, woe: -1.7 }
+        - { label: "sales ahead by up to 10", max: 10, woe: -1.1 }
+        - { label: "sales ahead by 10 to 20", max: 20, woe: -0.6 }
+        - { label: "sales ahead by 20 to 30", max: 30, woe: -0.2 }
+        - { label: "sales ahead by 30 to 45", max: 45, woe: 0.5 }
+        - { label: "sales ahead by more than 45", max: null, woe: 3.0 }
+    - code: group_late12_pct
+      factor: track_record
+      title: "Share of the group's finished RERA projects that were Late12 (%)"
+      kind: numeric
+      coef: 1.0
+      missing_woe: 0.0
+      bins:
+        - { label: "none late", max: 0, woe: -1.5 }
+        - { label: "up to 15% late", max: 15, woe: -0.3 }
+        - { label: "15% to 25% late", max: 25, woe: 0.05 }
+        - { label: "25% to 40% late", max: 40, woe: 0.15 }
+        - { label: "40% to 60% late", max: 60, woe: 1.5 }
+        - { label: "more than 60% late", max: null, woe: 3.9 }
+    - code: time_used_minus_built_pct
+      factor: timeline
+      title: "Promised time used minus share built (percentage points)"
+      kind: numeric
+      coef: 1.0
+      missing_woe: 0.0
+      bins:
+        - { label: "built at or ahead of time", max: 0, woe: -0.8 }
+        - { label: "behind by up to 10", max: 10, woe: -0.25 }
+        - { label: "behind by 10 to 25", max: 25, woe: 0.18 }
+        - { label: "behind by 25 to 40", max: 40, woe: 0.24 }
+        - { label: "behind by 40 to 60", max: 60, woe: 0.95 }
+        - { label: "behind by more than 60", max: null, woe: 1.3 }
+    - code: late_filings_last_8
+      factor: timeline
+      title: "QPRs filed late in the last 8 quarters on record"
+      kind: levels
+      coef: 1.0
+      missing_woe: 0.0
+      bins:
+        - { label: "none late in a full window of 8 quarters", level: "0, full window", woe: -0.1 }
+        - { label: "none late, fewer than 8 on record", level: "0, short record", woe: 0.0 }
+        - { label: "1 late", level: "1", woe: 0.12 }
+        - { label: "2 late", level: "2", woe: 0.16 }
+        - { label: "3 or more late", level: "3 or more", woe: 0.2 }
+    - code: missing_qprs
+      factor: timeline
+      title: "QPRs past their due date and not on HARERA"
+      kind: numeric
+      coef: 1.0
+      missing_woe: 0.0
+      bins:
+        - { label: "none missing", max: 0, woe: 0.0 }
+        - { label: "1 missing", max: 1, woe: 0.7 }
+        - { label: "2 or more missing", max: null, woe: 0.85 }
+    - code: extensions
+      factor: timeline
+      title: "RERA s.6 extensions granted to this project"
+      kind: numeric
+      coef: 1.0
+      missing_woe: 0.0
+      bins:
+        - { label: "none", max: 0, woe: 0.0 }
+        - { label: "1", max: 1, woe: 0.15 }
+        - { label: "2 or more", max: null, woe: 0.35 }
+    - code: complaints_per_100_units
+      factor: legal
+      title: "Complaints decided against the promoter in 24 months, per 100 units"
+      kind: numeric
+      coef: 1.0
+      missing_woe: 0.0
+      bins:
+        - { label: "up to 1", max: 1, woe: -0.1 }
+        - { label: "1 to 2", max: 2, woe: 0.18 }
+        - { label: "2 to 3", max: 3, woe: 0.26 }
+        - { label: "3 to 5", max: 5, woe: 1.0 }
+        - { label: "more than 5", max: null, woe: 2.6 }
+    - code: stall
+      factor: site
+      title: "No built progress across the last 4 consecutive QPRs"
+      kind: levels
+      coef: 1.0
+      missing_woe: 0.0
+      bins:
+        - { label: "progress reported", level: "no", woe: 0.0 }
+        - { label: "stalled", level: "yes", woe: 0.9 }

@@ -1,4 +1,4 @@
 {
   "extends": "@plinth/config/tsconfig.base.json",
-  "include": ["src"]
+  "include": ["src", "test", "vitest.config.ts"]
 }

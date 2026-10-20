@@ -1,0 +1,15 @@
+/*
+ * The kit showcase's own stylesheet (T14, dev only). It builds Tailwind with the
+ * tokens theme and @plinth/web-ui's styles, scanning only the kit and this
+ * folder, so the showcase is styled even before the app's globals.css imports
+ * "@plinth/web-ui/styles.css" (handoff to the shell owner).
+ */
+@import "tailwindcss" source(none);
+@import "@plinth/tokens/theme.css";
+@import "@plinth/web-ui/styles.css";
+@source "./";
+
+:root {
+  --pl-font-family-display: var(--font-plinth-display), system-ui, sans-serif;
+  --pl-font-family-text: var(--font-plinth-text), "Noto Sans", system-ui, sans-serif;
+}
