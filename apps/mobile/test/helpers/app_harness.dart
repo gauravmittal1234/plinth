@@ -35,8 +35,14 @@ Future<ProviderContainer> pumpPlinth(
 
 /// Scrolls the page's list until [finder] is built and on screen, then settles,
 /// so a tap lands on it rather than on whatever was there before the scroll.
-Future<void> scrollIntoView(WidgetTester tester, Finder finder) async {
-  await tester.scrollUntilVisible(finder, 120);
+///
+/// Defaults to the outermost `Scrollable` on screen (`find.byType(Scrollable).first`):
+/// a screen with a single-line `TextField` (e.g. AppExplore's search field)
+/// adds its own internal `Scrollable` for horizontal text scrolling, so more
+/// than one can be on screen at once. Pass [scrollable] to target a specific
+/// one explicitly.
+Future<void> scrollIntoView(WidgetTester tester, Finder finder, {Finder? scrollable}) async {
+  await tester.scrollUntilVisible(finder, 120, scrollable: scrollable ?? find.byType(Scrollable).first);
   await tester.pumpAndSettle();
 }
 

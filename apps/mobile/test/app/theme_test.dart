@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:plinth/app/routes.dart';
 import 'package:plinth/app/theme_mode.dart';
 import 'package:plinth/core/theme/app_theme.dart';
 import 'package:plinth_tokens/plinth_tokens.dart';
@@ -8,8 +9,11 @@ import '../helpers/app_harness.dart';
 
 void main() {
   testWidgets('Day is the default; the toggle switches to Night and back', (tester) async {
-    final container = await pumpPlinth(tester);
-    BuildContext page() => tester.element(find.text('AppExplore'));
+    // AppExplore is filled (T30) and has no theme toggle of its own; Following
+    // is still the ArtboardPlaceholder, which carries the toggle this test
+    // exercises.
+    final container = await pumpPlinth(tester, location: Routes.following);
+    BuildContext page() => tester.element(find.text('AppFollowing'));
 
     expect(container.read(themeModeProvider), ThemeMode.light);
     expect(Theme.of(page()).brightness, Brightness.light);

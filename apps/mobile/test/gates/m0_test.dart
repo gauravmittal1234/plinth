@@ -1,9 +1,11 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:plinth/app/routes.dart';
+import 'package:plinth/core/widgets/widgets.dart' show RiskChip;
+import 'package:plinth/data/search.dart';
+import 'package:plinth/features/explore/project_card_tile.dart';
 import 'package:plinth/features/explore/seeded_phases.dart';
 import 'package:plinth/fixtures/fixture_mode.dart';
 import 'package:plinth_fixtures/plinth_fixtures.dart';
@@ -46,19 +48,21 @@ void main() {
   testWidgets('the app opens on Explore with the seeded phases', (tester) async {
     final container = await pumpPlinth(tester);
     expect(locationOf(container), Routes.explore);
-    expect(find.text('AppExplore'), findsOneWidget);
+    expect(find.text('Which home are you buying?'), findsOneWidget);
 
-    final phases = container.read(seededPhasesProvider).value;
-    expect(phases, isNotNull, reason: 'the fixture search loaded');
-    expect([for (final p in phases!) p.slug], [for (final s in seeded) s.$1]);
+    // Explore's own data path (AppExplore, T30): the same fixture search as
+    // `seededPhasesSearchKey`, now wired through `searchProvider`.
+    final results = container.read(searchProvider(const SearchQuery())).value;
+    expect(results, isNotNull, reason: 'the fixture search loaded');
+    expect([for (final p in results!.items) p.slug], [for (final s in seeded) s.$1]);
 
     for (final (slug, name, chip) in seeded) {
       final title = find.text(name);
       await scrollIntoView(tester, title);
       expect(title.hitTestable(), findsOneWidget, reason: slug);
-      final tile = find.ancestor(of: title, matching: find.byType(ListTile));
+      final tile = find.ancestor(of: title, matching: find.byType(ProjectCardTile));
       expect(
-        find.descendant(of: tile, matching: find.text(chip)),
+        find.descendant(of: tile, matching: find.byWidgetPredicate((w) => w is RiskChip && w.chip.label == chip)),
         findsOneWidget,
         reason: '$slug chip',
       );
