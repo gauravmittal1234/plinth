@@ -496,7 +496,7 @@
         "fee_per_sqft_super_inr": 150,
         "fee_3bhk_inr": 300000,
         "rules": [
-          "All dues to date paid first.",
+          "All dues to date first.",
           "No transfer before the agreement for sale is registered."
         ]
       },

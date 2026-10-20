@@ -1053,8 +1053,11 @@ export function buildDeveloperContent(cat, ev) {
       summary: {
         fee_per_sqft_super_inr: 150,
         fee_3bhk_inr: 300000,
+        // Worded as the WebProject/AppProject artboards and expected/project_page show it
+        // (DESIGN §5b paraphrases it as "all dues to date paid first"). T13 renders the line
+        // from these rules, so the two must agree.
         rules: [
-          "All dues to date paid first.",
+          "All dues to date first.",
           "No transfer before the agreement for sale is registered.",
         ],
       },
