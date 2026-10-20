@@ -1,0 +1,15 @@
+{
+  "schema": "plinth.family_join/1",
+  "member_id": "6a4ec682-1447-52b9-8c7a-92979e185e0b",
+  "inviter_first_name": "Rohan",
+  "scope_line": "4 projects: Aurelia Heights Ph 2, Kestrel Park, Sapphire Grove Ph 1 and Coral Towers",
+  "joined_on": "2026-10-06",
+  "can_add_notes": true,
+  "joined_line": "You'll get the same alerts as Rohan for 4 projects: Aurelia Heights Ph 2, Kestrel Park, Sapphire Grove Ph 1 and Coral Towers.",
+  "what_you_get": [
+    "An alert when a project's band changes, a QPR is filed or missed, its date moves or an order is passed.",
+    "A short round-up on Sundays. Nothing between 10 pm and 8 am.",
+    "Stop anytime: reply STOP, or leave from this page."
+  ],
+  "number_line": "Rohan sees that you joined, never your number."
+}

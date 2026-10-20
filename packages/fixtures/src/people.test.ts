@@ -340,21 +340,28 @@ describe("T03b seed", () => {
     expect(all["40_share_cards.sql"]).toContain("'v1.1', 'moderate'");
   });
 
-  it("people, consents and family wait for m2_people; comms for m2_comms and T44", async () => {
+  it("people, consents and family wait for m2_people (consents also m2_privacy); comms for m2_comms and T44", async () => {
     const t04 = (await buildSeed({
       migrations: ["20261020000400_t04_core_catalogue.sql"],
     })) as Record<string, string>;
     for (const f of ["50_people.sql", "51_consents.sql", "52_family.sql", "53_comms.sql"])
       expect(t04[f], f).toContain("-- SKIPPED");
     expect(t04["40_share_cards.sql"]).toContain("insert into core.share_cards");
+    const t40 = (await buildSeed({
+      migrations: ["20261020000400_t04_core_catalogue.sql", "20261110000100_t40_m2_people.sql"],
+    })) as Record<string, string>;
+    // party_label and detail_line are T45b's columns (20261121, m2_privacy).
+    expect(t40["51_consents.sql"]).toContain("-- SKIPPED");
     const m2 = (await buildSeed({
       migrations: [
         "20261020000400_t04_core_catalogue.sql",
         "20261110000100_t40_m2_people.sql",
         "20261112000100_t42_m2_comms_outbox.sql",
+        "20261121000100_t45b_m2_privacy_ledger.sql",
       ],
     })) as Record<string, string>;
     expect(m2["51_consents.sql"]).toContain("insert into app.consents");
+    expect(m2["51_consents.sql"]).toContain("'Orbis Land site office', 'Kestrel Park site visit'");
     expect(m2["53_comms.sql"]).toContain("-- SKIPPED"); // pii.wa_contacts is T44's (20261114)
   });
 });

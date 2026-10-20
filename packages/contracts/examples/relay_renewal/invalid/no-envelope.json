@@ -1,0 +1,12 @@
+{
+  "base": "c-1018-11.json",
+  "why": "An acknowledgement carries no schema envelope (API_CONTRACTS §1).",
+  "expect": "",
+  "patch": [
+    {
+      "op": "add",
+      "path": "/schema",
+      "value": "plinth.relay_renewal/1"
+    }
+  ]
+}

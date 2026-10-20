@@ -128,7 +128,6 @@ void main() {
       expect(find.text('Extract · register'), findsOneWidget);
       expect(find.text(KitCopy.evidenceNoDeveloperNote), findsOneWidget);
       expect(find.text(evidence.correctionsLine), findsOneWidget);
-      expect(find.text('View on HARERA', findRichText: true), findsNothing);
       expect(find.textContaining('View on HARERA', findRichText: true), findsOneWidget);
     });
 

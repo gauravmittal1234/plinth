@@ -1269,18 +1269,17 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: Me
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/Me"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
@@ -1316,6 +1315,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
+      description: A token already registered moves to the caller (the device signed in again).
       requestBody:
         required: true
         content:
@@ -1326,7 +1326,6 @@ paths:
               required:
                 - p_token
                 - p_platform
-                - p_app_version
               properties:
                 p_token:
                   type: string
@@ -1337,7 +1336,9 @@ paths:
                     - ios
                     - web
                 p_app_version:
-                  type: string
+                  type:
+                    - string
+                    - "null"
   /rest/v1/rpc/follow:
     post:
       operationId: follow
@@ -1437,6 +1438,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
+      description: Booked adds payment-stage alerts and the Pay-as-built links. Not found unless the caller follows the phase.
       requestBody:
         required: true
         content:
@@ -1545,18 +1547,18 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: LinkWhatsappFollows
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/LinkWhatsappFollows"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
+      description: p_accept false peeks at the caller's own number on WhatsApp; true (the buyer's tap) links it and moves its follows into the account.
       requestBody:
         required: true
         content:
@@ -1604,6 +1606,32 @@ paths:
               additionalProperties: false
               required: []
               properties: {}
+    get:
+      operationId: alert_prefs_get_get
+      summary: api.alert_prefs_get
+      tags:
+        - Buyer API
+      x-plinth-milestone: M2
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: AlertPrefs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertPrefs"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: "STABLE: the same arguments as query parameters."
   /rest/v1/rpc/alert_prefs_set:
     post:
       operationId: alert_prefs_set
@@ -1630,12 +1658,74 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
+      description: Sets the channels and kinds given; others are unchanged. WhatsApp needs a linked, opted-in contact (consent_required).
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/AlertPrefsSetRequest"
+  /rest/v1/rpc/saved_searches:
+    post:
+      operationId: saved_searches
+      summary: api.saved_searches
+      tags:
+        - Buyer API
+      x-plinth-milestone: M2
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: SavedSearches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavedSearches"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: []
+              properties: {}
+    get:
+      operationId: saved_searches_get
+      summary: api.saved_searches
+      tags:
+        - Buyer API
+      x-plinth-milestone: M2
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: SavedSearches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavedSearches"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: "STABLE: the same arguments as query parameters."
   /rest/v1/rpc/saved_search_save:
     post:
       operationId: saved_search_save
@@ -1651,25 +1741,46 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: SavedSearch
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/SavedSearch"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
+      description: The same query saved again updates the one saved search; p_id edits one. At most 25.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              description: Defined by the task that builds it.
+              additionalProperties: false
+              required:
+                - p_query
+              properties:
+                p_query:
+                  type: object
+                p_name:
+                  type:
+                    - string
+                    - "null"
+                  maxLength: 80
+                p_in_digest:
+                  type: boolean
+                  default: false
+                p_id:
+                  type:
+                    - string
+                    - "null"
+                  format: uuid
+                p_client_id:
+                  type: string
+                  format: uuid
   /rest/v1/rpc/saved_search_delete:
     post:
       operationId: saved_search_delete
@@ -1685,25 +1796,33 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: Ok
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/Ok"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              description: Defined by the task that builds it.
+              additionalProperties: false
+              required:
+                - p_id
+              properties:
+                p_id:
+                  type: string
+                  format: uuid
+                p_client_id:
+                  type: string
+                  format: uuid
   /rest/v1/rpc/family_circle:
     post:
       operationId: family_circle
@@ -1719,18 +1838,17 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: FamilyCircle
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/FamilyCircle"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
@@ -1740,6 +1858,32 @@ paths:
               additionalProperties: false
               required: []
               properties: {}
+    get:
+      operationId: family_circle_get
+      summary: api.family_circle
+      tags:
+        - Buyer API
+      x-plinth-milestone: M2
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: FamilyCircle
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FamilyCircle"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: "STABLE: the same arguments as query parameters."
   /rest/v1/rpc/family_invite_create:
     post:
       operationId: family_invite_create
@@ -1810,6 +1954,9 @@ paths:
               properties:
                 p_code:
                   $ref: "#/components/schemas/InviteCode"
+                p_client_id:
+                  type: string
+                  format: uuid
   /rest/v1/rpc/family_member_remove:
     post:
       operationId: family_member_remove
@@ -1825,25 +1972,34 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: Ok
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/Ok"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
+      description: Undo within an hour with family_member_undo.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              description: Defined by the task that builds it.
+              additionalProperties: false
+              required:
+                - p_member_id
+              properties:
+                p_member_id:
+                  type: string
+                  format: uuid
+                p_client_id:
+                  type: string
+                  format: uuid
   /rest/v1/rpc/family_member_undo:
     post:
       operationId: family_member_undo
@@ -1859,25 +2015,33 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: Ok
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/Ok"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              description: Defined by the task that builds it.
+              additionalProperties: false
+              required:
+                - p_member_id
+              properties:
+                p_member_id:
+                  type: string
+                  format: uuid
+                p_client_id:
+                  type: string
+                  format: uuid
   /rest/v1/rpc/family_join:
     post:
       operationId: family_join
@@ -1893,18 +2057,18 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: FamilyJoin
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/FamilyJoin"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
+      description: An unknown, used, cancelled or expired code is one neutral not_found.
       requestBody:
         required: true
         content:
@@ -1917,6 +2081,9 @@ paths:
               properties:
                 p_code:
                   $ref: "#/components/schemas/InviteCode"
+                p_client_id:
+                  type: string
+                  format: uuid
   /rest/v1/rpc/shortlist_note_add:
     post:
       operationId: shortlist_note_add
@@ -1932,25 +2099,43 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: Ok
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/Ok"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
+      description: The circle owner, or a joined member with can_add_notes.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              description: Defined by the task that builds it.
+              additionalProperties: false
+              required:
+                - p_slug
+                - p_text
+              properties:
+                p_slug:
+                  $ref: "#/components/schemas/Slug"
+                p_text:
+                  type: string
+                  minLength: 1
+                  maxLength: 1000
+                p_client_id:
+                  type: string
+                  format: uuid
+                p_circle_id:
+                  type:
+                    - string
+                    - "null"
+                  format: uuid
   /rest/v1/rpc/who_has_my_number:
     post:
       operationId: who_has_my_number
@@ -1986,6 +2171,32 @@ paths:
               additionalProperties: false
               required: []
               properties: {}
+    get:
+      operationId: who_has_my_number_get
+      summary: api.who_has_my_number
+      tags:
+        - Buyer API
+      x-plinth-milestone: M2
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: WhoHasMyNumber
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WhoHasMyNumber"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: "STABLE: the same arguments as query parameters."
   /rest/v1/rpc/consent_history:
     post:
       operationId: consent_history
@@ -2001,18 +2212,17 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: ConsentHistory
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ConsentHistory"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
@@ -2022,6 +2232,32 @@ paths:
               additionalProperties: false
               required: []
               properties: {}
+    get:
+      operationId: consent_history_get
+      summary: api.consent_history
+      tags:
+        - Buyer API
+      x-plinth-milestone: M2
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: ConsentHistory
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentHistory"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: "STABLE: the same arguments as query parameters."
   /rest/v1/rpc/consent_withdraw:
     post:
       operationId: consent_withdraw
@@ -2048,6 +2284,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
+      description: Ends the shares, closes the relay and queues the partner deletion request. A replay returns the first withdrawal.
       requestBody:
         required: true
         content:
@@ -2060,6 +2297,12 @@ paths:
               properties:
                 p_ref:
                   $ref: "#/components/schemas/ConsentRef"
+                p_channel:
+                  type: string
+                  enum:
+                    - web
+                    - app
+                  default: web
   /rest/v1/rpc/relay_renew:
     post:
       operationId: relay_renew
@@ -2075,18 +2318,17 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: RelayRenewal
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/RelayRenewal"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
@@ -2115,18 +2357,18 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: DataExport
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/DataExport"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
+      description: One open request at a time; a repeat call returns it. export-data (T53) fulfils it.
       requestBody:
         required: true
         content:
@@ -2151,18 +2393,18 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: AccountDeletion
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/AccountDeletion"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
+      description: One open request at a time; a repeat call returns it. delete-account (T53) fulfils it.
       requestBody:
         required: true
         content:
@@ -2187,19 +2429,18 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: RequestProject
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/RequestProject"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      description: Returns an R-MMDD-NN reference.
-      x-plinth-shape: pending
+      description: An R-MMDD-NN reference, added within 14 days or told why not. p_whatsapp_consent (the buyer's tap) needs a linked, opted-in WhatsApp contact.
       requestBody:
         required: true
         content:
@@ -2209,14 +2450,23 @@ paths:
               additionalProperties: false
               required:
                 - p_name
-                - p_rera
               properties:
                 p_name:
-                  type: string
+                  type:
+                    - string
+                    - "null"
+                  maxLength: 200
                 p_rera:
                   type:
                     - string
                     - "null"
+                  maxLength: 100
+                p_whatsapp_consent:
+                  type: boolean
+                  default: false
+                p_client_id:
+                  type: string
+                  format: uuid
   /rest/v1/rpc/create_upload:
     post:
       operationId: create_upload
@@ -2875,6 +3125,10 @@ components:
       $ref: ../schemas/about.schema.json#/$defs/AboutIdentity
     AboutMoney:
       $ref: ../schemas/about.schema.json#/$defs/AboutMoney
+    AccountDeletion:
+      $ref: ../schemas/account_delete_request.schema.json
+    AccountDeletionStatus:
+      $ref: ../schemas/account_delete_request.schema.json#/$defs/AccountDeletionStatus
     AffordInputs:
       $ref: ../schemas/afford_the_wait.schema.json#/$defs/AffordInputs
     AffordLoan:
@@ -2983,8 +3237,16 @@ components:
       $ref: ../schemas/risk_summary.schema.json#/$defs/ConfidenceLevel
     ConfidenceLevelLine:
       $ref: ../schemas/methodology.schema.json#/$defs/ConfidenceLevelLine
+    ConsentChannel:
+      $ref: ../schemas/consent_history.schema.json#/$defs/ConsentChannel
+    ConsentHistory:
+      $ref: ../schemas/consent_history.schema.json
+    ConsentHistoryItem:
+      $ref: ../schemas/consent_history.schema.json#/$defs/ConsentHistoryItem
     ConsentRef:
       $ref: ../schemas/common.schema.json#/$defs/ConsentRef
+    ConsentRelay:
+      $ref: ../schemas/consent_history.schema.json#/$defs/ConsentRelay
     ConsentWithdrawal:
       $ref: ../schemas/who_has_my_number.schema.json#/$defs/ConsentWithdrawal
     ContactParty:
@@ -3005,6 +3267,10 @@ components:
       $ref: ../schemas/about.schema.json#/$defs/CoverageNext
     CoverageToday:
       $ref: ../schemas/about.schema.json#/$defs/CoverageToday
+    DataExport:
+      $ref: ../schemas/data_export_request.schema.json
+    DataExportStatus:
+      $ref: ../schemas/data_export_request.schema.json#/$defs/DataExportStatus
     DataRules:
       $ref: ../schemas/methodology.schema.json#/$defs/DataRules
     DateOrMonth:
@@ -3067,14 +3333,24 @@ components:
       $ref: ../schemas/methodology.schema.json#/$defs/FactorWeight
     FactsOnlyNotice:
       $ref: ../schemas/developer_page.schema.json#/$defs/FactsOnlyNotice
+    FamilyCircle:
+      $ref: ../schemas/family_circle.schema.json
     FamilyInvite:
       $ref: ../schemas/family_invite.schema.json
     FamilyInviteCreateRequest:
       $ref: ../schemas/family_invite.schema.json#/$defs/FamilyInviteCreateRequest
     FamilyInvitePreview:
       $ref: ../schemas/family_invite_preview.schema.json
+    FamilyInviteRow:
+      $ref: ../schemas/family_circle.schema.json#/$defs/FamilyInviteRow
     FamilyInviteScope:
       $ref: ../schemas/family_invite.schema.json#/$defs/FamilyInviteScope
+    FamilyJoin:
+      $ref: ../schemas/family_join.schema.json
+    FamilyMember:
+      $ref: ../schemas/family_circle.schema.json#/$defs/FamilyMember
+    FamilyMembership:
+      $ref: ../schemas/family_circle.schema.json#/$defs/FamilyMembership
     FlagValues:
       $ref: ../schemas/flags.schema.json#/$defs/FlagValues
     Flags:
@@ -3137,8 +3413,14 @@ components:
       $ref: ../schemas/methodology.schema.json#/$defs/Late12Explainer
     LatestQpr:
       $ref: ../schemas/risk_summary.schema.json#/$defs/LatestQpr
+    LinkWhatsappFollows:
+      $ref: ../schemas/link_whatsapp_follows.schema.json
+    LinkedFollow:
+      $ref: ../schemas/link_whatsapp_follows.schema.json#/$defs/LinkedFollow
     MatchMethod:
       $ref: ../schemas/doc_check.schema.json#/$defs/MatchMethod
+    Me:
+      $ref: ../schemas/me.schema.json
     Methodology:
       $ref: ../schemas/methodology.schema.json
     MethodologyVersion:
@@ -3187,6 +3469,8 @@ components:
       $ref: ../schemas/risk_summary.schema.json#/$defs/PendingFact
     PhaseSummary:
       $ref: ../schemas/risk_summary.schema.json#/$defs/PhaseSummary
+    PlatformRole:
+      $ref: ../schemas/me.schema.json#/$defs/PlatformRole
     PreRera:
       $ref: ../schemas/common.schema.json#/$defs/PreRera
     PreReraItem:
@@ -3211,6 +3495,8 @@ components:
       $ref: ../schemas/project_page.schema.json
     ProjectProgress:
       $ref: ../schemas/project_page.schema.json#/$defs/ProjectProgress
+    ProjectRequestStatus:
+      $ref: ../schemas/request_project.schema.json#/$defs/ProjectRequestStatus
     Quarter:
       $ref: ../schemas/common.schema.json#/$defs/Quarter
     QuarterProgress:
@@ -3229,6 +3515,8 @@ components:
       $ref: ../schemas/about.schema.json#/$defs/RegisterRow
     RelayParty:
       $ref: ../schemas/who_has_my_number.schema.json#/$defs/RelayParty
+    RelayRenewal:
+      $ref: ../schemas/who_has_my_number.schema.json#/$defs/RelayRenewal
     Replay:
       $ref: ../schemas/following_feed.schema.json#/$defs/Replay
     ReplayMark:
@@ -3237,6 +3525,8 @@ components:
       $ref: ../schemas/evidence.schema.json#/$defs/ReportError
     ReportedIncident:
       $ref: ../schemas/project_page.schema.json#/$defs/ReportedIncident
+    RequestProject:
+      $ref: ../schemas/request_project.schema.json
     ReraBadge:
       $ref: ../schemas/project_page.schema.json#/$defs/ReraBadge
     ReraNumber:
@@ -3251,6 +3541,14 @@ components:
       $ref: ../schemas/risk_summary.schema.json
     RpcError:
       $ref: ../schemas/error.schema.json#/$defs/RpcError
+    SavedCostSheet:
+      $ref: ../schemas/link_whatsapp_follows.schema.json#/$defs/SavedCostSheet
+    SavedSearch:
+      $ref: ../schemas/saved_search.schema.json
+    SavedSearchItem:
+      $ref: ../schemas/saved_search.schema.json#/$defs/SavedSearchItem
+    SavedSearches:
+      $ref: ../schemas/saved_searches.schema.json
     ScoreState:
       $ref: ../schemas/common.schema.json#/$defs/ScoreState
     SearchFilters:

@@ -93,10 +93,28 @@ void main() {
 
   test('type roles: families, tracking in px, tabular numerals', () {
     expect(PlinthType.display.fontFamily, 'Bricolage Grotesque');
-    expect(PlinthType.display.fontWeight, FontWeight.w800);
-    expect(PlinthType.display.letterSpacing, closeTo(-0.02 * 36, 1e-9));
-    expect(PlinthType.body.fontFamily, 'Mukta');
-    expect(PlinthType.body.fontFamilyFallback, ['Noto Sans']);
+    expect(PlinthType.display.fontWeight, FontWeight.w700);
+    expect(PlinthType.display.letterSpacing, closeTo(-0.5, 1e-9));
+    // App UI v2 (FOUNDER_QUESTIONS P10): Bricolage 700 for display, title and
+    // section only; Figtree for every other role, with Noto Sans for Hindi.
+    for (final s in [PlinthType.title, PlinthType.section]) {
+      expect(s.fontFamily, 'Bricolage Grotesque');
+      expect(s.fontWeight, FontWeight.w700);
+    }
+    for (final s in [
+      PlinthType.rowTitle,
+      PlinthType.body,
+      PlinthType.meta,
+      PlinthType.caption,
+      PlinthType.button,
+      PlinthType.label,
+      PlinthType.number,
+    ]) {
+      expect(s.fontFamily, 'Figtree');
+      expect(s.fontFamilyFallback, ['Noto Sans']);
+    }
+    expect(PlinthType.rowTitle.fontWeight, FontWeight.w600);
+    expect(PlinthType.button.fontWeight, FontWeight.w700);
     expect(PlinthType.caption.fontSize, greaterThanOrEqualTo(13));
     expect(
       PlinthType.body.fontFeatures,
@@ -122,5 +140,13 @@ void main() {
     expect(PlinthRadius.none, 0);
     expect(PlinthRadius.panel, lessThanOrEqualTo(8));
     expect(PlinthLayout.touchApp, greaterThanOrEqualTo(48));
+    expect(PlinthRadius.card, 20);
+    expect(PlinthRadius.button, 16);
+    expect(PlinthRadius.tile, 12);
+    expect(PlinthLayout.buttonApp, 56);
+    expect(
+      PlinthLayout.buttonSecondaryApp,
+      greaterThanOrEqualTo(PlinthLayout.touchApp),
+    );
   });
 }

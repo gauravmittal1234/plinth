@@ -1,0 +1,11 @@
+{
+  "schema": "plinth.account_delete_request/1",
+  "request_id": "00000000-0000-4000-8000-00000045b002",
+  "status": "requested",
+  "requested_at": "2026-10-18T12:00:00+05:30",
+  "due_at": "2026-11-17T12:00:00+05:30",
+  "due_line": "We'll erase your account by 17 Nov 2026.",
+  "lines": [
+    "Some records stay where the law requires them, such as proof of the consents you gave."
+  ]
+}

@@ -50,6 +50,7 @@ describe("seed", () => {
       "51_consents.sql",
       "52_family.sql",
       "53_comms.sql",
+      "54_buyer_api.sql",
     ]);
     for (const c of Object.values(a))
       expect(c).not.toMatch(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/);

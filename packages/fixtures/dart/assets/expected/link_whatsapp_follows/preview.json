@@ -1,9 +1,21 @@
 {
   "schema": "plinth.link_whatsapp_follows/1",
+  "accepted": false,
+  "linked": false,
   "follows": [
-    { "slug": "aurelia-heights-phase-2", "since": "2026-09-14" },
-    { "slug": "kestrel-park", "since": "2026-10-09" }
+    {
+      "slug": "aurelia-heights-phase-2",
+      "since": "2026-09-14"
+    },
+    {
+      "slug": "kestrel-park",
+      "since": "2026-10-09"
+    }
   ],
-  "cost_sheets": [{ "label": "Aurelia Heights, 3 BHK cost sheet", "saved_on": "2026-10-02" }],
-  "source": "DESIGN §5b · WebSignIn (\"We found your WhatsApp follows\": Aurelia Heights Ph 2 since 14 Sep 2026, Kestrel Park since 9 Oct 2026, the Aurelia 3 BHK cost sheet of 2 Oct 2026)"
+  "cost_sheets": [
+    {
+      "label": "Aurelia Heights, 3 BHK cost sheet",
+      "saved_on": "2026-10-02"
+    }
+  ]
 }

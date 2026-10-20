@@ -1,0 +1,11 @@
+{
+  "base": "brought.json",
+  "why": "linked says whether the number belongs to the account now; a client never guesses it.",
+  "expect": "",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/linked"
+    }
+  ]
+}

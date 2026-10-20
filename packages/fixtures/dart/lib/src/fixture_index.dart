@@ -20,6 +20,9 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
     'aurelia-heights-phase-2_kestrel-park_sapphire-grove-phase-1_coral-towers',
     'aurelia-heights-phase-2_kestrel-park_sapphire-grove-phase-1',
   ],
+  'consent_history': <String>[
+    'rohan',
+  ],
   'consent_withdraw': <String>[
     'C-1012-04',
     'C-1012-05',
@@ -56,6 +59,9 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
     'd56b2adf-6ea3-598a-8cef-cbd1b0c74895',
     'dff74c62-2384-5736-88b1-02fac3a33a69--aurelia-heights-phase-2',
     'dff74c62-2384-5736-88b1-02fac3a33a69',
+  ],
+  'family_circle': <String>[
+    'rohan',
   ],
   'family_invite_cancel': <String>[
     'AH2-7KQ',
@@ -111,6 +117,9 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
     'laurel-residency',
     'sapphire-grove-phase-1',
   ],
+  'request_project': <String>[
+    'indigo-terraces',
+  ],
   'risk_summary': <String>[
     'aurelia-heights-phase-2--facts-only',
     'aurelia-heights-phase-2',
@@ -122,12 +131,25 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
     'laurel-residency',
     'sapphire-grove-phase-1',
   ],
+  'saved_searches': <String>[
+    'rohan',
+  ],
   'search_projects': <String>[
     'all-gurugram',
     'canonical',
     'outside-coverage',
     'unknown-project',
     'zero-results',
+  ],
+  'set_follow_type': <String>[
+    'aurelia-heights-phase-2--booked',
+    'aurelia-heights-phase-2--watching',
+    'coral-towers--booked',
+    'coral-towers--watching',
+    'kestrel-park--booked',
+    'kestrel-park--watching',
+    'sapphire-grove-phase-1--booked',
+    'sapphire-grove-phase-1--watching',
   ],
   'share_card': <String>[
     'aurelia-old-card',

@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/consent_history.schema.json",
+  "title": "ConsentHistory",
+  "description": "plinth.consent_history/1, from api.consent_history() (API_CONTRACTS §3.2; DESIGN §5b Rohan's consent history). Every consent the buyer gave, newest first, each by its C-MMDD-NN ref. Identical on web and app. Refs, dates and counts come from the ledger rows; party and detail are what the buyer saw at the tap.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "count_line", "rule_line", "items"],
+  "properties": {
+    "schema": { "const": "plinth.consent_history/1" },
+    "count_line": {
+      "description": "Distinct parties holding the number now, as in WhoHasMyNumber.",
+      "type": "string"
+    },
+    "rule_line": { "type": "string" },
+    "items": { "type": "array", "items": { "$ref": "#/$defs/ConsentHistoryItem" } }
+  },
+  "$defs": {
+    "ConsentHistoryItem": {
+      "title": "ConsentHistoryItem",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ref",
+        "granted_on",
+        "party",
+        "detail",
+        "purpose",
+        "purpose_line",
+        "channel",
+        "notice_version",
+        "status",
+        "status_line",
+        "number_shared",
+        "access_until",
+        "ended_on",
+        "withdrawn_at",
+        "can_withdraw",
+        "relay"
+      ],
+      "properties": {
+        "ref": { "$ref": "common.schema.json#/$defs/ConsentRef" },
+        "granted_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "party": { "type": "string" },
+        "detail": { "type": "string" },
+        "purpose": {
+          "description": "app.purposes code (catalogues/purposes.json), e.g. number_share, visit_share.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "purpose_line": {
+          "description": "The purpose as the privacy notice words it.",
+          "type": "string"
+        },
+        "channel": { "$ref": "#/$defs/ConsentChannel" },
+        "notice_version": {
+          "description": "The privacy notice version shown at the tap.",
+          "type": "string"
+        },
+        "status": { "$ref": "who_has_my_number.schema.json#/$defs/ContactStatus" },
+        "status_line": {
+          "description": "\"Number shared, until 14 Nov 2026\", \"Ended 2 Oct 2026\", \"Withdrawn 18 Oct 2026\".",
+          "type": "string"
+        },
+        "number_shared": {
+          "description": "The party can see the number now (a live share made by the buyer's tap).",
+          "type": "boolean"
+        },
+        "access_until": {
+          "description": "Last day of a live number share; null when it has no end or the number is not shared.",
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        },
+        "ended_on": {
+          "description": "The day the consent ended or was withdrawn; null while active.",
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        },
+        "withdrawn_at": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Timestamp" }, { "type": "null" }]
+        },
+        "can_withdraw": {
+          "description": "True until withdrawn; api.consent_withdraw(ref) withdraws it.",
+          "type": "boolean"
+        },
+        "relay": {
+          "description": "The WhatsApp relay this consent backs, if any. Pass relay_id to api.relay_renew.",
+          "anyOf": [{ "$ref": "#/$defs/ConsentRelay" }, { "type": "null" }]
+        }
+      }
+    },
+    "ConsentChannel": {
+      "title": "ConsentChannel",
+      "description": "app.consents.channel: where the buyer tapped.",
+      "type": "string",
+      "enum": ["web", "app", "whatsapp"]
+    },
+    "ConsentRelay": {
+      "title": "ConsentRelay",
+      "description": "A WhatsApp text relay instead of the number. It never counts toward the cap.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relay_id", "open", "closes_on", "counts_toward_cap"],
+      "properties": {
+        "relay_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+        "open": { "type": "boolean" },
+        "closes_on": {
+          "description": "When an open relay closes (null while a deal is active and no end is set), or the day a closed one closed.",
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        },
+        "counts_toward_cap": {
+          "description": "Always false: a relay is not a number holder.",
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

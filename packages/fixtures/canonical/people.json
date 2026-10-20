@@ -496,7 +496,7 @@
       "id": "121a030c-3816-5bbd-baba-444f6a7b084d",
       "ref": "R-1018-07",
       "ref_year": 2026,
-      "user": null,
+      "user": "rohan",
       "name_text": "Indigo Terraces, Sector 79",
       "rera_text": null,
       "requested_at": "2026-10-18T00:00:00+05:30",
@@ -504,7 +504,7 @@
       "status": "open",
       "reason": null,
       "line": "We'll add it by 1 Nov 2026 or tell you why not.",
-      "source": "DESIGN §5b · Discovery, cost and Ask Plinth (Request a project; requester not named)"
+      "source": "DESIGN §5b · Discovery, cost and Ask Plinth (Request a project); requester derived: §5b names none; Rohan, the fixture buyer, so the R-1018-07 receipt has an owner and api.request_project can replay it (T45a)"
     }
   ],
   "following": {

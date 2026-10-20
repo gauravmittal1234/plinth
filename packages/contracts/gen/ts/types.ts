@@ -17,6 +17,8 @@ export type Timestamp = string;
  * Scoring model version, e.g. v1.2.
  */
 export type ModelVersion = string;
+export type Uuid = string;
+export type AccountDeletionStatus = "requested";
 /**
  * Whole rupees. Always paired with a server-formatted *_label.
  */
@@ -38,7 +40,6 @@ export type AgreementStage = "before_agreement" | "after_agreement";
  * app.alert_subscriptions.cadence.
  */
 export type Cadence = "instant" | "daily_8am" | "weekly_sun_9am" | "off";
-export type Uuid = string;
 /**
  * HTTP status: not_found 404, not_in_coverage 404, invalid_input 422, auth_required 401, forbidden 403, consent_required 409, cap_reached 409, conflict 409, rate_limited 429, flag_off 503.
  */
@@ -128,11 +129,16 @@ export type EventKind =
 export type ClaimState = "claimed" | "invited" | "unclaimed";
 export type ConfidenceLevel = "high" | "low";
 /**
+ * app.consents.channel: where the buyer tapped.
+ */
+export type ConsentChannel = "web" | "app" | "whatsapp";
+/**
  * Consent reference C-MMDD-NN (IST date; NN widens past 99). Must equal catalogues/ref_formats.json prefix C.
  */
 export type ConsentRef = string;
 export type ContactStatus = "active" | "ended" | "withdrawn";
 export type CostTag = "often_negotiable" | "set_by_law" | "included_in_base" | "refundable_deposit";
+export type DataExportStatus = "preparing" | "ready";
 /**
  * YYYY-MM-DD or, for month precision, YYYY-MM.
  */
@@ -181,6 +187,14 @@ export type Lane =
  */
 export type Factor = "finances" | "track_record" | "timeline" | "legal" | "site";
 /**
+ * The member id for api.family_member_remove and api.family_member_undo.
+ */
+export type Uuid1 = string;
+/**
+ * The invite id (api.family_member_remove cancels it like api.family_invite_cancel).
+ */
+export type Uuid2 = string;
+/**
  * Family invite code, e.g. AH2-7KQ or RC4-2MW.
  */
 export type InviteCode = string;
@@ -207,7 +221,14 @@ export type StageKind =
  * Calendar quarter, YYYY-Qn. Apr–Jun 2026 is 2026-Q2.
  */
 export type Quarter = string;
+/**
+ * A calendar date, YYYY-MM-DD (IST business date).
+ */
+export type IsoDate2 = string;
+export type PlatformRole =
+  "buyer" | "agent" | "developer_member" | "reviewer" | "methodology" | "admin" | "support";
 export type PaymentMethod = "transfer" | "cheque" | "cash";
+export type ProjectRequestStatus = "open" | "added" | "declined";
 /**
  * core.score_state.
  */
@@ -334,6 +355,21 @@ export interface PageMeta {
   promise_line?: string;
   live_url?: string;
   [k: string]: unknown | undefined;
+}
+/**
+ * plinth.account_delete_request/1, from api.account_delete_request() (API_CONTRACTS §3.2; BUILD_PLAN §13). The record of a DPDP erasure request (app.data_requests, kind erasure): erasure within 30 days (due_at = requested_at + 30 days), with legal-hold exceptions (delete-account, T53). One open request at a time: a repeat call returns it.
+ */
+export interface AccountDeletion {
+  schema: "plinth.account_delete_request/1";
+  request_id: Uuid;
+  status: AccountDeletionStatus;
+  requested_at: Timestamp;
+  due_at: Timestamp;
+  /**
+   * "We'll erase your account by 17 Nov 2026."
+   */
+  due_line: string;
+  lines: string[];
 }
 /**
  * The inputs this answer used (echoed, so a page can show and edit them).
@@ -737,6 +773,78 @@ export interface ConfidenceLevelLine {
   [k: string]: unknown | undefined;
 }
 /**
+ * plinth.consent_history/1, from api.consent_history() (API_CONTRACTS §3.2; DESIGN §5b Rohan's consent history). Every consent the buyer gave, newest first, each by its C-MMDD-NN ref. Identical on web and app. Refs, dates and counts come from the ledger rows; party and detail are what the buyer saw at the tap.
+ */
+export interface ConsentHistory {
+  schema: "plinth.consent_history/1";
+  /**
+   * Distinct parties holding the number now, as in WhoHasMyNumber.
+   */
+  count_line: string;
+  rule_line: string;
+  items: ConsentHistoryItem[];
+}
+export interface ConsentHistoryItem {
+  ref: ConsentRef;
+  granted_on: IsoDate;
+  party: string;
+  detail: string;
+  /**
+   * app.purposes code (catalogues/purposes.json), e.g. number_share, visit_share.
+   */
+  purpose: string;
+  /**
+   * The purpose as the privacy notice words it.
+   */
+  purpose_line: string;
+  channel: ConsentChannel;
+  /**
+   * The privacy notice version shown at the tap.
+   */
+  notice_version: string;
+  status: ContactStatus;
+  /**
+   * "Number shared, until 14 Nov 2026", "Ended 2 Oct 2026", "Withdrawn 18 Oct 2026".
+   */
+  status_line: string;
+  /**
+   * The party can see the number now (a live share made by the buyer's tap).
+   */
+  number_shared: boolean;
+  /**
+   * Last day of a live number share; null when it has no end or the number is not shared.
+   */
+  access_until: IsoDate | null;
+  /**
+   * The day the consent ended or was withdrawn; null while active.
+   */
+  ended_on: IsoDate | null;
+  withdrawn_at: Timestamp | null;
+  /**
+   * True until withdrawn; api.consent_withdraw(ref) withdraws it.
+   */
+  can_withdraw: boolean;
+  /**
+   * The WhatsApp relay this consent backs, if any. Pass relay_id to api.relay_renew.
+   */
+  relay: ConsentRelay | null;
+}
+/**
+ * A WhatsApp text relay instead of the number. It never counts toward the cap.
+ */
+export interface ConsentRelay {
+  relay_id: Uuid;
+  open: boolean;
+  /**
+   * When an open relay closes (null while a deal is active and no end is set), or the day a closed one closed.
+   */
+  closes_on: IsoDate | null;
+  /**
+   * Always false: a relay is not a number holder.
+   */
+  counts_toward_cap: boolean;
+}
+/**
  * Result of api.consent_withdraw(p_ref). An acknowledgement, so no schema envelope (as Ok).
  */
 export interface ConsentWithdrawal {
@@ -801,6 +909,25 @@ export interface CostBreakdownRequest {
   p_unit: string;
   p_buyer?: BuyerKind;
   p_waive?: string[];
+}
+/**
+ * plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2; BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request (app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24 hours); the link works for 7 days and opens only after a fresh sign-in code (export-data, T53). One open request at a time: a repeat call returns it.
+ */
+export interface DataExport {
+  schema: "plinth.data_export_request/1";
+  request_id: Uuid;
+  status: DataExportStatus;
+  requested_at: Timestamp;
+  due_at: Timestamp;
+  /**
+   * Set once the file is ready; the link opens only after a fresh sign-in code.
+   */
+  link_expires_at: Timestamp | null;
+  /**
+   * "Ready by 19 Oct 2026, 12:00 pm." or "Ready. The link works until 26 Oct 2026."
+   */
+  status_line: string;
+  lines: string[];
 }
 export interface DataRules {
   rescore_hours: number;
@@ -1157,6 +1284,64 @@ export interface FactorWeight {
   weight_pct: number;
 }
 /**
+ * plinth.family_circle/1, from api.family_circle() (API_CONTRACTS §3.2, §4.11; built by T45a). The caller's own circle (joined members and open invites) and the circles they joined. Never a phone number, follow type, payment alert or "who has my number" (DATA_MODEL §12 inv. 5). Every line is final server copy.
+ */
+export interface FamilyCircle {
+  schema: "plinth.family_circle/1";
+  /**
+   * Relatives who joined the caller's circle, earliest first.
+   */
+  members: FamilyMember[];
+  /**
+   * Open invites (not used, cancelled or expired), newest first.
+   */
+  invites: FamilyInviteRow[];
+  /**
+   * Other people's circles the caller joined.
+   */
+  member_of: FamilyMembership[];
+  rules: string[];
+  private_line: string;
+  number_line: string;
+}
+export interface FamilyMember {
+  id: Uuid1;
+  /**
+   * The relative's first name when they have an account; null for a WhatsApp-only member.
+   */
+  first_name: string | null;
+  /**
+   * Same alerts for all of the owner's projects.
+   */
+  scope_all: boolean;
+  joined_on: IsoDate;
+  joined_via: "whatsapp" | "app";
+  can_add_notes: boolean;
+  /**
+   * "Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes"
+   */
+  line: string;
+}
+export interface FamilyInviteRow {
+  id: Uuid2;
+  code: InviteCode;
+  link: string;
+  scope_line: string;
+  invited_on: IsoDate;
+  expires_on: IsoDate;
+  /**
+   * "Invited today · Aurelia Heights Ph 2 · hasn't tapped the link yet"
+   */
+  line: string;
+}
+export interface FamilyMembership {
+  member_id: Uuid;
+  owner_first_name: string | null;
+  scope_line: string;
+  joined_on: IsoDate;
+  can_add_notes: boolean;
+}
+/**
  * plinth.family_invite/1, from api.family_invite_create(p_scope) (API_CONTRACTS §4.11). A code works for one person for 7 days and carries no phone number; the relative's own "JOIN <code>" message is the opt-in.
  */
 export interface FamilyInvite {
@@ -1170,11 +1355,15 @@ export interface FamilyInvite {
   private_line: string;
 }
 /**
- * Arguments of api.family_invite_create.
+ * Arguments of api.family_invite_create. Idempotent on p_client_id. The scope may name only phases the caller follows.
  */
 export interface FamilyInviteCreateRequest {
   p_scope: FamilyInviteScope;
   p_client_id?: Uuid;
+  /**
+   * The relative may add notes to the shared shortlist (default false).
+   */
+  p_can_add_notes?: boolean;
 }
 /**
  * Either some followed phases (slugs) or all of them (all = true).
@@ -1197,6 +1386,23 @@ export interface FamilyInvitePreview {
    * The RERA number when the invite covers one phase; null for a multi-phase invite.
    */
   rera_number: ReraNumber | null;
+  what_you_get: string[];
+  number_line: string;
+}
+/**
+ * plinth.family_join/1, from api.family_join(p_code) (the app path) and the relative's own WhatsApp "JOIN <code>" (ops.family_join_by_code via api.whatsapp_family_join; API_CONTRACTS §4.11; built by T45a). The join itself is the relative's opt-in. An unknown, used, cancelled or expired code is a neutral not_found, never this payload. Never a phone number.
+ */
+export interface FamilyJoin {
+  schema: "plinth.family_join/1";
+  member_id: Uuid;
+  inviter_first_name: string;
+  scope_line: string;
+  joined_on: IsoDate;
+  can_add_notes: boolean;
+  /**
+   * "You'll get the same alerts as Rohan for Aurelia Heights, Phase 2."
+   */
+  joined_line: string;
   what_you_get: string[];
   number_line: string;
 }
@@ -1463,6 +1669,59 @@ export interface LatestQpr {
    * Days since filed_on; null when the filing date is not on record (Cedar Walk Ph 2).
    */
   age_days: number | null;
+}
+/**
+ * plinth.link_whatsapp_follows/1, from api.link_whatsapp_follows(p_accept) ("Bring them here", API_CONTRACTS §3.2; built by T45a). The WhatsApp number is the account's own verified phone. p_accept false is the peek before any tap: what that number follows on WhatsApp, nothing changes. p_accept true is the buyer's own tap: the WhatsApp contact is linked to the account and its follows move into the account (source whatsapp); the answer lists the follows now brought. A number linked to another account answers linked false with nothing listed.
+ */
+export interface LinkWhatsappFollows {
+  schema: "plinth.link_whatsapp_follows/1";
+  /**
+   * Echoes p_accept: true only for the "Bring them here" tap.
+   */
+  accepted: boolean;
+  /**
+   * This WhatsApp number is linked to the caller's account now.
+   */
+  linked: boolean;
+  /**
+   * Peek: the number's WhatsApp follows not brought yet. Accepted: the follows brought into the account. Oldest first.
+   */
+  follows: LinkedFollow[];
+  /**
+   * Cost sheets the number saved on WhatsApp (uploads, M3). Empty until uploads exist.
+   */
+  cost_sheets: SavedCostSheet[];
+}
+export interface LinkedFollow {
+  slug: Slug;
+  since: IsoDate2;
+}
+export interface SavedCostSheet {
+  label: string;
+  saved_on: IsoDate;
+}
+/**
+ * plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The number itself never leaves auth: only the masked form.
+ */
+export interface Me {
+  schema: "plinth.me/1";
+  user_id: Uuid;
+  /**
+   * The only name a site office ever sees (with a visit consent).
+   */
+  first_name: string | null;
+  /**
+   * "+91 99••• ••318" (app.profiles.phone_masked).
+   */
+  phone_masked: string | null;
+  /**
+   * When the user confirmed they are 18 or over; null until then.
+   */
+  adult_attested_at: Timestamp | null;
+  /**
+   * Platform roles (app.user_roles; plinth_roles in the JWT).
+   */
+  roles: PlatformRole[];
 }
 /**
  * plinth.methodology/1, from api.methodology() (API_CONTRACTS §3.1; the WebMethodology page): the bands and their ranges, factor weights, red-flag rules, confidence, the calibration table and the model versions with their changelog. Only published models and runs.
@@ -1827,6 +2086,41 @@ export interface RelayParty {
   counts_toward_cap: boolean;
 }
 /**
+ * Result of api.relay_renew(p_relay_id): the relay stays open 30 more days (D13), or a new session opens for the same parties when it had closed. An acknowledgement, so no schema envelope (as Ok). relay_id is the session now open; ref is the consent that backs it.
+ */
+export interface RelayRenewal {
+  relay_id: Uuid;
+  ref: ConsentRef;
+  closes_at: Timestamp;
+  line: string;
+}
+/**
+ * plinth.request_project/1, from api.request_project(p_name, p_rera, p_whatsapp_consent) (API_CONTRACTS §3.2; DESIGN §5b Request a project; built by T45a). The record of the request: reference R-MMDD-NN (IST date), added by due_on (requested + 14 days) or told why not. p_whatsapp_consent is the buyer's own tap asking to hear back on WhatsApp too; it needs a linked, opted-in WhatsApp contact (otherwise consent_required). The same open request again returns the same reference.
+ */
+export interface RequestProject {
+  schema: "plinth.request_project/1";
+  /**
+   * R-MMDD-NN (catalogues/ref_formats.json prefix R).
+   */
+  ref: string;
+  /**
+   * The project as the buyer typed it.
+   */
+  name: string | null;
+  rera: string | null;
+  requested_on: IsoDate;
+  due_on: IsoDate;
+  status: ProjectRequestStatus;
+  /**
+   * "We'll add it by 1 Nov 2026 or tell you why not."
+   */
+  line: string;
+  /**
+   * Set when the buyer asked to hear back on WhatsApp too.
+   */
+  whatsapp_line: string | null;
+}
+/**
  * PostgREST error for a function that raised SQLSTATE PT<http> via ops.raise_api_error(): code is PT<http status>, message the domain code, details the house-copy sentence. Each domain code has exactly one status (see ApiErrorCode).
  */
 export interface RpcError {
@@ -1834,6 +2128,39 @@ export interface RpcError {
   message: ApiErrorCode;
   details: string | null;
   hint: string | null;
+}
+/**
+ * plinth.saved_search/1, from api.saved_search_save(p_query, p_name, p_in_digest, p_id, p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved (app.saved_searches). The same query saved again updates the one saved search; at most 25 per buyer. Matches are digest material, never utility alerts.
+ */
+export interface SavedSearch {
+  schema: "plinth.saved_search/1";
+  search: SavedSearchItem;
+  line: string;
+}
+export interface SavedSearchItem {
+  id: Uuid;
+  /**
+   * The buyer's own name for it (at most 80 characters).
+   */
+  name: string | null;
+  /**
+   * The search as the client sent it in p_query (what was asked, without the page: q, filters, sort, bbox).
+   */
+  query: {};
+  in_digest: boolean;
+  saved_at: Timestamp;
+  updated_at: Timestamp;
+}
+/**
+ * plinth.saved_searches/1, from api.saved_searches() (built by T45a): the caller's saved searches, newest first.
+ */
+export interface SavedSearches {
+  schema: "plinth.saved_searches/1";
+  items: SavedSearchItem[];
+  /**
+   * How many searches a buyer can save.
+   */
+  max_items: number;
 }
 /**
  * Structured filters. Also the response schema of the AI task parse.search_query@1 (a deterministic parser runs first).

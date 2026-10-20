@@ -216,7 +216,7 @@ export function buildPeople(sc) {
       id: id("project_request", "R-1018-07"),
       ref: "R-1018-07",
       ref_year: 2026,
-      user: null,
+      user: "rohan",
       name_text: "Indigo Terraces, Sector 79",
       rera_text: null,
       requested_at: at("2026-10-18"),
@@ -224,7 +224,7 @@ export function buildPeople(sc) {
       status: "open",
       reason: null,
       line: "We'll add it by 1 Nov 2026 or tell you why not.",
-      source: `${SEC.discovery} (Request a project; requester not named)`,
+      source: `${SEC.discovery} (Request a project); requester ${derived("§5b names none; Rohan, the fixture buyer, so the R-1018-07 receipt has an owner and api.request_project can replay it (T45a)")}`,
     },
   ];
 

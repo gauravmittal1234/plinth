@@ -1,0 +1,13 @@
+{
+  "schema": "plinth.data_export_request/1",
+  "request_id": "00000000-0000-4000-8000-00000045b001",
+  "status": "preparing",
+  "requested_at": "2026-10-18T12:00:00+05:30",
+  "due_at": "2026-10-19T12:00:00+05:30",
+  "link_expires_at": null,
+  "status_line": "Ready by 19 Oct 2026, 12:00 pm.",
+  "lines": [
+    "One ZIP with a readable PDF and a JSON file: follows, alerts, saved cost sheets, questions to Ask Plinth, consent history and who had your number.",
+    "The link works for 7 days and opens only after your sign-in code."
+  ]
+}

@@ -6,6 +6,7 @@ import '../foundation/glyphs.dart';
 import '../foundation/kit_copy.dart';
 import '../foundation/motion.dart';
 import '../primitives/buttons.dart';
+import '../primitives/rows.dart';
 import '../primitives/sheet.dart';
 
 /// Opens the evidence sheet for one fact (AppRisk; API_CONTRACTS §4.6).
@@ -87,21 +88,31 @@ class _EvidenceSheetState extends State<EvidenceSheet> {
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
     final e = widget.evidence;
-    final dt = PlinthType.small.copyWith(color: tokens.muted);
-    final dd = PlinthType.body.copyWith(height: 1.5, color: tokens.ink);
-    Widget field(String term, Widget value) => Padding(
-      padding: const EdgeInsets.only(top: 14),
-      child: MergeSemantics(
-        child: Column(
+    // App UI v2 sheet pattern: each field is a row with an icon tile, its
+    // name in `meta` and its value in `body`, grouped on one rounded field.
+    Widget field(IconData icon, String term, Widget value) => MergeSemantics(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: PlinthSpace.s16, vertical: PlinthSpace.s12),
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(term, style: dt),
-            const SizedBox(height: 2),
-            value,
+            PlinthIconTile(icon: icon, tone: tokens.bgSolid),
+            const SizedBox(width: PlinthSpace.s12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(term, style: PlinthType.meta.copyWith(color: tokens.ink2)),
+                  const SizedBox(height: 2),
+                  value,
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
+    final dd = PlinthType.body.copyWith(color: tokens.ink);
     final extract = e.extract;
     return Semantics(
       scopesRoute: true,
@@ -113,6 +124,12 @@ class _EvidenceSheetState extends State<EvidenceSheet> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           PlinthSheetHeader(
+            leading: PlinthIconTile(
+              icon: KitGlyph.document.icon,
+              size: 48,
+              tone: tokens.accentSoft,
+              color: tokens.onAccentSoft,
+            ),
             title: e.chip,
             subtitle: widget.subtitle,
             onClose: widget.onClose,
@@ -120,69 +137,80 @@ class _EvidenceSheetState extends State<EvidenceSheet> {
           ),
           Flexible(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 14, 20, 24),
+              padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterApp, PlinthSpace.s16, PlinthLayout.gutterApp, 24),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  LaneLabel(lane: e.lane),
-                  if (widget.fact != null) ...[
-                    const SizedBox(height: 12),
-                    Text(
-                      widget.fact!,
-                      style: PlinthType.h2.copyWith(height: 1.12, letterSpacing: -0.03 * 26, color: tokens.ink),
-                    ),
-                  ],
-                  field(KitCopy.evidenceSource, Text(e.document, style: dd)),
-                  field(KitCopy.evidenceDates, Text(e.datesLine, style: dd)),
-                  if (extract != null)
-                    field(
-                      e.page == null ? KitCopy.evidenceExtract : '${KitCopy.evidenceExtract} · ${e.page}',
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: _Extract(text: extract, highlight: widget.highlight),
-                      ),
-                    ),
-                  if (e.readLine != null) field(KitCopy.evidenceRead, Text(e.readLine!, style: dd)),
-                  if (e.usedIn.isNotEmpty) field(KitCopy.evidenceUsedIn, Text(e.usedIn.join(' · '), style: dd)),
-                  field(
-                    KitCopy.evidenceDeveloperNote,
-                    Text(e.developerSays?.line ?? KitCopy.evidenceNoDeveloperNote, style: dd),
+                  Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: LaneLabel(lane: e.lane),
                   ),
-                  field(KitCopy.evidenceCorrections, Text(e.correctionsLine, style: dd)),
-                  const SizedBox(height: 18),
-                  Wrap(
-                    spacing: PlinthSpace.s8,
-                    runSpacing: PlinthSpace.s8,
+                  if (widget.fact != null) ...[
+                    const SizedBox(height: PlinthSpace.s12),
+                    Text(widget.fact!, style: PlinthType.h3.copyWith(color: tokens.ink)),
+                  ],
+                  if (extract != null) ...[
+                    const SizedBox(height: PlinthSpace.s16),
+                    Text(
+                      e.page == null ? KitCopy.evidenceExtract : '${KitCopy.evidenceExtract} · ${e.page}',
+                      style: PlinthType.meta.copyWith(color: tokens.ink2),
+                    ),
+                    const SizedBox(height: 6),
+                    _Extract(text: extract, highlight: widget.highlight),
+                  ],
+                  const SizedBox(height: PlinthSpace.s16),
+                  PlinthGroup(
+                    tone: tokens.track,
+                    gapTone: tokens.sheet,
                     children: [
-                      if (e.officialUrl != null)
-                        PlinthButton(
-                          label: e.viewLabel ?? KitCopy.openOriginal,
-                          glyph: KitGlyph.external,
-                          compact: true,
-                          onPressed: widget.onOpenOriginal,
-                        ),
-                      if (e.snapshot != null)
-                        PlinthButton(
-                          label: KitCopy.archivedCopy,
-                          kind: PlinthButtonKind.tonal,
-                          compact: true,
-                          onPressed: widget.onOpenArchive,
-                        ),
+                      field(Icons.description_rounded, KitCopy.evidenceSource, Text(e.document, style: dd)),
+                      field(Icons.event_rounded, KitCopy.evidenceDates, Text(e.datesLine, style: dd)),
+                      if (e.readLine != null)
+                        field(Icons.lightbulb_rounded, KitCopy.evidenceRead, Text(e.readLine!, style: dd)),
+                      if (e.usedIn.isNotEmpty)
+                        field(Icons.link_rounded, KitCopy.evidenceUsedIn, Text(e.usedIn.join(' · '), style: dd)),
+                      field(
+                        KitGlyph.speech.icon,
+                        KitCopy.evidenceDeveloperNote,
+                        Text(e.developerSays?.line ?? KitCopy.evidenceNoDeveloperNote, style: dd),
+                      ),
+                      field(Icons.edit_note_rounded, KitCopy.evidenceCorrections, Text(e.correctionsLine, style: dd)),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  Wrap(
-                    spacing: PlinthSpace.s20,
+                  if (e.officialUrl != null) ...[
+                    const SizedBox(height: PlinthSpace.s20),
+                    PlinthButton(
+                      label: e.viewLabel ?? KitCopy.openOriginal,
+                      glyph: KitGlyph.external,
+                      expand: true,
+                      onPressed: widget.onOpenOriginal,
+                    ),
+                  ],
+                  const SizedBox(height: PlinthSpace.s16),
+                  PlinthGroup(
+                    tone: tokens.track,
+                    gapTone: tokens.sheet,
                     children: [
-                      PlinthButton(
-                        label: KitCopy.reportError,
-                        kind: PlinthButtonKind.tertiary,
-                        onPressed: widget.onReportError,
+                      if (e.snapshot != null)
+                        PlinthListRow(
+                          leading: PlinthIconTile(icon: Icons.inventory_2_rounded, tone: tokens.bgSolid),
+                          title: KitCopy.archivedCopy,
+                          navigates: true,
+                          onTap: widget.onOpenArchive,
+                        ),
+                      PlinthListRow(
+                        leading: PlinthIconTile(icon: Icons.flag_rounded, tone: tokens.bgSolid),
+                        title: KitCopy.reportError,
+                        navigates: true,
+                        onTap: widget.onReportError,
                       ),
-                      PlinthButton(
-                        label: _copied ? KitCopy.citationCopied : KitCopy.copyCitation,
-                        kind: PlinthButtonKind.tertiary,
-                        onPressed: () {
+                      PlinthListRow(
+                        leading: PlinthIconTile(
+                          icon: _copied ? Icons.check_rounded : Icons.content_copy_rounded,
+                          tone: tokens.bgSolid,
+                        ),
+                        title: _copied ? KitCopy.citationCopied : KitCopy.copyCitation,
+                        onTap: () {
                           setState(() => _copied = true);
                           widget.onCopyCitation?.call();
                         },
@@ -210,7 +238,7 @@ class LaneLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
     return DecoratedBox(
-      decoration: BoxDecoration(color: tokens.track, borderRadius: BorderRadius.circular(PlinthRadius.pill)),
+      decoration: BoxDecoration(color: tokens.chipFill, borderRadius: BorderRadius.circular(PlinthRadius.pill)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
         child: Text.rich(
@@ -228,7 +256,7 @@ class LaneLabel extends StatelessWidget {
               TextSpan(text: KitCopy.lane(lane)),
             ],
           ),
-          style: PlinthType.small.copyWith(height: 1.3, fontWeight: FontWeight.w600, color: tokens.ink),
+          style: PlinthType.meta.copyWith(fontWeight: FontWeight.w600, color: tokens.ink),
         ),
       ),
     );
@@ -276,7 +304,7 @@ class _ExtractState extends State<_Extract> with SingleTickerProviderStateMixin 
   @override
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
-    final style = PlinthType.body.copyWith(fontSize: 17, height: 1.55, color: tokens.ink);
+    final style = PlinthType.body.copyWith(color: tokens.ink);
     final h = widget.highlight;
     final at = h == null || h.isEmpty ? -1 : widget.text.indexOf(h);
     final Widget text;
@@ -310,7 +338,7 @@ class _ExtractState extends State<_Extract> with SingleTickerProviderStateMixin 
       );
     }
     return DecoratedBox(
-      decoration: BoxDecoration(color: tokens.track, borderRadius: BorderRadius.circular(PlinthRadius.panel)),
+      decoration: BoxDecoration(color: tokens.track, borderRadius: BorderRadius.circular(PlinthRadius.button)),
       child: Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14), child: text),
     );
   }

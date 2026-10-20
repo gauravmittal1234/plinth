@@ -1,0 +1,12 @@
+{
+  "base": "rohan.json",
+  "why": "Consent refs are always C-MMDD-NN (DESIGN §5b).",
+  "expect": "/items/0/ref",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/items/0/ref",
+      "value": "CN-1018-11"
+    }
+  ]
+}

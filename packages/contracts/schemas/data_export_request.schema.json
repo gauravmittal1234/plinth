@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/data_export_request.schema.json",
+  "title": "DataExport",
+  "description": "plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2; BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request (app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24 hours); the link works for 7 days and opens only after a fresh sign-in code (export-data, T53). One open request at a time: a repeat call returns it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "request_id",
+    "status",
+    "requested_at",
+    "due_at",
+    "link_expires_at",
+    "status_line",
+    "lines"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.data_export_request/1" },
+    "request_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+    "status": { "$ref": "#/$defs/DataExportStatus" },
+    "requested_at": { "$ref": "common.schema.json#/$defs/Timestamp" },
+    "due_at": { "$ref": "common.schema.json#/$defs/Timestamp" },
+    "link_expires_at": {
+      "description": "Set once the file is ready; the link opens only after a fresh sign-in code.",
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/Timestamp" }, { "type": "null" }]
+    },
+    "status_line": {
+      "description": "\"Ready by 19 Oct 2026, 12:00 pm.\" or \"Ready. The link works until 26 Oct 2026.\"",
+      "type": "string"
+    },
+    "lines": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "DataExportStatus": {
+      "title": "DataExportStatus",
+      "type": "string",
+      "enum": ["preparing", "ready"]
+    }
+  }
+}

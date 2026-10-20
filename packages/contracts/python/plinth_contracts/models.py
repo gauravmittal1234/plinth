@@ -18,6 +18,10 @@ class AboutMoney(BaseModel):
     lines: list[str]
 
 
+class AccountDeletionStatus(StrEnum):
+    requested = "requested"
+
+
 class AgreementStage(StrEnum):
     before_agreement = "before_agreement"
     after_agreement = "after_agreement"
@@ -296,6 +300,16 @@ class ConfidenceLevelLine(BaseModel):
     line: str
 
 
+class ConsentChannel(StrEnum):
+    """
+    app.consents.channel: where the buyer tapped.
+    """
+
+    web = "web"
+    app = "app"
+    whatsapp = "whatsapp"
+
+
 class ContactStatus(StrEnum):
     active = "active"
     ended = "ended"
@@ -331,6 +345,11 @@ class CoverageToday(BaseModel):
     )
     line: str
     items: list[str]
+
+
+class DataExportStatus(StrEnum):
+    preparing = "preparing"
+    ready = "ready"
 
 
 class DataRules(BaseModel):
@@ -484,6 +503,11 @@ class FactorWeight(BaseModel):
     factor: Factor
     label: str
     weight_pct: Annotated[float, Field(ge=0.0, le=100.0)]
+
+
+class JoinedVia(StrEnum):
+    whatsapp = "whatsapp"
+    app = "app"
 
 
 class FlagValues(BaseModel):
@@ -740,6 +764,16 @@ class Pct(RootModel[float]):
     """
 
 
+class PlatformRole(StrEnum):
+    buyer = "buyer"
+    agent = "agent"
+    developer_member = "developer_member"
+    reviewer = "reviewer"
+    methodology = "methodology"
+    admin = "admin"
+    support = "support"
+
+
 class PreReraItem(BaseModel):
     model_config = ConfigDict(
         extra="allow",
@@ -785,6 +819,12 @@ class ProgressToday(BaseModel):
     """
     band: BandCode | None
     band_since_line: str | None
+
+
+class ProjectRequestStatus(StrEnum):
+    open = "open"
+    added = "added"
+    declined = "declined"
 
 
 TowersAdditionalProperty = TypeAliasType(
@@ -925,6 +965,45 @@ class ReportedIncident(BaseModel):
     url: str | None = None
 
 
+class RequestProject(BaseModel):
+    """
+    plinth.request_project/1, from api.request_project(p_name, p_rera, p_whatsapp_consent) (API_CONTRACTS §3.2; DESIGN §5b Request a project; built by T45a). The record of the request: reference R-MMDD-NN (IST date), added by due_on (requested + 14 days) or told why not. p_whatsapp_consent is the buyer's own tap asking to hear back on WhatsApp too; it needs a linked, opted-in WhatsApp contact (otherwise consent_required). The same open request again returns the same reference.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.request_project/1"], Field(alias="schema")]
+    ref: Annotated[
+        str, Field(pattern="^R-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$")
+    ]
+    """
+    R-MMDD-NN (catalogues/ref_formats.json prefix R).
+    """
+    name: str | None
+    """
+    The project as the buyer typed it.
+    """
+    rera: str | None
+    requested_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    due_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    status: ProjectRequestStatus
+    line: str
+    """
+    "We'll add it by 1 Nov 2026 or tell you why not."
+    """
+    whatsapp_line: str | None
+    """
+    Set when the buyer asked to hear back on WhatsApp too.
+    """
+
+
 class ReraNumber(RootModel[str]):
     root: Annotated[str, Field(min_length=1, title="ReraNumber")]
     """
@@ -979,6 +1058,17 @@ class RpcError(BaseModel):
     message: ApiErrorCode
     details: str | None
     hint: str | None
+
+
+class SavedCostSheet(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    label: str
+    saved_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
 
 
 class ScoreState(StrEnum):
@@ -1179,6 +1269,34 @@ class AboutIdentity(BaseModel):
     placeholder_note: str | None
     photo_line: str | None = None
     register_: Annotated[list[RegisterRow], Field(alias="register")]
+
+
+class AccountDeletion(BaseModel):
+    """
+    plinth.account_delete_request/1, from api.account_delete_request() (API_CONTRACTS §3.2; BUILD_PLAN §13). The record of a DPDP erasure request (app.data_requests, kind erasure): erasure within 30 days (due_at = requested_at + 30 days), with legal-hold exceptions (delete-account, T53). One open request at a time: a repeat call returns it.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[
+        Literal["plinth.account_delete_request/1"], Field(alias="schema")
+    ]
+    request_id: Annotated[UUID, Field(title="Uuid")]
+    status: AccountDeletionStatus
+    requested_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    due_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    due_line: str
+    """
+    "We'll erase your account by 17 Nov 2026."
+    """
+    lines: list[str]
 
 
 class AffordInputs(BaseModel):
@@ -1510,6 +1628,26 @@ class Confidence(BaseModel):
     line: str
 
 
+class ConsentRelay(BaseModel):
+    """
+    A WhatsApp text relay instead of the number. It never counts toward the cap.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    relay_id: Annotated[UUID, Field(title="Uuid")]
+    open: bool
+    closes_on: date_aliased | None
+    """
+    When an open relay closes (null while a deal is active and no end is set), or the day a closed one closed.
+    """
+    counts_toward_cap: bool
+    """
+    Always false: a relay is not a number holder.
+    """
+
+
 class ConsentWithdrawal(BaseModel):
     """
     Result of api.consent_withdraw(p_ref). An acknowledgement, so no schema envelope (as Ok).
@@ -1598,6 +1736,36 @@ class Coverage(BaseModel):
     )
     today: CoverageToday
     next: list[CoverageNext]
+
+
+class DataExport(BaseModel):
+    """
+    plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2; BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request (app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24 hours); the link works for 7 days and opens only after a fresh sign-in code (export-data, T53). One open request at a time: a repeat call returns it.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.data_export_request/1"], Field(alias="schema")]
+    request_id: Annotated[UUID, Field(title="Uuid")]
+    status: DataExportStatus
+    requested_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    due_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    link_expires_at: AwareDatetime | None
+    """
+    Set once the file is ready; the link opens only after a fresh sign-in code.
+    """
+    status_line: str
+    """
+    "Ready by 19 Oct 2026, 12:00 pm." or "Ready. The link works until 26 Oct 2026."
+    """
+    lines: list[str]
 
 
 class DelayCost(BaseModel):
@@ -1862,6 +2030,36 @@ class FamilyInvitePreview(BaseModel):
     number_line: str
 
 
+class FamilyInviteRow(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    """
+    The invite id (api.family_member_remove cancels it like api.family_invite_cancel).
+    """
+    code: Annotated[
+        str, Field(pattern="^[A-Z0-9]{2,4}-[A-Z0-9]{3}$", title="InviteCode")
+    ]
+    """
+    Family invite code, e.g. AH2-7KQ or RC4-2MW.
+    """
+    link: str
+    scope_line: str
+    invited_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    expires_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    line: str
+    """
+    "Invited today · Aurelia Heights Ph 2 · hasn't tapped the link yet"
+    """
+
+
 class FamilyInviteScope(BaseModel):
     """
     Either some followed phases (slugs) or all of them (all = true).
@@ -1872,6 +2070,73 @@ class FamilyInviteScope(BaseModel):
     )
     slugs: Annotated[list[Slug] | None, Field(min_length=1)] = None
     all: bool | None = None
+
+
+class FamilyJoin(BaseModel):
+    """
+    plinth.family_join/1, from api.family_join(p_code) (the app path) and the relative's own WhatsApp "JOIN <code>" (ops.family_join_by_code via api.whatsapp_family_join; API_CONTRACTS §4.11; built by T45a). The join itself is the relative's opt-in. An unknown, used, cancelled or expired code is a neutral not_found, never this payload. Never a phone number.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.family_join/1"], Field(alias="schema")]
+    member_id: Annotated[UUID, Field(title="Uuid")]
+    inviter_first_name: str
+    scope_line: str
+    joined_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    can_add_notes: bool
+    joined_line: str
+    """
+    "You'll get the same alerts as Rohan for Aurelia Heights, Phase 2."
+    """
+    what_you_get: list[str]
+    number_line: str
+
+
+class FamilyMember(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    """
+    The member id for api.family_member_remove and api.family_member_undo.
+    """
+    first_name: str | None
+    """
+    The relative's first name when they have an account; null for a WhatsApp-only member.
+    """
+    scope_all: bool
+    """
+    Same alerts for all of the owner's projects.
+    """
+    joined_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    joined_via: JoinedVia
+    can_add_notes: bool
+    line: str
+    """
+    "Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes"
+    """
+
+
+class FamilyMembership(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    member_id: Annotated[UUID, Field(title="Uuid")]
+    owner_first_name: str | None
+    scope_line: str
+    joined_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    can_add_notes: bool
 
 
 class Follow(BaseModel):
@@ -2070,6 +2335,48 @@ class LatestQpr(BaseModel):
     age_days: Annotated[int | None, Field(ge=0)]
     """
     Days since filed_on; null when the filing date is not on record (Cedar Walk Ph 2).
+    """
+
+
+class LinkedFollow(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    since: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    The IST date the number followed it on WhatsApp.
+    """
+
+
+class Me(BaseModel):
+    """
+    plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The number itself never leaves auth: only the masked form.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.me/1"], Field(alias="schema")]
+    user_id: Annotated[UUID, Field(title="Uuid")]
+    first_name: str | None
+    """
+    The only name a site office ever sees (with a visit consent).
+    """
+    phone_masked: str | None
+    """
+    "+91 99••• ••318" (app.profiles.phone_masked).
+    """
+    adult_attested_at: AwareDatetime | None
+    """
+    When the user confirmed they are 18 or over; null until then.
+    """
+    roles: list[PlatformRole]
+    """
+    Platform roles (app.user_roles; plinth_roles in the JWT).
     """
 
 
@@ -2387,6 +2694,32 @@ class Reason(BaseModel):
     sources: Annotated[list[SourceRef], Field(min_length=1)]
 
 
+class RelayRenewal(BaseModel):
+    """
+    Result of api.relay_renew(p_relay_id): the relay stays open 30 more days (D13), or a new session opens for the same parties when it had closed. An acknowledgement, so no schema envelope (as Ok). relay_id is the session now open; ref is the consent that backs it.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    relay_id: Annotated[UUID, Field(title="Uuid")]
+    ref: Annotated[
+        str,
+        Field(
+            pattern="^C-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$",
+            title="ConsentRef",
+        ),
+    ]
+    """
+    Consent reference C-MMDD-NN (IST date; NN widens past 99). Must equal catalogues/ref_formats.json prefix C.
+    """
+    closes_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    line: str
+
+
 class Replay(BaseModel):
     """
     Jump chips in R1; the slider is behind the since_replay_slider flag.
@@ -2494,6 +2827,46 @@ class RiskSummary(BaseModel):
     """
     meta: RiskMeta
     share: RiskShare
+
+
+class SavedSearchItem(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    name: str | None
+    """
+    The buyer's own name for it (at most 80 characters).
+    """
+    query: dict[str, Any]
+    """
+    The search as the client sent it in p_query (what was asked, without the page: q, filters, sort, bbox).
+    """
+    in_digest: bool
+    saved_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    updated_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+
+
+class SavedSearches(BaseModel):
+    """
+    plinth.saved_searches/1, from api.saved_searches() (built by T45a): the caller's saved searches, newest first.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.saved_searches/1"], Field(alias="schema")]
+    items: list[SavedSearchItem]
+    max_items: Annotated[int, Field(ge=1)]
+    """
+    How many searches a buyer can save.
+    """
 
 
 class SearchFilters(BaseModel):
@@ -2757,6 +3130,67 @@ class Compare(BaseModel):
     meta: PageMeta | None = None
 
 
+class ConsentHistoryItem(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    ref: Annotated[
+        str,
+        Field(
+            pattern="^C-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$",
+            title="ConsentRef",
+        ),
+    ]
+    """
+    Consent reference C-MMDD-NN (IST date; NN widens past 99). Must equal catalogues/ref_formats.json prefix C.
+    """
+    granted_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    party: str
+    detail: str
+    purpose: Annotated[str, Field(pattern="^[a-z][a-z0-9_]*$")]
+    """
+    app.purposes code (catalogues/purposes.json), e.g. number_share, visit_share.
+    """
+    purpose_line: str
+    """
+    The purpose as the privacy notice words it.
+    """
+    channel: ConsentChannel
+    notice_version: str
+    """
+    The privacy notice version shown at the tap.
+    """
+    status: ContactStatus
+    status_line: str
+    """
+    "Number shared, until 14 Nov 2026", "Ended 2 Oct 2026", "Withdrawn 18 Oct 2026".
+    """
+    number_shared: bool
+    """
+    The party can see the number now (a live share made by the buyer's tap).
+    """
+    access_until: date_aliased | None
+    """
+    Last day of a live number share; null when it has no end or the number is not shared.
+    """
+    ended_on: date_aliased | None
+    """
+    The day the consent ended or was withdrawn; null while active.
+    """
+    withdrawn_at: AwareDatetime | None
+    can_withdraw: bool
+    """
+    True until withdrawn; api.consent_withdraw(ref) withdraws it.
+    """
+    relay: ConsentRelay | None
+    """
+    The WhatsApp relay this consent backs, if any. Pass relay_id to api.relay_renew.
+    """
+
+
 class CostBreakdown(BaseModel):
     """
     plinth.cost_breakdown/1, from api.cost_breakdown(p_slug, p_unit, p_buyer, p_waive) (API_CONTRACTS §4.13). Charges and all-in are totals, never lines.
@@ -2879,9 +3313,35 @@ class Evidence(BaseModel):
     report_error: ReportError
 
 
+class FamilyCircle(BaseModel):
+    """
+    plinth.family_circle/1, from api.family_circle() (API_CONTRACTS §3.2, §4.11; built by T45a). The caller's own circle (joined members and open invites) and the circles they joined. Never a phone number, follow type, payment alert or "who has my number" (DATA_MODEL §12 inv. 5). Every line is final server copy.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.family_circle/1"], Field(alias="schema")]
+    members: list[FamilyMember]
+    """
+    Relatives who joined the caller's circle, earliest first.
+    """
+    invites: list[FamilyInviteRow]
+    """
+    Open invites (not used, cancelled or expired), newest first.
+    """
+    member_of: list[FamilyMembership]
+    """
+    Other people's circles the caller joined.
+    """
+    rules: list[str]
+    private_line: str
+    number_line: str
+
+
 class FamilyInviteCreateRequest(BaseModel):
     """
-    Arguments of api.family_invite_create.
+    Arguments of api.family_invite_create. Idempotent on p_client_id. The scope may name only phases the caller follows.
     """
 
     model_config = ConfigDict(
@@ -2889,6 +3349,10 @@ class FamilyInviteCreateRequest(BaseModel):
     )
     p_scope: FamilyInviteScope
     p_client_id: Annotated[UUID | None, Field(title="Uuid")] = None
+    p_can_add_notes: bool | None = None
+    """
+    The relative may add notes to the shared shortlist (default false).
+    """
 
 
 class FollowingFeed(BaseModel):
@@ -2913,6 +3377,33 @@ class FollowingFeed(BaseModel):
     Changes before the replay date.
     """
     digest: DigestInfo | None
+
+
+class LinkWhatsappFollows(BaseModel):
+    """
+    plinth.link_whatsapp_follows/1, from api.link_whatsapp_follows(p_accept) ("Bring them here", API_CONTRACTS §3.2; built by T45a). The WhatsApp number is the account's own verified phone. p_accept false is the peek before any tap: what that number follows on WhatsApp, nothing changes. p_accept true is the buyer's own tap: the WhatsApp contact is linked to the account and its follows move into the account (source whatsapp); the answer lists the follows now brought. A number linked to another account answers linked false with nothing listed.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.link_whatsapp_follows/1"], Field(alias="schema")]
+    accepted: bool
+    """
+    Echoes p_accept: true only for the "Bring them here" tap.
+    """
+    linked: bool
+    """
+    This WhatsApp number is linked to the caller's account now.
+    """
+    follows: list[LinkedFollow]
+    """
+    Peek: the number's WhatsApp follows not brought yet. Accepted: the follows brought into the account. Oldest first.
+    """
+    cost_sheets: list[SavedCostSheet]
+    """
+    Cost sheets the number saved on WhatsApp (uploads, M3). Empty until uploads exist.
+    """
 
 
 class Methodology(BaseModel):
@@ -2989,6 +3480,19 @@ class ProjectHero(BaseModel):
     rera_badge: ReraBadge
 
 
+class SavedSearch(BaseModel):
+    """
+    plinth.saved_search/1, from api.saved_search_save(p_query, p_name, p_in_digest, p_id, p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved (app.saved_searches). The same query saved again updates the one saved search; at most 25 per buyer. Matches are digest material, never utility alerts.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.saved_search/1"], Field(alias="schema")]
+    search: SavedSearchItem
+    line: str
+
+
 class ShareCard(BaseModel):
     """
     plinth.share_card/1, from api.share_card(p_code): the card as it was sent, the record now, and the "Changed since this card was sent" diff (API_CONTRACTS §3.1; core.share_cards).
@@ -3037,6 +3541,23 @@ class About(BaseModel):
     grievance: GrievanceOfficer
     coverage: Coverage
     meta: PageMeta
+
+
+class ConsentHistory(BaseModel):
+    """
+    plinth.consent_history/1, from api.consent_history() (API_CONTRACTS §3.2; DESIGN §5b Rohan's consent history). Every consent the buyer gave, newest first, each by its C-MMDD-NN ref. Identical on web and app. Refs, dates and counts come from the ledger rows; party and detail are what the buyer saw at the tap.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.consent_history/1"], Field(alias="schema")]
+    count_line: str
+    """
+    Distinct parties holding the number now, as in WhoHasMyNumber.
+    """
+    rule_line: str
+    items: list[ConsentHistoryItem]
 
 
 class DocCheck(BaseModel):
