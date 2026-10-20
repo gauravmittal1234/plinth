@@ -50,7 +50,10 @@ test.describe("WebAbout", () => {
     await expect(page.getByRole("heading", { name: "What do we cover today?" })).toBeVisible();
     const notify = page.getByRole("button", { name: "Notify me" }).first();
     await notify.click();
-    await expect(page.getByRole("status").first()).toContainText("On the waitlist");
+    await expect(page.getByRole("status").first()).toContainText(
+      "Waitlists aren’t open yet, so nothing was saved.",
+    );
+    await expect(page.getByText("On the waitlist")).not.toBeVisible();
   });
 
   test("no serious or critical a11y violations", async ({ page }) => {

@@ -30,12 +30,7 @@ export function CoverageSection({ coverage }: { coverage: About["coverage"] }) {
                 <span className="text-body">
                   <strong className="font-semibold">{next.name}:</strong> {next.when_line}
                 </span>
-                {next.notify ? (
-                  <NotifyToggle
-                    idleLabel="Notify me"
-                    confirmedLine={`On the waitlist. One message when ${next.name} opens. Nothing else.`}
-                  />
-                ) : null}
+                {next.notify ? <NotifyToggle idleLabel="Notify me" /> : null}
               </li>
             ))}
           </ul>
