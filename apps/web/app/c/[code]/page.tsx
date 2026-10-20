@@ -6,10 +6,11 @@
 import { RiskChip } from "@plinth/web-ui";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { isDataError, riskSummary, shareCard } from "@/src/data";
-import { PlinthMark } from "@/src/shell/icons";
 import { breadcrumbListJsonLd } from "@/src/seo/json-ld";
 import { canonicalUrl } from "@/src/seo/site";
+import { PlinthMark } from "@/src/shell/icons";
 
 export async function generateMetadata({ params }: PageProps<"/c/[code]">) {
   const { code } = await params;
@@ -25,7 +26,24 @@ export async function generateMetadata({ params }: PageProps<"/c/[code]">) {
   };
 }
 
-export default async function Page({ params }: PageProps<"/c/[code]">) {
+export default function Page({ params }: PageProps<"/c/[code]">) {
+  return (
+    <Suspense fallback={<CardFallback />}>
+      <CardRoute params={params} />
+    </Suspense>
+  );
+}
+
+function CardFallback() {
+  return (
+    <main id="main" className="mx-auto flex w-full max-w-[40rem] flex-col gap-10 px-4 py-16 sm:px-8">
+      <p className="m-0 text-body text-ink2">{"Reading the record…"}</p>
+    </main>
+  );
+}
+
+// Exported for the test only (it calls this directly, skipping Suspense).
+export async function CardRoute({ params }: Pick<PageProps<"/c/[code]">, "params">) {
   const { code } = await params;
 
   let card;

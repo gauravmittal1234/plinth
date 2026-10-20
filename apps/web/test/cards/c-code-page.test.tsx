@@ -14,7 +14,7 @@ vi.mock("next/navigation", () => ({
   },
 }));
 
-import Page, { generateMetadata } from "@/app/c/[code]/page";
+import { CardRoute, generateMetadata } from "@/app/c/[code]/page";
 
 function params(code: string) {
   return { params: Promise.resolve({ code }), searchParams: Promise.resolve({}) };
@@ -22,7 +22,7 @@ function params(code: string) {
 
 describe("/c/[code]", () => {
   it("shows the phase name, the current band and what changed", async () => {
-    const element = await Page(params("ce57248d"));
+    const element = await CardRoute(params("ce57248d"));
     render(element);
 
     expect(screen.getByRole("heading", { name: "Aurelia Heights, Phase 2" })).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe("/c/[code]", () => {
   });
 
   it("calls notFound() for an unknown code", async () => {
-    await expect(Page(params("not-a-real-code"))).rejects.toThrow(NOT_FOUND);
+    await expect(CardRoute(params("not-a-real-code"))).rejects.toThrow(NOT_FOUND);
   });
 
   it("builds metadata from the ShareCard, kept out of the index (a reopen link, not the canonical page)", async () => {

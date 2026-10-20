@@ -9,14 +9,20 @@
 //   without), paired within a corridor: real alternatives a buyer would
 //   actually compare, not every combination.
 import "server-only";
+// A static import, not @plinth/fixtures/node's loadCanonical(): that loader
+// reads the file at a dynamic path (readFileSync(join(FIXTURES_DIR, rel))),
+// which makes Turbopack trace (and ship) the whole monorepo for this route
+// (confirmed by `next build`'s own warning on this exact import).
+import catalogueJson from "@plinth/fixtures/canonical/catalogue.json";
 import { GROUP_SLUGS, PHASE_SLUGS, type PhaseSlug } from "@plinth/fixtures";
-import { loadCanonical } from "@plinth/fixtures/node";
 
 export type ComparePair = readonly [PhaseSlug, PhaseSlug];
 
 /** One row of packages/fixtures/canonical/catalogue.json `phases` (fields this module reads only). */
 type CataloguePhase = { slug: string; corridor: string | null };
 type Catalogue = { phases: CataloguePhase[] };
+
+const catalogue = catalogueJson as unknown as Catalogue;
 
 /** The phases with their own `/gurugram/projects/[slug]` page. */
 export function publicProjectSlugs(): readonly PhaseSlug[] {
@@ -33,7 +39,6 @@ export function publicDeveloperSlugs(): readonly string[] {
  * `/compare/[a]-vs-[b]` SEO route (WORK_BREAKDOWN §2.1 WebCompare).
  */
 export function comparePairs(): readonly ComparePair[] {
-  const catalogue = loadCanonical<Catalogue>("catalogue");
   const corridorOf = new Map(catalogue.phases.map((p) => [p.slug, p.corridor]));
   const byCorridor = new Map<string, PhaseSlug[]>();
   for (const slug of PHASE_SLUGS) {
