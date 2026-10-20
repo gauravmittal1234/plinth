@@ -80,7 +80,11 @@ export function claimsTask(overrides: Partial<AiTask> = {}): AiTask {
 
 /** A cost-sheet-like task (bank policy, one prompt) for PII tests. */
 export function bankTask(overrides: Partial<AiTask> = {}): AiTask {
-  const real = DEFAULT_CATALOGUE.tasks.find((t) => t.id === "extract.payment_request")!;
+  // A single-reader stand-in: the bank-policy tests are about redaction, not readers, so they
+  // must not depend on whether the catalogue lists readers a and b for this task (T61 does).
+  const { readers: _readers, ...real } = DEFAULT_CATALOGUE.tasks.find((t) =>
+    t.id === "extract.payment_request"
+  )!;
   return {
     ...real,
     model_id: "gemini-test-flash",
