@@ -698,7 +698,7 @@ class PlinthTokens extends ThemeExtension<PlinthTokens> {
   }
 }
 
-/// Type roles for the app (app UI v2, benchmark-thapki.md; Android sp). Colourless: apply a
+/// Type roles for the app (app UI v2; Android sp). Colourless: apply a
 /// [PlinthTokens] colour with `copyWith(color: …)`.
 ///
 /// The app must bundle the families under exactly these names.

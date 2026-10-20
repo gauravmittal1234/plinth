@@ -132,9 +132,7 @@ function model(dictionary) {
     letterSpacing: em(v.letterSpacing),
   });
   const familyOf = (stack) => {
-    const key = Object.keys(t.font.family).find(
-      (k) => t.font.family[k].join() === stack.join(),
-    );
+    const key = Object.keys(t.font.family).find((k) => t.font.family[k].join() === stack.join());
     if (!key) throw new Error(`typography uses an unknown family stack: ${stack.join()}`);
     return key;
   };
@@ -712,7 +710,7 @@ function formatDartFlutter({ dictionary }) {
   push("");
 
   // PlinthType.
-  push("/// Type roles for the app (app UI v2, benchmark-thapki.md; Android sp). Colourless: apply a");
+  push("/// Type roles for the app (app UI v2; Android sp). Colourless: apply a");
   push("/// [PlinthTokens] colour with `copyWith(color: …)`.");
   push("///");
   push("/// The app must bundle the families under exactly these names.");
