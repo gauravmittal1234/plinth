@@ -228,8 +228,8 @@ begin
     perform ops.raise_api_error('invalid_input', 'p_model_calls is the number of provider calls made (0 to 10).');
   end if;
   if coalesce(p_tokens_in, 0) < 0 or coalesce(p_tokens_out, 0) < 0 or coalesce(p_latency_ms, 0) < 0
-     or coalesce(p_cost_inr, 0) < 0 then
-    perform ops.raise_api_error('invalid_input', 'Tokens, latency and cost are never negative.');
+     or coalesce(p_cost_inr, 0) < 0 or coalesce(p_cost_inr, 0) >= 100000000 then
+    perform ops.raise_api_error('invalid_input', 'Tokens, latency and cost are never negative (cost under ₹10 Cr).');
   end if;
   if p_output is not null and pg_catalog.octet_length(p_output::text) > 262144 then
     perform ops.raise_api_error('invalid_input', 'The logged output is at most 256 KB.');
