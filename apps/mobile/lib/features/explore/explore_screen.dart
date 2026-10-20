@@ -114,7 +114,11 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             ),
             const SizedBox(width: PlinthSpace.s12),
             Expanded(
-              child: PlinthButton(label: 'Map', kind: PlinthButtonKind.tonal, onPressed: () => context.push(Routes.map)),
+              child: PlinthButton(
+                label: 'Map',
+                kind: PlinthButtonKind.tonal,
+                onPressed: () => context.push(Routes.map),
+              ),
             ),
           ],
         ),

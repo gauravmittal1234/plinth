@@ -25,7 +25,6 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-
   const order = [
     'Kestrel Park',
     'Cedar Walk, Phase 2',

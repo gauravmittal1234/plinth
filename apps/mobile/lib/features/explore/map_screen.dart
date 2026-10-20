@@ -139,10 +139,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                           results.legendLine!,
                           style: PlinthType.small.copyWith(color: tokens.ink, fontWeight: FontWeight.w600),
                         ),
-                      Text(
-                        '"Quoted" means no cost sheet yet.',
-                        style: PlinthType.caption.copyWith(color: tokens.ink2),
-                      ),
+                      Text('"Quoted" means no cost sheet yet.', style: PlinthType.caption.copyWith(color: tokens.ink2)),
                       const SizedBox(height: PlinthSpace.s8),
                       PlinthSegmented<bool>(
                         semanticLabel: 'Pins show',
@@ -174,12 +171,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   Widget _sheetList(ScrollController controller, List<ProjectCard> pins) {
     return ListView.separated(
       controller: controller,
-      padding: const EdgeInsets.fromLTRB(
-        PlinthLayout.gutterPhone,
-        0,
-        PlinthLayout.gutterPhone,
-        PlinthSpace.s24,
-      ),
+      padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterPhone, 0, PlinthLayout.gutterPhone, PlinthSpace.s24),
       itemCount: pins.length,
       separatorBuilder: (context, i) => const SizedBox(height: PlinthSpace.s12),
       itemBuilder: (context, i) {

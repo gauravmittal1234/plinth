@@ -62,10 +62,7 @@ void main() {
       expect(title.hitTestable(), findsOneWidget, reason: slug);
       final tile = find.ancestor(of: title, matching: find.byType(ProjectCardTile));
       expect(
-        find.descendant(
-          of: tile,
-          matching: find.byWidgetPredicate((w) => w is RiskChip && w.chip.label == chip),
-        ),
+        find.descendant(of: tile, matching: find.byWidgetPredicate((w) => w is RiskChip && w.chip.label == chip)),
         findsOneWidget,
         reason: '$slug chip',
       );
