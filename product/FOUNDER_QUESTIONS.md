@@ -16,6 +16,7 @@ Collected while closing the design gaps (18 Oct 2026). None of these block desig
 | P4 | **One consent-reference format**, `C-MMDD-NN`, on every screen | The developer inbox had invented a second format |
 | P5 | **Flyers and letters in images are greeked** (placeholder bars), with the real claim text overlaid as live type | AI images produced half-readable nonsense text |
 | P6 | **No confirmation without a record.** A screen confirms only what the server confirmed. "Notify me" and "Join the waitlist" now say "Waitlists aren't open yet, so nothing was saved" until a waitlist API exists. Request references (R-MMDD-NN) come only from the API's answer | M1 screens had shown "On the waitlist" and a fixed R-1018-07 without recording anything (#36, #38) |
+| P7 | **Free at launch, no revenue at all** (founder, 20 Oct 2026). No Pro plan and no agent fee; developers never pay; loans stay "arrive in 2027". `/pricing` becomes a "Plinth is free" page; `pro_paywall` stays off. This supersedes P2 for launch | Founder decision |
 
 ## Start this week (long lead times; steps in `docs/engineering/SETUP_FOR_FOUNDER.md`)
 - **Meta Business verification**, needed for the WhatsApp Business API and its templates.
@@ -95,7 +96,7 @@ Collected while closing the design gaps (18 Oct 2026). None of these block desig
   - Home, Search and About offer "Notify me" / "Join the Noida waitlist", but no API records them.
   - Proposal: an `api.waitlist_join(area, WhatsApp consent)` in M2 with the T45 buyer writes, sending one WhatsApp utility message on opening.
   - Confirm the scope.
-- **Pricing copy (#38).** WebPricing states "Full refund within 7 days, for any reason", "money back within 5 working days" and ₹999 "GST included". None of these is in DESIGN.md §5b; they come from the artboard. Confirm them, or give the real terms, before launch.
+- ~~**Pricing copy (#38).**~~ Moot: free at launch (P7).
 
 ## For the lawyer (copy currently states these as fact)
 - Pay-as-built and the site-visit recap: 10 flags in `fix-visitpay.md` §4. They include the s.19(6)/(7) wording, the draft letter the buyer sends themselves, and how we label what a salesperson said.
