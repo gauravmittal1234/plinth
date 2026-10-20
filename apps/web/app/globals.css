@@ -8,6 +8,9 @@
  * below, so the font-family overrides here win.
  */
 @import "@plinth/tokens/theme.css";
+/* Web UI kit (T14): its component utilities and @source scan, so kit classes
+ * such as text-on-accent reach the Tailwind build. Must follow the tokens. */
+@import "@plinth/web-ui/styles.css";
 
 :root {
   /* next/font serves Bricolage Grotesque and Mukta under generated family names;
