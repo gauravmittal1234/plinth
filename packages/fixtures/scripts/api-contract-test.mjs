@@ -19,8 +19,11 @@
 //   pglite    a throwaway PGlite database built from the Supabase shim, supabase/migrations and
 //             supabase/seed, exactly as `npm run db:check` builds it. The default otherwise.
 //
-// Every call runs as `anon` (the public read API) inside one transaction that is rolled back,
-// so the run leaves the database as it found it.
+// Every call runs as `anon` (the public read API), or, when its request names `as.user_id`
+// (the buyer API), as `authenticated` with that user's JWT claims. All calls share one
+// transaction that is rolled back, and each call is also undone on its own (its block raises
+// after the call), so a mutation fixture (consent_withdraw) never changes what a later fixture
+// reads. Acknowledgements carry no envelope (API_CONTRACTS §1): ACKNOWLEDGEMENTS names their type.
 //
 // Skipped on purpose:
 //   - keys ending in `--facts-only`, and any request carrying a `state`: design states that are
@@ -44,6 +47,20 @@ const PKG = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ROOT = resolve(PKG, "../..");
 const EXPECTED = join(PKG, "expected");
 const SUPABASE = join(ROOT, "supabase");
+
+/** Contract type of the functions that answer with an acknowledgement (no envelope). */
+const ACKNOWLEDGEMENTS = {
+  consent_withdraw: "ConsentWithdrawal",
+  relay_renew: "RelayRenewal",
+  device_register: "Ok",
+  unfollow: "Ok",
+  mark_following_seen: "Ok",
+  family_invite_cancel: "Ok",
+  family_member_remove: "Ok",
+  family_member_undo: "Ok",
+  shortlist_note_add: "Ok",
+  doc_check_save: "Ok",
+};
 
 /** Fields that need a table a later task creates, tolerated while `table` is absent.
  *  `fixture` is the expected/<fn>/<fixture>.json key. */
@@ -182,18 +199,25 @@ function runSql(cases, topUps) {
     block.push(`  insert into pg_temp._contract_topup values (${lit(t.table)}, v_n);`);
   }
   for (const c of cases) {
+    const userId = c.req.as?.user_id;
+    const claims = userId ? JSON.stringify({ sub: userId, role: "authenticated" }) : "";
+    block.push("  v_out := null;");
     block.push("  begin");
-    block.push("    execute 'set local role anon';");
-    block.push("    perform pg_catalog.set_config('request.jwt.claims', '', true);");
+    block.push(`    execute 'set local role ${userId ? "authenticated" : "anon"}';`);
+    block.push(`    perform pg_catalog.set_config('request.jwt.claims', ${lit(claims)}, true);`);
     block.push(`    execute ${lit(callSql(c.fn, c.req))} into v_out;`);
-    block.push("    execute 'reset role';");
-    block.push(
-      `    insert into pg_temp._contract_result values (${lit(c.fn)}, ${lit(c.key)}, v_out, null);`,
-    );
+    // Undo this call's writes, role and claims: the raise rolls the block back; v_out survives.
+    block.push("    raise exception using errcode = 'P0001', message = '__contract_rollback__';");
     block.push("  exception when others then");
+    block.push("    if sqlerrm = '__contract_rollback__' then");
     block.push(
-      `    insert into pg_temp._contract_result values (${lit(c.fn)}, ${lit(c.key)}, null, sqlstate || ': ' || sqlerrm);`,
+      `      insert into pg_temp._contract_result values (${lit(c.fn)}, ${lit(c.key)}, v_out, null);`,
     );
+    block.push("    else");
+    block.push(
+      `      insert into pg_temp._contract_result values (${lit(c.fn)}, ${lit(c.key)}, null, sqlstate || ': ' || sqlerrm);`,
+    );
+    block.push("    end if;");
     block.push("  end;");
   }
   return [
@@ -327,7 +351,7 @@ const show = (v) => (typeof v === "string" ? JSON.stringify(v) : JSON.stringify(
 
 // ---------------------------------------------------------------------------- main
 async function main() {
-  const { validatorForPayload } = await import("@plinth/contracts/validators");
+  const { VALIDATORS, validatorForPayload } = await import("@plinth/contracts/validators");
   const db =
     opt.db === "postgres"
       ? { query: async (sql) => psql(sql), close: async () => {} }
@@ -395,8 +419,14 @@ async function main() {
     const live = JSON.parse(r.payload);
     const problems = [];
 
-    const validate = validatorForPayload(live);
-    if (!validate) problems.push(`no contract schema for envelope ${show(live?.schema)}`);
+    const ack = ACKNOWLEDGEMENTS[c.fn];
+    const validate = ack ? VALIDATORS[ack] : validatorForPayload(live);
+    if (!validate)
+      problems.push(
+        ack
+          ? `no contract type ${ack} for api.${c.fn}`
+          : `no contract schema for envelope ${show(live?.schema)}`,
+      );
     else if (!validate(live))
       for (const e of validate.errors ?? [])
         problems.push(`schema: ${e.instancePath || "/"} ${e.message}`);

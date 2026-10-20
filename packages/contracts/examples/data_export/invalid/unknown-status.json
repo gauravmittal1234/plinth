@@ -1,0 +1,12 @@
+{
+  "base": "rohan-preparing.json",
+  "why": "An export is preparing or ready; anything else is not a status.",
+  "expect": "/status",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/status",
+      "value": "sent"
+    }
+  ]
+}
