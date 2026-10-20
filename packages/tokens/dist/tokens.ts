@@ -267,6 +267,10 @@ export const font = {
     "text": {
       "name": "Mukta",
       "stack": "\"Mukta\", \"Noto Sans\", system-ui, sans-serif"
+    },
+    "ui": {
+      "name": "Figtree",
+      "stack": "\"Figtree\", \"Noto Sans\", system-ui, sans-serif"
     }
   },
   "weight": {
@@ -388,72 +392,114 @@ export const typography = {
   "app": {
     "display": {
       "family": "display",
-      "weight": 800,
-      "size": 36,
-      "lineHeight": 1.02,
-      "letterSpacing": -0.02
+      "weight": 700,
+      "size": 30,
+      "lineHeight": 1.1333,
+      "letterSpacing": -0.016667
+    },
+    "title": {
+      "family": "display",
+      "weight": 700,
+      "size": 26,
+      "lineHeight": 1.1923,
+      "letterSpacing": -0.015385
+    },
+    "section": {
+      "family": "display",
+      "weight": 700,
+      "size": 20,
+      "lineHeight": 1.25,
+      "letterSpacing": -0.01
     },
     "h1": {
       "family": "display",
-      "weight": 800,
-      "size": 30,
-      "lineHeight": 1.08,
-      "letterSpacing": -0.02
+      "weight": 700,
+      "size": 26,
+      "lineHeight": 1.1923,
+      "letterSpacing": -0.015385
     },
     "h2": {
       "family": "display",
-      "weight": 800,
-      "size": 26,
-      "lineHeight": 1.1,
-      "letterSpacing": -0.02
+      "weight": 700,
+      "size": 20,
+      "lineHeight": 1.25,
+      "letterSpacing": -0.01
     },
     "h3": {
-      "family": "display",
-      "weight": 800,
-      "size": 20,
-      "lineHeight": 1.2,
-      "letterSpacing": -0.02
+      "family": "ui",
+      "weight": 700,
+      "size": 18,
+      "lineHeight": 1.2778,
+      "letterSpacing": -0.005556
     },
     "number": {
-      "family": "display",
-      "weight": 800,
+      "family": "ui",
+      "weight": 700,
       "size": 26,
-      "lineHeight": 1.1,
-      "letterSpacing": -0.02
+      "lineHeight": 1.1923,
+      "letterSpacing": -0.011538
     },
     "numberLg": {
-      "family": "display",
-      "weight": 800,
+      "family": "ui",
+      "weight": 700,
       "size": 32,
-      "lineHeight": 1.1,
-      "letterSpacing": -0.02
+      "lineHeight": 1.125,
+      "letterSpacing": -0.015625
+    },
+    "rowTitle": {
+      "family": "ui",
+      "weight": 600,
+      "size": 16,
+      "lineHeight": 1.3125,
+      "letterSpacing": 0
     },
     "lead": {
-      "family": "text",
+      "family": "ui",
       "weight": 400,
       "size": 18,
-      "lineHeight": 1.4,
+      "lineHeight": 1.4444,
       "letterSpacing": 0
     },
     "body": {
-      "family": "text",
+      "family": "ui",
       "weight": 400,
       "size": 16,
-      "lineHeight": 1.55,
+      "lineHeight": 1.4375,
+      "letterSpacing": 0
+    },
+    "meta": {
+      "family": "ui",
+      "weight": 400,
+      "size": 14,
+      "lineHeight": 1.3571,
       "letterSpacing": 0
     },
     "small": {
-      "family": "text",
+      "family": "ui",
       "weight": 400,
       "size": 14,
-      "lineHeight": 1.45,
+      "lineHeight": 1.3571,
       "letterSpacing": 0
     },
     "caption": {
-      "family": "text",
-      "weight": 400,
+      "family": "ui",
+      "weight": 500,
       "size": 13,
-      "lineHeight": 1.4,
+      "lineHeight": 1.3077,
+      "letterSpacing": 0
+    },
+    "button": {
+      "family": "ui",
+      "weight": 700,
+      "size": 16,
+      "lineHeight": 1.3125,
+      "letterSpacing": 0
+    },
+    "label": {
+      "family": "ui",
+      "weight": 600,
+      "size": 13,
+      "lineHeight": 1.2308,
       "letterSpacing": 0
     }
   }
@@ -488,7 +534,21 @@ export const layout = {
   "sheetPeek": 112,
   "iconSm": 16,
   "iconMd": 20,
-  "iconLg": 24
+  "iconLg": 24,
+  "gutterApp": 20,
+  "sectionGapAppMin": 32,
+  "sectionGapAppMax": 40,
+  "rowMin": 64,
+  "cardPadding": 16,
+  "cardPaddingLg": 20,
+  "buttonApp": 56,
+  "buttonSecondaryApp": 48,
+  "fieldApp": 56,
+  "chipApp": 40,
+  "navFloating": 72,
+  "navFloatingMargin": 16,
+  "iconTile": 40,
+  "thumb": 56
 } as const;
 
 export const radius = {
@@ -496,6 +556,11 @@ export const radius = {
   "segment": 2,
   "segmentLg": 4,
   "panel": 8,
+  "tile": 12,
+  "button": 16,
+  "field": 16,
+  "card": 20,
+  "sheet": 28,
   "pill": 999,
   "circle": "50%"
 } as const;
@@ -687,7 +752,8 @@ export const cssVar = {
   "font": {
     "family": {
       "display": "var(--pl-font-family-display)",
-      "text": "var(--pl-font-family-text)"
+      "text": "var(--pl-font-family-text)",
+      "ui": "var(--pl-font-family-ui)"
     },
     "weight": {
       "normal": "var(--pl-font-weight-normal)",
@@ -826,13 +892,32 @@ export const cssVar = {
     "sheetPeek": "var(--pl-layout-sheet-peek)",
     "iconSm": "var(--pl-layout-icon-sm)",
     "iconMd": "var(--pl-layout-icon-md)",
-    "iconLg": "var(--pl-layout-icon-lg)"
+    "iconLg": "var(--pl-layout-icon-lg)",
+    "gutterApp": "var(--pl-layout-gutter-app)",
+    "sectionGapAppMin": "var(--pl-layout-section-gap-app-min)",
+    "sectionGapAppMax": "var(--pl-layout-section-gap-app-max)",
+    "rowMin": "var(--pl-layout-row-min)",
+    "cardPadding": "var(--pl-layout-card-padding)",
+    "cardPaddingLg": "var(--pl-layout-card-padding-lg)",
+    "buttonApp": "var(--pl-layout-button-app)",
+    "buttonSecondaryApp": "var(--pl-layout-button-secondary-app)",
+    "fieldApp": "var(--pl-layout-field-app)",
+    "chipApp": "var(--pl-layout-chip-app)",
+    "navFloating": "var(--pl-layout-nav-floating)",
+    "navFloatingMargin": "var(--pl-layout-nav-floating-margin)",
+    "iconTile": "var(--pl-layout-icon-tile)",
+    "thumb": "var(--pl-layout-thumb)"
   },
   "radius": {
     "none": "var(--pl-radius-none)",
     "segment": "var(--pl-radius-segment)",
     "segmentLg": "var(--pl-radius-segment-lg)",
     "panel": "var(--pl-radius-panel)",
+    "tile": "var(--pl-radius-tile)",
+    "button": "var(--pl-radius-button)",
+    "field": "var(--pl-radius-field)",
+    "card": "var(--pl-radius-card)",
+    "sheet": "var(--pl-radius-sheet)",
     "pill": "var(--pl-radius-pill)",
     "circle": "var(--pl-radius-circle)"
   },

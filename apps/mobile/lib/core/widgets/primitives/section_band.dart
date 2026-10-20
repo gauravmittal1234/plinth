@@ -12,10 +12,11 @@ enum BandTone {
   track,
 }
 
-/// A full-bleed section band (DESIGN §4a): one buyer question per band, as a
-/// heading (never an eyebrow), a one-to-two-sentence answer, then the band's
-/// one instrument and its details. Bands alternate [BandTone]s; the heading,
-/// answer and body rise in 80 ms apart, once.
+/// A full-bleed section band (DESIGN §4a; app UI v2): one buyer question per
+/// band, as a `section` heading (Bricolage 20/25 · 700, never an eyebrow), a
+/// one-to-two-sentence answer in `body`, then the band's one instrument and
+/// its details. Bands alternate [BandTone]s with a 32 dp section gap and the
+/// 20 dp app gutter; the heading, answer and body rise in 80 ms apart, once.
 class SectionBand extends StatelessWidget {
   const SectionBand({
     super.key,
@@ -44,7 +45,12 @@ class SectionBand extends StatelessWidget {
     return ColoredBox(
       color: tone == BandTone.track ? tokens.track : tokens.bg,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterPhone, 56, PlinthLayout.gutterPhone, 48),
+        padding: const EdgeInsets.fromLTRB(
+          PlinthLayout.gutterApp,
+          PlinthLayout.sectionGapAppMin,
+          PlinthLayout.gutterApp,
+          PlinthLayout.sectionGapAppMin,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
@@ -53,23 +59,15 @@ class SectionBand extends StatelessWidget {
               0,
               Semantics(
                 header: true,
-                child: Text(
-                  question,
-                  style: PlinthType.h1.copyWith(
-                    fontSize: 34,
-                    height: 1.02,
-                    letterSpacing: -0.035 * 34,
-                    color: tokens.ink,
-                  ),
-                ),
+                child: Text(question, style: PlinthType.section.copyWith(color: tokens.ink)),
               ),
             ),
             if (answer != null) ...[
-              const SizedBox(height: 14),
-              rise(1, Text(answer!, style: PlinthType.lead.copyWith(height: 1.55, color: tokens.ink))),
+              const SizedBox(height: PlinthSpace.s8),
+              rise(1, Text(answer!, style: PlinthType.body.copyWith(color: tokens.ink))),
             ],
             if (children.isNotEmpty) ...[
-              const SizedBox(height: 28),
+              const SizedBox(height: PlinthSpace.s20),
               rise(
                 2,
                 Column(

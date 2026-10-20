@@ -8,7 +8,7 @@ import 'kit_harness.dart';
 
 void main() {
   group('PlinthButton', () {
-    testWidgets('primary is accent, tonal is track; a pressed toggle turns accent-soft', (tester) async {
+    testWidgets('primary is accent, tonal is a tone fill; a pressed toggle turns accent-soft', (tester) async {
       final handle = tester.ensureSemantics();
       var follows = 0;
       await pumpKit(
@@ -28,9 +28,9 @@ void main() {
           .color!;
       expect(fill(0), PlinthTokens.day.accent);
       expect(fill(1), PlinthTokens.day.accentSoft);
-      expect(fill(2), PlinthTokens.day.track);
+      expect(fill(2), PlinthTokens.day.chipFill);
       expect(fill(3), PlinthTokens.day.disabledBg);
-      expect(tester.getSize(find.byType(PlinthButton).first).height, PlinthLayout.buttonPrimary);
+      expect(tester.getSize(find.byType(PlinthButton).first).height, PlinthLayout.buttonApp);
       expect(tester.getSize(find.byType(PlinthButton).last).height, PlinthLayout.touchApp);
       expect(
         tester.getSemantics(find.byType(PlinthButton).at(1)),

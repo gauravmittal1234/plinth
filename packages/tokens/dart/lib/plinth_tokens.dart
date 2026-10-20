@@ -698,13 +698,13 @@ class PlinthTokens extends ThemeExtension<PlinthTokens> {
   }
 }
 
-/// Type roles for the app (DESIGN §3.3, Android sp). Colourless: apply a
+/// Type roles for the app (app UI v2; Android sp). Colourless: apply a
 /// [PlinthTokens] colour with `copyWith(color: …)`.
 ///
 /// The app must bundle the families under exactly these names.
 abstract final class PlinthType {
   static const String displayFamily = 'Bricolage Grotesque';
-  static const String textFamily = 'Mukta';
+  static const String textFamily = 'Figtree';
   static const List<String> textFallback = <String>['Noto Sans'];
 
   /// Tabular, lining numerals everywhere (DESIGN §3.3).
@@ -715,55 +715,86 @@ abstract final class PlinthType {
 
   static const TextStyle display = TextStyle(
     fontFamily: displayFamily,
-    fontWeight: FontWeight.w800,
-    fontSize: 36,
-    height: 1.02,
-    letterSpacing: -0.72,
+    fontWeight: FontWeight.w700,
+    fontSize: 30,
+    height: 1.1333,
+    letterSpacing: -0.5,
+    fontFeatures: numerals,
+  );
+
+  static const TextStyle title = TextStyle(
+    fontFamily: displayFamily,
+    fontWeight: FontWeight.w700,
+    fontSize: 26,
+    height: 1.1923,
+    letterSpacing: -0.4,
+    fontFeatures: numerals,
+  );
+
+  static const TextStyle section = TextStyle(
+    fontFamily: displayFamily,
+    fontWeight: FontWeight.w700,
+    fontSize: 20,
+    height: 1.25,
+    letterSpacing: -0.2,
     fontFeatures: numerals,
   );
 
   static const TextStyle h1 = TextStyle(
     fontFamily: displayFamily,
-    fontWeight: FontWeight.w800,
-    fontSize: 30,
-    height: 1.08,
-    letterSpacing: -0.6,
+    fontWeight: FontWeight.w700,
+    fontSize: 26,
+    height: 1.1923,
+    letterSpacing: -0.4,
     fontFeatures: numerals,
   );
 
   static const TextStyle h2 = TextStyle(
     fontFamily: displayFamily,
-    fontWeight: FontWeight.w800,
-    fontSize: 26,
-    height: 1.1,
-    letterSpacing: -0.52,
+    fontWeight: FontWeight.w700,
+    fontSize: 20,
+    height: 1.25,
+    letterSpacing: -0.2,
     fontFeatures: numerals,
   );
 
   static const TextStyle h3 = TextStyle(
-    fontFamily: displayFamily,
-    fontWeight: FontWeight.w800,
-    fontSize: 20,
-    height: 1.2,
-    letterSpacing: -0.4,
+    fontFamily: textFamily,
+    fontFamilyFallback: textFallback,
+    fontWeight: FontWeight.w700,
+    fontSize: 18,
+    height: 1.2778,
+    letterSpacing: -0.1,
     fontFeatures: numerals,
   );
 
   static const TextStyle number = TextStyle(
-    fontFamily: displayFamily,
-    fontWeight: FontWeight.w800,
+    fontFamily: textFamily,
+    fontFamilyFallback: textFallback,
+    fontWeight: FontWeight.w700,
     fontSize: 26,
-    height: 1.1,
-    letterSpacing: -0.52,
+    height: 1.1923,
+    letterSpacing: -0.3,
     fontFeatures: numerals,
   );
 
   static const TextStyle numberLg = TextStyle(
-    fontFamily: displayFamily,
-    fontWeight: FontWeight.w800,
+    fontFamily: textFamily,
+    fontFamilyFallback: textFallback,
+    fontWeight: FontWeight.w700,
     fontSize: 32,
-    height: 1.1,
-    letterSpacing: -0.64,
+    height: 1.125,
+    letterSpacing: -0.5,
+    fontFeatures: numerals,
+  );
+
+  static const TextStyle rowTitle = TextStyle(
+    fontFamily: textFamily,
+    fontFamilyFallback: textFallback,
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
+    height: 1.3125,
+    letterSpacing: 0,
     fontFeatures: numerals,
   );
 
@@ -772,7 +803,7 @@ abstract final class PlinthType {
     fontFamilyFallback: textFallback,
     fontWeight: FontWeight.w400,
     fontSize: 18,
-    height: 1.4,
+    height: 1.4444,
     letterSpacing: 0,
     fontFeatures: numerals,
   );
@@ -782,7 +813,17 @@ abstract final class PlinthType {
     fontFamilyFallback: textFallback,
     fontWeight: FontWeight.w400,
     fontSize: 16,
-    height: 1.55,
+    height: 1.4375,
+    letterSpacing: 0,
+    fontFeatures: numerals,
+  );
+
+  static const TextStyle meta = TextStyle(
+    fontFamily: textFamily,
+    fontFamilyFallback: textFallback,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    height: 1.3571,
     letterSpacing: 0,
     fontFeatures: numerals,
   );
@@ -792,7 +833,7 @@ abstract final class PlinthType {
     fontFamilyFallback: textFallback,
     fontWeight: FontWeight.w400,
     fontSize: 14,
-    height: 1.45,
+    height: 1.3571,
     letterSpacing: 0,
     fontFeatures: numerals,
   );
@@ -800,9 +841,29 @@ abstract final class PlinthType {
   static const TextStyle caption = TextStyle(
     fontFamily: textFamily,
     fontFamilyFallback: textFallback,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 13,
-    height: 1.4,
+    height: 1.3077,
+    letterSpacing: 0,
+    fontFeatures: numerals,
+  );
+
+  static const TextStyle button = TextStyle(
+    fontFamily: textFamily,
+    fontFamilyFallback: textFallback,
+    fontWeight: FontWeight.w700,
+    fontSize: 16,
+    height: 1.3125,
+    letterSpacing: 0,
+    fontFeatures: numerals,
+  );
+
+  static const TextStyle label = TextStyle(
+    fontFamily: textFamily,
+    fontFamilyFallback: textFallback,
+    fontWeight: FontWeight.w600,
+    fontSize: 13,
+    height: 1.2308,
     letterSpacing: 0,
     fontFeatures: numerals,
   );
@@ -822,7 +883,8 @@ abstract final class PlinthSpace {
   static const double s72 = 72;
 }
 
-/// Corner radii (DESIGN §0): square media, panels ≤ 8, pills.
+/// Corner radii (DESIGN §0): square media, panels ≤ 8, pills; app UI v2 adds
+/// tile 12, button 16, field 16, card 20 and sheet 28.
 ///
 /// Icon-array cells and confidence dots use `BoxShape.circle`.
 abstract final class PlinthRadius {
@@ -830,6 +892,11 @@ abstract final class PlinthRadius {
   static const double segment = 2;
   static const double segmentLg = 4;
   static const double panel = 8;
+  static const double tile = 12;
+  static const double button = 16;
+  static const double field = 16;
+  static const double card = 20;
+  static const double sheet = 28;
   static const double pill = 999;
 }
 
@@ -845,6 +912,20 @@ abstract final class PlinthLayout {
   static const double iconSm = 16;
   static const double iconMd = 20;
   static const double iconLg = 24;
+  static const double gutterApp = 20;
+  static const double sectionGapAppMin = 32;
+  static const double sectionGapAppMax = 40;
+  static const double rowMin = 64;
+  static const double cardPadding = 16;
+  static const double cardPaddingLg = 20;
+  static const double buttonApp = 56;
+  static const double buttonSecondaryApp = 48;
+  static const double fieldApp = 56;
+  static const double chipApp = 40;
+  static const double navFloating = 72;
+  static const double navFloatingMargin = 16;
+  static const double iconTile = 40;
+  static const double thumb = 56;
 }
 
 /// Motion (DESIGN §0): one signature move, staggered rise, press feedback.

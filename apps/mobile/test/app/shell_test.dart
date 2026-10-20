@@ -17,7 +17,7 @@ void main() {
         reason: label,
       );
     }
-    expect(tester.getSize(bar).height, 64, reason: 'DESIGN §4.16: a 64 dp bar');
+    expect(tester.getSize(bar).height, 72, reason: 'app UI v2: a floating 72 dp bar');
   });
 
   testWidgets('each tab opens its screen', (tester) async {

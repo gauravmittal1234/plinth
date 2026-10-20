@@ -40,14 +40,14 @@ final t = PlinthTokens.of(context);
 Text('…', style: PlinthType.body.copyWith(color: t.ink));
 ```
 
-The app must bundle the fonts under the family names `Bricolage Grotesque` and `Mukta` (fallback `Noto Sans`).
+The app must bundle the fonts under the family names `Bricolage Grotesque` and `Figtree` (fallback `Noto Sans`). `PlinthType.textFamily` is whichever stack the app's text roles use: `font.family.ui` (Figtree) since FOUNDER_QUESTIONS P10. The web keeps `font.family.text` (Mukta) until its follow-up.
 
 ## Rules the tokens encode
 
 - **No glass, glow or gradients.** Every colour is opaque or fully `transparent`. The two documented exceptions are `scrim` (neutral scrim under text on a photo) and the `sheet` shadow (floating surfaces only). Night values that were translucent in the artboards are flattened over the surface they sit on; each one's `$description` says which.
 - **Risk ramp** (`risk.{day,night}.{low…severe,limited,notScored}.{ink,fill,text}`): never reused for anything else. On Day, Low and Moderate names use `ink` because their inks fail 4.5:1. Limited history sits on `track` with a dashed meter. Band names, frequencies and reasons are server copy, not tokens.
-- **Type:** `typography.web` (px, emitted as rem; `hero` and `question` are fluid `clamp()`s from §0) and `typography.app` (sp). Letter spacing is in em; Flutter gets px.
-- **Radius:** media `none`, panels and tone fields `panel` (8), buttons, inputs and chips `pill`.
+- **Type:** `typography.web` (px, emitted as rem; `hero` and `question` are fluid `clamp()`s from §0) and `typography.app` (sp). Letter spacing is in em; Flutter gets px. App roles follow app UI v2 (`product/design/review/benchmark-thapki.md`): Bricolage 700 for `display`, `title` and `section` only; Figtree for `rowTitle`, `body`, `meta`, `caption`, `button`, `label` and the rest. `h1`, `h2` and `small` are legacy aliases of `title`, `section` and `meta`.
+- **Radius:** media `none`, panels and tone fields `panel` (8), chips and badges `pill`. App UI v2 adds `tile` (12, icon tiles and thumbnails), `button` and `field` (16), `card` (20) and `sheet` (28); the web adopts them in a follow-up.
 
 ## Artboard name → token name
 
