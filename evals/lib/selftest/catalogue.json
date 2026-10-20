@@ -1,0 +1,50 @@
+{
+  "catalogue": "ai_tasks",
+  "version": 1,
+  "note": "A toy catalogue for the eval harness's self-test (T63). Not a real task: it never runs live.",
+  "tasks": [
+    {
+      "id": "extract.toy_claims",
+      "version": 1,
+      "key": "extract.toy_claims@1",
+      "model_class": "flash",
+      "model_id": "gemini-toy-flash",
+      "temperature": 0,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "daily_call_cap": 50,
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claims"],
+        "properties": {
+          "claims": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["type", "value", "confidence", "line_ids"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["rera_number", "price", "possession", "area"]
+                },
+                "value": { "type": "string" },
+                "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+                "line_ids": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          }
+        }
+      },
+      "readers": [
+        { "id": "a", "model_class": "flash", "prompt": "a@1" },
+        { "id": "b", "model_class": "flash_lite", "prompt": "b@1", "model_id": "gemini-toy-lite" }
+      ],
+      "kill_switch": "ai_doc_check",
+      "pii_policy": "strip",
+      "eval_set": "evals/lib/selftest/toy",
+      "recorded_dir": "evals/lib/selftest/recorded/extract.toy_claims"
+    }
+  ]
+}

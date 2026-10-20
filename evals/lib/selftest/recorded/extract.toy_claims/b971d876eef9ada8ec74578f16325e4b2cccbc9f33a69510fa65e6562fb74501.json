@@ -1,0 +1,43 @@
+{
+  "format": "plinth.ai_recorded/1",
+  "task": "extract.toy_claims@1",
+  "prompt_version": "a@1",
+  "input_sha256": "b971d876eef9ada8ec74578f16325e4b2cccbc9f33a69510fa65e6562fb74501",
+  "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "model": "gemini-toy-flash",
+  "recorded_at": "2026-10-18T12:00:00+05:30",
+  "attempts": [
+    {
+      "output": {
+        "claims": [
+          {
+            "type": "rera_number",
+            "value": "GGM/TOY/2026/02",
+            "confidence": 0.96,
+            "line_ids": [
+              "L1"
+            ]
+          },
+          {
+            "type": "price",
+            "value": "₹98 L",
+            "confidence": 0.92,
+            "line_ids": [
+              "L2"
+            ]
+          },
+          {
+            "type": "area",
+            "value": "1,250 sq ft carpet",
+            "confidence": 0.88,
+            "line_ids": [
+              "L3"
+            ]
+          }
+        ]
+      },
+      "tokens_in": 170,
+      "tokens_out": 70
+    }
+  ]
+}

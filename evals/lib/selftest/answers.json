@@ -1,0 +1,95 @@
+{
+  "note": "The toy readers' answers per golden id and reader. make.ts turns them into recorded files keyed by input SHA. flyer-1 reader a fails the schema once, so the replay exercises the retry.",
+  "flyer-1": {
+    "a": [
+      { "text": "{\"claims\": \"three claims\"}", "tokens_in": 180, "tokens_out": 9 },
+      {
+        "output": {
+          "claims": [
+            {
+              "type": "rera_number",
+              "value": "GGM/TOY/2026/01",
+              "confidence": 0.97,
+              "line_ids": ["L1"]
+            },
+            { "type": "price", "value": "₹1.95 Cr", "confidence": 0.93, "line_ids": ["L2"] },
+            { "type": "possession", "value": "Dec 2028", "confidence": 0.9, "line_ids": ["L3"] }
+          ]
+        },
+        "tokens_in": 180,
+        "tokens_out": 72
+      }
+    ],
+    "b": [
+      {
+        "output": {
+          "claims": [
+            {
+              "type": "rera_number",
+              "value": "ggm/toy/2026/01",
+              "confidence": 0.95,
+              "line_ids": ["L1"]
+            },
+            { "type": "price", "value": "Rs 1,95,00,000", "confidence": 0.9, "line_ids": ["L2"] },
+            {
+              "type": "possession",
+              "value": "December 2028",
+              "confidence": 0.85,
+              "line_ids": ["L3"]
+            }
+          ]
+        },
+        "tokens_in": 175,
+        "tokens_out": 70
+      }
+    ]
+  },
+  "flyer-2": {
+    "a": [
+      {
+        "output": {
+          "claims": [
+            {
+              "type": "rera_number",
+              "value": "GGM/TOY/2026/02",
+              "confidence": 0.96,
+              "line_ids": ["L1"]
+            },
+            { "type": "price", "value": "₹98 L", "confidence": 0.92, "line_ids": ["L2"] },
+            {
+              "type": "area",
+              "value": "1,250 sq ft carpet",
+              "confidence": 0.88,
+              "line_ids": ["L3"]
+            }
+          ]
+        },
+        "tokens_in": 170,
+        "tokens_out": 70
+      }
+    ],
+    "b": [
+      {
+        "output": {
+          "claims": [
+            {
+              "type": "rera_number",
+              "value": "GGM/TOY/2026/02",
+              "confidence": 0.94,
+              "line_ids": ["L1"]
+            },
+            { "type": "price", "value": "Rs 98,00,000", "confidence": 0.9, "line_ids": ["L2"] },
+            {
+              "type": "area",
+              "value": "1,250 sq ft super area",
+              "confidence": 0.8,
+              "line_ids": ["L3"]
+            }
+          ]
+        },
+        "tokens_in": 168,
+        "tokens_out": 69
+      }
+    ]
+  }
+}
