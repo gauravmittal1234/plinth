@@ -1,6 +1,6 @@
 // Canonical fixtures, part 4 (owner: T03b): the developer workspace, agents, visits and checks.
 // These are M3–M5 tables, so they have no seedmap yet; the milestone's tasks seed them from here.
-// DESIGN.md §5b is the only source of facts; gaps stay null (CONFLICTS.md C-30 onwards).
+// DESIGN.md §5b is the only source of facts; gaps stay null (CONFLICTS.md C-42 onwards).
 import { IST, R2, S5B, S5B_SWEEP, derived } from "./canonical.mjs";
 import { SEC } from "./people.mjs";
 import { uuid5 } from "./lib.mjs";

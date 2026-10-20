@@ -52,7 +52,7 @@
       "says_label": "They said",
       "says_text": "Tower A at slab 12",
       "verdict": "cant_check",
-      "verdict_label": "Can't check",
+      "verdict_label": "Can't check yet",
       "records_line": "Slab 9 at the last filing.",
       "how_checked": null,
       "sources": [
@@ -75,7 +75,7 @@
       "says_label": "They said",
       "says_text": "Jul–Sep QPR filed 12 Oct",
       "verdict": "cant_check",
-      "verdict_label": "Can't check",
+      "verdict_label": "Can't check yet",
       "records_line": "Not on HARERA. The same as the developer's public claim.",
       "how_checked": null,
       "sources": [

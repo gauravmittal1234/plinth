@@ -149,27 +149,35 @@ describe("Rohan (DESIGN §5b)", () => {
       expect(Number(c.ref.split("-")[2])).toBeLessThanOrEqual(at("C", c.ref_date)!);
   });
 
-  it("his circle: Meera joined 6 Oct, her father invited 18 Oct with AH2-7KQ, both codes to 25 Oct", () => {
+  it("his circle: Meera joined 6 Oct by WhatsApp (RC4-8TD), her father invited 18 Oct with AH2-7KQ, both open codes to 25 Oct", () => {
     const members = arr<{
       member: string | null;
       status: string;
       invite_code: string | null;
+      joined_via: string | null;
       joined_at: string | null;
+      invited_at: string | null;
       expires_at: string | null;
     }>(canon.family, "members");
     expect(members.find((m) => m.member === "meera")).toMatchObject({
       status: "joined",
-      joined_at: "2026-10-06T00:00:00+05:30",
+      invite_code: "RC4-8TD",
+      joined_via: "whatsapp",
+      invited_at: "2026-10-03T00:00:00+05:30",
+      joined_at: "2026-10-06T20:12:00+05:30",
+      expires_at: "2026-10-10T00:00:00+05:30",
     });
     expect(members.find((m) => m.member === "meera-father")).toMatchObject({
       status: "invited",
       invite_code: "AH2-7KQ",
     });
     expect(members.filter((m) => m.invite_code).map((m) => m.invite_code)).toEqual([
+      "RC4-8TD",
       "AH2-7KQ",
       "RC4-2MW",
     ]);
-    for (const m of members.filter((x) => x.invite_code))
+    // The two still-open invites (not Meera's already-used one) share the 7-day window.
+    for (const m of members.filter((x) => x.status === "invited" && x.invite_code))
       expect(m.expires_at).toBe("2026-10-25T00:00:00+05:30");
     // A member row carries no phone (DATA_MODEL app.family_members); no number anywhere.
     for (const m of members) expect(Object.keys(m).join()).not.toMatch(/phone|wa_id/);

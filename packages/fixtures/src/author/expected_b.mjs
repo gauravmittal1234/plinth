@@ -17,7 +17,7 @@ const VERDICT_LABEL = {
   matches: "Matches",
   differs: "Differs",
   not_in_records: "Not in records",
-  cant_check: "Can't check",
+  cant_check: "Can't check yet",
 };
 
 export function makeExpectedB({ cat, ev, sc, dc, vec, X, B }) {
@@ -82,8 +82,11 @@ export function makeExpectedB({ cat, ev, sc, dc, vec, X, B }) {
       developer_says: e.developer_says_line ? { line: e.developer_says_line } : null,
       sources: srcRefs(e.facts),
     });
-    const after = fw.events.filter((e) => e.occurred_on >= sinceDay);
-    const before = fw.events.filter((e) => e.occurred_on < sinceDay);
+    // Newest first (R3 C-41; events are already authored newest-first, but sort explicitly so
+    // the order is an invariant, not an accident of src/author/people.mjs's array order).
+    const byNewest = (a, b) => b.occurred_on.localeCompare(a.occurred_on);
+    const after = fw.events.filter((e) => e.occurred_on >= sinceDay).sort(byNewest);
+    const before = fw.events.filter((e) => e.occurred_on < sinceDay).sort(byNewest);
     // The summary line is §5b copy; check it against the events it summarises.
     const n = (k) => after.filter((e) => e.summary_kind === k).length;
     const plural = (k, one, many) => `${n(k)} ${n(k) === 1 ? one : many}`;
@@ -250,7 +253,9 @@ export function makeExpectedB({ cat, ev, sc, dc, vec, X, B }) {
     const b = BANDS[card.band];
     const oldRun = sc.runs.find((r) => r.id === card.run);
     const counts = cat.complaint_counts.find((c) => c.subject === card.phase).count_history;
-    const was = counts.find((h) => h.as_of <= card.data_as_of);
+    // The count in effect on the card's data_as_of: the latest history entry at or before it
+    // (count_history is ordered oldest to newest; R3 C-30 added entries before 30 Sep 2026).
+    const was = [...counts].filter((h) => h.as_of <= card.data_as_of).at(-1);
     const now = counts.at(-1);
     return {
       schema: "plinth.share_card/1",
