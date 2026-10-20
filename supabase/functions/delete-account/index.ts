@@ -1,10 +1,13 @@
-// delete-account: POST /functions/v1/delete-account (API_CONTRACTS §3.5) · auth: the buyer's JWT ·
-// body (optional) { "channel": "web" | "app" } (default app; it is the channel the consent
+// delete-account: POST /functions/v1/delete-account (API_CONTRACTS §3.5) · auth: the buyer's JWT
+// carrying a sign-in code from the last 10 minutes (lead decision, PR #80 review) · body
+// (optional) { "channel": "web" | "app" } (default app; it is the channel the consent
 // withdrawals record).
 //   200 { request: plinth.account_delete_request/1, erasure: plinth.account_erasure/1 (erased) }
 //   202 { request, erasure: { status: "erasing", … } | null }   on record, not finished yet: the
 //       daily retention-sweep finishes it (erasure within 30 days, BUILD_PLAN §13)
-//   401 auth_required   no bearer token, or PostgREST refused it
+//   401 auth_required   no bearer token, PostgREST refused it, or no fresh sign-in code
+//                       (WWW-Authenticate: insufficient_user_authentication; ask for a code,
+//                       then retry; nothing was filed or erased)
 //   403 forbidden        a token that is not a signed-in buyer's (e.g. the service role's)
 //   422 invalid_input    a body other than { channel }
 // Show the buyer only what these records say (AGENTS.md rule 9).
@@ -31,6 +34,13 @@ Deno.serve(makeDeleteAccount({
       request: async () => {
         try {
           return await callRpc(buyer, "account_delete_request");
+        } catch (err) {
+          throw jwtRejected(err);
+        }
+      },
+      confirm: async (id) => {
+        try {
+          return await callRpc(buyer, "dpdp_erasure_confirm", { p_request_id: id });
         } catch (err) {
           throw jwtRejected(err);
         }

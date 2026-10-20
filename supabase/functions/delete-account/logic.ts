@@ -3,9 +3,14 @@
 // retention-sweep, which finishes any erasure a call left half done.
 //
 // Order (pet_app: "any failure stops before the sign-in is deleted, so the person can try again"):
+//   0. a sign-in code from the last 10 minutes in the JWT (requireFreshSignIn, as export-data),
+//      else 401 auth_required with WWW-Authenticate insufficient_user_authentication.
 //   1. api.account_delete_request()        under the buyer's own JWT: the record (T45b). It is
 //                                          the only way this function learns which account to
 //                                          erase, so a buyer can only ever erase their own.
+//   1b. api.dpdp_erasure_confirm(request)   under the same JWT: the database checks the code
+//                                          again and records the confirmation, without which
+//                                          step 2 (and the sweep) refuses to erase.
 //   2. api.dpdp_erasure_run(request)        service: the account data goes in one transaction;
 //                                          the consent proof stays under legal hold; returns the
 //                                          files still to remove and the user id.
@@ -30,6 +35,7 @@ import { json, parseJson, readText } from "../_shared/core/http.ts";
 import type { Logger, LogSink } from "../_shared/core/log.ts";
 import { errorFields } from "../_shared/core/log.ts";
 import { check, compileSchema } from "../_shared/core/validate.ts";
+import { requireFreshSignIn, signInCodeRequired } from "../export-data/logic.ts";
 import type { StorageAdapter, StorageObject } from "../export-data/storage.ts";
 import { batchesByBucket } from "../export-data/storage.ts";
 
@@ -159,6 +165,8 @@ export async function readDeleteBody(req: Request): Promise<{ channel: ErasureCh
 export interface DeleteDeps {
   /** api.account_delete_request() under the buyer's own JWT (T45b). */
   request(): Promise<unknown>;
+  /** api.dpdp_erasure_confirm(request_id) under the buyer's own JWT (fresh code checked again). */
+  confirm(requestId: string): Promise<unknown>;
   erase: EraseDeps;
 }
 
@@ -167,17 +175,39 @@ export interface DeleteResponse {
   erasure: Record<string, unknown> | null;
 }
 
+export const FRESH_CODE_LINE = "Enter a fresh sign-in code to delete your account.";
+
 export async function deleteAccount(
   deps: DeleteDeps,
+  token: string,
+  now: Date,
   channel: ErasureChannel,
   log: Logger,
 ): Promise<{ status: number; body: DeleteResponse }> {
+  // Lead decision (PR #80 review): deleting an account needs a sign-in code from the last
+  // 10 minutes, as the export download does. Nothing is filed or erased before it.
+  requireFreshSignIn(token, now, FRESH_CODE_LINE);
+
   const request = await deps.request() as Record<string, unknown> | null;
   if (
     !request || request.schema !== "plinth.account_delete_request/1" ||
     typeof request.request_id !== "string"
   ) {
     throw new Error("api.account_delete_request returned an unexpected shape");
+  }
+
+  // The database checks the code again under the verified JWT and records the confirmation;
+  // api.dpdp_erasure_run refuses any request without one.
+  const confirmation = await deps.confirm(request.request_id) as
+    | { status?: unknown; line?: unknown }
+    | null;
+  if (confirmation?.status === "sign_in_required") {
+    throw signInCodeRequired(
+      typeof confirmation.line === "string" ? confirmation.line : FRESH_CODE_LINE,
+    );
+  }
+  if (confirmation?.status !== "confirmed") {
+    throw new Error("api.dpdp_erasure_confirm returned an unexpected shape");
   }
 
   let erasure: ErasureOutcome | null = null;
@@ -216,7 +246,13 @@ export function makeDeleteAccount(
       }
       const token = requireBearer(req);
       const { channel } = await readDeleteBody(req);
-      const { status, body } = await deleteAccount(opts.deps(ctx, token), channel, ctx.log);
+      const { status, body } = await deleteAccount(
+        opts.deps(ctx, token),
+        token,
+        ctx.clock.now(),
+        channel,
+        ctx.log,
+      );
       ctx.log.info("account erasure", {
         request_id: body.request.request_id,
         erasure: body.erasure?.status ?? "pending",

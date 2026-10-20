@@ -225,8 +225,23 @@ function parseLinkAnswer(value: unknown): LinkAnswer {
   return v as LinkAnswer;
 }
 
-const STEP_UP =
+/** The WWW-Authenticate challenge that tells a client to ask for a sign-in code and retry. */
+export const STEP_UP =
   'Bearer error="insufficient_user_authentication", error_description="fresh sign-in code required"';
+
+/** auth_required (401) with the step-up challenge: the client asks for a code, then retries. */
+export function signInCodeRequired(message: string): HttpError {
+  return new HttpError("auth_required", message, { headers: { "www-authenticate": STEP_UP } });
+}
+
+/**
+ * Throws signInCodeRequired unless the token carries a sign-in code from the last 10 minutes.
+ * Used before anything irreversible (export-data's signed URL, delete-account's erasure); the
+ * database checks the same claim again under the verified JWT (app.dpdp_fresh_sign_in).
+ */
+export function requireFreshSignIn(token: string, now: Date, message: string): void {
+  if (!isFreshSignIn(token, now)) throw signInCodeRequired(message);
+}
 
 export async function openLink(
   deps: LinkDeps,
@@ -240,18 +255,12 @@ export async function openLink(
     case "expired":
       throw new HttpError("not_found", answer.line);
     case "sign_in_required":
-      throw new HttpError("auth_required", answer.line, {
-        headers: { "www-authenticate": STEP_UP },
-      });
+      throw signInCodeRequired(answer.line);
   }
 
   const now = deps.now();
   // Second look: the database said ready, so the token must carry a fresh code here too.
-  if (!isFreshSignIn(token, now)) {
-    throw new HttpError("auth_required", "Enter a fresh sign-in code to open your download.", {
-      headers: { "www-authenticate": STEP_UP },
-    });
-  }
+  requireFreshSignIn(token, now, "Enter a fresh sign-in code to open your download.");
   const until = answer.link_expires_at ? new Date(answer.link_expires_at) : null;
   if (
     !answer.export_key || answer.export_key !== exportKey(requestId) || !until ||

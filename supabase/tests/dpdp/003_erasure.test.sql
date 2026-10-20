@@ -8,7 +8,7 @@
 -- Deno tests); this file checks the database side and the completion record.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(41);
+select plan(49);
 
 update ops.runtime_settings set value = 'test' where key = 'env';
 
@@ -45,13 +45,61 @@ select throws_ok(
   $$select api.dpdp_erasure_complete(current_setting('t53.req')::uuid, true, true)$$, '42501', null,
   'a buyer cannot mark an erasure complete'
 );
+select set_config('t53.k0', api.dpdp_erasure_confirm(current_setting('t53.req')::uuid)::text, true);
 select set_config('request.jwt.claims', '{"sub":"582a793f-ad80-5334-8d89-275221207fea","role":"authenticated"}', true);
 select set_config('t53.areq', api.account_delete_request() ->> 'request_id', true);
+select set_config('request.jwt.claims', json_build_object(
+  'sub', '582a793f-ad80-5334-8d89-275221207fea', 'role', 'authenticated',
+  'amr', json_build_array(json_build_object('method', 'otp', 'timestamp', extract(epoch from now())::bigint - 60))
+)::text, true);
+select throws_ok(
+  $$select api.dpdp_erasure_confirm(current_setting('t53.req')::uuid)$$, 'PT404', 'not_found',
+  'Aman cannot confirm Rohan''s erasure, even with a fresh code'
+);
 reset role;
 select set_config('request.jwt.claims', '', true);
 set local role anon;
 select throws_ok($$select api.dpdp_erasure_pending(10)$$, '42501', null, 'anon cannot list erasures');
 reset role;
+
+-- Nothing is erased without a fresh sign-in code -------------------------------------------
+select results_eq(
+  $$select x ->> 'status', x ->> 'line', x ->> 'confirmed_at' from (select current_setting('t53.k0')::jsonb as x) as v$$,
+  $$values ('sign_in_required'::text, 'Enter a fresh sign-in code to delete your account.'::text, null::text)$$,
+  'a session without a fresh sign-in code cannot confirm'
+);
+set local role service_role;
+select throws_ok(
+  $$select api.dpdp_erasure_run(current_setting('t53.req')::uuid, 'app')$$, 'PT409', 'conflict',
+  'an unconfirmed request is never erased'
+);
+select throws_ok(
+  $$select api.dpdp_erasure_confirm(current_setting('t53.req')::uuid)$$, '42501', null,
+  'the service role cannot confirm for a buyer'
+);
+reset role;
+set local role authenticated;
+select set_config('request.jwt.claims', json_build_object(
+  'sub', 'bff1ee72-9910-5980-a875-96a9a00b24cf', 'role', 'authenticated',
+  'amr', json_build_array(json_build_object('method', 'otp', 'timestamp', extract(epoch from now())::bigint - 60))
+)::text, true);
+select set_config('t53.k1', api.dpdp_erasure_confirm(current_setting('t53.req')::uuid)::text, true);
+select set_config('t53.k2', api.dpdp_erasure_confirm(current_setting('t53.req')::uuid)::text, true);
+reset role;
+select set_config('request.jwt.claims', '', true);
+select results_eq(
+  $$select x ->> 'status', x ->> 'confirmed_at' from (select current_setting('t53.k1')::jsonb as x) as v$$,
+  $$values ('confirmed'::text, '2026-10-18T12:00:00+05:30'::text)$$,
+  'a code from a minute ago confirms it'
+);
+select is(current_setting('t53.k2')::jsonb, current_setting('t53.k1')::jsonb, 'a replay returns the same confirmation');
+select is(
+  (select array_agg(a.after ->> 'status' order by a.id) from ops.audit_log a
+    where a.action = 'dpdp_erasure_confirm' and a.entity_id = current_setting('t53.req')
+      and a.actor_user_id = 'bff1ee72-9910-5980-a875-96a9a00b24cf'),
+  array['sign_in_required', 'confirmed', 'confirmed']::text[],
+  'every confirmation attempt is audited, with Rohan as the actor'
+);
 
 -- The run -------------------------------------------------------------------------------------
 set local role service_role;
@@ -264,17 +312,34 @@ select results_eq(
   'running a completed erasure returns its record and no user'
 );
 
--- The sweep finishes what a delete-account call left (older than 15 minutes).
+-- The sweep finishes only confirmed requests that a delete-account call left (older than 15 minutes).
+select set_config('plinth.fixed_now', '2026-10-18 12:20:00+05:30', true);
 select is(
   (select count(*)::int from jsonb_array_elements(api.dpdp_erasure_pending(10)) as x where x ->> 'request_id' = current_setting('t53.areq')),
   0,
-  'a request from this minute is left to its delete-account call'
+  'Aman''s request, filed but never confirmed with a code, is never the sweep''s to erase'
+);
+reset role;
+select set_config('plinth.fixed_now', '', true);
+set local role authenticated;
+select set_config('request.jwt.claims', json_build_object(
+  'sub', '582a793f-ad80-5334-8d89-275221207fea', 'role', 'authenticated',
+  'amr', json_build_array(json_build_object('method', 'otp', 'timestamp', extract(epoch from now())::bigint - 60))
+)::text, true);
+select api.dpdp_erasure_confirm(current_setting('t53.areq')::uuid);
+reset role;
+select set_config('request.jwt.claims', '', true);
+set local role service_role;
+select is(
+  (select count(*)::int from jsonb_array_elements(api.dpdp_erasure_pending(10)) as x where x ->> 'request_id' = current_setting('t53.areq')),
+  0,
+  'once confirmed, a request from this minute is left to its delete-account call'
 );
 select set_config('plinth.fixed_now', '2026-10-18 12:20:00+05:30', true);
 select is(
   (select count(*)::int from jsonb_array_elements(api.dpdp_erasure_pending(10)) as x where x ->> 'request_id' = current_setting('t53.areq')),
   1,
-  'after 15 minutes Aman''s open request is the sweep''s to finish'
+  'after 15 minutes Aman''s confirmed request is the sweep''s to finish'
 );
 select is(
   (select count(*)::int from jsonb_array_elements(api.dpdp_erasure_pending(10)) as x where x ->> 'request_id' = current_setting('t53.req')),

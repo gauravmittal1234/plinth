@@ -5,7 +5,13 @@
 -- DATA_MODEL §5, §6, §12 inv. 3 (the ledger is insert-only); T45b api.account_delete_request.
 --
 -- The flow (the request row is the record, T45b api.account_delete_request under the buyer's
--- own JWT; support can also file one as admin):
+-- own JWT):
+--   0. api.dpdp_erasure_confirm(request), under the buyer's own JWT carrying a sign-in code from
+--      the last 10 minutes (app.dpdp_fresh_sign_in, as the export download): writes
+--      app.dpdp_erasure_confirmations. Nothing is erased without it, so a session alone (a
+--      stolen one included) can file a request but never erase an account; the sweep finishes
+--      only confirmed requests. (A support-filed request needs its own confirmation path: PR
+--      Handoff.)
 --   1. api.dpdp_erasure_run(request): erases the request's own user's account data in one
 --      transaction and writes app.dpdp_erasures (the erasure record). Idempotent: a retry
 --      re-runs the deletes and keeps the first record.
@@ -23,6 +29,89 @@
 -- records in comms.outbox stay with their content cleared. Every live share ends
 -- (ended_reason 'erased'), every open relay closes, and every consent is withdrawn, so each
 -- partner that held anything gets a deletion request (T45b's trigger).
+
+-- ---------------------------------------------------------------------------
+-- app.dpdp_erasure_confirmations: the buyer confirmed with a fresh sign-in code.
+-- ---------------------------------------------------------------------------
+create table app.dpdp_erasure_confirmations (
+  request_id uuid primary key references app.data_requests (id),
+  confirmed_at timestamptz not null default ops.now(),
+  created_at timestamptz not null default now()
+);
+comment on table app.dpdp_erasure_confirmations is 'One per erasure request: the account holder confirmed it under their own JWT with a sign-in code from the last 10 minutes (api.dpdp_erasure_confirm). api.dpdp_erasure_run refuses an unconfirmed request. Insert-only; edge and admin only.';
+comment on column app.dpdp_erasure_confirmations.confirmed_at is 'pii:C0';
+comment on column app.dpdp_erasure_confirmations.created_at is 'pii:C0';
+
+create trigger dpdp_erasure_confirmations_audit
+  after insert on app.dpdp_erasure_confirmations
+  for each row execute function ops.audit_trigger();
+create trigger dpdp_erasure_confirmations_append_only
+  before update or delete on app.dpdp_erasure_confirmations
+  for each row execute function ops.forbid_mutation();
+create trigger dpdp_erasure_confirmations_no_truncate
+  before truncate on app.dpdp_erasure_confirmations
+  for each statement execute function ops.forbid_mutation();
+
+alter table app.dpdp_erasure_confirmations enable row level security;
+create policy admin_read on app.dpdp_erasure_confirmations for select to authenticated
+  using (
+    coalesce((nullif(current_setting('request.jwt.claims', true), '')::jsonb -> 'plinth_roles') ? 'admin', false)
+    and nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'aal' = 'aal2'
+  );
+
+create function api.dpdp_erasure_confirm(p_request_id uuid)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_uid uuid := app.privacy_caller();
+  v_req app.data_requests%rowtype;
+  v_confirmed timestamptz;
+  v_status text;
+begin
+  if p_request_id is null then
+    perform ops.raise_api_error('invalid_input', 'Say which erasure request to confirm.');
+  end if;
+  -- Only the caller's own open erasure request. Another person's id reads like an unknown one.
+  select d.* into v_req
+  from app.data_requests d
+  where d.id = p_request_id and d.user_id = v_uid and d.kind = 'erasure' and d.completed_at is null;
+  if not found then
+    perform ops.raise_api_error('not_found', 'We have no open erasure request with this id on your account.');
+  end if;
+
+  select c.confirmed_at into v_confirmed from app.dpdp_erasure_confirmations c where c.request_id = v_req.id;
+  if v_confirmed is not null then
+    v_status := 'confirmed';
+  elsif not app.dpdp_fresh_sign_in() then
+    v_status := 'sign_in_required';
+  else
+    insert into app.dpdp_erasure_confirmations (request_id, confirmed_at)
+    values (v_req.id, ops.now())
+    on conflict (request_id) do nothing;
+    select c.confirmed_at into v_confirmed from app.dpdp_erasure_confirmations c where c.request_id = v_req.id;
+    v_status := 'confirmed';
+  end if;
+
+  perform ops.audit(
+    'dpdp_erasure_confirm', 'app.data_requests', v_req.id::text, null,
+    pg_catalog.jsonb_build_object('status', v_status),
+    'DPDP erasure: the account holder confirmed (or was asked for a fresh sign-in code)'
+  );
+  return pg_catalog.jsonb_build_object(
+    'request_id', v_req.id,
+    'status', v_status,
+    'confirmed_at', core.fmt_timestamp(v_confirmed),
+    'line', case v_status
+      when 'confirmed' then 'Confirmed. We are erasing your account.'
+      else 'Enter a fresh sign-in code to delete your account.'
+    end
+  );
+end
+$$;
+comment on function api.dpdp_erasure_confirm(uuid) is 'The caller confirms their own open erasure request: status confirmed (recorded once, in app.dpdp_erasure_confirmations) only when the JWT carries an OTP sign-in from the last 10 minutes, else sign_in_required. Audited. Buyer JWT only. Errors: auth_required, forbidden, invalid_input, not_found.';
 
 -- ---------------------------------------------------------------------------
 -- app.dpdp_erasures: one record per erasure request.
@@ -335,6 +424,9 @@ begin
   if v_req.user_id is null then
     perform ops.raise_api_error('conflict', 'This erasure request no longer names an account.');
   end if;
+  if not exists (select 1 from app.dpdp_erasure_confirmations c where c.request_id = v_req.id) then
+    perform ops.raise_api_error('conflict', 'The account holder has not confirmed this erasure with a fresh sign-in code.');
+  end if;
 
   v_result := app.dpdp_erase_user(v_req.user_id, p_channel);
 
@@ -381,7 +473,7 @@ begin
   );
 end
 $$;
-comment on function api.dpdp_erasure_run(uuid, text) is 'Service-only. Erases the account data of this erasure request''s own user (app.dpdp_erase_user) and writes app.dpdp_erasures. Returns the user id (for the sign-in soft delete) and the files to remove. Re-runnable; a completed request returns its record. Errors: invalid_input, not_found, conflict.';
+comment on function api.dpdp_erasure_run(uuid, text) is 'Service-only. Erases the account data of this erasure request''s own user (app.dpdp_erase_user) and writes app.dpdp_erasures, only once the holder confirmed it with a fresh sign-in code (app.dpdp_erasure_confirmations). Returns the user id (for the sign-in soft delete) and the files to remove. Re-runnable; a completed request returns its record. Errors: invalid_input, not_found, conflict (unconfirmed, or no account).';
 
 create function api.dpdp_erasure_complete(
   p_request_id uuid,
@@ -454,6 +546,7 @@ begin
       from app.data_requests d
       where d.kind = 'erasure' and d.completed_at is null
         and (d.user_id is not null or exists (select 1 from app.dpdp_erasures e where e.request_id = d.id))
+        and exists (select 1 from app.dpdp_erasure_confirmations c where c.request_id = d.id)
         and d.requested_at <= ops.now() - interval '15 minutes'
       order by d.requested_at, d.id
       limit p_limit
@@ -461,11 +554,14 @@ begin
   ), '[]'::jsonb);
 end
 $$;
-comment on function api.dpdp_erasure_pending(integer) is 'Service-only. Erasure requests not yet completed and older than 15 minutes, for retention-sweep to finish.';
+comment on function api.dpdp_erasure_pending(integer) is 'Service-only. Confirmed erasure requests not yet completed and older than 15 minutes, for retention-sweep to finish. An unconfirmed request is never erased.';
 
 -- ---------------------------------------------------------------------------
--- Grants: service_role only, explicit per function.
+-- Grants, explicit per function: the confirmation is the buyer's JWT only; the rest service_role only.
 -- ---------------------------------------------------------------------------
+revoke all on function api.dpdp_erasure_confirm(uuid) from public, anon, service_role;
+grant execute on function api.dpdp_erasure_confirm(uuid) to authenticated;
+
 revoke all on function api.dpdp_erasure_run(uuid, text) from public, anon, authenticated;
 revoke all on function api.dpdp_erasure_complete(uuid, boolean, boolean) from public, anon, authenticated;
 revoke all on function api.dpdp_erasure_pending(integer) from public, anon, authenticated;
