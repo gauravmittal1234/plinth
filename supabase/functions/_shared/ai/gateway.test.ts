@@ -1,3 +1,4 @@
+import { sha256Hex } from "../core/crypto.ts";
 import { EnvError, Secret } from "../core/env.ts";
 import {
   assert,
@@ -11,10 +12,9 @@ import {
 import { readAiEnv } from "./config.ts";
 import { AiError } from "./errors.ts";
 import type { AiContext } from "./gateway.ts";
-import { runReaders, runTask } from "./gateway.ts";
+import { inputShaFor, runReaders, runTask } from "./gateway.ts";
 import type { TaskInput } from "./input.ts";
-import { inputSha, normaliseInput } from "./input.ts";
-import { PiiStripper } from "./pii.ts";
+import { canonicalJson } from "./input.ts";
 import type { RecordedResponse } from "./recorded.ts";
 import {
   bankTask,
@@ -36,22 +36,27 @@ const FLYER: TaskInput = {
   ],
 };
 
-/** The SHA runTask computes for an input (normalised and stripped like the gateway does). */
-async function shaFor(input: TaskInput, taskKey: string, prompt: string, policy = "strip") {
-  const n = await normaliseInput(input);
-  const s = new PiiStripper(policy as "strip", "test-hash-salt");
-  const lines = n.lines
-    ? s.strip(n.lines.map((l) => l.text).join("\n")).split("\n").map((text, i) => ({
-      id: n.lines![i]!.id,
-      text,
-    }))
-    : undefined;
-  return await inputSha(taskKey, prompt, {
-    ...n,
-    ...(lines ? { lines } : {}),
-    ...(n.text !== undefined ? { text: s.strip(n.text) } : {}),
+/** The SHA runTask computes for an input and reader. */
+const shaFor = (input: TaskInput, taskKey: string, prompt: string) =>
+  inputShaFor(taskKey, input, {
+    reader: prompt.split("@")[0],
+    catalogue: catalogueOf(claimsTask()),
   });
-}
+
+Deno.test("input SHA = sha256 of [task@version, prompt version, the stripped input]", async () => {
+  const sha = await shaFor(FLYER, "extract.marketing_claims@1", "a@1");
+  const want = await sha256Hex(canonicalJson([
+    "extract.marketing_claims@1",
+    "a@1",
+    {
+      lines: [
+        { id: "L1", text: "Aurelia Heights Phase 2 · RERA GGM/2023/45" },
+        { id: "L2", text: "From ₹2.74 Cr · call [PHONE_1]" },
+      ],
+    },
+  ]));
+  assertEquals(sha, want);
+});
 
 function recording(sha: string, attempts: RecordedResponse["attempts"], prompt = "a@1") {
   return {

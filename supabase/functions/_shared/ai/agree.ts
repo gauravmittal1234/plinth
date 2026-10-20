@@ -15,13 +15,19 @@
 // Output shapes: flat ({ field: value }) or a list of items (spec.items = "claims") matched by key
 // fields (spec.key = ["type"]); the nth item with the same key pairs with the nth. A field value
 // may be a scalar or { value, confidence?, unit?, basis? }; confidence also comes from the item or
-// the output (`confidence`), and is 0 when no reader states one.
+// the output (`confidence`), and is 0 when no reader states one. A field's kind can depend on the
+// item: { by: "type", kinds: { price: "inr", possession: "date" }, default: "text" }.
 
 export type FieldKind = "inr" | "date" | "area" | "percent" | "number" | "text" | "enum";
 
+/** A kind, or a kind chosen by another field of the item (claims: by `type`). */
+export type FieldSpec =
+  | FieldKind
+  | { by: string; kinds: Readonly<Record<string, FieldKind>>; default: FieldKind };
+
 export interface AgreeSpec {
   /** Field name → kind. Only these fields are compared. */
-  fields: Readonly<Record<string, FieldKind>>;
+  fields: Readonly<Record<string, FieldSpec>>;
   /** The output's array of items (e.g. "claims"); absent for a flat output. */
   items?: string;
   /** Item fields whose normalised values identify an item (items only). */
@@ -218,6 +224,13 @@ export function normalisedKey(v: Normalised): string {
   return typeof v === "object" ? `${v.sqft} sqft ${v.basis ?? "-"}` : String(v);
 }
 
+/** The kind of a field in one item. */
+export function kindFor(spec: FieldSpec, record: Readonly<Record<string, unknown>>): FieldKind {
+  if (typeof spec === "string") return spec;
+  const by = record[spec.by];
+  return (typeof by === "string" ? spec.kinds[by] : undefined) ?? spec.default;
+}
+
 function isBlank(v: unknown): boolean {
   return v === null || v === undefined || (typeof v === "string" && v.trim() === "");
 }
@@ -259,7 +272,8 @@ export function holdersOf(output: unknown, spec: AgreeSpec): Holder[] {
   return list.map((item) => {
     const record = asRecord(item);
     const base = (spec.key ?? []).map((k) => {
-      const kind = spec.fields[k] ?? "enum";
+      const fs = spec.fields[k];
+      const kind = typeof fs === "string" ? fs : "enum";
       const n = normalise(kind, fieldOf(record, k, kind, null).value);
       return n === null ? "?" : normalisedKey(n).replace(/ /g, "_");
     }).join("|") || "item";
@@ -280,7 +294,8 @@ export function agree(a: unknown, b: unknown, spec: AgreeSpec): Agreement {
     const key = spec.items ? k : null;
     const xa = ha.get(k);
     const xb = hb.get(k);
-    for (const [field, kind] of Object.entries(spec.fields)) {
+    for (const [field, fs] of Object.entries(spec.fields)) {
+      const kind = kindFor(fs, xa?.record ?? xb?.record ?? {});
       const fa = xa ? fieldOf(xa.record, field, kind, xa.confidence) : null;
       const fb = xb ? fieldOf(xb.record, field, kind, xb.confidence) : null;
       const va = fa?.value;
@@ -319,4 +334,31 @@ export function agree(a: unknown, b: unknown, spec: AgreeSpec): Agreement {
     confidence: agreed.length ? Math.min(...agreed.map((f) => f.confidence)) : null,
     rate: total ? agreed.length / total : null,
   };
+}
+
+export interface Fact {
+  key: string | null;
+  field: string;
+  value: Normalised;
+  confidence: number;
+}
+
+/**
+ * The readable facts of one output (a single reader, or an eval's expected output): every
+ * compared field with a value that normalises. `unreadable` counts the values that do not.
+ */
+export function factsOf(output: unknown, spec: AgreeSpec): { facts: Fact[]; unreadable: number } {
+  const facts: Fact[] = [];
+  let unreadable = 0;
+  for (const h of holdersOf(output, spec)) {
+    for (const [field, fs] of Object.entries(spec.fields)) {
+      const kind = kindFor(fs, h.record);
+      const { value, confidence } = fieldOf(h.record, field, kind, h.confidence);
+      if (isBlank(value)) continue;
+      const n = normalise(kind, value);
+      if (n === null) unreadable++;
+      else facts.push({ key: spec.items ? h.key : null, field, value: n, confidence });
+    }
+  }
+  return { facts, unreadable };
 }

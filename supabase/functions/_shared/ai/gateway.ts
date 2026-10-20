@@ -18,6 +18,7 @@
 
 import type { Clock } from "../core/clock.ts";
 import { systemClock } from "../core/clock.ts";
+import type { Secret } from "../core/env.ts";
 import type { FlagKey } from "../core/flags.ts";
 import type { Logger } from "../core/log.ts";
 import type { RpcClient } from "../core/supabase.ts";
@@ -134,6 +135,46 @@ function stripInput(input: NormalisedInput, stripper: PiiStripper): NormalisedIn
   return out;
 }
 
+export interface PreparedInput {
+  normalised: NormalisedInput;
+  /** What the model sees (and what is hashed): normalised, PII stripped. */
+  stripped: NormalisedInput;
+  input_sha256: string;
+  vault: PiiVault;
+}
+
+/**
+ * Steps 4–5 of runTask: normalise, strip PII per the task's policy, hash. The salt keys only the
+ * vault's hashes, never the tokens, so the input SHA does not depend on it.
+ */
+export async function prepareInput(
+  task: AiTask,
+  promptVersion: string,
+  input: TaskInput,
+  salt: Secret | string,
+): Promise<PreparedInput> {
+  const normalised = await normaliseInput(input);
+  const stripper = new PiiStripper(task.pii_policy, salt);
+  const stripped = stripInput(normalised, stripper);
+  return {
+    normalised,
+    stripped,
+    input_sha256: await inputSha(task.key, promptVersion, stripped),
+    vault: await stripper.vault(),
+  };
+}
+
+/** The input SHA runTask would compute for this task, reader and input (record.ts, tests). */
+export async function inputShaFor(
+  taskKey: string,
+  input: TaskInput,
+  opts: RunOptions & { catalogue?: AiCatalogue } = {},
+): Promise<string> {
+  const task = findTask(opts.catalogue ?? DEFAULT_CATALOGUE, taskKey);
+  const promptVersion = promptVersionFor(task, readerFor(task, opts.reader));
+  return (await prepareInput(task, promptVersion, input, "sha-only")).input_sha256;
+}
+
 function costInr(
   tier: AiTier,
   model: string | null,
@@ -215,12 +256,14 @@ export async function runTask(
     }
     if (!env.hashSalt) throw new AiError("config", "PLINTH_HASH_SALT is not set");
 
-    const normalised = await normaliseInput(input);
+    const { normalised, stripped, input_sha256, vault } = await prepareInput(
+      task,
+      promptVersion,
+      input,
+      env.hashSalt,
+    );
     source = normalised.source_sha256;
-    const stripper = new PiiStripper(task.pii_policy, env.hashSalt);
-    const stripped = stripInput(normalised, stripper);
-    const vault = await stripper.vault();
-    sha = await inputSha(task.key, promptVersion, stripped);
+    sha = input_sha256;
 
     const schema = await (ctx.schemas ?? schemaSource()).forTask(task);
     const prompt = await (ctx.prompts ?? filePromptSource()).get(task.id, promptVersion);

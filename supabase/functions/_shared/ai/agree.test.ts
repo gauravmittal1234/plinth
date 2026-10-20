@@ -1,6 +1,7 @@
 import { assertEquals } from "../testing/mod.ts";
 import {
   agree,
+  factsOf,
   normaliseArea,
   normaliseDate,
   normaliseInr,
@@ -163,6 +164,42 @@ Deno.test("item lists: claims pair by key; unreadable values never agree", () =>
     0.88,
   ]]);
   assertEquals(money.disagreements.map((d) => [d.key, d.reason]), [["price#2", "unreadable"]]);
+});
+
+Deno.test("a field's kind can follow the item's type; factsOf lists one output's facts", () => {
+  const spec = {
+    items: "claims",
+    key: ["type"],
+    fields: {
+      value: {
+        by: "type",
+        kinds: { price: "inr", possession: "date" } as const,
+        default: "text" as const,
+      },
+    },
+  };
+  const r = agree(
+    { claims: [{ type: "price", value: "₹98 L" }, { type: "possession", value: "Dec 2028" }] },
+    {
+      claims: [{ type: "price", value: "Rs 98,00,000" }, {
+        type: "possession",
+        value: "December 2028",
+      }],
+    },
+    spec,
+  );
+  assertEquals(r.agreed.map((f) => [f.key, f.value]), [["price#1", 9800000], [
+    "possession#1",
+    "2028-12",
+  ]]);
+  const { facts, unreadable } = factsOf(
+    {
+      claims: [{ type: "price", value: "₹98 L", confidence: 0.9 }, { type: "price", value: "ask" }],
+    },
+    spec,
+  );
+  assertEquals(facts, [{ key: "price#1", field: "value", value: 9800000, confidence: 0.9 }]);
+  assertEquals(unreadable, 1);
 });
 
 Deno.test("no confidence stated reads as 0, and empty outputs agree on nothing", () => {
