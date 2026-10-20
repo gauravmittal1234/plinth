@@ -80,7 +80,7 @@ How to read this table:
 | `apps/web/src/features/project/{sections/homes,sections/developer,sections/cost,sections/wait,sections/booking,sections/prerera,sections/picture,sections/ask,simple}/**` | T20a, T20b | T20a stubs, T20b fills |
 | `apps/web/src/features/project/states/**`, `apps/web/e2e/project-states.spec.ts` | T20a, T20c | T20a stubs, T20c fills |
 | `apps/web/app/(public)/page.tsx`, `apps/web/src/features/home/**`, `apps/web/e2e/home.spec.ts` | T21 | |
-| `apps/web/app/(public)/search/**`, `apps/web/src/features/{search,map}/**`, `apps/web/e2e/search.spec.ts` | T22 | |
+| `apps/web/app/(public)/search/**`, `apps/web/src/features/{search,map}/**`, `apps/web/e2e/search.spec.ts`, `apps/web/test/{search,map}/**` | T22 | Vitest's `include` only covers `test/**`, so component tests live there, not beside the source (T27 precedent) |
 | `apps/web/app/(public)/gurugram/developers/[slug]/**`, `apps/web/src/features/developer/**`, `apps/web/e2e/developer.spec.ts` | T23 | |
 | `apps/web/app/(public)/compare/**`, `apps/web/src/features/compare/**`, `apps/web/e2e/compare.spec.ts` | T24 | |
 | `apps/web/app/(public)/{methodology,about}/**`, `apps/web/src/features/trust/**`, `apps/web/e2e/trust.spec.ts` | T25 | |

@@ -1,5 +1,5 @@
 // Canonical fixtures, part 2: scoring (published output of v1.2) and "From the developer" content.
-import { R2, S5, S5B, S5B_ENG, S5B_SWEEP, derived } from "./canonical.mjs";
+import { R2, R3, S5, S5B, S5B_ENG, S5B_SWEEP, derived } from "./canonical.mjs";
 import { uuid5 } from "./lib.mjs";
 
 export const BANDS = {
@@ -606,10 +606,13 @@ export function buildScoring(cat, ev) {
       status: "superseded",
       what_would_change: null,
       reasons: [],
-      // Coral's v1.0 run keeps stale: true here, as T11's ledger records it. On 15 Jul 2026 its
-      // newest QPR (filed 14 Apr 2026) was 92 days old, under v1.0's 180-day line, so the flag
-      // should be false; T11's ledger and this file change together (CONFLICTS.md C-30).
-      source: histSrc,
+      // Coral's v1.0 run is not stale (R3 C-30): on 15 Jul 2026 its newest QPR (filed 14 Apr
+      // 2026) was 92 days old, under v1.0's 180-day line. T11's ledger flips the same field.
+      stale: o.phase === "coral-towers" ? false : o.stale,
+      source:
+        o.phase === "coral-towers"
+          ? `${histSrc}; not stale at 15 Jul 2026 ${R3("C-30")} (newest QPR 92 days old, under v1.0's 180-day line)`
+          : histSrc,
     });
     const r12 = run({
       ...o,

@@ -13,17 +13,17 @@
     {
       "id": "6a4ec682-1447-52b9-8c7a-92979e185e0b",
       "member": "meera",
-      "invite_code": null,
+      "invite_code": "RC4-8TD",
       "scope_all": true,
       "scope_phases": [],
       "status": "joined",
-      "invited_at": null,
-      "expires_at": null,
-      "joined_at": "2026-10-06T00:00:00+05:30",
-      "joined_via": null,
+      "invited_at": "2026-10-03T00:00:00+05:30",
+      "expires_at": "2026-10-10T00:00:00+05:30",
+      "joined_at": "2026-10-06T20:12:00+05:30",
+      "joined_via": "whatsapp",
       "can_add_notes": true,
       "line": "Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes",
-      "source": "DESIGN §5b · Following, digest and family (Meera joined 6 Oct 2026, all 4 projects, can add notes); code and channel not in §5b (CONFLICTS.md C-34)"
+      "source": "DESIGN §5b · Following, digest and family (Meera joined 6 Oct 2026, all 4 projects, can add notes); DESIGN §5b · Fixture decisions, round 3 (C-34) (joined 8:12 pm IST, by her own WhatsApp message \"JOIN RC4-8TD\"; the code was issued 3 Oct 2026 and is now used)"
     },
     {
       "id": "0209e42c-7fec-5e5b-bfa8-525bb990232b",
@@ -93,7 +93,7 @@
         "author": "rohan",
         "created_at": "2026-10-15T00:00:00+05:30",
         "body": "Asked Larkspur for the 3 BHK cost sheet, so we can compare all-in prices.",
-        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard; DESIGN §5b · Fixture decisions, round 3 (C-35) (user-written notes may come from the artboard; the ₹2.5 Cr all-in budget matches Rohan's)"
       },
       {
         "id": "ef913dc7-ca15-5078-85f3-cbeb819a3b1d",
@@ -101,7 +101,7 @@
         "author": "meera",
         "created_at": "2026-10-12T00:00:00+05:30",
         "body": "Site visit done. The 3 BHK layout works for us.",
-        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard; DESIGN §5b · Fixture decisions, round 3 (C-35) (user-written notes may come from the artboard; the ₹2.5 Cr all-in budget matches Rohan's)"
       },
       {
         "id": "61b541a6-ed96-56ad-879c-19048fd97cea",
@@ -109,7 +109,7 @@
         "author": "meera",
         "created_at": "2026-10-16T00:00:00+05:30",
         "body": "New price list: ₹1.95 Cr quoted. Still under our ₹2.5 Cr all-in limit.",
-        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard; DESIGN §5b · Fixture decisions, round 3 (C-35) (user-written notes may come from the artboard; the ₹2.5 Cr all-in budget matches Rohan's)"
       },
       {
         "id": "ea43a3ab-35ea-5e85-8a8a-ba18c8243514",
@@ -117,7 +117,7 @@
         "author": "rohan",
         "created_at": "2026-10-15T00:00:00+05:30",
         "body": "Visited the site today. The office says the new QPR was filed today; wait for Plinth's re-score.",
-        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard; DESIGN §5b · Fixture decisions, round 3 (C-35) (user-written notes may come from the artboard; the ₹2.5 Cr all-in budget matches Rohan's)"
       },
       {
         "id": "d8c5fae8-0abe-556f-8b58-e27126603c9b",
@@ -125,7 +125,7 @@
         "author": "rohan",
         "created_at": "2026-10-17T00:00:00+05:30",
         "body": "Visit on Sat 24 Oct, 11 am. Ask why the Jul–Sep QPR isn't on HARERA.",
-        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard; DESIGN §5b · Fixture decisions, round 3 (C-35) (user-written notes may come from the artboard; the ₹2.5 Cr all-in budget matches Rohan's)"
       },
       {
         "id": "394a3be9-d4a6-5c70-a7a1-8cde714299b7",
@@ -133,7 +133,7 @@
         "author": "meera",
         "created_at": "2026-10-17T00:00:00+05:30",
         "body": "Over our limit at ₹2.74 Cr all-in. Is the visit still worth it?",
-        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard; DESIGN §5b · Fixture decisions, round 3 (C-35) (user-written notes may come from the artboard; the ₹2.5 Cr all-in budget matches Rohan's)"
       }
     ],
     "source": "DESIGN §5b · Following, digest and family"

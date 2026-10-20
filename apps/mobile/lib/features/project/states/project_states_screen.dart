@@ -122,12 +122,7 @@ class _StateContent extends ConsumerWidget {
           staleDays: staleDays,
           ruleLine: methodology?.dataRules?.line,
         ),
-        // AppProject's built section assumes at least 2 quarters on file
-        // (its replay slider asserts `labels.length > 1`). Not scored
-        // (Heron) has none yet; Limited history, Stale and Re-scoring have
-        // just their first QPR, so AppProjectStates skips the section
-        // rather than tripping that assertion (Handoff in the PR body).
-        if (page.progress.quarters.length > 1) ProjectBuiltSection(progress: page.progress, answer: risk.progress.line),
+        ProjectBuiltSection(progress: page.progress, answer: risk.progress.line),
         AlreadyBookedSection(slug: slug, projectName: risk.phase.name),
         ProjectFooterSection(meta: page.meta),
       ],

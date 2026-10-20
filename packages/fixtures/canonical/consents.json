@@ -2,8 +2,8 @@
   "schema": "plinth.fixtures.consents/1",
   "note": "The consent ledger (app.consents, C-MMDD-NN), number shares, the relay and the ref counters. Rohan's 5 refs and the workspace and agent refs of DESIGN §5b. Owner: T03b. Generated; edit src/author.",
   "count_line": "3 parties can reach you",
-  "count_rule": "Counts active number-holding parties: Orbis Land site office, Larkspur Realty and Meridian Habitat site office. The ended Meridian sales office and the relay do not count.",
-  "count_source": "DESIGN §5b · Who has my number; DESIGN §5b · Final sweep rulings (19 Oct 2026) (Who has my number)",
+  "count_rule": "Counts distinct active number-holding recipients: Orbis Land site office, Larkspur Realty and Meridian Habitat site office. The ended Meridian sales office and the relay do not count.",
+  "count_source": "DESIGN §5b · Who has my number; DESIGN §5b · Final sweep rulings (19 Oct 2026) (Who has my number); DESIGN §5b · Fixture decisions, round 3 (C-40) (distinct active recipients)",
   "purposes": [
     {
       "code": "account",
@@ -85,7 +85,7 @@
       "party": "Northfield Estates site office",
       "detail": "Aurelia visit Sat 24 Oct, 11 am, code 4821",
       "phase": "aurelia-heights-phase-2",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "17e532aa-4f5c-52e3-a7cf-3134d4aacd89"
@@ -122,7 +122,7 @@
       "party": "Meridian Habitat site office",
       "detail": "Sapphire Grove Ph 1 site visit",
       "phase": "sapphire-grove-phase-1",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "5ea4ebe2-7622-5966-a464-7352427bf3be"
@@ -151,7 +151,7 @@
       "party": "Larkspur Realty",
       "detail": "Your agent of record for Kestrel Park (you added them; shared by your tap after the visit)",
       "phase": "kestrel-park",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "c2252741-e161-5e1c-abf6-d8c11a2a9bf5"
@@ -180,7 +180,7 @@
       "party": "Orbis Land site office",
       "detail": "Kestrel Park site visit",
       "phase": "kestrel-park",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "1dd0844e-2e66-5068-8d16-8f6d53ac576a"
@@ -208,8 +208,8 @@
       "recipient_agent_id": null,
       "party": "Meridian Habitat sales office",
       "detail": "Price list",
-      "phase": null,
-      "notice_version": null,
+      "phase": "sapphire-grove-phase-1",
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "9b149bb6-6e70-5d68-9896-f488296ed43e"
@@ -221,7 +221,7 @@
       "number_shared": true,
       "relay": false,
       "pays_line": null,
-      "source": "DESIGN §5b · Who has my number (Ended); DESIGN §5b · Rohan's consent history (ended 2 Oct 2026); project not named (CONFLICTS.md C-33)"
+      "source": "DESIGN §5b · Who has my number (Ended); DESIGN §5b · Rohan's consent history (ended 2 Oct 2026); phase DESIGN §5b · Fixture decisions, round 3 (C-33) (Sapphire Grove Ph 1)"
     },
     {
       "id": "26cf2a0b-91e0-5aef-b7f5-de462f35ea44",
@@ -238,7 +238,7 @@
       "party": "Northfield Estates site office",
       "detail": "Aurelia visit Sat 24 Oct, 3 pm, code 5190",
       "phase": "aurelia-heights-phase-2",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "3b9274e2-8e5d-52af-993c-b869a8762a25"
@@ -271,7 +271,7 @@
       "party": "Northfield Estates site office",
       "detail": "Cedar Walk Ph 2 visit Sun 25 Oct, 4 pm, code 3376",
       "phase": "cedar-walk-phase-2",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "3f1a3447-c490-5e22-9f91-607d26a1f1be"
@@ -305,7 +305,7 @@
       "party": "Northfield Estates sales office",
       "detail": "3 BHK price-list enquiry, 17 Oct",
       "phase": "aurelia-heights-phase-2",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "7dda290e-0a0a-5948-b75b-79c0209364df"
@@ -321,7 +321,7 @@
       "number_shared": false,
       "relay": false,
       "pays_line": null,
-      "source": "DESIGN §5b · Developer workspace (inbox; agent Larkspur Realty); project derived: Larkspur's brief for Ishita is Aurelia (C-1017-09)"
+      "source": "DESIGN §5b · Developer workspace (inbox; agent Larkspur Realty); project derived: Larkspur's brief for Ishita is Aurelia (C-1017-09); confirmed DESIGN §5b · Fixture decisions, round 3 (C-33)"
     },
     {
       "id": "277b8479-12f3-504c-8bc0-ad2b7376e0fd",
@@ -338,7 +338,7 @@
       "party": "Northfield Estates sales office",
       "detail": "Cedar Walk payment-plan enquiry, 16 Oct",
       "phase": "cedar-walk-phase-2",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "793abd43-802f-54dc-9454-13424a1bba68"
@@ -352,7 +352,7 @@
       "number_shared": false,
       "relay": false,
       "pays_line": null,
-      "source": "DESIGN §5b · Developer workspace (inbox); phase derived: Cedar Walk Ph 2 is Northfield's only Cedar Walk phase on sale"
+      "source": "DESIGN §5b · Developer workspace (inbox); phase derived: Cedar Walk Ph 2 is Northfield's only Cedar Walk phase on sale; confirmed DESIGN §5b · Fixture decisions, round 3 (C-33)"
     },
     {
       "id": "6c3508b1-0f47-5fb4-a6bc-48db6184f60d",
@@ -368,8 +368,8 @@
       "recipient_agent_id": null,
       "party": "Northfield Estates site office",
       "detail": "Visited 16 Oct; shared his number by his own tap",
-      "phase": null,
-      "notice_version": null,
+      "phase": "aurelia-heights-phase-2",
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "eae3cc91-dd4b-57c3-9e1f-a6c65756d985"
@@ -381,7 +381,7 @@
       "number_shared": true,
       "relay": false,
       "pays_line": "Developer · pays us nothing",
-      "source": "DESIGN §5b · Developer workspace (inbox); project not named (CONFLICTS.md C-33)"
+      "source": "DESIGN §5b · Developer workspace (inbox); phase DESIGN §5b · Fixture decisions, round 3 (C-33) (Aurelia Heights Ph 2)"
     },
     {
       "id": "73752e45-ef8d-518b-a46d-f470dcaec778",
@@ -398,7 +398,7 @@
       "party": "Northfield Estates sales office",
       "detail": "4 BHK enquiry, 15 Oct; replied 16 Oct",
       "phase": "aurelia-heights-phase-2",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "9b23c026-44e8-5ef6-8597-e5087a6bc8d2"
@@ -413,7 +413,7 @@
       "number_shared": false,
       "relay": false,
       "pays_line": null,
-      "source": "DESIGN §5b · Developer workspace (inbox); phase derived: Aurelia is the only Northfield project with a 4 BHK (§5b Discovery)"
+      "source": "DESIGN §5b · Developer workspace (inbox); phase derived: Aurelia is the only Northfield project with a 4 BHK (§5b Discovery); confirmed DESIGN §5b · Fixture decisions, round 3 (C-33)"
     },
     {
       "id": "9d923376-ae6c-56cd-8a4e-e85af9ed483a",
@@ -430,7 +430,7 @@
       "party": "Larkspur Realty",
       "detail": "Brief for Aurelia Heights, Phase 2",
       "phase": "aurelia-heights-phase-2",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "5aa43cfc-3980-5841-9d4a-2dc065941763"
@@ -459,7 +459,7 @@
       "party": "Larkspur Realty",
       "detail": "Brief for Cobalt Square; visit 9 Oct, window to 8 Dec 2026",
       "phase": null,
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "13bcb00c-8885-581a-97ed-e8f208e970c0"
@@ -492,7 +492,7 @@
       "party": "Larkspur Realty",
       "detail": "Brief for Sapphire Grove, Phase 1",
       "phase": "sapphire-grove-phase-1",
-      "notice_version": null,
+      "notice_version": "Privacy notice v1.0, 1 Oct 2026",
       "channel": null,
       "evidence": {
         "tap_event_id": "b8f1263a-c1b3-5187-9179-24e05df45e1c"
@@ -516,12 +516,12 @@
       "recipient_agent": null,
       "recipient_org_id": "dc8aac37-8b88-539c-97c6-597d5b873d4b",
       "recipient_agent_id": null,
-      "phase": null,
+      "phase": "sapphire-grove-phase-1",
       "number_shared": true,
       "starts_at": "2026-09-02T00:00:00+05:30",
       "ends_at": "2026-10-02T00:00:00+05:30",
       "ended_reason": "expired",
-      "source": "DESIGN §5b · Who has my number (Ended); DESIGN §5b · Rohan's consent history (ended 2 Oct 2026); project not named (CONFLICTS.md C-33)"
+      "source": "DESIGN §5b · Who has my number (Ended); DESIGN §5b · Rohan's consent history (ended 2 Oct 2026); phase DESIGN §5b · Fixture decisions, round 3 (C-33) (Sapphire Grove Ph 1)"
     },
     {
       "id": "8e83e034-942f-5fda-b237-45dd05e9fab0",
@@ -576,12 +576,12 @@
       "recipient_agent": null,
       "recipient_org_id": "a3789e36-f6a8-5e75-b050-79d39f37193d",
       "recipient_agent_id": null,
-      "phase": null,
+      "phase": "aurelia-heights-phase-2",
       "number_shared": true,
       "starts_at": "2026-10-16T00:00:00+05:30",
       "ends_at": null,
       "ended_reason": null,
-      "source": "DESIGN §5b · Developer workspace (inbox); project not named (CONFLICTS.md C-33)"
+      "source": "DESIGN §5b · Developer workspace (inbox); phase DESIGN §5b · Fixture decisions, round 3 (C-33) (Aurelia Heights Ph 2)"
     }
   ],
   "relay_sessions": [
