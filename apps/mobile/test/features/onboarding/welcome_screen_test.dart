@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:plinth/app/routes.dart';
+import 'package:plinth/data/alerts.dart';
 import 'package:plinth/data/follow.dart';
 import 'package:plinth/data/session.dart';
 import 'package:plinth/features/onboarding/onboarding_copy.dart';
@@ -12,6 +14,36 @@ import '../../helpers/app_harness.dart';
 /// Done — the same path a genuine first run takes, never a shortcut through
 /// the controller.
 void main() {
+  // The Alerts step's "Turn on alerts" asks the real Android notification
+  // permission (`permission_handler`, `Permission.notification.request()`).
+  // Unmocked, that platform channel call never resolves inside flutter_test's
+  // FakeAsync zone (see family_screen_test.dart's own comment on the same
+  // issue for Clipboard) — it would hang the widget tree forever rather than
+  // throw. This grants or denies whatever permission values the step asks
+  // for, the way a real Android dialog tap would, so the flow can reach
+  // Done either way (`grantNotificationPermission`, reset to granted before
+  // every test; a test wanting the denied path sets it false first).
+  const permissionChannel = MethodChannel('flutter.baseflow.com/permissions/methods');
+  var grantNotificationPermission = true;
+  setUp(() {
+    grantNotificationPermission = true;
+    TestWidgetsFlutterBinding.ensureInitialized().defaultBinaryMessenger.setMockMethodCallHandler(permissionChannel, (
+      MethodCall call,
+    ) async {
+      if (call.method != 'requestPermissions') return null;
+      final requested = (call.arguments as List).cast<int>();
+      final status = grantNotificationPermission ? 1 : 0; // PermissionStatus.granted / .denied
+      return {for (final value in requested) value: status};
+    });
+  });
+
+  tearDown(() {
+    TestWidgetsFlutterBinding.ensureInitialized().defaultBinaryMessenger.setMockMethodCallHandler(
+      permissionChannel,
+      null,
+    );
+  });
+
   /// Taps the shared bottom bar's primary action. It may show a toast
   /// (`showPlinthToast`, 3.2 s): flushed here so the toast's own floating
   /// SnackBar never sits over the *next* step's primary button and steals
@@ -107,6 +139,40 @@ void main() {
 
     await tapPrimary(tester);
     expect(locationOf(container), Routes.explore);
+  });
+
+  testWidgets('a denied Android notification permission still keeps the real record, with an honest toast', (
+    tester,
+  ) async {
+    final container = await pumpPlinth(tester, location: Routes.welcome);
+    await tapPrimary(tester); // Buying
+    await tapPrimary(tester); // Location
+    await tapPrimary(tester); // Phone
+    await tester.enterText(find.byKey(const Key('onboarding-phone-field')), '9900000318');
+    await tapPrimary(tester); // -> Code
+    await tester.enterText(find.byKey(const Key('onboarding-otp-field')), '482193');
+    await tapPrimary(tester); // -> Follow
+    await tapPrimary(tester); // -> Alerts, no follow picked
+    expect(find.text(OnboardingCopy.alertsHeadline), findsOneWidget);
+
+    grantNotificationPermission = false;
+    await tester.tap(find.byKey(const Key('onboarding-primary')));
+    await tester.pumpAndSettle();
+    // The server-side save still went through (it never touched Android),
+    // so the toast is the honest "saved, but Android notifications are
+    // off" line, never the happy-path "Android will ask" one.
+    expect(find.text(OnboardingCopy.notificationPermissionDenied), findsOneWidget);
+    expect(find.text(OnboardingCopy.androidWillAskToast), findsNothing);
+
+    await tester.pump(const Duration(seconds: 4));
+    await tester.pumpAndSettle();
+    expect(find.text(OnboardingCopy.doneHeadline), findsOneWidget);
+    // The Done summary reflects the real record the save RPC made, not the
+    // OS-level permission a buyer could flip separately in Settings
+    // (AGENTS.md rule 9: no confirmation without a record, but a record
+    // that was genuinely made is still reported as made).
+    expect(find.text(OnboardingCopy.alertsOnQuiet), findsOneWidget);
+    expect(container.read(alertPrefsProvider), isNotNull);
   });
 
   testWidgets('a code that never arrives is an honest error, not a silent pass', (tester) async {
