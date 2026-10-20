@@ -10,7 +10,7 @@ import { CHECKLIST_COPY, type ChecklistItem } from "./copy";
 export function Checklist({ items }: { items: readonly ChecklistItem[] }) {
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="m-0 font-display text-h2 font-extrabold">{CHECKLIST_COPY.heading}</h2>
+      <h2 className="m-0 font-display text-section font-bold">{CHECKLIST_COPY.heading}</h2>
       <ul role="list" className="m-0 flex flex-col gap-4 p-0">
         {items.map((item, i) => (
           <li key={i} className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4">

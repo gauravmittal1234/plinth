@@ -19,7 +19,7 @@ export function StubSection({
 }) {
   return (
     <SectionBand id={id} tone={tone} data-stub-section={id}>
-      <h2 className="m-0 font-display text-h3 font-extrabold text-balance sm:text-h2">
+      <h2 className="m-0 font-display text-section font-bold text-balance">
         {heading}
       </h2>
       <p className="mt-5 mb-0 max-w-measure text-lead text-ink2">

@@ -12,7 +12,7 @@ export function ComplaintsSection({ complaints }: { complaints: GroupComplaints 
   return (
     <SectionBand id="complaints" tone="track">
       <div className="flex flex-col gap-6">
-        <h2 className="m-0 max-w-[22ch] text-balance font-display text-h2 font-extrabold">
+        <h2 className="m-0 max-w-[22ch] text-balance font-display text-section font-bold">
           {COMPLAINTS_COPY.heading}
         </h2>
         <p className="m-0 max-w-measure text-lead">{complaints.line_24m}</p>

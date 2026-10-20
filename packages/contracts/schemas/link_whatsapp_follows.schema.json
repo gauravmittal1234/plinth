@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/link_whatsapp_follows.schema.json",
+  "title": "LinkWhatsappFollows",
+  "description": "plinth.link_whatsapp_follows/1, from api.link_whatsapp_follows(p_accept) (\"Bring them here\", API_CONTRACTS §3.2; built by T45a). The WhatsApp number is the account's own verified phone. p_accept false is the peek before any tap: what that number follows on WhatsApp, nothing changes. p_accept true is the buyer's own tap: the WhatsApp contact is linked to the account and its follows move into the account (source whatsapp); the answer lists the follows now brought. A number linked to another account answers linked false with nothing listed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "accepted", "linked", "follows", "cost_sheets"],
+  "properties": {
+    "schema": { "const": "plinth.link_whatsapp_follows/1" },
+    "accepted": {
+      "description": "Echoes p_accept: true only for the \"Bring them here\" tap.",
+      "type": "boolean"
+    },
+    "linked": {
+      "description": "This WhatsApp number is linked to the caller's account now.",
+      "type": "boolean"
+    },
+    "follows": {
+      "description": "Peek: the number's WhatsApp follows not brought yet. Accepted: the follows brought into the account. Oldest first.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/LinkedFollow" }
+    },
+    "cost_sheets": {
+      "description": "Cost sheets the number saved on WhatsApp (uploads, M3). Empty until uploads exist.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/SavedCostSheet" }
+    }
+  },
+  "$defs": {
+    "LinkedFollow": {
+      "title": "LinkedFollow",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "since"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "since": {
+          "description": "The IST date the number followed it on WhatsApp.",
+          "$ref": "common.schema.json#/$defs/IsoDate"
+        }
+      }
+    },
+    "SavedCostSheet": {
+      "title": "SavedCostSheet",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "saved_on"],
+      "properties": {
+        "label": { "type": "string" },
+        "saved_on": { "$ref": "common.schema.json#/$defs/IsoDate" }
+      }
+    }
+  }
+}

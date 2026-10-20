@@ -32,7 +32,7 @@ export function ValueCard({ page }: { page: ProjectPage }) {
       </div>
       <div className="flex flex-col gap-3.5 bg-track px-7 py-6.5">
         <div className="flex flex-col">
-          <h2 id="value-card-h" className="m-0 font-display text-h3 font-extrabold">
+          <h2 id="value-card-h" className="m-0 font-sans text-h3 font-bold">
             {phase.name}
           </h2>
           <span className="text-body text-ink2">
@@ -49,7 +49,7 @@ export function ValueCard({ page }: { page: ProjectPage }) {
         <ReasonList reasons={risk.reasons.slice(0, 3)} surface="track" />
         {price ? (
           <p className="m-0 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <strong className="font-display text-lead font-extrabold">{price.all_in_label} all-in</strong>
+            <strong className="font-display text-lead font-bold">{price.all_in_label} all-in</strong>
             <span className="text-small text-ink2">
               quoted {price.quoted_label} · {price.basis_line}
             </span>

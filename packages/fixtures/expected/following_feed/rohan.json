@@ -6,7 +6,7 @@
   "summary_line": "5 changes across your 4 projects: 1 extension, 1 filing on time, 2 missing filings and 1 price change. No band moved.",
   "changes": [
     {
-      "event_id": "707c008d-01a8-5512-bf69-84881d932cf9",
+      "event_id": "bd4acc3d-c9de-5065-969e-42466745eee1",
       "slug": "sapphire-grove-phase-1",
       "kind": "price_list_published",
       "occurred_on": "2026-10-16",
@@ -25,7 +25,7 @@
       ]
     },
     {
-      "event_id": "3d06d71c-ff28-5ec4-987a-d3581696446a",
+      "event_id": "6bcd0dee-9d11-5f23-a9eb-15232d821464",
       "slug": "sapphire-grove-phase-1",
       "kind": "qpr_filed",
       "occurred_on": "2026-10-15",
@@ -44,7 +44,7 @@
       ]
     },
     {
-      "event_id": "27a269ba-ec4e-5ccc-acdb-7602cce61e7f",
+      "event_id": "f1b0400a-d6a3-572f-ae0b-18719c719e5b",
       "slug": "coral-towers",
       "kind": "qpr_missing",
       "occurred_on": "2026-10-15",
@@ -63,7 +63,7 @@
       ]
     },
     {
-      "event_id": "6166d123-3592-5ce1-9b9a-04496ba56870",
+      "event_id": "9892e7a2-f08f-5484-8f56-f4306c1fd85f",
       "slug": "aurelia-heights-phase-2",
       "kind": "qpr_missing",
       "occurred_on": "2026-10-15",
@@ -84,7 +84,7 @@
       ]
     },
     {
-      "event_id": "23fce41f-b542-57f0-b3dd-c431714a17ac",
+      "event_id": "329250e5-f811-532a-a2bb-5f8baf822eb6",
       "slug": "coral-towers",
       "kind": "extension_granted",
       "occurred_on": "2026-10-14",
@@ -190,6 +190,11 @@
     ],
     "marks": [
       {
+        "date": "2026-07-14",
+        "kind": "qpr_filed",
+        "band": null
+      },
+      {
         "date": "2026-07-15",
         "kind": "qpr_filed",
         "band": null
@@ -205,9 +210,24 @@
         "band": null
       },
       {
+        "date": "2026-10-01",
+        "kind": "price_list_published",
+        "band": null
+      },
+      {
+        "date": "2026-10-01",
+        "kind": "price_list_published",
+        "band": null
+      },
+      {
         "date": "2026-10-02",
         "kind": "band_changed",
         "band": "elevated"
+      },
+      {
+        "date": "2026-10-02",
+        "kind": "price_list_published",
+        "band": null
       },
       {
         "date": "2026-10-09",
@@ -248,7 +268,7 @@
   },
   "record": [
     {
-      "event_id": "b7627bbc-1290-5506-a412-6815b13f1374",
+      "event_id": "853d06ea-0cf6-50d5-a5ca-f7ad109aa5d6",
       "slug": "kestrel-park",
       "kind": "qpr_filed",
       "occurred_on": "2026-10-12",
@@ -274,7 +294,7 @@
       ]
     },
     {
-      "event_id": "6519b63f-89c3-5d79-a9a5-66d3aec3b84d",
+      "event_id": "d56b2adf-6ea3-598a-8cef-cbd1b0c74895",
       "slug": "aurelia-heights-phase-2",
       "kind": "order_decided",
       "occurred_on": "2026-10-09",
@@ -293,7 +313,26 @@
       ]
     },
     {
-      "event_id": "2595e9f7-87c1-5e57-ae58-28d40e75fc78",
+      "event_id": "e32a73ba-ac84-5f11-8768-09926a92728a",
+      "slug": "aurelia-heights-phase-2",
+      "kind": "price_list_published",
+      "occurred_on": "2026-10-02",
+      "line": "New price list from the developer: 3 BHK quoted ₹2.35 Cr. All-in is now about ₹2.74 Cr.",
+      "before_pill": "₹2.24 Cr",
+      "after_pill": "₹2.35 Cr",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "Developer price list · 2 Oct 2026",
+          "fact_ids": ["df98bb14-8dc5-52ef-a38f-2235752df336"],
+          "evidence_url": "/evidence/df98bb14-8dc5-52ef-a38f-2235752df336",
+          "official_url": null,
+          "as_of": "2026-10-02"
+        }
+      ]
+    },
+    {
+      "event_id": "50a271a1-9fec-5714-a256-6eee75bb0ca6",
       "slug": "aurelia-heights-phase-2",
       "kind": "band_changed",
       "occurred_on": "2026-10-02",
@@ -319,13 +358,51 @@
       ]
     },
     {
-      "event_id": "39f0caf3-a32a-5f59-9684-32ca85d2653e",
+      "event_id": "612bf3c3-49ee-5e77-bf80-3e596a666e77",
+      "slug": "coral-towers",
+      "kind": "price_list_published",
+      "occurred_on": "2026-10-01",
+      "line": "New price list from the developer: 3 BHK quoted ₹1.62 Cr. All-in is now about ₹1.90 Cr.",
+      "before_pill": null,
+      "after_pill": "₹1.62 Cr",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "Developer price list · 1 Oct 2026",
+          "fact_ids": ["1d0dbcea-b9cd-50f3-a906-24796d2a267b"],
+          "evidence_url": "/evidence/1d0dbcea-b9cd-50f3-a906-24796d2a267b",
+          "official_url": null,
+          "as_of": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "event_id": "2f9f7e3d-cbe3-5d72-87b6-d9acc395b67e",
+      "slug": "kestrel-park",
+      "kind": "price_list_published",
+      "occurred_on": "2026-10-01",
+      "line": "New price list from the developer: 3 BHK quoted ₹2.10 Cr. All-in is now about ₹2.44 Cr.",
+      "before_pill": null,
+      "after_pill": "₹2.10 Cr",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "Developer price list · 1 Oct 2026",
+          "fact_ids": ["f035914e-4375-52dc-af8f-f074f788f1d1"],
+          "evidence_url": "/evidence/f035914e-4375-52dc-af8f-f074f788f1d1",
+          "official_url": null,
+          "as_of": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "event_id": "b9616ab2-d97d-5ef3-9c20-787f87936ffc",
       "slug": "sapphire-grove-phase-1",
       "kind": "qpr_late",
       "occurred_on": "2026-07-27",
-      "line": "The Apr–Jun 2026 QPR was filed 12 days late: 48% built.",
-      "before_pill": "Due 15 Jul",
-      "after_pill": "Filed 27 Jul",
+      "line": "The Apr–Jun 2026 QPR was filed 12 days late: 48% built, 47% of the promised time used.",
+      "before_pill": "38%",
+      "after_pill": "48%",
       "developer_says": null,
       "sources": [
         {
@@ -345,11 +422,30 @@
       ]
     },
     {
-      "event_id": "abf8aa21-385a-59c7-9e37-90758937efbe",
+      "event_id": "3a3489a3-c850-57e1-8606-99608241670d",
+      "slug": "coral-towers",
+      "kind": "qpr_missing",
+      "occurred_on": "2026-07-15",
+      "line": "The Apr–Jun 2026 QPR is not on HARERA yet. It was due 15 Jul 2026. The Jul–Sep QPR is missing too, so the newest figures are 187 days old.",
+      "before_pill": "Due 15 Jul",
+      "after_pill": "Not on HARERA as of 18 Oct",
+      "developer_says": null,
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["966624b0-fb07-53f5-9cd3-aaaf740a5257"],
+          "evidence_url": "/evidence/966624b0-fb07-53f5-9cd3-aaaf740a5257",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "event_id": "9a2ba249-d791-5bbf-bdf0-e03c1b9cb2c1",
       "slug": "aurelia-heights-phase-2",
       "kind": "qpr_filed",
       "occurred_on": "2026-07-15",
-      "line": "The Apr–Jun 2026 QPR was filed on time: 72% of units sold, 41% built, Tower A at slab 9.",
+      "line": "The Apr–Jun 2026 QPR was filed on time: 41% built, 70% of the promised time used.",
       "before_pill": "38%",
       "after_pill": "41%",
       "developer_says": null,
@@ -371,21 +467,21 @@
       ]
     },
     {
-      "event_id": "2b5d64e6-53d9-5d48-b2d9-47d9b5c9ef79",
-      "slug": "coral-towers",
-      "kind": "qpr_missing",
-      "occurred_on": "2026-07-15",
-      "line": "The Apr–Jun 2026 QPR is not on HARERA. It was due 15 Jul 2026. The newest QPR is Jan–Mar 2026, filed 14 Apr: 22% built.",
-      "before_pill": "Due 15 Jul",
-      "after_pill": "Not on HARERA as of 18 Oct",
+      "event_id": "cff556d3-a51f-5a66-ac60-ca0288825db0",
+      "slug": "kestrel-park",
+      "kind": "qpr_filed",
+      "occurred_on": "2026-07-14",
+      "line": "The Apr–Jun 2026 QPR was filed on time: 59% built, 53% of the promised time used.",
+      "before_pill": null,
+      "after_pill": "59%",
       "developer_says": null,
       "sources": [
         {
-          "label": "HARERA QPR register",
-          "fact_ids": ["966624b0-fb07-53f5-9cd3-aaaf740a5257"],
-          "evidence_url": "/evidence/966624b0-fb07-53f5-9cd3-aaaf740a5257",
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["2c5a7da2-aa5b-549c-952a-8ecc86bc31dd"],
+          "evidence_url": "/evidence/2c5a7da2-aa5b-549c-952a-8ecc86bc31dd",
           "official_url": "https://haryanarera.gov.in",
-          "as_of": "2026-10-18"
+          "as_of": "2026-07-14"
         }
       ]
     }

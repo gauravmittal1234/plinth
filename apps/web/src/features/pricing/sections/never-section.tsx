@@ -8,7 +8,7 @@ export function NeverSection() {
   return (
     <section aria-labelledby="never-h" className="bg-track py-18 text-ink md:py-30">
       <div className="mx-auto flex w-full max-w-[79rem] flex-col gap-6 px-4 sm:px-8">
-        <h2 id="never-h" className="m-0 font-display text-h2 font-extrabold">
+        <h2 id="never-h" className="m-0 font-display text-section font-bold">
           {NEVER_SECTION_COPY.heading}
         </h2>
         <ul role="list" className="m-0 grid grid-cols-1 gap-3 p-0 sm:grid-cols-2">

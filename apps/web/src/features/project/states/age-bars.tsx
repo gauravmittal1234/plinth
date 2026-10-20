@@ -95,7 +95,7 @@ export function AgeBars({ rows }: { rows: readonly AgeRow[] }) {
   if (rows.length === 0) return null;
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="m-0 font-display text-h2 font-extrabold">{AGE_BARS_COPY.heading}</h2>
+      <h2 className="m-0 font-display text-section font-bold">{AGE_BARS_COPY.heading}</h2>
       <div className="flex flex-col gap-5">
         {rows.map((row) => (
           <AgeBar key={row.label} row={row} />

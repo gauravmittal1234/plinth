@@ -407,6 +407,18 @@
             "per_sqft_line": null
           }
         ]
+      },
+      {
+        "published_on": "2026-09-01",
+        "label": "1 Sep 2026",
+        "items": [
+          {
+            "unit_label": "3 BHK",
+            "base_price_inr": 18900000,
+            "price_line": "from ₹1.89 Cr",
+            "per_sqft_line": null
+          }
+        ]
       }
     ],
     "price_basis_line": "Base prices, before charges, GST and stamp duty.",

@@ -63,8 +63,8 @@ const TAGS = {
   refundable_deposit: "Refundable deposit",
 };
 
-const H2 = "m-0 font-display text-question font-extrabold text-balance";
-const H3 = "m-0 font-display text-h3 font-extrabold";
+const H2 = "m-0 font-display text-question font-bold text-balance";
+const H3 = "m-0 font-sans text-h3 font-bold";
 
 function bandChip(bands: BandRange[], code: string | null): Chip | null {
   const b = bands.find((x) => x.code === code);
@@ -108,7 +108,7 @@ export function KitShowcase({ pages, bands, evidence }: Props) {
     >
       <header className="z-20 bg-bg md:sticky md:top-0">
         <div className="mx-auto flex w-full max-w-[79rem] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-8">
-          <p className="m-0 font-display text-h3 font-extrabold">Web UI kit</p>
+          <p className="m-0 font-sans text-h3 font-bold">Web UI kit</p>
           <div role="group" aria-label="Fixture" className="flex flex-wrap gap-1">
             {pages.map((p, i) => (
               <Pill
@@ -258,7 +258,7 @@ export function KitShowcase({ pages, bands, evidence }: Props) {
         >
           <div className="flex min-w-0 flex-[1_1_20rem] flex-col gap-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p aria-live="polite" className="m-0 font-display text-h2 font-extrabold">
+              <p aria-live="polite" className="m-0 font-display text-h2 font-bold">
                 {cur?.label}
               </p>
               {thenChip ? <RiskChip chip={thenChip} /> : null}

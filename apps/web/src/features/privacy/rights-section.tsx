@@ -37,7 +37,7 @@ export function RightsSection({
 
   return (
     <section aria-labelledby="rights-h" className="flex flex-col gap-8">
-      <h2 id="rights-h" className="m-0 font-display text-h3 font-extrabold">
+      <h2 id="rights-h" className="m-0 font-sans text-h3 font-bold">
         Can I take my data, or delete it?
       </h2>
       <p className="m-0 max-w-measure text-body text-ink2">

@@ -10,7 +10,7 @@ export function Wordmark({ href = "/" }: { href?: string }) {
   return (
     <Link href={href} className="flex items-center gap-2.5 py-1 text-ink no-underline">
       <PlinthMark />
-      <span className="font-display text-[1.4375rem] font-extrabold tracking-[-0.02em]">
+      <span className="font-display text-[1.4375rem] font-bold tracking-[-0.02em]">
         Plinth
       </span>
     </Link>

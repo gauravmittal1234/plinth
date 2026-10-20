@@ -329,6 +329,20 @@ describe("scale rules", () => {
     expect(app.section).toMatchObject({ size: 20, weight: 700 });
   });
 
+  it("web UI v2: Figtree text, Bricolage 700 only for display, title and section (P10)", () => {
+    const web = typography.web;
+    const display = new Set(["hero", "question", "display", "h1", "h2", "section"]);
+    for (const [role, r] of Object.entries(web)) {
+      expect(r.family, role).toBe(display.has(role) ? "display" : "ui");
+      // Every weight is 700 (bold): Bricolage never ships 800 any more, and
+      // Figtree's text roles were already 400 (never extrabold).
+      expect(r.weight, role).not.toBe(800);
+    }
+    expect(web.section).toMatchObject({ size: 20, weight: 700 });
+    expect(web.h3).toMatchObject({ size: 24, weight: 700, family: "ui" });
+    expect(web.number).toMatchObject({ size: 30, weight: 700, family: "ui" });
+  });
+
   it("app UI v2: radii and sizes from the benchmark", () => {
     expect(radius).toMatchObject({ tile: 12, button: 16, field: 16, card: 20, sheet: 28 });
     expect(layout).toMatchObject({
