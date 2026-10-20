@@ -157,6 +157,7 @@ from .models import (
     IconArray as IconArray,
     JoinedVia as JoinedVia,
     JumpChip as JumpChip,
+    Kind as Kind,
     Lane as Lane,
     LaneList as LaneList,
     Late12 as Late12,
@@ -239,6 +240,7 @@ from .models import (
     ShareCardKind as ShareCardKind,
     ShareCardPhase as ShareCardPhase,
     ShareCardState as ShareCardState,
+    ShortLink as ShortLink,
     Slug as Slug,
     SourceRef as SourceRef,
     StageKind as StageKind,
@@ -292,6 +294,7 @@ MODEL_BY_SCHEMA_ID: dict[str, type[BaseModel]] = {
     "plinth.saved_searches/1": SavedSearches,
     "plinth.search_results/1": SearchResults,
     "plinth.share_card/1": ShareCard,
+    "plinth.short_link/1": ShortLink,
     "plinth.suggest/1": SuggestResults,
     "plinth.who_has_my_number/1": WhoHasMyNumber,
 }
@@ -343,6 +346,7 @@ EXPORTED_TYPES: tuple[str, ...] = (
     "SearchRequest",
     "SearchResults",
     "ShareCard",
+    "ShortLink",
     "SuggestResults",
     "WhoHasMyNumber",
 )

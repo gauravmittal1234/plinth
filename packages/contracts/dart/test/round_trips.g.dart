@@ -48,6 +48,7 @@ final Map<String, Map<String, dynamic> Function(Map<String, dynamic>)> roundTrip
   'search_request': (json) => SearchRequest.fromJson(json).toJson(),
   'search_results': (json) => SearchResults.fromJson(json).toJson(),
   'share_card': (json) => ShareCard.fromJson(json).toJson(),
+  'short_link': (json) => ShortLink.fromJson(json).toJson(),
   'suggest_results': (json) => SuggestResults.fromJson(json).toJson(),
   'who_has_my_number': (json) => WhoHasMyNumber.fromJson(json).toJson(),
 };

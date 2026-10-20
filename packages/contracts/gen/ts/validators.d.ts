@@ -47,6 +47,7 @@ export declare const validateSavedSearches: ValidateFunction<T.SavedSearches>;
 export declare const validateSearchRequest: ValidateFunction<T.SearchRequest>;
 export declare const validateSearchResults: ValidateFunction<T.SearchResults>;
 export declare const validateShareCard: ValidateFunction<T.ShareCard>;
+export declare const validateShortLink: ValidateFunction<T.ShortLink>;
 export declare const validateSuggestResults: ValidateFunction<T.SuggestResults>;
 export declare const validateWhoHasMyNumber: ValidateFunction<T.WhoHasMyNumber>;
 
@@ -97,6 +98,7 @@ export interface TypeByName {
   SearchRequest: T.SearchRequest;
   SearchResults: T.SearchResults;
   ShareCard: T.ShareCard;
+  ShortLink: T.ShortLink;
   SuggestResults: T.SuggestResults;
   WhoHasMyNumber: T.WhoHasMyNumber;
 }
@@ -135,6 +137,7 @@ export interface PayloadBySchemaId {
   "plinth.saved_searches/1": T.SavedSearches;
   "plinth.search_results/1": T.SearchResults;
   "plinth.share_card/1": T.ShareCard;
+  "plinth.short_link/1": T.ShortLink;
   "plinth.suggest/1": T.SuggestResults;
   "plinth.who_has_my_number/1": T.WhoHasMyNumber;
 }

@@ -35198,23 +35198,265 @@ validate803.errors = vErrors;
 return errors === 0;
 }
 
-export const validateSuggestResults = validate827;
-const schema352 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://plinth.in/schemas/suggest.schema.json","title":"SuggestResults","description":"plinth.suggest/1, from api.suggest(p_q) (API_CONTRACTS §3.1): at most 8 typo- and Hinglish-tolerant name, RERA number and sector matches.","type":"object","additionalProperties":false,"required":["schema","q","items"],"properties":{"schema":{"const":"plinth.suggest/1"},"q":{"type":"string"},"items":{"type":"array","maxItems":8,"items":{"$ref":"#/$defs/Suggestion"}}},"$defs":{"Suggestion":{"title":"Suggestion","type":"object","additionalProperties":false,"required":["kind","slug","label","detail_line","matched_on"],"properties":{"kind":{"$ref":"#/$defs/SuggestionKind"},"slug":{"$ref":"common.schema.json#/$defs/Slug"},"label":{"type":"string"},"detail_line":{"type":["string","null"]},"matched_on":{"$ref":"#/$defs/SuggestionMatch"}}},"SuggestionKind":{"title":"SuggestionKind","type":"string","enum":["phase","developer","locality"]},"SuggestionMatch":{"title":"SuggestionMatch","type":"string","enum":["name","rera_number","sector","synonym"]}}};
-const schema353 = {"title":"Suggestion","type":"object","additionalProperties":false,"required":["kind","slug","label","detail_line","matched_on"],"properties":{"kind":{"$ref":"#/$defs/SuggestionKind"},"slug":{"$ref":"common.schema.json#/$defs/Slug"},"label":{"type":"string"},"detail_line":{"type":["string","null"]},"matched_on":{"$ref":"#/$defs/SuggestionMatch"}}};
-const schema354 = {"title":"SuggestionKind","type":"string","enum":["phase","developer","locality"]};
+export const validateShortLink = validate767;
+const schema324 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://plinth.in/schemas/short_link.schema.json","title":"ShortLink","description":"plinth.short_link/1, from api.resolve_short_link(p_code): what a plinth.in/r/<code> link names -- a project's own short code (kind phase) or an issued share card's short code (kind card). Read-only; never increments the Live Record placement count that api.live_record (M4) owns.","type":"object","additionalProperties":false,"required":["schema","kind","slug","card_code"],"properties":{"schema":{"const":"plinth.short_link/1"},"kind":{"type":"string","enum":["phase","card"]},"slug":{"description":"The phase's slug when kind is phase; null when kind is card.","anyOf":[{"$ref":"common.schema.json#/$defs/Slug"},{"type":"null"}]},"card_code":{"description":"The share card's short code when kind is card; null when kind is phase.","anyOf":[{"type":"string"},{"type":"null"}]}}};
 
-function validate829(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
+function validate768(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
+let vErrors = null;
+let errors = 0;
+if(errors === 0){
+if(typeof data === "string"){
+if(!pattern6.test(data)){
+validate768.errors = [{instancePath,schemaPath:"#/pattern",keyword:"pattern",params:{pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"},message:"must match pattern \""+"^[a-z0-9]+(-[a-z0-9]+)*$"+"\""}];
+return false;
+}
+}
+else {
+validate768.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "string"},message:"must be string"}];
+return false;
+}
+}
+validate768.errors = vErrors;
+return errors === 0;
+}
+
+
+function validate767(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
+/*# sourceURL="https://plinth.in/schemas/short_link.schema.json" */;
+let vErrors = null;
+let errors = 0;
+if(errors === 0){
+if(data && typeof data == "object" && !Array.isArray(data)){
+let missing0;
+if(((((data.schema === undefined) && (missing0 = "schema")) || ((data.kind === undefined) && (missing0 = "kind"))) || ((data.slug === undefined) && (missing0 = "slug"))) || ((data.card_code === undefined) && (missing0 = "card_code"))){
+validate767.errors = [{instancePath,schemaPath:"#/required",keyword:"required",params:{missingProperty: missing0},message:"must have required property '"+missing0+"'"}];
+return false;
+}
+else {
+const _errs1 = errors;
+for(const key0 in data){
+if(!((((key0 === "schema") || (key0 === "kind")) || (key0 === "slug")) || (key0 === "card_code"))){
+validate767.errors = [{instancePath,schemaPath:"#/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key0},message:"must NOT have additional properties"}];
+return false;
+break;
+}
+}
+if(_errs1 === errors){
+if(data.schema !== undefined){
+const _errs2 = errors;
+if("plinth.short_link/1" !== data.schema){
+validate767.errors = [{instancePath:instancePath+"/schema",schemaPath:"#/properties/schema/const",keyword:"const",params:{allowedValue: "plinth.short_link/1"},message:"must be equal to constant"}];
+return false;
+}
+var valid0 = _errs2 === errors;
+}
+else {
+var valid0 = true;
+}
+if(valid0){
+if(data.kind !== undefined){
+let data1 = data.kind;
+const _errs3 = errors;
+if(typeof data1 !== "string"){
+validate767.errors = [{instancePath:instancePath+"/kind",schemaPath:"#/properties/kind/type",keyword:"type",params:{type: "string"},message:"must be string"}];
+return false;
+}
+if(!((data1 === "phase") || (data1 === "card"))){
+validate767.errors = [{instancePath:instancePath+"/kind",schemaPath:"#/properties/kind/enum",keyword:"enum",params:{allowedValues: schema324.properties.kind.enum},message:"must be equal to one of the allowed values"}];
+return false;
+}
+var valid0 = _errs3 === errors;
+}
+else {
+var valid0 = true;
+}
+if(valid0){
+if(data.slug !== undefined){
+let data2 = data.slug;
+const _errs5 = errors;
+const _errs6 = errors;
+let valid1 = false;
+const _errs7 = errors;
+if(!(validate768(data2, {instancePath:instancePath+"/slug",parentData:data,parentDataProperty:"slug",rootData}))){
+vErrors = vErrors === null ? validate768.errors : vErrors.concat(validate768.errors);
+errors = vErrors.length;
+}
+var _valid0 = _errs7 === errors;
+valid1 = valid1 || _valid0;
+if(!valid1){
+const _errs8 = errors;
+if(data2 !== null){
+const err0 = {instancePath:instancePath+"/slug",schemaPath:"#/properties/slug/anyOf/1/type",keyword:"type",params:{type: "null"},message:"must be null"};
+if(vErrors === null){
+vErrors = [err0];
+}
+else {
+vErrors.push(err0);
+}
+errors++;
+}
+var _valid0 = _errs8 === errors;
+valid1 = valid1 || _valid0;
+}
+if(!valid1){
+const err1 = {instancePath:instancePath+"/slug",schemaPath:"#/properties/slug/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
+if(vErrors === null){
+vErrors = [err1];
+}
+else {
+vErrors.push(err1);
+}
+errors++;
+validate767.errors = vErrors;
+return false;
+}
+else {
+errors = _errs6;
+if(vErrors !== null){
+if(_errs6){
+vErrors.length = _errs6;
+}
+else {
+vErrors = null;
+}
+}
+}
+var valid0 = _errs5 === errors;
+}
+else {
+var valid0 = true;
+}
+if(valid0){
+if(data.card_code !== undefined){
+let data3 = data.card_code;
+const _errs10 = errors;
+const _errs11 = errors;
+let valid2 = false;
+const _errs12 = errors;
+if(typeof data3 !== "string"){
+const err2 = {instancePath:instancePath+"/card_code",schemaPath:"#/properties/card_code/anyOf/0/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(vErrors === null){
+vErrors = [err2];
+}
+else {
+vErrors.push(err2);
+}
+errors++;
+}
+var _valid1 = _errs12 === errors;
+valid2 = valid2 || _valid1;
+if(!valid2){
+const _errs14 = errors;
+if(data3 !== null){
+const err3 = {instancePath:instancePath+"/card_code",schemaPath:"#/properties/card_code/anyOf/1/type",keyword:"type",params:{type: "null"},message:"must be null"};
+if(vErrors === null){
+vErrors = [err3];
+}
+else {
+vErrors.push(err3);
+}
+errors++;
+}
+var _valid1 = _errs14 === errors;
+valid2 = valid2 || _valid1;
+}
+if(!valid2){
+const err4 = {instancePath:instancePath+"/card_code",schemaPath:"#/properties/card_code/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
+if(vErrors === null){
+vErrors = [err4];
+}
+else {
+vErrors.push(err4);
+}
+errors++;
+validate767.errors = vErrors;
+return false;
+}
+else {
+errors = _errs11;
+if(vErrors !== null){
+if(_errs11){
+vErrors.length = _errs11;
+}
+else {
+vErrors = null;
+}
+}
+}
+var valid0 = _errs10 === errors;
+}
+else {
+var valid0 = true;
+}
+}
+}
+}
+}
+}
+}
+else {
+validate767.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "object"},message:"must be object"}];
+return false;
+}
+}
+validate767.errors = vErrors;
+return errors === 0;
+}
+
+export const validateSuggestResults = validate770;
+const schema326 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://plinth.in/schemas/suggest.schema.json","title":"SuggestResults","description":"plinth.suggest/1, from api.suggest(p_q) (API_CONTRACTS §3.1): at most 8 typo- and Hinglish-tolerant name, RERA number and sector matches.","type":"object","additionalProperties":false,"required":["schema","q","items"],"properties":{"schema":{"const":"plinth.suggest/1"},"q":{"type":"string"},"items":{"type":"array","maxItems":8,"items":{"$ref":"#/$defs/Suggestion"}}},"$defs":{"Suggestion":{"title":"Suggestion","type":"object","additionalProperties":false,"required":["kind","slug","label","detail_line","matched_on"],"properties":{"kind":{"$ref":"#/$defs/SuggestionKind"},"slug":{"$ref":"common.schema.json#/$defs/Slug"},"label":{"type":"string"},"detail_line":{"type":["string","null"]},"matched_on":{"$ref":"#/$defs/SuggestionMatch"}}},"SuggestionKind":{"title":"SuggestionKind","type":"string","enum":["phase","developer","locality"]},"SuggestionMatch":{"title":"SuggestionMatch","type":"string","enum":["name","rera_number","sector","synonym"]}}};
+const schema327 = {"title":"Suggestion","type":"object","additionalProperties":false,"required":["kind","slug","label","detail_line","matched_on"],"properties":{"kind":{"$ref":"#/$defs/SuggestionKind"},"slug":{"$ref":"common.schema.json#/$defs/Slug"},"label":{"type":"string"},"detail_line":{"type":["string","null"]},"matched_on":{"$ref":"#/$defs/SuggestionMatch"}}};
+const schema328 = {"title":"SuggestionKind","type":"string","enum":["phase","developer","locality"]};
+
+function validate772(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
 let vErrors = null;
 let errors = 0;
 if(typeof data !== "string"){
-validate829.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "string"},message:"must be string"}];
+validate772.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "string"},message:"must be string"}];
 return false;
 }
 if(!(((data === "phase") || (data === "developer")) || (data === "locality"))){
-validate829.errors = [{instancePath,schemaPath:"#/enum",keyword:"enum",params:{allowedValues: schema354.enum},message:"must be equal to one of the allowed values"}];
+validate772.errors = [{instancePath,schemaPath:"#/enum",keyword:"enum",params:{allowedValues: schema328.enum},message:"must be equal to one of the allowed values"}];
 return false;
 }
-validate829.errors = vErrors;
+validate772.errors = vErrors;
+return errors === 0;
+}
+
+
+function validate774(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
+let vErrors = null;
+let errors = 0;
+if(errors === 0){
+if(typeof data === "string"){
+if(!pattern6.test(data)){
+validate774.errors = [{instancePath,schemaPath:"#/pattern",keyword:"pattern",params:{pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"},message:"must match pattern \""+"^[a-z0-9]+(-[a-z0-9]+)*$"+"\""}];
+return false;
+}
+}
+else {
+validate774.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "string"},message:"must be string"}];
+return false;
+}
+}
+validate774.errors = vErrors;
+return errors === 0;
+}
+
+const schema330 = {"title":"SuggestionMatch","type":"string","enum":["name","rera_number","sector","synonym"]};
+
+function validate776(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
+let vErrors = null;
+let errors = 0;
+if(typeof data !== "string"){
+validate776.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "string"},message:"must be string"}];
+return false;
+}
+if(!((((data === "name") || (data === "rera_number")) || (data === "sector")) || (data === "synonym"))){
+validate776.errors = [{instancePath,schemaPath:"#/enum",keyword:"enum",params:{allowedValues: schema330.enum},message:"must be equal to one of the allowed values"}];
+return false;
+}
+validate776.errors = vErrors;
 return errors === 0;
 }
 
@@ -35223,54 +35465,17 @@ function validate831(data, {instancePath="", parentData, parentDataProperty, roo
 let vErrors = null;
 let errors = 0;
 if(errors === 0){
-if(typeof data === "string"){
-if(!pattern6.test(data)){
-validate831.errors = [{instancePath,schemaPath:"#/pattern",keyword:"pattern",params:{pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"},message:"must match pattern \""+"^[a-z0-9]+(-[a-z0-9]+)*$"+"\""}];
-return false;
-}
-}
-else {
-validate831.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "string"},message:"must be string"}];
-return false;
-}
-}
-validate831.errors = vErrors;
-return errors === 0;
-}
-
-const schema356 = {"title":"SuggestionMatch","type":"string","enum":["name","rera_number","sector","synonym"]};
-
-function validate833(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
-let vErrors = null;
-let errors = 0;
-if(typeof data !== "string"){
-validate833.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "string"},message:"must be string"}];
-return false;
-}
-if(!((((data === "name") || (data === "rera_number")) || (data === "sector")) || (data === "synonym"))){
-validate833.errors = [{instancePath,schemaPath:"#/enum",keyword:"enum",params:{allowedValues: schema356.enum},message:"must be equal to one of the allowed values"}];
-return false;
-}
-validate833.errors = vErrors;
-return errors === 0;
-}
-
-
-function validate828(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
-let vErrors = null;
-let errors = 0;
-if(errors === 0){
 if(data && typeof data == "object" && !Array.isArray(data)){
 let missing0;
 if((((((data.kind === undefined) && (missing0 = "kind")) || ((data.slug === undefined) && (missing0 = "slug"))) || ((data.label === undefined) && (missing0 = "label"))) || ((data.detail_line === undefined) && (missing0 = "detail_line"))) || ((data.matched_on === undefined) && (missing0 = "matched_on"))){
-validate828.errors = [{instancePath,schemaPath:"#/required",keyword:"required",params:{missingProperty: missing0},message:"must have required property '"+missing0+"'"}];
+validate771.errors = [{instancePath,schemaPath:"#/required",keyword:"required",params:{missingProperty: missing0},message:"must have required property '"+missing0+"'"}];
 return false;
 }
 else {
 const _errs1 = errors;
 for(const key0 in data){
 if(!(((((key0 === "kind") || (key0 === "slug")) || (key0 === "label")) || (key0 === "detail_line")) || (key0 === "matched_on"))){
-validate828.errors = [{instancePath,schemaPath:"#/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key0},message:"must NOT have additional properties"}];
+validate771.errors = [{instancePath,schemaPath:"#/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key0},message:"must NOT have additional properties"}];
 return false;
 break;
 }
@@ -35278,8 +35483,8 @@ break;
 if(_errs1 === errors){
 if(data.kind !== undefined){
 const _errs2 = errors;
-if(!(validate829(data.kind, {instancePath:instancePath+"/kind",parentData:data,parentDataProperty:"kind",rootData}))){
-vErrors = vErrors === null ? validate829.errors : vErrors.concat(validate829.errors);
+if(!(validate772(data.kind, {instancePath:instancePath+"/kind",parentData:data,parentDataProperty:"kind",rootData}))){
+vErrors = vErrors === null ? validate772.errors : vErrors.concat(validate772.errors);
 errors = vErrors.length;
 }
 var valid0 = _errs2 === errors;
@@ -35290,8 +35495,8 @@ var valid0 = true;
 if(valid0){
 if(data.slug !== undefined){
 const _errs3 = errors;
-if(!(validate831(data.slug, {instancePath:instancePath+"/slug",parentData:data,parentDataProperty:"slug",rootData}))){
-vErrors = vErrors === null ? validate831.errors : vErrors.concat(validate831.errors);
+if(!(validate774(data.slug, {instancePath:instancePath+"/slug",parentData:data,parentDataProperty:"slug",rootData}))){
+vErrors = vErrors === null ? validate774.errors : vErrors.concat(validate774.errors);
 errors = vErrors.length;
 }
 var valid0 = _errs3 === errors;
@@ -35303,7 +35508,7 @@ if(valid0){
 if(data.label !== undefined){
 const _errs4 = errors;
 if(typeof data.label !== "string"){
-validate828.errors = [{instancePath:instancePath+"/label",schemaPath:"#/properties/label/type",keyword:"type",params:{type: "string"},message:"must be string"}];
+validate771.errors = [{instancePath:instancePath+"/label",schemaPath:"#/properties/label/type",keyword:"type",params:{type: "string"},message:"must be string"}];
 return false;
 }
 var valid0 = _errs4 === errors;
@@ -35316,7 +35521,7 @@ if(data.detail_line !== undefined){
 let data3 = data.detail_line;
 const _errs6 = errors;
 if((typeof data3 !== "string") && (data3 !== null)){
-validate828.errors = [{instancePath:instancePath+"/detail_line",schemaPath:"#/properties/detail_line/type",keyword:"type",params:{type: schema353.properties.detail_line.type},message:"must be string,null"}];
+validate771.errors = [{instancePath:instancePath+"/detail_line",schemaPath:"#/properties/detail_line/type",keyword:"type",params:{type: schema327.properties.detail_line.type},message:"must be string,null"}];
 return false;
 }
 var valid0 = _errs6 === errors;
@@ -35327,8 +35532,8 @@ var valid0 = true;
 if(valid0){
 if(data.matched_on !== undefined){
 const _errs8 = errors;
-if(!(validate833(data.matched_on, {instancePath:instancePath+"/matched_on",parentData:data,parentDataProperty:"matched_on",rootData}))){
-vErrors = vErrors === null ? validate833.errors : vErrors.concat(validate833.errors);
+if(!(validate776(data.matched_on, {instancePath:instancePath+"/matched_on",parentData:data,parentDataProperty:"matched_on",rootData}))){
+vErrors = vErrors === null ? validate776.errors : vErrors.concat(validate776.errors);
 errors = vErrors.length;
 }
 var valid0 = _errs8 === errors;
@@ -35344,16 +35549,16 @@ var valid0 = true;
 }
 }
 else {
-validate828.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "object"},message:"must be object"}];
+validate771.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "object"},message:"must be object"}];
 return false;
 }
 }
-validate828.errors = vErrors;
+validate771.errors = vErrors;
 return errors === 0;
 }
 
 
-function validate827(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
+function validate770(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
 /*# sourceURL="https://plinth.in/schemas/suggest.schema.json" */;
 let vErrors = null;
 let errors = 0;
@@ -35361,14 +35566,14 @@ if(errors === 0){
 if(data && typeof data == "object" && !Array.isArray(data)){
 let missing0;
 if((((data.schema === undefined) && (missing0 = "schema")) || ((data.q === undefined) && (missing0 = "q"))) || ((data.items === undefined) && (missing0 = "items"))){
-validate827.errors = [{instancePath,schemaPath:"#/required",keyword:"required",params:{missingProperty: missing0},message:"must have required property '"+missing0+"'"}];
+validate770.errors = [{instancePath,schemaPath:"#/required",keyword:"required",params:{missingProperty: missing0},message:"must have required property '"+missing0+"'"}];
 return false;
 }
 else {
 const _errs1 = errors;
 for(const key0 in data){
 if(!(((key0 === "schema") || (key0 === "q")) || (key0 === "items"))){
-validate827.errors = [{instancePath,schemaPath:"#/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key0},message:"must NOT have additional properties"}];
+validate770.errors = [{instancePath,schemaPath:"#/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key0},message:"must NOT have additional properties"}];
 return false;
 break;
 }
@@ -35377,7 +35582,7 @@ if(_errs1 === errors){
 if(data.schema !== undefined){
 const _errs2 = errors;
 if("plinth.suggest/1" !== data.schema){
-validate827.errors = [{instancePath:instancePath+"/schema",schemaPath:"#/properties/schema/const",keyword:"const",params:{allowedValue: "plinth.suggest/1"},message:"must be equal to constant"}];
+validate770.errors = [{instancePath:instancePath+"/schema",schemaPath:"#/properties/schema/const",keyword:"const",params:{allowedValue: "plinth.suggest/1"},message:"must be equal to constant"}];
 return false;
 }
 var valid0 = _errs2 === errors;
@@ -35389,7 +35594,7 @@ if(valid0){
 if(data.q !== undefined){
 const _errs3 = errors;
 if(typeof data.q !== "string"){
-validate827.errors = [{instancePath:instancePath+"/q",schemaPath:"#/properties/q/type",keyword:"type",params:{type: "string"},message:"must be string"}];
+validate770.errors = [{instancePath:instancePath+"/q",schemaPath:"#/properties/q/type",keyword:"type",params:{type: "string"},message:"must be string"}];
 return false;
 }
 var valid0 = _errs3 === errors;
@@ -35404,7 +35609,7 @@ const _errs5 = errors;
 if(errors === _errs5){
 if(Array.isArray(data2)){
 if(data2.length > 8){
-validate827.errors = [{instancePath:instancePath+"/items",schemaPath:"#/properties/items/maxItems",keyword:"maxItems",params:{limit: 8},message:"must NOT have more than 8 items"}];
+validate770.errors = [{instancePath:instancePath+"/items",schemaPath:"#/properties/items/maxItems",keyword:"maxItems",params:{limit: 8},message:"must NOT have more than 8 items"}];
 return false;
 }
 else {
@@ -35412,8 +35617,8 @@ var valid1 = true;
 const len0 = data2.length;
 for(let i0=0; i0<len0; i0++){
 const _errs7 = errors;
-if(!(validate828(data2[i0], {instancePath:instancePath+"/items/" + i0,parentData:data2,parentDataProperty:i0,rootData}))){
-vErrors = vErrors === null ? validate828.errors : vErrors.concat(validate828.errors);
+if(!(validate771(data2[i0], {instancePath:instancePath+"/items/" + i0,parentData:data2,parentDataProperty:i0,rootData}))){
+vErrors = vErrors === null ? validate771.errors : vErrors.concat(validate771.errors);
 errors = vErrors.length;
 }
 var valid1 = _errs7 === errors;
@@ -35424,7 +35629,7 @@ break;
 }
 }
 else {
-validate827.errors = [{instancePath:instancePath+"/items",schemaPath:"#/properties/items/type",keyword:"type",params:{type: "array"},message:"must be array"}];
+validate770.errors = [{instancePath:instancePath+"/items",schemaPath:"#/properties/items/type",keyword:"type",params:{type: "array"},message:"must be array"}];
 return false;
 }
 }
@@ -35439,11 +35644,11 @@ var valid0 = true;
 }
 }
 else {
-validate827.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "object"},message:"must be object"}];
+validate770.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "object"},message:"must be object"}];
 return false;
 }
 }
-validate827.errors = vErrors;
+validate770.errors = vErrors;
 return errors === 0;
 }
 
@@ -36066,6 +36271,7 @@ export const VALIDATORS = {
   SearchRequest: validateSearchRequest,
   SearchResults: validateSearchResults,
   ShareCard: validateShareCard,
+  ShortLink: validateShortLink,
   SuggestResults: validateSuggestResults,
   WhoHasMyNumber: validateWhoHasMyNumber,
 };
@@ -36102,6 +36308,7 @@ export const SCHEMA_IDS = {
   "plinth.saved_searches/1": "SavedSearches",
   "plinth.search_results/1": "SearchResults",
   "plinth.share_card/1": "ShareCard",
+  "plinth.short_link/1": "ShortLink",
   "plinth.suggest/1": "SuggestResults",
   "plinth.who_has_my_number/1": "WhoHasMyNumber",
 };
@@ -36153,6 +36360,7 @@ export const EXPORTED_TYPES = [
   "SearchRequest",
   "SearchResults",
   "ShareCard",
+  "ShortLink",
   "SuggestResults",
   "WhoHasMyNumber",
 ];

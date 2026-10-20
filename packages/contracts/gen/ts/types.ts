@@ -2259,6 +2259,21 @@ export interface ShareCardChange {
   after_line: string;
 }
 /**
+ * plinth.short_link/1, from api.resolve_short_link(p_code): what a plinth.in/r/<code> link names -- a project's own short code (kind phase) or an issued share card's short code (kind card). Read-only; never increments the Live Record placement count that api.live_record (M4) owns.
+ */
+export interface ShortLink {
+  schema: "plinth.short_link/1";
+  kind: "phase" | "card";
+  /**
+   * The phase's slug when kind is phase; null when kind is card.
+   */
+  slug: Slug | null;
+  /**
+   * The share card's short code when kind is card; null when kind is phase.
+   */
+  card_code: string | null;
+}
+/**
  * plinth.suggest/1, from api.suggest(p_q) (API_CONTRACTS §3.1): at most 8 typo- and Hinglish-tolerant name, RERA number and sector matches.
  */
 export interface SuggestResults {
