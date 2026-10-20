@@ -5,7 +5,7 @@
 -- v1.2 Elevated, 14 Oct 2026 (packages/fixtures/canonical/{people,scoring}.json).
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(29);
+select plan(32);
 
 update ops.runtime_settings set value = 'test' where key = 'env';
 select set_config('plinth.fixed_now', '', true);
@@ -68,6 +68,28 @@ select ok(
     where c ->> 'key' = 'band' and c ->> 'before_line' = 'Moderate' and c ->> 'after_line' = 'Elevated since 2 Oct 2026'
   )),
   'changes carries a band entry with real before/after lines'
+);
+select ok(
+  (select exists (
+    select 1 from t_card, jsonb_array_elements(j -> 'changes') c
+    where c ->> 'key' = 'complaints' and c ->> 'label' = 'Complaints decided against the promoter in 24 months'
+      and c ->> 'before_line' = '13 complaints · 2.6 per 100 units' and c ->> 'after_line' = '14 complaints · 2.8 per 100 units'
+  )),
+  'changes carries a complaints entry: the count in effect at the card''s own data_as_of (core.facts, R3 C-30) vs the live count'
+);
+select ok(
+  (select exists (
+    select 1 from t_card, jsonb_array_elements(j -> 'changes') c
+    where c ->> 'key' = 'qpr_jul_sep_2026' and c ->> 'label' = 'Jul–Sep 2026 QPR'
+      and c ->> 'before_line' = 'Not due yet'
+      and c ->> 'after_line' = 'The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026.'
+  )),
+  'changes carries the Jul-Sep 2026 QPR entry: not due when the card was sent, missing now (core.qpr_filings)'
+);
+select is(
+  (select jsonb_array_length(j -> 'changes') from t_card),
+  4,
+  'changes: band, complaints, the newly-due QPR and data_as_of -- four entries, no more'
 );
 select is((select j ->> 'live_url' from t_card), 'https://plinth.in/gurugram/projects/aurelia-heights-phase-2', 'live_url');
 

@@ -24,11 +24,17 @@
 -- surface reads, so a card's "changed" diff is always against the same number the web
 -- page and the app show today.
 --
--- The diff ("changes") only ever compares fields both snapshots truly carry: band and
--- data_as_of. Complaints, QPR filing status and similar have no historical snapshot
--- on a share card (T43a stored only band/model_version/data_as_of/phash), so this
--- never fabricates a before/after line for them (AGENTS.md §6 rule 10) -- a future
--- task that gives share_cards a fuller snapshot can extend v_changes here.
+-- The diff ("changes") compares band and data_as_of straight off the stored card row
+-- (T43a: share_cards keeps only band/model_version/data_as_of/phash as "the card as
+-- sent"), plus two kinds the card never had to store because the fact system already
+-- remembers them at the card's own data_as_of without anyone inventing a value for it:
+--   - complaints: core.facts is bitemporal (R3 C-30's chain of superseded facts, one
+--     per order), so "the count when this card was sent" is just the latest fact whose
+--     as_of <= the card's data_as_of. Skipped, never guessed, when no such fact exists.
+--   - a QPR that only became due after the card was sent and is still missing today
+--     (core.qpr_filings, the same substrate as core.risk_pending's "qpr_missing" item).
+-- Never a fact the RPC did not itself read off the fact/filing tables (AGENTS.md §6
+-- rule 10) -- a future task can extend v_changes the same way for another fact kind.
 -- ---------------------------------------------------------------------------
 create function core.share_card_json(p_short_code text)
 returns jsonb
@@ -41,6 +47,7 @@ declare
   v_phase core.phases%rowtype;
   v_project core.projects%rowtype;
   v_run core.score_runs%rowtype;
+  v_reg core.rera_registrations%rowtype;
   v_city jsonb;
   v_base text := core.public_base_url();
   v_sent_label text;
@@ -54,6 +61,11 @@ declare
   v_now_lines jsonb;
   v_now_card_url text;
   v_now_since date;
+  v_now_complaints_count integer;
+  v_now_complaints_line text;
+  v_complaints_before core.facts%rowtype;
+  v_qpr_rec record;
+  v_qpr_parts text[];
   v_live_url text;
   v_changed boolean := false;
   v_headline text;
@@ -67,6 +79,7 @@ begin
   select * into v_phase from core.phases p where p.id = v_card.phase_id;
   select * into v_project from core.projects pr where pr.id = v_phase.project_id;
   v_city := core.locality_city(v_project.locality_id);
+  select * into v_reg from core.phase_registration(v_phase.id);
 
   if v_card.run_id is not null then
     select * into v_run from core.score_runs r where r.id = v_card.run_id;
@@ -117,6 +130,8 @@ begin
     v_now_card_url := v_now -> 'share' ->> 'card_url';
     v_live_url := v_now -> 'meta' ->> 'live_url';
     v_now_since := nullif(v_now -> 'band' ->> 'since', '')::date;
+    v_now_complaints_count := nullif(v_now -> 'complaints' ->> 'count_24m', '')::integer;
+    v_now_complaints_line := v_now -> 'complaints' ->> 'line';
   else
     -- No published run at all (should not happen for a phase that ever issued a
     -- card): the most honest "now" is the last state we truly know, the card itself.
@@ -127,6 +142,8 @@ begin
     v_now_lines := coalesce(v_sent -> 'lines', '[]'::jsonb);
     v_now_card_url := v_sent ->> 'card_url';
     v_live_url := v_base || '/' || (v_city ->> 'slug') || '/projects/' || v_phase.slug;
+    -- No live RiskSummary to read a current complaints figure from either; honest
+    -- omission (AGENTS.md §6 rule 10), not an invented "unchanged" or zero count.
   end if;
 
   if v_now_band is not null and v_now_band is distinct from v_card.band::text then
@@ -139,6 +156,58 @@ begin
     );
     v_headline := 'Changed since this card was sent: band ' || coalesce(v_sent_label, 'Not scored')
       || ' → ' || core.band_label(v_now_band) || coalesce(' (' || core.fmt_day_month(v_now_since) || ')', '') || '.';
+  end if;
+
+  -- Complaints: core.facts is bitemporal (R3 C-30 -- a chain of superseded facts, one
+  -- per order), so "the count in effect when this card was sent" is simply the latest
+  -- fact whose as_of falls at or before the card's own data_as_of; never a value this
+  -- function invents. Skipped (not "unchanged") when there is no earlier fact at all.
+  if v_now_complaints_count is not null then
+    select * into v_complaints_before
+      from core.facts f
+     where f.subject_type = 'phase' and f.subject_id = v_phase.id
+       and f.attribute = 'orders.complaints_against_promoter_24m'
+       and f.as_of <= v_card.data_as_of
+     order by f.as_of desc
+     limit 1;
+
+    if v_complaints_before.id is not null
+      and (v_complaints_before.value ->> 'count')::integer is distinct from v_now_complaints_count then
+      v_changed := true;
+      v_changes := v_changes || pg_catalog.jsonb_build_object(
+        'key', 'complaints',
+        'label', 'Complaints decided against the promoter in 24 months',
+        'before_line', (v_complaints_before.value ->> 'count')
+          || case when (v_complaints_before.value ->> 'count') = '1' then ' complaint' else ' complaints' end
+          || ' · ' || (v_complaints_before.value ->> 'per_100_units') || ' per 100 units',
+        'after_line', v_now_complaints_line
+      );
+    end if;
+  end if;
+
+  -- A QPR that only became due after this card was sent, and is still missing today:
+  -- re-derived from core.qpr_filings (the same substrate as core.risk_pending's
+  -- "qpr_missing" item), not from anything the card itself stored.
+  if v_reg.id is not null then
+    for v_qpr_rec in
+      select q.quarter, q.due_on
+        from core.qpr_filings q
+       where q.registration_id = v_reg.id
+         and q.status = 'missing'
+         and q.due_on <= ops.today()
+         and q.due_on > v_card.data_as_of
+       order by q.due_on
+    loop
+      v_changed := true;
+      v_qpr_parts := pg_catalog.regexp_match(v_qpr_rec.quarter, '^(\d{4})-Q([1-4])$');
+      v_changes := v_changes || pg_catalog.jsonb_build_object(
+        'key', 'qpr_' || (array['jan_mar', 'apr_jun', 'jul_sep', 'oct_dec'])[v_qpr_parts[2]::integer] || '_' || v_qpr_parts[1],
+        'label', ops.fmt_quarter(v_qpr_rec.quarter) || ' QPR',
+        'before_line', 'Not due yet',
+        'after_line', 'The ' || ops.fmt_quarter(v_qpr_rec.quarter) || ' QPR is not on '
+          || core.authority_short(v_reg.authority) || ' yet. It was due ' || ops.fmt_date(v_qpr_rec.due_on) || '.'
+      );
+    end loop;
   end if;
 
   if v_now_data_as_of is not null and v_now_data_as_of is distinct from v_card.data_as_of then
@@ -177,7 +246,7 @@ begin
   );
 end
 $$;
-comment on function core.share_card_json(text) is 'plinth.share_card/1 for one share code, or null when it is unknown. api.share_card wraps it; the diff never carries a fact share_cards did not itself store (band, data_as_of only).';
+comment on function core.share_card_json(text) is 'plinth.share_card/1 for one share code, or null when it is unknown. api.share_card wraps it; the diff (band, complaints, a newly-due missing QPR, data_as_of) is always read off the card row, core.facts and core.qpr_filings at the card''s own data_as_of, never invented.';
 
 -- ---------------------------------------------------------------------------
 -- api.share_card(p_code): /c/[code] and the WaDigest "returned card" flow
