@@ -2,21 +2,34 @@
 // M1–M2 (API_CONTRACTS §3.1 public reads, §3.2 buyer API). Pages import only
 // from here; nothing else talks to Supabase or reads fixture files.
 //
-// SIGNATURES ONLY (T05). Every function maps its arguments to the RPC's `p_`
-// args and hands them to `call`, which rejects with DataError("not_implemented")
-// until T16 implements the two adapters behind it:
-//   fixtures  → packages/fixtures/expected/<rpc>/<key>.json (writes held in memory)
-//   supabase  → supabase.schema("api").rpc(<rpc>, args), cookie sessions via @supabase/ssr
-// T16 owns src/data/** from here on (OWNERSHIP.md).
+// Every function maps its arguments to the RPC's `p_` args and hands them to
+// `call`, which picks the adapter for PLINTH_DATA (mode.ts):
+//   fixtures  → packages/fixtures/expected/<fn>/<key>.json, writes held in memory
+//   supabase  → supabase.schema("api").rpc(<fn>, args), cookie sessions via @supabase/ssr
+//
+// - Public reads are cached with ISR tags (cache.ts, tags.ts) and revalidated
+//   by POST /api/revalidate. Buyer calls are never cached and always render at
+//   request time, in both modes, so a page that builds in fixture mode also
+//   builds against Supabase.
+// - Failures reject with a DataError whose `code` is the contract code
+//   (`isDataError(e, "not_found")` → notFound()).
+// - In development and tests, arguments and payloads are checked against the
+//   contract schemas (validate.ts).
+// Owner: T16 (OWNERSHIP.md).
 import "server-only";
+import { connection } from "next/server";
+import { cachedRead } from "./cache";
 import { DataError } from "./errors";
+import { invoke } from "./invoke";
 import { dataMode } from "./mode";
+import { API_FUNCTIONS, type RpcArgs, type RpcName } from "./registry";
 import type {
   About,
   AlertPrefs,
   AlertPrefsInput,
   ClientId,
   Compare,
+  ConsentWithdrawal,
   DeveloperPage,
   DevicePlatform,
   Evidence,
@@ -25,11 +38,12 @@ import type {
   FamilyScope,
   Flags,
   Follow,
-  FollowType,
   FollowingFeed,
+  FollowType,
   Methodology,
   Ok,
   ProjectPage,
+  ReadOptions,
   RiskSummary,
   SearchQuery,
   SearchResults,
@@ -42,89 +56,65 @@ import type {
 } from "./types";
 
 export type * from "./types";
-export { DataError, isDataError, type ErrorCode } from "./errors";
+export { DataError, ERROR_CODES, isDataError, type ApiErrorCode, type ErrorCode } from "./errors";
 export { dataMode, type DataMode } from "./mode";
+export { API_FUNCTIONS, type RpcArgs, type RpcName } from "./registry";
+export {
+  developerTag,
+  isCacheTag,
+  phaseTag,
+  tagsForCall,
+  tagsForPayload,
+  type CacheTag,
+} from "./tags";
 
-type Audience = "anon" | "buyer";
+/** Drops undefined args, so a function's SQL default applies (JSON has no undefined). */
+function compact(args: RpcArgs): RpcArgs {
+  return Object.fromEntries(Object.entries(args).filter(([, v]) => v !== undefined)) as RpcArgs;
+}
 
-/** Every api.* function behind this module, with who may call it and when it lands. */
-export const API_FUNCTIONS = {
-  // §3.1 public reads (anon, cacheable)
-  risk_summary: { audience: "anon", milestone: "M1" },
-  project_page: { audience: "anon", milestone: "M1" },
-  search_projects: { audience: "anon", milestone: "M1" },
-  suggest: { audience: "anon", milestone: "M1" },
-  developer_page: { audience: "anon", milestone: "M1" },
-  compare: { audience: "anon", milestone: "M1" },
-  evidence: { audience: "anon", milestone: "M1" },
-  methodology: { audience: "anon", milestone: "M1" },
-  about: { audience: "anon", milestone: "M1" },
-  flags: { audience: "anon", milestone: "M0" },
-  share_card: { audience: "anon", milestone: "M2" },
-  family_invite_preview: { audience: "anon", milestone: "M2" },
-  // §3.2 buyer API (user JWT)
-  me: { audience: "buyer", milestone: "M2" },
-  device_register: { audience: "buyer", milestone: "M2" },
-  follow: { audience: "buyer", milestone: "M2" },
-  unfollow: { audience: "buyer", milestone: "M2" },
-  set_follow_type: { audience: "buyer", milestone: "M2" },
-  following_feed: { audience: "buyer", milestone: "M2" },
-  mark_following_seen: { audience: "buyer", milestone: "M2" },
-  link_whatsapp_follows: { audience: "buyer", milestone: "M2" },
-  alert_prefs_get: { audience: "buyer", milestone: "M2" },
-  alert_prefs_set: { audience: "buyer", milestone: "M2" },
-  saved_search_save: { audience: "buyer", milestone: "M2" },
-  saved_search_delete: { audience: "buyer", milestone: "M2" },
-  family_circle: { audience: "buyer", milestone: "M2" },
-  family_invite_create: { audience: "buyer", milestone: "M2" },
-  family_invite_cancel: { audience: "buyer", milestone: "M2" },
-  family_member_remove: { audience: "buyer", milestone: "M2" },
-  family_member_undo: { audience: "buyer", milestone: "M2" },
-  family_join: { audience: "buyer", milestone: "M2" },
-  shortlist_note_add: { audience: "buyer", milestone: "M2" },
-  who_has_my_number: { audience: "buyer", milestone: "M2" },
-  consent_history: { audience: "buyer", milestone: "M2" },
-  consent_withdraw: { audience: "buyer", milestone: "M2" },
-  relay_renew: { audience: "buyer", milestone: "M2" },
-  data_export_request: { audience: "buyer", milestone: "M2" },
-  account_delete_request: { audience: "buyer", milestone: "M2" },
-  request_project: { audience: "buyer", milestone: "M2" },
-} as const satisfies Record<string, { audience: Audience; milestone: "M0" | "M1" | "M2" }>;
+/** The one seam: dispatch `api.<rpc>(args)` to the active adapter. */
+async function call<T>(rpc: RpcName, args: RpcArgs = {}, options: ReadOptions = {}): Promise<T> {
+  const mode = dataMode();
+  const clean = compact(args);
+  const fixtureState = mode === "fixtures" ? (options.fixtureState ?? null) : null;
+  const fn = API_FUNCTIONS[rpc];
 
-export type RpcName = keyof typeof API_FUNCTIONS;
-
-/** RPC arguments: snake case with a `p_` prefix (API_CONTRACTS §1 "Args"). */
-export type RpcArgs = Readonly<Record<`p_${string}`, unknown>>;
-
-/** The one seam T16 fills: dispatch `api.<rpc>(args)` to the active adapter. */
-async function call<T>(rpc: RpcName, args: RpcArgs = {}): Promise<T> {
-  void args;
-  throw new DataError(
-    "not_implemented",
-    rpc,
-    `api.${rpc} has a signature but no ${dataMode()} adapter yet: T16 (web data layer) implements it.`,
-  );
+  if (fn.cache) {
+    const settled = await cachedRead(mode, rpc, clean, fixtureState);
+    if (settled.ok) return settled.value as T;
+    throw DataError.fromShape(settled.error);
+  }
+  // Uncached reads depend on the request (the buyer's session, a live invite):
+  // never part of a prerendered shell.
+  if (fn.kind === "read") await connection();
+  return (await invoke(mode, rpc, clean, { fixtureState })) as T;
 }
 
 // ---------------------------------------------------------------------------
 // §3.1 Public read API (anon)
 
-export function riskSummary(slug: Slug): Promise<RiskSummary> {
-  return call("risk_summary", { p_slug: slug });
+/** The one risk object (API_CONTRACTS §2). `fixtureState` picks a design state in fixture mode. */
+export function riskSummary(slug: Slug, options?: ReadOptions): Promise<RiskSummary> {
+  return call("risk_summary", { p_slug: slug }, options);
 }
 
-export function projectPage(slug: Slug): Promise<ProjectPage> {
-  return call("project_page", { p_slug: slug });
+export function projectPage(slug: Slug, options?: ReadOptions): Promise<ProjectPage> {
+  return call("project_page", { p_slug: slug }, options);
 }
 
+/**
+ * Fields left out are not sent, so the server's defaults apply (sort
+ * lowest_risk, its page size): every SearchRequest field is optional.
+ */
 export function searchProjects(query: SearchQuery = {}): Promise<SearchResults> {
   return call("search_projects", {
-    p_q: query.q ?? null,
-    p_filters: query.filters ?? null,
-    p_sort: query.sort ?? null,
-    p_bbox: query.bbox ?? null,
-    p_cursor: query.cursor ?? null,
-    p_limit: query.limit ?? null,
+    p_q: query.q,
+    p_filters: query.filters,
+    p_sort: query.sort,
+    p_bbox: query.bbox,
+    p_cursor: query.cursor,
+    p_limit: query.limit,
   });
 }
 
@@ -133,11 +123,11 @@ export function suggest(q: string): Promise<SuggestResults> {
   return call("suggest", { p_q: q });
 }
 
-export function developerPage(slug: Slug): Promise<DeveloperPage> {
-  return call("developer_page", { p_slug: slug });
+export function developerPage(slug: Slug, options?: ReadOptions): Promise<DeveloperPage> {
+  return call("developer_page", { p_slug: slug }, options);
 }
 
-/** 2–4 phases. */
+/** 2–4 phases, in column order. */
 export function compare(slugs: Slug[]): Promise<Compare> {
   return call("compare", { p_slugs: slugs });
 }
@@ -155,6 +145,7 @@ export function about(): Promise<About> {
   return call("about");
 }
 
+/** `{ schema, flags: { key: boolean } }` for anonymous visitors; an absent key reads as false. */
 export function flags(): Promise<Flags> {
   return call("flags");
 }
@@ -291,7 +282,7 @@ export function consentHistory(): Promise<Untyped> {
 }
 
 /** Withdraw a consent by its C- ref; returns the effects lines. */
-export function consentWithdraw(ref: string): Promise<Untyped> {
+export function consentWithdraw(ref: string): Promise<ConsentWithdrawal> {
   return call("consent_withdraw", { p_ref: ref });
 }
 
