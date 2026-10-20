@@ -1,7 +1,7 @@
 // _shared/testing: helpers for Deno tests of edge functions (T29). Owner: T29.
 // Test files only: production code never imports this folder (testing.test.ts checks it).
 //
-//   import { assertEquals, fakeRequest, frozenClock, testEnv, captureLogs } from "../_shared/testing/mod.ts";
+//   Tests take assertEquals, fakeRequest, frozenClock, testEnv and captureLogs from _shared/testing/mod.ts.
 //
 //   fakeRequest("ask", { json: {...}, bearer: "user-token" })   a Request for /functions/v1/ask
 //   frozenClock()                                               18 Oct 2026 12:00 IST; advance(ms)
