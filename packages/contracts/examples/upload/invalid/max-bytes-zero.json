@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-broker-flyer.json",
+  "why": "max_bytes is a positive limit (BUILD_PLAN §12.9: 15 MB).",
+  "expect": "/max_bytes",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/max_bytes",
+      "value": 0
+    }
+  ]
+}

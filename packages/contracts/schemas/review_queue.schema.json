@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/review_queue.schema.json",
+  "title": "ReviewQueue",
+  "description": "plinth.review_queue/1, from admin_review_queue (API_CONTRACTS §3.4). Highest priority first.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "items", "counts"],
+  "properties": {
+    "schema": { "const": "plinth.review_queue/1" },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "review_task.schema.json" }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["open", "in_progress"],
+      "properties": {
+        "open": { "type": "integer", "minimum": 0 },
+        "in_progress": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

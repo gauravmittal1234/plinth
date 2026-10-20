@@ -19,6 +19,7 @@ export type Timestamp = string;
 export type ModelVersion = string;
 export type Uuid = string;
 export type AccountDeletionStatus = "requested";
+export type AdviserRequestStatus = "open" | "in_progress" | "answered" | "closed";
 /**
  * Whole rupees. Always paired with a server-formatted *_label.
  */
@@ -138,6 +139,19 @@ export type ConsentChannel = "web" | "app" | "whatsapp";
 export type ConsentRef = string;
 export type ContactStatus = "active" | "ended" | "withdrawn";
 export type CostTag = "often_negotiable" | "set_by_law" | "included_in_base" | "refundable_deposit";
+/**
+ * app.uploads.kind (DATA_MODEL §7).
+ */
+export type UploadKind =
+  | "flyer"
+  | "brochure"
+  | "hoarding_photo"
+  | "cost_sheet"
+  | "demand_letter"
+  | "payment_request"
+  | "receipt"
+  | "voice_note"
+  | "room_photo";
 export type DataExportStatus = "preparing" | "ready";
 /**
  * YYYY-MM-DD or, for month precision, YYYY-MM.
@@ -197,6 +211,7 @@ export type DocumentLabel =
   | "payment_request"
   | "receipt"
   | "other";
+export type ErrorReportStatus = "open" | "in_progress" | "resolved";
 /**
  * Opaque id of a core.facts row (a uuid in the database). Clients never parse it.
  */
@@ -298,6 +313,18 @@ export type PaymentRequestClaimType =
   | "banned_phrase";
 export type PaymentRequestClaimQualifier = "super" | "carpet" | "all_in" | "base";
 export type ProjectRequestStatus = "open" | "added" | "declined";
+export type ReviewTaskKind =
+  | "extraction_disagreement"
+  | "low_confidence_claim"
+  | "dispute"
+  | "clerical"
+  | "notice"
+  | "legal"
+  | "capture"
+  | "entity_merge"
+  | "demand_check"
+  | "adviser_request";
+export type ReviewTaskStatus = "open" | "in_progress" | "done";
 /**
  * core.score_state.
  */
@@ -439,6 +466,25 @@ export interface AccountDeletion {
    */
   due_line: string;
   lines: string[];
+}
+/**
+ * plinth.adviser_request/1, from api.adviser_request_create (API_CONTRACTS §4.12 "Talk to a Plinth adviser"; ops.review_tasks kind adviser_request, DATA_MODEL §10). Answered by the founder, Mon–Sat 10 am–7 pm IST, the same working day (FOUNDER_QUESTIONS M3-6).
+ */
+export interface AdviserRequest {
+  schema: "plinth.adviser_request/1";
+  id: Uuid;
+  check_id: Uuid | null;
+  status: AdviserRequestStatus;
+  hours_line: string;
+  line: string;
+}
+/**
+ * Arguments of api.adviser_request_create.
+ */
+export interface AdviserRequestCreateRequest {
+  p_check_id?: Uuid | null;
+  p_question?: string | null;
+  p_client_id?: string;
 }
 /**
  * The inputs this answer used (echoed, so a page can show and edit them).
@@ -715,6 +761,42 @@ export interface BookingPara {
   lead: string | null;
   text: string;
   tone: BookingParaTone;
+}
+/**
+ * plinth.booking/1, from api.booking_save (API_CONTRACTS §3.2; app.bookings, DATA_MODEL §7). Powers the pay-as-built check's "confirm home" step. Never visible to the family circle (DATA_MODEL §12 invariant 5).
+ */
+export interface Booking {
+  schema: "plinth.booking/1";
+  id: Uuid;
+  phase_slug: Slug;
+  tower: string;
+  unit_no: string;
+  price_inr: Inr;
+  price_label: string;
+  booked_on: IsoDate;
+  agreement_registered_on: IsoDate | null;
+  paid_to_date_inr: Inr;
+  paid_to_date_label: string;
+  paid_pct: Pct;
+  plan_id?: string | null;
+  /**
+   * "Unit A-1104 (Tower A) · 52.5% paid"
+   */
+  line: string;
+}
+/**
+ * Arguments of api.booking_save. The same unit saved again updates the one booking.
+ */
+export interface BookingSaveRequest {
+  p_slug: Slug;
+  p_tower: string;
+  p_unit_no: string;
+  p_price_inr: number;
+  p_booked_on: IsoDate;
+  p_agreement_registered_on?: IsoDate | null;
+  p_paid_to_date_inr: number;
+  p_plan_id?: string | null;
+  p_client_id?: string;
 }
 export interface Calibration {
   model_version?: ModelVersion;
@@ -1000,6 +1082,20 @@ export interface CostSheetLine {
  */
 export interface CostSheetLines {
   lines: CostSheetLine[];
+}
+/**
+ * Arguments of api.create_upload.
+ */
+export interface CreateUploadRequest {
+  p_kind: UploadKind;
+  p_mime: "application/pdf" | "image/jpeg" | "image/png" | "image/webp" | "image/heic";
+  p_bytes: number;
+  p_sha256: string;
+  p_channel: Channel;
+  /**
+   * Evidence for the first upload's ai_processing consent (DATA_MODEL §13; BUILD_PLAN §13).
+   */
+  p_tap_event_id?: string | null;
 }
 /**
  * plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2; BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request (app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24 hours); the link works for 7 days and opens only after a fresh sign-in code (export-data, T53). One open request at a time: a repeat call returns it.
@@ -1348,6 +1444,33 @@ export interface EndedParty {
   party: string;
   detail: string;
   ended_on: IsoDate;
+}
+/**
+ * plinth.error_report/1, from api.error_report_create ("Report an error in this row"; ops.error_reports, DATA_MODEL §10). Reference E-nnnn (catalogues/ref_formats.json prefix E); resolved within 15 working days (ops.error_reports.sla_due).
+ */
+export interface ErrorReport {
+  schema: "plinth.error_report/1";
+  /**
+   * E-nnnn (catalogues/ref_formats.json prefix E).
+   */
+  ref: string;
+  status: ErrorReportStatus;
+  sla_due: IsoDate;
+  /**
+   * "Reported. We'll reply by 5 Nov 2026."
+   */
+  line: string;
+}
+/**
+ * Arguments of api.error_report_create.
+ */
+export interface ErrorReportCreateRequest {
+  p_slug?: Slug | null;
+  p_fact_id?: FactId | null;
+  p_check_id?: Uuid | null;
+  p_row_seq?: number | null;
+  p_text: string;
+  p_client_id?: string;
 }
 /**
  * plinth.evidence/1, from api.evidence(p_fact_id): the evidence drawer, F-06 (API_CONTRACTS §4.6).
@@ -1920,6 +2043,27 @@ export interface MethodologyVersion {
   current: boolean;
   [k: string]: unknown | undefined;
 }
+export interface MyCheckItem {
+  id: Uuid;
+  kind: DocCheckKind;
+  status: DocCheckStatus;
+  doc_label: string | null;
+  project_slug?: Slug | null;
+  project_label?: string | null;
+  checked_on: IsoDate;
+  summary_line: string | null;
+  /**
+   * True once api.doc_check_save was called; an unsaved check is deleted after 30 days.
+   */
+  saved: boolean;
+}
+/**
+ * plinth.my_checks/1, from api.my_checks() (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). The caller's own document checks, newest first. Never a circle member's (DATA_MODEL §12 invariant 5).
+ */
+export interface MyChecks {
+  schema: "plinth.my_checks/1";
+  items: MyCheckItem[];
+}
 /**
  * Same corridor, lower band, all-in within 20%. Nobody pays to appear.
  */
@@ -2269,6 +2413,38 @@ export interface WaitDefaults {
   tenure_years: number;
 }
 /**
+ * plinth.receipt/1, from api.receipt_add (API_CONTRACTS §3.2; app.receipts, DATA_MODEL §7). Typed in R1 (FOUNDER_QUESTIONS M3-12): amount, date and the last 4 UTR digits only, no AI reading. Kept until the user deletes it.
+ */
+export interface Receipt {
+  schema: "plinth.receipt/1";
+  id: Uuid;
+  phase_slug: Slug;
+  amount_inr: Inr;
+  amount_label: string;
+  paid_on: IsoDate;
+  utr_last4: string;
+  /**
+   * The before_you_pay check this receipt follows up on, when there was one.
+   */
+  payee_check_id?: Uuid | null;
+  /**
+   * "₹11,00,000 paid 18 Oct 2026 · UTR …7731"
+   */
+  line: string;
+}
+/**
+ * Arguments of api.receipt_add.
+ */
+export interface ReceiptAddRequest {
+  p_slug: Slug;
+  p_upload_id?: Uuid | null;
+  p_amount_inr: number;
+  p_paid_on: IsoDate;
+  p_utr_last4: string;
+  p_payee_check_id?: Uuid | null;
+  p_client_id?: string;
+}
+/**
  * Gets a first name and a WhatsApp text relay, not the number.
  */
 export interface RelayParty {
@@ -2311,6 +2487,38 @@ export interface RequestProject {
    * Set when the buyer asked to hear back on WhatsApp too.
    */
   whatsapp_line: string | null;
+}
+/**
+ * plinth.review_queue/1, from admin_review_queue (API_CONTRACTS §3.4). Highest priority first.
+ */
+export interface ReviewQueue {
+  schema: "plinth.review_queue/1";
+  items: ReviewTask[];
+  counts: {
+    open: number;
+    in_progress: number;
+  };
+}
+/**
+ * plinth.review_task/1, one row of the admin review queue (ops.review_tasks, DATA_MODEL §10, plus kind adviser_request for M3). Reviewer and admin only (admin_review_queue, API_CONTRACTS §3.4).
+ */
+export interface ReviewTask {
+  schema: "plinth.review_task/1";
+  id: Uuid;
+  kind: ReviewTaskKind;
+  /**
+   * The table the review is about, e.g. "extracted_claims".
+   */
+  entity: string;
+  entity_id: Uuid;
+  /**
+   * impact × uncertainty; higher sorts first.
+   */
+  priority: number;
+  status: ReviewTaskStatus;
+  assignee: string | null;
+  due_at: Timestamp | null;
+  summary_line: string;
 }
 /**
  * PostgREST error for a function that raised SQLSTATE PT<http> via ops.raise_api_error(): code is PT<http status>, message the domain code, details the house-copy sentence. Each domain code has exactly one status (see ApiErrorCode).
@@ -2491,6 +2699,41 @@ export interface Suggestion {
   label: string;
   detail_line: string | null;
   matched_on: SuggestionMatch;
+}
+/**
+ * plinth.upload/1, from api.create_upload(p_kind, p_mime, p_bytes, p_sha256, p_channel, p_tap_event_id) (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). Does not carry the signed PUT URL: that comes only from the doc-check edge function's upload-url route (upload_url.schema.json), never from SQL or a client storage policy.
+ */
+export interface Upload {
+  schema: "plinth.upload/1";
+  upload_id: Uuid;
+  /**
+   * The private storage bucket (BUILD_PLAN §12 principle 7).
+   */
+  bucket: string;
+  storage_key: string;
+  /**
+   * The upload limit, BUILD_PLAN §12.9.
+   */
+  max_bytes: number;
+  /**
+   * Set when the same file hash was already uploaded by this owner ("Checked again").
+   */
+  existing_check_id: Uuid | null;
+}
+/**
+ * plinth.upload_url/1, from the doc-check edge function's upload-url route (API_CONTRACTS §4.12; WORK_BREAKDOWN T68: "the signed upload URL itself comes from the doc-check edge function, never from SQL or a client storage policy"). The client PUTs the file to url before starting the check.
+ */
+export interface UploadUrl {
+  schema: "plinth.upload_url/1";
+  upload_id: Uuid;
+  url: string;
+  expires_at: Timestamp;
+}
+/**
+ * POST /functions/v1/doc-check/upload-url body.
+ */
+export interface UploadUrlRequest {
+  upload_id: Uuid;
 }
 /**
  * plinth.who_has_my_number/1, from api.who_has_my_number() (API_CONTRACTS §4.10). Identical on web and app. A relay doesn't count toward the cap; family members are not parties.

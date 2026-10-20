@@ -1,0 +1,27 @@
+{
+  "schema": "plinth.my_checks/1",
+  "items": [
+    {
+      "id": "6f0e2c1a-0000-4000-8000-000000000201",
+      "kind": "claims",
+      "status": "done",
+      "doc_label": "Flyer",
+      "project_slug": "aurelia-heights-phase-2",
+      "project_label": "Aurelia Heights, Phase 2",
+      "checked_on": "2026-10-18",
+      "summary_line": "4 of 7 claims differ from the records.",
+      "saved": true
+    },
+    {
+      "id": "6f0e2c1a-0000-4000-8000-000000000502",
+      "kind": "before_you_pay",
+      "status": "done",
+      "doc_label": "Payment request",
+      "project_slug": "aurelia-heights-phase-2",
+      "project_label": "Aurelia Heights, Phase 2",
+      "checked_on": "2026-10-18",
+      "summary_line": "0 of 3 match.",
+      "saved": false
+    }
+  ]
+}

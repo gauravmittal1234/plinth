@@ -4,6 +4,8 @@ import type * as T from "./types";
 
 export declare const validateAbout: ValidateFunction<T.About>;
 export declare const validateAccountDeletion: ValidateFunction<T.AccountDeletion>;
+export declare const validateAdviserRequest: ValidateFunction<T.AdviserRequest>;
+export declare const validateAdviserRequestCreateRequest: ValidateFunction<T.AdviserRequestCreateRequest>;
 export declare const validateAffordTheWait: ValidateFunction<T.AffordTheWait>;
 export declare const validateAffordTheWaitRequest: ValidateFunction<T.AffordTheWaitRequest>;
 export declare const validateAlertPrefs: ValidateFunction<T.AlertPrefs>;
@@ -11,6 +13,8 @@ export declare const validateAlertPrefsSetRequest: ValidateFunction<T.AlertPrefs
 export declare const validateApiError: ValidateFunction<T.ApiError>;
 export declare const validateAskAnswer: ValidateFunction<T.AskAnswer>;
 export declare const validateAskRequest: ValidateFunction<T.AskRequest>;
+export declare const validateBooking: ValidateFunction<T.Booking>;
+export declare const validateBookingSaveRequest: ValidateFunction<T.BookingSaveRequest>;
 export declare const validateCompare: ValidateFunction<T.Compare>;
 export declare const validateCompareRequest: ValidateFunction<T.CompareRequest>;
 export declare const validateConsentHistory: ValidateFunction<T.ConsentHistory>;
@@ -18,6 +22,7 @@ export declare const validateConsentWithdrawal: ValidateFunction<T.ConsentWithdr
 export declare const validateCostBreakdown: ValidateFunction<T.CostBreakdown>;
 export declare const validateCostBreakdownRequest: ValidateFunction<T.CostBreakdownRequest>;
 export declare const validateCostSheetLines: ValidateFunction<T.CostSheetLines>;
+export declare const validateCreateUploadRequest: ValidateFunction<T.CreateUploadRequest>;
 export declare const validateDataExport: ValidateFunction<T.DataExport>;
 export declare const validateDemandLetter: ValidateFunction<T.DemandLetter>;
 export declare const validateDeveloperPage: ValidateFunction<T.DeveloperPage>;
@@ -25,6 +30,8 @@ export declare const validateDocCheck: ValidateFunction<T.DocCheck>;
 export declare const validateDocCheckStartRequest: ValidateFunction<T.DocCheckStartRequest>;
 export declare const validateDocCheckStarted: ValidateFunction<T.DocCheckStarted>;
 export declare const validateDocumentClass: ValidateFunction<T.DocumentClass>;
+export declare const validateErrorReport: ValidateFunction<T.ErrorReport>;
+export declare const validateErrorReportCreateRequest: ValidateFunction<T.ErrorReportCreateRequest>;
 export declare const validateEvidence: ValidateFunction<T.Evidence>;
 export declare const validateFamilyCircle: ValidateFunction<T.FamilyCircle>;
 export declare const validateFamilyInvite: ValidateFunction<T.FamilyInvite>;
@@ -39,14 +46,19 @@ export declare const validateLinkWhatsappFollows: ValidateFunction<T.LinkWhatsap
 export declare const validateMarketingClaims: ValidateFunction<T.MarketingClaims>;
 export declare const validateMe: ValidateFunction<T.Me>;
 export declare const validateMethodology: ValidateFunction<T.Methodology>;
+export declare const validateMyChecks: ValidateFunction<T.MyChecks>;
 export declare const validateOcrPage: ValidateFunction<T.OcrPage>;
 export declare const validateOk: ValidateFunction<T.Ok>;
 export declare const validatePayeeCheck: ValidateFunction<T.PayeeCheck>;
 export declare const validatePayeeCheckRequest: ValidateFunction<T.PayeeCheckRequest>;
 export declare const validatePaymentRequest: ValidateFunction<T.PaymentRequest>;
 export declare const validateProjectPage: ValidateFunction<T.ProjectPage>;
+export declare const validateReceipt: ValidateFunction<T.Receipt>;
+export declare const validateReceiptAddRequest: ValidateFunction<T.ReceiptAddRequest>;
 export declare const validateRelayRenewal: ValidateFunction<T.RelayRenewal>;
 export declare const validateRequestProject: ValidateFunction<T.RequestProject>;
+export declare const validateReviewQueue: ValidateFunction<T.ReviewQueue>;
+export declare const validateReviewTask: ValidateFunction<T.ReviewTask>;
 export declare const validateRiskSummary: ValidateFunction<T.RiskSummary>;
 export declare const validateRpcError: ValidateFunction<T.RpcError>;
 export declare const validateSavedSearch: ValidateFunction<T.SavedSearch>;
@@ -56,12 +68,17 @@ export declare const validateSearchResults: ValidateFunction<T.SearchResults>;
 export declare const validateShareCard: ValidateFunction<T.ShareCard>;
 export declare const validateShortLink: ValidateFunction<T.ShortLink>;
 export declare const validateSuggestResults: ValidateFunction<T.SuggestResults>;
+export declare const validateUpload: ValidateFunction<T.Upload>;
+export declare const validateUploadUrl: ValidateFunction<T.UploadUrl>;
+export declare const validateUploadUrlRequest: ValidateFunction<T.UploadUrlRequest>;
 export declare const validateWhoHasMyNumber: ValidateFunction<T.WhoHasMyNumber>;
 
 /** Exported type name → payload type. */
 export interface TypeByName {
   About: T.About;
   AccountDeletion: T.AccountDeletion;
+  AdviserRequest: T.AdviserRequest;
+  AdviserRequestCreateRequest: T.AdviserRequestCreateRequest;
   AffordTheWait: T.AffordTheWait;
   AffordTheWaitRequest: T.AffordTheWaitRequest;
   AlertPrefs: T.AlertPrefs;
@@ -69,6 +86,8 @@ export interface TypeByName {
   ApiError: T.ApiError;
   AskAnswer: T.AskAnswer;
   AskRequest: T.AskRequest;
+  Booking: T.Booking;
+  BookingSaveRequest: T.BookingSaveRequest;
   Compare: T.Compare;
   CompareRequest: T.CompareRequest;
   ConsentHistory: T.ConsentHistory;
@@ -76,6 +95,7 @@ export interface TypeByName {
   CostBreakdown: T.CostBreakdown;
   CostBreakdownRequest: T.CostBreakdownRequest;
   CostSheetLines: T.CostSheetLines;
+  CreateUploadRequest: T.CreateUploadRequest;
   DataExport: T.DataExport;
   DemandLetter: T.DemandLetter;
   DeveloperPage: T.DeveloperPage;
@@ -83,6 +103,8 @@ export interface TypeByName {
   DocCheckStartRequest: T.DocCheckStartRequest;
   DocCheckStarted: T.DocCheckStarted;
   DocumentClass: T.DocumentClass;
+  ErrorReport: T.ErrorReport;
+  ErrorReportCreateRequest: T.ErrorReportCreateRequest;
   Evidence: T.Evidence;
   FamilyCircle: T.FamilyCircle;
   FamilyInvite: T.FamilyInvite;
@@ -97,14 +119,19 @@ export interface TypeByName {
   MarketingClaims: T.MarketingClaims;
   Me: T.Me;
   Methodology: T.Methodology;
+  MyChecks: T.MyChecks;
   OcrPage: T.OcrPage;
   Ok: T.Ok;
   PayeeCheck: T.PayeeCheck;
   PayeeCheckRequest: T.PayeeCheckRequest;
   PaymentRequest: T.PaymentRequest;
   ProjectPage: T.ProjectPage;
+  Receipt: T.Receipt;
+  ReceiptAddRequest: T.ReceiptAddRequest;
   RelayRenewal: T.RelayRenewal;
   RequestProject: T.RequestProject;
+  ReviewQueue: T.ReviewQueue;
+  ReviewTask: T.ReviewTask;
   RiskSummary: T.RiskSummary;
   RpcError: T.RpcError;
   SavedSearch: T.SavedSearch;
@@ -114,6 +141,9 @@ export interface TypeByName {
   ShareCard: T.ShareCard;
   ShortLink: T.ShortLink;
   SuggestResults: T.SuggestResults;
+  Upload: T.Upload;
+  UploadUrl: T.UploadUrl;
+  UploadUrlRequest: T.UploadUrlRequest;
   WhoHasMyNumber: T.WhoHasMyNumber;
 }
 
@@ -123,15 +153,18 @@ export type ExportedTypeName = keyof TypeByName;
 export interface PayloadBySchemaId {
   "plinth.about/1": T.About;
   "plinth.account_delete_request/1": T.AccountDeletion;
+  "plinth.adviser_request/1": T.AdviserRequest;
   "plinth.afford_the_wait/1": T.AffordTheWait;
   "plinth.alert_prefs/1": T.AlertPrefs;
   "plinth.ask_answer/1": T.AskAnswer;
+  "plinth.booking/1": T.Booking;
   "plinth.compare/1": T.Compare;
   "plinth.consent_history/1": T.ConsentHistory;
   "plinth.cost_breakdown/1": T.CostBreakdown;
   "plinth.data_export_request/1": T.DataExport;
   "plinth.developer_page/1": T.DeveloperPage;
   "plinth.doc_check/1": T.DocCheck;
+  "plinth.error_report/1": T.ErrorReport;
   "plinth.evidence/1": T.Evidence;
   "plinth.family_circle/1": T.FamilyCircle;
   "plinth.family_invite/1": T.FamilyInvite;
@@ -143,9 +176,13 @@ export interface PayloadBySchemaId {
   "plinth.link_whatsapp_follows/1": T.LinkWhatsappFollows;
   "plinth.me/1": T.Me;
   "plinth.methodology/1": T.Methodology;
+  "plinth.my_checks/1": T.MyChecks;
   "plinth.payee_check/1": T.PayeeCheck;
   "plinth.project_page/1": T.ProjectPage;
+  "plinth.receipt/1": T.Receipt;
   "plinth.request_project/1": T.RequestProject;
+  "plinth.review_queue/1": T.ReviewQueue;
+  "plinth.review_task/1": T.ReviewTask;
   "plinth.risk_summary/1": T.RiskSummary;
   "plinth.saved_search/1": T.SavedSearch;
   "plinth.saved_searches/1": T.SavedSearches;
@@ -153,6 +190,8 @@ export interface PayloadBySchemaId {
   "plinth.share_card/1": T.ShareCard;
   "plinth.short_link/1": T.ShortLink;
   "plinth.suggest/1": T.SuggestResults;
+  "plinth.upload/1": T.Upload;
+  "plinth.upload_url/1": T.UploadUrl;
   "plinth.who_has_my_number/1": T.WhoHasMyNumber;
 }
 

@@ -1,0 +1,12 @@
+{
+  "base": "flyer-web.json",
+  "why": "p_bytes is at most 15 MB (BUILD_PLAN §12.9).",
+  "expect": "/p_bytes",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/p_bytes",
+      "value": 20000000
+    }
+  ]
+}

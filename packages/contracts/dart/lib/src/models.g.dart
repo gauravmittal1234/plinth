@@ -5,6 +5,8 @@
 //
 //     final about = aboutFromJson(jsonString);
 //     final accountDeletion = accountDeletionFromJson(jsonString);
+//     final adviserRequest = adviserRequestFromJson(jsonString);
+//     final adviserRequestCreateRequest = adviserRequestCreateRequestFromJson(jsonString);
 //     final affordTheWait = affordTheWaitFromJson(jsonString);
 //     final affordTheWaitRequest = affordTheWaitRequestFromJson(jsonString);
 //     final alertPrefs = alertPrefsFromJson(jsonString);
@@ -12,6 +14,8 @@
 //     final apiError = apiErrorFromJson(jsonString);
 //     final askAnswer = askAnswerFromJson(jsonString);
 //     final askRequest = askRequestFromJson(jsonString);
+//     final booking = bookingFromJson(jsonString);
+//     final bookingSaveRequest = bookingSaveRequestFromJson(jsonString);
 //     final compare = compareFromJson(jsonString);
 //     final compareRequest = compareRequestFromJson(jsonString);
 //     final consentHistory = consentHistoryFromJson(jsonString);
@@ -19,6 +23,7 @@
 //     final costBreakdown = costBreakdownFromJson(jsonString);
 //     final costBreakdownRequest = costBreakdownRequestFromJson(jsonString);
 //     final costSheetLines = costSheetLinesFromJson(jsonString);
+//     final createUploadRequest = createUploadRequestFromJson(jsonString);
 //     final dataExport = dataExportFromJson(jsonString);
 //     final demandLetter = demandLetterFromJson(jsonString);
 //     final developerPage = developerPageFromJson(jsonString);
@@ -26,6 +31,8 @@
 //     final docCheckStartRequest = docCheckStartRequestFromJson(jsonString);
 //     final docCheckStarted = docCheckStartedFromJson(jsonString);
 //     final documentClass = documentClassFromJson(jsonString);
+//     final errorReport = errorReportFromJson(jsonString);
+//     final errorReportCreateRequest = errorReportCreateRequestFromJson(jsonString);
 //     final evidence = evidenceFromJson(jsonString);
 //     final familyCircle = familyCircleFromJson(jsonString);
 //     final familyInvite = familyInviteFromJson(jsonString);
@@ -40,14 +47,19 @@
 //     final marketingClaims = marketingClaimsFromJson(jsonString);
 //     final me = meFromJson(jsonString);
 //     final methodology = methodologyFromJson(jsonString);
+//     final myChecks = myChecksFromJson(jsonString);
 //     final ocrPage = ocrPageFromJson(jsonString);
 //     final ok = okFromJson(jsonString);
 //     final payeeCheck = payeeCheckFromJson(jsonString);
 //     final payeeCheckRequest = payeeCheckRequestFromJson(jsonString);
 //     final paymentRequest = paymentRequestFromJson(jsonString);
 //     final projectPage = projectPageFromJson(jsonString);
+//     final receipt = receiptFromJson(jsonString);
+//     final receiptAddRequest = receiptAddRequestFromJson(jsonString);
 //     final relayRenewal = relayRenewalFromJson(jsonString);
 //     final requestProject = requestProjectFromJson(jsonString);
+//     final reviewQueue = reviewQueueFromJson(jsonString);
+//     final reviewTask = reviewTaskFromJson(jsonString);
 //     final riskSummary = riskSummaryFromJson(jsonString);
 //     final rpcError = rpcErrorFromJson(jsonString);
 //     final savedSearch = savedSearchFromJson(jsonString);
@@ -57,6 +69,9 @@
 //     final shareCard = shareCardFromJson(jsonString);
 //     final shortLink = shortLinkFromJson(jsonString);
 //     final suggestResults = suggestResultsFromJson(jsonString);
+//     final upload = uploadFromJson(jsonString);
+//     final uploadUrl = uploadUrlFromJson(jsonString);
+//     final uploadUrlRequest = uploadUrlRequestFromJson(jsonString);
 //     final whoHasMyNumber = whoHasMyNumberFromJson(jsonString);
 
 import 'dart:convert';
@@ -68,6 +83,14 @@ String aboutToJson(About data) => json.encode(data.toJson());
 AccountDeletion accountDeletionFromJson(String str) => AccountDeletion.fromJson(json.decode(str));
 
 String accountDeletionToJson(AccountDeletion data) => json.encode(data.toJson());
+
+AdviserRequest adviserRequestFromJson(String str) => AdviserRequest.fromJson(json.decode(str));
+
+String adviserRequestToJson(AdviserRequest data) => json.encode(data.toJson());
+
+AdviserRequestCreateRequest adviserRequestCreateRequestFromJson(String str) => AdviserRequestCreateRequest.fromJson(json.decode(str));
+
+String adviserRequestCreateRequestToJson(AdviserRequestCreateRequest data) => json.encode(data.toJson());
 
 AffordTheWait affordTheWaitFromJson(String str) => AffordTheWait.fromJson(json.decode(str));
 
@@ -97,6 +120,14 @@ AskRequest askRequestFromJson(String str) => AskRequest.fromJson(json.decode(str
 
 String askRequestToJson(AskRequest data) => json.encode(data.toJson());
 
+Booking bookingFromJson(String str) => Booking.fromJson(json.decode(str));
+
+String bookingToJson(Booking data) => json.encode(data.toJson());
+
+BookingSaveRequest bookingSaveRequestFromJson(String str) => BookingSaveRequest.fromJson(json.decode(str));
+
+String bookingSaveRequestToJson(BookingSaveRequest data) => json.encode(data.toJson());
+
 Compare compareFromJson(String str) => Compare.fromJson(json.decode(str));
 
 String compareToJson(Compare data) => json.encode(data.toJson());
@@ -125,6 +156,10 @@ CostSheetLines costSheetLinesFromJson(String str) => CostSheetLines.fromJson(jso
 
 String costSheetLinesToJson(CostSheetLines data) => json.encode(data.toJson());
 
+CreateUploadRequest createUploadRequestFromJson(String str) => CreateUploadRequest.fromJson(json.decode(str));
+
+String createUploadRequestToJson(CreateUploadRequest data) => json.encode(data.toJson());
+
 DataExport dataExportFromJson(String str) => DataExport.fromJson(json.decode(str));
 
 String dataExportToJson(DataExport data) => json.encode(data.toJson());
@@ -152,6 +187,14 @@ String docCheckStartedToJson(DocCheckStarted data) => json.encode(data.toJson())
 DocumentClass documentClassFromJson(String str) => DocumentClass.fromJson(json.decode(str));
 
 String documentClassToJson(DocumentClass data) => json.encode(data.toJson());
+
+ErrorReport errorReportFromJson(String str) => ErrorReport.fromJson(json.decode(str));
+
+String errorReportToJson(ErrorReport data) => json.encode(data.toJson());
+
+ErrorReportCreateRequest errorReportCreateRequestFromJson(String str) => ErrorReportCreateRequest.fromJson(json.decode(str));
+
+String errorReportCreateRequestToJson(ErrorReportCreateRequest data) => json.encode(data.toJson());
 
 Evidence evidenceFromJson(String str) => Evidence.fromJson(json.decode(str));
 
@@ -209,6 +252,10 @@ Methodology methodologyFromJson(String str) => Methodology.fromJson(json.decode(
 
 String methodologyToJson(Methodology data) => json.encode(data.toJson());
 
+MyChecks myChecksFromJson(String str) => MyChecks.fromJson(json.decode(str));
+
+String myChecksToJson(MyChecks data) => json.encode(data.toJson());
+
 OcrPage ocrPageFromJson(String str) => OcrPage.fromJson(json.decode(str));
 
 String ocrPageToJson(OcrPage data) => json.encode(data.toJson());
@@ -233,6 +280,14 @@ ProjectPage projectPageFromJson(String str) => ProjectPage.fromJson(json.decode(
 
 String projectPageToJson(ProjectPage data) => json.encode(data.toJson());
 
+Receipt receiptFromJson(String str) => Receipt.fromJson(json.decode(str));
+
+String receiptToJson(Receipt data) => json.encode(data.toJson());
+
+ReceiptAddRequest receiptAddRequestFromJson(String str) => ReceiptAddRequest.fromJson(json.decode(str));
+
+String receiptAddRequestToJson(ReceiptAddRequest data) => json.encode(data.toJson());
+
 RelayRenewal relayRenewalFromJson(String str) => RelayRenewal.fromJson(json.decode(str));
 
 String relayRenewalToJson(RelayRenewal data) => json.encode(data.toJson());
@@ -240,6 +295,14 @@ String relayRenewalToJson(RelayRenewal data) => json.encode(data.toJson());
 RequestProject requestProjectFromJson(String str) => RequestProject.fromJson(json.decode(str));
 
 String requestProjectToJson(RequestProject data) => json.encode(data.toJson());
+
+ReviewQueue reviewQueueFromJson(String str) => ReviewQueue.fromJson(json.decode(str));
+
+String reviewQueueToJson(ReviewQueue data) => json.encode(data.toJson());
+
+ReviewTask reviewTaskFromJson(String str) => ReviewTask.fromJson(json.decode(str));
+
+String reviewTaskToJson(ReviewTask data) => json.encode(data.toJson());
 
 RiskSummary riskSummaryFromJson(String str) => RiskSummary.fromJson(json.decode(str));
 
@@ -276,6 +339,18 @@ String shortLinkToJson(ShortLink data) => json.encode(data.toJson());
 SuggestResults suggestResultsFromJson(String str) => SuggestResults.fromJson(json.decode(str));
 
 String suggestResultsToJson(SuggestResults data) => json.encode(data.toJson());
+
+Upload uploadFromJson(String str) => Upload.fromJson(json.decode(str));
+
+String uploadToJson(Upload data) => json.encode(data.toJson());
+
+UploadUrl uploadUrlFromJson(String str) => UploadUrl.fromJson(json.decode(str));
+
+String uploadUrlToJson(UploadUrl data) => json.encode(data.toJson());
+
+UploadUrlRequest uploadUrlRequestFromJson(String str) => UploadUrlRequest.fromJson(json.decode(str));
+
+String uploadUrlRequestToJson(UploadUrlRequest data) => json.encode(data.toJson());
 
 WhoHasMyNumber whoHasMyNumberFromJson(String str) => WhoHasMyNumber.fromJson(json.decode(str));
 
@@ -712,6 +787,70 @@ class AccountDeletion {
         "requested_at": requestedAt,
         "schema": schema,
         "status": status,
+    };
+}
+
+///plinth.adviser_request/1, from api.adviser_request_create (API_CONTRACTS §4.12 "Talk to a
+///Plinth adviser"; ops.review_tasks kind adviser_request, DATA_MODEL §10). Answered by the
+///founder, Mon–Sat 10 am–7 pm IST, the same working day (FOUNDER_QUESTIONS M3-6).
+class AdviserRequest {
+    final String? checkId;
+    final String hoursLine;
+    final String id;
+    final String line;
+    final String schema;
+    final String status;
+
+    AdviserRequest({
+        required this.checkId,
+        required this.hoursLine,
+        required this.id,
+        required this.line,
+        required this.schema,
+        required this.status,
+    });
+
+    factory AdviserRequest.fromJson(Map<String, dynamic> json) => AdviserRequest(
+        checkId: json["check_id"],
+        hoursLine: json["hours_line"],
+        id: json["id"],
+        line: json["line"],
+        schema: json["schema"],
+        status: json["status"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "check_id": checkId,
+        "hours_line": hoursLine,
+        "id": id,
+        "line": line,
+        "schema": schema,
+        "status": status,
+    };
+}
+
+///Arguments of api.adviser_request_create.
+class AdviserRequestCreateRequest {
+    final String? pCheckId;
+    final String? pClientId;
+    final String? pQuestion;
+
+    AdviserRequestCreateRequest({
+        this.pCheckId,
+        this.pClientId,
+        this.pQuestion,
+    });
+
+    factory AdviserRequestCreateRequest.fromJson(Map<String, dynamic> json) => AdviserRequestCreateRequest(
+        pCheckId: json["p_check_id"],
+        pClientId: json["p_client_id"],
+        pQuestion: json["p_question"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "p_check_id": pCheckId,
+        "p_client_id": pClientId,
+        "p_question": pQuestion,
     };
 }
 
@@ -1512,6 +1651,128 @@ class AskVoice {
     };
 }
 
+///plinth.booking/1, from api.booking_save (API_CONTRACTS §3.2; app.bookings, DATA_MODEL
+///§7). Powers the pay-as-built check's "confirm home" step. Never visible to the family
+///circle (DATA_MODEL §12 invariant 5).
+class Booking {
+    final String? agreementRegisteredOn;
+    final String bookedOn;
+    final String id;
+    
+    ///"Unit A-1104 (Tower A) · 52.5% paid"
+    final String line;
+    final double paidPct;
+    final int paidToDateInr;
+    final String paidToDateLabel;
+    final String phaseSlug;
+    final String? planId;
+    final int priceInr;
+    final String priceLabel;
+    final String schema;
+    final String tower;
+    final String unitNo;
+
+    Booking({
+        required this.agreementRegisteredOn,
+        required this.bookedOn,
+        required this.id,
+        required this.line,
+        required this.paidPct,
+        required this.paidToDateInr,
+        required this.paidToDateLabel,
+        required this.phaseSlug,
+        this.planId,
+        required this.priceInr,
+        required this.priceLabel,
+        required this.schema,
+        required this.tower,
+        required this.unitNo,
+    });
+
+    factory Booking.fromJson(Map<String, dynamic> json) => Booking(
+        agreementRegisteredOn: json["agreement_registered_on"],
+        bookedOn: json["booked_on"],
+        id: json["id"],
+        line: json["line"],
+        paidPct: json["paid_pct"]?.toDouble(),
+        paidToDateInr: json["paid_to_date_inr"],
+        paidToDateLabel: json["paid_to_date_label"],
+        phaseSlug: json["phase_slug"],
+        planId: json["plan_id"],
+        priceInr: json["price_inr"],
+        priceLabel: json["price_label"],
+        schema: json["schema"],
+        tower: json["tower"],
+        unitNo: json["unit_no"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "agreement_registered_on": agreementRegisteredOn,
+        "booked_on": bookedOn,
+        "id": id,
+        "line": line,
+        "paid_pct": paidPct,
+        "paid_to_date_inr": paidToDateInr,
+        "paid_to_date_label": paidToDateLabel,
+        "phase_slug": phaseSlug,
+        "plan_id": planId,
+        "price_inr": priceInr,
+        "price_label": priceLabel,
+        "schema": schema,
+        "tower": tower,
+        "unit_no": unitNo,
+    };
+}
+
+///Arguments of api.booking_save. The same unit saved again updates the one booking.
+class BookingSaveRequest {
+    final String? pAgreementRegisteredOn;
+    final String pBookedOn;
+    final String? pClientId;
+    final int pPaidToDateInr;
+    final String? pPlanId;
+    final int pPriceInr;
+    final String pSlug;
+    final String pTower;
+    final String pUnitNo;
+
+    BookingSaveRequest({
+        this.pAgreementRegisteredOn,
+        required this.pBookedOn,
+        this.pClientId,
+        required this.pPaidToDateInr,
+        this.pPlanId,
+        required this.pPriceInr,
+        required this.pSlug,
+        required this.pTower,
+        required this.pUnitNo,
+    });
+
+    factory BookingSaveRequest.fromJson(Map<String, dynamic> json) => BookingSaveRequest(
+        pAgreementRegisteredOn: json["p_agreement_registered_on"],
+        pBookedOn: json["p_booked_on"],
+        pClientId: json["p_client_id"],
+        pPaidToDateInr: json["p_paid_to_date_inr"],
+        pPlanId: json["p_plan_id"],
+        pPriceInr: json["p_price_inr"],
+        pSlug: json["p_slug"],
+        pTower: json["p_tower"],
+        pUnitNo: json["p_unit_no"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "p_agreement_registered_on": pAgreementRegisteredOn,
+        "p_booked_on": pBookedOn,
+        "p_client_id": pClientId,
+        "p_paid_to_date_inr": pPaidToDateInr,
+        "p_plan_id": pPlanId,
+        "p_price_inr": pPriceInr,
+        "p_slug": pSlug,
+        "p_tower": pTower,
+        "p_unit_no": pUnitNo,
+    };
+}
+
 ///plinth.compare/1, from api.compare(p_slugs) for 2–4 phases (API_CONTRACTS §4.5).
 ///rows[].cells line up with columns.
 class Compare {
@@ -2029,6 +2290,45 @@ class CostSheetLine {
         "confidence": confidence,
         "line_ids": List<dynamic>.from(lineIds.map((x) => x)),
         "raw_text": rawText,
+    };
+}
+
+///Arguments of api.create_upload.
+class CreateUploadRequest {
+    final int pBytes;
+    final String pChannel;
+    final String pKind;
+    final String pMime;
+    final String pSha256;
+    
+    ///Evidence for the first upload's ai_processing consent (DATA_MODEL §13; BUILD_PLAN §13).
+    final String? pTapEventId;
+
+    CreateUploadRequest({
+        required this.pBytes,
+        required this.pChannel,
+        required this.pKind,
+        required this.pMime,
+        required this.pSha256,
+        this.pTapEventId,
+    });
+
+    factory CreateUploadRequest.fromJson(Map<String, dynamic> json) => CreateUploadRequest(
+        pBytes: json["p_bytes"],
+        pChannel: json["p_channel"],
+        pKind: json["p_kind"],
+        pMime: json["p_mime"],
+        pSha256: json["p_sha256"],
+        pTapEventId: json["p_tap_event_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "p_bytes": pBytes,
+        "p_channel": pChannel,
+        "p_kind": pKind,
+        "p_mime": pMime,
+        "p_sha256": pSha256,
+        "p_tap_event_id": pTapEventId,
     };
 }
 
@@ -3020,6 +3320,82 @@ class DocumentClass {
     Map<String, dynamic> toJson() => {
         "confidence": confidence,
         "label": label,
+    };
+}
+
+///plinth.error_report/1, from api.error_report_create ("Report an error in this row";
+///ops.error_reports, DATA_MODEL §10). Reference E-nnnn (catalogues/ref_formats.json prefix
+///E); resolved within 15 working days (ops.error_reports.sla_due).
+class ErrorReport {
+    
+    ///"Reported. We'll reply by 5 Nov 2026."
+    final String line;
+    
+    ///E-nnnn (catalogues/ref_formats.json prefix E).
+    final String ref;
+    final String schema;
+    final String slaDue;
+    final String status;
+
+    ErrorReport({
+        required this.line,
+        required this.ref,
+        required this.schema,
+        required this.slaDue,
+        required this.status,
+    });
+
+    factory ErrorReport.fromJson(Map<String, dynamic> json) => ErrorReport(
+        line: json["line"],
+        ref: json["ref"],
+        schema: json["schema"],
+        slaDue: json["sla_due"],
+        status: json["status"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "line": line,
+        "ref": ref,
+        "schema": schema,
+        "sla_due": slaDue,
+        "status": status,
+    };
+}
+
+///Arguments of api.error_report_create.
+class ErrorReportCreateRequest {
+    final String? pCheckId;
+    final String? pClientId;
+    final String? pFactId;
+    final int? pRowSeq;
+    final String? pSlug;
+    final String pText;
+
+    ErrorReportCreateRequest({
+        this.pCheckId,
+        this.pClientId,
+        this.pFactId,
+        this.pRowSeq,
+        this.pSlug,
+        required this.pText,
+    });
+
+    factory ErrorReportCreateRequest.fromJson(Map<String, dynamic> json) => ErrorReportCreateRequest(
+        pCheckId: json["p_check_id"],
+        pClientId: json["p_client_id"],
+        pFactId: json["p_fact_id"],
+        pRowSeq: json["p_row_seq"],
+        pSlug: json["p_slug"],
+        pText: json["p_text"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "p_check_id": pCheckId,
+        "p_client_id": pClientId,
+        "p_fact_id": pFactId,
+        "p_row_seq": pRowSeq,
+        "p_slug": pSlug,
+        "p_text": pText,
     };
 }
 
@@ -4508,6 +4884,79 @@ class MethodologyVersion {
         "released_on": releasedOn,
         "title": title,
         "version": version,
+    };
+}
+
+///plinth.my_checks/1, from api.my_checks() (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). The
+///caller's own document checks, newest first. Never a circle member's (DATA_MODEL §12
+///invariant 5).
+class MyChecks {
+    final List<MyCheckItem> items;
+    final String schema;
+
+    MyChecks({
+        required this.items,
+        required this.schema,
+    });
+
+    factory MyChecks.fromJson(Map<String, dynamic> json) => MyChecks(
+        items: List<MyCheckItem>.from(json["items"].map((x) => MyCheckItem.fromJson(x))),
+        schema: json["schema"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "schema": schema,
+    };
+}
+
+class MyCheckItem {
+    final String checkedOn;
+    final String? docLabel;
+    final String id;
+    final String kind;
+    final String? projectLabel;
+    final String? projectSlug;
+    
+    ///True once api.doc_check_save was called; an unsaved check is deleted after 30 days.
+    final bool saved;
+    final String status;
+    final String? summaryLine;
+
+    MyCheckItem({
+        required this.checkedOn,
+        required this.docLabel,
+        required this.id,
+        required this.kind,
+        this.projectLabel,
+        this.projectSlug,
+        required this.saved,
+        required this.status,
+        required this.summaryLine,
+    });
+
+    factory MyCheckItem.fromJson(Map<String, dynamic> json) => MyCheckItem(
+        checkedOn: json["checked_on"],
+        docLabel: json["doc_label"],
+        id: json["id"],
+        kind: json["kind"],
+        projectLabel: json["project_label"],
+        projectSlug: json["project_slug"],
+        saved: json["saved"],
+        status: json["status"],
+        summaryLine: json["summary_line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "checked_on": checkedOn,
+        "doc_label": docLabel,
+        "id": id,
+        "kind": kind,
+        "project_label": projectLabel,
+        "project_slug": projectSlug,
+        "saved": saved,
+        "status": status,
+        "summary_line": summaryLine,
     };
 }
 
@@ -6486,6 +6935,102 @@ class WaitDefaults {
     };
 }
 
+///plinth.receipt/1, from api.receipt_add (API_CONTRACTS §3.2; app.receipts, DATA_MODEL §7).
+///Typed in R1 (FOUNDER_QUESTIONS M3-12): amount, date and the last 4 UTR digits only, no AI
+///reading. Kept until the user deletes it.
+class Receipt {
+    final int amountInr;
+    final String amountLabel;
+    final String id;
+    
+    ///"₹11,00,000 paid 18 Oct 2026 · UTR …7731"
+    final String line;
+    final String paidOn;
+    
+    ///The before_you_pay check this receipt follows up on, when there was one.
+    final String? payeeCheckId;
+    final String phaseSlug;
+    final String schema;
+    final String utrLast4;
+
+    Receipt({
+        required this.amountInr,
+        required this.amountLabel,
+        required this.id,
+        required this.line,
+        required this.paidOn,
+        this.payeeCheckId,
+        required this.phaseSlug,
+        required this.schema,
+        required this.utrLast4,
+    });
+
+    factory Receipt.fromJson(Map<String, dynamic> json) => Receipt(
+        amountInr: json["amount_inr"],
+        amountLabel: json["amount_label"],
+        id: json["id"],
+        line: json["line"],
+        paidOn: json["paid_on"],
+        payeeCheckId: json["payee_check_id"],
+        phaseSlug: json["phase_slug"],
+        schema: json["schema"],
+        utrLast4: json["utr_last4"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "amount_inr": amountInr,
+        "amount_label": amountLabel,
+        "id": id,
+        "line": line,
+        "paid_on": paidOn,
+        "payee_check_id": payeeCheckId,
+        "phase_slug": phaseSlug,
+        "schema": schema,
+        "utr_last4": utrLast4,
+    };
+}
+
+///Arguments of api.receipt_add.
+class ReceiptAddRequest {
+    final int pAmountInr;
+    final String? pClientId;
+    final String pPaidOn;
+    final String? pPayeeCheckId;
+    final String pSlug;
+    final String? pUploadId;
+    final String pUtrLast4;
+
+    ReceiptAddRequest({
+        required this.pAmountInr,
+        this.pClientId,
+        required this.pPaidOn,
+        this.pPayeeCheckId,
+        required this.pSlug,
+        this.pUploadId,
+        required this.pUtrLast4,
+    });
+
+    factory ReceiptAddRequest.fromJson(Map<String, dynamic> json) => ReceiptAddRequest(
+        pAmountInr: json["p_amount_inr"],
+        pClientId: json["p_client_id"],
+        pPaidOn: json["p_paid_on"],
+        pPayeeCheckId: json["p_payee_check_id"],
+        pSlug: json["p_slug"],
+        pUploadId: json["p_upload_id"],
+        pUtrLast4: json["p_utr_last4"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "p_amount_inr": pAmountInr,
+        "p_client_id": pClientId,
+        "p_paid_on": pPaidOn,
+        "p_payee_check_id": pPayeeCheckId,
+        "p_slug": pSlug,
+        "p_upload_id": pUploadId,
+        "p_utr_last4": pUtrLast4,
+    };
+}
+
 ///Result of api.relay_renew(p_relay_id): the relay stays open 30 more days (D13), or a new
 ///session opens for the same parties when it had closed. An acknowledgement, so no schema
 ///envelope (as Ok). relay_id is the session now open; ref is the consent that backs it.
@@ -6576,6 +7121,170 @@ class RequestProject {
         "schema": schema,
         "status": status,
         "whatsapp_line": whatsappLine,
+    };
+}
+
+///plinth.review_queue/1, from admin_review_queue (API_CONTRACTS §3.4). Highest priority
+///first.
+class ReviewQueue {
+    final Counts counts;
+    final List<ItemElement> items;
+    final String schema;
+
+    ReviewQueue({
+        required this.counts,
+        required this.items,
+        required this.schema,
+    });
+
+    factory ReviewQueue.fromJson(Map<String, dynamic> json) => ReviewQueue(
+        counts: Counts.fromJson(json["counts"]),
+        items: List<ItemElement>.from(json["items"].map((x) => ItemElement.fromJson(x))),
+        schema: json["schema"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "counts": counts.toJson(),
+        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "schema": schema,
+    };
+}
+
+class Counts {
+    final int inProgress;
+    final int open;
+
+    Counts({
+        required this.inProgress,
+        required this.open,
+    });
+
+    factory Counts.fromJson(Map<String, dynamic> json) => Counts(
+        inProgress: json["in_progress"],
+        open: json["open"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "in_progress": inProgress,
+        "open": open,
+    };
+}
+
+///plinth.review_task/1, one row of the admin review queue (ops.review_tasks, DATA_MODEL
+///§10, plus kind adviser_request for M3). Reviewer and admin only (admin_review_queue,
+///API_CONTRACTS §3.4).
+class ItemElement {
+    final String? assignee;
+    final String? dueAt;
+    
+    ///The table the review is about, e.g. "extracted_claims".
+    final String entity;
+    final String entityId;
+    final String id;
+    final String kind;
+    
+    ///impact × uncertainty; higher sorts first.
+    final double priority;
+    final String schema;
+    final String status;
+    final String summaryLine;
+
+    ItemElement({
+        required this.assignee,
+        required this.dueAt,
+        required this.entity,
+        required this.entityId,
+        required this.id,
+        required this.kind,
+        required this.priority,
+        required this.schema,
+        required this.status,
+        required this.summaryLine,
+    });
+
+    factory ItemElement.fromJson(Map<String, dynamic> json) => ItemElement(
+        assignee: json["assignee"],
+        dueAt: json["due_at"],
+        entity: json["entity"],
+        entityId: json["entity_id"],
+        id: json["id"],
+        kind: json["kind"],
+        priority: json["priority"]?.toDouble(),
+        schema: json["schema"],
+        status: json["status"],
+        summaryLine: json["summary_line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "assignee": assignee,
+        "due_at": dueAt,
+        "entity": entity,
+        "entity_id": entityId,
+        "id": id,
+        "kind": kind,
+        "priority": priority,
+        "schema": schema,
+        "status": status,
+        "summary_line": summaryLine,
+    };
+}
+
+///plinth.review_task/1, one row of the admin review queue (ops.review_tasks, DATA_MODEL
+///§10, plus kind adviser_request for M3). Reviewer and admin only (admin_review_queue,
+///API_CONTRACTS §3.4).
+class ReviewTask {
+    final String? assignee;
+    final String? dueAt;
+    
+    ///The table the review is about, e.g. "extracted_claims".
+    final String entity;
+    final String entityId;
+    final String id;
+    final String kind;
+    
+    ///impact × uncertainty; higher sorts first.
+    final double priority;
+    final String schema;
+    final String status;
+    final String summaryLine;
+
+    ReviewTask({
+        required this.assignee,
+        required this.dueAt,
+        required this.entity,
+        required this.entityId,
+        required this.id,
+        required this.kind,
+        required this.priority,
+        required this.schema,
+        required this.status,
+        required this.summaryLine,
+    });
+
+    factory ReviewTask.fromJson(Map<String, dynamic> json) => ReviewTask(
+        assignee: json["assignee"],
+        dueAt: json["due_at"],
+        entity: json["entity"],
+        entityId: json["entity_id"],
+        id: json["id"],
+        kind: json["kind"],
+        priority: json["priority"]?.toDouble(),
+        schema: json["schema"],
+        status: json["status"],
+        summaryLine: json["summary_line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "assignee": assignee,
+        "due_at": dueAt,
+        "entity": entity,
+        "entity_id": entityId,
+        "id": id,
+        "kind": kind,
+        "priority": priority,
+        "schema": schema,
+        "status": status,
+        "summary_line": summaryLine,
     };
 }
 
@@ -7238,6 +7947,101 @@ class Suggestion {
         "label": label,
         "matched_on": matchedOn,
         "slug": slug,
+    };
+}
+
+///plinth.upload/1, from api.create_upload(p_kind, p_mime, p_bytes, p_sha256, p_channel,
+///p_tap_event_id) (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). Does not carry the signed PUT
+///URL: that comes only from the doc-check edge function's upload-url route
+///(upload_url.schema.json), never from SQL or a client storage policy.
+class Upload {
+    
+    ///The private storage bucket (BUILD_PLAN §12 principle 7).
+    final String bucket;
+    
+    ///Set when the same file hash was already uploaded by this owner ("Checked again").
+    final String? existingCheckId;
+    
+    ///The upload limit, BUILD_PLAN §12.9.
+    final int maxBytes;
+    final String schema;
+    final String storageKey;
+    final String uploadId;
+
+    Upload({
+        required this.bucket,
+        required this.existingCheckId,
+        required this.maxBytes,
+        required this.schema,
+        required this.storageKey,
+        required this.uploadId,
+    });
+
+    factory Upload.fromJson(Map<String, dynamic> json) => Upload(
+        bucket: json["bucket"],
+        existingCheckId: json["existing_check_id"],
+        maxBytes: json["max_bytes"],
+        schema: json["schema"],
+        storageKey: json["storage_key"],
+        uploadId: json["upload_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "bucket": bucket,
+        "existing_check_id": existingCheckId,
+        "max_bytes": maxBytes,
+        "schema": schema,
+        "storage_key": storageKey,
+        "upload_id": uploadId,
+    };
+}
+
+///plinth.upload_url/1, from the doc-check edge function's upload-url route (API_CONTRACTS
+///§4.12; WORK_BREAKDOWN T68: "the signed upload URL itself comes from the doc-check edge
+///function, never from SQL or a client storage policy"). The client PUTs the file to url
+///before starting the check.
+class UploadUrl {
+    final String expiresAt;
+    final String schema;
+    final String uploadId;
+    final String url;
+
+    UploadUrl({
+        required this.expiresAt,
+        required this.schema,
+        required this.uploadId,
+        required this.url,
+    });
+
+    factory UploadUrl.fromJson(Map<String, dynamic> json) => UploadUrl(
+        expiresAt: json["expires_at"],
+        schema: json["schema"],
+        uploadId: json["upload_id"],
+        url: json["url"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "expires_at": expiresAt,
+        "schema": schema,
+        "upload_id": uploadId,
+        "url": url,
+    };
+}
+
+///POST /functions/v1/doc-check/upload-url body.
+class UploadUrlRequest {
+    final String uploadId;
+
+    UploadUrlRequest({
+        required this.uploadId,
+    });
+
+    factory UploadUrlRequest.fromJson(Map<String, dynamic> json) => UploadUrlRequest(
+        uploadId: json["upload_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "upload_id": uploadId,
     };
 }
 

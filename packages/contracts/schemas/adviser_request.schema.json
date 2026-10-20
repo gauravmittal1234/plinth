@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/adviser_request.schema.json",
+  "title": "AdviserRequest",
+  "description": "plinth.adviser_request/1, from api.adviser_request_create (API_CONTRACTS §4.12 \"Talk to a Plinth adviser\"; ops.review_tasks kind adviser_request, DATA_MODEL §10). Answered by the founder, Mon–Sat 10 am–7 pm IST, the same working day (FOUNDER_QUESTIONS M3-6).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "check_id", "status", "hours_line", "line"],
+  "properties": {
+    "schema": { "const": "plinth.adviser_request/1" },
+    "id": { "$ref": "common.schema.json#/$defs/Uuid" },
+    "check_id": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/Uuid" }, { "type": "null" }]
+    },
+    "status": { "$ref": "#/$defs/AdviserRequestStatus" },
+    "hours_line": {
+      "type": "string",
+      "examples": ["Mon–Sat 10 am–7 pm, usually within 4 working hours"]
+    },
+    "line": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "AdviserRequestStatus": {
+      "title": "AdviserRequestStatus",
+      "type": "string",
+      "enum": ["open", "in_progress", "answered", "closed"]
+    },
+    "AdviserRequestCreateRequest": {
+      "title": "AdviserRequestCreateRequest",
+      "description": "Arguments of api.adviser_request_create.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "p_check_id": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Uuid" }, { "type": "null" }]
+        },
+        "p_question": {
+          "type": ["string", "null"],
+          "maxLength": 1000
+        },
+        "p_client_id": { "type": "string", "format": "uuid" }
+      }
+    }
+  }
+}

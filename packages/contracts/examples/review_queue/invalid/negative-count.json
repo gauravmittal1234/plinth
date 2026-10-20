@@ -1,0 +1,12 @@
+{
+  "base": "one-open.json",
+  "why": "counts are non-negative.",
+  "expect": "/counts/open",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/counts/open",
+      "value": -1
+    }
+  ]
+}

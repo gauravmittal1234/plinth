@@ -6,6 +6,14 @@ abstract final class AccountDeletionStatus {
   static const List<String> values = ['requested'];
 }
 
+abstract final class AdviserRequestStatus {
+  static const String open = 'open';
+  static const String inProgress = 'in_progress';
+  static const String answered = 'answered';
+  static const String closed = 'closed';
+  static const List<String> values = ['open', 'in_progress', 'answered', 'closed'];
+}
+
 abstract final class AgreementStage {
   static const String beforeAgreement = 'before_agreement';
   static const String afterAgreement = 'after_agreement';
@@ -212,6 +220,13 @@ abstract final class DocumentLabel {
   static const List<String> values = ['flyer', 'brochure', 'hoarding', 'cost_sheet', 'demand_letter', 'payment_request', 'receipt', 'other'];
 }
 
+abstract final class ErrorReportStatus {
+  static const String open = 'open';
+  static const String inProgress = 'in_progress';
+  static const String resolved = 'resolved';
+  static const List<String> values = ['open', 'in_progress', 'resolved'];
+}
+
 /// core.events.kind. Drives alerts, Since you last looked, the digest and the replay.
 abstract final class EventKind {
   static const String bandChanged = 'band_changed';
@@ -390,6 +405,27 @@ abstract final class RefusalCode {
   static const List<String> values = ['advice_buy_sell', 'title_opinion', 'guarantee', 'discriminatory_filter', 'investment_returns', 'personal_data', 'legal_advice', 'outside_coverage', 'unknown_project', 'loans_r2', 'off_topic'];
 }
 
+abstract final class ReviewTaskKind {
+  static const String extractionDisagreement = 'extraction_disagreement';
+  static const String lowConfidenceClaim = 'low_confidence_claim';
+  static const String dispute = 'dispute';
+  static const String clerical = 'clerical';
+  static const String notice = 'notice';
+  static const String legal = 'legal';
+  static const String capture = 'capture';
+  static const String entityMerge = 'entity_merge';
+  static const String demandCheck = 'demand_check';
+  static const String adviserRequest = 'adviser_request';
+  static const List<String> values = ['extraction_disagreement', 'low_confidence_claim', 'dispute', 'clerical', 'notice', 'legal', 'capture', 'entity_merge', 'demand_check', 'adviser_request'];
+}
+
+abstract final class ReviewTaskStatus {
+  static const String open = 'open';
+  static const String inProgress = 'in_progress';
+  static const String done = 'done';
+  static const List<String> values = ['open', 'in_progress', 'done'];
+}
+
 /// core.score_state.
 abstract final class ScoreState {
   static const String scored = 'scored';
@@ -431,6 +467,20 @@ abstract final class SuggestionMatch {
   static const String sector = 'sector';
   static const String synonym = 'synonym';
   static const List<String> values = ['name', 'rera_number', 'sector', 'synonym'];
+}
+
+/// app.uploads.kind (DATA_MODEL §7).
+abstract final class UploadKind {
+  static const String flyer = 'flyer';
+  static const String brochure = 'brochure';
+  static const String hoardingPhoto = 'hoarding_photo';
+  static const String costSheet = 'cost_sheet';
+  static const String demandLetter = 'demand_letter';
+  static const String paymentRequest = 'payment_request';
+  static const String receipt = 'receipt';
+  static const String voiceNote = 'voice_note';
+  static const String roomPhoto = 'room_photo';
+  static const List<String> values = ['flyer', 'brochure', 'hoarding_photo', 'cost_sheet', 'demand_letter', 'payment_request', 'receipt', 'voice_note', 'room_photo'];
 }
 
 /// app.verdict. Labels are only Matches · Differs · Not in records · Can't check.

@@ -2549,43 +2549,24 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: Upload
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/Upload"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      description: Returns a signed upload URL.
-      x-plinth-shape: pending
+      description: The signed PUT URL comes from the doc-check edge function's upload-url route, never from this RPC.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties: false
-              required:
-                - p_kind
-                - p_mime
-                - p_bytes
-                - p_sha256
-              properties:
-                p_kind:
-                  type: string
-                p_mime:
-                  type: string
-                p_bytes:
-                  type: integer
-                  minimum: 1
-                  maximum: 15728640
-                p_sha256:
-                  type: string
-                  pattern: ^[0-9a-f]{64}$
+              $ref: "#/components/schemas/CreateUploadRequest"
   /rest/v1/rpc/doc_check:
     post:
       operationId: doc_check
@@ -2706,6 +2687,67 @@ paths:
                 p_id:
                   type: string
                   format: uuid
+  /rest/v1/rpc/my_checks:
+    post:
+      operationId: my_checks
+      summary: api.my_checks
+      tags:
+        - Buyer API
+      x-plinth-milestone: M3
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: MyChecks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MyChecks"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: []
+              properties: {}
+    get:
+      operationId: my_checks_get
+      summary: api.my_checks
+      tags:
+        - Buyer API
+      x-plinth-milestone: M3
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: MyChecks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MyChecks"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: "STABLE: the same arguments as query parameters."
   /rest/v1/rpc/booking_save:
     post:
       operationId: booking_save
@@ -2721,25 +2763,23 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: Booking
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/Booking"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              description: Defined by the task that builds it.
+              $ref: "#/components/schemas/BookingSaveRequest"
   /rest/v1/rpc/receipt_add:
     post:
       operationId: receipt_add
@@ -2755,25 +2795,89 @@ paths:
           bearer: []
       responses:
         "200":
-          description: Shape defined by the milestone task that builds this endpoint.
+          description: Receipt
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/Receipt"
         default:
           description: SQLSTATE PT<http> raised by the function; message is the domain code.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RpcError"
-      x-plinth-shape: pending
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              description: Defined by the task that builds it.
+              $ref: "#/components/schemas/ReceiptAddRequest"
+  /rest/v1/rpc/adviser_request_create:
+    post:
+      operationId: adviser_request_create
+      summary: api.adviser_request_create
+      tags:
+        - Buyer API
+      x-plinth-milestone: M3
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: AdviserRequest
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdviserRequest"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: '"Talk to a Plinth adviser" (ops.review_tasks kind adviser_request). Answered Mon–Sat 10 am–7 pm IST, the same working day.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdviserRequestCreateRequest"
+  /rest/v1/rpc/error_report_create:
+    post:
+      operationId: error_report_create
+      summary: api.error_report_create
+      tags:
+        - Buyer API
+      x-plinth-milestone: M3
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: ErrorReport
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorReport"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: '"Report an error in this row" (ops.error_reports). Resolved within 15 working days.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ErrorReportCreateRequest"
   /functions/v1/health:
     get:
       operationId: health_get
@@ -2939,10 +3043,40 @@ paths:
             schema:
               type: object
               description: Defined by the task that builds it.
+  /functions/v1/doc-check/upload-url:
+    post:
+      operationId: doc_check/upload_url_post
+      summary: Signs the PUT URL for an api.create_upload result; the client PUTs the file there before starting the check.
+      tags:
+        - Edge functions
+      x-plinth-milestone: M3
+      x-plinth-auth: bearer
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: UploadUrl
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadUrl"
+        default:
+          description: "{ error: { code, message } } with the same codes as the RPCs."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadUrlRequest"
   /functions/v1/doc-check:
     post:
       operationId: doc_check_post
-      summary: OCR → classify → 2 readers → rules → app.doc_checks. Poll api.doc_check.
+      summary: Starts a check (OCR → classify → 2 readers → rules → app.doc_checks). Poll api.doc_check.
       tags:
         - Edge functions
       x-plinth-milestone: M3
@@ -2969,6 +3103,125 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/DocCheckStartRequest"
+  /functions/v1/doc-check/internal:
+    post:
+      operationId: doc_check/internal_post
+      summary: 'Starts a check forwarded by wa-webhook (API_CONTRACTS §3.5: "buyer JWT, or internal from wa-webhook"); same body and reply as doc-check.'
+      tags:
+        - Edge functions
+      x-plinth-milestone: M3
+      x-plinth-auth: internal_secret
+      security: []
+      responses:
+        "202":
+          description: DocCheckStarted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocCheckStarted"
+        default:
+          description: "{ error: { code, message } } with the same codes as the RPCs."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DocCheckStartRequest"
+  /functions/v1/doc-check/process:
+    post:
+      operationId: doc_check/process_post
+      summary: "Drains the pgmq doc_checks queue (BUILD_PLAN §5.4, EdgeRuntime.waitUntil continuation): OCR → classify → readers → agreement → app.doc_check_ingest."
+      tags:
+        - Edge functions
+      x-plinth-milestone: M3
+      x-plinth-auth: dispatch_secret
+      security: []
+      responses:
+        "200":
+          description: Shape defined by the milestone task that builds this endpoint.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: "{ error: { code, message } } with the same codes as the RPCs."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+      x-plinth-shape: pending
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Defined by the task that builds it.
+  /functions/v1/doc-check/recheck:
+    post:
+      operationId: doc_check/recheck_post
+      summary: Re-runs the rules for a check after a filing changed its answer (FOUNDER_QUESTIONS M3-11); queues the check_updated alert, once per check per filing.
+      tags:
+        - Edge functions
+      x-plinth-milestone: M3
+      x-plinth-auth: dispatch_secret
+      security: []
+      responses:
+        "200":
+          description: Shape defined by the milestone task that builds this endpoint.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: "{ error: { code, message } } with the same codes as the RPCs."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+      x-plinth-shape: pending
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Defined by the task that builds it.
+  /functions/v1/doc-check/review-image:
+    post:
+      operationId: doc_check/review_image_post
+      summary: A short-lived signed URL onto one page of a check's upload, for the admin review queue (API_CONTRACTS §3.4, aal2). Never the file itself, never more than the reviewed page.
+      tags:
+        - Edge functions
+      x-plinth-milestone: M3
+      x-plinth-auth: bearer
+      security:
+        - apikey: []
+          bearer: []
+      responses:
+        "200":
+          description: UploadUrl
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadUrl"
+        default:
+          description: "{ error: { code, message } } with the same codes as the RPCs."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Defined by the task that builds it.
   /functions/v1/ask:
     post:
       operationId: ask_post
@@ -3196,6 +3449,12 @@ components:
       $ref: ../schemas/account_delete_request.schema.json
     AccountDeletionStatus:
       $ref: ../schemas/account_delete_request.schema.json#/$defs/AccountDeletionStatus
+    AdviserRequest:
+      $ref: ../schemas/adviser_request.schema.json
+    AdviserRequestCreateRequest:
+      $ref: ../schemas/adviser_request.schema.json#/$defs/AdviserRequestCreateRequest
+    AdviserRequestStatus:
+      $ref: ../schemas/adviser_request.schema.json#/$defs/AdviserRequestStatus
     AffordInputs:
       $ref: ../schemas/afford_the_wait.schema.json#/$defs/AffordInputs
     AffordLoan:
@@ -3258,10 +3517,14 @@ components:
       $ref: ../schemas/search_results.schema.json#/$defs/Bbox
     BeforeBooking:
       $ref: ../schemas/project_page.schema.json#/$defs/BeforeBooking
+    Booking:
+      $ref: ../schemas/booking.schema.json
     BookingPara:
       $ref: ../schemas/project_page.schema.json#/$defs/BookingPara
     BookingParaTone:
       $ref: ../schemas/project_page.schema.json#/$defs/BookingParaTone
+    BookingSaveRequest:
+      $ref: ../schemas/booking.schema.json#/$defs/BookingSaveRequest
     BookingTopic:
       $ref: ../schemas/project_page.schema.json#/$defs/BookingTopic
     BuyerKind:
@@ -3338,6 +3601,8 @@ components:
       $ref: ../schemas/about.schema.json#/$defs/CoverageNext
     CoverageToday:
       $ref: ../schemas/about.schema.json#/$defs/CoverageToday
+    CreateUploadRequest:
+      $ref: ../schemas/upload.schema.json#/$defs/CreateUploadRequest
     DataExport:
       $ref: ../schemas/data_export_request.schema.json
     DataExportStatus:
@@ -3400,6 +3665,12 @@ components:
       $ref: ../schemas/ai/document_class.schema.json#/$defs/DocumentLabel
     EndedParty:
       $ref: ../schemas/who_has_my_number.schema.json#/$defs/EndedParty
+    ErrorReport:
+      $ref: ../schemas/error_report.schema.json
+    ErrorReportCreateRequest:
+      $ref: ../schemas/error_report.schema.json#/$defs/ErrorReportCreateRequest
+    ErrorReportStatus:
+      $ref: ../schemas/error_report.schema.json#/$defs/ErrorReportStatus
     EventKind:
       $ref: ../schemas/common.schema.json#/$defs/EventKind
     Evidence:
@@ -3520,6 +3791,10 @@ components:
       $ref: ../schemas/common.schema.json#/$defs/ModelVersion
     MonthlyShare:
       $ref: ../schemas/afford_the_wait.schema.json#/$defs/MonthlyShare
+    MyCheckItem:
+      $ref: ../schemas/my_checks.schema.json#/$defs/MyCheckItem
+    MyChecks:
+      $ref: ../schemas/my_checks.schema.json
     NearbyProject:
       $ref: ../schemas/project_page.schema.json#/$defs/NearbyProject
     NextStep:
@@ -3610,6 +3885,10 @@ components:
       $ref: ../schemas/following_feed.schema.json#/$defs/QuietProject
     Reason:
       $ref: ../schemas/risk_summary.schema.json#/$defs/Reason
+    Receipt:
+      $ref: ../schemas/receipt.schema.json
+    ReceiptAddRequest:
+      $ref: ../schemas/receipt.schema.json#/$defs/ReceiptAddRequest
     RedFlagRule:
       $ref: ../schemas/methodology.schema.json#/$defs/RedFlagRule
     RefusalCode:
@@ -3636,6 +3915,14 @@ components:
       $ref: ../schemas/common.schema.json#/$defs/ReraNumber
     ResponseTime:
       $ref: ../schemas/about.schema.json#/$defs/ResponseTime
+    ReviewQueue:
+      $ref: ../schemas/review_queue.schema.json
+    ReviewTask:
+      $ref: ../schemas/review_task.schema.json
+    ReviewTaskKind:
+      $ref: ../schemas/review_task.schema.json#/$defs/ReviewTaskKind
+    ReviewTaskStatus:
+      $ref: ../schemas/review_task.schema.json#/$defs/ReviewTaskStatus
     RiskMeta:
       $ref: ../schemas/common.schema.json#/$defs/RiskMeta
     RiskShare:
@@ -3694,6 +3981,14 @@ components:
       $ref: ../schemas/developer_page.schema.json#/$defs/TrackRecordProject
     TruthPanelRow:
       $ref: ../schemas/project_page.schema.json#/$defs/TruthPanelRow
+    Upload:
+      $ref: ../schemas/upload.schema.json
+    UploadKind:
+      $ref: ../schemas/upload.schema.json#/$defs/UploadKind
+    UploadUrl:
+      $ref: ../schemas/upload_url.schema.json
+    UploadUrlRequest:
+      $ref: ../schemas/upload_url.schema.json#/$defs/UploadUrlRequest
     Uuid:
       $ref: ../schemas/common.schema.json#/$defs/Uuid
     Verdict:

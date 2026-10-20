@@ -73,12 +73,18 @@ describe("openapi/plinth.yaml", () => {
     const refs = [...read("openapi/plinth.yaml").matchAll(/#\/components\/schemas\/(\w+)/g)].map(
       (m) => m[1]!,
     );
+    // Admin (admin_*) and workspace (ws_*) RPCs are added by their own milestone's API task
+    // (the OpenAPI doc's own description; T87 for the review queue), not T61: ReviewQueue and
+    // ReviewTask are defined now so T87 and the DB/eval tasks that write ops.review_tasks rows
+    // have a contract to target, but no admin_* path exists yet to reference them.
+    const PENDING_MILESTONE_API = new Set(["ReviewQueue", "ReviewTask"]);
     for (const r of refs) expect(schemas[r], r).toBeTruthy();
     for (const name of loaded.exported) {
       // schemas/ai/** (T61): the AI gateway resolves these straight off disk as a task's
       // response_schema (catalogues/ai_tasks.json); no api.* RPC or edge function returns one
       // directly, so they never appear on an OpenAPI path. Checked below instead.
       if (loaded.types.get(name)!.file.startsWith("ai/")) continue;
+      if (PENDING_MILESTONE_API.has(name)) continue;
       expect(refs, name).toContain(name);
     }
   });

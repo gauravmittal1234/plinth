@@ -22,6 +22,13 @@ class AccountDeletionStatus(StrEnum):
     requested = "requested"
 
 
+class AdviserRequestStatus(StrEnum):
+    open = "open"
+    in_progress = "in_progress"
+    answered = "answered"
+    closed = "closed"
+
+
 class AgreementStage(StrEnum):
     before_agreement = "before_agreement"
     after_agreement = "after_agreement"
@@ -382,6 +389,14 @@ class CoverageToday(BaseModel):
     items: list[str]
 
 
+class PMime(StrEnum):
+    application_pdf = "application/pdf"
+    image_jpeg = "image/jpeg"
+    image_png = "image/png"
+    image_webp = "image/webp"
+    image_heic = "image/heic"
+
+
 class DataExportStatus(StrEnum):
     preparing = "preparing"
     ready = "ready"
@@ -531,6 +546,12 @@ class DocumentLabel(StrEnum):
     payment_request = "payment_request"
     receipt = "receipt"
     other = "other"
+
+
+class ErrorReportStatus(StrEnum):
+    open = "open"
+    in_progress = "in_progress"
+    resolved = "resolved"
 
 
 class EventKind(StrEnum):
@@ -1196,6 +1217,33 @@ class ResponseTime(BaseModel):
     """
 
 
+class Counts(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    open: Annotated[int, Field(ge=0)]
+    in_progress: Annotated[int, Field(ge=0)]
+
+
+class ReviewTaskKind(StrEnum):
+    extraction_disagreement = "extraction_disagreement"
+    low_confidence_claim = "low_confidence_claim"
+    dispute = "dispute"
+    clerical = "clerical"
+    notice = "notice"
+    legal = "legal"
+    capture = "capture"
+    entity_merge = "entity_merge"
+    demand_check = "demand_check"
+    adviser_request = "adviser_request"
+
+
+class ReviewTaskStatus(StrEnum):
+    open = "open"
+    in_progress = "in_progress"
+    done = "done"
+
+
 class RiskShare(BaseModel):
     """
     WhatsApp and the share card (F-05): at most 3 short lines plus a source-and-date line.
@@ -1345,6 +1393,22 @@ class TruthPanelRow(BaseModel):
     sources: list[SourceRef]
 
 
+class UploadKind(StrEnum):
+    """
+    app.uploads.kind (DATA_MODEL §7).
+    """
+
+    flyer = "flyer"
+    brochure = "brochure"
+    hoarding_photo = "hoarding_photo"
+    cost_sheet = "cost_sheet"
+    demand_letter = "demand_letter"
+    payment_request = "payment_request"
+    receipt = "receipt"
+    voice_note = "voice_note"
+    room_photo = "room_photo"
+
+
 class Verdict(StrEnum):
     """
     app.verdict. Labels are only Matches · Differs · Not in records · Can't check.
@@ -1467,6 +1531,35 @@ class AccountDeletion(BaseModel):
     "We'll erase your account by 17 Nov 2026."
     """
     lines: list[str]
+
+
+class AdviserRequest(BaseModel):
+    """
+    plinth.adviser_request/1, from api.adviser_request_create (API_CONTRACTS §4.12 "Talk to a Plinth adviser"; ops.review_tasks kind adviser_request, DATA_MODEL §10). Answered by the founder, Mon–Sat 10 am–7 pm IST, the same working day (FOUNDER_QUESTIONS M3-6).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.adviser_request/1"], Field(alias="schema")]
+    id: Annotated[UUID, Field(title="Uuid")]
+    check_id: UUID | None
+    status: AdviserRequestStatus
+    hours_line: str
+    line: str
+
+
+class AdviserRequestCreateRequest(BaseModel):
+    """
+    Arguments of api.adviser_request_create.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    p_check_id: UUID | None = None
+    p_question: Annotated[str | None, Field(max_length=1000)] = None
+    p_client_id: UUID | None = None
 
 
 class AffordInputs(BaseModel):
@@ -1664,6 +1757,48 @@ class BandRange(BaseModel):
     example_slug: Slug | None = None
 
 
+class Booking(BaseModel):
+    """
+    plinth.booking/1, from api.booking_save (API_CONTRACTS §3.2; app.bookings, DATA_MODEL §7). Powers the pay-as-built check's "confirm home" step. Never visible to the family circle (DATA_MODEL §12 invariant 5).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.booking/1"], Field(alias="schema")]
+    id: Annotated[UUID, Field(title="Uuid")]
+    phase_slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    tower: Annotated[str, Field(min_length=1)]
+    unit_no: Annotated[str, Field(min_length=1)]
+    price_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+    price_label: str
+    booked_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    agreement_registered_on: date_aliased | None
+    paid_to_date_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+    paid_to_date_label: str
+    paid_pct: Annotated[float, Field(ge=0.0, title="Pct")]
+    """
+    A percentage. Time used can pass 100 after the promised date (Laurel Residency: 106).
+    """
+    plan_id: str | None = None
+    line: str
+    """
+    "Unit A-1104 (Tower A) · 52.5% paid"
+    """
+
+
 class BookingPara(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -1671,6 +1806,31 @@ class BookingPara(BaseModel):
     lead: str | None
     text: str
     tone: BookingParaTone
+
+
+class BookingSaveRequest(BaseModel):
+    """
+    Arguments of api.booking_save. The same unit saved again updates the one booking.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    p_slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    p_tower: Annotated[str, Field(min_length=1)]
+    p_unit_no: Annotated[str, Field(min_length=1)]
+    p_price_inr: Annotated[int, Field(ge=0)]
+    p_booked_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    p_agreement_registered_on: date_aliased | None = None
+    p_paid_to_date_inr: Annotated[int, Field(ge=0)]
+    p_plan_id: str | None = None
+    p_client_id: UUID | None = None
 
 
 class BookingTopic(BaseModel):
@@ -1908,6 +2068,25 @@ class Coverage(BaseModel):
     next: list[CoverageNext]
 
 
+class CreateUploadRequest(BaseModel):
+    """
+    Arguments of api.create_upload.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    p_kind: UploadKind
+    p_mime: PMime
+    p_bytes: Annotated[int, Field(ge=1, le=15728640)]
+    p_sha256: Annotated[str, Field(pattern="^[0-9a-f]{64}$")]
+    p_channel: Channel
+    p_tap_event_id: str | None = None
+    """
+    Evidence for the first upload's ai_processing consent (DATA_MODEL §13; BUILD_PLAN §13).
+    """
+
+
 class DataExport(BaseModel):
     """
     plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2; BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request (app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24 hours); the link works for 7 days and opens only after a fresh sign-in code (export-data, T53). One open request at a time: a repeat call returns it.
@@ -2136,6 +2315,46 @@ class EndedParty(BaseModel):
     """
     A calendar date, YYYY-MM-DD (IST business date).
     """
+
+
+class ErrorReport(BaseModel):
+    """
+    plinth.error_report/1, from api.error_report_create ("Report an error in this row"; ops.error_reports, DATA_MODEL §10). Reference E-nnnn (catalogues/ref_formats.json prefix E); resolved within 15 working days (ops.error_reports.sla_due).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.error_report/1"], Field(alias="schema")]
+    ref: Annotated[str, Field(pattern="^E-\\d{4,}$")]
+    """
+    E-nnnn (catalogues/ref_formats.json prefix E).
+    """
+    status: ErrorReportStatus
+    sla_due: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    line: str
+    """
+    "Reported. We'll reply by 5 Nov 2026."
+    """
+
+
+class ErrorReportCreateRequest(BaseModel):
+    """
+    Arguments of api.error_report_create.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    p_slug: Slug | None = None
+    p_fact_id: FactId | None = None
+    p_check_id: UUID | None = None
+    p_row_seq: Annotated[int | None, Field(ge=1)] = None
+    p_text: Annotated[str, Field(max_length=1000, min_length=1)]
+    p_client_id: UUID | None = None
 
 
 class EvidenceSnapshot(BaseModel):
@@ -2653,6 +2872,39 @@ class MonthlyShare(BaseModel):
     """
 
 
+class MyCheckItem(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    kind: DocCheckKind
+    status: DocCheckStatus
+    doc_label: str | None
+    project_slug: Slug | None = None
+    project_label: str | None = None
+    checked_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    summary_line: str | None
+    saved: bool
+    """
+    True once api.doc_check_save was called; an unsaved check is deleted after 30 days.
+    """
+
+
+class MyChecks(BaseModel):
+    """
+    plinth.my_checks/1, from api.my_checks() (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). The caller's own document checks, newest first. Never a circle member's (DATA_MODEL §12 invariant 5).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.my_checks/1"], Field(alias="schema")]
+    items: list[MyCheckItem]
+
+
 class NearbyProject(BaseModel):
     """
     Same corridor, lower band, all-in within 20%. Nobody pays to appear.
@@ -2953,6 +3205,63 @@ class Reason(BaseModel):
     sources: Annotated[list[SourceRef], Field(min_length=1)]
 
 
+class Receipt(BaseModel):
+    """
+    plinth.receipt/1, from api.receipt_add (API_CONTRACTS §3.2; app.receipts, DATA_MODEL §7). Typed in R1 (FOUNDER_QUESTIONS M3-12): amount, date and the last 4 UTR digits only, no AI reading. Kept until the user deletes it.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.receipt/1"], Field(alias="schema")]
+    id: Annotated[UUID, Field(title="Uuid")]
+    phase_slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    amount_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+    amount_label: str
+    paid_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    utr_last4: Annotated[str, Field(pattern="^\\d{4}$")]
+    payee_check_id: UUID | None = None
+    """
+    The before_you_pay check this receipt follows up on, when there was one.
+    """
+    line: str
+    """
+    "₹11,00,000 paid 18 Oct 2026 · UTR …7731"
+    """
+
+
+class ReceiptAddRequest(BaseModel):
+    """
+    Arguments of api.receipt_add.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    p_slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    p_upload_id: UUID | None = None
+    p_amount_inr: Annotated[int, Field(ge=0)]
+    p_paid_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    p_utr_last4: Annotated[str, Field(pattern="^\\d{4}$")]
+    p_payee_check_id: UUID | None = None
+    p_client_id: UUID | None = None
+
+
 class RelayRenewal(BaseModel):
     """
     Result of api.relay_renew(p_relay_id): the relay stays open 30 more days (D13), or a new session opens for the same parties when it had closed. An acknowledgement, so no schema envelope (as Ok). relay_id is the session now open; ref is the consent that backs it.
@@ -3009,6 +3318,32 @@ class ReraBadge(BaseModel):
     """
     authority_url: str
     qr_url: str | None
+
+
+class ReviewTask(BaseModel):
+    """
+    plinth.review_task/1, one row of the admin review queue (ops.review_tasks, DATA_MODEL §10, plus kind adviser_request for M3). Reviewer and admin only (admin_review_queue, API_CONTRACTS §3.4).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.review_task/1"], Field(alias="schema")]
+    id: Annotated[UUID, Field(title="Uuid")]
+    kind: ReviewTaskKind
+    entity: Annotated[str, Field(min_length=1)]
+    """
+    The table the review is about, e.g. "extracted_claims".
+    """
+    entity_id: Annotated[UUID, Field(title="Uuid")]
+    priority: float
+    """
+    impact × uncertainty; higher sorts first.
+    """
+    status: ReviewTaskStatus
+    assignee: str | None
+    due_at: AwareDatetime | None
+    summary_line: str
 
 
 class RiskMeta(BaseModel):
@@ -3274,6 +3609,59 @@ class TrackRecord(BaseModel):
     late: Annotated[int | None, Field(ge=0)]
     line: str | None
     projects: list[TrackRecordProject]
+
+
+class Upload(BaseModel):
+    """
+    plinth.upload/1, from api.create_upload(p_kind, p_mime, p_bytes, p_sha256, p_channel, p_tap_event_id) (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). Does not carry the signed PUT URL: that comes only from the doc-check edge function's upload-url route (upload_url.schema.json), never from SQL or a client storage policy.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.upload/1"], Field(alias="schema")]
+    upload_id: Annotated[UUID, Field(title="Uuid")]
+    bucket: Annotated[str, Field(min_length=1)]
+    """
+    The private storage bucket (BUILD_PLAN §12 principle 7).
+    """
+    storage_key: Annotated[str, Field(min_length=1)]
+    max_bytes: Annotated[int, Field(ge=1)]
+    """
+    The upload limit, BUILD_PLAN §12.9.
+    """
+    existing_check_id: UUID | None
+    """
+    Set when the same file hash was already uploaded by this owner ("Checked again").
+    """
+
+
+class UploadUrl(BaseModel):
+    """
+    plinth.upload_url/1, from the doc-check edge function's upload-url route (API_CONTRACTS §4.12; WORK_BREAKDOWN T68: "the signed upload URL itself comes from the doc-check edge function, never from SQL or a client storage policy"). The client PUTs the file to url before starting the check.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.upload_url/1"], Field(alias="schema")]
+    upload_id: Annotated[UUID, Field(title="Uuid")]
+    url: Annotated[str, Field(min_length=1)]
+    expires_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+
+
+class UploadUrlRequest(BaseModel):
+    """
+    POST /functions/v1/doc-check/upload-url body.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    upload_id: Annotated[UUID, Field(title="Uuid")]
 
 
 class WhoHasMyNumber(BaseModel):
@@ -3779,6 +4167,19 @@ class ProjectHero(BaseModel):
     image_caption: str | None
     summary_line: str
     rera_badge: ReraBadge
+
+
+class ReviewQueue(BaseModel):
+    """
+    plinth.review_queue/1, from admin_review_queue (API_CONTRACTS §3.4). Highest priority first.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.review_queue/1"], Field(alias="schema")]
+    items: list[ReviewTask]
+    counts: Counts
 
 
 class SavedSearch(BaseModel):
