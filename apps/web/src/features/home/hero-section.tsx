@@ -26,7 +26,15 @@ export function HeroSection({ defaultSummary }: { defaultSummary: RiskSummary })
       </span>
 
       <div className="relative z-10 mx-auto flex w-full max-w-[79rem] flex-wrap items-end justify-between gap-10 px-4 pt-36 pb-16 sm:px-8">
-        <div className="flex min-w-0 flex-1 basis-[36rem] flex-col gap-6 text-white">
+        {/*
+         * `text-on-slab` (DESIGN §3 "slab"/"on-slab"): the near-white the
+         * kit already uses for light text on a dark ink ground (the
+         * footer). The tokens theme resets Tailwind's own palette
+         * (`--color-*: initial`), so a literal `text-white` resolves to
+         * nothing and the text falls back to inherited `ink` — dark text
+         * on a photo scrim is the bug this avoids.
+         */}
+        <div className="flex min-w-0 flex-1 basis-[36rem] flex-col gap-6 text-on-slab">
           <h1
             id="hero-h"
             className="m-0 font-display text-[clamp(3.5rem,7.5vw,7rem)] leading-[0.94] font-extrabold tracking-[-0.045em]"
@@ -44,7 +52,7 @@ export function HeroSection({ defaultSummary }: { defaultSummary: RiskSummary })
 
           <p className="m-0 text-body">
             <strong className="font-bold">No developer pays us. Ever.</strong>{" "}
-            <Link href="#money" className="font-medium text-white underline underline-offset-[0.2em]">
+            <Link href="#money" className="font-medium underline underline-offset-[0.2em]">
               How we make money
             </Link>
           </p>

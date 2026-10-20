@@ -77,16 +77,19 @@ export function HeroSearch({ defaultSummary }: { defaultSummary: RiskSummary }) 
             </svg>
           </button>
         </div>
-        <p className="m-0 text-small text-ink2">
+        {/* Still on the photo (DESIGN §3 "on-slab2": the dimmer light text for a dark ground). */}
+        <p className="m-0 text-small text-on-slab2">
           Type any project or developer above, like Kestrel, Coral or Halcyon. The card builds from
           the records.
         </p>
       </form>
 
+      {/* A white panel sitting on the photo: reset to `text-ink` so it isn't
+          the surrounding column's light `text-on-slab`. */}
       <section
         aria-live="polite"
         aria-busy={isPending}
-        className="min-h-[21.25rem] rounded-panel bg-bg-solid p-7"
+        className="min-h-[21.25rem] rounded-panel bg-bg-solid p-7 text-ink"
       >
         <HeroCardPanel defaultSummary={defaultSummary} result={result} />
       </section>
