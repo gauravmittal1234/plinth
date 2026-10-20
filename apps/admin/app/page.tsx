@@ -1,9 +1,6 @@
-// Placeholder from T00 (repo bootstrap). T54 builds the admin shell
-// (email OTP + TOTP, /ops, review queues).
+import { redirect } from "next/navigation";
+
+// /ops decides from there whether to show it, send to /sign-in, or show Forbidden.
 export default function AdminHome() {
-  return (
-    <main>
-      <h1>Plinth admin</h1>
-    </main>
-  );
+  redirect("/ops");
 }
