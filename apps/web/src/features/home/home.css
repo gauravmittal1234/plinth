@@ -1,0 +1,16 @@
+/*
+ * WebHome's own stylesheet (T21). apps/web/app/globals.css does not import
+ * "@plinth/web-ui/styles.css" yet (T14 PR #13 handoff, due "at the T39 gate" —
+ * see docs/engineering/INTEGRATION_NOTES.md). Until the lead's integrator PR
+ * wires that import centrally, this page needs the kit's own utilities
+ * (the `night:` variant, the icon-array hatch, the motion keyframes) to render
+ * every RiskChip / Riskometer / TowerStack / IconArray correctly in both
+ * themes, so it brings them in itself — the same pattern T14 used for the kit
+ * showcase (apps/web/app/__kit/kit.css). `source(none)` skips a second
+ * project-wide scan (globals.css already runs one); `@source "./"` only adds
+ * this folder's own class names.
+ */
+@import "tailwindcss" source(none);
+@import "@plinth/tokens/theme.css";
+@import "@plinth/web-ui/styles.css";
+@source "./";
