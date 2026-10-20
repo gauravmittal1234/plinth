@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/error_report.schema.json",
+  "title": "ErrorReport",
+  "description": "plinth.error_report/1, from api.error_report_create (\"Report an error in this row\"; ops.error_reports, DATA_MODEL §10). Reference E-nnnn (catalogues/ref_formats.json prefix E); resolved within 15 working days (ops.error_reports.sla_due).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "ref", "status", "sla_due", "line"],
+  "properties": {
+    "schema": { "const": "plinth.error_report/1" },
+    "ref": {
+      "description": "E-nnnn (catalogues/ref_formats.json prefix E).",
+      "type": "string",
+      "pattern": "^E-\\d{4,}$"
+    },
+    "status": { "$ref": "#/$defs/ErrorReportStatus" },
+    "sla_due": { "$ref": "common.schema.json#/$defs/IsoDate" },
+    "line": {
+      "description": "\"Reported. We'll reply by 5 Nov 2026.\"",
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "ErrorReportStatus": {
+      "title": "ErrorReportStatus",
+      "type": "string",
+      "enum": ["open", "in_progress", "resolved"]
+    },
+    "ErrorReportCreateRequest": {
+      "title": "ErrorReportCreateRequest",
+      "description": "Arguments of api.error_report_create.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p_text"],
+      "properties": {
+        "p_slug": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Slug" }, { "type": "null" }]
+        },
+        "p_fact_id": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/FactId" }, { "type": "null" }]
+        },
+        "p_check_id": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Uuid" }, { "type": "null" }]
+        },
+        "p_row_seq": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "p_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "p_client_id": { "type": "string", "format": "uuid" }
+      }
+    }
+  }
+}

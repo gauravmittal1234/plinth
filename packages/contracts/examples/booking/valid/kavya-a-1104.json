@@ -1,0 +1,16 @@
+{
+  "schema": "plinth.booking/1",
+  "id": "6f0e2c1a-0000-4000-8000-000000000601",
+  "phase_slug": "aurelia-heights-phase-2",
+  "tower": "A",
+  "unit_no": "A-1104",
+  "price_inr": 16720000,
+  "price_label": "₹1,67,20,000",
+  "booked_on": "2023-01-15",
+  "agreement_registered_on": "2023-02-20",
+  "paid_to_date_inr": 8778000,
+  "paid_to_date_label": "₹87,78,000",
+  "paid_pct": 52.5,
+  "plan_id": null,
+  "line": "Unit A-1104 (Tower A) · 52.5% paid"
+}

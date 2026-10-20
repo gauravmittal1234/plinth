@@ -1,0 +1,11 @@
+{
+  "base": "checks-paused.json",
+  "why": "edge always carries both action slots, even when one is null.",
+  "expect": "/edge",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/edge/secondary"
+    }
+  ]
+}

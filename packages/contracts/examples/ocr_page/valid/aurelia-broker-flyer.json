@@ -1,0 +1,23 @@
+{
+  "lines": [
+    {
+      "id": "l1",
+      "page": 1,
+      "text": "POSSESSION DEC 2026",
+      "bbox": [0.08, 0.31, 0.62, 0.38]
+    },
+    {
+      "id": "l2",
+      "page": 1,
+      "text": "ONLY 20 FLATS LEFT",
+      "bbox": [0.1, 0.42, 0.55, 0.47]
+    },
+    {
+      "id": "l3",
+      "page": 1,
+      "text": "RERA No. GGM/673/405/2022/117",
+      "bbox": [0.08, 0.9, 0.5, 0.95]
+    }
+  ],
+  "page_count": 1
+}

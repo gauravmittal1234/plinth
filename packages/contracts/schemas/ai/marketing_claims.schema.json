@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/ai/marketing_claims.schema.json",
+  "title": "MarketingClaims",
+  "description": "Response schema of extract.marketing_claims@1, one reader's answer (BUILD_PLAN §14, F-90/F-91; schema-locked per the hard rules). A flyer, brochure or hoarding read as a list of claims; app.extracted_claims.claim_type names the same set. No envelope: the AI gateway validates each reader's raw answer directly, then agree() compares reader A and reader B before any rule runs (rules decide, never a single reader).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["claims"],
+  "properties": {
+    "claims": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/MarketingClaim" }
+    }
+  },
+  "$defs": {
+    "MarketingClaimType": {
+      "title": "MarketingClaimType",
+      "description": "app.extracted_claims.claim_type (DATA_MODEL §7).",
+      "type": "string",
+      "enum": [
+        "possession_date",
+        "price",
+        "all_in",
+        "area",
+        "rera_number",
+        "oc_status",
+        "sold_left",
+        "amenity",
+        "demand_stage",
+        "plan_stage",
+        "amount",
+        "payee_name",
+        "account_number",
+        "ifsc",
+        "banned_phrase"
+      ]
+    },
+    "MarketingClaimQualifier": {
+      "title": "MarketingClaimQualifier",
+      "type": "string",
+      "enum": ["super", "carpet", "all_in", "base"]
+    },
+    "MarketingClaim": {
+      "title": "MarketingClaim",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "raw_text", "value", "line_ids", "confidence"],
+      "properties": {
+        "type": { "$ref": "#/$defs/MarketingClaimType" },
+        "raw_text": {
+          "description": "The claim exactly as printed, before any normalisation.",
+          "type": "string"
+        },
+        "value": {
+          "description": "Normalised value. account_number carries the PII-vault token (e.g. \"[ACCOUNT_1]\"), never a raw digit.",
+          "anyOf": [{ "type": "string" }, { "type": "number" }, { "type": "null" }]
+        },
+        "unit": {
+          "type": ["string", "null"]
+        },
+        "qualifier": {
+          "anyOf": [{ "$ref": "#/$defs/MarketingClaimQualifier" }, { "type": "null" }]
+        },
+        "line_ids": {
+          "description": "ai/ocr_page.schema.json OcrLine ids the claim was read from. Never a bounding box: that comes from the cited OCR lines.",
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  }
+}

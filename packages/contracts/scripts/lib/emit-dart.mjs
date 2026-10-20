@@ -34,19 +34,44 @@ function stripDartFormats(node) {
   Object.values(node).forEach(stripDartFormats);
 }
 
+// Dart's reserved words (cannot be identifiers at all), not just the ones this
+// catalogue happened to need before: a future enum value is one schema change
+// away from hitting any of these (T61 hit "super", DATA_MODEL §7 qualifier).
 const DART_RESERVED = new Set([
+  "assert",
+  "break",
+  "case",
+  "catch",
+  "class",
+  "const",
+  "continue",
   "default",
-  "new",
+  "do",
+  "else",
+  "enum",
+  "extends",
+  "false",
+  "final",
+  "finally",
+  "for",
+  "if",
   "in",
   "is",
-  "as",
-  "class",
-  "enum",
-  "switch",
-  "case",
+  "new",
   "null",
+  "rethrow",
+  "return",
+  "super",
+  "switch",
+  "this",
+  "throw",
   "true",
-  "false",
+  "try",
+  "var",
+  "void",
+  "while",
+  "with",
+  "as",
 ]);
 
 function dartIdent(value) {

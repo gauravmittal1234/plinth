@@ -1,0 +1,12 @@
+{
+  "base": "rohan.json",
+  "why": "status is DocCheckStatus (doc_check.schema.json).",
+  "expect": "/items/0/status",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/items/0/status",
+      "value": "finished"
+    }
+  ]
+}

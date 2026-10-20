@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-claims-row.json",
+  "why": "ref is E-nnnn, at least 4 digits (catalogues/ref_formats.json prefix E).",
+  "expect": "/ref",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/ref",
+      "value": "E-431"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "schema": "plinth.upload/1",
+  "upload_id": "6f0e2c1a-0000-4000-8000-000000000401",
+  "bucket": "uploads",
+  "storage_key": "uploads/6f0e2c1a-0000-4000-8000-000000000401/flyer.pdf",
+  "max_bytes": 15728640,
+  "existing_check_id": null
+}

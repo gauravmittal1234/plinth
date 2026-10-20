@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-claims-check.json",
+  "why": "status is AdviserRequestStatus.",
+  "expect": "/status",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/status",
+      "value": "pending"
+    }
+  ]
+}

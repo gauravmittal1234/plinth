@@ -19,6 +19,7 @@ export type Timestamp = string;
 export type ModelVersion = string;
 export type Uuid = string;
 export type AccountDeletionStatus = "requested";
+export type AdviserRequestStatus = "open" | "in_progress" | "answered" | "closed";
 /**
  * Whole rupees. Always paired with a server-formatted *_label.
  */
@@ -138,11 +139,44 @@ export type ConsentChannel = "web" | "app" | "whatsapp";
 export type ConsentRef = string;
 export type ContactStatus = "active" | "ended" | "withdrawn";
 export type CostTag = "often_negotiable" | "set_by_law" | "included_in_base" | "refundable_deposit";
+/**
+ * app.uploads.kind (DATA_MODEL §7).
+ */
+export type UploadKind =
+  | "flyer"
+  | "brochure"
+  | "hoarding_photo"
+  | "cost_sheet"
+  | "demand_letter"
+  | "payment_request"
+  | "receipt"
+  | "voice_note"
+  | "room_photo";
 export type DataExportStatus = "preparing" | "ready";
 /**
  * YYYY-MM-DD or, for month precision, YYYY-MM.
  */
 export type DateOrMonth = string;
+/**
+ * app.extracted_claims.claim_type (DATA_MODEL §7).
+ */
+export type DemandLetterClaimType =
+  | "possession_date"
+  | "price"
+  | "all_in"
+  | "area"
+  | "rera_number"
+  | "oc_status"
+  | "sold_left"
+  | "amenity"
+  | "demand_stage"
+  | "plan_stage"
+  | "amount"
+  | "payee_name"
+  | "account_number"
+  | "ifsc"
+  | "banned_phrase";
+export type DemandLetterClaimQualifier = "super" | "carpet" | "all_in" | "base";
 /**
  * Facts-only is data on the group (core.developer_groups.facts_only_since), not a flag.
  */
@@ -151,7 +185,7 @@ export type Overlay = "stale" | "rescoring" | "stalled" | "pending_change";
 export type DocCheckKind =
   "claims" | "cost_sheet" | "pay_as_built" | "before_you_pay" | "visit_recap";
 /**
- * Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable or outside_coverage.
+ * Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable, outside_coverage or checks_paused. checks_paused is the ai_doc_check kill switch (T61; catalogues/flags.json).
  */
 export type DocCheckStatus =
   | "reading"
@@ -161,13 +195,24 @@ export type DocCheckStatus =
   | "unreadable"
   | "partly_readable"
   | "no_claims"
-  | "outside_coverage";
+  | "outside_coverage"
+  | "checks_paused";
 export type MatchMethod = "rera_number" | "name_sector" | "user_pick";
 /**
  * app.verdict. Labels are only Matches · Differs · Not in records · Can't check.
  */
 export type Verdict = "matches" | "differs" | "not_in_records" | "cant_check";
 export type PayeeField = "payee_name" | "account" | "ifsc";
+export type DocumentLabel =
+  | "flyer"
+  | "brochure"
+  | "hoarding"
+  | "cost_sheet"
+  | "demand_letter"
+  | "payment_request"
+  | "receipt"
+  | "other";
+export type ErrorReportStatus = "open" | "in_progress" | "resolved";
 /**
  * Opaque id of a core.facts row (a uuid in the database). Clients never parse it.
  */
@@ -225,10 +270,65 @@ export type Quarter = string;
  * A calendar date, YYYY-MM-DD (IST business date).
  */
 export type IsoDate2 = string;
+/**
+ * app.extracted_claims.claim_type (DATA_MODEL §7).
+ */
+export type MarketingClaimType =
+  | "possession_date"
+  | "price"
+  | "all_in"
+  | "area"
+  | "rera_number"
+  | "oc_status"
+  | "sold_left"
+  | "amenity"
+  | "demand_stage"
+  | "plan_stage"
+  | "amount"
+  | "payee_name"
+  | "account_number"
+  | "ifsc"
+  | "banned_phrase";
+export type MarketingClaimQualifier = "super" | "carpet" | "all_in" | "base";
 export type PlatformRole =
   "buyer" | "agent" | "developer_member" | "reviewer" | "methodology" | "admin" | "support";
 export type PaymentMethod = "transfer" | "cheque" | "cash";
+/**
+ * app.extracted_claims.claim_type (DATA_MODEL §7).
+ */
+export type PaymentRequestClaimType =
+  | "possession_date"
+  | "price"
+  | "all_in"
+  | "area"
+  | "rera_number"
+  | "oc_status"
+  | "sold_left"
+  | "amenity"
+  | "demand_stage"
+  | "plan_stage"
+  | "amount"
+  | "payee_name"
+  | "account_number"
+  | "ifsc"
+  | "banned_phrase";
+export type PaymentRequestClaimQualifier = "super" | "carpet" | "all_in" | "base";
 export type ProjectRequestStatus = "open" | "added" | "declined";
+export type ReviewTaskKind =
+  | "extraction_disagreement"
+  | "low_confidence_claim"
+  | "dispute"
+  | "clerical"
+  | "notice"
+  | "legal"
+  | "capture"
+  | "entity_merge"
+  | "demand_check"
+  | "adviser_request";
+/**
+ * ops.review_tasks.status (DATA_MODEL §10; the check constraint T60 migrates, PR #91).
+ */
+export type ReviewTaskStatus = "open" | "assigned" | "resolved" | "dismissed";
 /**
  * core.score_state.
  */
@@ -370,6 +470,25 @@ export interface AccountDeletion {
    */
   due_line: string;
   lines: string[];
+}
+/**
+ * plinth.adviser_request/1, from api.adviser_request_create (API_CONTRACTS §4.12 "Talk to a Plinth adviser"; ops.review_tasks kind adviser_request, DATA_MODEL §10). Answered by the founder, Mon–Sat 10 am–7 pm IST, the same working day (FOUNDER_QUESTIONS M3-6).
+ */
+export interface AdviserRequest {
+  schema: "plinth.adviser_request/1";
+  id: Uuid;
+  check_id: Uuid | null;
+  status: AdviserRequestStatus;
+  hours_line: string;
+  line: string;
+}
+/**
+ * Arguments of api.adviser_request_create.
+ */
+export interface AdviserRequestCreateRequest {
+  p_check_id?: Uuid | null;
+  p_question?: string | null;
+  p_client_id?: string;
 }
 /**
  * The inputs this answer used (echoed, so a page can show and edit them).
@@ -647,6 +766,42 @@ export interface BookingPara {
   text: string;
   tone: BookingParaTone;
 }
+/**
+ * plinth.booking/1, from api.booking_save (API_CONTRACTS §3.2; app.bookings, DATA_MODEL §7). Powers the pay-as-built check's "confirm home" step. Never visible to the family circle (DATA_MODEL §12 invariant 5).
+ */
+export interface Booking {
+  schema: "plinth.booking/1";
+  id: Uuid;
+  phase_slug: Slug;
+  tower: string;
+  unit_no: string;
+  price_inr: Inr;
+  price_label: string;
+  booked_on: IsoDate;
+  agreement_registered_on: IsoDate | null;
+  paid_to_date_inr: Inr;
+  paid_to_date_label: string;
+  paid_pct: Pct;
+  plan_id?: string | null;
+  /**
+   * "Unit A-1104 (Tower A) · 52.5% paid"
+   */
+  line: string;
+}
+/**
+ * Arguments of api.booking_save. The same unit saved again updates the one booking.
+ */
+export interface BookingSaveRequest {
+  p_slug: Slug;
+  p_tower: string;
+  p_unit_no: string;
+  p_price_inr: number;
+  p_booked_on: IsoDate;
+  p_agreement_registered_on?: IsoDate | null;
+  p_paid_to_date_inr: number;
+  p_plan_id?: string | null;
+  p_client_id?: string;
+}
 export interface Calibration {
   model_version?: ModelVersion;
   illustrative: boolean;
@@ -910,6 +1065,42 @@ export interface CostBreakdownRequest {
   p_buyer?: BuyerKind;
   p_waive?: string[];
 }
+export interface CostSheetLine {
+  /**
+   * The line label as printed, e.g. "PLC (Park facing)".
+   */
+  raw_text: string;
+  /**
+   * A guess at the matching cost_breakdown.schema.json CostLine.code, when the label is recognisable.
+   */
+  code?: string | null;
+  amount_inr: number | null;
+  /**
+   * ai/ocr_page.schema.json OcrLine ids the line was read from.
+   */
+  line_ids: string[];
+  confidence: number;
+}
+/**
+ * Response schema of extract.cost_sheet@1, one reader's answer (BUILD_PLAN §14, F-10). The raw lines of a photographed cost sheet, feeding app.cost_sheet_reads.lines; the rules (core.cost_rule_sets) turn them into CostBreakdown, never a reader. No envelope: validated by the AI gateway directly.
+ */
+export interface CostSheetLines {
+  lines: CostSheetLine[];
+}
+/**
+ * Arguments of api.create_upload.
+ */
+export interface CreateUploadRequest {
+  p_kind: UploadKind;
+  p_mime: "application/pdf" | "image/jpeg" | "image/png" | "image/webp" | "image/heic";
+  p_bytes: number;
+  p_sha256: string;
+  p_channel: Channel;
+  /**
+   * Evidence for the first upload's ai_processing consent (DATA_MODEL §13; BUILD_PLAN §13).
+   */
+  p_tap_event_id?: string | null;
+}
 /**
  * plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2; BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request (app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24 hours); the link works for 7 days and opens only after a fresh sign-in code (export-data, T53). One open request at a time: a repeat call returns it.
  */
@@ -934,6 +1125,30 @@ export interface DataRules {
   stale_days: number;
   line: string;
   [k: string]: unknown | undefined;
+}
+/**
+ * Response schema of extract.demand_letter@1, one reader's answer (BUILD_PLAN §14, F-92; pii_policy strip_and_redact_bank). A payment-demand letter read as a list of claims (stage, plan, amount, payee), the same shape as ai/marketing_claims.schema.json so agree() compares every extract.* reader uniformly (app.extracted_claims.claim_type, DATA_MODEL §7). No envelope: validated by the AI gateway directly.
+ */
+export interface DemandLetter {
+  claims: DemandLetterClaim[];
+}
+export interface DemandLetterClaim {
+  type: DemandLetterClaimType;
+  /**
+   * The claim exactly as printed, before any normalisation.
+   */
+  raw_text: string;
+  /**
+   * Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+   */
+  value: string | number | null;
+  unit?: string | null;
+  qualifier?: DemandLetterClaimQualifier | null;
+  /**
+   * ai/ocr_page.schema.json OcrLine ids the claim was read from.
+   */
+  line_ids: string[];
+  confidence: number;
 }
 /**
  * line is "claimed developer page, replies here" or "invited 24 Nov 2025 · not yet claimed".
@@ -1120,6 +1335,27 @@ export interface DocCheck {
   rules_version: string;
   cost?: CostBreakdown1;
   payee?: PayeeResult;
+  /**
+   * Set for an edge status (unreadable, partly_readable, no_claims, outside_coverage, checks_paused); null once status is confirm_project or done.
+   */
+  edge?: DocCheckEdge | null;
+  /**
+   * The pick list, when the match needs the buyer's confirmation (project_match.method user_pick and not yet confirmed).
+   */
+  project_candidates?: ProjectCandidate[];
+  /**
+   * kind = pay_as_built only: the tower chart (letter slab against filed slab).
+   */
+  stage?: DocCheckStage | null;
+  /**
+   * Set once a later filing could change this check's answer (FOUNDER_QUESTIONS M3-11).
+   */
+  recheck?: DocCheckRecheck | null;
+  /**
+   * True once api.doc_check_save was called; an unsaved check is deleted after 30 days.
+   */
+  saved?: boolean;
+  share?: DocCheckShare | null;
 }
 export interface ProjectMatch {
   slug: Slug | null;
@@ -1137,7 +1373,15 @@ export interface DocCheckRow {
   verdict: Verdict;
   verdict_label: string;
   records_line: string;
+  /**
+   * INTEGRATION_NOTES round 3: optional, e.g. "Records show", "Price list shows", "Your plan shows" (API_CONTRACTS §4.12).
+   */
+  records_label?: string | null;
   how_checked?: string | null;
+  /**
+   * Set while a person checks this reading (concierge-first, FOUNDER_QUESTIONS M3-7): "Can't check yet" + "A person is checking this reading."
+   */
+  review?: DocCheckReview | null;
   sources?: SourceRef[];
   broker_question?: string | null;
   page?: number | null;
@@ -1147,6 +1391,9 @@ export interface DocCheckRow {
   bbox?: [number, number, number, number, ...number[]] | null;
   checkable_on?: IsoDate | null;
   developer_says?: DeveloperSaysLine | null;
+}
+export interface DocCheckReview {
+  line: string;
 }
 export interface DocCheckActions {
   /**
@@ -1205,6 +1452,54 @@ export interface PayeeRow {
   result: Verdict;
 }
 /**
+ * Unreadable, partly readable, no claims, outside coverage or checks paused (FOUNDER_QUESTIONS M3-7, M3-13).
+ */
+export interface DocCheckEdge {
+  title: string;
+  body: string;
+  primary: EdgeAction | null;
+  secondary: EdgeAction | null;
+}
+export interface EdgeAction {
+  label: string;
+  /**
+   * A code the client switches on, e.g. "retry_upload", "pick_project", "talk_to_adviser".
+   */
+  action: string;
+}
+/**
+ * One row of the pick list; the buyer's tap becomes api.doc_check_confirm(p_id, p_slug).
+ */
+export interface ProjectCandidate {
+  slug: Slug;
+  label: string;
+  sector_line?: string | null;
+}
+/**
+ * kind = pay_as_built: the letter's claimed slab against the latest filed slab.
+ */
+export interface DocCheckStage {
+  letter_slab_line: string;
+  filed_slab_line: string;
+  floors: number | null;
+  as_of_line: string;
+}
+export interface DocCheckRecheck {
+  /**
+   * True once a later filing changed this check's answer; the re-check line and the check_updated alert follow.
+   */
+  armed: boolean;
+  line: string | null;
+}
+export interface DocCheckShare {
+  card_url: string;
+  card_alt: string;
+  /**
+   * A summary only, never the file.
+   */
+  share_text: string;
+}
+/**
  * POST /functions/v1/doc-check body, after api.create_upload and the PUT of the file.
  */
 export interface DocCheckStartRequest {
@@ -1221,11 +1516,45 @@ export interface DocCheckStarted {
   status: DocCheckStatus;
   poll_after_ms: number;
 }
+/**
+ * Response schema of classify.document@1 (BUILD_PLAN §14; catalogues/ai_tasks.json labels). No envelope: validated by the AI gateway directly.
+ */
+export interface DocumentClass {
+  label: DocumentLabel;
+  confidence: number;
+}
 export interface EndedParty {
   ref: ConsentRef;
   party: string;
   detail: string;
   ended_on: IsoDate;
+}
+/**
+ * plinth.error_report/1, from api.error_report_create ("Report an error in this row"; ops.error_reports, DATA_MODEL §10). Reference E-nnnn (catalogues/ref_formats.json prefix E); resolved within 15 working days (ops.error_reports.sla_due).
+ */
+export interface ErrorReport {
+  schema: "plinth.error_report/1";
+  /**
+   * E-nnnn (catalogues/ref_formats.json prefix E).
+   */
+  ref: string;
+  status: ErrorReportStatus;
+  sla_due: IsoDate;
+  /**
+   * "Reported. We'll reply by 5 Nov 2026."
+   */
+  line: string;
+}
+/**
+ * Arguments of api.error_report_create.
+ */
+export interface ErrorReportCreateRequest {
+  p_slug?: Slug | null;
+  p_fact_id?: FactId | null;
+  p_check_id?: Uuid | null;
+  p_row_seq?: number | null;
+  p_text: string;
+  p_client_id?: string;
 }
 /**
  * plinth.evidence/1, from api.evidence(p_fact_id): the evidence drawer, F-06 (API_CONTRACTS §4.6).
@@ -1700,6 +2029,30 @@ export interface SavedCostSheet {
   label: string;
   saved_on: IsoDate;
 }
+export interface MarketingClaim {
+  type: MarketingClaimType;
+  /**
+   * The claim exactly as printed, before any normalisation.
+   */
+  raw_text: string;
+  /**
+   * Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+   */
+  value: string | number | null;
+  unit?: string | null;
+  qualifier?: MarketingClaimQualifier | null;
+  /**
+   * ai/ocr_page.schema.json OcrLine ids the claim was read from. Never a bounding box: that comes from the cited OCR lines.
+   */
+  line_ids: string[];
+  confidence: number;
+}
+/**
+ * Response schema of extract.marketing_claims@1, one reader's answer (BUILD_PLAN §14, F-90/F-91; schema-locked per the hard rules). A flyer, brochure or hoarding read as a list of claims; app.extracted_claims.claim_type names the same set. No envelope: the AI gateway validates each reader's raw answer directly, then agree() compares reader A and reader B before any rule runs (rules decide, never a single reader).
+ */
+export interface MarketingClaims {
+  claims: MarketingClaim[];
+}
 /**
  * plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The number itself never leaves auth: only the masked form.
  */
@@ -1774,6 +2127,27 @@ export interface MethodologyVersion {
   current: boolean;
   [k: string]: unknown | undefined;
 }
+export interface MyCheckItem {
+  id: Uuid;
+  kind: DocCheckKind;
+  status: DocCheckStatus;
+  doc_label: string | null;
+  project_slug?: Slug | null;
+  project_label?: string | null;
+  checked_on: IsoDate;
+  summary_line: string | null;
+  /**
+   * True once api.doc_check_save was called; an unsaved check is deleted after 30 days.
+   */
+  saved: boolean;
+}
+/**
+ * plinth.my_checks/1, from api.my_checks() (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). The caller's own document checks, newest first. Never a circle member's (DATA_MODEL §12 invariant 5).
+ */
+export interface MyChecks {
+  schema: "plinth.my_checks/1";
+  items: MyCheckItem[];
+}
 /**
  * Same corridor, lower band, all-in within 20%. Nobody pays to appear.
  */
@@ -1800,6 +2174,28 @@ export interface NextSteps {
   lower_band_nearby: NearbyProject[];
   rule_line: string | null;
   [k: string]: unknown | undefined;
+}
+export interface OcrLine {
+  /**
+   * Stable within the document; the only thing a reader may cite.
+   */
+  id: string;
+  page: number;
+  text: string;
+  /**
+   * [x0, y0, x1, y1] as fractions of the page.
+   *
+   * @minItems 4
+   * @maxItems 4
+   */
+  bbox: [number, number, number, number, ...number[]];
+}
+/**
+ * Response schema of ocr.document@1 (BUILD_PLAN §14). Every line gets a stable id and a bounding box; readers cite line ids and never produce their own coordinates (Wave 6 M3 rules, PII before models). No envelope: this is validated by the AI gateway directly, never sent over an api.* contract.
+ */
+export interface OcrPage {
+  lines: OcrLine[];
+  page_count: number;
 }
 /**
  * Acknowledgement of a mutation that returns nothing else (api.unfollow, api.mark_following_seen).
@@ -1854,6 +2250,30 @@ export interface PayeeCheckRequest {
   p_stage: AgreementStage;
   p_paid_so_far_inr: number;
   p_method: PaymentMethod;
+}
+/**
+ * Response schema of extract.payment_request@1, one reader's answer (BUILD_PLAN §14, F-94; pii_policy strip_and_redact_bank). A forwarded payment request (WhatsApp image or text) read as a list of claims (payee, account, IFSC, amount), the same shape as ai/marketing_claims.schema.json so agree() compares every extract.* reader uniformly (app.extracted_claims.claim_type, DATA_MODEL §7). The rules (before_you_pay_check) decide the verdict, never a reader. No envelope: validated by the AI gateway directly.
+ */
+export interface PaymentRequest {
+  claims: PaymentRequestClaim[];
+}
+export interface PaymentRequestClaim {
+  type: PaymentRequestClaimType;
+  /**
+   * The claim exactly as printed, before any normalisation.
+   */
+  raw_text: string;
+  /**
+   * Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+   */
+  value: string | number | null;
+  unit?: string | null;
+  qualifier?: PaymentRequestClaimQualifier | null;
+  /**
+   * ai/ocr_page.schema.json OcrLine ids the claim was read from.
+   */
+  line_ids: string[];
+  confidence: number;
 }
 /**
  * A public fact that may move the band (catalogues/reason_codes.json pending_codes). Never carries the proposed band.
@@ -2077,6 +2497,38 @@ export interface WaitDefaults {
   tenure_years: number;
 }
 /**
+ * plinth.receipt/1, from api.receipt_add (API_CONTRACTS §3.2; app.receipts, DATA_MODEL §7). Typed in R1 (FOUNDER_QUESTIONS M3-12): amount, date and the last 4 UTR digits only, no AI reading. Kept until the user deletes it.
+ */
+export interface Receipt {
+  schema: "plinth.receipt/1";
+  id: Uuid;
+  phase_slug: Slug;
+  amount_inr: Inr;
+  amount_label: string;
+  paid_on: IsoDate;
+  utr_last4: string;
+  /**
+   * The before_you_pay check this receipt follows up on, when there was one.
+   */
+  payee_check_id?: Uuid | null;
+  /**
+   * "₹11,00,000 paid 18 Oct 2026 · UTR …7731"
+   */
+  line: string;
+}
+/**
+ * Arguments of api.receipt_add.
+ */
+export interface ReceiptAddRequest {
+  p_slug: Slug;
+  p_upload_id?: Uuid | null;
+  p_amount_inr: number;
+  p_paid_on: IsoDate;
+  p_utr_last4: string;
+  p_payee_check_id?: Uuid | null;
+  p_client_id?: string;
+}
+/**
  * Gets a first name and a WhatsApp text relay, not the number.
  */
 export interface RelayParty {
@@ -2119,6 +2571,41 @@ export interface RequestProject {
    * Set when the buyer asked to hear back on WhatsApp too.
    */
   whatsapp_line: string | null;
+}
+/**
+ * plinth.review_queue/1, from admin_review_queue (API_CONTRACTS §3.4). Highest priority first.
+ */
+export interface ReviewQueue {
+  schema: "plinth.review_queue/1";
+  items: ReviewTask[];
+  /**
+   * Open queue work (ReviewTaskStatus open/assigned); resolved and dismissed are not counted here.
+   */
+  counts: {
+    open: number;
+    assigned: number;
+  };
+}
+/**
+ * plinth.review_task/1, one row of the admin review queue (ops.review_tasks, DATA_MODEL §10, plus kind adviser_request for M3). Reviewer and admin only (admin_review_queue, API_CONTRACTS §3.4).
+ */
+export interface ReviewTask {
+  schema: "plinth.review_task/1";
+  id: Uuid;
+  kind: ReviewTaskKind;
+  /**
+   * The table the review is about, e.g. "extracted_claims".
+   */
+  entity: string;
+  entity_id: Uuid;
+  /**
+   * impact × uncertainty; higher sorts first.
+   */
+  priority: number;
+  status: ReviewTaskStatus;
+  assignee: string | null;
+  due_at: Timestamp | null;
+  summary_line: string;
 }
 /**
  * PostgREST error for a function that raised SQLSTATE PT<http> via ops.raise_api_error(): code is PT<http status>, message the domain code, details the house-copy sentence. Each domain code has exactly one status (see ApiErrorCode).
@@ -2299,6 +2786,41 @@ export interface Suggestion {
   label: string;
   detail_line: string | null;
   matched_on: SuggestionMatch;
+}
+/**
+ * plinth.upload/1, from api.create_upload(p_kind, p_mime, p_bytes, p_sha256, p_channel, p_tap_event_id) (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). Does not carry the signed PUT URL: that comes only from the doc-check edge function's upload-url route (upload_url.schema.json), never from SQL or a client storage policy.
+ */
+export interface Upload {
+  schema: "plinth.upload/1";
+  upload_id: Uuid;
+  /**
+   * The private storage bucket (BUILD_PLAN §12 principle 7).
+   */
+  bucket: string;
+  storage_key: string;
+  /**
+   * The upload limit, BUILD_PLAN §12.9.
+   */
+  max_bytes: number;
+  /**
+   * Set when the same file hash was already uploaded by this owner ("Checked again").
+   */
+  existing_check_id: Uuid | null;
+}
+/**
+ * plinth.upload_url/1, from the doc-check edge function's upload-url route (API_CONTRACTS §4.12; WORK_BREAKDOWN T68: "the signed upload URL itself comes from the doc-check edge function, never from SQL or a client storage policy"). The client PUTs the file to url before starting the check.
+ */
+export interface UploadUrl {
+  schema: "plinth.upload_url/1";
+  upload_id: Uuid;
+  url: string;
+  expires_at: Timestamp;
+}
+/**
+ * POST /functions/v1/doc-check/upload-url body.
+ */
+export interface UploadUrlRequest {
+  upload_id: Uuid;
 }
 /**
  * plinth.who_has_my_number/1, from api.who_has_my_number() (API_CONTRACTS §4.10). Identical on web and app. A relay doesn't count toward the cap; family members are not parties.

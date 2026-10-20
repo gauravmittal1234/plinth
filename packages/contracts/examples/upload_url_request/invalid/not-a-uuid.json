@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-broker-flyer.json",
+  "why": "upload_id is a Uuid.",
+  "expect": "/upload_id",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/upload_id",
+      "value": "not-a-uuid"
+    }
+  ]
+}

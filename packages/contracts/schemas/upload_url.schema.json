@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/upload_url.schema.json",
+  "title": "UploadUrl",
+  "description": "plinth.upload_url/1, from the doc-check edge function's upload-url route (API_CONTRACTS §4.12; WORK_BREAKDOWN T68: \"the signed upload URL itself comes from the doc-check edge function, never from SQL or a client storage policy\"). The client PUTs the file to url before starting the check.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "upload_id", "url", "expires_at"],
+  "properties": {
+    "schema": { "const": "plinth.upload_url/1" },
+    "upload_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+    "url": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expires_at": { "$ref": "common.schema.json#/$defs/Timestamp" }
+  },
+  "$defs": {
+    "UploadUrlRequest": {
+      "title": "UploadUrlRequest",
+      "description": "POST /functions/v1/doc-check/upload-url body.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["upload_id"],
+      "properties": {
+        "upload_id": { "$ref": "common.schema.json#/$defs/Uuid" }
+      }
+    }
+  }
+}

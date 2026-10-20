@@ -1,0 +1,12 @@
+{
+  "base": "kavya-a-1104.json",
+  "why": "unit_no is required and non-empty.",
+  "expect": "/unit_no",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/unit_no",
+      "value": ""
+    }
+  ]
+}

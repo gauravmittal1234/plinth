@@ -1,0 +1,12 @@
+{
+  "base": "rohan-eoi.json",
+  "why": "utr_last4 is exactly 4 digits, never the full UTR.",
+  "expect": "/utr_last4",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/utr_last4",
+      "value": "N000012347731"
+    }
+  ]
+}

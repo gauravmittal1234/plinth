@@ -195,6 +195,61 @@
       },
       "required": ["helpful"],
       "milestone": "M5"
+    },
+    {
+      "name": "cost_sheet_checked",
+      "description": "A cost-sheet document check finished (doc_check kind cost_sheet).",
+      "properties": {
+        "status": { "type": "string" },
+        "negotiable_count": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["status"],
+      "milestone": "M3"
+    },
+    {
+      "name": "payee_checked",
+      "description": "A before_you_pay check finished (api.before_you_pay_check or doc_check kind before_you_pay).",
+      "properties": {
+        "status": { "type": "string" },
+        "matched": { "type": "integer", "minimum": 0 },
+        "of": { "type": "integer", "minimum": 1 }
+      },
+      "required": ["status", "matched", "of"],
+      "milestone": "M3"
+    },
+    {
+      "name": "pay_as_built_checked",
+      "description": "A pay-as-built document check finished (doc_check kind pay_as_built).",
+      "properties": {
+        "status": { "type": "string" },
+        "stage_verdict": {
+          "type": ["string", "null"],
+          "enum": ["matches", "differs", "not_in_records", "cant_check", null]
+        }
+      },
+      "required": ["status"],
+      "milestone": "M3"
+    },
+    {
+      "name": "check_saved",
+      "description": "The buyer saved a document check to their account (api.doc_check_save).",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["claims", "cost_sheet", "pay_as_built", "before_you_pay", "visit_recap"]
+        }
+      },
+      "required": ["kind"],
+      "milestone": "M3"
+    },
+    {
+      "name": "adviser_requested",
+      "description": "\"Talk to a Plinth adviser\" was tapped (ops.review_tasks kind adviser_request).",
+      "properties": {
+        "source": { "type": "string", "enum": ["doc_check", "ask", "other"] }
+      },
+      "required": [],
+      "milestone": "M3"
     }
   ]
 }

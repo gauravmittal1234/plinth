@@ -7,6 +7,7 @@ The one contract (BUILD_PLAN §1 rule 2). Owner: **T02**; new schemas in M3+ go 
 | Path | What | Edited by hand? |
 |---|---|---|
 | `schemas/*.schema.json` | JSON Schema 2020-12, one file per payload; sub-objects are named `$defs` | Yes: the source of truth |
+| `schemas/ai/*.schema.json` | AI reader-output schemas (T61, M3): the gateway (`supabase/functions/_shared/ai`) validates a model's raw answer against these directly, as a task's `response_schema` in `catalogues/ai_tasks.json`. No `plinth.<type>/1` envelope (`NO_ENVELOPE` in `scripts/lib/schemas.mjs`); still a top-level type, still exported, still needs `examples/<type>/{valid,invalid}/` | Yes: the source of truth |
 | `catalogues/*.json` | `flags`, `events`, `reason_codes`, `wa_templates`, `ai_tasks`, `purposes`, `ref_formats` (shape: `catalogue.schema.json`) | Yes |
 | `examples/<type>/{valid,invalid}/` | ≥ 1 valid and ≥ 1 invalid example per exported type, §5b facts only | Yes |
 | `scripts/gen.mjs`, `scripts/lib/` | Codegen | Yes |

@@ -1,0 +1,12 @@
+{
+  "schema": "plinth.review_task/1",
+  "id": "6f0e2c1a-0000-4000-8000-000000001001",
+  "kind": "extraction_disagreement",
+  "entity": "extracted_claims",
+  "entity_id": "6f0e2c1a-0000-4000-8000-000000001002",
+  "priority": 72.5,
+  "status": "open",
+  "assignee": null,
+  "due_at": "2026-10-18T19:00:00+05:30",
+  "summary_line": "Reader A and reader B disagree on claim 2 (\"Structure up to 12th floor\")."
+}

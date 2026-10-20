@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-claims-row.json",
+  "why": "p_text is required and non-empty.",
+  "expect": "/p_text",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/p_text",
+      "value": ""
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/upload.schema.json",
+  "title": "Upload",
+  "description": "plinth.upload/1, from api.create_upload(p_kind, p_mime, p_bytes, p_sha256, p_channel, p_tap_event_id) (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). Does not carry the signed PUT URL: that comes only from the doc-check edge function's upload-url route (upload_url.schema.json), never from SQL or a client storage policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "upload_id", "bucket", "storage_key", "max_bytes", "existing_check_id"],
+  "properties": {
+    "schema": { "const": "plinth.upload/1" },
+    "upload_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+    "bucket": {
+      "description": "The private storage bucket (BUILD_PLAN §12 principle 7).",
+      "type": "string",
+      "minLength": 1,
+      "examples": ["uploads"]
+    },
+    "storage_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "max_bytes": {
+      "description": "The upload limit, BUILD_PLAN §12.9.",
+      "type": "integer",
+      "minimum": 1,
+      "examples": [15728640]
+    },
+    "existing_check_id": {
+      "description": "Set when the same file hash was already uploaded by this owner (\"Checked again\").",
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/Uuid" }, { "type": "null" }]
+    }
+  },
+  "$defs": {
+    "UploadKind": {
+      "title": "UploadKind",
+      "description": "app.uploads.kind (DATA_MODEL §7).",
+      "type": "string",
+      "enum": [
+        "flyer",
+        "brochure",
+        "hoarding_photo",
+        "cost_sheet",
+        "demand_letter",
+        "payment_request",
+        "receipt",
+        "voice_note",
+        "room_photo"
+      ]
+    },
+    "CreateUploadRequest": {
+      "title": "CreateUploadRequest",
+      "description": "Arguments of api.create_upload.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p_kind", "p_mime", "p_bytes", "p_sha256", "p_channel"],
+      "properties": {
+        "p_kind": { "$ref": "#/$defs/UploadKind" },
+        "p_mime": {
+          "type": "string",
+          "enum": ["application/pdf", "image/jpeg", "image/png", "image/webp", "image/heic"]
+        },
+        "p_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 15728640
+        },
+        "p_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "p_channel": { "$ref": "common.schema.json#/$defs/Channel" },
+        "p_tap_event_id": {
+          "description": "Evidence for the first upload's ai_processing consent (DATA_MODEL §13; BUILD_PLAN §13).",
+          "anyOf": [{ "type": "string" }, { "type": "null" }]
+        }
+      }
+    }
+  }
+}

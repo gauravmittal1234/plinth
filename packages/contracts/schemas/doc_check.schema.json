@@ -85,6 +85,30 @@
     "payee": {
       "description": "kind = before_you_pay only.",
       "$ref": "payee_check.schema.json#/$defs/PayeeResult"
+    },
+    "edge": {
+      "description": "Set for an edge status (unreadable, partly_readable, no_claims, outside_coverage, checks_paused); null once status is confirm_project or done.",
+      "anyOf": [{ "$ref": "#/$defs/DocCheckEdge" }, { "type": "null" }]
+    },
+    "project_candidates": {
+      "description": "The pick list, when the match needs the buyer's confirmation (project_match.method user_pick and not yet confirmed).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/ProjectCandidate" }
+    },
+    "stage": {
+      "description": "kind = pay_as_built only: the tower chart (letter slab against filed slab).",
+      "anyOf": [{ "$ref": "#/$defs/DocCheckStage" }, { "type": "null" }]
+    },
+    "recheck": {
+      "description": "Set once a later filing could change this check's answer (FOUNDER_QUESTIONS M3-11).",
+      "anyOf": [{ "$ref": "#/$defs/DocCheckRecheck" }, { "type": "null" }]
+    },
+    "saved": {
+      "description": "True once api.doc_check_save was called; an unsaved check is deleted after 30 days.",
+      "type": "boolean"
+    },
+    "share": {
+      "anyOf": [{ "$ref": "#/$defs/DocCheckShare" }, { "type": "null" }]
     }
   },
   "allOf": [
@@ -118,7 +142,7 @@
     },
     "DocCheckStatus": {
       "title": "DocCheckStatus",
-      "description": "Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable or outside_coverage.",
+      "description": "Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable, outside_coverage or checks_paused. checks_paused is the ai_doc_check kill switch (T61; catalogues/flags.json).",
       "type": "string",
       "enum": [
         "reading",
@@ -128,7 +152,8 @@
         "unreadable",
         "partly_readable",
         "no_claims",
-        "outside_coverage"
+        "outside_coverage",
+        "checks_paused"
       ]
     },
     "MatchMethod": {
@@ -190,8 +215,17 @@
         "records_line": {
           "type": "string"
         },
+        "records_label": {
+          "description": "INTEGRATION_NOTES round 3: optional, e.g. \"Records show\", \"Price list shows\", \"Your plan shows\" (API_CONTRACTS §4.12).",
+          "type": ["string", "null"],
+          "examples": ["Records show", "Price list shows", "Your plan shows"]
+        },
         "how_checked": {
           "type": ["string", "null"]
+        },
+        "review": {
+          "description": "Set while a person checks this reading (concierge-first, FOUNDER_QUESTIONS M3-7): \"Can't check yet\" + \"A person is checking this reading.\"",
+          "anyOf": [{ "$ref": "#/$defs/DocCheckReview" }, { "type": "null" }]
         },
         "sources": {
           "type": "array",
@@ -243,6 +277,134 @@
               "type": "null"
             }
           ]
+        }
+      }
+    },
+    "DocCheckReview": {
+      "title": "DocCheckReview",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["line"],
+      "properties": {
+        "line": {
+          "type": "string",
+          "minLength": 1,
+          "examples": ["A person is checking this reading."]
+        }
+      }
+    },
+    "EdgeAction": {
+      "title": "EdgeAction",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "action"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action": {
+          "description": "A code the client switches on, e.g. \"retry_upload\", \"pick_project\", \"talk_to_adviser\".",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        }
+      }
+    },
+    "DocCheckEdge": {
+      "title": "DocCheckEdge",
+      "description": "Unreadable, partly readable, no claims, outside coverage or checks paused (FOUNDER_QUESTIONS M3-7, M3-13).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "body", "primary", "secondary"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "body": {
+          "type": "string"
+        },
+        "primary": {
+          "anyOf": [{ "$ref": "#/$defs/EdgeAction" }, { "type": "null" }]
+        },
+        "secondary": {
+          "anyOf": [{ "$ref": "#/$defs/EdgeAction" }, { "type": "null" }]
+        }
+      }
+    },
+    "ProjectCandidate": {
+      "title": "ProjectCandidate",
+      "description": "One row of the pick list; the buyer's tap becomes api.doc_check_confirm(p_id, p_slug).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "label"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sector_line": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "DocCheckStage": {
+      "title": "DocCheckStage",
+      "description": "kind = pay_as_built: the letter's claimed slab against the latest filed slab.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["letter_slab_line", "filed_slab_line", "floors", "as_of_line"],
+      "properties": {
+        "letter_slab_line": {
+          "type": "string",
+          "examples": ["This letter: slab 12"]
+        },
+        "filed_slab_line": {
+          "type": "string",
+          "examples": ["Latest filing: slab 9"]
+        },
+        "floors": {
+          "anyOf": [{ "type": "integer", "minimum": 1 }, { "type": "null" }]
+        },
+        "as_of_line": {
+          "type": "string",
+          "examples": ["As of the Jan–Mar 2026 QPR, filed 15 Apr 2026."]
+        }
+      }
+    },
+    "DocCheckRecheck": {
+      "title": "DocCheckRecheck",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["armed", "line"],
+      "properties": {
+        "armed": {
+          "description": "True once a later filing changed this check's answer; the re-check line and the check_updated alert follow.",
+          "type": "boolean"
+        },
+        "line": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "DocCheckShare": {
+      "title": "DocCheckShare",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["card_url", "card_alt", "share_text"],
+      "properties": {
+        "card_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "card_alt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "share_text": {
+          "description": "A summary only, never the file.",
+          "type": "string"
         }
       }
     },

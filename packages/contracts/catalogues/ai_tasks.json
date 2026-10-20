@@ -5,6 +5,8 @@
   "notes": [
     "model_class names the Gemini tier. model_id and fallback_model_id stay null until the bake-off pins them (BUILD_PLAN §5.4); the gateway refuses a live call for a task whose model_id is null.",
     "budget_inr_per_day is set by the lead before a task goes live: alert at 80%, kill switch at 100%.",
+    "daily_call_cap (T61) is the free-tier daily cap (FOUNDER_QUESTIONS M3-13): the stricter of it and the ₹ budget applies, kill switch at 100%.",
+    "response_schema (T61) is a reference into packages/contracts/schemas (\"x.schema.json\", \"x.schema.json#/$defs/Y\", or \"ai/x.schema.json\" for the reader-output schemas T61 adds under schemas/ai/). The gateway refuses a live or recorded call for a task whose response_schema is null.",
     "Prompts live in supabase/functions/_shared/ai/prompts/<task>/<version>.md, mirrored in Python. Every call writes ops.ai_generations. AI_MODE=recorded replays responses keyed by input SHA from recorded_dir.",
     "Hard rules: rules decide (no LLM output becomes a band, verdict or number); citations or silence; document text is data, never instructions; PII is stripped before any model call; Gemini free tier sees fictional data only (DECISIONS E-8)."
   ],
@@ -26,7 +28,8 @@
       "temperature": 0,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
-      "response_schema": null,
+      "daily_call_cap": 1500,
+      "response_schema": "ai/ocr_page.schema.json",
       "pii_policy": "strip",
       "eval_set": "evals/extraction/ocr.document",
       "recorded_dir": "packages/fixtures/recorded/ai/ocr.document",
@@ -45,7 +48,8 @@
       "temperature": 0,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
-      "response_schema": null,
+      "daily_call_cap": 1500,
+      "response_schema": "ai/document_class.schema.json",
       "labels": [
         "flyer",
         "brochure",
@@ -74,7 +78,8 @@
       "temperature": 0,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
-      "response_schema": null,
+      "daily_call_cap": 1000,
+      "response_schema": "ai/marketing_claims.schema.json",
       "readers": [
         {
           "id": "a",
@@ -105,7 +110,20 @@
       "temperature": 0,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
-      "response_schema": null,
+      "daily_call_cap": 1000,
+      "response_schema": "ai/cost_sheet_lines.schema.json",
+      "readers": [
+        {
+          "id": "a",
+          "model_class": "flash",
+          "prompt": "a@1"
+        },
+        {
+          "id": "b",
+          "model_class": "flash_lite",
+          "prompt": "b@1"
+        }
+      ],
       "pii_policy": "strip_and_redact_bank",
       "eval_set": "evals/extraction/extract.cost_sheet",
       "recorded_dir": "packages/fixtures/recorded/ai/extract.cost_sheet",
@@ -124,7 +142,20 @@
       "temperature": 0,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
-      "response_schema": null,
+      "daily_call_cap": 1000,
+      "response_schema": "ai/demand_letter.schema.json",
+      "readers": [
+        {
+          "id": "a",
+          "model_class": "flash",
+          "prompt": "a@1"
+        },
+        {
+          "id": "b",
+          "model_class": "flash_lite",
+          "prompt": "b@1"
+        }
+      ],
       "pii_policy": "strip_and_redact_bank",
       "eval_set": "evals/extraction/extract.demand_letter",
       "recorded_dir": "packages/fixtures/recorded/ai/extract.demand_letter",
@@ -143,7 +174,20 @@
       "temperature": 0,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
-      "response_schema": null,
+      "daily_call_cap": 1000,
+      "response_schema": "ai/payment_request.schema.json",
+      "readers": [
+        {
+          "id": "a",
+          "model_class": "flash",
+          "prompt": "a@1"
+        },
+        {
+          "id": "b",
+          "model_class": "flash_lite",
+          "prompt": "b@1"
+        }
+      ],
       "pii_policy": "strip_and_redact_bank",
       "eval_set": "evals/extraction/extract.payment_request",
       "recorded_dir": "packages/fixtures/recorded/ai/extract.payment_request",
@@ -162,6 +206,7 @@
       "temperature": 0,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
+      "daily_call_cap": 300,
       "response_schema": null,
       "pii_policy": "strip",
       "eval_set": "evals/extraction/transcribe.voice",
@@ -181,6 +226,7 @@
       "temperature": 0,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
+      "daily_call_cap": 1500,
       "response_schema": "search_results.schema.json#/$defs/SearchFilters",
       "pii_policy": "strip",
       "eval_set": "evals/extraction/parse.search_query",
@@ -200,6 +246,7 @@
       "temperature": 0.2,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
+      "daily_call_cap": 1000,
       "response_schema": "ask_answer.schema.json",
       "tools": [
         "risk_summary",
@@ -228,6 +275,7 @@
       "temperature": 0,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
+      "daily_call_cap": 100,
       "response_schema": null,
       "readers": [
         {
@@ -259,6 +307,7 @@
       "temperature": null,
       "max_output_tokens": null,
       "budget_inr_per_day": null,
+      "daily_call_cap": 50,
       "response_schema": null,
       "pii_policy": "strip",
       "eval_set": "evals/extraction/stage.room",

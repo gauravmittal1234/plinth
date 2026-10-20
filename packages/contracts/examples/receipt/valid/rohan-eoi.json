@@ -1,0 +1,11 @@
+{
+  "schema": "plinth.receipt/1",
+  "id": "6f0e2c1a-0000-4000-8000-000000000701",
+  "phase_slug": "aurelia-heights-phase-2",
+  "amount_inr": 1100000,
+  "amount_label": "₹11,00,000",
+  "paid_on": "2026-10-18",
+  "utr_last4": "7731",
+  "payee_check_id": "6f0e2c1a-0000-4000-8000-000000000502",
+  "line": "₹11,00,000 paid 18 Oct 2026 · UTR …7731"
+}

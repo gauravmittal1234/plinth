@@ -6,6 +6,14 @@ abstract final class AccountDeletionStatus {
   static const List<String> values = ['requested'];
 }
 
+abstract final class AdviserRequestStatus {
+  static const String open = 'open';
+  static const String inProgress = 'in_progress';
+  static const String answered = 'answered';
+  static const String closed = 'closed';
+  static const List<String> values = ['open', 'in_progress', 'answered', 'closed'];
+}
+
 abstract final class AgreementStage {
   static const String beforeAgreement = 'before_agreement';
   static const String afterAgreement = 'after_agreement';
@@ -134,6 +142,34 @@ abstract final class DataExportStatus {
   static const List<String> values = ['preparing', 'ready'];
 }
 
+abstract final class DemandLetterClaimQualifier {
+  static const String super_ = 'super';
+  static const String carpet = 'carpet';
+  static const String allIn = 'all_in';
+  static const String base = 'base';
+  static const List<String> values = ['super', 'carpet', 'all_in', 'base'];
+}
+
+/// app.extracted_claims.claim_type (DATA_MODEL §7).
+abstract final class DemandLetterClaimType {
+  static const String possessionDate = 'possession_date';
+  static const String price = 'price';
+  static const String allIn = 'all_in';
+  static const String area = 'area';
+  static const String reraNumber = 'rera_number';
+  static const String ocStatus = 'oc_status';
+  static const String soldLeft = 'sold_left';
+  static const String amenity = 'amenity';
+  static const String demandStage = 'demand_stage';
+  static const String planStage = 'plan_stage';
+  static const String amount = 'amount';
+  static const String payeeName = 'payee_name';
+  static const String accountNumber = 'account_number';
+  static const String ifsc = 'ifsc';
+  static const String bannedPhrase = 'banned_phrase';
+  static const List<String> values = ['possession_date', 'price', 'all_in', 'area', 'rera_number', 'oc_status', 'sold_left', 'amenity', 'demand_stage', 'plan_stage', 'amount', 'payee_name', 'account_number', 'ifsc', 'banned_phrase'];
+}
+
 /// Facts-only is data on the group (core.developer_groups.facts_only_since), not a flag.
 abstract final class DeveloperPageMode {
   static const String scored = 'scored';
@@ -159,7 +195,7 @@ abstract final class DocCheckKind {
   static const List<String> values = ['claims', 'cost_sheet', 'pay_as_built', 'before_you_pay', 'visit_recap'];
 }
 
-/// Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable or outside_coverage.
+/// Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable, outside_coverage or checks_paused. checks_paused is the ai_doc_check kill switch (T61; catalogues/flags.json).
 abstract final class DocCheckStatus {
   static const String reading = 'reading';
   static const String confirmProject = 'confirm_project';
@@ -169,7 +205,27 @@ abstract final class DocCheckStatus {
   static const String partlyReadable = 'partly_readable';
   static const String noClaims = 'no_claims';
   static const String outsideCoverage = 'outside_coverage';
-  static const List<String> values = ['reading', 'confirm_project', 'checking', 'done', 'unreadable', 'partly_readable', 'no_claims', 'outside_coverage'];
+  static const String checksPaused = 'checks_paused';
+  static const List<String> values = ['reading', 'confirm_project', 'checking', 'done', 'unreadable', 'partly_readable', 'no_claims', 'outside_coverage', 'checks_paused'];
+}
+
+abstract final class DocumentLabel {
+  static const String flyer = 'flyer';
+  static const String brochure = 'brochure';
+  static const String hoarding = 'hoarding';
+  static const String costSheet = 'cost_sheet';
+  static const String demandLetter = 'demand_letter';
+  static const String paymentRequest = 'payment_request';
+  static const String receipt = 'receipt';
+  static const String other = 'other';
+  static const List<String> values = ['flyer', 'brochure', 'hoarding', 'cost_sheet', 'demand_letter', 'payment_request', 'receipt', 'other'];
+}
+
+abstract final class ErrorReportStatus {
+  static const String open = 'open';
+  static const String inProgress = 'in_progress';
+  static const String resolved = 'resolved';
+  static const List<String> values = ['open', 'in_progress', 'resolved'];
 }
 
 /// core.events.kind. Drives alerts, Since you last looked, the digest and the replay.
@@ -231,6 +287,34 @@ abstract final class Lane {
   static const List<String> values = ['records_show', 'developer_says', 'from_developer', 'our_estimate', 'reported_unverified', 'buyer_upload'];
 }
 
+abstract final class MarketingClaimQualifier {
+  static const String super_ = 'super';
+  static const String carpet = 'carpet';
+  static const String allIn = 'all_in';
+  static const String base = 'base';
+  static const List<String> values = ['super', 'carpet', 'all_in', 'base'];
+}
+
+/// app.extracted_claims.claim_type (DATA_MODEL §7).
+abstract final class MarketingClaimType {
+  static const String possessionDate = 'possession_date';
+  static const String price = 'price';
+  static const String allIn = 'all_in';
+  static const String area = 'area';
+  static const String reraNumber = 'rera_number';
+  static const String ocStatus = 'oc_status';
+  static const String soldLeft = 'sold_left';
+  static const String amenity = 'amenity';
+  static const String demandStage = 'demand_stage';
+  static const String planStage = 'plan_stage';
+  static const String amount = 'amount';
+  static const String payeeName = 'payee_name';
+  static const String accountNumber = 'account_number';
+  static const String ifsc = 'ifsc';
+  static const String bannedPhrase = 'banned_phrase';
+  static const List<String> values = ['possession_date', 'price', 'all_in', 'area', 'rera_number', 'oc_status', 'sold_left', 'amenity', 'demand_stage', 'plan_stage', 'amount', 'payee_name', 'account_number', 'ifsc', 'banned_phrase'];
+}
+
 abstract final class MatchMethod {
   static const String reraNumber = 'rera_number';
   static const String nameSector = 'name_sector';
@@ -258,6 +342,34 @@ abstract final class PaymentMethod {
   static const String cheque = 'cheque';
   static const String cash = 'cash';
   static const List<String> values = ['transfer', 'cheque', 'cash'];
+}
+
+abstract final class PaymentRequestClaimQualifier {
+  static const String super_ = 'super';
+  static const String carpet = 'carpet';
+  static const String allIn = 'all_in';
+  static const String base = 'base';
+  static const List<String> values = ['super', 'carpet', 'all_in', 'base'];
+}
+
+/// app.extracted_claims.claim_type (DATA_MODEL §7).
+abstract final class PaymentRequestClaimType {
+  static const String possessionDate = 'possession_date';
+  static const String price = 'price';
+  static const String allIn = 'all_in';
+  static const String area = 'area';
+  static const String reraNumber = 'rera_number';
+  static const String ocStatus = 'oc_status';
+  static const String soldLeft = 'sold_left';
+  static const String amenity = 'amenity';
+  static const String demandStage = 'demand_stage';
+  static const String planStage = 'plan_stage';
+  static const String amount = 'amount';
+  static const String payeeName = 'payee_name';
+  static const String accountNumber = 'account_number';
+  static const String ifsc = 'ifsc';
+  static const String bannedPhrase = 'banned_phrase';
+  static const List<String> values = ['possession_date', 'price', 'all_in', 'area', 'rera_number', 'oc_status', 'sold_left', 'amenity', 'demand_stage', 'plan_stage', 'amount', 'payee_name', 'account_number', 'ifsc', 'banned_phrase'];
 }
 
 abstract final class PlatformRole {
@@ -292,6 +404,29 @@ abstract final class RefusalCode {
   static const String loansR2 = 'loans_r2';
   static const String offTopic = 'off_topic';
   static const List<String> values = ['advice_buy_sell', 'title_opinion', 'guarantee', 'discriminatory_filter', 'investment_returns', 'personal_data', 'legal_advice', 'outside_coverage', 'unknown_project', 'loans_r2', 'off_topic'];
+}
+
+abstract final class ReviewTaskKind {
+  static const String extractionDisagreement = 'extraction_disagreement';
+  static const String lowConfidenceClaim = 'low_confidence_claim';
+  static const String dispute = 'dispute';
+  static const String clerical = 'clerical';
+  static const String notice = 'notice';
+  static const String legal = 'legal';
+  static const String capture = 'capture';
+  static const String entityMerge = 'entity_merge';
+  static const String demandCheck = 'demand_check';
+  static const String adviserRequest = 'adviser_request';
+  static const List<String> values = ['extraction_disagreement', 'low_confidence_claim', 'dispute', 'clerical', 'notice', 'legal', 'capture', 'entity_merge', 'demand_check', 'adviser_request'];
+}
+
+/// ops.review_tasks.status (DATA_MODEL §10; the check constraint T60 migrates, PR #91).
+abstract final class ReviewTaskStatus {
+  static const String open = 'open';
+  static const String assigned = 'assigned';
+  static const String resolved = 'resolved';
+  static const String dismissed = 'dismissed';
+  static const List<String> values = ['open', 'assigned', 'resolved', 'dismissed'];
 }
 
 /// core.score_state.
@@ -335,6 +470,20 @@ abstract final class SuggestionMatch {
   static const String sector = 'sector';
   static const String synonym = 'synonym';
   static const List<String> values = ['name', 'rera_number', 'sector', 'synonym'];
+}
+
+/// app.uploads.kind (DATA_MODEL §7).
+abstract final class UploadKind {
+  static const String flyer = 'flyer';
+  static const String brochure = 'brochure';
+  static const String hoardingPhoto = 'hoarding_photo';
+  static const String costSheet = 'cost_sheet';
+  static const String demandLetter = 'demand_letter';
+  static const String paymentRequest = 'payment_request';
+  static const String receipt = 'receipt';
+  static const String voiceNote = 'voice_note';
+  static const String roomPhoto = 'room_photo';
+  static const List<String> values = ['flyer', 'brochure', 'hoarding_photo', 'cost_sheet', 'demand_letter', 'payment_request', 'receipt', 'voice_note', 'room_photo'];
 }
 
 /// app.verdict. Labels are only Matches · Differs · Not in records · Can't check.
