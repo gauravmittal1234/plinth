@@ -11,7 +11,7 @@ export function CoverageSection({ coverage }: { coverage: About["coverage"] }) {
         <div className="flex flex-col gap-3">
           <h2
             id="coverage-h"
-            className="m-0 max-w-[18ch] font-display text-question font-extrabold tracking-[-0.03em]"
+            className="m-0 max-w-[18ch] font-display text-question font-bold tracking-[-0.03em]"
           >
             Where does Plinth work?
           </h2>

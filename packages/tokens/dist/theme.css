@@ -104,6 +104,10 @@
   --text-h2--line-height: var(--pl-type-h2-line-height);
   --text-h2--letter-spacing: var(--pl-type-h2-letter-spacing);
   --text-h2--font-weight: var(--pl-type-h2-weight);
+  --text-section: var(--pl-type-section-size);
+  --text-section--line-height: var(--pl-type-section-line-height);
+  --text-section--letter-spacing: var(--pl-type-section-letter-spacing);
+  --text-section--font-weight: var(--pl-type-section-weight);
   --text-h3: var(--pl-type-h3-size);
   --text-h3--line-height: var(--pl-type-h3-line-height);
   --text-h3--letter-spacing: var(--pl-type-h3-letter-spacing);

@@ -37,7 +37,7 @@ export function RescoringSteps({ fact }: { fact: PendingFactData | undefined }) 
   if (!fact) return null;
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="m-0 font-display text-h2 font-extrabold">{RESCORING_COPY.heading}</h2>
+      <h2 className="m-0 font-display text-section font-bold">{RESCORING_COPY.heading}</h2>
       <ol role="list" className="m-0 flex list-none gap-2 p-0">
         {RESCORING_COPY.steps.map((step, i) => (
           <Step

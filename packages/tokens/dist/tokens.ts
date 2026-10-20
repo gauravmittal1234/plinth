@@ -288,7 +288,7 @@ export const typography = {
   "web": {
     "hero": {
       "family": "display",
-      "weight": 800,
+      "weight": 700,
       "size": 112,
       "sizeMin": 56,
       "sizeFluid": "7.5vw",
@@ -297,7 +297,7 @@ export const typography = {
     },
     "question": {
       "family": "display",
-      "weight": 800,
+      "weight": 700,
       "size": 64,
       "sizeMin": 40,
       "sizeFluid": "5vw",
@@ -306,83 +306,90 @@ export const typography = {
     },
     "display": {
       "family": "display",
-      "weight": 800,
+      "weight": 700,
       "size": 52,
       "lineHeight": 1.02,
       "letterSpacing": -0.03
     },
     "h1": {
       "family": "display",
-      "weight": 800,
+      "weight": 700,
       "size": 40,
       "lineHeight": 1.08,
       "letterSpacing": -0.02
     },
     "h2": {
       "family": "display",
-      "weight": 800,
+      "weight": 700,
       "size": 34,
       "lineHeight": 1.1,
       "letterSpacing": -0.02
     },
-    "h3": {
+    "section": {
       "family": "display",
-      "weight": 800,
+      "weight": 700,
+      "size": 20,
+      "lineHeight": 1.25,
+      "letterSpacing": -0.01
+    },
+    "h3": {
+      "family": "ui",
+      "weight": 700,
       "size": 24,
       "lineHeight": 1.2,
       "letterSpacing": -0.02
     },
     "number": {
-      "family": "display",
-      "weight": 800,
+      "family": "ui",
+      "weight": 700,
       "size": 30,
       "lineHeight": 1.1,
       "letterSpacing": -0.02
     },
     "numberLg": {
-      "family": "display",
-      "weight": 800,
+      "family": "ui",
+      "weight": 700,
       "size": 40,
       "lineHeight": 1.1,
       "letterSpacing": -0.02
     },
     "lead": {
-      "family": "text",
+      "family": "ui",
       "weight": 400,
       "size": 21,
       "lineHeight": 1.4,
       "letterSpacing": 0
     },
     "bodyPublic": {
-      "family": "text",
+      "family": "ui",
       "weight": 400,
       "size": 19,
       "lineHeight": 1.55,
       "letterSpacing": 0
     },
     "body": {
-      "family": "text",
+      "family": "ui",
       "weight": 400,
       "size": 17,
       "lineHeight": 1.55,
       "letterSpacing": 0
     },
     "small": {
-      "family": "text",
+      "family": "ui",
       "weight": 400,
       "size": 15,
       "lineHeight": 1.45,
       "letterSpacing": 0
     },
     "caption": {
-      "family": "text",
+      "family": "ui",
       "weight": 400,
       "size": 14,
       "lineHeight": 1.4,
       "letterSpacing": 0
     },
     "captionMin": {
-      "family": "text",
+      "family": "ui",
       "weight": 400,
       "size": 13,
       "lineHeight": 1.4,
@@ -799,6 +806,13 @@ export const cssVar = {
       "size": "var(--pl-type-h2-size)",
       "lineHeight": "var(--pl-type-h2-line-height)",
       "letterSpacing": "var(--pl-type-h2-letter-spacing)"
+    },
+    "section": {
+      "family": "var(--pl-type-section-family)",
+      "weight": "var(--pl-type-section-weight)",
+      "size": "var(--pl-type-section-size)",
+      "lineHeight": "var(--pl-type-section-line-height)",
+      "letterSpacing": "var(--pl-type-section-letter-spacing)"
     },
     "h3": {
       "family": "var(--pl-type-h3-family)",

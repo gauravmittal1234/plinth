@@ -48,7 +48,7 @@ export function CodeStep({
       >
         {COPY.changeNumber}
       </button>
-      <h1 id="flow-h" className="m-0 font-display text-question leading-none font-extrabold">
+      <h1 id="flow-h" className="m-0 font-display text-question leading-none font-bold">
         {COPY.enterCodeHeading}
       </h1>
       <p className="m-0 text-lead">{COPY.sentLine(channel, maskedPhone)}</p>

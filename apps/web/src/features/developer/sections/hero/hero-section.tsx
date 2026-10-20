@@ -30,7 +30,7 @@ export function HeroSection({ page }: { page: DeveloperPage }) {
           {meta.model_version ? ` · model ${meta.model_version}` : null}
         </p>
 
-        <h1 className="m-0 max-w-[20ch] text-balance font-display text-[clamp(2.75rem,6.5vw,4.5rem)] leading-[0.96] font-extrabold tracking-[-0.03em]">
+        <h1 className="m-0 max-w-[20ch] text-balance font-display text-[clamp(2.75rem,6.5vw,4.5rem)] leading-[0.96] font-bold tracking-[-0.03em]">
           {group.name}
         </h1>
 

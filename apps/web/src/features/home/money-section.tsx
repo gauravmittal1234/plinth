@@ -15,7 +15,7 @@ export function MoneySection({ money }: { money: About["money"] }) {
           </h2>
           <p
             aria-hidden="true"
-            className="m-0 font-display text-[clamp(8.75rem,20vw,17.5rem)] leading-[0.86] font-extrabold tracking-[-0.06em]"
+            className="m-0 font-display text-[clamp(8.75rem,20vw,17.5rem)] leading-[0.86] font-bold tracking-[-0.06em]"
           >
             ₹0
           </p>

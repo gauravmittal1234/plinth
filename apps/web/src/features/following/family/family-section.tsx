@@ -153,7 +153,7 @@ function NoteComposer({ projects }: { projects: readonly FollowedProject[] }) {
         });
       }}
     >
-      <h3 className="m-0 font-display text-h4 font-extrabold">{FAMILY_COPY.shortlistHeading}</h3>
+      <h3 className="m-0 font-display text-h4 font-bold">{FAMILY_COPY.shortlistHeading}</h3>
       <p className="m-0 text-small text-ink2">{FAMILY_COPY.shortlistSub}</p>
       <label htmlFor={selectId} className="text-small font-semibold">
         {FAMILY_COPY.noteLabel}
@@ -205,7 +205,7 @@ export function FamilySection({ projects }: { projects: readonly FollowedProject
     <SectionBand id="family" tone="track">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-2">
-          <h2 className="m-0 font-display text-h2 font-extrabold">{FAMILY_COPY.heading}</h2>
+          <h2 className="m-0 font-display text-section font-bold">{FAMILY_COPY.heading}</h2>
           <p className="m-0 max-w-[60ch] text-body text-ink2">{FAMILY_COPY.subheading}</p>
         </div>
 

@@ -19,7 +19,7 @@ function ProjectRow({ project }: { project: FollowedProject }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <Link
           href={`/gurugram/projects/${project.slug}`}
-          className="m-0 font-display text-h4 font-extrabold text-ink no-underline hover:underline"
+          className="m-0 font-display text-h4 font-bold text-ink no-underline hover:underline"
         >
           {project.name ?? project.slug}
         </Link>
@@ -44,7 +44,7 @@ export function ProjectsSection({ projects }: { projects: readonly FollowedProje
   return (
     <SectionBand id="projects" tone="bg">
       <div className="flex flex-col gap-6">
-        <h2 className="m-0 font-display text-h2 font-extrabold">{PROJECTS_COPY.heading}</h2>
+        <h2 className="m-0 font-display text-section font-bold">{PROJECTS_COPY.heading}</h2>
         <ul role="list" className="m-0 grid grid-cols-1 gap-4 p-0 sm:grid-cols-2">
           {projects.map((project) => (
             <ProjectRow key={project.slug} project={project} />

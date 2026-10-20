@@ -24,7 +24,7 @@ export function BookedToggle({
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h2 className="m-0 font-display text-h2 font-extrabold">{heading}</h2>
+        <h2 className="m-0 font-display text-section font-bold">{heading}</h2>
         <Pill as="button" pressed={booked} onClick={() => setBooked((b) => !b)} aria-label={label}>
           {label}
         </Pill>

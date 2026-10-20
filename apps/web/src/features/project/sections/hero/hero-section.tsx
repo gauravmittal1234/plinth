@@ -70,7 +70,7 @@ export function HeroSection({ page }: { page: ProjectPage }) {
           <RiskChipGate chip={risk.chip} />
         </p>
 
-        <h1 className="m-0 max-w-[16ch] text-balance font-display text-[clamp(2.75rem,6.5vw,4.5rem)] leading-[0.96] font-extrabold tracking-[-0.03em]">
+        <h1 className="m-0 max-w-[16ch] text-balance font-display text-[clamp(2.75rem,6.5vw,4.5rem)] leading-[0.96] font-bold tracking-[-0.03em]">
           {phase.name}
         </h1>
 

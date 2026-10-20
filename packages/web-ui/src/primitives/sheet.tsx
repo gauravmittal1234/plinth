@@ -91,7 +91,7 @@ export function Sheet({
               <CloseIcon />
             </Dialog.Close>
           </div>
-          <Dialog.Title className="m-0 font-display text-h3 font-extrabold">{title}</Dialog.Title>
+          <Dialog.Title className="m-0 font-sans text-h3 font-bold">{title}</Dialog.Title>
           {description ? (
             <Dialog.Description className="m-0 text-body font-semibold">
               {description}

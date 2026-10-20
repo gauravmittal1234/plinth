@@ -56,7 +56,7 @@ export function BookedSection({ projects }: { projects: readonly FollowedProject
   return (
     <SectionBand id="booked" tone="bg">
       <div className="flex flex-col gap-6">
-        <h2 className="m-0 font-display text-h2 font-extrabold">{BOOKED_COPY.heading}</h2>
+        <h2 className="m-0 font-display text-section font-bold">{BOOKED_COPY.heading}</h2>
         <p className="m-0 max-w-[60ch] text-body text-ink2">{BOOKED_COPY.subheading}</p>
 
         <div role="group" aria-label={BOOKED_COPY.heading} className="flex flex-wrap gap-2">

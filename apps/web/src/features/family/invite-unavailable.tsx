@@ -11,9 +11,9 @@ export function InviteUnavailable() {
     <main id="main" className="mx-auto flex w-full max-w-[32rem] flex-col gap-6 px-4 py-16 sm:px-8">
       <Link href="/" className="flex items-center gap-2 text-ink no-underline">
         <PlinthMark />
-        <span className="font-display text-h3 font-extrabold">Plinth</span>
+        <span className="font-sans text-h3 font-bold">Plinth</span>
       </Link>
-      <h1 className="m-0 font-display text-h1 font-extrabold">
+      <h1 className="m-0 font-display text-h1 font-bold">
         {FAMILY_JOIN_COPY.unavailableHeading}
       </h1>
       <p className="m-0 max-w-measure text-lead text-ink2">{FAMILY_JOIN_COPY.unavailableBody}</p>

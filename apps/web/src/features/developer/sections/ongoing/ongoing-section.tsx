@@ -34,7 +34,7 @@ export function OngoingSection({
   return (
     <SectionBand id="ongoing" tone="bg">
       <div className="flex flex-col gap-6">
-        <h2 className="m-0 max-w-[20ch] text-balance font-display text-h2 font-extrabold">
+        <h2 className="m-0 max-w-[20ch] text-balance font-display text-section font-bold">
           {ONGOING_COPY.heading(name)}
         </h2>
         <ul role="list" className="m-0 grid gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">

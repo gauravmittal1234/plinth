@@ -83,7 +83,7 @@ export function CompareBoard({
               ))}
               {canAdd ? (
                 <th scope="col" className="min-w-52 px-4 py-4 align-bottom">
-                  <p className="m-0 font-display text-body font-extrabold text-ink">
+                  <p className="m-0 font-display text-body font-bold text-ink">
                     {COPY.addSlotHeading}
                   </p>
                   <p className="m-0 mt-1 text-caption text-ink2">{COPY.addSlotHint}</p>
@@ -169,7 +169,7 @@ function ColumnHead({
           </span>
         </div>
       ) : null}
-      <h2 className="m-0 font-display text-body font-extrabold text-ink">{column.name}</h2>
+      <h2 className="m-0 font-display text-body font-bold text-ink">{column.name}</h2>
       <p className="m-0 mt-1 text-caption text-ink2">
         {[column.developer_name, column.locality_line].filter(Boolean).join(" · ")}
       </p>

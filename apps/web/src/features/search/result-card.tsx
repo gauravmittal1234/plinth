@@ -42,7 +42,7 @@ export function ResultCard({ card, selected, onHover }: ResultCardProps) {
         )}
         <div className="flex min-w-0 flex-col gap-2">
           <div>
-            <p className="m-0 font-display text-lead leading-tight font-extrabold">{card.name}</p>
+            <p className="m-0 font-display text-lead leading-tight font-bold">{card.name}</p>
             <p className="m-0 text-small text-ink2">
               {`${card.developer_name} · ${card.locality_line}`}
             </p>

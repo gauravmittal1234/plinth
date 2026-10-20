@@ -37,7 +37,7 @@ export function PhoneStep({
 }) {
   return (
     <div className="flex flex-col gap-4.5">
-      <h1 id="flow-h" className="m-0 font-display text-question leading-none font-extrabold">
+      <h1 id="flow-h" className="m-0 font-display text-question leading-none font-bold">
         {heading}
       </h1>
       <p className="m-0 text-lead">{COPY.genericIntro}</p>

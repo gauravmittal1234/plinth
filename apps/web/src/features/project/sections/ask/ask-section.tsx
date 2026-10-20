@@ -50,7 +50,7 @@ export function AskSection() {
     <SectionBand id="ask" tone="bg">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          <h2 className="m-0 max-w-[16ch] text-balance font-display text-h2 font-extrabold">
+          <h2 className="m-0 max-w-[16ch] text-balance font-display text-section font-bold">
             {ASK_COPY.heading}
           </h2>
           <p className="m-0 max-w-measure text-lead">{ASK_COPY.intro}</p>
