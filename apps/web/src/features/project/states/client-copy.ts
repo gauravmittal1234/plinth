@@ -1,5 +1,7 @@
-// Copy for the two client components in this folder (stall-instrument,
-// withheld-notice), split from copy.ts to keep the project page's JS small.
+// Copy for stall-instrument and withheld-notice, split from copy.ts when they
+// were client components. Both are server-rendered now (only their source
+// chips, evidence-chip.tsx, run on the client), so this never ships to the
+// browser either way.
 
 export const STALL_COPY = {
   heading: "Is it still being built?",

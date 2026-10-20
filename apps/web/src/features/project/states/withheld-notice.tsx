@@ -1,5 +1,3 @@
-"use client";
-
 // Facts-only (WORK_BREAKDOWN §4 T20c; fix-project2.md §2(b), DESIGN.md §5b
 // "Facts-only example"): the withheld box plus "The records, as they stand".
 // `risk.withheld` carries the since/line/explainer straight from the server
@@ -7,22 +5,21 @@
 // own facts-only copy (facts-only-section.tsx), adapted from a group to one
 // project. The records list is `page.records` unchanged — the same sourced
 // facts records-section.tsx shows, just regrouped under this heading.
+// Server-rendered; only each record's source chip is client code
+// (evidence-chip.tsx).
 import type { EvidenceSummary, Withheld } from "@plinth/contracts";
-import { SourceChip } from "@plinth/web-ui";
 import { WITHHELD_COPY } from "./client-copy";
 import { formatDate } from "../page/format";
-import { useEvidence } from "../page/evidence-context";
+import { EvidenceChip } from "./evidence-chip";
 
 function RecordRow({ row }: { row: EvidenceSummary }) {
-  const { has, open } = useEvidence();
-  const available = has(row.fact_id);
   return (
     <li className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4">
-      <SourceChip
-        source={{ label: row.chip, evidence_url: available ? row.evidence_url : null }}
-        onOpen={available ? () => open(row.fact_id) : undefined}
-        ariaLabel={available ? `Source: ${row.chip}. Open evidence.` : undefined}
-        surface="track"
+      <EvidenceChip
+        factId={row.fact_id}
+        source={{ label: row.chip, evidence_url: row.evidence_url }}
+        ariaLabel={`Source: ${row.chip}. Open evidence.`}
+        fallback="text"
       />
       <p className="m-0 min-w-0 flex-1 text-ink2">{row.line}</p>
     </li>

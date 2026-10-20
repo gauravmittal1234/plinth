@@ -1,28 +1,18 @@
-"use client";
-
 // The Stalled instrument (WORK_BREAKDOWN §4 T20c; fixpass-buyer.md §4,
 // WebProjectStates.dc.html "Built, by quarterly report"): four equal slabs,
 // one per QPR with no progress, plus a promised-time bar running past 100%
 // to today. The slabs are read off the "site" reason's own sources (Laurel's
 // rank-3 reason, "No QPR progress for 4 quarters…"), so every quarter label,
 // filed date and evidence link is the same data risk-section.tsx already
-// cites — nothing here is invented.
+// cites — nothing here is invented. Server-rendered; only each slab's
+// source chip is client code (evidence-chip.tsx).
 import type { Reason, RiskMeta, Progress } from "@plinth/contracts";
-import { SourceChip } from "@plinth/web-ui";
 import type { CSSProperties } from "react";
 import { formatDate } from "../page/format";
-import { useEvidence } from "../page/evidence-context";
 import { STALL_COPY } from "./client-copy";
+import { EvidenceChip } from "./evidence-chip";
 
-function Slab({
-  source,
-  pct,
-  onOpen,
-}: {
-  source: Reason["sources"][number];
-  pct: number;
-  onOpen: (() => void) | undefined;
-}) {
+function Slab({ source, pct }: { source: Reason["sources"][number]; pct: number }) {
   const quarter = source.label.replace(/^HARERA QPR\s*·\s*/, "");
   return (
     <div className="flex flex-col gap-2">
@@ -39,11 +29,11 @@ function Slab({
       <p className="m-0 text-small font-semibold text-ink">
         {pct}% <span className="font-normal text-ink2">{quarter}</span>
       </p>
-      <SourceChip
+      <EvidenceChip
+        factId={source.fact_ids[0]}
         source={{ label: `filed ${formatDate(source.as_of)}`, evidence_url: source.evidence_url }}
-        onOpen={onOpen}
         ariaLabel={`Source: ${source.label}, filed ${formatDate(source.as_of)}. Open evidence.`}
-        surface="track"
+        fallback="link"
       />
     </div>
   );
@@ -58,7 +48,6 @@ export function StallInstrument({
   progress: Progress;
   meta: Pick<RiskMeta, "generated_at">;
 }) {
-  const { has, open } = useEvidence();
   const siteReason = reasons.find((r) => r.factor === "site" && r.sources.length > 1);
   if (!siteReason || progress.built_pct == null) return null;
 
@@ -87,17 +76,9 @@ export function StallInstrument({
           {STALL_COPY.barHeading}
         </h4>
         <div className="grid gap-4 sm:grid-cols-4">
-          {siteReason.sources.map((source) => {
-            const factId = source.fact_ids[0];
-            return (
-              <Slab
-                key={source.label}
-                source={source}
-                pct={progress.built_pct ?? 0}
-                onOpen={factId && has(factId) ? () => open(factId) : undefined}
-              />
-            );
-          })}
+          {siteReason.sources.map((source) => (
+            <Slab key={source.label} source={source} pct={progress.built_pct ?? 0} />
+          ))}
         </div>
       </div>
 

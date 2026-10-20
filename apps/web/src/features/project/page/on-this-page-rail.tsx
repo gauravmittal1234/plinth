@@ -7,7 +7,9 @@
 // The trailing "Simple view" link is fix-project2.md §1 G-27's header toggle
 // (handoff to T20c, WebProjectStates PR): it switches the page to
 // SimpleView via `?view=simple` (features/project/simple/simple-view.tsx,
-// which links back to this same, plain URL).
+// which links back to this same, plain URL). Not prefetched: SimpleView's
+// own client code (~5 KB) would otherwise load with every project page and
+// count against its JS budget (lighthouserc.cjs), for a view few open.
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { cx } from "./cx";
@@ -73,6 +75,7 @@ export function OnThisPageRail({ slug }: { slug: string }) {
       </nav>
       <Link
         href={`/gurugram/projects/${slug}?view=simple`}
+        prefetch={false}
         className="shrink-0 pr-4 text-small text-ink underline underline-offset-[0.2em] sm:pr-8"
       >
         {HERO_COPY.simpleView}
