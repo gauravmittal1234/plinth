@@ -69,6 +69,13 @@ export const PUBLIC_RPCS = [
     stable: true,
   },
   {
+    fn: "resolve_short_link",
+    m: "M2",
+    request: args({ p_code: { type: "string" } }),
+    response: "ShortLink",
+    stable: true,
+  },
+  {
     fn: "family_invite_preview",
     m: "M2",
     request: args({ p_code: { $ref: "#/components/schemas/InviteCode" } }),

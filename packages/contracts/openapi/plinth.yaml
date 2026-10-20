@@ -719,6 +719,73 @@ paths:
               schema:
                 $ref: "#/components/schemas/RpcError"
       description: "STABLE: the same arguments as query parameters."
+  /rest/v1/rpc/resolve_short_link:
+    post:
+      operationId: resolve_short_link
+      summary: api.resolve_short_link
+      tags:
+        - Public read API
+      x-plinth-milestone: M2
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+      security:
+        - apikey: []
+      responses:
+        "200":
+          description: ShortLink
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShortLink"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - p_code
+              properties:
+                p_code:
+                  type: string
+    get:
+      operationId: resolve_short_link_get
+      summary: api.resolve_short_link
+      tags:
+        - Public read API
+      x-plinth-milestone: M2
+      parameters:
+        - $ref: "#/components/parameters/ContentProfile"
+        - $ref: "#/components/parameters/AcceptProfile"
+        - name: p_code
+          in: query
+          required: true
+          schema:
+            type: string
+      security:
+        - apikey: []
+      responses:
+        "200":
+          description: ShortLink
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShortLink"
+        default:
+          description: SQLSTATE PT<http> raised by the function; message is the domain code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RpcError"
+      description: "STABLE: the same arguments as query parameters."
   /rest/v1/rpc/family_invite_preview:
     post:
       operationId: family_invite_preview
@@ -3567,6 +3634,8 @@ components:
       $ref: ../schemas/share_card.schema.json#/$defs/ShareCardPhase
     ShareCardState:
       $ref: ../schemas/share_card.schema.json#/$defs/ShareCardState
+    ShortLink:
+      $ref: ../schemas/short_link.schema.json
     Slug:
       $ref: ../schemas/common.schema.json#/$defs/Slug
     SourceRef:
