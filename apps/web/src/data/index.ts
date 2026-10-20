@@ -132,9 +132,14 @@ export function compare(slugs: Slug[]): Promise<Compare> {
   return call("compare", { p_slugs: slugs });
 }
 
-/** The evidence drawer (F-06). */
-export function evidence(factId: string): Promise<Evidence> {
-  return call("evidence", { p_fact_id: factId });
+/**
+ * The evidence drawer (F-06). `slug`, the page it was opened from (the
+ * `api.evidence(p_fact_id, p_slug)` overload, T13): `used_in` then names
+ * that page's own reasons, not whichever page the fact was first authored
+ * for.
+ */
+export function evidence(factId: string, slug?: Slug): Promise<Evidence> {
+  return call("evidence", { p_fact_id: factId, p_slug: slug });
 }
 
 export function methodology(): Promise<Methodology> {
