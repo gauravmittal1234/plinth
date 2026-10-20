@@ -99,7 +99,7 @@ jobs:
           nohup supabase functions serve --no-verify-jwt > "$RUNNER_TEMP/serve.log" 2>&1 &
           echo $! > "$RUNNER_TEMP/serve.pid"
 
-      - name: GET /functions/v1/health → 200 { "ok": true }
+      - name: 'GET /functions/v1/health → 200 {"ok": true}'
         env:
           URL: http://127.0.0.1:54321/functions/v1/health
         run: |
@@ -116,7 +116,7 @@ jobs:
           grep -qi '^x-request-id: ci-edge-health-0001' "$RUNNER_TEMP/health.headers"
           grep -qi '^x-plinth-db-ms: [0-9]' "$RUNNER_TEMP/health.headers"
 
-      - name: POST /functions/v1/health → 404 not_found (the contract error body)
+      - name: "POST /functions/v1/health → 404 not_found (the contract error body)"
         run: |
           code=$(curl -s -o "$RUNNER_TEMP/post.json" -w '%{http_code}' -X POST \
             -H 'content-type: application/json' -d '{}' http://127.0.0.1:54321/functions/v1/health)
