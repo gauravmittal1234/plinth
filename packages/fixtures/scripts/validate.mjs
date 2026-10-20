@@ -103,6 +103,7 @@ export const REQUIRED = {
   // T03b (API_CONTRACTS §4.7–§4.14); the schemas hold the full lists.
   following_feed: ["schema", "since", "summary_line", "changes", "quiet", "projects", "replay"],
   who_has_my_number: ["schema", "count_line", "rule_line", "parties", "relays", "ended"],
+  consent_history: ["schema", "count_line", "rule_line", "items"],
   family_invite_preview: ["schema", "inviter_first_name", "scope_line", "number_line"],
   family_invite: ["schema", "code", "link", "expires_on", "rules", "private_line"],
   alert_prefs: ["schema", "prefs", "whatsapp_optin", "lines", "number_line"],
@@ -129,6 +130,7 @@ const FN_TYPE = {
   // differs from the folder (alert_prefs_get, before_you_pay_check), _requests.json says `rpc`.
   following_feed: "following_feed",
   who_has_my_number: "who_has_my_number",
+  consent_history: "consent_history",
   family_invite_preview: "family_invite_preview",
   alert_prefs: "alert_prefs",
   share_card: "share_card",
