@@ -2,6 +2,14 @@
 
 Collected while closing the design gaps (18 Oct 2026). None of these block design or the first build: screens use clearly marked placeholders. Decisions I took as acting PM are listed so you can overturn them.
 
+## Needed from you to unblock coding
+1. **Review and merge the PRs, in order.**
+   - **PR #1 `[T00] Repo bootstrap`:** https://github.com/gauravmittal1234/plinth/pull/1
+   - **Wave-1 PRs (T01–T06):** these are stacked on PR #1's branch. Merge #1 first; GitHub will then offer to retarget them to `main`.
+
+   My session isn't allowed to merge without a human review. If you'd rather I merge PRs that pass CI, add that permission in your Claude Code settings.
+2. ~~Let CI workflows be pushed.~~ **Done 19 Oct 2026:** the `workflow` scope was granted and the T00 workflows are active on PR #1.
+
 ## Decisions taken as acting PM (overturn any)
 
 | # | Decision | Why |

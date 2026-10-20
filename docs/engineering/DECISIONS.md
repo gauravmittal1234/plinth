@@ -13,4 +13,4 @@ Decided by the acting Head of Engineering / PM on 19 Oct 2026, while the founder
 | E-7 | Maps use MapLibre with open tiles, not Google Maps | No Google billing or account |
 | E-8 | Gemini free tier, fictional data only, until the founder's paid key and DPA are in place | No real personal data goes to the AI before agreements exist |
 | E-9 | Keep GitHub Actions lean (path filters, cancel superseded runs) to fit the free private-repo minutes | Cost |
-| E-10 | `plinth.in` is a placeholder domain in copy and config (`PUBLIC_BASE_URL`) until the founder confirms it | Not yet registered |
+| E-10 | `plinth.in` is a placeholder domain in copy and config (`NEXT_PUBLIC_SITE_URL`) until the founder confirms it | Not yet registered |
