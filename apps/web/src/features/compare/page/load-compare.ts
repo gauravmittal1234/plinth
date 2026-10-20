@@ -10,7 +10,7 @@ import { compare, flags, isDataError, type Compare, type Slug } from "@/src/data
 
 export type CompareLoad =
   | { ok: true; slugs: readonly Slug[]; data: Compare; aiAskOn: boolean }
-  | { ok: false; slugs: readonly Slug[]; message: string };
+  | { ok: false; slugs: readonly Slug[]; reason: "not_found" | "fixture_missing"; message: string };
 
 const NOT_YET =
   "This exact comparison isn't in our records yet. Try the default projects, or remove one and compare again.";
@@ -20,8 +20,10 @@ export async function loadCompare(slugs: readonly Slug[]): Promise<CompareLoad> 
     const [data, f] = await Promise.all([compare([...slugs]), flags()]);
     return { ok: true, slugs, data, aiAskOn: f.flags.ai_ask === true };
   } catch (e) {
-    if (isDataError(e, "fixture_missing") || isDataError(e, "not_found")) {
-      return { ok: false, slugs, message: NOT_YET };
+    if (isDataError(e, "not_found"))
+      return { ok: false, slugs, reason: "not_found", message: NOT_YET };
+    if (isDataError(e, "fixture_missing")) {
+      return { ok: false, slugs, reason: "fixture_missing", message: NOT_YET };
     }
     throw e;
   }

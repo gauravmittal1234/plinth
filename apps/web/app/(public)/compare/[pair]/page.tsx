@@ -14,13 +14,27 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ComparePlaceholder } from "@/src/features/compare/page/compare-placeholder";
 import { CompareScreen } from "@/src/features/compare/page/compare-screen";
-import { parsePair } from "@/src/features/compare/page/pair";
+import { loadCompare } from "@/src/features/compare/page/load-compare";
+import { buildPair, parsePair } from "@/src/features/compare/page/pair";
 
-export const metadata: Metadata = {
-  title: "Compare",
-  description:
-    "Compare 2 to 4 Gurugram projects side by side: delivery risk, all-in cost and what's on record, each fact with its source and date.",
-};
+const DESCRIPTION =
+  "Compare 2 to 4 Gurugram projects side by side: delivery risk, all-in cost and what's on record, each fact with its source and date.";
+
+// An SEO route: the title names the projects. A pair we can't show is never
+// indexed (the 404 itself comes from CompareScreen's `unknownIs404`).
+export async function generateMetadata({
+  params,
+}: Pick<PageProps<"/compare/[pair]">, "params">): Promise<Metadata> {
+  const slugs = parsePair((await params).pair);
+  if (!slugs) return { title: "Compare", description: DESCRIPTION, robots: { index: false } };
+  const load = await loadCompare(slugs);
+  if (!load.ok) return { title: "Compare", description: DESCRIPTION, robots: { index: false } };
+  return {
+    title: `${load.data.columns.map((c) => c.name).join(" vs ")}: compare`,
+    description: DESCRIPTION,
+    alternates: { canonical: `/compare/${buildPair(slugs)}` },
+  };
+}
 
 export default function Page({ params }: PageProps<"/compare/[pair]">) {
   return (
@@ -34,5 +48,5 @@ async function CompareFromPair({ params }: Pick<PageProps<"/compare/[pair]">, "p
   const { pair } = await params;
   const slugs = parsePair(pair);
   if (!slugs) notFound();
-  return <CompareScreen slugs={slugs} />;
+  return <CompareScreen slugs={slugs} unknownIs404 />;
 }

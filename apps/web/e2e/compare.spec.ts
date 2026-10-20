@@ -4,8 +4,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const DEFAULT_PATH =
-  "/compare?p=aurelia-heights-phase-2,kestrel-park,sapphire-grove-phase-1";
+const DEFAULT_PATH = "/compare?p=aurelia-heights-phase-2,kestrel-park,sapphire-grove-phase-1";
 
 test.describe("WebCompare", () => {
   test.use({ reducedMotion: "reduce" });
@@ -14,9 +13,7 @@ test.describe("WebCompare", () => {
     page,
   }) => {
     await page.goto(DEFAULT_PATH);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-      "How do these 3 compare?",
-    );
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("How do these 3 compare?");
     await expect(page.locator('[data-compare-column="aurelia-heights-phase-2"]')).toBeVisible();
 
     const pendingCell = page.locator('[data-compare-cell="pending-aurelia-heights-phase-2"]');
@@ -52,9 +49,9 @@ test.describe("WebCompare", () => {
     // same four-column state without replaying the add.
     await page.reload();
     await expect(page.locator('[data-compare-column="coral-towers"]')).toBeVisible();
-    await expect(
-      page.locator('[data-compare-cell="pending-coral-towers"]'),
-    ).toContainText("progress 187 days old");
+    await expect(page.locator('[data-compare-cell="pending-coral-towers"]')).toContainText(
+      "progress 187 days old",
+    );
   });
 
   test("a column can be removed, and the URL drops back to 3 projects", async ({ page }) => {
@@ -87,6 +84,23 @@ test.describe("WebCompare", () => {
     expect(res?.status()).toBe(200);
     await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
     await expect(page.getByRole("main")).toHaveCount(1);
+    // A pair we can't show is never indexed.
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  });
+
+  test("the SEO pair route names its projects in the title, with a canonical URL", async ({
+    page,
+  }) => {
+    const pair = "aurelia-heights-phase-2-vs-kestrel-park-vs-sapphire-grove-phase-1";
+    await page.goto(`/compare/${pair}`);
+    await expect(page).toHaveTitle(
+      /Aurelia Heights.* vs Kestrel Park vs Sapphire Grove.*: compare/,
+    );
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      new RegExp(`/compare/${pair}$`),
+    );
+    await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
   });
 
   test("Ask Plinth's answer stays hidden while ai_ask is off", async ({ page }) => {
