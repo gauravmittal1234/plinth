@@ -10,7 +10,8 @@
     "./canonical/*": "./canonical/*",
     "./expected/*": "./expected/*",
     "./vectors/*": "./vectors/*",
-    "./media/*": "./media/*"
+    "./media/*": "./media/*",
+    "./recorded/*": "./recorded/*"
   },
   "scripts": {
     "author": "node src/author/build.mjs",

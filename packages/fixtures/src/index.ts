@@ -45,8 +45,55 @@ export const EXPECTED_FUNCTIONS = [
   "methodology",
   "about",
   "flags",
+  // T03b: M2–M3 reads. `alert_prefs` answers api.alert_prefs_get and `payee_check` answers
+  // api.before_you_pay_check (each key's `rpc` in _requests.json).
+  "following_feed",
+  "who_has_my_number",
+  "family_invite_preview",
+  "alert_prefs",
+  "share_card",
+  "doc_check",
+  "cost_breakdown",
+  "afford_the_wait",
+  "payee_check",
 ] as const;
 export type ExpectedFunction = (typeof EXPECTED_FUNCTIONS)[number];
+
+/** M2 buyer writes with fixture answers (T03b): what each RPC returns in the fixture world. */
+export const WRITE_FUNCTIONS = [
+  "follow",
+  "unfollow",
+  "mark_following_seen",
+  "alert_prefs_set",
+  "family_invite_create",
+  "family_invite_cancel",
+  "family_member_remove",
+  "family_member_undo",
+  "shortlist_note_add",
+  "consent_withdraw",
+] as const;
+export type WriteFunction = (typeof WRITE_FUNCTIONS)[number];
+
+/** The fixture buyer: Rohan (DESIGN §5b). His user id is canonical/people.json `people[key=rohan].id`. */
+export const FIXTURE_BUYER = "rohan";
+
+/** Recorded WhatsApp webhook bodies: `recorded/wa/<name>.json`, described in `recorded/wa/_index.json`. */
+export const RECORDED_WA = [
+  "text-aurelia",
+  "text-rera-number",
+  "text-join-ah2-7kq",
+  "text-stop",
+  "button-stop-weekly",
+  "button-see-changes",
+  "interactive-why-this-band",
+  "interactive-follow-project",
+  "image-old-card",
+  "image-flyer",
+  "audio-voice-note",
+  "document-demand-letter",
+  "status-delivered",
+] as const;
+export type RecordedWa = (typeof RECORDED_WA)[number];
 
 /** Golden vector files: `vectors/<name>.json`. */
 export const VECTOR_NAMES = [

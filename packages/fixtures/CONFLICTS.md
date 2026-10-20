@@ -2,6 +2,8 @@
 
 Owner: T03 (then T03b). WORK_BREAKDOWN §1 rule 5: facts come only from DESIGN.md §5/§5b. When a fixture needs a fact that is missing, or two sources disagree, it is listed here. The lead decides and adds the fact to §5b. Then the fixtures change in `src/author`, and `npm run -w @plinth/fixtures gen` regenerates everything.
 
+**Round 3 (T03b, 20 Oct 2026):** rows C-30 to C-41 are new and **open**. Until the lead decides, the fixtures follow the "How the fixtures behave" rules below, and each row says what they do now.
+
 **Round 2 (19 Oct 2026):** the lead answered every row in DESIGN §5b "Fixture decisions, round 2" (PR #8). All rows are now **resolved**. Each one says how the fixtures apply the decision. Canonical records cite the decision as `DESIGN §5b · Fixture decisions, round 2 (C-xx)`.
 
 How the fixtures behave:
@@ -41,6 +43,18 @@ How the fixtures behave:
 | C-27 | resolved | Northfield's finished projects |
 | C-28 | resolved | Schema gaps (T04 PR #4) |
 | C-29 | resolved | AI kill switches off until M5 |
+| C-30 | **open** | Replay inputs §5b does not give (T11 handoff) |
+| C-31 | **open** | Test phone numbers |
+| C-32 | **open** | Rohan's push alerts and quiet hours |
+| C-33 | **open** | Consents whose project is not named |
+| C-34 | **open** | How and when Meera joined |
+| C-35 | **open** | Shortlist notes and the ₹2.5 Cr budget |
+| C-36 | **open** | Kabir the buyer and Kabir Malhotra the agent |
+| C-37 | **open** | The old share card's issue date and code |
+| C-38 | **open** | Values left to column defaults |
+| C-39 | **open** | Contract gaps found by the T03b payloads |
+| C-40 | **open** | The number-holder cap and Rohan's 4 shares |
+| C-41 | **open** | Order of the Since you last looked changes |
 
 ---
 
@@ -129,3 +143,27 @@ How the fixtures behave:
   - Checked locally with T04's PGlite tool on a318d96, plus a stand-in for `ops.runtime_settings`: the seed loads and T04's 171 assertions pass.
   - One small gap remains for T04: `core.completion_events.granted_on` has no precision column, so OC months are stored as the 1st.
 - **C-29.** The seed turns `ai_ask`, `ai_doc_check` and `ai_staging` off. `expected/flags/anon.json` reads false for all three.
+
+---
+
+## Round 3 (T03b): open
+
+- **C-30 · Replay inputs §5b does not give.** T11's replay audit re-computes 6 of 10 earlier runs. T03b added what §5b supports:
+  - Aurelia had **13** complaints until the 9 Oct 2026 order ("13 → 14"), so the 30 Sep 2026 run saw 13. This is a `count_history` on the catalogue record and a superseded fact as of 30 Sep (rate 2.6, derived).
+  - Coral's v1.0 run of 15 Jul 2026 is **not stale**: its newest QPR (Jan–Mar 2026, filed 14 Apr 2026) was 92 days old, under v1.0's 180-day line. **T11 must set `stale: false` (and the new source) on that run in `fixture_world/ledger.yaml`**, or its golden diff fails.
+  - **Still missing (lead to add to §5b):** Aurelia's complaint count on 15 Jul and 2 Sep 2026, and the dates of the "new complaint orders" behind the 2 Oct change; Sapphire Grove Ph 1's QPRs before Apr–Jun 2026 (Jan–Mar 2025 to Jan–Mar 2026: filed dates and built %), which its 15 Jul v1.0 run used; Coral's QPRs before Jan–Mar 2026 (for "late in the last 8").
+- **C-31 · Test phone numbers.** AGENTS.md makes `canonical/people.json` the home of test numbers. The block is `+91 99000 003NN`, starting from Rohan's `+919900000318` in API_CONTRACTS §5.4 (masked `+91 99••• ••318`, DATA_MODEL). They are never displayed and only sign in on local, CI and dev. **Lead:** confirm the block is safe to use (not real subscribers), or name a reserved range; the generator changes in one line.
+- **C-32 · Rohan's push alerts and quiet hours.** §5b says WhatsApp alerts and the weekly digest are on. Push on and quiet hours 10 pm–8 am come from the WebFollowing and AppYou artboards (both agree). API_CONTRACTS §4.9's example says 21:00. The fixtures use 22:00–08:00. **Lead:** add both to §5b and align the §4.9 example.
+- **C-33 · Consents whose project is not named.** C-0902-01 (Meridian Habitat sales office, price list) and C-1016-08 (Kabir's visit of 16 Oct) carry no phase. Three are derived: Ishita's price-list enquiry C-1017-06 is Aurelia (her Larkspur brief C-1017-09 is Aurelia); Farah's C-1016-04 is Cedar Walk Ph 2 (Northfield's only Cedar Walk phase on sale); Dev's 4 BHK enquiry C-1015-07 is Aurelia (the only Northfield 4 BHK). **Lead:** confirm or name them.
+- **C-34 · How and when Meera joined.** §5b gives 6 Oct 2026. Her invite code, the channel (WhatsApp or app) and the time are not given; they are null. Times of day not in §5b are 00:00 IST everywhere (README convention).
+- **C-35 · Shortlist notes and the ₹2.5 Cr budget.** §5b says "dated notes from 12–17 Oct". The 6 note texts come from the WebFollowing artboard, and two mention a "₹2.5 Cr all-in limit" that is not in §5b. **Lead:** add the notes (or the budget) to §5b, or rule that user-written notes may come from the artboard.
+- **C-36 · Kabir the buyer and Kabir Malhotra the agent.** Northfield's inbox has a buyer Kabir (visited 16 Oct, shared his number); the agents list has Kabir Malhotra (verified 18 Oct). They are two people in the fixtures. **Lead:** confirm.
+- **C-37 · The old share card.** It is issued from Aurelia's v1.1 Moderate run of 2 Sep 2026, data as of 30 Sep 2026 (C-24, INTEGRATION_NOTES). Issue date 30 Sep 2026 comes from WaDigest ("Card of 30 Sep 2026"); two WaDigest labels still say "card of 26 Jun", and DATA_MODEL's `core.share_cards` note still says "26 Jun 2026 v1.1". The short code is derived (first 8 hex digits of the card id) and the perceptual hash is null. **Lead:** fix the stale labels and, if wanted, name a code.
+- **C-38 · Values left to column defaults.** Not in §5b, so the seed writes `default` (or null): a consent's `notice_version` and `channel`, a follow's `source`, `can_add_notes` on open invites, account creation times. **T40:** keep defaults (or nullability) on those columns, or the lead adds a privacy-notice version to §5b.
+- **C-39 · Contract gaps found by the T03b payloads (T02 / the API tasks).**
+  - `DocCheckRow` has no records label, but §5b rows say "Price list shows" (hoarding, recap) and WebPayAsBuilt says "Your plan shows" / "Your price shows". The fixtures name the developer's paper inside `records_line`. Suggest an optional `records_label`.
+  - §5b's recap and Pay-as-built say "Can't check yet"; API_CONTRACTS §4.12 allows only "Can't check". The fixtures use "Can't check".
+  - No result schema exists for `saved_search_save`, `request_project`, `family_join`, `consent_history`, `me`, `link_whatsapp_follows`, `data_export_request`, `account_delete_request`, so they have no write answers yet. `shortlist_note_add`, `family_invite_cancel`, `family_member_remove`/`undo` return `Ok`. §5b has no saved searches either (only the WebFollowing artboard has them).
+  - `api.set_follow_type`'s "What a booked buyer can do" link has no route yet.
+- **C-40 · The number-holder cap and Rohan's 4 shares.** Within 30 days of 15 Oct, Rohan's number reached Meridian Habitat's sales office (ended 2 Oct), Orbis Land, Larkspur and Meridian Habitat's site office: 4 share rows but 3 recipients, and 3 active on 18 Oct. **T40:** the cap trigger must count distinct recipients (or active shares), or the seed will not load. Shares are seeded in date order with Rohan's JWT and a tap event id.
+- **C-41 · Order of the Since you last looked changes.** The fixtures list changes newest first, as WebFollowing and AppFollowing do. API_CONTRACTS §4.8's two-item example lists the 14 Oct extension before the 15 Oct missing QPR. **Lead:** confirm newest first (T43b reproduces it).

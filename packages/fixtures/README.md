@@ -8,6 +8,8 @@ DESIGN.md §5/§5b as data: the seed of every surface. Owners: **T03** (catalogu
 |---|---|---|
 | `src/author/*.mjs` | The facts, written once, with a `source` on every record | hand (T03) |
 | `canonical/{catalogue,evidence,scoring,developer_content}.json` | §5b as tables (DATA_MODEL §1–§4) | `npm run author` |
+| `canonical/{people,consents,family,workspace,agents,visits,checks}.json` | T03b: people and test numbers, Rohan's follows, alerts and dated changes, the consent ledger and ref counters, the family circle, Northfield's workspace, agents, visits and checks (DATA_MODEL §4–§9) | `npm run author` |
+| `recorded/wa/*.json` | T03b: raw WhatsApp webhook bodies (API_CONTRACTS §5.1); `_index.json` gives each one's sender and expected route | `npm run author` |
 | `expected/<fn>/<key>.json` | Golden API outputs (API_CONTRACTS §2, §4); `_requests.json` holds each key's RPC args | `npm run author` |
 | `vectors/*.json` | Golden numbers for SQL, TS and Dart: cost, afford the wait, 10% cap, time used, Late12, formatting | `npm run author` |
 | `media/` | Hero images and the 3 BHK floor plan referenced by `image_url` (`/media/<file>`) | copied from `product/design/assets` |
@@ -28,6 +30,15 @@ Generated files are committed and never hand-edited. `npm run -w @plinth/fixture
 | `evidence` | the fact id (the 4 facts behind Aurelia's reasons) |
 | `methodology`, `about` | `default` |
 | `flags` | `anon` |
+| `following_feed`, `who_has_my_number`, `alert_prefs` | `rohan` (`alert_prefs` answers `api.alert_prefs_get`); `who_has_my_number/rohan--withdrawn-c-1012-04` is the state after withdrawing C-1012-04 |
+| `family_invite_preview` | `AH2-7KQ`, `RC4-2MW` |
+| `share_card` | `aurelia-old-card` (the v1.1 card of 30 Sep 2026; `p_code` in `_requests.json`) |
+| `doc_check` | `flyer`, `flyer--confirm-project`, `hoarding`, `demand-letter`, `payment-request`, `booking-form`, `visit-recap` |
+| `cost_breakdown`, `afford_the_wait` | `aurelia-heights-phase-2`, plus `--waive-plc-club` and `--delay-24` |
+| `payee_check` | `aurelia-eoi-whatsapp` (0 of 3), `aurelia-booking-form` (3 of 3); answers `api.before_you_pay_check` |
+| M2 writes: `follow`, `unfollow`, `mark_following_seen`, `alert_prefs_set`, `family_invite_create`, `family_invite_cancel`, `family_member_remove`, `family_member_undo`, `shortlist_note_add`, `consent_withdraw` | What each write returns in the fixture world (idempotent on `p_client_id`) |
+
+Buyer calls carry `"as": {"user", "user_id"}` in `_requests.json`: the contract runner sets that user's JWT claims before calling. `"rpc"` names the function when it differs from the folder. Requests with a `"state"` are design states (not reachable from the seed) and are skipped like `--facts-only`.
 
 Contract tests (T12/T13) call the function with `_requests.json` args and deep-compare, ignoring ids and `meta.generated_at`. Keys ending `--facts-only` need Northfield's `facts_only_since` set and are skipped against the normal seed.
 
@@ -37,7 +48,9 @@ Contract tests (T12/T13) call the function with `_requests.json` args and deep-c
 - **Ids:** UUID v5 of `https://plinth.in/fixtures/<kind>/<key>` in the URL namespace, so the seed, the expected files and the Dart assets share them.
 - **Dates:** month-precision dates are the 1st of the month. `learned_at` defaults to the `as_of` date at 00:00 IST when §5b gives no time.
 - **Copy:** risk copy is final in the expected files (clients never compose it). Apostrophes are ASCII, as in API_CONTRACTS §2.1.
-- **Seed `requires`:** a seedmap is emitted only when a migration file name contains each marker (`20261020` = T04; `20261101`/`20261102` = T12/T13). Otherwise its SQL file holds a "SKIPPED" header. Preview everything with `node scripts/build-seed.mjs --all --out <dir>`.
+- **Seed `requires`:** a seedmap is emitted only when a migration file name contains each marker (`20261020` = T04; `20261101`/`20261102` = T12/T13; `m2_people` = T40; `m2_comms` = T42; `20261114` = T44). Otherwise its SQL file holds a "SKIPPED" header. Preview everything with `node scripts/build-seed.mjs --all --out <dir>`.
+- **T03b seed:** consents and number shares are inserted with the buyer's own JWT claims and a tap event id, as the product writes them, so T40's triggers need no seed exception. `51_consents.sql` bumps `ops.ref_counters` to the highest seeded ref per prefix and IST day (C-1018-11, so the next live ref is C-1018-12). Values §5b does not give are written as `default`.
+- **Test phone numbers** live only in `canonical/people.json` (block `+91 99000 003NN`; CONFLICTS C-31) and the recorded payloads. They are never displayed except masked.
 
 ## Commands
 
@@ -48,4 +61,4 @@ npm run -w @plinth/fixtures test              # vectors, sources, consistency, n
 npm run -w @plinth/fixtures check:generated   # CI drift check
 ```
 
-Loaders: `@plinth/fixtures` (constants, keys) and `@plinth/fixtures/node` (`loadExpected`, `loadRequests`, `loadCanonical`, `loadVector`). In Flutter: `package:plinth_fixtures/plinth_fixtures.dart`.
+Loaders: `@plinth/fixtures` (constants, keys, `WRITE_FUNCTIONS`, `RECORDED_WA`) and `@plinth/fixtures/node` (`loadExpected`, `loadRequests`, `loadCanonical`, `loadVector`, `loadRecordedWa`, `loadRecordedWaIndex`). In Flutter: `package:plinth_fixtures/plinth_fixtures.dart`.
