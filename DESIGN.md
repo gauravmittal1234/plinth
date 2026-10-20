@@ -669,6 +669,55 @@ Count: **3 parties can reach you**.
   Northfield Estates Pvt Ltd is the group parent and the promoter of Aurelia Heights Ph 2.
 - **C-29 · AI kill switches:** the fixture world turns `ai_ask`, `ai_doc_check` and `ai_staging` **off** until M5. Screens show their "coming soon" states.
 
+**Fixture decisions, round 3 (20 Oct 2026; answers to `packages/fixtures/CONFLICTS.md` C-30 to C-41):**
+- **C-30 · Replay inputs:**
+  - **Aurelia complaint counts:** 11 on 15 Jul 2026. An order of 28 Aug 2026 made it 12 (seen by the 2 Sep run); an order of 24 Sep 2026 made it 13 (seen by the 30 Sep run); the 9 Oct order made it 14. The "new complaint orders" behind the 2 Oct change are the 28 Aug and 24 Sep orders.
+  - **Sapphire Grove Ph 1 QPRs:**
+
+    | Quarter | Filed | Built |
+    |---|---|---|
+    | Jan–Mar 2025 | 14 Apr 2025 | 4% |
+    | Apr–Jun 2025 | 15 Jul 2025 | 10% |
+    | Jul–Sep 2025 | 14 Oct 2025 | 18% |
+    | Oct–Dec 2025 | 14 Jan 2026 | 27% |
+    | Jan–Mar 2026 | 15 Apr 2026 | 38% |
+    | Apr–Jun 2026 | 27 Jul 2026, 12 days late | 48% |
+
+  - **Coral Towers QPRs:**
+
+    | Quarter | Filed | Built |
+    |---|---|---|
+    | Jul–Sep 2024 | on time | 12% |
+    | Oct–Dec 2024 | on time | 14% |
+    | Jan–Mar 2025 | 30 days late | 15% |
+    | Apr–Jun 2025 | on time | 17% |
+    | Jul–Sep 2025 | 22 days late | 18% |
+    | Oct–Dec 2025 | on time | 20% |
+    | Jan–Mar 2026 | 14 Apr 2026 | 22% |
+
+    Apr–Jun 2026 (due 15 Jul) and Jul–Sep 2026 (due 15 Oct) are not on HARERA.
+  - **Coral's v1.0 run of 15 Jul 2026 is not stale.** Its newest QPR was 92 days old, under v1.0's 180-day line. T11's ledger and the fixtures' `scoring.mjs` flip it together.
+- **C-31 · Test phone numbers:** the block `+91 99000 003NN` is used only in Supabase Auth's test-OTP map and in fixtures. Outbound SMS and WhatsApp adapters must refuse any number in this block in every environment, and run in mock mode outside prod. Never display them.
+- **C-32 · Rohan's alerts:** WhatsApp alerts on, the weekly digest on, push on. Quiet hours 22:00–08:00 IST.
+- **C-33 · Consent projects:**
+  - C-0902-01: Meridian Habitat price list, Sapphire Grove Ph 1.
+  - C-1016-08: Kabir's visit, Aurelia Heights Ph 2.
+  - C-1017-06: Ishita, Aurelia.
+  - C-1016-04: Farah, Cedar Walk Ph 2.
+  - C-1015-07: Dev, Aurelia.
+- **C-34 · Meera:** joined 6 Oct 2026 at 8:12 pm IST, by her own WhatsApp message "JOIN RC4-8TD". That code was issued 3 Oct and is now used.
+- **C-35 · Shortlist notes:** user-written notes are user content and may come from the WebFollowing artboard. Rohan's budget is **₹2.5 Cr all-in**, which is also the canonical search's "under 2.5 cr".
+- **C-36 · Two Kabirs:** the buyer Kabir (Northfield inbox) and the agent Kabir Malhotra are two different people.
+- **C-37 · Old share card:** issued 30 Sep 2026 from Aurelia's v1.1 run of 2 Sep 2026, data as of 30 Sep 2026, Moderate. Its short code is derived from the card id.
+- **C-38 · Defaults:** consent notice version **"Privacy notice v1.0, 1 Oct 2026"**. Other unspecified values keep column defaults.
+- **C-39 · Contracts:**
+  - `DocCheckRow` gains an optional `records_label`.
+  - The verdict label is **"Can't check yet"** everywhere; design wins over the old contract text.
+  - The missing write-result schemas are defined by the M2 API tasks (T45a/T45b).
+  - The "What a booked buyer can do" link goes to `/guides/booked-buyer` (T49).
+- **C-40 · Number cap:** the cap counts **distinct active recipients**. Rohan has 3 on 18 Oct 2026: Orbis Land site office, Larkspur Realty and Meridian Habitat site office. The Meridian sales office ended 2 Oct.
+- **C-41 · Feed order:** "Since you last looked" lists changes **newest first**.
+
 ## 6. Copy rules (short form)
 
 - Headings are questions. Sentences are ≤ 20 words. One fact per sentence, number first.
