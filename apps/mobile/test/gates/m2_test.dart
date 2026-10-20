@@ -129,9 +129,15 @@ void main() {
       final flow = SignInFlowController(auth);
       addTearDown(flow.dispose);
       flow.setPhone(phone.replaceFirst('+91', ''));
-      expect(await flow.sendCode(), isTrue, reason: 'POST /auth/v1/otp: ${flow.phoneErr}');
+      if (!await flow.sendCode()) {
+        await auth.sendCode(phone); // the controller shows house copy; this surfaces the server's answer
+        fail('POST /auth/v1/otp: ${flow.phoneErr}');
+      }
       flow.setOtp(testOtp(phone));
-      expect(await flow.verify(), isTrue, reason: 'POST /auth/v1/verify: ${flow.otpErr}');
+      if (!await flow.verify()) {
+        await auth.verifyCode(phone: phone, code: testOtp(phone));
+        fail('POST /auth/v1/verify: ${flow.otpErr}');
+      }
       expect(auth.signedIn, isTrue);
       expect(client.auth.currentUser?.phone, phone.replaceFirst('+', ''));
     });

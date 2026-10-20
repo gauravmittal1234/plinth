@@ -95,6 +95,19 @@ jobs:
         working-directory: supabase/functions
         run: npx --yes deno@2 --version
 
+      # supabase/config.toml keeps the Send-SMS hook off ("the CLI refuses an http hook whose secret
+      # is unset, and CI starts the database without one"), and enables no SMS provider, so the
+      # stack as committed answers every phone OTP with 400 "Unsupported phone provider". This is
+      # the local setup that file documents: the hook on, with a secret made for this run. Auth
+      # never calls the hook for the [auth.sms.test_otp] numbers the gate signs in with.
+      - name: Phone OTP on the CI stack (the Send-SMS hook on, as config.toml documents)
+        run: |
+          sed -i '/^\[auth\.hook\.send_sms\]/,/^\[/ s/^enabled = false/enabled = true/' supabase/config.toml
+          grep -A1 '^\[auth\.hook\.send_sms\]' supabase/config.toml | grep -q '^enabled = true'
+          secret="v1,whsec_$(openssl rand -base64 32)"
+          echo "::add-mask::$secret"
+          echo "SEND_SMS_HOOK_SECRET=$secret" >> "$GITHUB_ENV"
+
       # Auth (gotrue) stays up: phone OTP sign-in is the point, and this CLI only reports the
       # local API keys when it runs.
       - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, auth, gateway)
@@ -178,6 +191,19 @@ jobs:
         working-directory: apps/mobile
         run: flutter pub get --enforce-lockfile
 
+      # supabase/config.toml keeps the Send-SMS hook off ("the CLI refuses an http hook whose secret
+      # is unset, and CI starts the database without one"), and enables no SMS provider, so the
+      # stack as committed answers every phone OTP with 400 "Unsupported phone provider". This is
+      # the local setup that file documents: the hook on, with a secret made for this run. Auth
+      # never calls the hook for the [auth.sms.test_otp] numbers the gate signs in with.
+      - name: Phone OTP on the CI stack (the Send-SMS hook on, as config.toml documents)
+        run: |
+          sed -i '/^\[auth\.hook\.send_sms\]/,/^\[/ s/^enabled = false/enabled = true/' supabase/config.toml
+          grep -A1 '^\[auth\.hook\.send_sms\]' supabase/config.toml | grep -q '^enabled = true'
+          secret="v1,whsec_$(openssl rand -base64 32)"
+          echo "::add-mask::$secret"
+          echo "SEND_SMS_HOOK_SECRET=$secret" >> "$GITHUB_ENV"
+
       - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, auth, gateway)
         run: >-
           supabase start
@@ -256,7 +282,12 @@ jobs:
 
       - name: "JOIN AH2-7KQ from a new contact (recorded payload) → a member of Rohan's circle"
         run: |
-          payload=packages/fixtures/recorded/wa/text-join-ah2-7kq.json
+          # The recorded message, sent "now": only Meta's timestamp moves, so the 24-hour session
+          # window is open for the reply, as it is when a relative really sends it.
+          payload="$RUNNER_TEMP/text-join-ah2-7kq.json"
+          sed -E "s/\"timestamp\": *\"[0-9]+\"/\"timestamp\": \"$(date +%s)\"/" \
+            packages/fixtures/recorded/wa/text-join-ah2-7kq.json > "$payload"
+          grep -c '"JOIN AH2-7KQ"' "$payload"
           from=$(grep -o '"from": *"[0-9]*"' "$payload" | grep -o '[0-9]*' | head -1)
           wamid=$(grep -o '"id": *"wamid[^"]*"' "$payload" | cut -d'"' -f4)
           member_sql="select m.status || '|' || m.joined_via || '|' || c.wa_id_e164 from app.family_members m
@@ -280,10 +311,23 @@ jobs:
             got=$(psql -tAc "$member_sql"); [ "$got" = "joined|whatsapp|+$from" ] && break; sleep 1
           done
           echo "member: $got"; test "$got" = "joined|whatsapp|+$from"
+          for i in $(seq 15); do
+            routed=$(psql -tAc "select coalesce(to_jsonb(m) ->> 'route', '-') || '|' || coalesce(to_jsonb(m) ->> 'route_error', '-')
+                                  from comms.wa_messages m where m.wa_message_id = '$wamid'")
+            [ "$routed" != "-|-" ] && break; sleep 1
+          done
           psql -tAc "select direction || ' ' || type || ' ' || coalesce(to_jsonb(m) ->> 'route', '-') || ' ' ||
                        coalesce(to_jsonb(m) ->> 'route_error', '-') || ' ' || coalesce(status, '-')
                        from comms.wa_messages m join pii.wa_contacts c on c.id = m.contact_id
                       where c.wa_id_e164 = '+$from' order by m.created_at"
+          echo "routed: $routed"; test "$routed" = "family_join|-"
+          # The session reply says what the RPC recorded, word for word (AGENTS.md rule 9).
+          reply=$(psql -tAc "select m.payload #>> '{text,body}' from comms.wa_messages m
+                               join pii.wa_contacts c on c.id = m.contact_id
+                              where c.wa_id_e164 = '+$from' and m.direction = 'out'")
+          want=$(psql -tAc "select (app.family_join_json(m) ->> 'joined_line') || ' ' || (app.family_join_json(m) ->> 'number_line')
+                              from app.family_members m where m.invite_code = 'AH2-7KQ'")
+          echo "reply: $reply"; test -n "$want" && test "$reply" = "$want"
 
           code=$(post "$sig"); echo "redelivered → $code"; test "$code" = "200"
           sleep 3
