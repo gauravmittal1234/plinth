@@ -234,7 +234,9 @@ class _Preview extends StatelessWidget {
               const SizedBox(height: PlinthSpace.s8),
             ],
             PlinthButton(
-              label: channel == _Channel.whatsApp ? FamilyCopy.getAlertsOnWhatsApp : FamilyCopy.followInApp,
+              label: channel == _Channel.whatsApp
+                  ? FamilyCopy.getAlertsOnWhatsApp
+                  : FamilyCopy.followInApp(preview.inviterFirstName),
               expand: true,
               onPressed: onPrimary,
             ),

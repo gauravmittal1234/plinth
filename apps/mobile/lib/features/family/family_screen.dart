@@ -10,15 +10,24 @@ import '../../core/widgets/widgets.dart';
 import '../../data/family.dart';
 import '../../data/session.dart';
 import '../onboarding/sign_in_sheet.dart';
-import 'family_circle.dart';
 import 'family_copy.dart';
 
 /// Key for the screen's root (AGENTS.md pitfall note; `AppRisk`'s
 /// `riskScreenKey` is the precedent).
 const familyScreenKey = Key('app-family-screen');
 
-/// "Your circle" (WORK_BREAKDOWN T50): who follows with you, invite someone
-/// on WhatsApp, and remove or cancel an invite with Undo.
+/// "Your circle" (WORK_BREAKDOWN T50): invite someone on WhatsApp, and see
+/// what they'd get.
+///
+/// `api.family_circle` has no read contract or fixture yet (a T45a gap), so
+/// this screen never lists who is actually in the circle: AGENTS.md says
+/// facts come from data, never code, and a hard-coded "Meera joined 6 Oct"
+/// would be wrong for every buyer who isn't the fixture's Rohan. It shows
+/// only the signed-in buyer's own row (no name — the data layer has none
+/// yet either, `api.me`'s shape is pending T41) and an honest line that
+/// members appear once they join. The invite itself is real:
+/// `api.family_invite_create` answers with the actual link, share text and
+/// rules.
 class FamilyScreen extends ConsumerWidget {
   const FamilyScreen({super.key});
 
@@ -65,8 +74,8 @@ class _SignedOut extends StatelessWidget {
   }
 }
 
-/// The scope an invite covers. `codeForDisplay`/`scopeOf` mirror the
-/// artboard's `scope`/`code`, but the real link comes from the fixture.
+/// The scope an invite covers. The real link, share text and rules come
+/// from the fixture (`_familyInviteProvider`); this only picks which one.
 enum _Scope { aurelia, all }
 
 class _Circle extends ConsumerStatefulWidget {
@@ -83,7 +92,6 @@ class _CircleState extends ConsumerState<_Circle> {
   @override
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
-    final circle = ref.watch(familyCircleFactsProvider);
     final inviteAsync = ref.watch(_familyInviteProvider(_scope));
     return ListView(
       padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterPhone, 8, PlinthLayout.gutterPhone, 40),
@@ -92,24 +100,12 @@ class _CircleState extends ConsumerState<_Circle> {
         const SizedBox(height: 2),
         Text(FamilyCopy.subtitle, style: PlinthType.small.copyWith(color: tokens.muted)),
         const SizedBox(height: PlinthSpace.s16),
-        _MemberRow(fact: youFact, sub: FamilyCopy.youSub, action: null),
-        _MemberRow(
-          fact: meeraFact,
-          sub: circle.meeraStatus == MemberStatus.removed ? FamilyCopy.meeraRemovedSub : FamilyCopy.meeraJoinedSub,
-          action: circle.meeraStatus == MemberStatus.removed
-              ? _Action(label: FamilyCopy.undo, onTap: () => _undoMeera(context))
-              : _Action(label: FamilyCopy.remove, onTap: () => _confirmRemoveMeera(context)),
+        const _YouRow(),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: PlinthSpace.s12),
+          child: Text(FamilyCopy.membersAppearLine, style: PlinthType.small.copyWith(color: tokens.ink2)),
         ),
-        _MemberRow(
-          fact: fatherFact,
-          sub: circle.fatherStatus == MemberStatus.cancelled
-              ? FamilyCopy.fatherCancelledSub
-              : FamilyCopy.fatherInvitedSub,
-          action: circle.fatherStatus == MemberStatus.cancelled
-              ? _Action(label: FamilyCopy.undo, onTap: () => _undoCancelFather())
-              : _Action(label: FamilyCopy.cancelInvite, onTap: () => _confirmCancelFather(context)),
-        ),
-        const SizedBox(height: PlinthSpace.s20),
+        const SizedBox(height: PlinthSpace.s8),
         Text(FamilyCopy.inviteSomeone, style: PlinthType.h3.copyWith(color: tokens.ink)),
         const SizedBox(height: PlinthSpace.s8),
         Text(FamilyCopy.whatTheyFollow, style: PlinthType.small.copyWith(color: tokens.ink2)),
@@ -190,49 +186,6 @@ class _CircleState extends ConsumerState<_Circle> {
     if (!mounted) return;
     setState(() => _inviteStatus = 'Copied ${_bareLink(invite.link)}. ${invite.rules.join(' ')}');
   }
-
-  Future<void> _confirmRemoveMeera(BuildContext context) async {
-    final yes = await showRevokeDialog(
-      context,
-      fact: meeraFact,
-      title: FamilyCopy.removeMeeraTitle,
-      points: FamilyCopy.removeMeeraPoints,
-      yesLabel: FamilyCopy.removeMeeraYes,
-      noLabel: FamilyCopy.removeMeeraNo,
-    );
-    if (yes != true || !context.mounted) return;
-    await ref.read(familyCircleFactsProvider.notifier).removeMeera();
-    if (!context.mounted) return;
-    showPlinthToast(
-      context,
-      FamilyCopy.removeMeeraToast,
-      actionLabel: FamilyCopy.undo,
-      onAction: () => _undoMeera(context),
-    );
-  }
-
-  Future<void> _undoMeera(BuildContext context) async {
-    await ref.read(familyCircleFactsProvider.notifier).undoRemoveMeera();
-  }
-
-  Future<void> _confirmCancelFather(BuildContext context) async {
-    final yes = await showRevokeDialog(
-      context,
-      fact: fatherFact,
-      title: FamilyCopy.cancelFatherTitle,
-      points: FamilyCopy.cancelFatherPoints,
-      yesLabel: FamilyCopy.cancelFatherYes,
-      noLabel: FamilyCopy.cancelFatherNo,
-    );
-    if (yes != true || !context.mounted) return;
-    await ref.read(familyCircleFactsProvider.notifier).cancelFatherInvite();
-    if (!context.mounted) return;
-    showPlinthToast(context, FamilyCopy.cancelFatherToast, actionLabel: FamilyCopy.undo, onAction: _undoCancelFather);
-  }
-
-  void _undoCancelFather() {
-    ref.read(familyCircleFactsProvider.notifier).undoCancelFatherInvite();
-  }
 }
 
 final _familyInviteProvider = FutureProvider.family<c.FamilyInvite, _Scope>((ref, scope) {
@@ -242,64 +195,30 @@ final _familyInviteProvider = FutureProvider.family<c.FamilyInvite, _Scope>((ref
   return ref.watch(familyRepositoryProvider).createInvite(args);
 });
 
-class _Action {
-  const _Action({required this.label, required this.onTap});
-
-  final String label;
-  final VoidCallback onTap;
-}
-
-class _MemberRow extends StatelessWidget {
-  const _MemberRow({required this.fact, required this.sub, required this.action});
-
-  final FamilyMemberFact fact;
-  final String sub;
-  final _Action? action;
+/// The signed-in buyer's own row: no name (none in the data layer yet), no
+/// join date (there is no "circle" record to date), just who they are.
+class _YouRow extends StatelessWidget {
+  const _YouRow();
 
   @override
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
-    final gone = sub == FamilyCopy.meeraRemovedSub || sub == FamilyCopy.fatherCancelledSub;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: PlinthSpace.s12),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Opacity(
-            opacity: gone ? 0.45 : 1,
-            child: Container(
-              width: 40,
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(color: tokens.track, shape: BoxShape.circle),
-              child: fact.person
-                  ? Icon(Icons.person_outline_rounded, size: 20, color: tokens.ink)
-                  : Text(
-                      fact.init,
-                      style: PlinthType.body.copyWith(fontWeight: FontWeight.w700, color: tokens.ink),
-                    ),
-            ),
+          Container(
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(color: tokens.track, shape: BoxShape.circle),
+            child: Icon(Icons.person_outline_rounded, size: 20, color: tokens.ink),
           ),
           const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  fact.name,
-                  style: PlinthType.body.copyWith(fontWeight: FontWeight.w600, color: tokens.ink),
-                ),
-                Text(sub, style: PlinthType.small.copyWith(color: tokens.ink2)),
-              ],
-            ),
+          Text(
+            FamilyCopy.you,
+            style: PlinthType.body.copyWith(fontWeight: FontWeight.w600, color: tokens.ink),
           ),
-          if (action != null)
-            Semantics(
-              button: true,
-              label: '${action!.label} ${fact.name}',
-              excludeSemantics: true,
-              child: TextButton(onPressed: action!.onTap, child: Text(action!.label)),
-            ),
         ],
       ),
     );
@@ -343,79 +262,4 @@ class _BulletList extends StatelessWidget {
       ],
     );
   }
-}
-
-/// The revoke / cancel-invite confirm dialog (AppFamily's DLG map).
-Future<bool?> showRevokeDialog(
-  BuildContext context, {
-  required FamilyMemberFact fact,
-  required String title,
-  required List<String> points,
-  required String yesLabel,
-  required String noLabel,
-}) {
-  final tokens = PlinthTokens.of(context);
-  return showPlinthSheet<bool>(
-    context: context,
-    builder: (_) => Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(color: tokens.track, shape: BoxShape.circle),
-                child: fact.person
-                    ? Icon(Icons.person_outline_rounded, size: 22, color: tokens.ink)
-                    : Text(fact.init, style: PlinthType.h3.copyWith(color: tokens.ink)),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(title, style: PlinthType.h2.copyWith(color: tokens.ink)),
-              ),
-            ],
-          ),
-          const SizedBox(height: PlinthSpace.s16),
-          for (final point in points)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 9),
-                    child: Container(
-                      width: 6,
-                      height: 6,
-                      decoration: BoxDecoration(color: tokens.ink, shape: BoxShape.circle),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(point, style: PlinthType.body.copyWith(height: 1.45, color: tokens.ink)),
-                  ),
-                ],
-              ),
-            ),
-          const SizedBox(height: PlinthSpace.s12),
-          PlinthButton(
-            label: yesLabel,
-            kind: PlinthButtonKind.inverse,
-            onPressed: () => Navigator.of(context).pop(true),
-          ),
-          const SizedBox(height: PlinthSpace.s8),
-          PlinthButton(
-            label: noLabel,
-            kind: PlinthButtonKind.tertiary,
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-        ],
-      ),
-    ),
-  );
 }

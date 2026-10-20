@@ -8,7 +8,6 @@ import '../../app/routes.dart';
 import '../../core/widgets/widgets.dart';
 import '../../data/follow.dart';
 import '../../data/session.dart';
-import '../family/family_circle.dart';
 import '../onboarding/sign_in_sheet.dart';
 import 'change_item_tile.dart';
 import 'follow_type_sheet.dart';
@@ -119,7 +118,6 @@ class _Feed extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tokens = PlinthTokens.of(context);
-    final circle = ref.watch(familyCircleFactsProvider);
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -147,17 +145,20 @@ class _Feed extends ConsumerWidget {
                 style: PlinthType.body.copyWith(color: tokens.ink),
               ),
               const SizedBox(height: PlinthSpace.s8),
+              // Who is actually in the circle is api.family_circle's job
+              // (no read contract or fixture yet, T45a); this is a plain
+              // link, not a membership claim.
               InkWell(
                 onTap: () => context.push(Routes.family),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: PlinthSpace.s8),
                   child: Row(
                     children: [
-                      _FamilyFaces(circle: circle),
+                      Icon(Icons.group_outlined, size: 22, color: tokens.ink),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          '${FollowingCopy.familyCirclePrefix}${circle.entryText}',
+                          FollowingCopy.familyCircle,
                           style: PlinthType.small.copyWith(fontSize: 15, color: tokens.ink),
                         ),
                       ),
@@ -188,62 +189,14 @@ class _Feed extends ConsumerWidget {
   }
 }
 
-class _FamilyFaces extends StatelessWidget {
-  const _FamilyFaces({required this.circle});
-
-  final FamilyCircleState circle;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = PlinthTokens.of(context);
-    final faces = circle.entryFaces;
-    if (faces.isEmpty) return const SizedBox.shrink();
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (final f in faces)
-          Padding(
-            padding: const EdgeInsets.only(right: 2),
-            child: _Face(fact: f, size: 28, tokens: tokens),
-          ),
-      ],
-    );
-  }
-}
-
-class _Face extends StatelessWidget {
-  const _Face({required this.fact, required this.size, required this.tokens});
-
-  final FamilyMemberFact fact;
-  final double size;
-  final PlinthTokens tokens;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(color: tokens.track, shape: BoxShape.circle),
-      child: fact.person
-          ? Icon(Icons.person_outline_rounded, size: size * 0.55, color: tokens.ink)
-          : Text(
-              fact.init,
-              style: PlinthType.small.copyWith(fontWeight: FontWeight.w700, color: tokens.ink),
-            ),
-    );
-  }
-}
-
-class _ProjectsSection extends ConsumerWidget {
+class _ProjectsSection extends StatelessWidget {
   const _ProjectsSection({required this.feed});
 
   final c.FollowingFeed feed;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
-    final circle = ref.watch(familyCircleFactsProvider);
     return Padding(
       padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterPhone, 40, PlinthLayout.gutterPhone, 56),
       child: Column(
@@ -252,7 +205,7 @@ class _ProjectsSection extends ConsumerWidget {
           Text(FollowingCopy.howAreProjectsDoing, style: PlinthType.h2.copyWith(color: tokens.ink)),
           const SizedBox(height: PlinthSpace.s8),
           Text(FollowingCopy.projectsIntro, style: PlinthType.small.copyWith(color: tokens.ink2)),
-          for (final project in feed.projects) _ProjectRow(project: project, circle: circle),
+          for (final project in feed.projects) _ProjectRow(project: project),
           const SizedBox(height: PlinthSpace.s8),
           Text(FollowingCopy.imagesIllustrative, style: PlinthType.small.copyWith(color: tokens.muted)),
         ],
@@ -262,10 +215,9 @@ class _ProjectsSection extends ConsumerWidget {
 }
 
 class _ProjectRow extends StatelessWidget {
-  const _ProjectRow({required this.project, required this.circle});
+  const _ProjectRow({required this.project});
 
   final c.FollowedProject project;
-  final FamilyCircleState circle;
 
   @override
   Widget build(BuildContext context) {
@@ -307,7 +259,7 @@ class _ProjectRow extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _Face(fact: circle.memberFact('meera'), size: 20, tokens: tokens),
+                    Icon(Icons.group_outlined, size: 16, color: tokens.muted),
                     const SizedBox(width: 6),
                     Text(project.familyLine!, style: PlinthType.small.copyWith(color: tokens.muted)),
                   ],

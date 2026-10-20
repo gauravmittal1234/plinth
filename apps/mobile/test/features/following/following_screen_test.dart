@@ -59,8 +59,8 @@ void main() {
 
   testWidgets('the family circle row opens the family circle', (tester) async {
     final container = await pumpSignedIn(tester, location: Routes.following);
-    expect(find.textContaining('With Meera'), findsOneWidget);
-    await tester.tap(find.textContaining('With Meera'));
+    expect(find.text(FollowingCopy.familyCircle), findsOneWidget);
+    await tester.tap(find.text(FollowingCopy.familyCircle));
     await tester.pumpAndSettle();
     expect(locationOf(container), Routes.family);
   });

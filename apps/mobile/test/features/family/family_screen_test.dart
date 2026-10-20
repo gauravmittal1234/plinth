@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:plinth/app/routes.dart';
@@ -6,8 +7,14 @@ import 'package:plinth/features/family/family_screen.dart' show familyScreenKey;
 
 import '../following/following_test_helpers.dart';
 
-/// AppFamily's "Your circle" (WORK_BREAKDOWN T50): who follows with you,
-/// invite someone on WhatsApp, and remove or cancel an invite with Undo.
+/// AppFamily's "Your circle" (WORK_BREAKDOWN T50): invite someone on
+/// WhatsApp, and see what they'd get.
+///
+/// `api.family_circle` has no read contract or fixture yet (T45a), so this
+/// screen never claims who is actually in the circle (AGENTS.md: facts come
+/// from data, never code). These tests check it shows only the signed-in
+/// buyer's own row, an honest "no members yet" line, and the real invite
+/// the fixture answers with.
 void main() {
   // "Copy link" calls Clipboard.setData, which needs a mock handler here:
   // tests run in a FakeAsync zone where an unmocked platform channel call
@@ -33,15 +40,22 @@ void main() {
     expect(find.text('Sign in with your phone'), findsNothing);
   });
 
-  testWidgets('signed in, lists the circle and the default invite link', (tester) async {
+  testWidgets('signed in, shows only the buyer\'s own row and the default invite link', (tester) async {
     await pumpSignedIn(tester, location: Routes.family);
-    expect(find.text('Rohan (you)'), findsOneWidget);
-    expect(find.text(FamilyCopy.meeraJoinedSub), findsOneWidget);
-    expect(find.text(FamilyCopy.fatherInvitedSub), findsOneWidget);
+    await tester.pumpAndSettle();
+
+    // Your own row, with no invented name. "You" also names the You tab in
+    // the bottom nav still showing underneath, so scope to the circle list.
+    expect(find.descendant(of: find.byType(ListView), matching: find.text(FamilyCopy.you)), findsOneWidget);
+    // No named member is claimed without a recorded api.family_circle
+    // answer (there is none yet): the honest line instead.
+    expect(find.text(FamilyCopy.membersAppearLine), findsOneWidget);
+    expect(find.text('Meera'), findsNothing);
+    expect(find.text('Meera’s father'), findsNothing);
+    expect(find.text('Rohan (you)'), findsNothing);
 
     // The default scope is Aurelia Heights Ph 2: api.family_invite_create
     // answers with the AH2-7KQ fixture, and its bare link is shown.
-    await tester.pumpAndSettle();
     expect(find.text('plinth.in/j/AH2-7KQ'), findsOneWidget);
   });
 
@@ -59,56 +73,5 @@ void main() {
     await tester.tap(find.text(FamilyCopy.copyLink));
     await tester.pumpAndSettle();
     expect(find.textContaining('Copied plinth.in/j/AH2-7KQ'), findsOneWidget);
-  });
-
-  testWidgets('Remove Meera, then Undo, restores her in the circle', (tester) async {
-    await pumpSignedIn(tester, location: Routes.family);
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text(FamilyCopy.remove));
-    await tester.pumpAndSettle();
-    expect(find.text(FamilyCopy.removeMeeraTitle), findsOneWidget);
-
-    await tester.tap(find.text(FamilyCopy.removeMeeraYes));
-    await tester.pumpAndSettle();
-    expect(find.text(FamilyCopy.meeraRemovedSub), findsOneWidget);
-    expect(find.text(FamilyCopy.removeMeeraToast), findsOneWidget);
-
-    // "Undo" now reads on both the toast and the member row; either one
-    // calls the same undo.
-    await tester.tap(find.text(FamilyCopy.undo).first);
-    await tester.pumpAndSettle();
-    expect(find.text(FamilyCopy.meeraJoinedSub), findsOneWidget);
-    expect(find.text(FamilyCopy.meeraRemovedSub), findsNothing);
-  });
-
-  testWidgets('cancelling the invite, then Undo, restores it', (tester) async {
-    await pumpSignedIn(tester, location: Routes.family);
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text(FamilyCopy.cancelInvite));
-    await tester.pumpAndSettle();
-    expect(find.text(FamilyCopy.cancelFatherTitle), findsOneWidget);
-
-    // "Cancel invite" also names the member row's own action (still in the
-    // tree behind the sheet); the sheet's own "Cancel invite" button is last.
-    await tester.tap(find.text(FamilyCopy.cancelFatherYes).last);
-    await tester.pumpAndSettle();
-    expect(find.text(FamilyCopy.fatherCancelledSub), findsOneWidget);
-
-    await tester.tap(find.text(FamilyCopy.undo).first);
-    await tester.pumpAndSettle();
-    expect(find.text(FamilyCopy.fatherInvitedSub), findsOneWidget);
-  });
-
-  testWidgets('declining to remove Meera keeps her in the circle', (tester) async {
-    await pumpSignedIn(tester, location: Routes.family);
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text(FamilyCopy.remove));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(FamilyCopy.removeMeeraNo));
-    await tester.pumpAndSettle();
-    expect(find.text(FamilyCopy.meeraJoinedSub), findsOneWidget);
   });
 }

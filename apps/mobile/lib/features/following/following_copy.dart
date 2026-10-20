@@ -7,7 +7,11 @@
 abstract final class FollowingCopy {
   static const title = 'Following';
   static const alertSettings = 'Alert settings';
-  static const familyCirclePrefix = 'Family circle: ';
+
+  /// A plain link to the family circle, not a membership claim: who is
+  /// actually in it is `api.family_circle`'s job (no read contract or
+  /// fixture yet, T45a).
+  static const familyCircle = 'Family circle';
 
   // Projects / Updates toggle.
   static const projectsTab = 'Projects';
