@@ -623,6 +623,16 @@ def settle_notice(
 
     DESIGN §5b: if the Jul-Sep QPR lands before 25 Oct, the proposal is withdrawn and
     Elevated stays; if it is still missing, High is published that day.
+
+    This decides; it writes nothing, and that is on purpose. The pipelines connect as
+    `pipeline_writer`, which can insert draft runs but never publish (DATA_MODEL §12 inv. 6,
+    `plinth.core.db`). The database owns the publish: `ops.publish_due_notice_runs()`
+    (migration 20261127000300, pg_cron daily at 00:05 IST) moves every `pending_notice` run
+    whose notice is still `pending` and due (`effective_on` <= today, IST) to `published`,
+    through `ops.publish_score_run`, the same path as any publish (band history, the
+    band_changed event, the alert fan-out, the page revalidation). A "withdrawn" answer here
+    is acted on before then, by moving the notice off `pending` (methodology or admin), so
+    the job never publishes it.
     """
     notice = next(n for n in result.notices if n.phase == phase and n.status == "pending")
     a = assess(
