@@ -65,12 +65,15 @@ begin
   end if;
 
   if v_user_id is not null and pg_catalog.to_regclass('ws.org_members') is not null then
-    execute $q$
+    -- ws.org_members arrives with M4. The table name is formatted in, so `supabase db lint`
+    -- (plpgsql_check) doesn't statically check a table that may not exist yet; the
+    -- to_regclass guard above keeps it safe at run time.
+    execute pg_catalog.format($q$
       select coalesce(pg_catalog.jsonb_object_agg(m.org_id::text, m.role::text), '{}'::jsonb)
-      from ws.org_members m
+      from %I.%I m
       where m.user_id = $1
         and (m.accepted_at is not null or m.invited_at is null)
-    $q$
+    $q$, 'ws', 'org_members')
     into v_org_roles
     using v_user_id;
   end if;
