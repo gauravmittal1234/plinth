@@ -65,4 +65,4 @@ jobs:
           fi
       - name: Reset the §5b seed (fixture world)
         if: inputs.reset_seed
-        run: supabase db reset --linked --password "$SUPABASE_DB_PASSWORD"
+        run: supabase db reset --linked --yes  # reads SUPABASE_DB_PASSWORD from env; db reset has no --password flag
