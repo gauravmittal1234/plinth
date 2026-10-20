@@ -18,9 +18,11 @@ typedef Sample = ({String location, String artboard, bool tabs});
 /// Every path in WORK_BREAKDOWN §2.2. A new route without a row here fails
 /// "every registered path has a sample".
 const samples = <String, Sample>{
-  '/': (location: '/', artboard: 'AppExplore', tabs: true),
-  Routes.explore: (location: '/explore', artboard: 'AppExplore', tabs: true),
-  Routes.map: (location: '/explore/map', artboard: 'AppMap', tabs: true),
+  // AppExplore and AppMap are filled (T30): the sample's "artboard" is the
+  // real screen's own stable heading/line, not a placeholder name.
+  '/': (location: '/', artboard: 'Which home are you buying?', tabs: true),
+  Routes.explore: (location: '/explore', artboard: 'Which home are you buying?', tabs: true),
+  Routes.map: (location: '/explore/map', artboard: '"Quoted" means no cost sheet yet.', tabs: true),
   Routes.following: (location: '/following', artboard: 'AppFollowing', tabs: true),
   Routes.family: (location: '/following/family', artboard: 'AppFamily', tabs: true),
   Routes.ask: (location: '/ask', artboard: 'AppVoice', tabs: true),
@@ -89,7 +91,7 @@ void main() {
   testWidgets('the app opens on Explore', (tester) async {
     final container = await pumpPlinth(tester);
     expect(locationOf(container), Routes.explore);
-    expect(find.text('AppExplore'), findsOneWidget);
+    expect(find.text('Which home are you buying?'), findsOneWidget);
   });
 
   testWidgets('browsing never redirects to sign-in', (tester) async {
