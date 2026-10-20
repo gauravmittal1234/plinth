@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:plinth/app/routes.dart';
+import 'package:plinth/features/following/following_screen.dart' show followingScreenKey;
 
 import '../helpers/app_harness.dart';
 
@@ -23,7 +24,6 @@ void main() {
     final container = await pumpPlinth(tester);
     final bar = find.byType(NavigationBar);
     for (final (label, path, artboard) in [
-      ('Following', Routes.following, 'AppFollowing'),
       ('Ask Plinth', Routes.ask, 'AppVoice'),
       // AppYou is filled (T51): its own stable, near-top text, shown signed
       // out too (this screen never scrolls in the check).
@@ -36,6 +36,14 @@ void main() {
       expect(locationOf(container), path);
       expect(find.text(artboard), findsOneWidget);
     }
+
+    // T50 replaced the AppFollowing placeholder with the real screen: check
+    // its root key instead of placeholder text (this test runs signed out,
+    // so it shows the inline sign-in prompt, not the feed).
+    await tester.tap(find.descendant(of: bar, matching: find.text('Following')));
+    await tester.pumpAndSettle();
+    expect(locationOf(container), Routes.following);
+    expect(find.byKey(followingScreenKey), findsOneWidget);
   });
 
   testWidgets('a tab keeps its place; tapping it again returns to its first screen', (tester) async {
