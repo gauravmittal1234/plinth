@@ -1,5 +1,7 @@
 // "What's free, for good?" (layout copy; FREE_GROUPS are feature names, never
 // a price or a band — those come from the payload elsewhere on the product).
+// Free at launch (founder, 20 Oct 2026): there is no paywall to move anything
+// behind.
 import { FREE_GROUPS } from "../copy";
 
 export function FreeSection() {
@@ -10,7 +12,7 @@ export function FreeSection() {
           What stays free?
         </h2>
         <p className="m-0 max-w-measure text-body text-ink2">
-          If it&rsquo;s free today, it stays free. We never move it behind Pro.
+          If it&rsquo;s free today, it stays free. We never move it behind a paywall.
         </p>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
           {FREE_GROUPS.map((group) => (
