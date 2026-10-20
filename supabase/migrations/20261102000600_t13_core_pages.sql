@@ -1251,11 +1251,12 @@ begin
   select pg_catalog.jsonb_build_object(
            'illustrative', coalesce(pg_catalog.bool_or(c.illustrative), false),
            'rows', pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
-             'band', c.band, 'label', core.band_label(c.band), 'range_low', c.range_low, 'range_high', c.range_high,
-             'n_projects', c.n_projects, 'n_late', c.n_late, 'per_100', c.per_100) order by core.band_step(c.band)),
+             'band', c.band, 'label', core.band_label(c.band), 'range_low', pg_catalog.trim_scale(c.range_low),
+             'range_high', pg_catalog.trim_scale(c.range_high), 'n_projects', c.n_projects, 'n_late', c.n_late,
+             'per_100', pg_catalog.trim_scale(c.per_100)) order by core.band_step(c.band)),
            'base_rate', v_base,
-           'brier', pg_catalog.max(c.brier),
-           'brier_baseline', pg_catalog.max(c.brier_baseline))
+           'brier', pg_catalog.trim_scale(pg_catalog.max(c.brier)),
+           'brier_baseline', pg_catalog.trim_scale(pg_catalog.max(c.brier_baseline)))
     into v_cal
   from core.calibration c where c.model_version = v_model.version;
 
@@ -1361,8 +1362,9 @@ declare
   v_baseline numeric;
 begin
   select pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
-           'band', c.band, 'label', core.band_label(c.band), 'said_low', c.range_low, 'said_high', c.range_high,
-           'n_projects', c.n_projects, 'n_late', c.n_late, 'per_100', c.per_100,
+           'band', c.band, 'label', core.band_label(c.band), 'said_low', pg_catalog.trim_scale(c.range_low),
+           'said_high', pg_catalog.trim_scale(c.range_high), 'n_projects', c.n_projects, 'n_late', c.n_late,
+           'per_100', pg_catalog.trim_scale(c.per_100),
            'inside_range', c.per_100 between c.range_low and c.range_high) order by core.band_step(c.band)),
          pg_catalog.bool_or(c.illustrative), pg_catalog.max(c.brier), pg_catalog.max(c.brier_baseline)
     into v_rows, v_illustrative, v_brier, v_baseline
