@@ -7,7 +7,12 @@
 // passes each of those six sections the slice of ProjectPage it needs — the
 // stubs took no props. One <h1> lives in HeroSection; every other heading is
 // an <h2>, so the page keeps exactly one top-level heading (e2e/smoke.spec.ts).
+// `ProjectStatesSection` (T20c, WebProjectStates) sits right after the risk
+// answer: it renders nothing for a plain scored project, and the hard-state
+// instrument plus "If you've already booked here" for the 6 phases and the
+// facts-only fixture that carry one (project-states-section.tsx).
 import type { Evidence } from "@plinth/contracts";
+import { ProjectStatesSection } from "../states";
 import { AskSection } from "../sections/ask/ask-section";
 import { BookingSection } from "../sections/booking/booking-section";
 import { BuiltSection } from "../sections/built/built-section";
@@ -34,8 +39,9 @@ export function ProjectPageView({
   return (
     <EvidenceProvider evidence={evidence}>
       <HeroSection page={page} />
-      <OnThisPageRail />
+      <OnThisPageRail slug={page.risk.phase.slug} />
       <RiskSection risk={page.risk} bands={bands} />
+      <ProjectStatesSection risk={page.risk} records={page.records} nextSteps={page.next_steps} />
       <NextSection nextSteps={page.next_steps} />
       <BookingSection beforeBooking={page.before_booking} />
       <BuiltSection page={page} bands={bands} />

@@ -2,10 +2,18 @@
 // phases are prerendered; any other slug renders on request and 404s through
 // `loadProject`'s `notFound()` when the fixtures (or, in time, the backend)
 // have no such phase.
+//
+// This page never reads `searchParams`, so it stays fully static. The fixture
+// previews keep their public URLs through next.config.ts rewrites to the
+// internal routes beside this file (src/features/project/page/preview.ts):
+// `?state=<state>` (WebProjectStates, T20c) → `~preview/state/[state]`, and
+// `?view=simple` (T20b's SimpleView; the header toggle is `OnThisPageRail`'s
+// "Simple view" link) → `~preview/simple`. Both are noindex.
 import { PHASE_SLUGS } from "@plinth/fixtures";
 import type { Metadata } from "next";
 import { loadEvidenceMap } from "@/src/features/project/page/evidence";
 import { loadProject } from "@/src/features/project/page/load-project";
+import { projectMetadata } from "@/src/features/project/page/preview";
 import { ProjectPageView } from "@/src/features/project/page/project-page";
 
 export function generateStaticParams() {
@@ -18,13 +26,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const { page } = await loadProject(slug);
-  const { phase } = page.risk;
-  return {
-    title: phase.name,
-    description: page.hero.summary_line,
-    alternates: { canonical: page.risk.meta.live_url },
-  };
+  return projectMetadata(await loadProject(slug));
 }
 
 export default async function Page(props: PageProps<"/gurugram/projects/[slug]">) {
