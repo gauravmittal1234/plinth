@@ -115,11 +115,28 @@ The agent team builds M0–M1 entirely on fixtures, so **nothing here blocks cod
    - Auth Hooks → Send SMS → `auth-sms-hook` with a generated hook secret;
    - Custom Access Token → `ops.custom_access_token_hook`.
 7. The `deploy-dev` workflow sets `plinth.env = 'fixture'` on this database, so `plinth-dev` stays the frozen §5b world (18 Oct 2026).
+8. **When M2 is merged: wire the edge functions** (about 15 minutes; free; skip any you're not testing yet, since everything stays in mock mode without them).
+   - **Edge function secrets** (Edge Functions → Secrets, or `supabase secrets set NAME=…` in your own terminal):
+     - `PLINTH_JWT_SECRET`: the project's legacy HS256 JWT secret (Project Settings → JWT Keys). It signs the 60-second WhatsApp "tap" links that open the app signed in.
+     - `PLINTH_HASH_SALT`: 32+ random characters (`openssl rand -hex 32`). It hashes rate-limit keys and log user ids. Never change it once live.
+     - `PLINTH_DISPATCH_SECRET`: 32+ random characters. It lets pg_cron call `outbox-dispatch`, `wa-webhook/sweep`, `retention-sweep` and `export-data`.
+     - `SEND_SMS_HOOK_SECRET`: the value the dashboard generated in step 6.
+     - `PLINTH_ENV`: `fixture` on `plinth-dev`, matching the database's frozen §5b clock (unset means `prod`). `META_MODE`: `mock` until 1.1 is done, then `live`. `OTP_CHANNELS`: empty (test numbers only), then `whatsapp`, then `whatsapp,msg91` once 1.3 is done.
+   - **Vault** (SQL editor), with the same value as `PLINTH_DISPATCH_SECRET`:
+     ```sql
+     select vault.create_secret('<the dispatch secret>', 'plinth_dispatch_secret');
+     ```
+   - **Functions base URL** (SQL editor; not a secret):
+     ```sql
+     update ops.runtime_settings set value = 'https://<ref>.supabase.co/functions/v1' where key = 'functions_base_url';
+     ```
+   - Until the Vault secret and the base URL are set, the cron jobs run as no-ops, so nothing breaks in the meantime.
 
 | Where | Env names |
 |---|---|
 | `.env.local` (and Vercel Preview) | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` |
-| Server only: Supabase secrets / Vercel server env / GitHub | `SUPABASE_SECRET_KEY`, `SUPABASE_PROJECT_REF`, `SUPABASE_DB_PASSWORD`, `SUPABASE_ACCESS_TOKEN` (CI), `SEND_SMS_HOOK_SECRET`, `PLINTH_DISPATCH_SECRET` (also stored in Vault), `REVALIDATE_SECRET` |
+| Server only: Supabase secrets / Vercel server env / GitHub | `SUPABASE_SECRET_KEY`, `SUPABASE_PROJECT_REF`, `SUPABASE_DB_PASSWORD`, `SUPABASE_ACCESS_TOKEN` (CI), `SEND_SMS_HOOK_SECRET`, `PLINTH_DISPATCH_SECRET` (also stored in Vault as `plinth_dispatch_secret`), `PLINTH_JWT_SECRET`, `PLINTH_HASH_SALT`, `REVALIDATE_SECRET` |
+| Edge function settings (not secrets) | `PLINTH_ENV`, `META_MODE`, `OTP_CHANNELS`, `AI_MODE`; `ops.runtime_settings.functions_base_url` in the database |
 | Pipelines | `PIPELINE_DB_URL` (the `pipeline_writer` role; you set its password via the SQL editor) |
 | App (`apps/mobile/.env.json`) | `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` |
 
@@ -209,6 +226,6 @@ The agent team builds M0–M1 entirely on fixtures, so **nothing here blocks cod
 - [ ] 1.2 D-U-N-S requested · [ ] Play organisation account · [ ] Upload key made · [ ] CI service account in GitHub secrets
 - [ ] 1.3 DLT Principal Entity · [ ] Header `PLINTH` · [ ] OTP template · [ ] MSG91 linked
 - [ ] 1.4 (optional) ≤ 10 real HARERA pages saved · legal memo and HARERA letter: post-launch
-- [ ] 2.1 `plinth-dev` Supabase + secrets · [ ] 2.2 Vercel ×2 · [ ] 2.3 Firebase · [ ] 2.4 Gemini budget alert · [ ] 2.5 Sentry/PostHog
+- [ ] 2.1 `plinth-dev` Supabase + secrets · [ ] 2.1.8 M2 function secrets, Vault, base URL · [ ] 2.2 Vercel ×2 · [ ] 2.3 Firebase · [ ] 2.4 Gemini budget alert · [ ] 2.5 Sentry/PostHog
 - [ ] 3 Resend + DNS
 - [ ] 4.x Production accounts, insurance, company facts
