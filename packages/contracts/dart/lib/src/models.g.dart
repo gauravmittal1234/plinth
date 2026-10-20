@@ -4,6 +4,7 @@
 // To parse this JSON data, do
 //
 //     final about = aboutFromJson(jsonString);
+//     final accountDeletion = accountDeletionFromJson(jsonString);
 //     final affordTheWait = affordTheWaitFromJson(jsonString);
 //     final affordTheWaitRequest = affordTheWaitRequestFromJson(jsonString);
 //     final alertPrefs = alertPrefsFromJson(jsonString);
@@ -13,9 +14,11 @@
 //     final askRequest = askRequestFromJson(jsonString);
 //     final compare = compareFromJson(jsonString);
 //     final compareRequest = compareRequestFromJson(jsonString);
+//     final consentHistory = consentHistoryFromJson(jsonString);
 //     final consentWithdrawal = consentWithdrawalFromJson(jsonString);
 //     final costBreakdown = costBreakdownFromJson(jsonString);
 //     final costBreakdownRequest = costBreakdownRequestFromJson(jsonString);
+//     final dataExport = dataExportFromJson(jsonString);
 //     final developerPage = developerPageFromJson(jsonString);
 //     final docCheck = docCheckFromJson(jsonString);
 //     final docCheckStartRequest = docCheckStartRequestFromJson(jsonString);
@@ -28,11 +31,13 @@
 //     final follow = followFromJson(jsonString);
 //     final followRequest = followRequestFromJson(jsonString);
 //     final followingFeed = followingFeedFromJson(jsonString);
+//     final me = meFromJson(jsonString);
 //     final methodology = methodologyFromJson(jsonString);
 //     final ok = okFromJson(jsonString);
 //     final payeeCheck = payeeCheckFromJson(jsonString);
 //     final payeeCheckRequest = payeeCheckRequestFromJson(jsonString);
 //     final projectPage = projectPageFromJson(jsonString);
+//     final relayRenewal = relayRenewalFromJson(jsonString);
 //     final riskSummary = riskSummaryFromJson(jsonString);
 //     final rpcError = rpcErrorFromJson(jsonString);
 //     final searchRequest = searchRequestFromJson(jsonString);
@@ -47,6 +52,10 @@ import 'dart:convert';
 About aboutFromJson(String str) => About.fromJson(json.decode(str));
 
 String aboutToJson(About data) => json.encode(data.toJson());
+
+AccountDeletion accountDeletionFromJson(String str) => AccountDeletion.fromJson(json.decode(str));
+
+String accountDeletionToJson(AccountDeletion data) => json.encode(data.toJson());
 
 AffordTheWait affordTheWaitFromJson(String str) => AffordTheWait.fromJson(json.decode(str));
 
@@ -84,6 +93,10 @@ CompareRequest compareRequestFromJson(String str) => CompareRequest.fromJson(jso
 
 String compareRequestToJson(CompareRequest data) => json.encode(data.toJson());
 
+ConsentHistory consentHistoryFromJson(String str) => ConsentHistory.fromJson(json.decode(str));
+
+String consentHistoryToJson(ConsentHistory data) => json.encode(data.toJson());
+
 ConsentWithdrawal consentWithdrawalFromJson(String str) => ConsentWithdrawal.fromJson(json.decode(str));
 
 String consentWithdrawalToJson(ConsentWithdrawal data) => json.encode(data.toJson());
@@ -95,6 +108,10 @@ String costBreakdownToJson(CostBreakdown data) => json.encode(data.toJson());
 CostBreakdownRequest costBreakdownRequestFromJson(String str) => CostBreakdownRequest.fromJson(json.decode(str));
 
 String costBreakdownRequestToJson(CostBreakdownRequest data) => json.encode(data.toJson());
+
+DataExport dataExportFromJson(String str) => DataExport.fromJson(json.decode(str));
+
+String dataExportToJson(DataExport data) => json.encode(data.toJson());
 
 DeveloperPage developerPageFromJson(String str) => DeveloperPage.fromJson(json.decode(str));
 
@@ -144,6 +161,10 @@ FollowingFeed followingFeedFromJson(String str) => FollowingFeed.fromJson(json.d
 
 String followingFeedToJson(FollowingFeed data) => json.encode(data.toJson());
 
+Me meFromJson(String str) => Me.fromJson(json.decode(str));
+
+String meToJson(Me data) => json.encode(data.toJson());
+
 Methodology methodologyFromJson(String str) => Methodology.fromJson(json.decode(str));
 
 String methodologyToJson(Methodology data) => json.encode(data.toJson());
@@ -163,6 +184,10 @@ String payeeCheckRequestToJson(PayeeCheckRequest data) => json.encode(data.toJso
 ProjectPage projectPageFromJson(String str) => ProjectPage.fromJson(json.decode(str));
 
 String projectPageToJson(ProjectPage data) => json.encode(data.toJson());
+
+RelayRenewal relayRenewalFromJson(String str) => RelayRenewal.fromJson(json.decode(str));
+
+String relayRenewalToJson(RelayRenewal data) => json.encode(data.toJson());
 
 RiskSummary riskSummaryFromJson(String str) => RiskSummary.fromJson(json.decode(str));
 
@@ -581,6 +606,52 @@ class ResponseTime {
         "promise_line": promiseLine,
         "ref_prefix": refPrefix,
         "what": what,
+    };
+}
+
+///plinth.account_delete_request/1, from api.account_delete_request() (API_CONTRACTS §3.2;
+///BUILD_PLAN §13). The record of a DPDP erasure request (app.data_requests, kind erasure):
+///erasure within 30 days (due_at = requested_at + 30 days), with legal-hold exceptions
+///(delete-account, T53). One open request at a time: a repeat call returns it.
+class AccountDeletion {
+    final String dueAt;
+    
+    ///"We'll erase your account by 17 Nov 2026."
+    final String dueLine;
+    final List<String> lines;
+    final String requestId;
+    final String requestedAt;
+    final String schema;
+    final String status;
+
+    AccountDeletion({
+        required this.dueAt,
+        required this.dueLine,
+        required this.lines,
+        required this.requestId,
+        required this.requestedAt,
+        required this.schema,
+        required this.status,
+    });
+
+    factory AccountDeletion.fromJson(Map<String, dynamic> json) => AccountDeletion(
+        dueAt: json["due_at"],
+        dueLine: json["due_line"],
+        lines: List<String>.from(json["lines"].map((x) => x)),
+        requestId: json["request_id"],
+        requestedAt: json["requested_at"],
+        schema: json["schema"],
+        status: json["status"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "due_at": dueAt,
+        "due_line": dueLine,
+        "lines": List<dynamic>.from(lines.map((x) => x)),
+        "request_id": requestId,
+        "requested_at": requestedAt,
+        "schema": schema,
+        "status": status,
     };
 }
 
@@ -1514,6 +1585,168 @@ class CompareRequest {
     };
 }
 
+///plinth.consent_history/1, from api.consent_history() (API_CONTRACTS §3.2; DESIGN §5b
+///Rohan's consent history). Every consent the buyer gave, newest first, each by its
+///C-MMDD-NN ref. Identical on web and app. Refs, dates and counts come from the ledger
+///rows; party and detail are what the buyer saw at the tap.
+class ConsentHistory {
+    
+    ///Distinct parties holding the number now, as in WhoHasMyNumber.
+    final String countLine;
+    final List<ConsentHistoryItem> items;
+    final String ruleLine;
+    final String schema;
+
+    ConsentHistory({
+        required this.countLine,
+        required this.items,
+        required this.ruleLine,
+        required this.schema,
+    });
+
+    factory ConsentHistory.fromJson(Map<String, dynamic> json) => ConsentHistory(
+        countLine: json["count_line"],
+        items: List<ConsentHistoryItem>.from(json["items"].map((x) => ConsentHistoryItem.fromJson(x))),
+        ruleLine: json["rule_line"],
+        schema: json["schema"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "count_line": countLine,
+        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "rule_line": ruleLine,
+        "schema": schema,
+    };
+}
+
+class ConsentHistoryItem {
+    
+    ///Last day of a live number share; null when it has no end or the number is not shared.
+    final String? accessUntil;
+    
+    ///True until withdrawn; api.consent_withdraw(ref) withdraws it.
+    final bool canWithdraw;
+    final String channel;
+    final String detail;
+    
+    ///The day the consent ended or was withdrawn; null while active.
+    final String? endedOn;
+    final String grantedOn;
+    
+    ///The privacy notice version shown at the tap.
+    final String noticeVersion;
+    
+    ///The party can see the number now (a live share made by the buyer's tap).
+    final bool numberShared;
+    final String party;
+    
+    ///app.purposes code (catalogues/purposes.json), e.g. number_share, visit_share.
+    final String purpose;
+    
+    ///The purpose as the privacy notice words it.
+    final String purposeLine;
+    final String ref;
+    
+    ///The WhatsApp relay this consent backs, if any. Pass relay_id to api.relay_renew.
+    final ConsentRelay? relay;
+    final String status;
+    
+    ///"Number shared, until 14 Nov 2026", "Ended 2 Oct 2026", "Withdrawn 18 Oct 2026".
+    final String statusLine;
+    final String? withdrawnAt;
+
+    ConsentHistoryItem({
+        required this.accessUntil,
+        required this.canWithdraw,
+        required this.channel,
+        required this.detail,
+        required this.endedOn,
+        required this.grantedOn,
+        required this.noticeVersion,
+        required this.numberShared,
+        required this.party,
+        required this.purpose,
+        required this.purposeLine,
+        required this.ref,
+        required this.relay,
+        required this.status,
+        required this.statusLine,
+        required this.withdrawnAt,
+    });
+
+    factory ConsentHistoryItem.fromJson(Map<String, dynamic> json) => ConsentHistoryItem(
+        accessUntil: json["access_until"],
+        canWithdraw: json["can_withdraw"],
+        channel: json["channel"],
+        detail: json["detail"],
+        endedOn: json["ended_on"],
+        grantedOn: json["granted_on"],
+        noticeVersion: json["notice_version"],
+        numberShared: json["number_shared"],
+        party: json["party"],
+        purpose: json["purpose"],
+        purposeLine: json["purpose_line"],
+        ref: json["ref"],
+        relay: json["relay"] == null ? null : ConsentRelay.fromJson(json["relay"]),
+        status: json["status"],
+        statusLine: json["status_line"],
+        withdrawnAt: json["withdrawn_at"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "access_until": accessUntil,
+        "can_withdraw": canWithdraw,
+        "channel": channel,
+        "detail": detail,
+        "ended_on": endedOn,
+        "granted_on": grantedOn,
+        "notice_version": noticeVersion,
+        "number_shared": numberShared,
+        "party": party,
+        "purpose": purpose,
+        "purpose_line": purposeLine,
+        "ref": ref,
+        "relay": relay?.toJson(),
+        "status": status,
+        "status_line": statusLine,
+        "withdrawn_at": withdrawnAt,
+    };
+}
+
+///A WhatsApp text relay instead of the number. It never counts toward the cap.
+class ConsentRelay {
+    
+    ///When an open relay closes (null while a deal is active and no end is set), or the day a
+    ///closed one closed.
+    final String? closesOn;
+    
+    ///Always false: a relay is not a number holder.
+    final bool countsTowardCap;
+    final bool open;
+    final String relayId;
+
+    ConsentRelay({
+        required this.closesOn,
+        required this.countsTowardCap,
+        required this.open,
+        required this.relayId,
+    });
+
+    factory ConsentRelay.fromJson(Map<String, dynamic> json) => ConsentRelay(
+        closesOn: json["closes_on"],
+        countsTowardCap: json["counts_toward_cap"],
+        open: json["open"],
+        relayId: json["relay_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "closes_on": closesOn,
+        "counts_toward_cap": countsTowardCap,
+        "open": open,
+        "relay_id": relayId,
+    };
+}
+
 ///Result of api.consent_withdraw(p_ref). An acknowledgement, so no schema envelope (as Ok).
 class ConsentWithdrawal {
     final List<String> effects;
@@ -1677,6 +1910,59 @@ class CostBreakdownRequest {
         "p_slug": pSlug,
         "p_unit": pUnit,
         "p_waive": pWaive == null ? null : List<dynamic>.from(pWaive!.map((x) => x)),
+    };
+}
+
+///plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2;
+///BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request
+///(app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24
+///hours); the link works for 7 days and opens only after a fresh sign-in code (export-data,
+///T53). One open request at a time: a repeat call returns it.
+class DataExport {
+    final String dueAt;
+    final List<String> lines;
+    
+    ///Set once the file is ready; the link opens only after a fresh sign-in code.
+    final String? linkExpiresAt;
+    final String requestId;
+    final String requestedAt;
+    final String schema;
+    final String status;
+    
+    ///"Ready by 19 Oct 2026, 12:00 pm." or "Ready. The link works until 26 Oct 2026."
+    final String statusLine;
+
+    DataExport({
+        required this.dueAt,
+        required this.lines,
+        required this.linkExpiresAt,
+        required this.requestId,
+        required this.requestedAt,
+        required this.schema,
+        required this.status,
+        required this.statusLine,
+    });
+
+    factory DataExport.fromJson(Map<String, dynamic> json) => DataExport(
+        dueAt: json["due_at"],
+        lines: List<String>.from(json["lines"].map((x) => x)),
+        linkExpiresAt: json["link_expires_at"],
+        requestId: json["request_id"],
+        requestedAt: json["requested_at"],
+        schema: json["schema"],
+        status: json["status"],
+        statusLine: json["status_line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "due_at": dueAt,
+        "lines": List<dynamic>.from(lines.map((x) => x)),
+        "link_expires_at": linkExpiresAt,
+        "request_id": requestId,
+        "requested_at": requestedAt,
+        "schema": schema,
+        "status": status,
+        "status_line": statusLine,
     };
 }
 
@@ -3188,6 +3474,53 @@ class ReplayMark {
         "band": band,
         "date": date,
         "kind": kind,
+    };
+}
+
+///plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b
+///per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The
+///number itself never leaves auth: only the masked form.
+class Me {
+    
+    ///When the user confirmed they are 18 or over; null until then.
+    final String? adultAttestedAt;
+    
+    ///The only name a site office ever sees (with a visit consent).
+    final String? firstName;
+    
+    ///"+91 99••• ••318" (app.profiles.phone_masked).
+    final String? phoneMasked;
+    
+    ///Platform roles (app.user_roles; plinth_roles in the JWT).
+    final List<String> roles;
+    final String schema;
+    final String userId;
+
+    Me({
+        required this.adultAttestedAt,
+        required this.firstName,
+        required this.phoneMasked,
+        required this.roles,
+        required this.schema,
+        required this.userId,
+    });
+
+    factory Me.fromJson(Map<String, dynamic> json) => Me(
+        adultAttestedAt: json["adult_attested_at"],
+        firstName: json["first_name"],
+        phoneMasked: json["phone_masked"],
+        roles: List<String>.from(json["roles"].map((x) => x)),
+        schema: json["schema"],
+        userId: json["user_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "adult_attested_at": adultAttestedAt,
+        "first_name": firstName,
+        "phone_masked": phoneMasked,
+        "roles": List<dynamic>.from(roles.map((x) => x)),
+        "schema": schema,
+        "user_id": userId,
     };
 }
 
@@ -5421,6 +5754,37 @@ class WaitDefaults {
         "rent_inr": rentInr,
         "take_home_inr": takeHomeInr,
         "tenure_years": tenureYears,
+    };
+}
+
+///Result of api.relay_renew(p_relay_id): the relay stays open 30 more days (D13), or a new
+///session opens for the same parties when it had closed. An acknowledgement, so no schema
+///envelope (as Ok). relay_id is the session now open; ref is the consent that backs it.
+class RelayRenewal {
+    final String closesAt;
+    final String line;
+    final String ref;
+    final String relayId;
+
+    RelayRenewal({
+        required this.closesAt,
+        required this.line,
+        required this.ref,
+        required this.relayId,
+    });
+
+    factory RelayRenewal.fromJson(Map<String, dynamic> json) => RelayRenewal(
+        closesAt: json["closes_at"],
+        line: json["line"],
+        ref: json["ref"],
+        relayId: json["relay_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "closes_at": closesAt,
+        "line": line,
+        "ref": ref,
+        "relay_id": relayId,
     };
 }
 

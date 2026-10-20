@@ -5,9 +5,11 @@
 //
 // Consents and number shares are written the way the product writes them: with the buyer's own
 // JWT (request.jwt.claims) and a tap event id, so T40's triggers (DATA_MODEL §12 invariant 4)
-// accept them without an exception for the seed.
+// accept them without an exception for the seed. Each consent carries the party and detail the
+// buyer saw at the tap (party_label, detail_line: T45b's `m2_privacy`), which Who has my number
+// and the consent history read.
 export const output = "51_consents.sql";
-export const requires = ["m2_people"];
+export const requires = ["m2_people", "m2_privacy"];
 
 export function build({ load, sql }) {
   const c = load("catalogue");
@@ -55,6 +57,8 @@ export function build({ load, sql }) {
           "scope",
           "granted_at",
           "expires_at",
+          "party_label",
+          "detail_line",
         ],
         k.consents
           .filter((x) => x.principal === b)
@@ -74,6 +78,8 @@ export function build({ load, sql }) {
             jsonb(x.scope),
             ts(x.granted_at),
             ts(x.expires_at),
+            q(x.party),
+            q(x.detail),
           ]),
       ),
     );

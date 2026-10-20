@@ -131,14 +131,11 @@ function model(dictionary) {
     lineHeight: v.lineHeight,
     letterSpacing: em(v.letterSpacing),
   });
-  const familyOf = (stack) =>
-    stack.join() === t.font.family.display.join()
-      ? "display"
-      : stack.join() === t.font.family.text.join()
-        ? "text"
-        : (() => {
-            throw new Error(`typography uses an unknown family stack: ${stack.join()}`);
-          })();
+  const familyOf = (stack) => {
+    const key = Object.keys(t.font.family).find((k) => t.font.family[k].join() === stack.join());
+    if (!key) throw new Error(`typography uses an unknown family stack: ${stack.join()}`);
+    return key;
+  };
   const type = {};
   for (const platform of ["web", "app"]) {
     type[platform] = {};
@@ -713,14 +710,26 @@ function formatDartFlutter({ dictionary }) {
   push("");
 
   // PlinthType.
-  push("/// Type roles for the app (DESIGN §3.3, Android sp). Colourless: apply a");
+  push("/// Type roles for the app (app UI v2; Android sp). Colourless: apply a");
   push("/// [PlinthTokens] colour with `copyWith(color: …)`.");
   push("///");
   push("/// The app must bundle the families under exactly these names.");
   push("abstract final class PlinthType {");
+  // The app's text family is whichever stack its non-display roles use (one
+  // stack for all of them): Figtree since P10, while the web keeps `text`.
+  const appTextKeys = [
+    ...new Set(
+      Object.values(m.type.app)
+        .map((r) => r.family)
+        .filter((f) => f !== "display"),
+    ),
+  ];
+  if (appTextKeys.length !== 1)
+    throw new Error(`app text roles must share one family, got: ${appTextKeys.join(", ")}`);
+  const appText = m.font.family[appTextKeys[0]];
   push(`  static const String displayFamily = '${m.font.family.display[0]}';`);
-  push(`  static const String textFamily = '${m.font.family.text[0]}';`);
-  const textFallback = m.font.family.text.filter((f, i) => i > 0 && !GENERIC_FAMILIES.has(f));
+  push(`  static const String textFamily = '${appText[0]}';`);
+  const textFallback = appText.filter((f, i) => i > 0 && !GENERIC_FAMILIES.has(f));
   push(
     ...dartList(
       "  ",
@@ -761,7 +770,8 @@ function formatDartFlutter({ dictionary }) {
   push("");
 
   // PlinthRadius.
-  push("/// Corner radii (DESIGN §0): square media, panels ≤ 8, pills.");
+  push("/// Corner radii (DESIGN §0): square media, panels ≤ 8, pills; app UI v2 adds");
+  push("/// tile 12, button 16, field 16, card 20 and sheet 28.");
   push("///");
   push("/// Icon-array cells and confidence dots use `BoxShape.circle`.");
   push("abstract final class PlinthRadius {");
@@ -782,6 +792,20 @@ function formatDartFlutter({ dictionary }) {
     "iconSm",
     "iconMd",
     "iconLg",
+    "gutterApp",
+    "sectionGapAppMin",
+    "sectionGapAppMax",
+    "rowMin",
+    "cardPadding",
+    "cardPaddingLg",
+    "buttonApp",
+    "buttonSecondaryApp",
+    "fieldApp",
+    "chipApp",
+    "navFloating",
+    "navFloatingMargin",
+    "iconTile",
+    "thumb",
   ];
   push("/// Phone layout (DESIGN §0, §3.4, §4 item 16).");
   push("abstract final class PlinthLayout {");

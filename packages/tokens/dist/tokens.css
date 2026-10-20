@@ -147,6 +147,7 @@
 :root {
   --pl-font-family-display: "Bricolage Grotesque", system-ui, sans-serif;
   --pl-font-family-text: "Mukta", "Noto Sans", system-ui, sans-serif;
+  --pl-font-family-ui: "Figtree", "Noto Sans", system-ui, sans-serif;
   --pl-font-weight-normal: 400;
   --pl-font-weight-medium: 500;
   --pl-font-weight-semibold: 600;
@@ -249,10 +250,29 @@
   --pl-layout-icon-sm: 16px;
   --pl-layout-icon-md: 20px;
   --pl-layout-icon-lg: 24px;
+  --pl-layout-gutter-app: 20px;
+  --pl-layout-section-gap-app-min: 32px;
+  --pl-layout-section-gap-app-max: 40px;
+  --pl-layout-row-min: 64px;
+  --pl-layout-card-padding: 16px;
+  --pl-layout-card-padding-lg: 20px;
+  --pl-layout-button-app: 56px;
+  --pl-layout-button-secondary-app: 48px;
+  --pl-layout-field-app: 56px;
+  --pl-layout-chip-app: 40px;
+  --pl-layout-nav-floating: 72px;
+  --pl-layout-nav-floating-margin: 16px;
+  --pl-layout-icon-tile: 40px;
+  --pl-layout-thumb: 56px;
   --pl-radius-none: 0px;
   --pl-radius-segment: 2px;
   --pl-radius-segment-lg: 4px;
   --pl-radius-panel: 8px;
+  --pl-radius-tile: 12px;
+  --pl-radius-button: 16px;
+  --pl-radius-field: 16px;
+  --pl-radius-card: 20px;
+  --pl-radius-sheet: 28px;
   --pl-radius-pill: 999px;
   --pl-radius-circle: 50%;
   --pl-motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);

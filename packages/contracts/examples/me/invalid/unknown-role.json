@@ -1,0 +1,12 @@
+{
+  "base": "rohan.json",
+  "why": "Roles come from app.user_roles; there is no owner role.",
+  "expect": "/roles/0",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/roles/0",
+      "value": "owner"
+    }
+  ]
+}

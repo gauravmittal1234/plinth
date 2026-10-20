@@ -130,7 +130,7 @@ export const PUBLIC_RPCS = [
 
 /** Buyer API (user JWT). Mutations take p_client_id and are idempotent. */
 export const BUYER_RPCS = [
-  { fn: "me", m: "M2", request: noArgs, response: null },
+  { fn: "me", m: "M2", request: noArgs, response: "Me" },
   {
     fn: "device_register",
     m: "M2",
@@ -200,22 +200,53 @@ export const BUYER_RPCS = [
     response: null,
   },
   { fn: "shortlist_note_add", m: "M2", request: null, response: null },
-  { fn: "who_has_my_number", m: "M2", request: noArgs, response: "WhoHasMyNumber" },
-  { fn: "consent_history", m: "M2", request: noArgs, response: null },
+  {
+    fn: "who_has_my_number",
+    m: "M2",
+    request: noArgs,
+    response: "WhoHasMyNumber",
+    stable: true,
+  },
+  {
+    fn: "consent_history",
+    m: "M2",
+    request: noArgs,
+    response: "ConsentHistory",
+    stable: true,
+  },
   {
     fn: "consent_withdraw",
     m: "M2",
-    request: args({ p_ref: { $ref: "#/components/schemas/ConsentRef" } }),
+    request: args(
+      {
+        p_ref: { $ref: "#/components/schemas/ConsentRef" },
+        p_channel: { type: "string", enum: ["web", "app"], default: "web" },
+      },
+      ["p_ref"],
+    ),
     response: "ConsentWithdrawal",
+    note: "Ends the shares, closes the relay and queues the partner deletion request. A replay returns the first withdrawal.",
   },
   {
     fn: "relay_renew",
     m: "M2",
     request: args({ p_relay_id: { type: "string", format: "uuid" } }),
-    response: null,
+    response: "RelayRenewal",
   },
-  { fn: "data_export_request", m: "M2", request: noArgs, response: null },
-  { fn: "account_delete_request", m: "M2", request: noArgs, response: null },
+  {
+    fn: "data_export_request",
+    m: "M2",
+    request: noArgs,
+    response: "DataExport",
+    note: "One open request at a time; a repeat call returns it. export-data (T53) fulfils it.",
+  },
+  {
+    fn: "account_delete_request",
+    m: "M2",
+    request: noArgs,
+    response: "AccountDeletion",
+    note: "One open request at a time; a repeat call returns it. delete-account (T53) fulfils it.",
+  },
   {
     fn: "request_project",
     m: "M2",

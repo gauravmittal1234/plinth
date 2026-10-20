@@ -6,14 +6,13 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/widgets/widgets.dart';
 import '../project_copy.dart';
 
-/// The photo, title, developer line, RERA badge and risk chip
-/// (`product/design/artboards/AppProject.dc.html` hero).
+/// The picture, title, developer line, RERA badge and risk chip
+/// (`product/design/artboards/AppProject.dc.html` hero; app UI v2).
 ///
-/// [hero.image_url] points at `packages/fixtures/media/*`, which this
-/// package doesn't bundle as a Flutter asset yet, so the photo is an
-/// illustrative placeholder carrying the server's caption rather than the
-/// image itself (Handoff: a later task can wire the real asset once
-/// `plinth_fixtures` ships media).
+/// The picture is the illustrative image the payload names in
+/// [c.ProjectHero.imageUrl], bundled with the app, under the server's own
+/// caption ("Images on this page are illustrative"). With no picture it
+/// shows a quiet building icon, never a flat grey box.
 class ProjectHeroSection extends StatelessWidget {
   const ProjectHeroSection({super.key, required this.phase, required this.hero, required this.chip});
 
@@ -27,28 +26,21 @@ class ProjectHeroSection extends StatelessWidget {
     final developer = phase.developer;
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-        PlinthLayout.gutterPhone,
-        PlinthSpace.s16,
-        PlinthLayout.gutterPhone,
-        PlinthSpace.s24,
+        PlinthLayout.gutterApp,
+        PlinthSpace.s8,
+        PlinthLayout.gutterApp,
+        // The risk band below opens with its own 32 dp section gap.
+        PlinthSpace.s4,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _Photo(caption: hero.imageCaption),
-          const SizedBox(height: PlinthSpace.s16),
+          ProjectHeroImage(imageUrl: hero.imageUrl, caption: hero.imageCaption, aspectRatio: 16 / 11),
+          const SizedBox(height: PlinthSpace.s20),
           Semantics(
             header: true,
-            child: Text(
-              phase.name,
-              style: PlinthType.display.copyWith(
-                fontSize: 34,
-                height: 1.02,
-                letterSpacing: -0.03 * 34,
-                color: tokens.ink,
-              ),
-            ),
+            child: Text(phase.name, style: PlinthType.display.copyWith(color: tokens.ink)),
           ),
           const SizedBox(height: PlinthSpace.s8),
           Text.rich(
@@ -62,49 +54,27 @@ class ProjectHeroSection extends StatelessWidget {
                 TextSpan(text: ' · ${developer.claim.line}'),
               ],
             ),
-            style: PlinthType.small.copyWith(color: tokens.ink2, height: 1.4),
+            style: PlinthType.meta.copyWith(color: tokens.ink2),
           ),
-          const SizedBox(height: 4),
-          Text(phase.localityLine, style: PlinthType.small.copyWith(color: tokens.muted)),
+          const SizedBox(height: PlinthSpace.s4),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 1),
+                child: Icon(Icons.place_rounded, size: 18, color: tokens.ink2),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Text(phase.localityLine, style: PlinthType.meta.copyWith(color: tokens.ink2)),
+              ),
+            ],
+          ),
           const SizedBox(height: PlinthSpace.s16),
           RiskChip(chip: chip),
-          const SizedBox(height: PlinthSpace.s16),
+          const SizedBox(height: PlinthSpace.s12),
           _ReraBadge(badge: hero.reraBadge),
         ],
-      ),
-    );
-  }
-}
-
-class _Photo extends StatelessWidget {
-  const _Photo({required this.caption});
-
-  final String? caption;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = PlinthTokens.of(context);
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(PlinthRadius.panel),
-      child: AspectRatio(
-        aspectRatio: 16 / 10,
-        child: Container(
-          color: tokens.photo,
-          alignment: Alignment.bottomLeft,
-          padding: const EdgeInsets.all(PlinthSpace.s12),
-          child: caption == null
-              ? null
-              : DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: tokens.scrim,
-                    borderRadius: BorderRadius.circular(PlinthRadius.panel),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    child: Text(caption!, style: PlinthType.small.copyWith(color: tokens.onInverse)),
-                  ),
-                ),
-        ),
       ),
     );
   }
@@ -128,21 +98,42 @@ class _ReraBadge extends StatelessWidget {
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () => _openAuthority(badge.authorityUrl),
-          child: DecoratedBox(
-            decoration: BoxDecoration(color: tokens.track, borderRadius: BorderRadius.circular(PlinthRadius.pill)),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    const WidgetSpan(
-                      alignment: PlaceholderAlignment.middle,
-                      child: Padding(padding: EdgeInsets.only(right: 6), child: KitIcon(KitGlyph.external, size: 16)),
-                    ),
-                    TextSpan(text: 'RERA ${badge.number}'),
-                  ],
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: PlinthLayout.touchApp),
+            child: Align(
+              alignment: AlignmentDirectional.centerStart,
+              widthFactor: 1,
+              heightFactor: 1,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: tokens.chipFill,
+                  borderRadius: BorderRadius.circular(PlinthRadius.pill),
                 ),
-                style: PlinthType.small.copyWith(fontWeight: FontWeight.w600, color: tokens.ink),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(12, 9, 14, 9),
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.only(end: 6),
+                            child: Icon(Icons.account_balance_rounded, size: 18, color: tokens.ink),
+                          ),
+                        ),
+                        TextSpan(text: 'RERA ${badge.number}'),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.only(start: 6),
+                            child: KitIcon(KitGlyph.external, size: 16, color: tokens.ink2),
+                          ),
+                        ),
+                      ],
+                    ),
+                    style: PlinthType.meta.copyWith(fontWeight: FontWeight.w600, color: tokens.ink),
+                  ),
+                ),
               ),
             ),
           ),
