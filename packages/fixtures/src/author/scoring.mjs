@@ -606,6 +606,9 @@ export function buildScoring(cat, ev) {
       status: "superseded",
       what_would_change: null,
       reasons: [],
+      // Coral's v1.0 run keeps stale: true here, as T11's ledger records it. On 15 Jul 2026 its
+      // newest QPR (filed 14 Apr 2026) was 92 days old, under v1.0's 180-day line, so the flag
+      // should be false; T11's ledger and this file change together (CONFLICTS.md C-30).
       source: histSrc,
     });
     const r12 = run({

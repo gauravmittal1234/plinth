@@ -1,0 +1,49 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "aurelia-heights-phase-2": {
+      "p_slug": "aurelia-heights-phase-2",
+      "p_follow_type": "watching",
+      "p_source": "web",
+      "p_client_id": "d7aba4b5-e59e-5821-a0ef-eb9e30945d9a",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Replays Rohan's follow of 1 Jul 2026; p_source is the request's, not a §5b fact."
+    },
+    "kestrel-park": {
+      "p_slug": "kestrel-park",
+      "p_follow_type": "watching",
+      "p_source": "web",
+      "p_client_id": "ba8aaba5-8a64-5226-ae3b-8420be342f3b",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Replays Rohan's follow of 1 Jul 2026; p_source is the request's, not a §5b fact."
+    },
+    "sapphire-grove-phase-1": {
+      "p_slug": "sapphire-grove-phase-1",
+      "p_follow_type": "watching",
+      "p_source": "web",
+      "p_client_id": "2c03efcd-7a2c-5873-92b6-02a222f0af92",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Replays Rohan's follow of 1 Jul 2026; p_source is the request's, not a §5b fact."
+    },
+    "coral-towers": {
+      "p_slug": "coral-towers",
+      "p_follow_type": "watching",
+      "p_source": "web",
+      "p_client_id": "ebe544ff-beb9-5d52-8b47-147dc0c42b10",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Replays Rohan's follow of 1 Jul 2026; p_source is the request's, not a §5b fact."
+    }
+  }
+}

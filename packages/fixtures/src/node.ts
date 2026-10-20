@@ -32,7 +32,18 @@ export function expectedKeys(fn: string): string[] {
     .sort();
 }
 
-/** A canonical file: catalogue, evidence, scoring, developer_content (T03b adds more). */
+/** A recorded WhatsApp webhook body, e.g. `loadRecordedWa("text-join-ah2-7kq")` (the raw POST body). */
+export function loadRecordedWa<T = unknown>(name: string): T {
+  return readJson(`recorded/wa/${name}.json`) as T;
+}
+
+/** The recorded payloads' index: sender, kind and expected route of each file. */
+export function loadRecordedWaIndex<T = unknown>(): T {
+  return readJson("recorded/wa/_index.json") as T;
+}
+
+/** A canonical file: catalogue, evidence, scoring, developer_content (T03); people, consents,
+ *  family, workspace, agents, visits, checks (T03b). */
 export function loadCanonical<T = unknown>(name: string): T {
   return readJson(`canonical/${name}.json`) as T;
 }

@@ -1,0 +1,25 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "AH2-7KQ": {
+      "p_scope": {
+        "slugs": ["aurelia-heights-phase-2"]
+      },
+      "p_client_id": "b79a0179-102a-5a72-89e1-cbdb8a889b29",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      }
+    },
+    "RC4-2MW": {
+      "p_scope": {
+        "all": true
+      },
+      "p_client_id": "2ca0bb90-0005-5992-acf7-f6a70bd27fa9",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      }
+    }
+  }
+}

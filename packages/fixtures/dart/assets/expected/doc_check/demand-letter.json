@@ -1,0 +1,112 @@
+{
+  "schema": "plinth.doc_check/1",
+  "rules_version": "2026.10",
+  "id": "b067e9cf-9fb2-5421-987b-21d49aac0304",
+  "kind": "pay_as_built",
+  "status": "done",
+  "doc_label": "Demand letter",
+  "project_match": {
+    "slug": "aurelia-heights-phase-2",
+    "method": "user_pick",
+    "confirmed": true,
+    "line": "You picked Aurelia Heights, Phase 2, where you booked A-1104."
+  },
+  "summary_line": "The latest filing shows slab 9. This letter asks for the slab 12 instalment.",
+  "breakdown_line": "Plan, amount and payee match. The stage can't be checked yet: the latest filing shows Tower A 3 slabs below.",
+  "rows": [
+    {
+      "seq": 1,
+      "says_label": "Letter says",
+      "says_text": "On casting of Tower A slab 12",
+      "verdict": "cant_check",
+      "verdict_label": "Can't check",
+      "records_line": "Tower A at slab 9 at the latest filing, as of 30 Jun 2026. Nothing newer is on HARERA.",
+      "how_checked": null,
+      "sources": [
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["2243cc6b-1c28-593f-9e90-a18f81656d8a"],
+          "evidence_url": "/evidence/2243cc6b-1c28-593f-9e90-a18f81656d8a",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-15"
+        },
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["bc3ff166-6be3-5805-8401-0dbd4260c1ea"],
+          "evidence_url": "/evidence/bc3ff166-6be3-5805-8401-0dbd4260c1ea",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-18"
+        }
+      ],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    },
+    {
+      "seq": 2,
+      "says_label": "Letter says",
+      "says_text": "7.5% of the price at this stage",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "7.5% at each of slabs 3, 6, 9, 12, 15, 18 and 20.",
+      "how_checked": null,
+      "sources": [],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    },
+    {
+      "seq": 3,
+      "says_label": "Letter says",
+      "says_text": "₹12,54,000 plus GST ₹62,700: ₹13,16,700",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "7.5% of ₹1,67,20,000 is ₹12,54,000. GST at 5% is ₹62,700.",
+      "how_checked": null,
+      "sources": [],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    },
+    {
+      "seq": 4,
+      "says_label": "Letter says",
+      "says_text": "RERA Collection Account, Peepal Bank, ending 4417",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "The account Northfield registered with HARERA for Phase 2.",
+      "how_checked": null,
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["364b3691-3068-5e22-a17f-e4e49bbeee90"],
+          "evidence_url": "/evidence/364b3691-3068-5e22-a17f-e4e49bbeee90",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    }
+  ],
+  "actions": {
+    "share_text": "The latest filing shows slab 9. This letter asks for the slab 12 instalment.",
+    "broker_questions": [
+      "Can I see the architect's or engineer's certificate that Tower A slab 12 is cast?"
+    ]
+  },
+  "notes": [
+    "If the stage is reached, pay on time: RERA s.19(6). Interest for delay: s.19(7).",
+    "Not legal advice. We never certify title.",
+    "We keep this file for 30 days, then delete it, unless you save it to your account."
+  ]
+}

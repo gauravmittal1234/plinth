@@ -97,10 +97,11 @@ void main() {
     test('a typed write with no answer fixture is not_found, but still counts', () async {
       final world = FixtureWorld(signedIn: true);
       await expectLater(
-        world.writeAnswered('consent_withdraw', {'p_ref': 'C-1012-04'}),
+        // C-1018-11 is the visit relay: T03b answers only the number shares (C-1012-04 …).
+        world.writeAnswered('consent_withdraw', {'p_ref': 'C-1018-11'}),
         _apiError(ApiErrorCode.notFound),
       );
-      expect(world.session.withdrawn, {'C-1012-04'});
+      expect(world.session.withdrawn, {'C-1018-11'});
     });
 
     test('alert preferences set in the session are what a later read returns', () async {

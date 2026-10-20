@@ -1,0 +1,72 @@
+{
+  "schema": "plinth.share_card/1",
+  "kind": "risk",
+  "phase": {
+    "slug": "aurelia-heights-phase-2",
+    "name": "Aurelia Heights, Phase 2"
+  },
+  "sent": {
+    "issued_at": "2026-09-30T00:00:00+05:30",
+    "data_as_of": "2026-09-30",
+    "model_version": "v1.1",
+    "band": "moderate",
+    "chip": {
+      "kind": "band",
+      "label": "Moderate",
+      "step": 2,
+      "meter_filled": 2
+    },
+    "lines": [
+      "Delivery risk: Moderate",
+      "Between 15 and 30 of 100 similar Gurugram projects got their OC more than 12 months late."
+    ],
+    "card_url": "https://plinth.in/cards/risk/aurelia-heights-phase-2.png?run=dcf13261-e728-5628-a069-8df586e62064"
+  },
+  "now": {
+    "issued_at": null,
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "band": "elevated",
+    "chip": {
+      "kind": "band",
+      "label": "Elevated",
+      "step": 3,
+      "meter_filled": 3
+    },
+    "lines": [
+      "Delivery risk: Elevated",
+      "Between 30 and 45 of 100 similar Gurugram projects got their OC more than 12 months late.",
+      "41% built with 77% of the promised time used."
+    ],
+    "card_url": "https://plinth.in/cards/risk/aurelia-heights-phase-2.png?run=f1bf715a-ccdc-57ca-afcc-b5dcda92abe3"
+  },
+  "changed": true,
+  "headline_line": "Changed since this card was sent: band Moderate → Elevated (2 Oct).",
+  "changes": [
+    {
+      "key": "band",
+      "label": "Delivery risk",
+      "before_line": "Moderate",
+      "after_line": "Elevated since 2 Oct 2026"
+    },
+    {
+      "key": "complaints",
+      "label": "Complaints decided against the promoter in 24 months",
+      "before_line": "13 complaints · 2.6 per 100 units",
+      "after_line": "14 complaints · 2.8 per 100 units"
+    },
+    {
+      "key": "qpr_jul_sep_2026",
+      "label": "Jul–Sep 2026 QPR",
+      "before_line": "Not due yet",
+      "after_line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026."
+    },
+    {
+      "key": "data_as_of",
+      "label": "Data as of",
+      "before_line": "30 Sep 2026",
+      "after_line": "14 Oct 2026"
+    }
+  ],
+  "live_url": "https://plinth.in/gurugram/projects/aurelia-heights-phase-2"
+}

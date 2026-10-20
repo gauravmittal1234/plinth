@@ -1,0 +1,141 @@
+{
+  "schema": "plinth.fixtures.family/1",
+  "note": "Rohan's family circle: members, invite codes, the shared shortlist and its notes. A member row carries no phone; the relative's own JOIN message is the opt-in. Owner: T03b. Generated; edit src/author.",
+  "circles": [
+    {
+      "id": "eb966824-b722-513a-8910-d343753022dc",
+      "owner": "rohan",
+      "created_at": null,
+      "source": "DESIGN §5b · Following, digest and family"
+    }
+  ],
+  "members": [
+    {
+      "id": "6a4ec682-1447-52b9-8c7a-92979e185e0b",
+      "member": "meera",
+      "invite_code": null,
+      "scope_all": true,
+      "scope_phases": [],
+      "status": "joined",
+      "invited_at": null,
+      "expires_at": null,
+      "joined_at": "2026-10-06T00:00:00+05:30",
+      "joined_via": null,
+      "can_add_notes": true,
+      "line": "Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes",
+      "source": "DESIGN §5b · Following, digest and family (Meera joined 6 Oct 2026, all 4 projects, can add notes); code and channel not in §5b (CONFLICTS.md C-34)"
+    },
+    {
+      "id": "0209e42c-7fec-5e5b-bfa8-525bb990232b",
+      "member": "meera-father",
+      "invite_code": "AH2-7KQ",
+      "scope_all": false,
+      "scope_phases": ["aurelia-heights-phase-2"],
+      "status": "invited",
+      "invited_at": "2026-10-18T00:00:00+05:30",
+      "expires_at": "2026-10-25T00:00:00+05:30",
+      "joined_at": null,
+      "joined_via": null,
+      "can_add_notes": null,
+      "line": "Invited today · Aurelia Heights Ph 2 · hasn't tapped the link yet",
+      "source": "DESIGN §5b · Following, digest and family (invited 18 Oct 2026 to Aurelia; AH2-7KQ; 7 days, to 25 Oct)"
+    },
+    {
+      "id": "f657dd3c-076d-5c17-97ae-f6e377cece22",
+      "member": null,
+      "invite_code": "RC4-2MW",
+      "scope_all": true,
+      "scope_phases": [],
+      "status": "invited",
+      "invited_at": "2026-10-18T00:00:00+05:30",
+      "expires_at": "2026-10-25T00:00:00+05:30",
+      "joined_at": null,
+      "joined_via": null,
+      "can_add_notes": null,
+      "line": null,
+      "source": "DESIGN §5b · Following, digest and family (plinth.in/j/RC4-2MW, all 4; 7 days, to 25 Oct); invitee not named"
+    }
+  ],
+  "invites": [
+    {
+      "code": "AH2-7KQ",
+      "link": "https://plinth.in/j/AH2-7KQ",
+      "scope_line": "Aurelia Heights, Phase 2",
+      "rera_number": "GGM/673/405/2022/117",
+      "expires_on": "2026-10-25",
+      "join_text": "JOIN AH2-7KQ",
+      "source": "DESIGN §5b · Following, digest and family"
+    },
+    {
+      "code": "RC4-2MW",
+      "link": "https://plinth.in/j/RC4-2MW",
+      "scope_line": "Your 4 projects",
+      "rera_number": null,
+      "expires_on": "2026-10-25",
+      "join_text": "JOIN RC4-2MW",
+      "source": "DESIGN §5b · Following, digest and family"
+    }
+  ],
+  "rules": {
+    "lines": [
+      "Each link works for one person for 7 days and carries no phone number.",
+      "The relative's own WhatsApp message, JOIN and the code, is the opt-in.",
+      "Payment alerts, follow type, cost sheets, visit passes and who has my number stay private to Rohan."
+    ],
+    "source": "DESIGN §5b · Following, digest and family"
+  },
+  "shortlist": {
+    "phases": ["kestrel-park", "sapphire-grove-phase-1", "aurelia-heights-phase-2"],
+    "notes": [
+      {
+        "id": "11df2be9-9995-5521-8e99-36e7171b93f3",
+        "phase": "kestrel-park",
+        "author": "rohan",
+        "created_at": "2026-10-15T00:00:00+05:30",
+        "body": "Asked Larkspur for the 3 BHK cost sheet, so we can compare all-in prices.",
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+      },
+      {
+        "id": "ef913dc7-ca15-5078-85f3-cbeb819a3b1d",
+        "phase": "kestrel-park",
+        "author": "meera",
+        "created_at": "2026-10-12T00:00:00+05:30",
+        "body": "Site visit done. The 3 BHK layout works for us.",
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+      },
+      {
+        "id": "61b541a6-ed96-56ad-879c-19048fd97cea",
+        "phase": "sapphire-grove-phase-1",
+        "author": "meera",
+        "created_at": "2026-10-16T00:00:00+05:30",
+        "body": "New price list: ₹1.95 Cr quoted. Still under our ₹2.5 Cr all-in limit.",
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+      },
+      {
+        "id": "ea43a3ab-35ea-5e85-8a8a-ba18c8243514",
+        "phase": "sapphire-grove-phase-1",
+        "author": "rohan",
+        "created_at": "2026-10-15T00:00:00+05:30",
+        "body": "Visited the site today. The office says the new QPR was filed today; wait for Plinth's re-score.",
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+      },
+      {
+        "id": "d8c5fae8-0abe-556f-8b58-e27126603c9b",
+        "phase": "aurelia-heights-phase-2",
+        "author": "rohan",
+        "created_at": "2026-10-17T00:00:00+05:30",
+        "body": "Visit on Sat 24 Oct, 11 am. Ask why the Jul–Sep QPR isn't on HARERA.",
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+      },
+      {
+        "id": "394a3be9-d4a6-5c70-a7a1-8cde714299b7",
+        "phase": "aurelia-heights-phase-2",
+        "author": "meera",
+        "created_at": "2026-10-17T00:00:00+05:30",
+        "body": "Over our limit at ₹2.74 Cr all-in. Is the visit still worth it?",
+        "source": "DESIGN §5b · Following, digest and family (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (CONFLICTS.md C-35)"
+      }
+    ],
+    "source": "DESIGN §5b · Following, digest and family"
+  }
+}

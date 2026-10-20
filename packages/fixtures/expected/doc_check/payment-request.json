@@ -1,0 +1,126 @@
+{
+  "schema": "plinth.doc_check/1",
+  "rules_version": "2026.10",
+  "id": "36ab2a7a-8513-5241-9905-d8f02d56aab1",
+  "kind": "before_you_pay",
+  "status": "done",
+  "doc_label": "Payment request",
+  "project_match": {
+    "slug": "aurelia-heights-phase-2",
+    "method": "name_sector",
+    "confirmed": true,
+    "line": "We matched the project named in the message: Aurelia Heights, Phase 2."
+  },
+  "summary_line": "0 of 3 match the account registered with HARERA.",
+  "breakdown_line": "₹11,00,000 is within the ₹24.4 L limit before a registered agreement.",
+  "rows": [
+    {
+      "seq": 1,
+      "says_label": "Message says",
+      "says_text": "Northfield Realty Services LLP",
+      "verdict": "differs",
+      "verdict_label": "Differs",
+      "records_line": "Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd",
+      "how_checked": "Compared with the RERA collection account on the HARERA registration.",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["364b3691-3068-5e22-a17f-e4e49bbeee90"],
+          "evidence_url": "/evidence/364b3691-3068-5e22-a17f-e4e49bbeee90",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    },
+    {
+      "seq": 2,
+      "says_label": "Message says",
+      "says_text": "ending 8082",
+      "verdict": "differs",
+      "verdict_label": "Differs",
+      "records_line": "ending 4417",
+      "how_checked": "Compared with the RERA collection account on the HARERA registration.",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["364b3691-3068-5e22-a17f-e4e49bbeee90"],
+          "evidence_url": "/evidence/364b3691-3068-5e22-a17f-e4e49bbeee90",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    },
+    {
+      "seq": 3,
+      "says_label": "Message says",
+      "says_text": "MRGL0000912 · Marigold Bank",
+      "verdict": "differs",
+      "verdict_label": "Differs",
+      "records_line": "PEPL0000418 · Peepal Bank",
+      "how_checked": "Compared with the RERA collection account on the HARERA registration.",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["364b3691-3068-5e22-a17f-e4e49bbeee90"],
+          "evidence_url": "/evidence/364b3691-3068-5e22-a17f-e4e49bbeee90",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    }
+  ],
+  "actions": {
+    "share_text": "0 of 3 payee details in this message match the account registered with HARERA for Aurelia Heights, Phase 2.",
+    "broker_questions": []
+  },
+  "notes": [
+    "Plinth never takes, holds or moves your money.",
+    "We keep this file for 30 days, then delete it, unless you save it to your account."
+  ],
+  "payee": {
+    "matched": 0,
+    "of": 3,
+    "verdict": "differs",
+    "verdict_line": "Doesn't match the account registered with HARERA",
+    "rows": [
+      {
+        "field": "payee_name",
+        "entered_line": "Northfield Realty Services LLP",
+        "registered_line": "Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd",
+        "result": "differs"
+      },
+      {
+        "field": "account",
+        "entered_line": "ending 8082",
+        "registered_line": "ending 4417",
+        "result": "differs"
+      },
+      {
+        "field": "ifsc",
+        "entered_line": "MRGL0000912 · Marigold Bank",
+        "registered_line": "PEPL0000418 · Peepal Bank",
+        "result": "differs"
+      }
+    ],
+    "advice": [
+      "Pause.",
+      "Ask for written confirmation on letterhead.",
+      "Call the number on HARERA, not one from a message."
+    ]
+  }
+}

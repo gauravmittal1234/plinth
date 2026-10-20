@@ -1,0 +1,12 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "meera": {
+      "p_member_id": "6a4ec682-1447-52b9-8c7a-92979e185e0b",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      }
+    }
+  }
+}

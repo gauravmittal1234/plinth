@@ -1,0 +1,12 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "AH2-7KQ": {
+      "p_code": "AH2-7KQ",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      }
+    }
+  }
+}

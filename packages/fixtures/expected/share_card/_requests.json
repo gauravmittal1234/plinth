@@ -1,0 +1,9 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "aurelia-old-card": {
+      "p_code": "ce57248d",
+      "note": "The old Aurelia card: v1.1 run of 2 Sep 2026, data as of 30 Sep 2026 (CONFLICTS C-24, C-37)."
+    }
+  }
+}

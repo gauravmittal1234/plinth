@@ -1,0 +1,15 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "aurelia-heights-phase-2": {
+      "p_slug": "aurelia-heights-phase-2",
+      "p_body": "Visit on Sat 24 Oct, 11 am. Ask why the Jul–Sep QPR isn't on HARERA.",
+      "p_client_id": "702c332d-c863-572d-bfc8-8e33355a6c7f",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Replays Rohan's seeded note of 17 Oct 2026."
+    }
+  }
+}
