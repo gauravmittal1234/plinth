@@ -473,3 +473,9 @@ verify_jwt = false # Meta WhatsApp Flows endpoint; encrypted, signed requests (T
 
 [functions.outbox-dispatch]
 verify_jwt = false # pg_cron/pg_net call it with x-plinth-dispatch-secret, never a JWT (T42)
+
+[functions.export-data]
+verify_jwt = false # /build: x-plinth-dispatch-secret (pg_cron); download: buyer JWT verified by PostgREST + fresh sign-in code (T53)
+
+[functions.retention-sweep]
+verify_jwt = false # pg_cron/pg_net call it with x-plinth-dispatch-secret, never a JWT (T53)
