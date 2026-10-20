@@ -95,18 +95,24 @@ jobs:
         working-directory: supabase/functions
         run: npx --yes deno@2 --version
 
-      # supabase/config.toml keeps the Send-SMS hook off ("the CLI refuses an http hook whose secret
-      # is unset, and CI starts the database without one"), and enables no SMS provider, so the
-      # stack as committed answers every phone OTP with 400 "Unsupported phone provider". This is
-      # the local setup that file documents: the hook on, with a secret made for this run. Auth
-      # never calls the hook for the [auth.sms.test_otp] numbers the gate signs in with.
-      - name: Phone OTP on the CI stack (the Send-SMS hook on, as config.toml documents)
+      # Gate gap 7, worked around on the runner only. supabase/config.toml enables no SMS provider
+      # (and the Send-SMS hook is off), so the CLI disables phone login ("WARN: no SMS provider is
+      # enabled. Disabling phone login") and Auth answers every phone OTP, test numbers included,
+      # with 400 "Unsupported phone provider". Turning the hook on, as that file documents, does not
+      # change this: the CLI counts named providers only. So the gate names a placeholder Twilio
+      # provider (fake ids, a token made for this run). Auth answers the [auth.sms.test_otp]
+      # numbers itself and never calls a provider for them; e2e/gates/m2.spec.ts keeps the gap open.
+      - name: Phone login on the CI stack (gate gap 7 workaround, runner only)
         run: |
-          sed -i '/^\[auth\.hook\.send_sms\]/,/^\[/ s/^enabled = false/enabled = true/' supabase/config.toml
-          grep -A1 '^\[auth\.hook\.send_sms\]' supabase/config.toml | grep -q '^enabled = true'
-          secret="v1,whsec_$(openssl rand -base64 32)"
-          echo "::add-mask::$secret"
-          echo "SEND_SMS_HOOK_SECRET=$secret" >> "$GITHUB_ENV"
+          sed -i '/^\[auth\.sms\.twilio\]/,/^\[/ {
+            s/^enabled = false/enabled = true/
+            s/^account_sid = ""/account_sid = "ACplinthgateplaceholder"/
+            s/^message_service_sid = ""/message_service_sid = "MGplinthgateplaceholder"/
+          }' supabase/config.toml
+          grep -A3 '^\[auth\.sms\.twilio\]' supabase/config.toml | grep -q '^enabled = true'
+          token="$(openssl rand -hex 16)"
+          echo "::add-mask::$token"
+          echo "SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN=$token" >> "$GITHUB_ENV"
 
       # Auth (gotrue) stays up: phone OTP sign-in is the point, and this CLI only reports the
       # local API keys when it runs.
@@ -191,18 +197,24 @@ jobs:
         working-directory: apps/mobile
         run: flutter pub get --enforce-lockfile
 
-      # supabase/config.toml keeps the Send-SMS hook off ("the CLI refuses an http hook whose secret
-      # is unset, and CI starts the database without one"), and enables no SMS provider, so the
-      # stack as committed answers every phone OTP with 400 "Unsupported phone provider". This is
-      # the local setup that file documents: the hook on, with a secret made for this run. Auth
-      # never calls the hook for the [auth.sms.test_otp] numbers the gate signs in with.
-      - name: Phone OTP on the CI stack (the Send-SMS hook on, as config.toml documents)
+      # Gate gap 7, worked around on the runner only. supabase/config.toml enables no SMS provider
+      # (and the Send-SMS hook is off), so the CLI disables phone login ("WARN: no SMS provider is
+      # enabled. Disabling phone login") and Auth answers every phone OTP, test numbers included,
+      # with 400 "Unsupported phone provider". Turning the hook on, as that file documents, does not
+      # change this: the CLI counts named providers only. So the gate names a placeholder Twilio
+      # provider (fake ids, a token made for this run). Auth answers the [auth.sms.test_otp]
+      # numbers itself and never calls a provider for them; e2e/gates/m2.spec.ts keeps the gap open.
+      - name: Phone login on the CI stack (gate gap 7 workaround, runner only)
         run: |
-          sed -i '/^\[auth\.hook\.send_sms\]/,/^\[/ s/^enabled = false/enabled = true/' supabase/config.toml
-          grep -A1 '^\[auth\.hook\.send_sms\]' supabase/config.toml | grep -q '^enabled = true'
-          secret="v1,whsec_$(openssl rand -base64 32)"
-          echo "::add-mask::$secret"
-          echo "SEND_SMS_HOOK_SECRET=$secret" >> "$GITHUB_ENV"
+          sed -i '/^\[auth\.sms\.twilio\]/,/^\[/ {
+            s/^enabled = false/enabled = true/
+            s/^account_sid = ""/account_sid = "ACplinthgateplaceholder"/
+            s/^message_service_sid = ""/message_service_sid = "MGplinthgateplaceholder"/
+          }' supabase/config.toml
+          grep -A3 '^\[auth\.sms\.twilio\]' supabase/config.toml | grep -q '^enabled = true'
+          token="$(openssl rand -hex 16)"
+          echo "::add-mask::$token"
+          echo "SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN=$token" >> "$GITHUB_ENV"
 
       - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, auth, gateway)
         run: >-

@@ -127,6 +127,23 @@ test.describe(
   },
 );
 
+test.describe("M2 gate: phone login on a local stack", { tag: ["@smoke", "@gate"] }, () => {
+  test("supabase/config.toml names an SMS provider, so the CLI keeps phone login on", () => {
+    test.fixme(
+      true,
+      "Gate gap: no [auth.sms.<provider>] is enabled (the Send-SMS hook is off too), so `supabase " +
+        'start` warns "no SMS provider is enabled. Disabling phone login" and Auth answers every ' +
+        'phone OTP, the test numbers included, with 400 "Unsupported phone provider". The hook ' +
+        "alone does not count as a provider. ci-gate-m2 names a placeholder provider on its runner.",
+    );
+    const toml = readFileSync(join(ROOT, "supabase/config.toml"), "utf8");
+    const providers = ["twilio", "twilio_verify", "messagebird", "textlocal", "vonage"].filter(
+      (p) => new RegExp(`^\\[auth\\.sms\\.${p}\\]\\s*\\nenabled = true`, "m").test(toml),
+    );
+    expect(providers.length).toBeGreaterThan(0);
+  });
+});
+
 test.describe("M2 gate: live mode against CI's seeded stack", { tag: "@live" }, () => {
   test.describe("Phone OTP sign-in, then Following", () => {
     test.skip(!process.env.PLINTH_GATE_M2_WEB, "ci-gate-m2 only: set PLINTH_GATE_M2_WEB=1");
