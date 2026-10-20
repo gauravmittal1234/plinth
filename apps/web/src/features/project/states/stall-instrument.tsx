@@ -12,7 +12,7 @@ import { SourceChip } from "@plinth/web-ui";
 import type { CSSProperties } from "react";
 import { formatDate } from "../page/format";
 import { useEvidence } from "../page/evidence-context";
-import { STALL_COPY } from "./copy";
+import { STALL_COPY } from "./client-copy";
 
 function Slab({
   source,
@@ -31,7 +31,10 @@ function Slab({
         aria-label={`${quarter}: ${pct}% built`}
         className="h-24 w-full overflow-hidden rounded-panel bg-track"
       >
-        <div className="h-full bg-accent" style={{ width: `${Math.max(2, Math.min(100, pct))}%` }} />
+        <div
+          className="h-full bg-accent"
+          style={{ width: `${Math.max(2, Math.min(100, pct))}%` }}
+        />
       </div>
       <p className="m-0 text-small font-semibold text-ink">
         {pct}% <span className="font-normal text-ink2">{quarter}</span>
@@ -80,7 +83,9 @@ export function StallInstrument({
       <p className="m-0 max-w-measure text-body text-ink2">{siteReason.text}</p>
 
       <div className="flex flex-col gap-4">
-        <h4 className="m-0 text-small font-semibold text-ink2 uppercase">{STALL_COPY.barHeading}</h4>
+        <h4 className="m-0 text-small font-semibold text-ink2 uppercase">
+          {STALL_COPY.barHeading}
+        </h4>
         <div className="grid gap-4 sm:grid-cols-4">
           {siteReason.sources.map((source) => {
             const factId = source.fact_ids[0];

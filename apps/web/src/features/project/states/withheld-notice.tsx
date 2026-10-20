@@ -9,7 +9,7 @@
 // facts records-section.tsx shows, just regrouped under this heading.
 import type { EvidenceSummary, Withheld } from "@plinth/contracts";
 import { SourceChip } from "@plinth/web-ui";
-import { WITHHELD_COPY } from "./copy";
+import { WITHHELD_COPY } from "./client-copy";
 import { formatDate } from "../page/format";
 import { useEvidence } from "../page/evidence-context";
 
@@ -46,7 +46,9 @@ export function WithheldNotice({
         <p className="m-0 max-w-measure text-body">{withheld.explainer_line}</p>
         <p className="m-0 max-w-measure text-body">{WITHHELD_COPY.stillHereLine}</p>
         <p className="m-0 max-w-measure text-body">{WITHHELD_COPY.withheldLine}</p>
-        <p className="m-0 max-w-measure text-body">{WITHHELD_COPY.notAFindingLine(developerName)}</p>
+        <p className="m-0 max-w-measure text-body">
+          {WITHHELD_COPY.notAFindingLine(developerName)}
+        </p>
         <a href={withheld.explainer_url} className="text-ink underline underline-offset-[0.2em]">
           {WITHHELD_COPY.explainerLinkLabel}
         </a>
@@ -54,7 +56,9 @@ export function WithheldNotice({
 
       {records.length > 0 ? (
         <div className="flex flex-col gap-4">
-          <h2 className="m-0 font-display text-h2 font-extrabold">{WITHHELD_COPY.recordsHeading}</h2>
+          <h2 className="m-0 font-display text-h2 font-extrabold">
+            {WITHHELD_COPY.recordsHeading}
+          </h2>
           <ul role="list" className="m-0 flex flex-col gap-4 p-0">
             {records.map((row, i) => (
               <RecordRow key={`${row.fact_id}-${i}`} row={row} />

@@ -47,7 +47,13 @@ export function ProjectStatesSection({
   const isFactsOnly = display.state === "facts_only";
 
   const hardState =
-    isSevereRule || isStalled || isStale || isRescoring || isLimitedHistory || isNotScored || isFactsOnly;
+    isSevereRule ||
+    isStalled ||
+    isStale ||
+    isRescoring ||
+    isLimitedHistory ||
+    isNotScored ||
+    isFactsOnly;
   if (!hardState) return null;
 
   // The financial-creditor addendum is specific to the insolvency rule
@@ -97,7 +103,11 @@ export function ProjectStatesSection({
         {checklistItems ? <Checklist items={checklistItems} /> : null}
 
         {isFactsOnly && risk.withheld ? (
-          <WithheldNotice withheld={risk.withheld} records={records} developerName={phase.developer.name} />
+          <WithheldNotice
+            withheld={risk.withheld}
+            records={records}
+            developerName={phase.developer.name}
+          />
         ) : null}
 
         <BookedPanel

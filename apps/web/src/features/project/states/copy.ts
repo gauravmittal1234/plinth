@@ -8,15 +8,6 @@
 // client"; AGENTS.md §1: "Never invent a fact in code").
 import type { Slug } from "@plinth/contracts";
 
-export const STALL_COPY = {
-  heading: "Is it still being built?",
-  pill: "Stall flag",
-  barHeading: "Built, by quarterly report",
-  overdueLabel: "of the promised time used",
-  changeHeading: "What would lift the flag",
-  changeLine: "A QPR that shows construction moving again. We read each one the day it appears.",
-};
-
 export const CHECKLIST_COPY = {
   heading: "What to check instead",
 };
@@ -53,16 +44,6 @@ export const RESCORING_COPY = {
   currentStep: 2,
 };
 
-export const WITHHELD_COPY = {
-  recordsHeading: "The records, as they stand",
-  explainerLinkLabel: "How facts-only works",
-  stillHereLine:
-    "Still here: dates, progress reports, complaints, orders and company links, each with its source.",
-  withheldLine: "Withheld: the band, its reasons and the “of 100 similar projects” figure.",
-  notAFindingLine: (developerName: string) =>
-    `Not a finding: this says nothing about ${developerName}, and no record has changed.`,
-};
-
 export const BOOKED_PANEL_COPY = {
   heading: "If you've already booked here",
   toggleLabel: "I've booked here",
@@ -73,14 +54,12 @@ export const BOOKED_PANEL_COPY = {
   footerNote: "Hard news gets the same care as good news.",
   complain: {
     heading: "Where to complain",
-    body:
-      "HARERA Gurugram hears buyers' complaints. File online in Form CRA with your agreement, receipts and demand letters. Claims for compensation go to its adjudicating officer, in Form CAO.",
+    body: "HARERA Gurugram hears buyers' complaints. File online in Form CRA with your agreement, receipts and demand letters. Claims for compensation go to its adjudicating officer, in Form CAO.",
     chip: "HARERA Gurugram · complaints",
   },
   refund: {
     heading: "Your money back, or interest",
-    body:
-      "RERA s.18: when possession is late against your agreement, you can withdraw and get your money back with interest, or stay and get interest for every month of delay. In Haryana the rate is SBI's highest MCLR plus 2%.",
+    body: "RERA s.18: when possession is late against your agreement, you can withdraw and get your money back with interest, or stay and get interest for every month of delay. In Haryana the rate is SBI's highest MCLR plus 2%.",
     chip: "RERA Act 2016 · s.18",
   },
   /** Not-scored projects add the s.13 10% rule before the agreement (fixpass-buyer.md §4). */
@@ -117,3 +96,7 @@ export const BOOKED_INTRO: Readonly<Record<Slug, string>> = {
 
 export const BOOKED_INTRO_DEFAULT =
   "These are the rights every allottee has, and the records we keep watching.";
+
+// Kept in their own module so the two client components that read them
+// don't pull this whole file into the browser bundle.
+export { STALL_COPY, WITHHELD_COPY } from "./client-copy";

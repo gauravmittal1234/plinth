@@ -1,13 +1,10 @@
-"use client";
-
 // "If you've already booked here" (WORK_BREAKDOWN §4 T20c; fixpass-buyer.md
 // §4): the rights every allottee has, calm and factual (no "avoid", no
 // "fraud"), plus the "I've booked here" toggle that switches the alerts
 // line to allottee wording and points at the before-you-pay check
 // (fixpass-buyer.md §4: "links to Before you pay").
 import type { Slug } from "@plinth/contracts";
-import { Pill } from "@plinth/web-ui";
-import { useState } from "react";
+import { BookedToggle } from "./booked-toggle";
 import { BOOKED_INTRO, BOOKED_INTRO_DEFAULT, BOOKED_PANEL_COPY } from "./copy";
 
 function Bullet({ heading, body, chip }: { heading: string; body: string; chip: string }) {
@@ -39,28 +36,33 @@ export function BookedPanel({
   /** "What to watch" bullets, built from the payload by `watch.ts` (project-states-section.tsx). */
   watch?: readonly string[];
 }) {
-  const [booked, setBooked] = useState(false);
   const intro = BOOKED_INTRO[slug] ?? BOOKED_INTRO_DEFAULT;
   const copy = BOOKED_PANEL_COPY;
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <h2 className="m-0 font-display text-h2 font-extrabold">{copy.heading}</h2>
-        <Pill
-          as="button"
-          pressed={booked}
-          onClick={() => setBooked((b) => !b)}
-          aria-label={copy.toggleLabel}
-        >
-          {copy.toggleLabel}
-        </Pill>
-      </div>
-
+    <BookedToggle
+      heading={copy.heading}
+      label={copy.toggleLabel}
+      note={copy.bookedNote}
+      after={
+        <>
+          <p className="m-0">
+            <a href={copy.beforePayHref} className="text-ink underline underline-offset-[0.2em]">
+              {copy.beforePayPrompt}
+            </a>
+          </p>
+          <p className="m-0 text-small text-ink2">{copy.footerNote}</p>
+        </>
+      }
+    >
       <p className="m-0 max-w-measure text-body text-ink2">{intro}</p>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Bullet heading={copy.complain.heading} body={copy.complain.body} chip={copy.complain.chip} />
+        <Bullet
+          heading={copy.complain.heading}
+          body={copy.complain.body}
+          chip={copy.complain.chip}
+        />
         <Bullet
           heading={copy.refund.heading}
           body={copy.refund.body + (notScored ? copy.refundNotScoredAddendum : "")}
@@ -70,7 +72,9 @@ export function BookedPanel({
           heading={copy.associations.heading}
           body={
             copy.associations.body +
-            (insolvency && insolvencyDate ? copy.associationsInsolvencyAddendum(insolvencyDate) : "")
+            (insolvency && insolvencyDate
+              ? copy.associationsInsolvencyAddendum(insolvencyDate)
+              : "")
           }
           chip={copy.associations.chip}
         />
@@ -86,20 +90,6 @@ export function BookedPanel({
           </ul>
         </div>
       ) : null}
-
-      {booked ? (
-        <p className="m-0 rounded-panel bg-accent-soft px-5 py-4 text-on-accent-soft">
-          {copy.bookedNote}
-        </p>
-      ) : null}
-
-      <p className="m-0">
-        <a href={copy.beforePayHref} className="text-ink underline underline-offset-[0.2em]">
-          {copy.beforePayPrompt}
-        </a>
-      </p>
-
-      <p className="m-0 text-small text-ink2">{copy.footerNote}</p>
-    </div>
+    </BookedToggle>
   );
 }

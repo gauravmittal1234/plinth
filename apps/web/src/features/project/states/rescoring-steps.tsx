@@ -21,7 +21,9 @@ function Step({ label, status }: { label: string; status: "done" | "now" | "pend
           status === "pending" && "border border-ink2 bg-track",
         )}
       />
-      <span className={cx("text-small", status === "pending" ? "text-ink2" : "font-semibold text-ink")}>
+      <span
+        className={cx("text-small", status === "pending" ? "text-ink2" : "font-semibold text-ink")}
+      >
         {label}
       </span>
       <span className="sr-only">

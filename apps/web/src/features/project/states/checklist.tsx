@@ -18,7 +18,9 @@ export function Checklist({ items }: { items: readonly ChecklistItem[] }) {
               <SourceChip source={{ label: item.chip, evidence_url: null }} surface="track" />
             ) : null}
             <p className="m-0 min-w-0 flex-1 text-ink2">
-              {item.heading ? <strong className="font-semibold text-ink">{item.heading}: </strong> : null}
+              {item.heading ? (
+                <strong className="font-semibold text-ink">{item.heading}: </strong>
+              ) : null}
               {item.body}
             </p>
           </li>
