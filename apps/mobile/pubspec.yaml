@@ -80,3 +80,24 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  # OFL fonts bundled for an offline first launch (AGENTS.md §4, PlinthType in
+  # packages/tokens/dart, AppTheme). Sources and licence: assets/fonts/README.md.
+  fonts:
+    - family: Bricolage Grotesque
+      fonts:
+        - asset: assets/fonts/bricolage-grotesque/BricolageGrotesque[opsz,wdth,wght].ttf
+          weight: 800
+    - family: Mukta
+      fonts:
+        - asset: assets/fonts/mukta/Mukta-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/mukta/Mukta-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/mukta/Mukta-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/mukta/Mukta-Bold.ttf
+          weight: 700
+    - family: Noto Sans
+      fonts:
+        - asset: assets/fonts/noto-sans/NotoSans[wdth,wght].ttf
