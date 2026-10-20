@@ -81,10 +81,11 @@ jobs:
       - name: Install Chromium for Playwright
         run: npx playwright install --with-deps --only-shell chromium
 
-      - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, gateway)
+      # Auth (gotrue) stays up: this CLI only reports the local API keys when it runs.
+      - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, auth, gateway)
         run: >-
           supabase start
-          -x gotrue,realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+          -x realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
 
       - name: Freeze the clock (as ci-db; env = test → ops.now() is 18 Oct 2026, 12:00 IST)
         run: |
