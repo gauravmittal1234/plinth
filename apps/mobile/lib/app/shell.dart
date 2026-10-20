@@ -44,14 +44,16 @@ class AppShell extends StatelessWidget {
               PlinthLayout.navFloatingMargin,
               PlinthSpace.s8,
               PlinthLayout.navFloatingMargin,
-              PlinthLayout.navFloatingMargin,
+              // SafeArea already adds the system bar's inset below this.
+              PlinthSpace.s8,
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(28),
               // The bar's own SafeArea would pad inside the pill; the outer
-              // one already keeps it clear of the system navigation bar.
+              // one already keeps it clear of the system bars.
               child: MediaQuery.removePadding(
                 context: context,
+                removeTop: true,
                 removeBottom: true,
                 child: NavigationBar(
                   selectedIndex: shell.currentIndex,

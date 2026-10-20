@@ -216,14 +216,16 @@ class PlinthGroup extends StatelessWidget {
   }
 }
 
-/// A tinted hint row (app UI v2 sheets): an icon tile, a bold line and an
-/// optional quieter one, on `accentSoft`, radius 16.
+/// A tinted hint row (app UI v2 sheets): an icon tile, a line and an
+/// optional quieter one, on `accentSoft`, radius 16. A short [title] is set
+/// bold; pass [emphasized] false for a sentence or two.
 class PlinthHintRow extends StatelessWidget {
-  const PlinthHintRow({super.key, required this.icon, required this.title, this.subtitle});
+  const PlinthHintRow({super.key, required this.icon, required this.title, this.subtitle, this.emphasized = true});
 
   final IconData icon;
   final String title;
   final String? subtitle;
+  final bool emphasized;
 
   @override
   Widget build(BuildContext context) {
@@ -233,6 +235,7 @@ class PlinthHintRow extends StatelessWidget {
         padding: const EdgeInsets.all(PlinthSpace.s12),
         decoration: BoxDecoration(color: tokens.accentSoft, borderRadius: BorderRadius.circular(PlinthRadius.button)),
         child: Row(
+          crossAxisAlignment: emphasized ? CrossAxisAlignment.center : CrossAxisAlignment.start,
           children: [
             PlinthIconTile(icon: icon, tone: tokens.bgSolid, color: tokens.onAccentSoft),
             const SizedBox(width: PlinthSpace.s12),
@@ -241,7 +244,10 @@ class PlinthHintRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(title, style: PlinthType.rowTitle.copyWith(color: tokens.onAccentSoft)),
+                  Text(
+                    title,
+                    style: (emphasized ? PlinthType.rowTitle : PlinthType.meta).copyWith(color: tokens.onAccentSoft),
+                  ),
                   if (subtitle != null) ...[
                     const SizedBox(height: 2),
                     Text(subtitle!, style: PlinthType.meta.copyWith(color: tokens.onAccentSoft)),

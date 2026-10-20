@@ -152,77 +152,121 @@ class _Body extends StatelessWidget {
         _HistoryRow(ref: e.ref, date: e.endedOn, who: e.party, what: e.detail, status: 'ended'),
     ]..sort((a, b) => b.date.compareTo(a.date));
 
+    final tokens = PlinthTokens.of(context);
+    Widget note(IconData icon, String text) => Padding(
+      padding: const EdgeInsets.only(top: PlinthSpace.s8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 1),
+            child: Icon(icon, size: 18, color: tokens.ink2),
+          ),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Text(text, style: PlinthType.meta.copyWith(color: tokens.ink2)),
+          ),
+        ],
+      ),
+    );
+    // App UI v2: tight sections of cards and grouped rows with icon tiles.
     return ListView(
-      padding: EdgeInsets.zero,
+      padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterApp, 0, PlinthLayout.gutterApp, PlinthSpace.s32),
       children: [
-        SectionBand(
-          question: 'Who has my number?',
-          answer: 'Every share needed your tap. Each one has a purpose, a date and a consent reference.',
-          children: [
-            Text(
-              '${active.length} ${active.length == 1 ? 'party' : 'parties'} can reach you right now; a relay '
-              "doesn't count.",
-              style: PlinthType.body.copyWith(fontWeight: FontWeight.w600, color: PlinthTokens.of(context).ink),
-            ),
-            const SizedBox(height: PlinthSpace.s12),
-            for (final party in active) _PartyCard(party: party, onRevoke: () => onRevoke(party)),
-            for (final relay in numbers.relays)
-              Padding(
-                padding: const EdgeInsets.only(top: PlinthSpace.s8),
-                child: Text(
-                  'Not counted: ${relay.party} — ${relay.line} (consent ${relay.ref})',
-                  style: PlinthType.small.copyWith(color: PlinthTokens.of(context).ink2),
-                ),
+        YouSection(
+          title: 'Who has my number?',
+          subtitle: 'Every share needed your tap. Each one has a purpose, a date and a consent reference.',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${active.length} ${active.length == 1 ? 'party' : 'parties'} can reach you right now; a relay '
+                "doesn't count.",
+                style: PlinthType.rowTitle.copyWith(color: tokens.ink),
               ),
-            for (final ended in numbers.ended)
-              Padding(
-                padding: const EdgeInsets.only(top: PlinthSpace.s8),
-                child: Text(
+              const SizedBox(height: PlinthSpace.s12),
+              for (final party in active) _PartyCard(party: party, onRevoke: () => onRevoke(party)),
+              for (final relay in numbers.relays)
+                note(Icons.swap_calls_rounded, 'Not counted: ${relay.party} — ${relay.line} (consent ${relay.ref})'),
+              for (final ended in numbers.ended)
+                note(
+                  Icons.history_rounded,
                   '${ended.party} (${ended.detail}) · ended ${formatDisplayDate(ended.endedOn)} · consent ${ended.ref}',
-                  style: PlinthType.small.copyWith(color: PlinthTokens.of(context).ink2),
                 ),
-              ),
-            const SizedBox(height: PlinthSpace.s8),
-            Text(numbers.familyLine, style: PlinthType.small.copyWith(color: PlinthTokens.of(context).ink2)),
-          ],
+              note(Icons.family_restroom_rounded, numbers.familyLine),
+            ],
+          ),
         ),
-        SectionBand(
-          tone: BandTone.track,
-          question: 'What did I say yes to?',
-          answer:
+        YouSection(
+          title: 'What did I say yes to?',
+          subtitle:
               'Every line is a tap you made, newest first. References use the form C-MMDD-NN, so you can quote '
               'one to us or to the site office.',
-          children: [for (final row in history) _HistoryTile(row: row)],
+          child: PlinthGroup(children: [for (final row in history) _HistoryTile(row: row)]),
         ),
-        SectionBand(
-          question: 'Can I take my data, or delete it?',
-          answer: 'Yes, both, at any time. Neither needs an email or a phone call.',
-          children: [
-            YouPanel(
-              children: [
-                Text(
-                  'Saved projects, alerts, consent history and who had your number. One ZIP with a PDF and a '
-                  'JSON file. Ready within 24 hours; the link works for 7 days.',
-                  style: PlinthType.small.copyWith(color: PlinthTokens.of(context).ink2),
-                ),
-                PlinthButton(label: 'Prepare download', kind: PlinthButtonKind.tonal, onPressed: onExport),
-                if (exportNotice != null)
-                  Text(exportNotice!, style: PlinthType.small.copyWith(color: PlinthTokens.of(context).ink2)),
-              ],
-            ),
-            const SizedBox(height: PlinthSpace.s16),
-            YouPanel(
-              children: [
-                Text(
-                  'We close it now and erase your data within 30 days. Every party loses your relay number at once.',
-                  style: PlinthType.small.copyWith(color: PlinthTokens.of(context).ink2),
-                ),
-                PlinthButton(label: 'Delete my account', kind: PlinthButtonKind.tonal, onPressed: onDelete),
-                if (deleteNotice != null)
-                  Text(deleteNotice!, style: PlinthType.small.copyWith(color: PlinthTokens.of(context).ink2)),
-              ],
-            ),
-          ],
+        YouSection(
+          title: 'Can I take my data, or delete it?',
+          subtitle: 'Yes, both, at any time. Neither needs an email or a phone call.',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              YouPanel(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PlinthIconTile(icon: Icons.download_rounded, tone: tokens.track),
+                      const SizedBox(width: PlinthSpace.s12),
+                      Expanded(
+                        child: Text(
+                          'Saved projects, alerts, consent history and who had your number. One ZIP with a PDF and '
+                          'a JSON file. Ready within 24 hours; the link works for 7 days.',
+                          style: PlinthType.meta.copyWith(color: tokens.ink2),
+                        ),
+                      ),
+                    ],
+                  ),
+                  PlinthButton(
+                    label: 'Prepare download',
+                    icon: Icons.download_rounded,
+                    kind: PlinthButtonKind.tonal,
+                    expand: true,
+                    onPressed: onExport,
+                  ),
+                  if (exportNotice != null) Text(exportNotice!, style: PlinthType.meta.copyWith(color: tokens.ink2)),
+                ],
+              ),
+              const SizedBox(height: PlinthSpace.s12),
+              YouPanel(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PlinthIconTile(icon: Icons.person_remove_rounded, tone: tokens.track),
+                      const SizedBox(width: PlinthSpace.s12),
+                      Expanded(
+                        child: Text(
+                          'We close it now and erase your data within 30 days. Every party loses your relay number '
+                          'at once.',
+                          style: PlinthType.meta.copyWith(color: tokens.ink2),
+                        ),
+                      ),
+                    ],
+                  ),
+                  PlinthButton(
+                    label: 'Delete my account',
+                    icon: Icons.delete_rounded,
+                    kind: PlinthButtonKind.tonal,
+                    expand: true,
+                    onPressed: onDelete,
+                  ),
+                  if (deleteNotice != null) Text(deleteNotice!, style: PlinthType.meta.copyWith(color: tokens.ink2)),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -253,23 +297,35 @@ class _HistoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: PlinthSpace.s8),
-      child: Container(
-        padding: const EdgeInsets.all(PlinthSpace.s16),
-        decoration: BoxDecoration(color: tokens.bgSolid, borderRadius: BorderRadius.circular(PlinthRadius.panel)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Consent ${row.ref} · ${row.who}',
-              style: PlinthType.small.copyWith(fontWeight: FontWeight.w700, color: tokens.ink),
-            ),
-            const SizedBox(height: 2),
-            Text(row.what, style: PlinthType.small.copyWith(color: tokens.ink2)),
-            const SizedBox(height: 2),
-            Text(row.status, style: PlinthType.caption.copyWith(color: tokens.muted)),
-          ],
+    final icon = switch (row.status) {
+      'active' => Icons.check_circle_rounded,
+      'withdrawn' => Icons.undo_rounded,
+      _ => Icons.history_rounded,
+    };
+    return MergeSemantics(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: PlinthLayout.rowMin),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: PlinthSpace.s16, vertical: PlinthSpace.s12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PlinthIconTile(icon: icon, tone: tokens.track),
+              const SizedBox(width: PlinthSpace.s12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Consent ${row.ref} · ${row.who}', style: PlinthType.rowTitle.copyWith(color: tokens.ink)),
+                    const SizedBox(height: 2),
+                    Text(row.what, style: PlinthType.meta.copyWith(color: tokens.ink2)),
+                    const SizedBox(height: 2),
+                    Text(row.status, style: PlinthType.caption.copyWith(color: tokens.muted)),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -288,23 +344,43 @@ class _PartyCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: PlinthSpace.s12),
       child: YouPanel(
-        gap: PlinthSpace.s8,
+        gap: PlinthSpace.s12,
         children: [
-          Text(
-            party.party,
-            style: PlinthType.body.copyWith(fontWeight: FontWeight.w700, color: tokens.ink),
-          ),
-          Text(party.paysLine, style: PlinthType.small.copyWith(color: tokens.ink2)),
-          Text(party.detail, style: PlinthType.small.copyWith(color: tokens.ink2)),
-          Text(
-            'Shared ${formatDisplayDate(party.sharedOn)}'
-            '${party.accessUntil != null ? ' · access until ${formatDisplayDate(party.accessUntil!)}' : ''}'
-            ' · consent ${party.ref}',
-            style: PlinthType.small.copyWith(color: tokens.ink2),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PlinthIconTile(icon: Icons.storefront_rounded, tone: tokens.track),
+              const SizedBox(width: PlinthSpace.s12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(party.party, style: PlinthType.rowTitle.copyWith(color: tokens.ink)),
+                    const SizedBox(height: 2),
+                    Text(party.paysLine, style: PlinthType.meta.copyWith(color: tokens.ink2)),
+                    const SizedBox(height: 2),
+                    Text(party.detail, style: PlinthType.meta.copyWith(color: tokens.ink2)),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Shared ${formatDisplayDate(party.sharedOn)}'
+                      '${party.accessUntil != null ? ' · access until ${formatDisplayDate(party.accessUntil!)}' : ''}'
+                      ' · consent ${party.ref}',
+                      style: PlinthType.meta.copyWith(color: tokens.ink2),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
           Align(
-            alignment: Alignment.centerLeft,
-            child: PlinthButton(label: 'Revoke', kind: PlinthButtonKind.tonal, compact: true, onPressed: onRevoke),
+            alignment: AlignmentDirectional.centerStart,
+            child: PlinthButton(
+              label: 'Revoke',
+              icon: Icons.link_off_rounded,
+              kind: PlinthButtonKind.tonal,
+              compact: true,
+              onPressed: onRevoke,
+            ),
           ),
         ],
       ),
@@ -320,29 +396,45 @@ class _RevokeSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(PlinthSpace.s20, PlinthSpace.s16, PlinthSpace.s20, PlinthSpace.s24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          PlinthSheetHeader(title: 'Stop sharing your number with ${party.party}?'),
-          const SizedBox(height: PlinthSpace.s12),
-          Text(
-            "You shared your number with them on ${formatDisplayDate(party.sharedOn)}, and a shared number "
-            "can't be recalled, so ask them to delete it.",
-            style: PlinthType.body.copyWith(color: tokens.ink2),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        PlinthSheetHeader(
+          leading: PlinthIconTile(icon: Icons.link_off_rounded, size: 48, tone: tokens.track),
+          title: 'Stop sharing your number with ${party.party}?',
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterApp, PlinthSpace.s16, PlinthLayout.gutterApp, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PlinthHintRow(
+                icon: Icons.info_rounded,
+                emphasized: false,
+                title:
+                    "You shared your number with them on ${formatDisplayDate(party.sharedOn)}, and a shared number "
+                    "can't be recalled, so ask them to delete it.",
+              ),
+              const SizedBox(height: PlinthSpace.s20),
+              PlinthButton(
+                label: 'Stop sharing',
+                icon: Icons.link_off_rounded,
+                expand: true,
+                onPressed: () => Navigator.of(context).pop(true),
+              ),
+              const SizedBox(height: PlinthSpace.s12),
+              PlinthButton(
+                label: 'Keep sharing',
+                kind: PlinthButtonKind.tonal,
+                expand: true,
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+            ],
           ),
-          const SizedBox(height: PlinthSpace.s20),
-          PlinthButton(
-            label: 'Keep sharing',
-            kind: PlinthButtonKind.tonal,
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-          const SizedBox(height: PlinthSpace.s12),
-          PlinthButton(label: 'Stop sharing', onPressed: () => Navigator.of(context).pop(true)),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -360,38 +452,57 @@ class _DeleteAccountSheetState extends State<_DeleteAccountSheet> {
   @override
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(PlinthSpace.s20, PlinthSpace.s16, PlinthSpace.s20, PlinthSpace.s24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const PlinthSheetHeader(title: 'Delete your account?'),
-          const SizedBox(height: PlinthSpace.s12),
-          Text(
-            'Your account closes today. Every party loses access to your relay number at once. We erase your '
-            'profile, saved projects, alerts and AI chats within 30 days. We keep consent records and any '
-            'invoices only as long as the law requires.',
-            style: PlinthType.body.copyWith(color: tokens.ink2),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        PlinthSheetHeader(
+          leading: PlinthIconTile(icon: Icons.person_remove_rounded, size: 48, tone: tokens.track),
+          title: 'Delete your account?',
+        ),
+        Flexible(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterApp, PlinthSpace.s16, PlinthLayout.gutterApp, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Your account closes today. Every party loses access to your relay number at once. We erase your '
+                  'profile, saved projects, alerts and AI chats within 30 days. We keep consent records and any '
+                  'invoices only as long as the law requires.',
+                  style: PlinthType.body.copyWith(color: tokens.ink),
+                ),
+                const SizedBox(height: PlinthSpace.s12),
+                CheckboxListTile(
+                  value: _ack,
+                  onChanged: (v) => setState(() => _ack = v ?? false),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    "I understand this can't be undone.",
+                    style: PlinthType.rowTitle.copyWith(color: tokens.ink),
+                  ),
+                ),
+                const SizedBox(height: PlinthSpace.s8),
+                PlinthButton(
+                  label: 'Yes, delete my account',
+                  icon: Icons.delete_rounded,
+                  expand: true,
+                  onPressed: _ack ? () => Navigator.of(context).pop(true) : null,
+                ),
+                const SizedBox(height: PlinthSpace.s12),
+                PlinthButton(
+                  label: 'Keep my account',
+                  kind: PlinthButtonKind.tonal,
+                  expand: true,
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: PlinthSpace.s16),
-          CheckboxListTile(
-            value: _ack,
-            onChanged: (v) => setState(() => _ack = v ?? false),
-            controlAffinity: ListTileControlAffinity.leading,
-            contentPadding: EdgeInsets.zero,
-            title: Text("I understand this can't be undone.", style: PlinthType.small.copyWith(color: tokens.ink)),
-          ),
-          const SizedBox(height: PlinthSpace.s8),
-          PlinthButton(
-            label: 'Keep my account',
-            kind: PlinthButtonKind.tonal,
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-          const SizedBox(height: PlinthSpace.s12),
-          PlinthButton(label: 'Yes, delete my account', onPressed: _ack ? () => Navigator.of(context).pop(true) : null),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
