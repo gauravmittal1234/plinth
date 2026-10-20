@@ -49,15 +49,17 @@
 --      through the tables (wall 2) or any buyer read (the api).
 --   D. Who has my number: the five C-MMDD-NN rows across both privacy reads; withdrawing
 --      C-1012-04 hides the share from Orbis's site office in the same instant.
---   E. 25 Oct with the Jul–Sep QPR still missing: the seeded 7-day notice (sent 18 Oct) and its
---      pending run publish Elevated → High; one band_changed event; push and the WhatsApp
---      template for the follower, deferred by his quiet hours, claimable at 08:00; nothing for the
---      circle; the template row carries every variable (`m2:wa_claim` diag for ci-gate-m2's
---      mock WhatsApp body snapshot).
---   Gate gaps are marked `todo` (todo_start): see the T59 PR.
+--   E. 25 Oct with the Jul–Sep QPR still missing: the daily publish job (ops.publish_due_notice_
+--      runs) publishes the seeded 7-day notice's pending run, Elevated → High; one band_changed
+--      event; push and the WhatsApp template for the follower, and the template for the relative
+--      who joined for Aurelia, deferred by quiet hours, claimable at 08:00 push first; nothing
+--      private for the circle; the template row carries every variable and its image header, and
+--      a session alert names the change (`m2:wa_claim` diag for ci-gate-m2's mock WhatsApp body).
+--   Gate gaps still open are marked `todo` (todo_start): see the T59 PR. Gaps 1, 3, 4, 5 and 6
+--   were closed by the lead's alerts batch and are real assertions now.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(53);
+select plan(62);
 
 update ops.runtime_settings set value = 'test' where key = 'env';
 
@@ -206,6 +208,33 @@ select is(
   array['true', '1', '1'],
   'Meta''s redelivery is a duplicate (never routed again): one message, one member'
 );
+-- He sends "JOIN AH2-7KQ" again (a new message): his own membership, said honestly; a stranger
+-- sending the same used code still gets the one neutral answer.
+set local role service_role;
+select api.wa_ingest_inbound('919900000320', 'wamid.t59.m2-gate-rejoin', 'text',
+  '{"from": "919900000320", "id": "wamid.t59.m2-gate-rejoin", "type": "text", "text": {"body": "JOIN AH2-7KQ"}}'::jsonb, '2026-10-18T12:05:00+05:30'::timestamptz);
+select set_config('m2.rejoin', api.whatsapp_family_join(
+  (pg_temp.j('ingest') -> 'contact' ->> 'id')::uuid, 'AH2-7KQ', 'wamid.t59.m2-gate-rejoin')::text, true);
+select set_config('m2.stranger', api.wa_ingest_inbound('919900000321', 'wamid.t59.m2-gate-stranger', 'text',
+  '{"from": "919900000321", "id": "wamid.t59.m2-gate-stranger", "type": "text", "text": {"body": "JOIN AH2-7KQ"}}'::jsonb, '2026-10-18T12:05:00+05:30'::timestamptz)::text, true);
+reset role;
+select is(
+  array[pg_temp.j('rejoin') ->> 'member_id', pg_temp.j('rejoin') ->> 'joined_line',
+        (select count(*)::text from app.family_members where wa_contact_id = (pg_temp.j('ingest') -> 'contact' ->> 'id')::uuid)],
+  array[(select id::text from app.family_members where invite_code = 'AH2-7KQ'),
+        'You''re already in ' || (select first_name from app.profiles where id = pg_temp.rohan()) || '''s circle for '
+          || (select name from core.phases where id = pg_temp.aurelia()) || '.',
+        '1'],
+  'a second JOIN AH2-7KQ from him: "You''re already in Rohan''s circle", from his member row, still one member'
+);
+set local role service_role;
+select throws_ok(
+  format($$select api.whatsapp_family_join(%L::uuid, 'AH2-7KQ', 'wamid.t59.m2-gate-stranger')$$,
+         pg_temp.j('stranger') -> 'contact' ->> 'id'),
+  'PT404', 'not_found',
+  'a stranger sending the used code gets the neutral not_found, nothing about the circle'
+);
+reset role;
 set local role authenticated;
 select set_config('request.jwt.claims', pg_temp.claims(pg_temp.rohan()), true);
 select set_config('m2.circle2', api.family_circle()::text, true);
@@ -377,27 +406,17 @@ select is(
   'missing',
   'on 25 Oct the Jul–Sep 2026 QPR is still not on HARERA'
 );
-select todo_start('Gate gap: nothing publishes a pending_notice run on its notice''s effective date (no cron or ops function; pipelines'' settle_notice decides "effective" but writes nothing)');
+-- The daily publish job (pg_cron, 00:05 IST) is due by now: the notice's effective date is today.
 select is(
-  (core.published_run(pg_temp.aurelia())).id, (select pending_run from m2_run),
-  'advancing the clock to 25 Oct (and running the jobs due by then) publishes the noticed run'
+  ops.publish_due_notice_runs(), 1,
+  'the daily publish job (ops.publish_due_notice_runs) publishes the one notice due by 25 Oct'
 );
-select todo_end();
-
--- The publish the notice promised (what a settle step would write): the noticed run goes
--- pending_notice → published, the Elevated run is superseded, the band history moves on 25 Oct.
-select lives_ok($$
-  do $p$
-  begin
-    update core.score_runs set status = 'superseded' where id = (select published_run from m2_run);
-    update core.score_runs set status = 'published', published_at = ops.now() where id = (select pending_run from m2_run);
-    update core.band_notices set status = 'effective' where id = (select notice from m2_run);
-    update core.band_history set to_date = '2026-10-25' where phase_id = pg_temp.aurelia() and to_date is null;
-    insert into core.band_history (phase_id, band, state, confidence, from_date, run_id, model_version)
-      select r.phase_id, r.band, r.state, r.confidence, '2026-10-25', r.id, r.model_version
-        from core.score_runs r where r.id = (select pending_run from m2_run);
-  end $p$
-$$, 'publish the noticed run on 25 Oct (pending_notice → published)');
+select results_eq(
+  $$select (core.published_run(pg_temp.aurelia())).id, n.status, o.status
+      from m2_run m join core.band_notices n on n.id = m.notice join core.score_runs o on o.id = m.published_run$$,
+  $$select pending_run, 'effective'::text, 'superseded'::text from m2_run$$,
+  'advancing the clock to 25 Oct (and running the jobs due by then) publishes the noticed run: the notice is effective, the Elevated run superseded'
+);
 
 select results_eq(
   $$select (core.published_run(pg_temp.aurelia())).id,
@@ -416,7 +435,7 @@ select set_config('m2.event', (select id::text from core.events where phase_id =
 
 select results_eq(
   $$select user_id, channel, template_code from comms.outbox
-     where dedupe_key like 'alert:' || current_setting('m2.event') || ':%' order by channel$$,
+     where dedupe_key like 'alert:' || current_setting('m2.event') || ':%' and user_id = pg_temp.rohan() order by channel$$,
   $$values (pg_temp.rohan(), 'push'::text, null::text), (pg_temp.rohan(), 'whatsapp_template'::text, 'band_change_alert'::text)$$,
   'the follower gets push and the WhatsApp band_change_alert template, one row each'
 );
@@ -435,19 +454,28 @@ select is(
   0,
   'nothing private reaches the circle: no payment stage, and no project they were not given'
 );
-select todo_start('Gate gap: the JOIN reply promises "You''ll get the same alerts as Rohan" (purpose family_alerts), but ops.fan_out reads only app.follows, so a joined relative gets nothing (T43b handoff)');
-select is(
-  (select count(*)::int from m2_circle_rows r
-    where r.dedupe_key like 'alert:' || current_setting('m2.event') || ':%'
-      and r.contact_id = (pg_temp.j('ingest') -> 'contact' ->> 'id')::uuid and r.channel = 'whatsapp_template'),
-  1,
-  'the relative who joined for Aurelia gets its band-change template'
+-- The JOIN reply's promise, "You'll get the same alerts as Rohan" (DESIGN §5b; lead decision on
+-- PR #89): the relative who joined for Aurelia gets the same band-change template, on his own
+-- contact, opted in by his JOIN.
+select results_eq(
+  $$select r.channel, r.template_code, r.payload, r.user_id is null
+      from m2_circle_rows r
+     where r.dedupe_key like 'alert:' || current_setting('m2.event') || ':%'
+       and r.contact_id = (pg_temp.j('ingest') -> 'contact' ->> 'id')::uuid$$,
+  $$select o.channel, o.template_code, o.payload, true from comms.outbox o
+     where o.dedupe_key like 'alert:' || current_setting('m2.event') || ':%'
+       and o.user_id = pg_temp.rohan() and o.channel = 'whatsapp_template'$$,
+  'the relative who joined for Aurelia gets its band-change template: one row, the same payload as Rohan''s'
 );
-select todo_end();
+select is(
+  (select count(*)::int from comms.outbox where dedupe_key like 'alert:' || current_setting('m2.event') || ':%'),
+  3,
+  '...and nobody else: Meera has no opted-in channel of her own, so the circle adds one row'
+);
 select is(
   array(select distinct not_before from comms.outbox where dedupe_key like 'alert:' || current_setting('m2.event') || ':%'),
   array['2026-10-25 08:00:00+05:30'::timestamptz],
-  'published at 03:15, inside his 22:00–08:00 quiet hours: both wait until 08:00 IST'
+  'published at 03:15, inside the 22:00–08:00 quiet hours: every alert row waits until 08:00 IST'
 );
 select ok(
   (select bool_and(n.sent_at <= r.published_at - interval '7 days')
@@ -459,7 +487,8 @@ select ok(
 select is(
   (select c.utility_opt_in and c.stopped_at is null and c.user_id = o.user_id
      from comms.outbox o join pii.wa_contacts c on c.id = o.contact_id
-    where o.dedupe_key like 'alert:' || current_setting('m2.event') || ':%' and o.channel = 'whatsapp_template'),
+    where o.dedupe_key like 'alert:' || current_setting('m2.event') || ':%' and o.channel = 'whatsapp_template'
+      and o.user_id = pg_temp.rohan()),
   true,
   'the template goes to his own linked contact, opted in and not stopped'
 );
@@ -488,13 +517,14 @@ select is(
   'outbox-dispatch claims neither alert during quiet hours'
 );
 select is(
-  array(select x ->> 'channel' from jsonb_array_elements(pg_temp.j('claim0800')) x
-         where x ->> 'dedupe_key' like 'alert:' || current_setting('m2.event') || ':%' order by 1),
-  array['push', 'whatsapp_template'],
-  'at 08:00 IST it claims both'
+  array(select x.v ->> 'channel' from jsonb_array_elements(pg_temp.j('claim0800')) with ordinality x(v, n)
+         where x.v ->> 'dedupe_key' like 'alert:' || current_setting('m2.event') || ':%' order by x.n),
+  array['push', 'whatsapp_template', 'whatsapp_template'],
+  'at 08:00 IST it claims all three, push first (same not_before: push, then WhatsApp)'
 );
 select set_config('m2.wa_row', (select x::text from jsonb_array_elements(pg_temp.j('claim0800')) x
-  where x ->> 'dedupe_key' like 'alert:' || current_setting('m2.event') || ':%' and x ->> 'channel' = 'whatsapp_template'), true);
+  where x ->> 'dedupe_key' like 'alert:' || current_setting('m2.event') || ':%' and x ->> 'channel' = 'whatsapp_template'
+    and x ->> 'user_id' = pg_temp.rohan()::text), true);
 select is(
   array(select v from jsonb_array_elements_text(pg_temp.j('wa_row') -> 'template' -> 'variables') v
          where coalesce(pg_temp.j('wa_row') -> 'payload' ->> v, '') = ''),
@@ -506,18 +536,49 @@ select is(
   array[(select name from core.phases where id = pg_temp.aurelia()), 'Elevated', 'High', 'new HARERA records', '25 Oct 2026'],
   'project, from band, to band, trigger and date, in the template''s order'
 );
-select todo_start('Gate gap: band_change_alert has an image header (comms.templates.header), but neither ops.fan_out''s payload nor outbox-dispatch''s buildWhatsAppRequest supplies the image');
-select ok(
-  pg_temp.j('wa_row') -> 'template' -> 'header' ->> 'type' <> 'image'
-    or exists (select 1 from jsonb_each_text(pg_temp.j('wa_row') -> 'payload') p
-                where p.value ~ '^(https?://[^ ]+|/cards/[^ ]+)\.png$'),
-  'the row carries the header image the template requires'
+select is(
+  array[pg_temp.j('wa_row') -> 'template' -> 'header' ->> 'type', pg_temp.j('wa_row') -> 'payload' ->> 'header_image_url'],
+  array['image', api.risk_summary('aurelia-heights-phase-2') -> 'share' ->> 'card_url'],
+  'the row carries the image header the template requires: Aurelia''s RiskSummary card, for the run just published'
 );
-select todo_end();
+select ok(
+  pg_temp.j('wa_row') -> 'payload' ->> 'header_image_url' ~ '^https://[^ ]+/cards/risk/aurelia-heights-phase-2\.png\?run=[0-9a-f-]{36}$'
+    and pg_temp.j('wa_row') -> 'payload' ->> 'header_image_url' like '%' || (select pending_run from m2_run)::text,
+  '...a served /cards/risk/<slug>.png URL naming the noticed run'
+);
+select is(
+  pg_temp.j('wa_row') -> 'payload' ->> 'session_text',
+  (select name from core.phases where id = pg_temp.aurelia()) || ': delivery risk moved from Elevated to High',
+  'inside the 24-hour window the session alert names the project and the new band (never "Something changed")'
+);
 set local role service_role;
 select set_config('m2.wa_contact', api.outbox_wa_contact((pg_temp.j('wa_row') ->> 'contact_id')::uuid)::text, true);
 reset role;
 select diag('m2:wa_claim ' || jsonb_build_object('row', pg_temp.j('wa_row'), 'contact', pg_temp.j('wa_contact'), 'now', ops.now())::text);
+
+-- F. Sun 25 Oct, 09:00 IST: the weekly digest names its 1080×570 header, an unguessable
+-- /cards/digest/<card_token>.png that api.digest_card answers as anon (the web's card route).
+select set_config('plinth.fixed_now', '2026-10-25T09:00:00+05:30', true);
+select is(ops.enqueue_digests('weekly_sun_9am'), 1, 'Sun 25 Oct 09:00: Rohan''s weekly digest is queued');
+select set_config('m2.digest', (select payload::text from comms.outbox where template_code = 'weekly_digest' and user_id = pg_temp.rohan()), true);
+select ok(
+  pg_temp.j('digest') ->> 'card_token' ~ '^[0-9a-f]{32}$'
+    and pg_temp.j('digest') ->> 'header_image_url' = core.public_base_url() || '/cards/digest/' || (pg_temp.j('digest') ->> 'card_token') || '.png',
+  'the weekly_digest row carries its header image: /cards/digest/<32 random hex digits>.png, no name or id in the URL'
+);
+set local role anon;
+select set_config('m2.digest_card', api.digest_card(pg_temp.j('digest') ->> 'card_token')::text, true);
+reset role;
+select is(
+  array(select p ->> 'slug' from jsonb_array_elements(pg_temp.j('digest_card') -> 'projects') p order by 1),
+  array(select ph.slug from app.follows f join core.phases ph on ph.id = f.phase_id where f.user_id = pg_temp.rohan() order by 1),
+  'api.digest_card (anon, as /cards/digest reads it): one floor per followed project'
+);
+select ok(
+  pg_temp.j('digest_card') ->> 'heading_line'
+    like '% · ' || (pg_temp.j('digest') ->> 'week_range') || ' · ' || (pg_temp.j('digest') ->> 'change_count') || ' change%',
+  '...under a heading with the digest row''s own week range and change count'
+);
 
 select * from finish();
 rollback;
