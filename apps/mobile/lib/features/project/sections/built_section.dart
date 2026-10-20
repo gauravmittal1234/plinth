@@ -79,9 +79,19 @@ class _ProjectBuiltSectionState extends State<ProjectBuiltSection> {
         Row(
           children: [
             if (towerSentence == null)
-              Expanded(child: FactTile(label: ProjectCopy.built, value: '${quarter.builtPct?.round() ?? 0}%', valueColor: tokens.accentText)),
-            Expanded(child: FactTile(label: ProjectCopy.sold, value: '${quarter.soldPct?.round() ?? 0}%')),
-            Expanded(child: FactTile(label: ProjectCopy.timeUsed, value: '${quarter.timeUsedPct?.round() ?? 0}%')),
+              Expanded(
+                child: FactTile(
+                  label: ProjectCopy.built,
+                  value: '${quarter.builtPct?.round() ?? 0}%',
+                  valueColor: tokens.accentText,
+                ),
+              ),
+            Expanded(
+              child: FactTile(label: ProjectCopy.sold, value: '${quarter.soldPct?.round() ?? 0}%'),
+            ),
+            Expanded(
+              child: FactTile(label: ProjectCopy.timeUsed, value: '${quarter.timeUsedPct?.round() ?? 0}%'),
+            ),
           ],
         ),
         const SizedBox(height: PlinthSpace.s24),
@@ -100,10 +110,7 @@ class _ProjectBuiltSectionState extends State<ProjectBuiltSection> {
           ],
         ),
         const SizedBox(height: PlinthSpace.s12),
-        Text(
-          'HARERA QPR · ${quarter.label}',
-          style: PlinthType.small.copyWith(color: tokens.muted),
-        ),
+        Text('HARERA QPR · ${quarter.label}', style: PlinthType.small.copyWith(color: tokens.muted)),
         if (quarter.noteLine != null || towerNote != null) ...[
           const SizedBox(height: 6),
           Text(

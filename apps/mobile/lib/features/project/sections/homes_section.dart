@@ -35,9 +35,7 @@ class _ProjectHomesSectionState extends State<ProjectHomesSection> {
 
     return SectionBand(
       question: ProjectCopy.whatAreHomesLike,
-      answer: configs.length < 2
-          ? null
-          : 'Two layouts in all. Sizes are carpet area: the floor you can use.',
+      answer: configs.length < 2 ? null : 'Two layouts in all. Sizes are carpet area: the floor you can use.',
       children: [
         if (configs.length > 1) ...[
           PlinthSegmented<int>(
@@ -54,7 +52,8 @@ class _ProjectHomesSectionState extends State<ProjectHomesSection> {
           ProjectExpander(
             title: ProjectCopy.amenitiesAndGettingAround,
             children: [
-              if (amenities != null) _LaneBlock(items: amenities.items, lane: amenities.lane, sourceLine: amenities.sourceLine),
+              if (amenities != null)
+                _LaneBlock(items: amenities.items, lane: amenities.lane, sourceLine: amenities.sourceLine),
               if (amenities != null && gettingAround != null) const SizedBox(height: PlinthSpace.s16),
               if (gettingAround != null)
                 _LaneBlock(
@@ -92,8 +91,12 @@ class _ConfigFacts extends StatelessWidget {
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
     final small = PlinthType.small.copyWith(color: tokens.muted);
-    Widget fact(String? line) =>
-        line == null ? const SizedBox.shrink() : Padding(padding: const EdgeInsets.only(bottom: 6), child: Text(line, style: small));
+    Widget fact(String? line) => line == null
+        ? const SizedBox.shrink()
+        : Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text(line, style: small),
+          );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -106,7 +109,10 @@ class _ConfigFacts extends StatelessWidget {
         if (config.allInLine != null)
           Padding(
             padding: const EdgeInsets.only(bottom: 6),
-            child: Text(config.allInLine!, style: PlinthType.body.copyWith(fontWeight: FontWeight.w700, color: tokens.ink)),
+            child: Text(
+              config.allInLine!,
+              style: PlinthType.body.copyWith(fontWeight: FontWeight.w700, color: tokens.ink),
+            ),
           )
         else if (config.allInNote != null)
           fact(config.allInNote),
@@ -191,7 +197,10 @@ class _FromDeveloperDetail extends StatelessWidget {
               child: Text.rich(
                 TextSpan(
                   children: [
-                    TextSpan(text: stage.label, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    TextSpan(
+                      text: stage.label,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
                     TextSpan(text: '  ${stage.pct.toStringAsFixed(stage.pct == stage.pct.roundToDouble() ? 0 : 1)}%'),
                   ],
                 ),
@@ -224,7 +233,10 @@ class _Waterlogging extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(ProjectCopy.waterloggingLabel, style: PlinthType.body.copyWith(fontWeight: FontWeight.w700, color: tokens.ink)),
+        Text(
+          ProjectCopy.waterloggingLabel,
+          style: PlinthType.body.copyWith(fontWeight: FontWeight.w700, color: tokens.ink),
+        ),
         const SizedBox(height: PlinthSpace.s12),
         Wrap(
           spacing: PlinthSpace.s8,
@@ -233,7 +245,9 @@ class _Waterlogging extends StatelessWidget {
             for (final r in waterlogging.reports)
               SourceChip(
                 label: 'News report · ${formatDisplayDate(r.reportedOn)}',
-                onPressed: r.url == null ? null : () => launchUrl(Uri.parse(r.url!), mode: LaunchMode.externalApplication),
+                onPressed: r.url == null
+                    ? null
+                    : () => launchUrl(Uri.parse(r.url!), mode: LaunchMode.externalApplication),
               ),
           ],
         ),

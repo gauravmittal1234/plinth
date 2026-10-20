@@ -15,9 +15,7 @@ class ProjectFurnishSection extends StatelessWidget {
     return SectionBand(
       question: ProjectCopy.furnishHeading,
       answer: ProjectCopy.furnishBody,
-      children: [
-        PlinthButton(label: ProjectCopy.tryOnYourRoom, kind: PlinthButtonKind.tonal, onPressed: onOpen),
-      ],
+      children: [PlinthButton(label: ProjectCopy.tryOnYourRoom, kind: PlinthButtonKind.tonal, onPressed: onOpen)],
     );
   }
 }

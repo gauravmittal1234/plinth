@@ -64,7 +64,10 @@ class _Topic extends StatelessWidget {
               decoration: BoxDecoration(color: tokens.track, borderRadius: BorderRadius.circular(PlinthRadius.panel)),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                child: _Para(para: para, style: body.copyWith(fontWeight: FontWeight.w600)),
+                child: _Para(
+                  para: para,
+                  style: body.copyWith(fontWeight: FontWeight.w600),
+                ),
               ),
             ),
             _ => _Para(para: para, style: body),
@@ -78,7 +81,10 @@ class _Topic extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(padding: const EdgeInsets.only(top: 9, right: 10), child: _Bullet(color: tokens.ink2)),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 9, right: 10),
+                    child: _Bullet(color: tokens.ink2),
+                  ),
                   Expanded(child: Text(point, style: body)),
                 ],
               ),
@@ -102,7 +108,10 @@ class _Para extends StatelessWidget {
     return Text.rich(
       TextSpan(
         children: [
-          TextSpan(text: '$lead ', style: const TextStyle(fontWeight: FontWeight.w700)),
+          TextSpan(
+            text: '$lead ',
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
           TextSpan(text: para.text),
         ],
       ),

@@ -56,10 +56,7 @@ class _ProjectExpanderState extends State<ProjectExpander> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            widget.title,
-                            style: PlinthType.h3.copyWith(color: tokens.ink),
-                          ),
+                          Text(widget.title, style: PlinthType.h3.copyWith(color: tokens.ink)),
                           if (widget.subtitle != null) ...[
                             const SizedBox(height: 2),
                             Text(widget.subtitle!, style: PlinthType.small.copyWith(color: tokens.muted)),
@@ -79,10 +76,7 @@ class _ProjectExpanderState extends State<ProjectExpander> {
             ),
           ),
         ),
-        if (_open) ...[
-          const SizedBox(height: PlinthSpace.s16),
-          ...widget.children,
-        ],
+        if (_open) ...[const SizedBox(height: PlinthSpace.s16), ...widget.children],
       ],
     );
   }

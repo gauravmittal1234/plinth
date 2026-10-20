@@ -77,23 +77,17 @@ class ProjectWaitSection extends StatelessWidget {
         if (afford.frequencyLine != null)
           Text(afford.frequencyLine!, style: PlinthType.body.copyWith(height: 1.5, color: tokens.ink)),
         const SizedBox(height: PlinthSpace.s16),
-        Text(
-          afford.assumptions.join(' '),
-          style: PlinthType.small.copyWith(color: tokens.ink2, height: 1.4),
-        ),
+        Text(afford.assumptions.join(' '), style: PlinthType.small.copyWith(color: tokens.ink2, height: 1.4)),
         const SizedBox(height: PlinthSpace.s8),
         Text(afford.framingLine, style: PlinthType.small.copyWith(color: tokens.muted)),
         const SizedBox(height: PlinthSpace.s24),
-        PlinthButton(
-          label: ProjectCopy.checkBeforeYouPay,
-          kind: PlinthButtonKind.inverse,
-          onPressed: null,
-        ),
+        PlinthButton(label: ProjectCopy.checkBeforeYouPay, kind: PlinthButtonKind.inverse, onPressed: null),
         const SizedBox(height: PlinthSpace.s8),
         Text(ProjectCopy.neverMovesMoney, style: PlinthType.small.copyWith(color: tokens.muted)),
       ],
     );
   }
 
-  static String _short(int inr) => inr >= 100000 ? '${(inr / 100000).toStringAsFixed(1)} L' : formatInrExact(inr).substring(1);
+  static String _short(int inr) =>
+      inr >= 100000 ? '${(inr / 100000).toStringAsFixed(1)} L' : formatInrExact(inr).substring(1);
 }

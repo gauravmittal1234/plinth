@@ -62,8 +62,12 @@ class _ProjectContentState extends ConsumerState<ProjectContent> {
       body: SafeArea(
         top: false,
         child: switch (pageAsync) {
-          AsyncData(:final value) =>
-            _Loaded(slug: widget.slug, page: value.value, simple: _simple, onBackToFullPage: _toggleSimple),
+          AsyncData(:final value) => _Loaded(
+            slug: widget.slug,
+            page: value.value,
+            simple: _simple,
+            onBackToFullPage: _toggleSimple,
+          ),
           AsyncError() => _ErrorState(onRetry: () => ref.invalidate(projectPageProvider(phase))),
           _ => const Center(child: CircularProgressIndicator()),
         },
@@ -89,7 +93,10 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('This project could not be loaded.', style: PlinthType.body.copyWith(color: PlinthTokens.of(context).ink)),
+            Text(
+              'This project could not be loaded.',
+              style: PlinthType.body.copyWith(color: PlinthTokens.of(context).ink),
+            ),
             const SizedBox(height: PlinthSpace.s16),
             PlinthButton(label: 'Try again', onPressed: onRetry),
           ],
@@ -154,11 +161,9 @@ Future<void> _toggleFollow(BuildContext context, WidgetRef ref, String slug, Str
   try {
     final result = await controller.follow(slug);
     if (!context.mounted) return;
-    if (result != null) {
-      await showAlertsSheet(context, projectName: name, alertsLine: result.alertsLine);
-    } else {
-      showPlinthToast(context, 'Following $name');
-    }
+    // Shown whether the server answered at once or the follow is still
+    // queued (offline): either way the buyer just followed, successfully.
+    await showAlertsSheet(context, projectName: name, alertsLine: result?.alertsLine ?? ProjectCopy.alertsLineFallback);
   } on Exception {
     if (context.mounted) showPlinthToast(context, 'Could not follow $name. Try again.');
   }
@@ -189,11 +194,7 @@ class _BottomBar extends ConsumerWidget {
           glyph: KitGlyph.sparkle,
           onPressed: () => showAskSheet(context, projectName: name),
         ),
-        BottomAction(
-          label: ProjectCopy.share,
-          glyph: KitGlyph.share,
-          onPressed: () => _share(page),
-        ),
+        BottomAction(label: ProjectCopy.share, glyph: KitGlyph.share, onPressed: () => _share(page)),
       ],
     );
   }

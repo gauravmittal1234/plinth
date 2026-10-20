@@ -54,7 +54,9 @@ class _ProjectRiskSectionState extends ConsumerState<ProjectRiskSection> {
                 padding: const EdgeInsets.only(top: 2, right: 6),
                 child: KitIcon(KitGlyph.trend, size: 16, color: tokens.muted),
               ),
-              Expanded(child: Text(sinceLine, style: PlinthType.small.copyWith(color: tokens.muted))),
+              Expanded(
+                child: Text(sinceLine, style: PlinthType.small.copyWith(color: tokens.muted)),
+              ),
             ],
           ),
         ],
@@ -67,10 +69,7 @@ class _ProjectRiskSectionState extends ConsumerState<ProjectRiskSection> {
           PlinthSegmented<bool>(
             semanticLabel: 'Risk view',
             value: _dial,
-            options: [
-              SegmentOption(true, ProjectCopy.dial),
-              SegmentOption(false, ProjectCopy.of100Projects),
-            ],
+            options: [SegmentOption(true, ProjectCopy.dial), SegmentOption(false, ProjectCopy.of100Projects)],
             onChanged: (v) => setState(() => _dial = v),
           ),
           const SizedBox(height: PlinthSpace.s20),
@@ -81,10 +80,7 @@ class _ProjectRiskSectionState extends ConsumerState<ProjectRiskSection> {
           ),
         ],
         const SizedBox(height: PlinthSpace.s24),
-        Text(
-          risk.late12.ocNotKeysLine,
-          style: PlinthType.body.copyWith(height: 1.5, color: tokens.ink),
-        ),
+        Text(risk.late12.ocNotKeysLine, style: PlinthType.body.copyWith(height: 1.5, color: tokens.ink)),
         if (risk.pending.isNotEmpty) ...[
           const SizedBox(height: PlinthSpace.s20),
           PendingFactNote(fact: risk.pending.first),
@@ -94,10 +90,7 @@ class _ProjectRiskSectionState extends ConsumerState<ProjectRiskSection> {
           title: '${ProjectCopy.whyBand} ${risk.chip.label}?',
           subtitle: risk.reasons.isEmpty ? null : ProjectCopy.seeReasons,
           children: [
-            ReasonList(
-              reasons: risk.reasons,
-              onSource: (reason, source) => _openEvidence(context, source),
-            ),
+            ReasonList(reasons: risk.reasons, onSource: (reason, source) => _openEvidence(context, source)),
             if (risk.whatWouldChange != null) ...[
               const SizedBox(height: PlinthSpace.s20),
               Text(risk.whatWouldChange!, style: PlinthType.body.copyWith(height: 1.5, color: tokens.ink2)),

@@ -67,7 +67,10 @@ class _AskSheetState extends State<AskSheet> {
                 const SizedBox(height: PlinthSpace.s24),
                 const Divider(height: 1),
                 const SizedBox(height: PlinthSpace.s20),
-                Text(ProjectCopy.wantAPerson, style: PlinthType.body.copyWith(fontWeight: FontWeight.w600, color: tokens.ink)),
+                Text(
+                  ProjectCopy.wantAPerson,
+                  style: PlinthType.body.copyWith(fontWeight: FontWeight.w600, color: tokens.ink),
+                ),
                 const SizedBox(height: 6),
                 Text(ProjectCopy.talkToAdviser, style: PlinthType.body.copyWith(color: tokens.ink)),
                 const SizedBox(height: 2),

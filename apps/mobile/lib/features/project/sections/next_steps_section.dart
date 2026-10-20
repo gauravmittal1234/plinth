@@ -63,7 +63,10 @@ class _Step extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(step.heading, style: PlinthType.body.copyWith(fontWeight: FontWeight.w700, color: tokens.ink)),
+          Text(
+            step.heading,
+            style: PlinthType.body.copyWith(fontWeight: FontWeight.w700, color: tokens.ink),
+          ),
           const SizedBox(height: 4),
           Text(step.body, style: PlinthType.body.copyWith(height: 1.5, color: tokens.ink)),
         ],

@@ -130,10 +130,7 @@ class _SimpleProjectViewState extends ConsumerState<SimpleProjectView> {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterPhone, PlinthSpace.s16, PlinthLayout.gutterPhone, 0),
-          child: Text(
-            '${widget.projectName} · large-text view',
-            style: PlinthType.small.copyWith(color: tokens.muted),
-          ),
+          child: Text('${widget.projectName} · large-text view', style: PlinthType.small.copyWith(color: tokens.muted)),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterPhone, PlinthSpace.s16, PlinthLayout.gutterPhone, 0),
@@ -152,8 +149,7 @@ class _SimpleProjectViewState extends ConsumerState<SimpleProjectView> {
           ),
         ],
         const SizedBox(height: PlinthSpace.s16),
-        for (final (i, block) in blocks.indexed)
-          _SimpleBlock(block: block, active: _activeBlock == i),
+        for (final (i, block) in blocks.indexed) _SimpleBlock(block: block, active: _activeBlock == i),
         const SizedBox(height: PlinthSpace.s24),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: PlinthLayout.gutterPhone),

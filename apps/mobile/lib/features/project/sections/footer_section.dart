@@ -22,7 +22,12 @@ class ProjectFooterSection extends StatelessWidget {
     return ColoredBox(
       color: tokens.bg,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterPhone, PlinthSpace.s40, PlinthLayout.gutterPhone, PlinthSpace.s56),
+        padding: const EdgeInsets.fromLTRB(
+          PlinthLayout.gutterPhone,
+          PlinthSpace.s40,
+          PlinthLayout.gutterPhone,
+          PlinthSpace.s56,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:plinth/app/app.dart';
+import 'package:plinth/app/router.dart';
 import 'package:plinth/app/routes.dart';
 import 'package:plinth/app/theme_mode.dart';
 import 'package:plinth/fixtures/fixture_mode.dart';

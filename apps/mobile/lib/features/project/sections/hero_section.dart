@@ -42,7 +42,12 @@ class ProjectHeroSection extends StatelessWidget {
             header: true,
             child: Text(
               phase.name,
-              style: PlinthType.display.copyWith(fontSize: 34, height: 1.02, letterSpacing: -0.03 * 34, color: tokens.ink),
+              style: PlinthType.display.copyWith(
+                fontSize: 34,
+                height: 1.02,
+                letterSpacing: -0.03 * 34,
+                color: tokens.ink,
+              ),
             ),
           ),
           const SizedBox(height: PlinthSpace.s8),
@@ -50,7 +55,10 @@ class ProjectHeroSection extends StatelessWidget {
             TextSpan(
               children: [
                 const TextSpan(text: 'by '),
-                TextSpan(text: developer.name, style: const TextStyle(fontWeight: FontWeight.w600)),
+                TextSpan(
+                  text: developer.name,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
                 TextSpan(text: ' · ${developer.claim.line}'),
               ],
             ),
@@ -87,13 +95,13 @@ class _Photo extends StatelessWidget {
           child: caption == null
               ? null
               : DecoratedBox(
-                  decoration: BoxDecoration(color: tokens.scrim, borderRadius: BorderRadius.circular(PlinthRadius.panel)),
+                  decoration: BoxDecoration(
+                    color: tokens.scrim,
+                    borderRadius: BorderRadius.circular(PlinthRadius.panel),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    child: Text(
-                      caption!,
-                      style: PlinthType.small.copyWith(color: tokens.onInverse),
-                    ),
+                    child: Text(caption!, style: PlinthType.small.copyWith(color: tokens.onInverse)),
                   ),
                 ),
         ),

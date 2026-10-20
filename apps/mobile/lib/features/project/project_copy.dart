@@ -84,7 +84,14 @@ abstract final class ProjectCopy {
   static String alertsHeading(String name) => 'Get alerts for $name?';
   static const turnOnAlerts = 'Turn on alerts';
   static const notNowJustFollow = 'Not now, just follow';
-  static const notificationNote = 'Android will ask to allow notifications next. Change this anytime in You › Notifications.';
+  static const notificationNote =
+      'Android will ask to allow notifications next. Change this anytime in You › Notifications.';
+
+  /// `Follow.alerts_line`'s usual wording, shown while a follow made offline
+  /// is still queued and the server hasn't answered with its own line yet.
+  static const alertsLineFallback =
+      "We'll tell you when its delivery risk changes, it gets a date extension, "
+      'or it files or misses a quarterly report. At most one alert a day.';
 
   // Ask sheet.
   static String askAbout(String name) => 'About $name · answers cite public records';
