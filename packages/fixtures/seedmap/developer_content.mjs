@@ -37,11 +37,22 @@ export function build({ load, sql }) {
   parts.push(
     insert(
       "ws.price_lists",
-      ["id", "phase_id", "published_on", "status", "version", "lane"],
+      [
+        "id",
+        "phase_id",
+        "published_on",
+        "published_precision",
+        "note",
+        "status",
+        "version",
+        "lane",
+      ],
       d.price_lists.map((l) => [
         q(l.id),
         q(ph[l.phase]),
         date(l.published_on),
+        q(l.published_precision ?? "day"),
+        q(l.note),
         q(l.status),
         q(l.version),
         q(l.lane),
@@ -103,6 +114,7 @@ export function build({ load, sql }) {
         "unit_label",
         "carpet_sqft",
         "super_sqft",
+        "edc_idc_line",
         "lane",
       ],
       d.cost_sheets.map((s) => [
@@ -113,6 +125,7 @@ export function build({ load, sql }) {
         q(s.option_label),
         q(s.carpet_sqft),
         q(s.super_sqft),
+        q(s.edc_idc_line),
         q(s.lane),
       ]),
     ),
