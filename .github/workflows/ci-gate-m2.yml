@@ -154,6 +154,19 @@ jobs:
           test "$planned" = "$ran" && test "$failed" = "0"
           grep -q '^# m2:wa_claim ' "$tap" && grep -q '^# m2:export_payload ' "$tap"
 
+      # Gate gap 8, worked around on the runner only. supabase/seed/50_people.sql leaves the
+      # auth.users token columns NULL; Supabase Auth reads them as plain strings, so every sign-in
+      # of a seeded person fails with 500 "Database error finding user" ("converting NULL to string
+      # is unsupported"). gates/m2.sql keeps the gap open as a todo, on the seed as loaded.
+      - name: Seeded accounts readable by Supabase Auth (gate gap 8 workaround, runner only)
+        run: |
+          psql -v ON_ERROR_STOP=1 -c "update auth.users set
+            confirmation_token = coalesce(confirmation_token, ''), recovery_token = coalesce(recovery_token, ''),
+            email_change_token_new = coalesce(email_change_token_new, ''), email_change = coalesce(email_change, ''),
+            phone_change = coalesce(phone_change, ''), phone_change_token = coalesce(phone_change_token, ''),
+            email_change_token_current = coalesce(email_change_token_current, ''),
+            reauthentication_token = coalesce(reauthentication_token, '')"
+
       # Playwright reuses the server this job starts (CI unset: reuseExistingServer).
       - name: Live build (PLINTH_DATA=supabase, the seeded stack)
         env:
@@ -237,6 +250,19 @@ jobs:
           echo "::add-mask::$key"
           echo "PLINTH_GATE_SUPABASE_URL=$api_url" >> "$GITHUB_ENV"
           echo "PLINTH_GATE_SUPABASE_KEY=$key" >> "$GITHUB_ENV"
+
+      # Gate gap 8, worked around on the runner only. supabase/seed/50_people.sql leaves the
+      # auth.users token columns NULL; Supabase Auth reads them as plain strings, so every sign-in
+      # of a seeded person fails with 500 "Database error finding user" ("converting NULL to string
+      # is unsupported"). gates/m2.sql keeps the gap open as a todo, on the seed as loaded.
+      - name: Seeded accounts readable by Supabase Auth (gate gap 8 workaround, runner only)
+        run: |
+          psql -v ON_ERROR_STOP=1 -c "update auth.users set
+            confirmation_token = coalesce(confirmation_token, ''), recovery_token = coalesce(recovery_token, ''),
+            email_change_token_new = coalesce(email_change_token_new, ''), email_change = coalesce(email_change, ''),
+            phone_change = coalesce(phone_change, ''), phone_change_token = coalesce(phone_change_token, ''),
+            email_change_token_current = coalesce(email_change_token_current, ''),
+            reauthentication_token = coalesce(reauthentication_token, '')"
 
       - name: flutter test test/gates/m2_test.dart (live group on, from the environment)
         working-directory: apps/mobile

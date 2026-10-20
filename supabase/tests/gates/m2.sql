@@ -57,7 +57,7 @@
 --   Gate gaps are marked `todo` (todo_start): see the T59 PR.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(52);
+select plan(53);
 
 update ops.runtime_settings set value = 'test' where key = 'env';
 
@@ -78,6 +78,27 @@ create function pg_temp.refs(p jsonb) returns text[] language sql immutable as $
 $$;
 
 select is(ops.now(), '2026-10-18 12:00:00+05:30'::timestamptz, 'ops.now() is the frozen clock, 18 Oct 2026 12:00 IST');
+
+-- Supabase Auth reads these auth.users columns into plain strings: a NULL in any of them makes
+-- every sign-in for that row fail ("Database error finding user"). PGlite's shim has none of them.
+create function pg_temp.auth_rows_with_null_tokens() returns integer language plpgsql as $$
+declare v_cols text[]; v integer;
+begin
+  select array_agg(column_name::text) into v_cols from information_schema.columns
+   where table_schema = 'auth' and table_name = 'users'
+     and column_name in ('confirmation_token', 'recovery_token', 'email_change_token_new', 'email_change',
+                         'phone_change', 'phone_change_token', 'email_change_token_current', 'reauthentication_token');
+  if v_cols is null then return null; end if;
+  execute 'select count(*)::int from auth.users where '
+    || (select string_agg(format('%I is null', c), ' or ') from unnest(v_cols) c) into v;
+  return v;
+end $$;
+select todo_start('Gate gap: supabase/seed/50_people.sql leaves auth.users token columns NULL, so Supabase Auth cannot read a seeded account ("converting NULL to string is unsupported") and no seeded person can sign in');
+select case when pg_temp.auth_rows_with_null_tokens() is null
+  then skip('the PGlite shim has no Supabase Auth token columns', 1)
+  else is(pg_temp.auth_rows_with_null_tokens(), 0, 'Supabase Auth can read every seeded account (no NULL token column)')
+end;
+select todo_end();
 
 -- A. Rohan's world, as his own JWT reads it -----------------------------------------------------
 set local role authenticated;
