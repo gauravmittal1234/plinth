@@ -1,0 +1,297 @@
+# ci-gate-m2 (owner: T59). BUILD_PLAN §3 "M2: Accounts, follow, alerts", the checks no other
+# workflow can run, because they need CI's seeded stack running (Postgres 17 with every
+# migration and the §5b seed, the clock frozen, PostgREST, Supabase Auth with its test OTPs):
+#
+#   live   pgTAP supabase/tests/gates/m2.sql on the stack (its `m2:` diag lines carry the outbox
+#          row the 25 Oct publish queues and Rohan's export payload). The web is built with
+#          PLINTH_DATA=supabase; e2e/gates/m2.spec.ts @live signs Rohan in with the test OTP and
+#          checks that Following shows his 5 changes, then runs the edge's own code with Deno
+#          over the diag rows: the mock WhatsApp body (outbox-dispatch) and the export ZIP
+#          (export-data).
+#   app    test/gates/m2_test.dart signs Rohan in through the app's own sign-in controller and
+#          repositories, and reads his Following, Who has my number and family circle.
+#   edge   wa-webhook served by `supabase functions serve` receives the recorded payload
+#          packages/fixtures/recorded/wa/text-join-ah2-7kq.json, signed for this run: the new
+#          contact becomes a member of Rohan's circle; Meta's redelivery changes nothing.
+#
+# The rest of the M2 list runs where it already lives (the map is the header of
+# supabase/tests/gates/m2.sql): ci-db (pgTAP incl. gates/m2.sql, test:api deep-equal), ci-edge
+# (Deno: templates, recorded payloads, dispatcher, export and delete), ci-web (smoke + e2e incl.
+# e2e/gates/m2.spec.ts @gate, card sizes), ci-mobile (flutter test incl. test/gates/m2_test.dart),
+# ci-scoring (the 7-day notice and its settle rule).
+#
+# Keys: only the Supabase CLI's fixed local-development values, read from `supabase status` on
+# the runner (as ci-gate-m1), and secrets made for this run (openssl rand) that never leave the
+# runner. No repository or organisation secret is used. The test phone numbers and the fixed test
+# code are read at run time from packages/fixtures/canonical/people.json and supabase/config.toml.
+name: ci-gate-m2
+
+on:
+  pull_request:
+    paths:
+      - "apps/web/**"
+      - "apps/mobile/lib/**"
+      - "apps/mobile/test/gates/**"
+      - "packages/**"
+      - "supabase/migrations/**"
+      - "supabase/seed/**"
+      - "supabase/functions/**"
+      - "supabase/tests/gates/**"
+      - "supabase/config.toml"
+      - "package-lock.json"
+      - ".github/workflows/ci-gate-m2.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - "apps/mobile/lib/**"
+      - "apps/mobile/test/gates/**"
+      - "packages/**"
+      - "supabase/migrations/**"
+      - "supabase/seed/**"
+      - "supabase/functions/**"
+      - "supabase/tests/gates/**"
+      - "supabase/config.toml"
+      - "package-lock.json"
+      - ".github/workflows/ci-gate-m2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-gate-m2-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  # The local database the CLI starts (supabase/config.toml [db] port); the CLI's fixed local
+  # defaults, exactly as ci-db uses them. Not secrets.
+  PGHOST: 127.0.0.1
+  PGPORT: "54322"
+  PGUSER: postgres
+  PGPASSWORD: postgres
+  PGDATABASE: postgres
+
+jobs:
+  live:
+    name: pgTAP on the stack, OTP sign-in → Following 5, mock WhatsApp body, export ZIP
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.118.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps --only-shell chromium
+      - name: Deno for the edge's own code (npx deno@2, as npm run edge:verify)
+        working-directory: supabase/functions
+        run: npx --yes deno@2 --version
+
+      # Auth (gotrue) stays up: phone OTP sign-in is the point, and this CLI only reports the
+      # local API keys when it runs.
+      - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, auth, gateway)
+        run: >-
+          supabase start
+          -x realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+
+      - name: Freeze the clock (as ci-db; env = test → ops.now() is 18 Oct 2026, 12:00 IST)
+        run: |
+          psql -v ON_ERROR_STOP=1 -c "update ops.runtime_settings set value = 'test' where key = 'env'"
+          got=$(psql -tAc "select ops.now() = timestamptz '2026-10-18 12:00:00+05:30'")
+          echo "env=$(psql -tAc "select ops.env()") frozen=$got"
+          test "$got" = "t"
+
+      - name: The local API's URL and public key (CLI local-development values)
+        run: |
+          set -o pipefail
+          supabase status -o env > "$RUNNER_TEMP/status.env"
+          echo "status -o env names: $(cut -d= -f1 "$RUNNER_TEMP/status.env" | tr '\n' ' ')"
+          val() { grep -E "^[A-Z_]*$1=" "$RUNNER_TEMP/status.env" | head -1 | cut -d= -f2- | tr -d '"'; }
+          api_url="$(val API_URL)"
+          key="$(val PUBLISHABLE_KEY)"; [ -n "$key" ] || key="$(val ANON_KEY)"
+          test -n "$api_url" || { echo "::error::no API_URL in supabase status"; exit 1; }
+          test -n "$key" || { echo "::error::no publishable/anon key in supabase status"; exit 1; }
+          echo "::add-mask::$key"
+          echo "NEXT_PUBLIC_SUPABASE_URL=$api_url" >> "$GITHUB_ENV"
+          echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$key" >> "$GITHUB_ENV"
+
+      - name: "pgTAP on the stack: supabase/tests/gates/m2.sql (todo = a listed gate gap)"
+        run: |
+          tap="$RUNNER_TEMP/m2.tap"
+          psql -X -q -tA -v ON_ERROR_STOP=1 -f supabase/tests/gates/m2.sql > "$tap"
+          grep -E '^(ok|not ok) ' "$tap" | cut -c1-220
+          planned=$(grep -oE '^1\.\.[0-9]+' "$tap" | head -1 | cut -d. -f3)
+          ran=$(grep -cE '^(ok|not ok) ' "$tap")
+          failed=$(grep -E '^not ok ' "$tap" | grep -vc '# TODO' || true)
+          echo "planned=$planned ran=$ran failed=$failed todo=$(grep -c '^not ok .*# TODO' "$tap" || true)"
+          test "$planned" = "$ran" && test "$failed" = "0"
+          grep -q '^# m2:wa_claim ' "$tap" && grep -q '^# m2:export_payload ' "$tap"
+
+      # Playwright reuses the server this job starts (CI unset: reuseExistingServer).
+      - name: Live build (PLINTH_DATA=supabase, the seeded stack)
+        env:
+          PLINTH_DATA: supabase
+        run: |
+          npm run -w @plinth/web build
+          (cd apps/web && exec node ../../node_modules/next/dist/bin/next start --port 3221) \
+            > "$RUNNER_TEMP/next-live.log" 2>&1 &
+          for i in $(seq 60); do curl -sf http://127.0.0.1:3221/api/health && break; sleep 1; done; echo
+          curl -sf http://127.0.0.1:3221/api/health | grep -q '"data":"supabase"'
+
+      - name: "e2e/gates/m2.spec.ts @live: OTP sign-in → Following 5; mock WhatsApp body; export ZIP"
+        env:
+          CI: ""
+          PLAYWRIGHT_PORT: "3221"
+          PLINTH_GATE_M2_WEB: "1"
+          PLINTH_GATE_M2_TAP: ${{ runner.temp }}/m2.tap
+        run: npm run -w @plinth/web e2e -- e2e/gates/m2.spec.ts --grep @live
+
+      - name: Server logs
+        if: failure()
+        run: |
+          tail -n 80 "$RUNNER_TEMP"/next-*.log || true
+          docker logs --tail 60 "$(docker ps -qf name=supabase_auth)" 2>&1 || true
+
+  app:
+    name: the app signs Rohan in with the test OTP and reads his world
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.118.0
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.5
+          channel: stable
+          cache: true
+      - name: flutter pub get (lockfile is frozen)
+        working-directory: apps/mobile
+        run: flutter pub get --enforce-lockfile
+
+      - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, auth, gateway)
+        run: >-
+          supabase start
+          -x realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+
+      - name: Freeze the clock (as ci-db)
+        run: |
+          psql -v ON_ERROR_STOP=1 -c "update ops.runtime_settings set value = 'test' where key = 'env'"
+          test "$(psql -tAc "select ops.now() = timestamptz '2026-10-18 12:00:00+05:30'")" = "t"
+
+      - name: The local API's URL and public key (CLI local-development values)
+        run: |
+          set -o pipefail
+          supabase status -o env > "$RUNNER_TEMP/status.env"
+          val() { grep -E "^[A-Z_]*$1=" "$RUNNER_TEMP/status.env" | head -1 | cut -d= -f2- | tr -d '"'; }
+          api_url="$(val API_URL)"
+          key="$(val PUBLISHABLE_KEY)"; [ -n "$key" ] || key="$(val ANON_KEY)"
+          test -n "$api_url" && test -n "$key"
+          echo "::add-mask::$key"
+          echo "PLINTH_GATE_SUPABASE_URL=$api_url" >> "$GITHUB_ENV"
+          echo "PLINTH_GATE_SUPABASE_KEY=$key" >> "$GITHUB_ENV"
+
+      - name: flutter test test/gates/m2_test.dart (live group on, from the environment)
+        working-directory: apps/mobile
+        run: >-
+          flutter test test/gates/m2_test.dart
+          --dart-define=PLINTH_GATE_SUPABASE_URL="$PLINTH_GATE_SUPABASE_URL"
+          --dart-define=PLINTH_GATE_SUPABASE_KEY="$PLINTH_GATE_SUPABASE_KEY"
+
+      - name: Auth logs
+        if: failure()
+        run: docker logs --tail 60 "$(docker ps -qf name=supabase_auth)" 2>&1 || true
+
+  edge:
+    name: JOIN AH2-7KQ through wa-webhook (recorded payload, served function)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.118.0
+
+      - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, auth, gateway)
+        run: >-
+          supabase start
+          -x realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+
+      - name: Freeze the clock (as ci-db)
+        run: |
+          psql -v ON_ERROR_STOP=1 -c "update ops.runtime_settings set value = 'test' where key = 'env'"
+          test "$(psql -tAc "select ops.now() = timestamptz '2026-10-18 12:00:00+05:30'")" = "t"
+
+      # The functions read SUPABASE_URL and the keys the CLI injects. Everything else is made for
+      # this run and stays on the runner.
+      - name: Serve the edge functions (mock Meta, PLINTH_ENV=test)
+        run: |
+          umask 077
+          wa_secret="$(openssl rand -hex 32)"
+          echo "::add-mask::$wa_secret"
+          {
+            echo "PLINTH_ENV=test"
+            echo "META_MODE=mock"
+            echo "WA_APP_SECRET=$wa_secret"
+            echo "WA_VERIFY_TOKEN=$(openssl rand -hex 16)"
+            echo "PLINTH_DISPATCH_SECRET=$(openssl rand -hex 32)"
+            echo "PLINTH_HASH_SALT=$(openssl rand -hex 32)"
+          } > "$RUNNER_TEMP/functions.env"
+          echo "$wa_secret" > "$RUNNER_TEMP/wa-app-secret"
+          supabase functions serve --env-file "$RUNNER_TEMP/functions.env" > "$RUNNER_TEMP/functions.log" 2>&1 &
+          for i in $(seq 120); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:54321/functions/v1/health || true)
+            [ "$code" = "200" ] && break; sleep 2
+          done
+          echo "health: $code"; test "$code" = "200"
+
+      - name: "JOIN AH2-7KQ from a new contact (recorded payload) → a member of Rohan's circle"
+        run: |
+          payload=packages/fixtures/recorded/wa/text-join-ah2-7kq.json
+          from=$(grep -o '"from": *"[0-9]*"' "$payload" | grep -o '[0-9]*' | head -1)
+          wamid=$(grep -o '"id": *"wamid[^"]*"' "$payload" | cut -d'"' -f4)
+          member_sql="select m.status || '|' || m.joined_via || '|' || c.wa_id_e164 from app.family_members m
+                        join pii.wa_contacts c on c.id = m.wa_contact_id where m.invite_code = 'AH2-7KQ'"
+          test "$(psql -tAc "select count(*) from pii.wa_contacts where wa_id_e164 = '+$from'")" = "0"
+          test "$(psql -tAc "select status from app.family_members where invite_code = 'AH2-7KQ'")" = "invited"
+
+          post() { # $1 = signature; prints the HTTP status
+            curl -s -o "$RUNNER_TEMP/wa-response.json" -w '%{http_code}' -X POST \
+              http://127.0.0.1:54321/functions/v1/wa-webhook \
+              -H "Content-Type: application/json" -H "X-Hub-Signature-256: $1" --data-binary @"$payload"
+          }
+          sig="sha256=$(openssl dgst -sha256 -hmac "$(cat "$RUNNER_TEMP/wa-app-secret")" -hex < "$payload" | awk '{print $NF}')"
+
+          bad=$(post "sha256=$(printf '0%.0s' $(seq 64))")
+          echo "unsigned/wrong signature → $bad"; test "$bad" = "403"
+          test "$(psql -tAc "select count(*) from comms.wa_messages where wa_message_id = '$wamid'")" = "0"
+
+          code=$(post "$sig"); echo "signed → $code $(cat "$RUNNER_TEMP/wa-response.json")"; test "$code" = "200"
+          for i in $(seq 30); do
+            got=$(psql -tAc "$member_sql"); [ "$got" = "joined|whatsapp|+$from" ] && break; sleep 1
+          done
+          echo "member: $got"; test "$got" = "joined|whatsapp|+$from"
+          psql -tAc "select direction || ' ' || type || ' ' || coalesce(to_jsonb(m) ->> 'route', '-') || ' ' ||
+                       coalesce(to_jsonb(m) ->> 'route_error', '-') || ' ' || coalesce(status, '-')
+                       from comms.wa_messages m join pii.wa_contacts c on c.id = m.contact_id
+                      where c.wa_id_e164 = '+$from' order by m.created_at"
+
+          code=$(post "$sig"); echo "redelivered → $code"; test "$code" = "200"
+          sleep 3
+          test "$(psql -tAc "select count(*) from comms.wa_messages where wa_message_id = '$wamid'")" = "1"
+          test "$(psql -tAc "select count(*) from app.family_members m join pii.wa_contacts c on c.id = m.wa_contact_id
+                              where c.wa_id_e164 = '+$from'")" = "1"
+          echo "JOIN AH2-7KQ: one message, one member, after Meta's redelivery"
+
+      - name: Function logs
+        if: always()
+        run: tail -n 60 "$RUNNER_TEMP/functions.log" || true
