@@ -47,8 +47,6 @@ export const NEVERS = [
 ] as const;
 
 export const PROMISES = [
-  { k: "The price is the price", v: "No fee is added at checkout." },
-  { k: "Nothing renews", v: "One payment covers one project for 12 months. Then it simply ends." },
   { k: "Nothing is ticked for you", v: "Every box starts empty, including WhatsApp updates." },
   { k: "No clocks", v: "No countdowns, no “only today”, no stock warnings." },
 ] as const;

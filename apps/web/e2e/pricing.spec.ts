@@ -31,6 +31,8 @@ test.describe("WebPricing", () => {
     expect(body).not.toContain("₹999");
     expect(body).not.toMatch(/\bPro\b/);
     expect(body.toLowerCase()).not.toContain("refund");
+    // No leftover paid-plan promises (one payment, renewals, checkout).
+    expect(body).not.toMatch(/One payment|renews|checkout/i);
   });
 
   test("no serious or critical a11y violations", async ({ page }) => {
