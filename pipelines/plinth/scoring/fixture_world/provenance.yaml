@@ -1,0 +1,31 @@
+# Provenance strings for the fixture world's computed records: where DESIGN §5/§5b (or a
+# lead decision) states each expected value. They fill the `source` fields of
+# canonical/scoring.json and nothing else. No value here feeds a computation; a test checks
+# that this file holds only strings keyed by phase or section.
+note: "Published output of scoring v1.2 for the fixture world (cutoff 14 Oct 2026). T11's `plinth-pipe score --fixtures --as-of 2026-10-14 --emit json` must reproduce this file. Internal values (internal_points, p_late12, reason contributions) are deliberately not part of it. Generated; edit src/author."
+
+# The as-of run of each phase (also its band-history row).
+runs:
+  aurelia-heights-phase-2: "DESIGN §5b"
+  kestrel-park: "DESIGN §5"
+  sapphire-grove-phase-1: "DESIGN §5"
+  coral-towers: "DESIGN §5"
+  laurel-residency: "DESIGN §5b"
+  juniper-enclave: "DESIGN §5b"
+  heron-point-phase-2: "DESIGN §5b; registration day DESIGN §5b · Engineering fixture decisions (19 Oct 2026)"
+  cedar-walk-phase-2: "DESIGN §5 (Moderate); DESIGN §5b · Fixture decisions, round 2 (C-05)"
+
+# Proposal runs from the watch pass at the clock.
+proposals:
+  aurelia-heights-phase-2: "DESIGN §5b (Elevated → High proposed; effective 25 Oct 2026 only if the Jul–Sep QPR is still missing; never shown to buyers)"
+
+# Reasons of the as-of runs; "*" covers every other phase.
+reasons:
+  aurelia-heights-phase-2: "BUILD_PLAN §7.1 (exact text); numbers DESIGN §5/§5b"
+  "*": "numbers DESIGN §5/DESIGN §5b; text DESIGN §5b · Fixture decisions, round 2 (C-16)"
+
+notices: "DESIGN §5b"
+red_flags: "DESIGN §5b"
+rescoring: "DESIGN §5b"
+stale: "DESIGN §5b"
+stalls: "DESIGN §5b"
