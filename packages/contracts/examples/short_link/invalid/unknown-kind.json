@@ -1,0 +1,8 @@
+{
+  "base": "ah2-phase.json",
+  "why": "kind is only phase or card -- never a bare project placement guess.",
+  "expect": "/kind",
+  "patch": [
+    { "op": "replace", "path": "/kind", "value": "project" }
+  ]
+}

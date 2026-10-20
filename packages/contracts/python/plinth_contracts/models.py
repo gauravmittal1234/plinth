@@ -1012,6 +1012,11 @@ class ShareCardKind(StrEnum):
     digest = "digest"
 
 
+class Kind(StrEnum):
+    phase = "phase"
+    card = "card"
+
+
 class Slug(RootModel[str]):
     root: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
     """
@@ -2594,6 +2599,26 @@ class ShareCardState(BaseModel):
     chip: Chip | None = None
     lines: Annotated[list[str], Field(max_length=3)]
     card_url: str | None
+
+
+class ShortLink(BaseModel):
+    """
+    plinth.short_link/1, from api.resolve_short_link(p_code): what a plinth.in/r/<code> link names -- a project's own short code (kind phase) or an issued share card's short code (kind card). Read-only; never increments the Live Record placement count that api.live_record (M4) owns.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.short_link/1"], Field(alias="schema")]
+    kind: Kind
+    slug: Slug | None
+    """
+    The phase's slug when kind is phase; null when kind is card.
+    """
+    card_code: str | None
+    """
+    The share card's short code when kind is card; null when kind is phase.
+    """
 
 
 class Suggestion(BaseModel):
