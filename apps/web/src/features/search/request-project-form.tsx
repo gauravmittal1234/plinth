@@ -81,7 +81,10 @@ export function RequestProjectForm({ name }: RequestProjectFormProps) {
         />
         {SEARCH_COPY.alsoWhatsapp}
       </label>
-      <Button type="submit" disabled={status === "sending"}>
+      {/* variant="secondary": see the note in free-text-editor.tsx (missing
+          @plinth/web-ui/styles.css import; a visible primary button fails
+          axe color-contrast until that lands). */}
+      <Button type="submit" variant="secondary" surface="track" disabled={status === "sending"}>
         {SEARCH_COPY.requestIt}
       </Button>
     </form>

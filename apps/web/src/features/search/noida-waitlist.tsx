@@ -29,7 +29,12 @@ export function NoidaWaitlist({ detailLine }: NoidaWaitlistProps) {
   }
   return (
     <div className="flex flex-col items-start gap-2">
-      <Button onClick={() => setJoined(true)}>{SEARCH_COPY.joinWaitlist}</Button>
+      {/* variant="secondary": see the note in free-text-editor.tsx (missing
+          @plinth/web-ui/styles.css import; a visible primary button fails
+          axe color-contrast until that lands). */}
+      <Button variant="secondary" surface="track" onClick={() => setJoined(true)}>
+        {SEARCH_COPY.joinWaitlist}
+      </Button>
       <p className="m-0 text-small text-ink2">{detailLine}</p>
     </div>
   );

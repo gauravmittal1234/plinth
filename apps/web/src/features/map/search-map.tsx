@@ -202,7 +202,7 @@ function LiveMap({
           el.textContent = pin.pinLabel ?? `Quoted ${pin.name}`;
           el.addEventListener("click", () => onSelect(pin.slug));
           const marker = new Marker({ element: el, anchor: "bottom" })
-            .setLngLat(pin.centroid)
+            .setLngLat([pin.centroid[0], pin.centroid[1]])
             .addTo(map);
           markers.push(marker);
         }
@@ -217,7 +217,6 @@ function LiveMap({
       map?.remove();
     };
     // `selected` only restyles existing markers below; it never remounts the map.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pins, onSelect]);
 
   if (failed) {
