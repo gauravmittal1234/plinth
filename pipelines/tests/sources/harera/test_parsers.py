@@ -86,7 +86,7 @@ def test_parse_qpr_register() -> None:
 def test_parse_corrigendum() -> None:
     entries = parse_corrigendum(_read("pages", "corrigendum_coral.json"))
     assert [e.doc_type for e in entries] == ["Extension (EXT)", "Extension (EXT)"]
-    assert entries[0].registration_no == "GGM/610/290/2019/45"
+    assert entries[0].registration_no == "GGM/612/344/2022/41"  # canonical rera_number
     assert entries[1].entry_date == date(2026, 10, 14)  # DESIGN §5b: "granted 14 Oct 2026"
 
 

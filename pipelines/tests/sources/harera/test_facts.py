@@ -94,7 +94,7 @@ def test_qpr_filing_fact() -> None:
 
 def test_corrigendum_fact_keys_by_doc_type_and_entry_date() -> None:
     rec = CorrigendumEntry(
-        "GGM/610/290/2019/45",
+        "GGM/612/344/2022/41",  # canonical rera_number (phase coral-towers)
         "Extension (EXT)",
         date(2026, 10, 14),
         "fixture://x.pdf",
@@ -103,7 +103,7 @@ def test_corrigendum_fact_keys_by_doc_type_and_entry_date() -> None:
     )
     draft = corrigendum_fact(rec, snapshot_id="snap-5")
     assert draft.key_fields == ("doc_type", "entry_date")
-    assert draft.subject_id == "GGM/610/290/2019/45"
+    assert draft.subject_id == "GGM/612/344/2022/41"
 
 
 def test_judgment_fact_subject_is_the_developer() -> None:

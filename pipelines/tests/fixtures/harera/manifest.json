@@ -1,6 +1,6 @@
 {
   "schema": "plinth.fetch_fixtures/1",
-  "note": "SYNTHETIC fixtures for plinth.sources.harera (T18). Shaped from the field lists in research_notes/Developer and project risk scoring/ncr_risk_data_sources.md (Q1) and platform_architecture.md §4.2-4.3. None of this is a copy of any HARERA page: the portal was never fetched for this task (AGENTS.md §7, the hard 'no live network access to HARERA' rule). URLs use the reserved .test domain, as T10's own fixtures do. Projects, promoters and complaint parties are the fictional entities of DESIGN.md §5b.",
+  "note": "SYNTHETIC fixtures for plinth.sources.harera (T18). Shaped from the field lists in research_notes/Developer and project risk scoring/ncr_risk_data_sources.md (Q1) and platform_architecture.md §4.2-4.3. None of this is a copy of any HARERA page: the portal was never fetched for this task (AGENTS.md §7, the hard 'no live network access to HARERA' rule). URLs use the reserved .test domain, as T10's own fixtures do. Projects, promoters and complaint parties are the fictional entities of DESIGN.md §5b; registration numbers in request data/params/URLs are the canonical rera_number values from packages/fixtures/canonical/catalogue.json's rera_registrations, keyed by phase slug.",
   "entries": [
     {
       "source": "harera_registration",
@@ -99,9 +99,9 @@
     },
     {
       "source": "harera_qpr",
-      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-332-104-2018-22/2026-Q2",
+      "url": "https://harera.example.test/view_project/quaterly_schedule_preview_open/GGM-447-179-2020-52/2026-Q2",
       "method": "POST",
-      "data": { "registration": "GGM/332/104/2018/22", "quarter": "2026-Q2" },
+      "data": { "registration": "GGM/447/179/2020/52", "quarter": "2026-Q2" },
       "file": "qpr/laurel-2026-Q2-dirty.html",
       "content_type": "text/html; charset=utf-8",
       "fetched_at": "2026-10-14T09:01:40+05:30"
@@ -109,7 +109,7 @@
     {
       "source": "harera_corrigendum",
       "url": "https://harera.example.test/assistancecontrol/view_corrigendums_popup",
-      "params": { "registration": "GGM/610/290/2019/45" },
+      "params": { "registration": "GGM/612/344/2022/41" },
       "file": "pages/corrigendum_coral.json",
       "content_type": "application/json",
       "fetched_at": "2026-10-14T09:02:00+05:30"
