@@ -1,8 +1,15 @@
-// Stub from T05 (web skeleton). T25 replaces it with the real page (WORK_BREAKDOWN §2.1, OWNERSHIP.md).
-import { Placeholder, placeholderMetadata } from "@/src/shell/placeholder";
+// WebMethodology (T25; WORK_BREAKDOWN §2.1, OWNERSHIP.md).
+import type { Metadata } from "next";
+import { loadMethodologyData } from "@/src/features/trust/methodology/data";
+import { MethodologyView } from "@/src/features/trust/methodology/methodology-view";
 
-export const metadata = placeholderMetadata("WebMethodology");
+export const metadata: Metadata = {
+  title: "How Delivery Risk works",
+  description:
+    "One question for every RERA phase in Gurugram: will the OC arrive more than 12 months late? Here is exactly how we answer it.",
+};
 
-export default function Page() {
-  return <Placeholder artboard="WebMethodology" />;
+export default async function Page() {
+  const methodology = await loadMethodologyData();
+  return <MethodologyView methodology={methodology} />;
 }
