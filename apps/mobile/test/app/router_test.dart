@@ -8,6 +8,9 @@ import 'package:plinth/app/not_found_screen.dart';
 import 'package:plinth/app/router.dart';
 import 'package:plinth/app/routes.dart';
 import 'package:plinth/data/session.dart';
+import 'package:plinth/features/family/family_join_screen.dart' show familyJoinScreenKey;
+import 'package:plinth/features/family/family_screen.dart' show familyScreenKey;
+import 'package:plinth/features/following/following_screen.dart' show followingScreenKey;
 import 'package:plinth/features/risk/risk_screen.dart' show riskScreenKey;
 
 import '../helpers/app_harness.dart';
@@ -91,6 +94,17 @@ void main() {
         // AppRisk (T32) is filled in: its own tests cover its content; here we
         // only confirm the route resolves to it, by its root key.
         expect(find.byKey(riskScreenKey), findsOneWidget, reason: '$pattern should show AppRisk');
+      } else if (pattern == Routes.following) {
+        // T50 replaced this placeholder with the real AppFollowing screen;
+        // its own tests cover the content, so we only check the root key
+        // (the heading is fixture copy, and "Following" also names the tab).
+        expect(find.byKey(followingScreenKey), findsOneWidget, reason: '$pattern should show AppFollowing');
+      } else if (pattern == Routes.family) {
+        // T50 replaced this placeholder with the real AppFamily screen.
+        expect(find.byKey(familyScreenKey), findsOneWidget, reason: '$pattern should show AppFamily');
+      } else if (pattern == Routes.familyJoin) {
+        // T50 replaced this placeholder with the real relative opt-in screen.
+        expect(find.byKey(familyJoinScreenKey), findsOneWidget, reason: '$pattern should show AppFamily');
       } else {
         expect(find.text(s.artboard), findsOneWidget, reason: '$pattern should show ${s.artboard}');
       }

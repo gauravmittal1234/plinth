@@ -9,11 +9,11 @@ import '../helpers/app_harness.dart';
 
 void main() {
   testWidgets('Day is the default; the toggle switches to Night and back', (tester) async {
-    // AppExplore is filled (T30) and has no theme toggle of its own; Following
-    // is still the ArtboardPlaceholder, which carries the toggle this test
-    // exercises.
-    final container = await pumpPlinth(tester, location: Routes.following);
-    BuildContext page() => tester.element(find.text('AppFollowing'));
+    // AppExplore is filled (T30) and Following is filled (T50); both have no
+    // theme toggle of their own. You is still the ArtboardPlaceholder, which
+    // carries the toggle this test exercises.
+    final container = await pumpPlinth(tester, location: Routes.you);
+    BuildContext page() => tester.element(find.text('AppYou'));
 
     expect(container.read(themeModeProvider), ThemeMode.light);
     expect(Theme.of(page()).brightness, Brightness.light);
