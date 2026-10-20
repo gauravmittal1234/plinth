@@ -117,7 +117,7 @@ How to read this table:
 | `supabase/migrations/20261120*`, `supabase/tests/buyer_api/**` | T45a | |
 | `supabase/migrations/20261121*`, `supabase/tests/privacy_api/**` | T45b | |
 | `supabase/functions/wa-webhook/handlers/{risk_card,card_changed,ask_fallback}*` | T44, T46a | T44 stubs, T46a fills (with tests) |
-| `supabase/functions/wa-webhook/handlers/{prefs,digest,family_join}*`, `supabase/functions/_shared/wa/templates/**` | T44, T46b | T44 stubs the handlers, T46b fills (with tests) |
+| `supabase/functions/wa-webhook/handlers/{prefs,digest,family_join}*`, `supabase/functions/_shared/wa/templates/**`, `supabase/migrations/20261123*`, `supabase/tests/wa_prefs/**` | T44, T46b | T44 stubs the handlers, T46b fills (with tests). The migration and its pgTAP test were added by T46b: no earlier task exposed a service-only RPC for a WhatsApp STOP (withdrawal needs no user JWT) or for the digest's "See changes" change lines — see the T46b PR's Handoff note |
 | `apps/mobile/lib/features/onboarding/**`, `apps/mobile/lib/core/push/**`, `apps/mobile/test/features/onboarding/**` | T48 | |
 | `supabase/functions/{export-data,delete-account,retention-sweep}/**`, `supabase/migrations/20261125*`, `supabase/tests/dpdp/**` | T53 | |
 
@@ -137,7 +137,7 @@ How to read this table:
 | 20261103 | lead | 20261122 | T43b |
 | 20261110 | T40 | 20261125 | T53 |
 | 20261111 | T41 | 20261126 | T54 |
-| 20261112 | T42 | ≥ 20261201 | M3+ (assigned per task) |
-| 20261113 | T43a | | |
+| 20261112 | T42 | 20261123 | T46b |
+| 20261113 | T43a | ≥ 20261201 | M3+ (assigned per task) |
 
 File names are `<prefix>HHMMSS_<task>_<what>.sql`. Never edit a merged migration; add a new one in your range.
