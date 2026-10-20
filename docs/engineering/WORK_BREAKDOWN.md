@@ -913,6 +913,114 @@ M3 is planned by the lead (21 Oct 2026). Read these first; they bind every M3 ta
 - **Build:** `next/og` cards at 1080×1350: claims (the summary line, the flyer thumbnail with verdict tags at each claim's bbox, at most 3 Says / Records rows, the source line), payee (matched of 3, three rows, "HARERA shows"), stage (the summary line, the letter slab against the filed slab on a tower bar), and the cost card aligned to WaCost. URLs are `/cards/{claims,payee,stage,cost}/<check_id>.<token>.png`: the token is an HMAC that `api.doc_check` issues to the owner, and `api.doc_check_card(p_id, p_token)` returns summary-only data, so no secret key reaches `apps/`. Never the file, never more than the last 4 digits of an account.
 - **Accept:** `npm run -w @plinth/web test -- cards`: exact PNG dimensions; snapshot hashes within tolerance; alt text equals `share.card_alt`; a wrong token gives 404; a scan of every rendered text node finds no run of more than 4 digits from an account; the copy lint passes.
 
+### Wave 7 (M3: check API and rules, AI reading, UI kits)
+
+T68, T69, T70, T71 and T72 run in parallel. T73, T74 and T75 start when T68 has merged (they plug their deciders into its dispatcher and its payload).
+
+#### T68 · doc_check API: uploads and the check lifecycle
+- **Owns:** `supabase/migrations/20261202*` (file names include the `m3_rules` marker), `supabase/tests/checks_api/**`.
+- **Depends:** T60, T61, T62; T12/T13 (facts, `api.suggest` matching), T40 (consent ledger), T41 (rate limits).
+- **Inputs:** API_CONTRACTS §1 (errors, idempotency), §3.2, §4.12; DATA_MODEL §6 (purpose `ai_processing`), §7, §12; BUILD_PLAN §12.9 (upload limits), §14 hard rule 1; DESIGN §5b (retention line, matching by RERA number); WebClaims.dc.html (confirm and pick copy is layout only).
+- **Build:**
+  - `api.create_upload(p_kind, p_mime, p_bytes, p_sha256, p_channel, p_tap_event_id)` (buyer): MIME allow-list (PDF, JPEG, PNG, WebP, HEIC; never SVG), ≤ 15 MB; rate-limited per user per day (T41 `ops.rate_limits`); the first check records an `ai_processing` consent under the buyer's own JWT with the tap event (T40's ledger); the same SHA from the same owner returns `existing_check_id` ("Checked again"). Returns `plinth.upload/1`; the signed upload URL itself comes from the `doc-check` edge function (T76), never from SQL or a client storage policy.
+  - Service-only lifecycle RPCs for `doc-check` and `wa-webhook`: `api.doc_check_open(p_upload_id, p_kind, p_channel, p_phase_hint, p_wa_contact_id)`, `api.doc_check_ingest(p_id, p_claims jsonb)` (readers' values, agreement, confidence, line ids; a disagreement or a confidence under the rule's bar opens an `ops.review_tasks` row), `api.doc_check_set_status(p_id, p_status, p_detail)` (only the §4.12 states), `api.doc_check_match(p_id)` (RERA number on the register first, then name and sector through T13's suggest index; outside Gurugram → `outside_coverage`; writes `project_candidates`).
+  - Buyer RPCs: `api.doc_check(p_id)` (owner only; assembles `plinth.doc_check/1` from the stored rows; issues the card token), `api.doc_check_confirm(p_id, p_slug)` (nothing is decided before it), `api.doc_check_save(p_id)` (keeps the upload past 30 days), `api.my_checks(p_slug default null)`, `api.report_error(p_check_id, p_seq, p_text)` (→ `ops.error_reports`, E-nnnn ref from `ops.next_ref`); WhatsApp-contact variants are service-only and take `p_wa_contact_id`. Anon: `api.doc_check_card(p_id, p_token)` (HMAC token, summary only, for `/cards`).
+  - `app.doc_check_decide(p_id)`: the dispatcher. It calls `app.decide_<kind>(p_id)` dynamically; a kind with no decider yet stays `checking`. Re-deciding is idempotent: verdicts are replaced, and the audit log keeps the history. Deciders write verdict rows and `summary`; this task only assembles them.
+  - Every function `SECURITY DEFINER`, `search_path = ''`, granted by name (AGENTS rule 12). No full account number is ever accepted by these RPCs.
+- **Accept:**
+  - pgTAP: a check owned by another user or by the owner's circle member → `not_found`; `api.doc_check_confirm` is required before any verdict row exists; a disagreement opens exactly one review task; the same SHA returns the earlier check; SVG and 16 MB are refused with `invalid_input`; an upload past the daily cap (a config value, not a literal) → `rate_limited`; a wrong card token → `not_found`; the first upload writes one `ai_processing` consent and a second writes none;
+  - `npm run -w @plinth/fixtures test:api -- --only doc_check,my_checks,doc_check_card,upload` deep-equals the keys whose deciders are merged (`flyer--confirm-project`, `flyer--noida`, `checks-paused`, `upload`), and the rest once T73–T75 land.
+
+#### T69 · AI: claims reading (OCR, classify, two claim readers) and evals
+- **Owns:** `supabase/functions/_shared/ai/prompts/{ocr.document,classify.document,extract.marketing_claims}/**`, `packages/fixtures/recorded/ai/{ocr.document,classify.document,extract.marketing_claims}/**`, `evals/claims/**`, `evals/extraction/{ocr.document,classify.document}/**`.
+- **Depends:** T63, T62 (sample documents and manifest), T61 (response schemas).
+- **Inputs:** BUILD_PLAN §14 (task table; hard rules 1, 4, 5 and 7); `catalogues/ai_tasks.json`; DESIGN §5b "Claims vs records example" (the flyer's 7 claims and its non-claims; the hoarding's 3); FOUNDER_QUESTIONS P5.
+- **Build:**
+  - Prompts v1: OCR (page text lines with normalised bbox and confidence; no interpretation), classify (the 8 catalogue labels with confidence), and reader A and reader B for marketing claims with **different prompts** (A reads line by line; B looks for each claim type in turn). Output is schema-locked `{type, raw_text, value, unit, qualifier, line_ids, confidence}`. Readers see only PII-stripped OCR text; bbox comes from the OCR lines they cite. Headlines, amenity captions and "artistic impression" fine print are not claims; fine print that qualifies a claim ("Stamp duty and registration extra") is attached to it as a qualifier.
+  - Recorded responses for every sample document (T62), keyed by T63's SHA rule, including two **disagreement** cases (reader B drops the "super" qualifier on "2,000 SQ FT"; reader B reads ₹11,999 as ₹11,990), so the review-queue path is exercised.
+  - Goldens and gates: `evals/claims/golden/*.json` (the expected claims per document), classify labels per document; `gates.json`: claims precision ≥ 0.95, recall ≥ 0.90, **agreed-but-wrong = 0**; classify accuracy 1.0; OCR line recall ≥ 0.98 on the text-layer PDFs.
+  - `evals/claims/LIVE.md`: how the nightly live run re-records (free tier, manifest documents only).
+- **Accept:** `deno task eval -- claims extraction/ocr.document extraction/classify.document` passes in recorded mode; every recorded file validates against its response schema; the flyer yields 7 claims, the hoarding 3, the brochure page 0; T63's `agree.ts` flags both planted disagreements; a grep finds no phone number or email in any recorded file.
+
+#### T70 · AI: money documents reading and evals
+- **Owns:** `supabase/functions/_shared/ai/prompts/{extract.cost_sheet,extract.demand_letter,extract.payment_request}/**`, `packages/fixtures/recorded/ai/{extract.cost_sheet,extract.demand_letter,extract.payment_request}/**`, `evals/extraction/{extract.cost_sheet,extract.demand_letter,extract.payment_request}/**`.
+- **Depends:** T63, T62, T61.
+- **Inputs:** BUILD_PLAN §14; `ai_tasks.json` (`pii_policy: strip_and_redact_bank`); DESIGN §5b cost sheet, cost-sheet photo, demand letter, Before you pay on WhatsApp, booking form; DATA_MODEL §7 claim types (`demand_stage`, `plan_stage`, `amount`, `payee_name`, `account_number`, `ifsc`).
+- **Build:**
+  - Prompts v1, readers A and B for each task (different prompts):
+    - cost sheet: lines `{code, label, amount_inr, tag_hint, line_ids}`, carpet and super area, date, unit;
+    - demand letter: `{ref, dated, unit_no, tower, stage_text, slab_no, pct, instalment_inr, gst_inr, total_inr, due_on, payee_name, account_token, ifsc}`;
+    - payment request (text or image): `{payee_name, account_token, ifsc, bank_name, amount_inr, purpose}`.
+  - **No account number reaches a model.** Readers return the token T63's PII vault put in its place; the pipeline swaps the token for the hash and last 4. Amounts are integer rupees ("Rs 11,00,000" → 1100000).
+  - Recorded responses for the cost sheet (2 pages), the demand letter, the EOI request and the booking form, with one disagreement case (reader B reads PLC ₹2,90,000 as ₹2,09,000).
+  - Gates: amounts, IFSC, slab and percentage exact (field accuracy 1.0 on the fixtures); agreed-but-wrong = 0; zero unredacted account digits.
+- **Accept:** `deno task eval -- extraction/extract.cost_sheet extraction/extract.demand_letter extraction/extract.payment_request` passes in recorded mode; a grep test finds no run of 9 or more digits in `recorded/ai/extract.*` or in any logged `ops.ai_generations` row the tests produce; `agree.ts` flags the planted disagreement.
+
+#### T71 · Web checks kit
+- **Owns:** `apps/web/src/features/checks/shared/**`, `apps/web/test/checks/shared/**`.
+- **Depends:** T14 with web UI v2 (#82), T65.
+- **Inputs:** WebClaims.dc.html (drop zone, reading progress, confirm, pick, edge states, share sheet, delete), WebCostSheet.dc.html (upload card), WebPayAsBuilt.dc.html (confirm home); DESIGN §0, §4; `product/design/review/benchmark-thapki.md`; BUILD_PLAN §12.9; AGENTS rules 9 and 10.
+- **Build:** shared pieces for the four check pages:
+  - `DropZone` (choose a file, take a photo through `capture`; MIME and 15 MB checks before upload that mirror the server; never SVG) and `UploadProgress`;
+  - `ReadingProgress` (claims or lines appear as the payload reports them; reduced motion shows the final state), `useDocCheck(id)` (polls with back-off and stops at terminal states);
+  - `ConfirmProject` and `PickProject` (`suggest` search; nothing is checked before the tap);
+  - `EdgeState` for unreadable, partly readable, no claims, outside coverage, checks paused (`flag_off`) and offline, all from `edge` in the payload;
+  - `ShareSummarySheet` (the summary only: WhatsApp link and copy), `SaveCheck`, `AskAdviser`, `ReportErrorRow`, `DeleteMyFile`, `PrivacyLine`. Each shows "Saved", "Sent" or a reference only from its RPC's result (rule 9).
+  - The "Or paste a link" box renders as FOUNDER_QUESTIONS M3 decides (default: it fetches nothing and asks for a screenshot).
+- **Accept:** `npm run -w @plinth/web test -- checks/shared`: every component renders each state from fixture payloads; jest-axe finds no violations; the poll hook stops at each terminal state; an SVG or a 16 MB file is refused before any upload; a spy proves no "Saved" or "Sent" renders before the RPC resolves.
+
+#### T72 · App checks kit: capture, share-sheet intake, upload and progress
+- **Owns:** `apps/mobile/lib/features/checks/shared/**`, `apps/mobile/test/features/checks/shared/**`; plus, those lines only (T06 → T72): the `SEND` intent filters for `image/*` and `application/pdf` in `apps/mobile/android/app/src/main/AndroidManifest.xml`, and the share-intake mount in `apps/mobile/lib/app/app.dart`.
+- **Depends:** T15 with app UI v2 (#74), T66. Integrator: picking a PDF from storage needs a file picker that isn't in `pubspec.yaml`; until the lead adds one, PDFs arrive through the share sheet and the document scanner's PDF output.
+- **Inputs:** AppClaims.dc.html (share-sheet arrival, camera frame), AppCostSheet.dc.html (camera permission sheet, "Use these 2 pages?"), AppPayAsBuilt.dc.html (confirm home); BUILD_PLAN §5.3 (share_handler, google_mlkit_document_scanner, google_mlkit_text_recognition, image_picker, flutter_image_compress); `product/design/review/benchmark-thapki.md`; AGENTS rules 9 and 10.
+- **Build:**
+  - Capture: a just-in-time camera permission sheet; the document scanner for multi-page sheets; gallery through image_picker; compression; "Photos stay on this phone until you tap Read N pages" (nothing uploads before that tap).
+  - On-device pre-read: ML Kit text recognition sends `client_ocr` (lines and boxes, no image bytes) with the start request, so `doc-check` can skip its OCR call (T76).
+  - Share-sheet intake: share_handler → `/check/claims` with the shared file; the server classifies the kind.
+  - Upload, the poll stream, confirm and pick, edge states, the share summary, save, the adviser request and report-an-error, as in T71, with each confirmation shown only from its RPC result.
+- **Accept:** `flutter test test/features/checks/shared`: widget tests and Linux goldens (Day and Night) for each state; a fake share intent routes to `/check/claims`; camera denied → the gallery path still works; no upload call before the explicit tap; `client_ocr` carries no image bytes.
+
+#### T73 · Claims rules (claims vs records)
+- **Owns:** `supabase/migrations/20261203*`, `supabase/tests/rules_claims/**`.
+- **Depends:** T68 (dispatcher and payload), T62.
+- **Inputs:** BUILD_PLAN §14 hard rule 1 (per-type comparators with tolerances, falling to Can't check when unsure); DATA_MODEL §7 (`claim_type` list, `app.claim_verdicts`); API_CONTRACTS §4.12 (verdict labels, `records_label`); DESIGN §5b "Claims vs records example" and the round-2/round-3 fixture decisions; fix-claims.md; WebClaims.dc.html (legend, how-we-checked copy is layout only).
+- **Build:**
+  - `core.check_rules` rows v2026.10 for claims, each with its record source, tolerance and confidence bar:
+    - possession or completion date vs the registration's completion (extensions and the blanket extension included), month precision;
+    - structure or slab vs the latest filed tower slab: `cant_check` while a newer QPR is due and not on HARERA; any "Developer says" claim is attached as `developer_says`, never as a record;
+    - "only N left" or sold vs the latest QPR's booked share × units, with the "sales since the last filing aren't public" caveat;
+    - price per sq ft and "all-inclusive" vs `core.all_in` on one basis (carpet), noting a qualifying fine print;
+    - area vs the registered carpet area, using the qualifier (super vs carpet);
+    - RERA number: exact on the register; amenity sizes: `not_in_records` unless a fact carries the attribute; OC and "ready to move" vs completion events.
+  - `app.decide_claims(p_id)`: writes `app.claim_verdicts` (verdict, `records_line`, `how_checked`, `fact_ids`, `broker_question`, `rule_code`, `rule_version`), the summary and breakdown lines and the broker questions. Rows the readers disagreed on, or below the bar, become `cant_check` with a `review` line. **A row is `differs` only when both readers agreed.**
+- **Accept:** `npm run -w @plinth/fixtures test:api -- --only doc_check` deep-equals `flyer` ("4 of 7 claims differ from the records."), `hoarding` ("1 of 3"), `flyer--blurred`, `brochure--no-claims` and `flyer--reader-disagreement`; pgTAP: for every claim type, a single-reader or low-confidence value never yields `differs`; the flyer's counts are exactly 4 / 1 / 1 / 1; every non-empty verdict cites at least one fact id; re-deciding is idempotent.
+
+#### T74 · Cost rules v2026.10 and calculator RPCs
+- **Owns:** `supabase/migrations/20261204*`, `supabase/tests/rules_cost/**`.
+- **Depends:** T68, T62, T13 (`core.cost_compute`, `core.cost_breakdown_json`, `core.afford_the_wait`).
+- **Inputs:** API_CONTRACTS §4.13; DATA_MODEL §1 (`core.cost_rule_sets`), §7 (`app.cost_sheet_reads`); DESIGN §5b cost sheet, cost-sheet photo, move-in number, TDS, EDC and IDC, Afford the wait, C-22; BUILD_PLAN D-6; DECISIONS E-5; `packages/fixtures/vectors/{cost,afford_the_wait}.json`; WebCostSheet.dc.html (layout only).
+- **Build:**
+  - **Cost rule set v2026.10 for HR ships in a migration** (an upsert the fixture seed agrees with), so production has it without the seed: GST 5% under construction; stamp duty 7% / 5% / 6% (man, woman, joint); registration ₹50,000; TDS 1% under Income-tax Act 2025 s.393(1), shown as withheld, not added; the move-in estimate parameters (24 months × ₹5 per sq ft super + 18% GST, plus connection and fit-out ranges); rounding; a `source_line` per rule.
+  - `api.cost_breakdown(p_slug, p_unit, p_buyer, p_waive)` and `api.afford_the_wait(...)` (anon; validated ranges; `invalid_input` otherwise) over T13's functions. `p_waive` accepts only lines tagged `often_negotiable`.
+  - `app.decide_cost_sheet(p_id)`: the same arithmetic on the buyer's own agreed lines (not the developer's seeded sheet) → `app.cost_sheet_reads` and the `cost` block (all-in, per sq ft carpet, loading, negotiable, TDS, move-in). A line only one reader saw is left out of the total and shown as `cant_check` with a review line; an unknown line code opens a review task. `api.doc_check_cost(p_id, p_buyer, p_waive)` (owner) re-prices the buyer's read.
+- **Accept:** `test:api -- --only cost_breakdown,afford_the_wait` deep-equals all four keys (waiving PLC and club: ₹4,92,800 less, "₹4.9 L less"), and `doc_check` `cost-sheet` deep-equals (₹2.74 Cr, ₹18,900 per sq ft carpet, 38% loading); pgTAP: the v2026.10 row exists on a database with no seed; the vectors reproduce exactly (₹1,18,077, ₹2,00,563, ₹24.1 L, ₹48.1 L, ₹1,90,227); waiving parking → `invalid_input`.
+
+#### T75 · Payee, cap and stage rules (Before you pay, Pay-as-built)
+- **Owns:** `supabase/migrations/20261205*`, `supabase/tests/rules_money/**`.
+- **Depends:** T68, T62, T41 (rate limits).
+- **Inputs:** API_CONTRACTS §4.12 (`pay_as_built`, `before_you_pay`), §4.14; DATA_MODEL §1 (the registered collection account), §7; DESIGN §5b (10% cap, EOI and receipt, demand letter, Before you pay on WhatsApp, booking form, C-18 payment stages); fix-visitpay.md; WebBeforePay.dc.html, WebPayAsBuilt.dc.html (layout only); FOUNDER_QUESTIONS (lawyer list: Pay-as-built wording, never "don't pay").
+- **Build:**
+  - `core.check_rules` rows v2026.10:
+    - payee name (normalised case, punctuation and "Pvt Ltd" / "Private Limited"), account (exact on digits, compared by salted hash, shown as the last 4), IFSC (exact; bank name from the IFSC prefix);
+    - the cap: before a registered agreement, at most 10% of base + charges (RERA s.13);
+    - method: cash gets a caution line;
+    - stage: the demand's slab against the latest filed slab for that tower. Above the filing → `cant_check` with "N slabs above the filing"; at or below → `matches`. Present tense only, no forecasts;
+    - plan percentage vs `ws.payment_plan_stages`; amount = percentage × the booking price, plus GST 5%.
+  - `api.before_you_pay_check(...)` (anon or buyer; rate-limited per IP and user): the account number is hashed with a server pepper and dropped in the same statement; signed-in checks store only the hash and last 4 in `app.payee_checks`; anon checks store nothing.
+  - `app.decide_before_you_pay(p_id)` (payment request, booking form) and `app.decide_pay_as_built(p_id)` (demand letter: stage, plan, amount and payee rows plus the `stage` and `recheck` blocks; the unit is matched to the buyer's saved booking when one exists).
+  - `api.booking_save(...)`, `api.receipt_add(...)` (the buyer types amount, date and UTR last 4; rules compare them with the last payee check; no AI on receipts in R1).
+- **Accept:** `test:api -- --only payee_check` deep-equals both keys (0 of 3; 3 of 3; cap ₹24.4 L); `doc_check` `demand-letter`, `payment-request` and `booking-form` deep-equal; `booking` and `receipt` deep-equal; pgTAP: after a check, no row in `app.payee_checks`, `app.extracted_claims`, `ops.audit_log` or `ops.ai_generations` contains the account digits; a demand above the filed slab never yields `differs`; anon checks write no row; a check past the hourly cap → `rate_limited`.
+
 ---
 
 ## 5. Ownership summary for shared areas
