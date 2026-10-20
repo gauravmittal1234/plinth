@@ -2,7 +2,7 @@
 
 Status: 19 Oct 2026 · For: Gaurav · Engineering owner: Head of Engineering
 
-The agent team builds M0–M1 entirely on fixtures, so **nothing here blocks coding today.** Some items have long lead times (Meta business verification, TRAI DLT, the Play organisation account, the GCP project for live HARERA fetch). Start those this week. The legal memo and HARERA letter are post-launch (FOUNDER_QUESTIONS P8).
+The agent team builds M0–M1 entirely on fixtures, so **nothing here blocks coding today.** Some items have long lead times (Meta business verification, TRAI DLT, the Play organisation account, and, only at M6, the GCP project for live HARERA fetch, deferred for cost: P9). Start those this week. The legal memo and HARERA letter are post-launch (FOUNDER_QUESTIONS P8).
 
 ## The rules for keys (please read once)
 
@@ -88,7 +88,7 @@ The agent team builds M0–M1 entirely on fixtures, so **nothing here blocks cod
 ### 1.4 Live HARERA data (no legal gate)
 
 - **Founder decision, 20 Oct 2026:** the legal memo and the HARERA permission letter are post-launch work and do not gate live data (FOUNDER_QUESTIONS P8).
-- Live fetch needs the GCP project (4.3) for an Indian IP. You set `HARERA_LIVE_FETCH_APPROVED=yes` in the Cloud Run job's environment when the job is ready; it stays a kill switch you can turn off at any time.
+- Live fetch needs the GCP project (4.3) for an Indian IP. **Deferred to M6 for cost (P9)**; `scripts/gcp/bootstrap.sh` sets it up in one command when the time comes. You set `HARERA_LIVE_FETCH_APPROVED=yes` in the Cloud Run job's environment when the job is ready; it stays a kill switch you can turn off at any time.
 - Optional, low-risk, helpful: while browsing normally, **save up to 10 real HARERA pages by hand** for parser development: one registered-projects list, one Form A-H, one QPR, one corrigendum response and one judgments page. Drop them in `pipelines/tests/fixtures/harera/real/`.
 - **Before public beta (PRD §12.2):** media-liability and cyber insurance, a grievance officer, and the company details for the About page. Agents leave these as labelled placeholders.
 
