@@ -237,13 +237,14 @@ as $$
     and f.superseded_by is null
     and f.lane <> 'buyer_upload'
     and f.learned_at <= ops.now()
+    and (f.valid_to is null or f.valid_to > ops.today())
     and (
       (f.subject_type = 'phase' and f.subject_id = p_phase_id)
       or (f.subject_type = 'registration' and f.subject_id in (select r.id from core.rera_registrations r where r.phase_id = p_phase_id))
       or (f.subject_type = 'tower' and f.subject_id in (select t.id from core.towers t where t.phase_id = p_phase_id))
     )
 $$;
-comment on function core.phase_facts(uuid, text) is 'Current public facts of one attribute about a phase, its registrations or its towers (not superseded, learned by ops.now(), never buyer uploads).';
+comment on function core.phase_facts(uuid, text) is 'Current public facts of one attribute about a phase, its registrations or its towers (not superseded, still valid, learned by ops.now(), never buyer uploads).';
 
 -- ---------------------------------------------------------------------------
 -- The phase view
