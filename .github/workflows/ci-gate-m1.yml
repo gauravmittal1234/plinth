@@ -1,0 +1,227 @@
+# ci-gate-m1 (owner: T39). BUILD_PLAN §3 "M1: Know the builder", the two checks no other
+# workflow can run, because they need the web built against a real database:
+#
+#   live    The local Supabase stack, started as ci-db starts it (Postgres 17, every migration
+#           and the §5b seed, the clock frozen), plus its API gateway and PostgREST. The web is
+#           built twice: fixture mode, then PLINTH_DATA=supabase against that stack. Aurelia's
+#           visible text from the two builds must be identical (WORK_BREAKDOWN T39 Accept).
+#           Then bands_public goes off in the database, the site revalidates, and the web must
+#           render the S1 state the server sends (e2e/gates/m1.spec.ts, @live). The server's S1
+#           payloads are saved for the app.
+#   app-s1  The app renders those S1 payloads (apps/mobile/test/gates/m1_test.dart).
+#
+# The rest of the M1 list runs where it already lives: ci-db (pgTAP incl. supabase/tests/gates/
+# m1.sql, test:api deep-equal), ci-web (smoke + e2e/gates/m1.spec.ts @gate, initial-JS budget,
+# Lighthouse over h2), ci-mobile (flutter test, goldens), ci-scoring and ci-pipelines (pytest).
+#
+# Keys: only the Supabase CLI's fixed local-development values, read from `supabase status` on
+# the runner, the same local stack ci-db uses (and its PG* defaults). No repository or
+# organisation secret is used. REVALIDATE_SECRET is a random value made for this run's local
+# server and never leaves the runner.
+name: ci-gate-m1
+
+on:
+  pull_request:
+    paths:
+      - "apps/web/**"
+      - "apps/mobile/lib/**"
+      - "apps/mobile/test/gates/**"
+      - "packages/**"
+      - "supabase/migrations/**"
+      - "supabase/seed/**"
+      - "supabase/config.toml"
+      - "package-lock.json"
+      - ".github/workflows/ci-gate-m1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - "apps/mobile/lib/**"
+      - "apps/mobile/test/gates/**"
+      - "packages/**"
+      - "supabase/migrations/**"
+      - "supabase/seed/**"
+      - "supabase/config.toml"
+      - "package-lock.json"
+      - ".github/workflows/ci-gate-m1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-gate-m1-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  live:
+    name: live web vs fixtures (Aurelia text diff), S1 on web
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # The local database the CLI starts (supabase/config.toml [db] port); the CLI's fixed
+      # local defaults, exactly as ci-db uses them. Not secrets.
+      PGHOST: 127.0.0.1
+      PGPORT: "54322"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: postgres
+      NEXT_TELEMETRY_DISABLED: "1"
+      AURELIA: /gurugram/projects/aurelia-heights-phase-2
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.118.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps --only-shell chromium
+
+      # Auth (gotrue) stays up: this CLI only reports the local API keys when it runs.
+      - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, auth, gateway)
+        run: >-
+          supabase start
+          -x realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+
+      - name: Freeze the clock (as ci-db; env = test → ops.now() is 18 Oct 2026, 12:00 IST)
+        run: |
+          psql -v ON_ERROR_STOP=1 -c "update ops.runtime_settings set value = 'test' where key = 'env'"
+          got=$(psql -tAc "select ops.now() = timestamptz '2026-10-18 12:00:00+05:30'")
+          phases=$(psql -tAc "select count(*) from core.score_runs where status = 'published'")
+          echo "env=$(psql -tAc "select ops.env()") frozen=$got published_runs=$phases"
+          test "$got" = "t" && test "$phases" = "8"
+
+      - name: The local API's URL and public key (CLI local-development values)
+        run: |
+          set -o pipefail
+          supabase status -o env > "$RUNNER_TEMP/status.env"
+          # Names only, never values, so the log shows what this CLI version prints.
+          echo "status -o env names: $(cut -d= -f1 "$RUNNER_TEMP/status.env" | tr '\n' ' ')"
+          val() { grep -E "^[A-Z_]*$1=" "$RUNNER_TEMP/status.env" | head -1 | cut -d= -f2- | tr -d '"'; }
+          api_url="$(val API_URL)"
+          key="$(val PUBLISHABLE_KEY)"; [ -n "$key" ] || key="$(val ANON_KEY)"
+          test -n "$api_url" || { echo "::error::no API_URL in supabase status"; exit 1; }
+          test -n "$key" || { echo "::error::no publishable/anon key in supabase status"; exit 1; }
+          echo "::add-mask::$key"
+          echo "NEXT_PUBLIC_SUPABASE_URL=$api_url" >> "$GITHUB_ENV"
+          echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$key" >> "$GITHUB_ENV"
+          curl -sf -X POST "$api_url/rest/v1/rpc/risk_summary" \
+            -H "apikey: $key" -H "Authorization: Bearer $key" \
+            -H "Content-Type: application/json" -H "Content-Profile: api" \
+            -d '{"p_slug":"aurelia-heights-phase-2"}' -o "$RUNNER_TEMP/probe.json"
+          head -c 160 "$RUNNER_TEMP/probe.json"; echo
+
+      # Playwright reuses the server this job starts (CI unset: reuseExistingServer).
+      - name: Fixture build → Aurelia's visible text
+        env:
+          PLINTH_DATA: fixtures
+          CI: ""
+          PLAYWRIGHT_PORT: "3211"
+          PLINTH_GATE_TEXT_OUT: ${{ runner.temp }}/aurelia-fixtures.txt
+        run: |
+          npm run -w @plinth/web build
+          (cd apps/web && exec node ../../node_modules/next/dist/bin/next start --port 3211) \
+            > "$RUNNER_TEMP/next-fixtures.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/next-fixtures.pid"
+          for i in $(seq 60); do curl -sf http://127.0.0.1:3211/api/health && break; sleep 1; done; echo
+          npm run -w @plinth/web e2e -- e2e/gates/m1.spec.ts --grep "visible text"
+          kill "$(cat "$RUNNER_TEMP/next-fixtures.pid")"
+          wc -l "$PLINTH_GATE_TEXT_OUT"
+
+      - name: Live build (PLINTH_DATA=supabase, the seeded stack) → Aurelia's visible text
+        env:
+          PLINTH_DATA: supabase
+          CI: ""
+          PLAYWRIGHT_PORT: "3212"
+          PLINTH_GATE_TEXT_OUT: ${{ runner.temp }}/aurelia-live.txt
+        run: |
+          rm -rf apps/web/.next
+          npm run -w @plinth/web build
+          openssl rand -hex 24 > "$RUNNER_TEMP/revalidate-secret"
+          (cd apps/web && REVALIDATE_SECRET="$(cat "$RUNNER_TEMP/revalidate-secret")" \
+            exec node ../../node_modules/next/dist/bin/next start --port 3212) \
+            > "$RUNNER_TEMP/next-live.log" 2>&1 &
+          for i in $(seq 60); do curl -sf http://127.0.0.1:3212/api/health && break; sleep 1; done; echo
+          curl -sf http://127.0.0.1:3212/api/health | grep -q '"data":"supabase"'
+          npm run -w @plinth/web e2e -- e2e/gates/m1.spec.ts --grep "visible text"
+          wc -l "$PLINTH_GATE_TEXT_OUT"
+
+      - name: "Accept: live text = fixture text (diff of the extracted text)"
+        run: |
+          diff -u "$RUNNER_TEMP/aurelia-fixtures.txt" "$RUNNER_TEMP/aurelia-live.txt"
+          echo "Identical: $(wc -l < "$RUNNER_TEMP/aurelia-live.txt") lines of visible text on $AURELIA"
+
+      - name: S1 on web (bands_public off → revalidate → the page renders the server's S1)
+        env:
+          CI: ""
+          PLAYWRIGHT_PORT: "3212"
+          PLINTH_GATE_S1: "1"
+        run: |
+          psql -v ON_ERROR_STOP=1 -c "update ops.feature_flags set enabled = false where key = 'bands_public'"
+          curl -sf -X POST http://127.0.0.1:3212/api/revalidate \
+            -H "x-plinth-revalidate-secret: $(cat "$RUNNER_TEMP/revalidate-secret")" \
+            -H "Content-Type: application/json" -d '{"tags":["all"]}'; echo
+          # The first request right after a revalidation can still get the old page (seen
+          # locally); this check is about rendering S1, so let it settle and warm the pages.
+          sleep 2
+          for p in "$AURELIA" /gurugram/projects/kestrel-park; do curl -sf -o /dev/null "http://127.0.0.1:3212$p"; done
+          npm run -w @plinth/web e2e -- e2e/gates/m1.spec.ts --grep "S1"
+
+      - name: Save the server's S1 payloads for the app (PostgREST, as the app reads them)
+        run: |
+          dir="$RUNNER_TEMP/m1-s1"
+          mkdir -p "$dir/risk_summary" "$dir/project_page"
+          for slug in aurelia-heights-phase-2 kestrel-park; do
+            for fn in risk_summary project_page; do
+              curl -sf -X POST "$NEXT_PUBLIC_SUPABASE_URL/rest/v1/rpc/$fn" \
+                -H "apikey: $NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY" \
+                -H "Authorization: Bearer $NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY" \
+                -H "Content-Type: application/json" -H "Content-Profile: api" \
+                -d "{\"p_slug\":\"$slug\"}" > "$dir/$fn/$slug.json"
+            done
+          done
+          s1=$(grep -h -o '"bands_public": *false' "$dir"/risk_summary/*.json | wc -l | tr -d ' ')
+          echo "S1 risk summaries saved: $s1"
+          test "$s1" = 2
+          ls -l "$dir"/*
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m1-s1-payloads
+          path: ${{ runner.temp }}/m1-s1
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Server logs
+        if: failure()
+        run: |
+          tail -n 80 "$RUNNER_TEMP"/next-*.log || true
+          supabase status || true
+
+  app-s1:
+    name: S1 on the app (the server's S1 payloads)
+    needs: live
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.5
+          channel: stable
+          cache: true
+      - name: flutter pub get (lockfile is frozen)
+        run: flutter pub get --enforce-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: m1-s1-payloads
+          path: ${{ runner.temp }}/m1-s1
+      - name: flutter test test/gates/m1_test.dart (with PLINTH_GATE_S1_DIR)
+        run: flutter test test/gates/m1_test.dart --dart-define=PLINTH_GATE_S1_DIR="$RUNNER_TEMP/m1-s1"

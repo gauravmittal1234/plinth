@@ -69,6 +69,11 @@ Week 1 starts **Mon 19 Oct 2026**. Agent throughput can compress M1–M5. Extern
 - The HARERA parsers' golden tests pass on synthetic fixtures. Snapshots are immutable (pgTAP).
 - The listed web pages and app screens are built. Flutter goldens are committed. The Playwright smoke passes. The project page ships ≤ 150 KB JS (gzip) and Lighthouse CI LCP ≤ 2.5 s on the throttled-4G preset.
 - With `bands_public = false`, the server omits band, frequency and reasons (S1 truth panel), and both clients render the S1 state.
+- *Note (lead, 20 Oct 2026; DECISIONS E-11): how the two performance targets are measured.*
+  - JS is the project page's initial-load JS, gzipped: the chunks its build manifests name for the first load (`apps/web/scripts/initial-js.mjs`). Link-prefetch chunks that arrive after load are not counted.
+  - LCP is Lighthouse's throttled-4G figure over HTTP/2, as production serves the site (`apps/web/scripts/lhci-h2-server.mjs`).
+  - At the M1 gate, `/` (2.40 s) and `/methodology` (2.03 s) pass, so LCP is an error there. The project page measured 152.3 KB and 2.52–2.63 s, so both of its targets stay warnings until it passes them.
+  - The gate is T39: `ci-gate-m1` (live-mode text diff, S1 on web and app), `e2e/gates/m1.spec.ts`, `test/gates/m1_test.dart` and `supabase/tests/gates/m1.sql`.
 
 **M2: Accounts, follow, alerts**
 - Phone OTP sign-in works on web and app, using Supabase test numbers in dev. WhatsApp follows merge only after "Bring them here".

@@ -151,3 +151,18 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
   - Broker-layer and Pro tasks (M3+) ship with Plinth's fee off until the founder says otherwise. `pro_paywall` stays off.
   - Implemented by `lead/free-launch`.
 
+
+## M1 exit gate (T39, 20 Oct 2026)
+- **Where each M1 item is proven:** the checklist is in the T39 PR. In short:
+  - API deep-equal: ci-db `test:api`. Cross-function checks, S1 across every M1 read and the seeded snapshots: `supabase/tests/gates/m1.sql`.
+  - Scoring: ci-scoring. HARERA goldens: ci-pipelines.
+  - Screens: `e2e/gates/m1.spec.ts` and `test/gates/m1_test.dart`, on top of each screen's own tests.
+  - Performance: DECISIONS E-11.
+  - Live mode and S1 on both clients: `ci-gate-m1`.
+- **S1 has no fixture payload.** The fixture world is bands-on, and S1 copy comes only from the server: the share lines, the hero line and the next steps all change. So the clients' S1 tests run in `ci-gate-m1`, on the payloads the seeded database serves with `bands_public` off.
+  - If a fixture-mode S1 preview is wanted (like `?state=facts_only`), the fixtures owner can add `--bands-off` keys generated from the same rules.
+  - `supabase/tests/gates/m1.sql` proves those payloads carry no band anywhere.
+- **For T16 (revalidation):** locally, the first request right after `POST /api/revalidate {"tags":["all"]}` still got the old Aurelia page once. The next request was fresh, and so was a request 2 s later. `ci-gate-m1` waits 2 s and warms the page before its S1 check. Worth a look if "the next visitor never sees the old band" must hold exactly.
+- **For T28 (SEO):** the sitemap lists home, the 8 phases, the 6 developers and the compare pairs, but not `/methodology`, `/about` or `/pricing`.
+- **Perf owners:** the project page is 2.3 KB over its 150 KB initial-JS budget and 17–134 ms over the 2.5 s LCP (over h2). Both stay warnings until they pass (E-11).
+

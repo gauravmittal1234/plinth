@@ -74,10 +74,16 @@ jobs:
       - name: Build (fixture mode)
         run: npm run -w @plinth/web build
 
+      # M1 gate (T39, DECISIONS E-11): the project page's initial-load JS,
+      # gzipped, from the build manifests (link-prefetch chunks excluded).
+      - name: Initial-load JS budget (project page ≤ 150 KB gzip)
+        run: node apps/web/scripts/initial-js.mjs
+
       - name: Install Chromium for Playwright
         run: npx playwright install --with-deps --only-shell chromium
       - name: Playwright smoke + axe (every WORK_BREAKDOWN §2.1 route)
         run: npm run -w @plinth/web e2e:smoke
 
+      # Over HTTP/2 through scripts/lhci-h2-server.mjs (lighthouserc.cjs).
       - name: Lighthouse CI budgets
         run: npm run -w @plinth/web lhci

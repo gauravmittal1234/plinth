@@ -123,32 +123,65 @@
 //   /methodology (no page JS) sits at 2.48 s. `next start` also serves
 //   HTTP/1.1. Re-auditing the same saved runs with the protocol set to h2
 //   (what Vercel serves) gave / 2.25, project 2.48, /methodology 1.88 s.
-const BASE = "http://127.0.0.1:3200";
+//
+// M1 exit gate (T39, lead decision, DECISIONS E-11). How the two M1 targets
+// are measured from now on:
+// - LCP over HTTP/2, as production serves it. `scripts/lhci-h2-server.mjs`
+//   starts `next start` on :3201 and a TLS + h2 proxy on :3200 (a throwaway
+//   self-signed certificate; Chrome runs with --ignore-certificate-errors).
+//   Same bytes, same requests; only the protocol differs from before.
+// - Project-page JS as initial-load JS: `scripts/initial-js.mjs` sums the
+//   gzipped chunks the build manifests name for the route's first load (and
+//   checks them against the prerendered HTML), so the link-prefetch chunks
+//   that arrive after load (PR #50) are not counted. ci-web runs it after the
+//   build. The whole-window figure below stays as a looser ceiling.
+// The measured numbers and which assertions are errors are in DECISIONS E-11.
+const BASE = "https://127.0.0.1:3200";
 const PROJECT_URL = `${BASE}/gurugram/projects/aurelia-heights-phase-2`;
+
+/** The assertions every URL gets; only the LCP level differs per URL (below). */
+const assertions = (lcpLevel) => ({
+  // Every script that finishes in Lighthouse's window, link prefetch
+  // included. The 150 KB project-page budget is initial-load JS
+  // (scripts/initial-js.mjs).
+  "resource-summary:script:size": ["error", { maxNumericValue: 200 * 1024 }],
+  "cumulative-layout-shift": ["error", { maxNumericValue: 0.1 }],
+  "categories:accessibility": ["error", { minScore: 0.9 }],
+  "largest-contentful-paint": [lcpLevel, { maxNumericValue: 2500 }],
+  "categories:performance": ["warn", { minScore: 0.9 }],
+});
 
 module.exports = {
   ci: {
     collect: {
-      startServerCommand: "npm run start -- --port 3200",
-      startServerReadyPattern: "Ready",
+      startServerCommand: "node scripts/lhci-h2-server.mjs --port 3200 --upstream 3201",
+      startServerReadyPattern: "h2 proxy ready",
       startServerReadyTimeout: 60000,
       url: [`${BASE}/`, PROJECT_URL, `${BASE}/methodology`],
       numberOfRuns: 3,
       settings: {
-        chromeFlags: "--no-sandbox --headless=new",
+        chromeFlags: "--no-sandbox --headless=new --ignore-certificate-errors",
         onlyCategories: ["performance", "accessibility", "best-practices", "seo"],
         // Stubs are noindex on purpose (placeholderMetadata).
         skipAudits: ["is-crawlable"],
       },
     },
     assert: {
-      assertions: {
-        "resource-summary:script:size": ["error", { maxNumericValue: 200 * 1024 }],
-        "cumulative-layout-shift": ["error", { maxNumericValue: 0.1 }],
-        "categories:accessibility": ["error", { minScore: 0.9 }],
-        "largest-contentful-paint": ["warn", { maxNumericValue: 2500 }],
-        "categories:performance": ["warn", { minScore: 0.9 }],
-      },
+      // Two mutually exclusive URL groups, each with the full set, so exactly
+      // one entry applies to every URL. They differ only in LCP's level.
+      assertMatrix: [
+        {
+          // The project page: LCP over h2 measured 2517–2634 ms at the gate,
+          // so it stays a warning until it is under 2500 (E-11).
+          matchingUrlPattern: "/gurugram/projects/",
+          assertions: assertions("warn"),
+        },
+        {
+          // `/` and `/methodology`: under 2500 over h2, so LCP is an error.
+          matchingUrlPattern: "^(?!.*/gurugram/projects/)",
+          assertions: assertions("error"),
+        },
+      ],
     },
     upload: {
       target: "filesystem",

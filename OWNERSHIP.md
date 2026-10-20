@@ -96,7 +96,7 @@ How to read this table:
 
 | Path | Owner | Notes |
 |---|---|---|
-| `apps/web/e2e/gates/m1.spec.ts`, `apps/mobile/test/gates/m1_test.dart`, `supabase/tests/gates/m1.sql` | T39 | |
+| `apps/web/e2e/gates/m1.spec.ts`, `apps/mobile/test/gates/m1_test.dart`, `supabase/tests/gates/m1.sql`, `.github/workflows/ci-gate-m1.yml` | T39 | `ci-gate-m1` is the live-mode check (lead-authorised). The M1 perf measurement (`apps/web/scripts/{initial-js,lhci-h2-server}.mjs`, `lighthouserc.cjs`) stays T05's, then the lead's |
 
 ## Wave 4 and 5 (M2)
 
