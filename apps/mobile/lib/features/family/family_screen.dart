@@ -207,7 +207,11 @@ class _InviteSection extends ConsumerWidget {
           runSpacing: 8,
           children: [
             for (final choice in choices)
-              PlinthPill(label: choice.label, selected: choice.key == selected.key, onPressed: () => onSelect(choice.key)),
+              PlinthPill(
+                label: choice.label,
+                selected: choice.key == selected.key,
+                onPressed: () => onSelect(choice.key),
+              ),
           ],
         ),
         const SizedBox(height: PlinthSpace.s12),

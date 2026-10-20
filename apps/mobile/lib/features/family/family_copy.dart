@@ -31,7 +31,8 @@ abstract final class FamilyCopy {
   static const linkCopied = 'Copied';
 
   /// `followingFeedProvider` itself failed to load.
-  static const followsUnavailableLine = 'Couldn’t load your followed projects, so there’s nothing to invite someone to yet.';
+  static const followsUnavailableLine =
+      'Couldn’t load your followed projects, so there’s nothing to invite someone to yet.';
 
   /// Loaded, but the buyer follows nothing yet.
   static const noProjectsToInviteLine = 'Follow a project to invite someone to it.';

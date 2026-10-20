@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:plinth/app/routes.dart';
+import 'package:plinth/data/follow.dart';
 import 'package:plinth/features/family/family_copy.dart';
 import 'package:plinth/features/family/family_screen.dart' show familyScreenKey;
 
@@ -90,6 +91,20 @@ void main() {
     await tester.tap(find.text('All 4 projects'));
     await tester.pumpAndSettle();
     expect(find.text('plinth.in/j/RC4-2MW'), findsOneWidget);
+  });
+
+  testWidgets('when following_feed can\'t load, it offers only what the data supports', (tester) async {
+    await pumpSignedIn(
+      tester,
+      location: Routes.family,
+      overrides: [followingFeedProvider.overrideWith((ref) => Future.error(Exception('following_feed unavailable')))],
+    );
+    await tester.pumpAndSettle();
+
+    // No pill is fabricated without data, and the honest line explains why.
+    expect(find.text(FamilyCopy.followsUnavailableLine), findsOneWidget);
+    expect(find.text('Aurelia Heights, Phase 2'), findsNothing);
+    expect(find.text(FamilyCopy.whatTheyFollow), findsNothing);
   });
 
   testWidgets('copying the link shows a status line with it', (tester) async {
