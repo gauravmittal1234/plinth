@@ -24,7 +24,7 @@ import { sendEmailMock } from "../_shared/outbox/email.ts";
 import { fcmSender } from "../_shared/outbox/fcm.ts";
 import { whatsAppSender } from "../_shared/outbox/whatsapp.ts";
 import type { DispatchDeps } from "./logic.ts";
-import { makeOutboxDispatch, parseClaimed } from "./logic.ts";
+import { makeOutboxDispatch, MAX_ATTEMPTS, parseClaimed } from "./logic.ts";
 
 const dispatch = makeOutboxDispatch({
   buildDeps: (ctx): DispatchDeps => {
@@ -51,6 +51,7 @@ const dispatch = makeOutboxDispatch({
         } else if (outcome.outcome === "failed") {
           args.p_error = outcome.error;
           args.p_not_before = outcome.notBefore.toISOString();
+          args.p_max_attempts = MAX_ATTEMPTS;
         } else if (outcome.outcome === "suppressed") {
           args.p_error = outcome.error;
         } else {
