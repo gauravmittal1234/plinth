@@ -2,9 +2,11 @@
 // what do we do now? → What else before booking? → How much is built? → What
 // are the homes like? → What will I really pay? → Can we afford the wait? →
 // Picture yourself here → What do the records show? → Ask anything. T20a
-// builds Hero, Risk, Next, Built and Records; the rest are stubs T20b fills
-// (OWNERSHIP.md). One <h1> lives in HeroSection; every other heading is an
-// <h2>, so the page keeps exactly one top-level heading (e2e/smoke.spec.ts).
+// builds Hero, Risk, Next, Built and Records; T20b fills the rest
+// (OWNERSHIP.md: "T20a stubs, T20b fills"), which is also why this file
+// passes each of those six sections the slice of ProjectPage it needs — the
+// stubs took no props. One <h1> lives in HeroSection; every other heading is
+// an <h2>, so the page keeps exactly one top-level heading (e2e/smoke.spec.ts).
 import type { Evidence } from "@plinth/contracts";
 import { AskSection } from "../sections/ask/ask-section";
 import { BookingSection } from "../sections/booking/booking-section";
@@ -35,11 +37,16 @@ export function ProjectPageView({
       <OnThisPageRail />
       <RiskSection risk={page.risk} bands={bands} />
       <NextSection nextSteps={page.next_steps} />
-      <BookingSection />
+      <BookingSection beforeBooking={page.before_booking} />
       <BuiltSection page={page} bands={bands} />
-      <HomesSection />
-      <CostSection />
-      <WaitSection />
+      <HomesSection homes={page.homes} />
+      <CostSection
+        cost={page.cost}
+        fromDeveloper={page.from_developer}
+        waitDefaults={page.wait_defaults}
+        affordDefault={page.afford_default}
+      />
+      <WaitSection waitDefaults={page.wait_defaults} affordDefault={page.afford_default} />
       <PictureSection />
       <RecordsSection
         truthPanel={page.truth_panel}
