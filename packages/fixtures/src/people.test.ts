@@ -198,7 +198,7 @@ describe("expected M2–M3 payloads", () => {
     expect(f.summary_line).toBe(
       "5 changes across your 4 projects: 1 extension, 1 filing on time, 2 missing filings and 1 price change. No band moved.",
     );
-    expect(f.record).toHaveLength(6);
+    expect(f.record).toHaveLength(10);
     expect(f.quiet.map((q) => q.slug)).toEqual(["kestrel-park"]);
     const bandMarks = f.replay.marks.filter((m) => m.kind === "band_changed");
     expect(bandMarks).toEqual([{ date: "2026-10-02", kind: "band_changed", band: "elevated" }]);

@@ -1,0 +1,12 @@
+{
+  "base": "indigo-terraces.json",
+  "why": "A request is open, added or declined.",
+  "expect": "/status",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/status",
+      "value": "pending"
+    }
+  ]
+}

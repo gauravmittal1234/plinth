@@ -30,6 +30,7 @@ flutter:
     - assets/expected/developer_page/
     - assets/expected/doc_check/
     - assets/expected/evidence/
+    - assets/expected/family_circle/
     - assets/expected/family_invite_cancel/
     - assets/expected/family_invite_create/
     - assets/expected/family_invite_preview/
@@ -43,8 +44,11 @@ flutter:
     - assets/expected/methodology/
     - assets/expected/payee_check/
     - assets/expected/project_page/
+    - assets/expected/request_project/
     - assets/expected/risk_summary/
+    - assets/expected/saved_searches/
     - assets/expected/search_projects/
+    - assets/expected/set_follow_type/
     - assets/expected/share_card/
     - assets/expected/shortlist_note_add/
     - assets/expected/unfollow/

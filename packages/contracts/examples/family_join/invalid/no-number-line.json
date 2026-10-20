@@ -1,0 +1,11 @@
+{
+  "base": "meera.json",
+  "why": "The relative is always told the inviter never sees their number.",
+  "expect": "",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/number_line"
+    }
+  ]
+}

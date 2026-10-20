@@ -40,7 +40,7 @@ export function RequestProjectForm({ name }: RequestProjectFormProps) {
         setStatus("sending");
         void requestProjectAction(name, rera.trim() || null).then((result) => {
           if (result.ok) {
-            setMessage(SEARCH_COPY.requested(result.ref));
+            setMessage(SEARCH_COPY.requested(result.ref, result.line));
             setStatus("done");
           } else if (result.code === "fixture_missing") {
             setMessage(SEARCH_COPY.requestFixtureMode);

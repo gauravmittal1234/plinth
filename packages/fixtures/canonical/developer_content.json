@@ -128,6 +128,25 @@
       "source": "DESIGN §5b (price lists of Oct 2026)"
     },
     {
+      "id": "ed6c8eeb-872a-505e-90db-ba1f4244f7eb",
+      "phase": "sapphire-grove-phase-1",
+      "published_on": "2026-09-01",
+      "published_precision": "day",
+      "status": "published",
+      "version": 1,
+      "lane": "from_developer",
+      "note": null,
+      "items": [
+        {
+          "unit_type": "62cc8efb-826a-5892-b26f-0521c67f6118",
+          "unit_label": "3 BHK",
+          "base_price_inr": 18900000,
+          "per_sqft_carpet_inr": null
+        }
+      ],
+      "source": "DESIGN §5b (previous list, 1 Sep 2026, superseded 16 Oct 2026)"
+    },
+    {
       "id": "86c4e45c-151c-543c-be30-8321ce60f77c",
       "phase": "sapphire-grove-phase-1",
       "published_on": "2026-10-16",
@@ -214,15 +233,6 @@
         }
       ],
       "source": "DESIGN §5b (dated 12 Jun 2026); 3 BHK from ₹1.85 Cr DESIGN §5b · Fixture decisions, round 2 (C-05)"
-    }
-  ],
-  "previous_prices": [
-    {
-      "phase": "sapphire-grove-phase-1",
-      "unit_label": "3 BHK",
-      "base_price_inr": 18900000,
-      "superseded_on": "2026-10-16",
-      "source": "DESIGN §5b"
     }
   ],
   "quotes_without_list": [
