@@ -113,16 +113,6 @@ export async function buildAll() {
   const R = as("rohan");
   exp("following_feed", "rohan", XB.followingFeed(), { p_since: null, as: R });
   exp("who_has_my_number", "rohan", XB.whoHasMyNumber(), { as: R });
-  exp(
-    "who_has_my_number",
-    "rohan--withdrawn-c-1012-04",
-    XB.whoHasMyNumber({ withdrawn: "C-1012-04" }),
-    {
-      as: R,
-      state: "after_withdraw",
-      note: "Design state: after api.consent_withdraw('C-1012-04') at the clock (WORK_BREAKDOWN T51, T45b).",
-    },
-  );
   for (const code of ["AH2-7KQ", "RC4-2MW"])
     exp("family_invite_preview", code, XB.invitePreview(code), { p_code: code });
   exp("alert_prefs", "rohan", XB.alertPrefs(), { rpc: "alert_prefs_get", as: R });

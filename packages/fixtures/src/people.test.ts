@@ -207,10 +207,6 @@ describe("expected M2–M3 payloads", () => {
     expect(w.count_line).toBe("3 parties can reach you");
     expect(w.parties.map((p) => p.ref)).toEqual(["C-1012-04", "C-1012-05", "C-1015-02"]);
     expect(JSON.stringify(w)).not.toMatch(/lender|bank/i);
-    expect(
-      loadExpected<{ count_line: string }>("who_has_my_number", "rohan--withdrawn-c-1012-04")
-        .count_line,
-    ).toBe("2 parties can reach you");
     expect(loadExpected<{ effects: string[] }>("consent_withdraw", "C-1012-04").effects).toContain(
       "2 parties can reach you.",
     );

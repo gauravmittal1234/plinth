@@ -110,6 +110,13 @@ void main() {
       for (final key in keys) {
         test('$key parses as its contract type and comes back through its repository', () async {
           final payload = await world.payload(folder, key);
+          if (writeFunctions.contains(folder)) {
+            // T03b's answers to the M2 writes: the fixture world answers the recorded request.
+            final request = (await world.requests(folder))[key];
+            expect(request, isNotNull, reason: '_requests.json has no "$key"');
+            expect(await world.write(folder, request!), isNotNull);
+            return;
+          }
           final type = schemaIds[payload['schema']];
           expect(type, isNotNull, reason: 'unknown schema ${payload['schema']}');
           expect(_parsers[type]!(payload), isNotNull);

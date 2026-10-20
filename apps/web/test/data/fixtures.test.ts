@@ -218,8 +218,9 @@ describe("fixture writes: the in-memory session", () => {
   });
 
   it("rejects a write whose answer carries server copy until a fixture exists", async () => {
+    // T03b answers Rohan's 4 follows (expected/follow); Juniper Enclave has no answer.
     const err = await data
-      .follow("kestrel-park", "watching", "web", "6f0e2c1a-0000-4000-8000-000000000001")
+      .follow("juniper-enclave", "watching", "web", "6f0e2c1a-0000-4000-8000-000000000001")
       .catch((e: unknown) => e);
     expect(isDataError(err, "fixture_missing")).toBe(true);
     expect(fixtureSession().writes).toHaveLength(0);

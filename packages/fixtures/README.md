@@ -30,7 +30,7 @@ Generated files are committed and never hand-edited. `npm run -w @plinth/fixture
 | `evidence` | the fact id (the 4 facts behind Aurelia's reasons) |
 | `methodology`, `about` | `default` |
 | `flags` | `anon` |
-| `following_feed`, `who_has_my_number`, `alert_prefs` | `rohan` (`alert_prefs` answers `api.alert_prefs_get`); `who_has_my_number/rohan--withdrawn-c-1012-04` is the state after withdrawing C-1012-04 |
+| `following_feed`, `who_has_my_number`, `alert_prefs` | `rohan` (`alert_prefs` answers `api.alert_prefs_get`); after a withdrawal, `consent_withdraw/<ref>` gives the new count |
 | `family_invite_preview` | `AH2-7KQ`, `RC4-2MW` |
 | `share_card` | `aurelia-old-card` (the v1.1 card of 30 Sep 2026; `p_code` in `_requests.json`) |
 | `doc_check` | `flyer`, `flyer--confirm-project`, `hoarding`, `demand-letter`, `payment-request`, `booking-form`, `visit-recap` |

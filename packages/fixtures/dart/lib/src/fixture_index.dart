@@ -131,7 +131,6 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
     'kestrel-park',
   ],
   'who_has_my_number': <String>[
-    'rohan--withdrawn-c-1012-04',
     'rohan',
   ],
 };
