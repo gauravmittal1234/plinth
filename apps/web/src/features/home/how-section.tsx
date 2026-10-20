@@ -4,6 +4,7 @@
 import type { Methodology, RiskSummary } from "@/src/data";
 import { ConfidenceDots, DeveloperSaysField, Riskometer, SourceChip } from "@plinth/web-ui";
 import Link from "next/link";
+import { formatIsoDate } from "./format";
 
 export function HowSection({
   summary,
@@ -82,12 +83,5 @@ export function HowSection({
         </p>
       </div>
     </section>
-  );
-}
-
-function formatIsoDate(iso: string): string {
-  const d = new Date(`${iso}T00:00:00+05:30`);
-  return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" }).format(
-    d,
   );
 }

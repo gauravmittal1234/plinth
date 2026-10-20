@@ -13,6 +13,7 @@ import {
   TowerStack,
 } from "@plinth/web-ui";
 import Link from "next/link";
+import { formatIsoDate } from "./format";
 
 /** The server's `late12.line` always leads with "Original completion <month>." */
 function originalCompletionLine(line: string): string {
@@ -21,11 +22,19 @@ function originalCompletionLine(line: string): string {
 }
 
 export function RiskMiniCard({ summary }: { summary: RiskSummary }) {
-  const { phase, progress, price, late12, reasons, pending } = summary;
+  const { phase, band, frequency, progress, price, late12, reasons, pending } = summary;
   const sources = reasons
     .slice(0, 2)
     .map((r) => r.sources[0])
     .filter((s, i, arr) => arr.findIndex((o) => o.label === s.label) === i);
+  const caption = band ? (
+    <>
+      Since {formatIsoDate(band.since)}
+      {frequency ? <>. {frequency.sentence}</> : null}
+    </>
+  ) : (
+    frequency?.sentence
+  );
 
   return (
     <div data-hero-card={phase.slug} className="flex flex-col gap-4.5">
@@ -38,7 +47,7 @@ export function RiskMiniCard({ summary }: { summary: RiskSummary }) {
         </span>
       </div>
 
-      <RiskHeader risk={summary} srPrefix="Delivery risk: " caption={summary.frequency?.sentence} />
+      <RiskHeader risk={summary} srPrefix="Delivery risk: " caption={caption} />
 
       <div className="flex items-end gap-4.5">
         <TowerStack
