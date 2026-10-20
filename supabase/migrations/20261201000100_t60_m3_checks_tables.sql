@@ -127,7 +127,8 @@ create table app.doc_checks (
   kind text not null check (kind in ('claims', 'cost_sheet', 'pay_as_built', 'before_you_pay', 'visit_recap')),
   channel text not null check (channel in ('web', 'app', 'whatsapp')),
   status text not null default 'reading' check (status in (
-    'reading', 'confirm_project', 'checking', 'done', 'unreadable', 'partly_readable', 'no_claims', 'outside_coverage'
+    'reading', 'confirm_project', 'checking', 'done', 'unreadable', 'partly_readable', 'no_claims', 'outside_coverage',
+    'checks_paused'
   )),
   status_detail text check (status_detail is null or pg_catalog.length(status_detail) between 1 and 200),
   phase_id uuid references core.phases (id),
@@ -158,7 +159,7 @@ comment on column app.doc_checks.user_id is 'pii:C1 · The owner (the upload''s 
 comment on column app.doc_checks.wa_contact_id is 'pii:C1 · The WhatsApp sender, when it came in on WhatsApp.';
 comment on column app.doc_checks.kind is 'pii:C1';
 comment on column app.doc_checks.channel is 'pii:C1 · web | app | whatsapp.';
-comment on column app.doc_checks.status is 'pii:C1 · API_CONTRACTS §4.12 states.';
+comment on column app.doc_checks.status is 'pii:C1 · API_CONTRACTS §4.12 states, plus checks_paused (the ai_doc_check kill switch is off; contract DocCheckStatus, T61).';
 comment on column app.doc_checks.status_detail is 'pii:C1 · Why a check ended unreadable or partly_readable (a code or a short line; never document text).';
 comment on column app.doc_checks.phase_id is 'pii:C1 · The project the buyer confirmed (or the best match before that).';
 comment on column app.doc_checks.match_method is 'pii:C1 · rera_number | name_sector | user_pick.';
