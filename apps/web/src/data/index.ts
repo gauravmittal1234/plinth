@@ -18,6 +18,12 @@
 // Owner: T16 (OWNERSHIP.md).
 import "server-only";
 import { connection } from "next/server";
+// A static import, not @plinth/fixtures/node's loadCanonical(): that loader
+// reads the file at a dynamic path, which makes Turbopack trace (and ship)
+// the whole monorepo for every route that imports this file (src/seo/routes.ts's
+// own comment on the same import, before it moved here).
+import catalogueJson from "@plinth/fixtures/canonical/catalogue.json";
+import { DATA_AS_OF, GROUP_SLUGS, PHASE_SLUGS, type PhaseSlug } from "@plinth/fixtures";
 import { cachedRead } from "./cache";
 import { DataError } from "./errors";
 import { invoke } from "./invoke";
@@ -56,6 +62,8 @@ import type {
 } from "./types";
 
 export type * from "./types";
+/** Re-exported so src/seo/** never imports @plinth/fixtures directly (this file's one door). */
+export type { PhaseSlug } from "@plinth/fixtures";
 export { DataError, ERROR_CODES, isDataError, type ApiErrorCode, type ErrorCode } from "./errors";
 export { dataMode, type DataMode } from "./mode";
 export { API_FUNCTIONS, type RpcArgs, type RpcName } from "./registry";
@@ -67,6 +75,11 @@ export {
   tagsForPayload,
   type CacheTag,
 } from "./tags";
+
+/** One row of packages/fixtures/canonical/catalogue.json `phases` (fields this module reads only). */
+type CataloguePhase = { slug: string; corridor: string | null };
+type Catalogue = { phases: CataloguePhase[] };
+const catalogue = catalogueJson as unknown as Catalogue;
 
 /** Drops undefined args, so a function's SQL default applies (JSON has no undefined). */
 function compact(args: RpcArgs): RpcArgs {
@@ -163,6 +176,36 @@ export function shareCard(code: string): Promise<ShareCard> {
 /** Powers /j/[code]. Carries no phone number. */
 export function familyInvitePreview(code: string): Promise<FamilyInvitePreview> {
   return call("family_invite_preview", { p_code: code });
+}
+
+// ---------------------------------------------------------------------------
+// Site enumeration (T28 SEO: sitemap.ts, src/seo/routes.ts). Every URL a
+// crawler can reach comes from here, never a list `src/seo/**` keeps itself
+// (this file's own header: "Pages import only from here; nothing else talks
+// to Supabase or reads fixture files"). No api.* RPC lists every public
+// phase/developer today, so fixture mode's full catalogue is also today's
+// live list; a later task gives this its own api.* call once one exists.
+
+/** Every phase with its own `/gurugram/projects/[slug]` page (DESIGN §5b). */
+export function publicProjectSlugs(): readonly PhaseSlug[] {
+  return PHASE_SLUGS;
+}
+
+/** Every developer group with its own `/gurugram/developers/[slug]` page. */
+export function publicDeveloperSlugs(): readonly string[] {
+  return GROUP_SLUGS;
+}
+
+/** Each public phase's corridor (null when it has none), for pairing nearby projects. */
+export function publicProjectCorridors(): ReadonlyMap<PhaseSlug, string | null> {
+  return new Map(
+    PHASE_SLUGS.map((slug) => [slug, catalogue.phases.find((p) => p.slug === slug)?.corridor ?? null]),
+  );
+}
+
+/** The sitemap's `lastModified`: the published data's own cutoff. */
+export function siteDataAsOf(): string {
+  return DATA_AS_OF;
 }
 
 // ---------------------------------------------------------------------------

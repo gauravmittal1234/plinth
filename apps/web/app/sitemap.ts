@@ -1,13 +1,13 @@
 // /sitemap.xml (T28; PRD F-33, platform_architecture §2.1). Every URL comes
-// from the data layer (src/seo/routes.ts → @plinth/fixtures slugs): no
-// hand-kept list of phases, developers or compare pairs.
-import { DATA_AS_OF } from "@plinth/fixtures";
+// from the data layer (@/src/data, via src/seo/routes.ts): no hand-kept list
+// of phases, developers or compare pairs.
 import type { MetadataRoute } from "next";
-import { absoluteUrl } from "@/src/seo/site";
+import { siteDataAsOf } from "@/src/data";
 import { comparePairs, comparePairSlug, publicDeveloperSlugs, publicProjectSlugs } from "@/src/seo/routes";
+import { absoluteUrl } from "@/src/seo/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = DATA_AS_OF;
+  const lastModified = siteDataAsOf();
 
   const home: MetadataRoute.Sitemap = [
     { url: absoluteUrl("/"), lastModified, changeFrequency: "daily", priority: 1 },
