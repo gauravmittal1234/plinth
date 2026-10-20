@@ -7348,6 +7348,9 @@ class RequestProject {
 ///plinth.review_queue/1, from admin_review_queue (API_CONTRACTS §3.4). Highest priority
 ///first.
 class ReviewQueue {
+    
+    ///Open queue work (ReviewTaskStatus open/assigned); resolved and dismissed are not counted
+    ///here.
     final Counts counts;
     final List<ItemElement> items;
     final String schema;
@@ -7371,22 +7374,24 @@ class ReviewQueue {
     };
 }
 
+///Open queue work (ReviewTaskStatus open/assigned); resolved and dismissed are not counted
+///here.
 class Counts {
-    final int inProgress;
+    final int assigned;
     final int open;
 
     Counts({
-        required this.inProgress,
+        required this.assigned,
         required this.open,
     });
 
     factory Counts.fromJson(Map<String, dynamic> json) => Counts(
-        inProgress: json["in_progress"],
+        assigned: json["assigned"],
         open: json["open"],
     );
 
     Map<String, dynamic> toJson() => {
-        "in_progress": inProgress,
+        "assigned": assigned,
         "open": open,
     };
 }

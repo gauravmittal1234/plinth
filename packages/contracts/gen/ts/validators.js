@@ -36528,8 +36528,8 @@ return errors === 0;
 }
 
 export const validateReviewQueue = validate945;
-const schema412 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://plinth.in/schemas/review_queue.schema.json","title":"ReviewQueue","description":"plinth.review_queue/1, from admin_review_queue (API_CONTRACTS §3.4). Highest priority first.","type":"object","additionalProperties":false,"required":["schema","items","counts"],"properties":{"schema":{"const":"plinth.review_queue/1"},"items":{"type":"array","items":{"$ref":"review_task.schema.json"}},"counts":{"type":"object","additionalProperties":false,"required":["open","in_progress"],"properties":{"open":{"type":"integer","minimum":0},"in_progress":{"type":"integer","minimum":0}}}}};
-const schema413 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://plinth.in/schemas/review_task.schema.json","title":"ReviewTask","description":"plinth.review_task/1, one row of the admin review queue (ops.review_tasks, DATA_MODEL §10, plus kind adviser_request for M3). Reviewer and admin only (admin_review_queue, API_CONTRACTS §3.4).","type":"object","additionalProperties":false,"required":["schema","id","kind","entity","entity_id","priority","status","assignee","due_at","summary_line"],"properties":{"schema":{"const":"plinth.review_task/1"},"id":{"$ref":"common.schema.json#/$defs/Uuid"},"kind":{"$ref":"#/$defs/ReviewTaskKind"},"entity":{"description":"The table the review is about, e.g. \"extracted_claims\".","type":"string","minLength":1},"entity_id":{"$ref":"common.schema.json#/$defs/Uuid"},"priority":{"description":"impact × uncertainty; higher sorts first.","type":"number"},"status":{"$ref":"#/$defs/ReviewTaskStatus"},"assignee":{"type":["string","null"]},"due_at":{"anyOf":[{"$ref":"common.schema.json#/$defs/Timestamp"},{"type":"null"}]},"summary_line":{"type":"string"}},"$defs":{"ReviewTaskKind":{"title":"ReviewTaskKind","type":"string","enum":["extraction_disagreement","low_confidence_claim","dispute","clerical","notice","legal","capture","entity_merge","demand_check","adviser_request"]},"ReviewTaskStatus":{"title":"ReviewTaskStatus","type":"string","enum":["open","in_progress","done"]}}};
+const schema412 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://plinth.in/schemas/review_queue.schema.json","title":"ReviewQueue","description":"plinth.review_queue/1, from admin_review_queue (API_CONTRACTS §3.4). Highest priority first.","type":"object","additionalProperties":false,"required":["schema","items","counts"],"properties":{"schema":{"const":"plinth.review_queue/1"},"items":{"type":"array","items":{"$ref":"review_task.schema.json"}},"counts":{"description":"Open queue work (ReviewTaskStatus open/assigned); resolved and dismissed are not counted here.","type":"object","additionalProperties":false,"required":["open","assigned"],"properties":{"open":{"type":"integer","minimum":0},"assigned":{"type":"integer","minimum":0}}}}};
+const schema413 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://plinth.in/schemas/review_task.schema.json","title":"ReviewTask","description":"plinth.review_task/1, one row of the admin review queue (ops.review_tasks, DATA_MODEL §10, plus kind adviser_request for M3). Reviewer and admin only (admin_review_queue, API_CONTRACTS §3.4).","type":"object","additionalProperties":false,"required":["schema","id","kind","entity","entity_id","priority","status","assignee","due_at","summary_line"],"properties":{"schema":{"const":"plinth.review_task/1"},"id":{"$ref":"common.schema.json#/$defs/Uuid"},"kind":{"$ref":"#/$defs/ReviewTaskKind"},"entity":{"description":"The table the review is about, e.g. \"extracted_claims\".","type":"string","minLength":1},"entity_id":{"$ref":"common.schema.json#/$defs/Uuid"},"priority":{"description":"impact × uncertainty; higher sorts first.","type":"number"},"status":{"$ref":"#/$defs/ReviewTaskStatus"},"assignee":{"type":["string","null"]},"due_at":{"anyOf":[{"$ref":"common.schema.json#/$defs/Timestamp"},{"type":"null"}]},"summary_line":{"type":"string"}},"$defs":{"ReviewTaskKind":{"title":"ReviewTaskKind","type":"string","enum":["extraction_disagreement","low_confidence_claim","dispute","clerical","notice","legal","capture","entity_merge","demand_check","adviser_request"]},"ReviewTaskStatus":{"title":"ReviewTaskStatus","description":"ops.review_tasks.status (DATA_MODEL §10; the check constraint T60 migrates, PR #91).","type":"string","enum":["open","assigned","resolved","dismissed"]}}};
 
 function validate947(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
 let vErrors = null;
@@ -36569,7 +36569,7 @@ validate949.errors = vErrors;
 return errors === 0;
 }
 
-const schema416 = {"title":"ReviewTaskStatus","type":"string","enum":["open","in_progress","done"]};
+const schema416 = {"title":"ReviewTaskStatus","description":"ops.review_tasks.status (DATA_MODEL §10; the check constraint T60 migrates, PR #91).","type":"string","enum":["open","assigned","resolved","dismissed"]};
 
 function validate952(data, {instancePath="", parentData, parentDataProperty, rootData=data}={}){
 let vErrors = null;
@@ -36578,7 +36578,7 @@ if(typeof data !== "string"){
 validate952.errors = [{instancePath,schemaPath:"#/type",keyword:"type",params:{type: "string"},message:"must be string"}];
 return false;
 }
-if(!(((data === "open") || (data === "in_progress")) || (data === "done"))){
+if(!((((data === "open") || (data === "assigned")) || (data === "resolved")) || (data === "dismissed"))){
 validate952.errors = [{instancePath,schemaPath:"#/enum",keyword:"enum",params:{allowedValues: schema416.enum},message:"must be equal to one of the allowed values"}];
 return false;
 }
@@ -36895,14 +36895,14 @@ const _errs6 = errors;
 if(errors === _errs6){
 if(data3 && typeof data3 == "object" && !Array.isArray(data3)){
 let missing1;
-if(((data3.open === undefined) && (missing1 = "open")) || ((data3.in_progress === undefined) && (missing1 = "in_progress"))){
+if(((data3.open === undefined) && (missing1 = "open")) || ((data3.assigned === undefined) && (missing1 = "assigned"))){
 validate945.errors = [{instancePath:instancePath+"/counts",schemaPath:"#/properties/counts/required",keyword:"required",params:{missingProperty: missing1},message:"must have required property '"+missing1+"'"}];
 return false;
 }
 else {
 const _errs8 = errors;
 for(const key1 in data3){
-if(!((key1 === "open") || (key1 === "in_progress"))){
+if(!((key1 === "open") || (key1 === "assigned"))){
 validate945.errors = [{instancePath:instancePath+"/counts",schemaPath:"#/properties/counts/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key1},message:"must NOT have additional properties"}];
 return false;
 break;
@@ -36930,17 +36930,17 @@ else {
 var valid2 = true;
 }
 if(valid2){
-if(data3.in_progress !== undefined){
-let data5 = data3.in_progress;
+if(data3.assigned !== undefined){
+let data5 = data3.assigned;
 const _errs11 = errors;
 if(!(((typeof data5 == "number") && (!(data5 % 1) && !isNaN(data5))) && (isFinite(data5)))){
-validate945.errors = [{instancePath:instancePath+"/counts/in_progress",schemaPath:"#/properties/counts/properties/in_progress/type",keyword:"type",params:{type: "integer"},message:"must be integer"}];
+validate945.errors = [{instancePath:instancePath+"/counts/assigned",schemaPath:"#/properties/counts/properties/assigned/type",keyword:"type",params:{type: "integer"},message:"must be integer"}];
 return false;
 }
 if(errors === _errs11){
 if((typeof data5 == "number") && (isFinite(data5))){
 if(data5 < 0 || isNaN(data5)){
-validate945.errors = [{instancePath:instancePath+"/counts/in_progress",schemaPath:"#/properties/counts/properties/in_progress/minimum",keyword:"minimum",params:{comparison: ">=", limit: 0},message:"must be >= 0"}];
+validate945.errors = [{instancePath:instancePath+"/counts/assigned",schemaPath:"#/properties/counts/properties/assigned/minimum",keyword:"minimum",params:{comparison: ">=", limit: 0},message:"must be >= 0"}];
 return false;
 }
 }

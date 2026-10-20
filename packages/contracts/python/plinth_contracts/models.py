@@ -1278,11 +1278,15 @@ class ResponseTime(BaseModel):
 
 
 class Counts(BaseModel):
+    """
+    Open queue work (ReviewTaskStatus open/assigned); resolved and dismissed are not counted here.
+    """
+
     model_config = ConfigDict(
         extra="forbid",
     )
     open: Annotated[int, Field(ge=0)]
-    in_progress: Annotated[int, Field(ge=0)]
+    assigned: Annotated[int, Field(ge=0)]
 
 
 class ReviewTaskKind(StrEnum):
@@ -1299,9 +1303,14 @@ class ReviewTaskKind(StrEnum):
 
 
 class ReviewTaskStatus(StrEnum):
+    """
+    ops.review_tasks.status (DATA_MODEL §10; the check constraint T60 migrates, PR #91).
+    """
+
     open = "open"
-    in_progress = "in_progress"
-    done = "done"
+    assigned = "assigned"
+    resolved = "resolved"
+    dismissed = "dismissed"
 
 
 class RiskShare(BaseModel):
@@ -4278,6 +4287,9 @@ class ReviewQueue(BaseModel):
     schema_: Annotated[Literal["plinth.review_queue/1"], Field(alias="schema")]
     items: list[ReviewTask]
     counts: Counts
+    """
+    Open queue work (ReviewTaskStatus open/assigned); resolved and dismissed are not counted here.
+    """
 
 
 class SavedSearch(BaseModel):

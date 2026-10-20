@@ -420,11 +420,13 @@ abstract final class ReviewTaskKind {
   static const List<String> values = ['extraction_disagreement', 'low_confidence_claim', 'dispute', 'clerical', 'notice', 'legal', 'capture', 'entity_merge', 'demand_check', 'adviser_request'];
 }
 
+/// ops.review_tasks.status (DATA_MODEL §10; the check constraint T60 migrates, PR #91).
 abstract final class ReviewTaskStatus {
   static const String open = 'open';
-  static const String inProgress = 'in_progress';
-  static const String done = 'done';
-  static const List<String> values = ['open', 'in_progress', 'done'];
+  static const String assigned = 'assigned';
+  static const String resolved = 'resolved';
+  static const String dismissed = 'dismissed';
+  static const List<String> values = ['open', 'assigned', 'resolved', 'dismissed'];
 }
 
 /// core.score_state.

@@ -13,12 +13,13 @@
       "items": { "$ref": "review_task.schema.json" }
     },
     "counts": {
+      "description": "Open queue work (ReviewTaskStatus open/assigned); resolved and dismissed are not counted here.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["open", "in_progress"],
+      "required": ["open", "assigned"],
       "properties": {
         "open": { "type": "integer", "minimum": 0 },
-        "in_progress": { "type": "integer", "minimum": 0 }
+        "assigned": { "type": "integer", "minimum": 0 }
       }
     }
   }

@@ -50,8 +50,9 @@
     },
     "ReviewTaskStatus": {
       "title": "ReviewTaskStatus",
+      "description": "ops.review_tasks.status (DATA_MODEL §10; the check constraint T60 migrates, PR #91).",
       "type": "string",
-      "enum": ["open", "in_progress", "done"]
+      "enum": ["open", "assigned", "resolved", "dismissed"]
     }
   }
 }

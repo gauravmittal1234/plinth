@@ -325,7 +325,10 @@ export type ReviewTaskKind =
   | "entity_merge"
   | "demand_check"
   | "adviser_request";
-export type ReviewTaskStatus = "open" | "in_progress" | "done";
+/**
+ * ops.review_tasks.status (DATA_MODEL §10; the check constraint T60 migrates, PR #91).
+ */
+export type ReviewTaskStatus = "open" | "assigned" | "resolved" | "dismissed";
 /**
  * core.score_state.
  */
@@ -2575,9 +2578,12 @@ export interface RequestProject {
 export interface ReviewQueue {
   schema: "plinth.review_queue/1";
   items: ReviewTask[];
+  /**
+   * Open queue work (ReviewTaskStatus open/assigned); resolved and dismissed are not counted here.
+   */
   counts: {
     open: number;
-    in_progress: number;
+    assigned: number;
   };
 }
 /**
