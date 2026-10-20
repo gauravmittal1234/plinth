@@ -3,18 +3,21 @@
 // WebSignIn's 4 states (DESIGN.md §5b "WebSignIn"; WebSignIn.dc.html): Phone
 // → Code → Bring follows → Done. Fixture mode never calls Supabase Auth
 // (AGENTS.md "Fixture mode uses fake sessions…"): sending and verifying a
-// code are UI-only steps here, same as the design prototype. "Bring them
-// here" / "Not now" merges follows only locally too — T45a/T45b still have to
-// define api.link_whatsapp_follows' response shape (INTEGRATION_NOTES.md)
-// before a real call can land; T59 checks the live wiring once it does.
+// code stay UI-only, same as the design prototype. The Bring step itself is
+// real data, not a design-prototype guess: once the code verifies, it reads
+// api.link_whatsapp_follows (previewWhatsappFollows/confirmWhatsappFollows,
+// ./actions.ts) — if that can't answer (no fixture key, or
+// `not_implemented` before T45a builds the real function), there's nothing
+// to bring, so the flow goes straight to Done (lead review of #62).
 import { Toast } from "@plinth/web-ui";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import type { ProjectPage } from "@/src/data";
+import { confirmWhatsappFollows, previewWhatsappFollows, type WaPreview } from "./actions";
 import { BringStep } from "./bring-step";
 import { CodeStep } from "./code-step";
 import { COUNTRIES, DEFAULT_COUNTRY_CODE } from "./countries";
 import { COPY } from "./copy";
-import { buildFollowedList, type WaFollowItem, type WaProjectFollow } from "./data";
+import { buildFollowedList } from "./data";
 import { DoneStep } from "./done-step";
 import { digitsOnly, isPhoneValid, maskPhone, phoneError as phoneErrorFor } from "./phone";
 import { PhoneStep } from "./phone-step";
@@ -22,15 +25,13 @@ import type { PhoneChannel, SignInStep } from "./types";
 
 const RESEND_SECONDS = 30;
 
+type DoneOutcome = "merged" | "failed" | "skipped";
+
 export function SignInFlow({
   projectPage,
-  waProjects,
-  waFollows,
   notNowHref,
 }: {
   projectPage: ProjectPage | null;
-  waProjects: readonly [WaProjectFollow, WaProjectFollow];
-  waFollows: readonly WaFollowItem[];
   notNowHref: string;
 }) {
   const projectName = projectPage?.risk.phase.name ?? null;
@@ -45,9 +46,12 @@ export function SignInFlow({
   const [sentAt, setSentAt] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [alsoChecked, setAlsoChecked] = useState(false);
-  const [merged, setMerged] = useState(false);
+  const [waPreview, setWaPreview] = useState<WaPreview | null>(null);
+  const [outcome, setOutcome] = useState<DoneOutcome>("skipped");
+  const [brought, setBrought] = useState<readonly WaPreview["follows"][number][]>([]);
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isPending, startFlowTransition] = useTransition();
 
   // The resend countdown ticks only while the code step is showing.
   useEffect(() => {
@@ -56,9 +60,12 @@ export function SignInFlow({
     return () => clearInterval(id);
   }, [step]);
 
-  useEffect(() => () => {
-    if (toastTimer.current) clearTimeout(toastTimer.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (toastTimer.current) clearTimeout(toastTimer.current);
+    },
+    [],
+  );
 
   function say(message: string) {
     if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -66,7 +73,8 @@ export function SignInFlow({
   }
 
   const maskedPhone = maskPhone(countryCode, phoneDigits);
-  const resendSecondsLeft = sentAt === null ? 0 : Math.max(0, RESEND_SECONDS - Math.floor((now - sentAt) / 1000));
+  const resendSecondsLeft =
+    sentAt === null ? 0 : Math.max(0, RESEND_SECONDS - Math.floor((now - sentAt) / 1000));
 
   function handleCountryCode(code: string) {
     setCountryCode(code);
@@ -103,7 +111,18 @@ export function SignInFlow({
       return;
     }
     setOtpError("");
-    setStep("bring");
+    startFlowTransition(async () => {
+      const preview = await previewWhatsappFollows();
+      if (preview) {
+        setWaPreview(preview);
+        setStep("bring");
+      } else {
+        // Nothing to bring (or the data can't answer yet): skip the step.
+        setOutcome("skipped");
+        setBrought([]);
+        setStep("done");
+      }
+    });
   }
 
   function resend() {
@@ -126,16 +145,29 @@ export function SignInFlow({
   }
 
   function bring() {
-    setMerged(true);
-    setStep("done");
+    startFlowTransition(async () => {
+      const confirmed = await confirmWhatsappFollows();
+      if (confirmed) {
+        setBrought(confirmed.follows);
+        setOutcome("merged");
+      } else {
+        // The tap happened, but nothing came back recorded: say so plainly,
+        // never claim a merge that has no record (AGENTS.md §9).
+        setBrought([]);
+        setOutcome("failed");
+      }
+      setStep("done");
+    });
   }
 
   function skipBring() {
-    setMerged(false);
+    setBrought([]);
+    setOutcome("skipped");
     setStep("done");
   }
 
-  const followed = buildFollowedList(projectPage, waProjects, merged);
+  const followed = buildFollowedList(projectPage, brought);
+  const waNames = waPreview ? waPreview.follows.map((f) => f.name) : [];
 
   return (
     <section aria-labelledby="flow-h" className="flex min-w-0 flex-1 basis-[30rem] flex-col pt-2">
@@ -167,6 +199,7 @@ export function SignInFlow({
           }}
           otpError={otpError}
           onVerify={verify}
+          pending={isPending}
           resendSecondsLeft={resendSecondsLeft}
           onResend={resend}
           onSwitchChannel={switchChannel}
@@ -174,22 +207,24 @@ export function SignInFlow({
         />
       ) : null}
 
-      {step === "bring" ? (
+      {step === "bring" && waPreview ? (
         <BringStep
           maskedPhone={maskedPhone}
           projectName={projectName}
-          waFollows={waFollows}
+          preview={waPreview}
           alsoChecked={alsoChecked}
           onToggleAlso={() => setAlsoChecked((v) => !v)}
           onBring={bring}
           onSkip={skipBring}
+          pending={isPending}
         />
       ) : null}
 
       {step === "done" ? (
         <DoneStep
-          merged={merged}
+          outcome={outcome}
           followed={followed}
+          waNames={waNames}
           maskedPhone={maskedPhone}
           alsoChecked={alsoChecked}
           projectName={projectName}

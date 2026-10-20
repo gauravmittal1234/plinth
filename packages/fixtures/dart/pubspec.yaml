@@ -37,6 +37,7 @@ flutter:
     - assets/expected/flags/
     - assets/expected/follow/
     - assets/expected/following_feed/
+    - assets/expected/link_whatsapp_follows/
     - assets/expected/mark_following_seen/
     - assets/expected/methodology/
     - assets/expected/payee_check/
