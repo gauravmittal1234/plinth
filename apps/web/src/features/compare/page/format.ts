@@ -1,5 +1,7 @@
 // The house date format (AGENTS.md §5, DESIGN §2.7): "18 Oct 2026". Formats
 // an existing ISO date from the payload; it never invents one.
+import { COPY } from "./copy";
+
 const FORMATTER = new Intl.DateTimeFormat("en-IN", {
   day: "numeric",
   month: "short",
@@ -14,5 +16,5 @@ export function formatDate(iso: string): string {
 
 /** A row cell: the server's text, or the house line for a blank one (AGENTS.md §5, never a guess). */
 export function cellText(cell: string | null): string {
-  return cell ?? "Not in our records yet";
+  return cell ?? COPY.blankCell;
 }

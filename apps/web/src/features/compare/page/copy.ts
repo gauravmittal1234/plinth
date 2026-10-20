@@ -6,6 +6,7 @@ export const COPY = {
   heading: (count: number) => `How do these ${count} compare?`,
   intro: (dataAsOf: string) =>
     `Your shortlist · facts side by side, each with its source and date · data as of ${dataAsOf}`,
+  introNoDate: "Your shortlist · facts side by side, each with its source and date",
   disclaimerPrefix: "Delivery risk is ",
   noPaidPlacement: "No paid placement.",
   illustrativeImage: "Illustrative image",

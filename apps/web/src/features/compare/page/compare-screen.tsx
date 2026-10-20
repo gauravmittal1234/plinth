@@ -26,7 +26,7 @@ export async function CompareScreen({ slugs }: { slugs: readonly Slug[] }) {
   }
 
   const { data, aiAskOn } = load;
-  const dataAsOf = formatDate(data.meta?.data_as_of ?? "");
+  const dataAsOf = data.meta ? formatDate(data.meta.data_as_of) : null;
 
   return (
     <div className="mx-auto flex max-w-[79rem] flex-col gap-8 px-4 py-10 sm:px-8">
@@ -35,7 +35,9 @@ export async function CompareScreen({ slugs }: { slugs: readonly Slug[] }) {
           {COPY.heading(data.columns.length)}
         </h1>
         <p className="m-0 text-lead text-ink2">{data.columns.map((c) => c.name).join(" vs ")}</p>
-        <p className="m-0 text-body text-ink2">{COPY.intro(dataAsOf)}</p>
+        <p className="m-0 text-body text-ink2">
+          {dataAsOf ? COPY.intro(dataAsOf) : COPY.introNoDate}
+        </p>
       </header>
 
       <CompareBoard initialSlugs={load.slugs} initialData={data} aiAskOn={aiAskOn} />
