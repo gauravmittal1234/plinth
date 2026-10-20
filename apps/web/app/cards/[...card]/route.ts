@@ -42,7 +42,7 @@ export async function GET(
         // Re-read the phase's RiskSummary for its share.source_line/caption
         // footer text (ShareCard itself carries no promise or disclaimer line).
         const risk = await riskSummary(shared.phase.slug);
-        return await renderChangedCard(shared, risk);
+        return await renderChangedCard(shared, risk, key);
       }
       default:
         return NOT_FOUND;

@@ -5,6 +5,7 @@
 // RiskSummary of the same phase, read for its footer only.
 import type { BandCode, RiskSummary, ShareCard } from "@plinth/contracts";
 import { ImageResponse } from "next/og";
+import { absoluteUrl } from "@/src/seo/site";
 import { bandTone, ink } from "./colors";
 import { cardFonts } from "./fonts";
 import { Meter } from "./meter";
@@ -20,6 +21,8 @@ function headlineColor(code: BandCode | null): string {
 export async function renderChangedCard(
   card: ShareCard,
   risk: RiskSummary,
+  /** The ShareCard's own code (not one of its own fields): /c/<code> is this card's page. */
+  code: string,
 ): Promise<ImageResponse> {
   const fonts = await cardFonts();
   const { phase, now, headline_line, changes } = card;
@@ -89,7 +92,7 @@ export async function renderChangedCard(
 
         <SignatureFooter
           lines={[risk.share.source_line, risk.share.caption]}
-          qrTarget={now.card_url ?? card.live_url}
+          qrTarget={absoluteUrl(`/c/${code}`)}
           qrLabel="Live card"
         />
       </div>

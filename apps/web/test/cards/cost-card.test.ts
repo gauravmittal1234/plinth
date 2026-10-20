@@ -21,6 +21,6 @@ describe("renderCostCard", () => {
     expect(pngDimensions(png)).toEqual(COST_CARD_SIZE);
 
     const hash = perceptualHash(png);
-    expect(hammingDistance(hash, "3fff3f6060ffff1e")).toBeLessThanOrEqual(HASH_TOLERANCE);
+    expect(hammingDistance(hash, "1fff3f6060ffff1e")).toBeLessThanOrEqual(HASH_TOLERANCE);
   });
 });

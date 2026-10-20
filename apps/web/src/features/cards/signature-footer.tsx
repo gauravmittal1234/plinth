@@ -7,8 +7,18 @@
 // `lines` is text the caller already pulled from a server or fixture payload
 // (RiskSummary.share, ProjectPage.meta, CostBreakdown's own lines) — this
 // component only lays it out, never writes it.
+//
+// No QR yet (lead review of #47): a QR-shaped grid that doesn't scan looks
+// real but does nothing, which the "no confirmation without a record" rule
+// doesn't allow. Until the founder approves a QR dependency (package.json is
+// frozen past T00), the right-hand slot shows the live link itself as plain
+// text — still a genuine, working way to reach the card's live page.
 import { ink } from "./colors";
-import { QrMark } from "./qr";
+
+/** `qrTarget` without its protocol, e.g. "https://plinth.in/r/AH2" → "plinth.in/r/AH2". */
+function displayUrl(url: string): string {
+  return url.replace(/^https?:\/\//, "");
+}
 
 export function SignatureFooter({
   lines,
@@ -47,9 +57,28 @@ export function SignatureFooter({
           </div>
         ))}
       </div>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-        <QrMark target={qrTarget} />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          gap: 4,
+          maxWidth: 220,
+        }}
+      >
         <div style={{ fontFamily: "Mukta", fontWeight: 600, fontSize: 13, color: ink.ink2 }}>{qrLabel}</div>
+        <div
+          style={{
+            fontFamily: "Mukta",
+            fontWeight: 400,
+            fontSize: 13,
+            color: ink.ink,
+            textAlign: "right",
+            wordBreak: "break-all",
+          }}
+        >
+          {displayUrl(qrTarget)}
+        </div>
       </div>
     </div>
   );
