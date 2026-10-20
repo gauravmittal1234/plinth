@@ -117,6 +117,25 @@ export interface TaskResult {
 
 const DEFAULT_TIMEOUT_MS = 25_000;
 
+interface FileDefaults {
+  prompts: PromptSource;
+  schemas: SchemaSource;
+  recorded: RecordedStore;
+  manifest: ManifestLoader;
+}
+let defaults: FileDefaults | null = null;
+
+/** The file-backed sources, made once per isolate so their caches last across calls. */
+function fileDefaults(): FileDefaults {
+  defaults ??= {
+    prompts: filePromptSource(),
+    schemas: schemaSource(),
+    recorded: fileRecordedStore(),
+    manifest: fileManifestLoader(),
+  };
+  return defaults;
+}
+
 /** Strips PII from the document parts of a normalised input with one stripper (stable tokens). */
 function stripInput(input: NormalisedInput, stripper: PiiStripper): NormalisedInput {
   const out: NormalisedInput = { ...input };
@@ -216,29 +235,35 @@ export async function runTask(
     status: GenerationRecord["status"],
     errorCode: GenerationRecord["error_code"],
     output: unknown,
+    detail?: string,
   ): Promise<boolean> => {
     written = true;
     const cost = env.mode === "live"
       ? costInr(env.tier, model, tokensIn, tokensOut, ctx.pricing)
       : 0;
-    return logGeneration(ctx.rpc, {
-      task: task?.key ?? taskKey,
-      prompt_version: promptVersion,
-      model,
-      mode: env.mode,
-      tier: env.tier,
-      status,
-      error_code: errorCode,
-      input_sha256: sha,
-      source_sha256: source,
-      output: output === undefined || !env.hashSalt ? null : redactOutput(output, env.hashSalt),
-      tokens_in: tokensIn,
-      tokens_out: tokensOut,
-      cost_inr: cost ?? 0,
-      latency_ms: Math.max(0, clock.now().getTime() - started),
-      model_calls: modelCalls,
-      request_id: ctx.requestId ?? null,
-    }, log);
+    return logGeneration(
+      ctx.rpc,
+      {
+        task: task?.key ?? taskKey,
+        prompt_version: promptVersion,
+        model,
+        mode: env.mode,
+        tier: env.tier,
+        status,
+        error_code: errorCode,
+        input_sha256: sha,
+        source_sha256: source,
+        output: output === undefined || !env.hashSalt ? null : redactOutput(output, env.hashSalt),
+        tokens_in: tokensIn,
+        tokens_out: tokensOut,
+        cost_inr: cost,
+        latency_ms: Math.max(0, clock.now().getTime() - started),
+        model_calls: modelCalls,
+        request_id: ctx.requestId ?? null,
+      },
+      log,
+      detail,
+    );
   };
 
   try {
@@ -265,12 +290,12 @@ export async function runTask(
     source = normalised.source_sha256;
     sha = input_sha256;
 
-    const schema = await (ctx.schemas ?? schemaSource()).forTask(task);
-    const prompt = await (ctx.prompts ?? filePromptSource()).get(task.id, promptVersion);
+    const schema = await (ctx.schemas ?? fileDefaults().schemas).forTask(task);
+    const prompt = await (ctx.prompts ?? fileDefaults().prompts).get(task.id, promptVersion);
 
     let outcome: Attempted<RawAttempt>;
     if (env.mode === "recorded") {
-      const rec = await (ctx.recorded ?? fileRecordedStore()).get(recordedDirFor(task), sha);
+      const rec = await (ctx.recorded ?? fileDefaults().recorded).get(recordedDirFor(task), sha);
       if (!rec) {
         throw new AiError(
           "recorded_miss",
@@ -302,7 +327,7 @@ export async function runTask(
       model = modelFor(task, reader);
       if (!model) throw new AiError("model_unpinned", `AI task ${task.key} has no pinned model_id`);
       if (env.tier === "free") {
-        const allowed = await (ctx.manifest ?? fileManifestLoader())();
+        const allowed = await (ctx.manifest ?? fileDefaults().manifest)();
         const media = normalised.media?.sha256;
         if (!allowed.has(normalised.source_sha256) || (media && !allowed.has(media))) {
           throw new AiError(
@@ -344,9 +369,10 @@ export async function runTask(
     if (!outcome.ok) {
       const last = outcome.attempts.at(-1);
       await write(
-        "error",
+        statusOf(outcome.error),
         outcome.error.aiCode,
         last ? { rejected: last.output ?? last.text } : undefined,
+        outcome.error.detail,
       );
       throw outcome.error;
     }
@@ -373,13 +399,16 @@ export async function runTask(
       logged,
     };
   } catch (err) {
-    const code = err instanceof AiError ? err.aiCode : null;
     if (!written) {
-      await write(err instanceof AiError && err.refused ? "refused" : "error", code, undefined);
+      if (err instanceof AiError) await write(statusOf(err), err.aiCode, undefined, err.detail);
+      else await write("error", null, undefined, err instanceof Error ? err.name : "unknown");
     }
-    if (err instanceof AiError) log.warn("ai task not answered", { code, detail: err.detail });
     throw err;
   }
+}
+
+function statusOf(err: AiError): GenerationRecord["status"] {
+  return err.refused ? "refused" : "error";
 }
 
 /** Runs every reader of a two-reader task on the same input, in parallel. */

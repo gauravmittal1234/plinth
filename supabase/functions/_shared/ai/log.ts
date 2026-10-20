@@ -33,7 +33,8 @@ export interface GenerationRecord {
   output: unknown;
   tokens_in: number;
   tokens_out: number;
-  cost_inr: number;
+  /** 0 on the free tier and in recorded mode; null on the paid tier without a price. */
+  cost_inr: number | null;
   latency_ms: number;
   /** Model calls made: 0 (refused before a call, or recorded), 1, or 2 (one retry). */
   model_calls: number;
@@ -81,13 +82,18 @@ export function logArgs(r: GenerationRecord): Record<string, unknown> {
   };
 }
 
-/** Writes the row and one JSON log line (no output, no input). Never throws. */
+/**
+ * Writes the row and one JSON log line (no output, no input; `detail` is the AiError's log-safe
+ * detail, kept out of the row). Never throws.
+ */
 export async function logGeneration(
   rpc: RpcClient,
   record: GenerationRecord,
   log: Logger,
+  detail?: string,
 ): Promise<boolean> {
   const line = {
+    ...(detail ? { detail } : {}),
     task: record.task,
     prompt_version: record.prompt_version,
     model: record.model,

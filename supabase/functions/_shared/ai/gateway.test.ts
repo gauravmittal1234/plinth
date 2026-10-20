@@ -259,7 +259,10 @@ Deno.test("budget: refused at 100% of the call cap, warned at 80%, refused when 
   );
   assertEquals([e.aiCode, e.code], ["budget_exhausted", "flag_off"]);
   assertEquals(full.http.calls.length, 0);
-  assertEquals(logCalls(full.rpc)[0]!.p_error_code, "budget_exhausted");
+  assertEquals(
+    [logCalls(full.rpc)[0]!.p_status, logCalls(full.rpc)[0]!.p_error_code],
+    ["refused", "budget_exhausted"],
+  );
   assert(full.logs.find("ai budget exhausted; kill switch"));
 
   const inr = testCtx({
