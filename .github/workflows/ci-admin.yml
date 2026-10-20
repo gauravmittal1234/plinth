@@ -1,0 +1,65 @@
+# ci-admin (owner: T54). This task's brief: "npm run -w @plinth/admin build test."
+# Fixture mode only: no accounts, no secrets, no network data (AGENTS.md "Fixture
+# mode must work without Supabase"). Mirrors ci-web.yml's shape, without the
+# Playwright/Lighthouse steps this app doesn't have yet.
+name: ci-admin
+
+on:
+  pull_request:
+    paths:
+      - "apps/admin/**"
+      - "packages/config/**"
+      - "packages/tokens/**"
+      - "packages/contracts/**"
+      - "packages/web-ui/**"
+      - "package.json"
+      - "package-lock.json"
+      - "turbo.json"
+      - ".nvmrc"
+      - ".github/workflows/ci-admin.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/admin/**"
+      - "packages/config/**"
+      - "packages/tokens/**"
+      - "packages/contracts/**"
+      - "packages/web-ui/**"
+      - "package.json"
+      - "package-lock.json"
+      - "turbo.json"
+      - ".nvmrc"
+      - ".github/workflows/ci-admin.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-admin-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  admin:
+    name: admin (lint, typecheck, test, build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PLINTH_DATA: fixtures
+      NEXT_TELEMETRY_DISABLED: "1"
+      TURBO_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+
+      - name: Lint (ESLint incl. copy lint)
+        run: npm run -w @plinth/admin lint
+      - run: npm run -w @plinth/admin typecheck
+      - name: Vitest
+        run: npm run -w @plinth/admin test
+      - name: Build (fixture mode)
+        run: npm run -w @plinth/admin build
