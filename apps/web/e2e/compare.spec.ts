@@ -36,6 +36,9 @@ test.describe("WebCompare", () => {
     const coralPending = page.locator('[data-compare-cell="pending-coral-towers"]');
     await expect(coralPending).toContainText("progress 187 days old", { timeout: 5000 });
 
+    // The board's router.replace lands a tick after the re-render that the
+    // assertion above already waited for, so wait for the URL itself too.
+    await page.waitForURL((url) => url.searchParams.get("p")?.includes("coral-towers") ?? false);
     const url = new URL(page.url());
     expect(url.pathname).toBe("/compare");
     expect(url.searchParams.get("p")?.split(",")).toEqual([
@@ -68,6 +71,7 @@ test.describe("WebCompare", () => {
     await expect(page.locator('[data-compare-column="coral-towers"]')).toHaveCount(0, {
       timeout: 5000,
     });
+    await page.waitForURL((url) => !(url.searchParams.get("p")?.includes("coral-towers") ?? true));
     const url = new URL(page.url());
     expect(url.searchParams.get("p")?.split(",")).toEqual([
       "aurelia-heights-phase-2",
