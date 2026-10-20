@@ -1,6 +1,6 @@
 # OWNERSHIP: path → task
 
-Source: [docs/engineering/WORK_BREAKDOWN.md](docs/engineering/WORK_BREAKDOWN.md) §4 and §5 (M0–M2). One task owns a path at a time; two parallel agents never edit the same file (BUILD_PLAN §1 rule 6).
+Source: [docs/engineering/WORK_BREAKDOWN.md](docs/engineering/WORK_BREAKDOWN.md) §4 and §5 (M0–M3). One task owns a path at a time; two parallel agents never edit the same file (BUILD_PLAN §1 rule 6).
 
 How to read this table:
 
@@ -8,7 +8,7 @@ How to read this table:
 - A path can match several rows. A broad row (for example `apps/web/**` → T05) gives the skeleton task the right to create **stubs**; the narrower row names the task that owns and fills it afterwards. Handovers are sequential, never parallel.
 - `lead` means the lead (integrator) only. **Frozen** files change only through the lead's small integrator PR.
 - `ci-guard` runs `scripts/ci/check-ownership.mjs`, which parses this table and **warns** (it does not fail) when a PR on `task/Txx-…` touches paths outside Txx's rows. Keep the first column as backticked globs (`**`, `*`, `{a,b}`) and the second as task ids.
-- M3+ tasks get rows when each milestone is broken down.
+- M4+ tasks get rows when each milestone is broken down.
 
 ## Frozen after T00 (integrator PRs only)
 
@@ -30,7 +30,7 @@ How to read this table:
 | `product/design/artboards/**` | T00, lead | Copy-in only; the lead re-syncs from the canvas |
 | `supabase/config.toml` | T00, T41, lead | T41 owns the `[auth]` sections, then the lead |
 | `supabase/migrations/.gitkeep`, `supabase/tests/.gitkeep`, `supabase/functions/.gitkeep`, `supabase/seed/.gitkeep` | T00 | Placeholders |
-| `evals/**` | lead | Assigned per task from M3 |
+| `evals/**` | lead | Per set from M3: see the M3 rows (T63 `lib/`, T69, T70) |
 
 ## Wave 1 (M0)
 
@@ -127,6 +127,65 @@ How to read this table:
 |---|---|---|
 | `apps/web/e2e/gates/m2.spec.ts`, `apps/mobile/test/gates/m2_test.dart`, `supabase/tests/gates/m2.sql` | T59 | |
 
+## Wave 6 (M3)
+
+| Path | Owner | Notes |
+|---|---|---|
+| `supabase/migrations/20261201*`, `supabase/tests/checks/**` | T60 | Migration names include `m3_checks`. ALTERs T53's `app.uploads`; never a second CREATE |
+| `packages/contracts/**` | T02, T61 | T61 owns every M3 schema and catalogue change, after the M2 contract PRs merge; T68–T77 send Handoffs |
+| `packages/fixtures/canonical/checks.json`, `packages/fixtures/expected/doc_check/**` | T03b, T62 | T03b authored them; T62 adds the M3 keys |
+| `packages/fixtures/expected/{my_checks,doc_check_card,booking,receipt,upload,review_queue}/**`, `packages/fixtures/expected/flags/**` | T62 | `flags` handed over from T03 to turn `ai_doc_check` on in the fixture world |
+| `packages/fixtures/src/author/checks_m3.mjs`, `packages/fixtures/seedmap/checks.mjs`, `packages/fixtures/media/docs/**`, `packages/fixtures/scripts/make-docs.mjs`, `packages/fixtures/recorded/wa/m3-*.json` | T62 | Plus its registration lines in `src/author/build.mjs` (T03 → T62, those lines only) and the regenerated `supabase/seed/**` and `packages/fixtures/dart/**` |
+| `supabase/functions/_shared/ai/**`, `evals/lib/**`, `evals/README.md`, `evals/deno.json`, `packages/fixtures/recorded/ai/README.md`, `.github/workflows/ci-evals.yml` | T63 | Except the prompt folders below (T69, T70) |
+| `packages/calc/**` | T64 | TS preview ports; the Dart port is T86's |
+| `apps/web/src/data/**`, `apps/web/test/data/**` | T16, T65 | T65 adds the M3 functions (sequential handover) |
+| `apps/mobile/lib/data/**`, `apps/mobile/test/data/**` | T17, T66 | T66 adds the M3 repositories (after T48 if it still edits `lib/data`) |
+| `apps/web/src/features/cards/{claims-card,payee-card,stage-card}.tsx`, `apps/web/test/cards/checks/**` | T67 | |
+| `apps/web/src/features/cards/cost-card.tsx`, `apps/web/app/cards/[...card]/route.ts` | T27, T67 | T67: the cost card aligned to WaCost and the card-kind registry lines only |
+
+## Wave 7 (M3)
+
+| Path | Owner | Notes |
+|---|---|---|
+| `supabase/migrations/20261202*`, `supabase/tests/checks_api/**` | T68 | Migration names include `m3_rules` (the seed's decide call waits for it) |
+| `supabase/functions/_shared/ai/prompts/{ocr.document,classify.document,extract.marketing_claims}/**`, `packages/fixtures/recorded/ai/{ocr.document,classify.document,extract.marketing_claims}/**`, `evals/claims/**`, `evals/extraction/{ocr.document,classify.document}/**` | T69 | |
+| `supabase/functions/_shared/ai/prompts/{extract.cost_sheet,extract.demand_letter,extract.payment_request}/**`, `packages/fixtures/recorded/ai/{extract.cost_sheet,extract.demand_letter,extract.payment_request}/**`, `evals/extraction/{extract.cost_sheet,extract.demand_letter,extract.payment_request}/**` | T70 | |
+| `apps/web/src/features/checks/shared/**`, `apps/web/test/checks/shared/**` | T71 | |
+| `apps/mobile/lib/features/checks/shared/**`, `apps/mobile/test/features/checks/shared/**` | T72 | |
+| `apps/mobile/android/app/src/main/AndroidManifest.xml`, `apps/mobile/lib/app/app.dart` | T06, T72 | T72: the share `SEND` intent filters and the share-intake mount only |
+| `supabase/migrations/20261203*`, `supabase/tests/rules_claims/**` | T73 | |
+| `supabase/migrations/20261204*`, `supabase/tests/rules_cost/**` | T74 | Ships cost rules v2026.10 as a migration |
+| `supabase/migrations/20261205*`, `supabase/tests/rules_money/**` | T75 | |
+
+## Wave 8 and 8b (M3)
+
+| Path | Owner | Notes |
+|---|---|---|
+| `supabase/functions/doc-check/**` | T76 | |
+| `supabase/migrations/20261206*`, `supabase/tests/review/**` | T77 | |
+| `apps/web/app/(public)/check/claims/**`, `apps/web/src/features/checks/claims/**`, `apps/web/test/checks/claims/**`, `apps/web/e2e/checks-claims.spec.ts` | T78 | |
+| `apps/web/app/(public)/check/cost-sheet/**`, `apps/web/src/features/checks/cost-sheet/**`, `apps/web/test/checks/cost-sheet/**`, `apps/web/e2e/checks-cost-sheet.spec.ts` | T79 | |
+| `apps/web/app/(public)/check/pay-as-built/**`, `apps/web/src/features/checks/pay-as-built/**`, `apps/web/test/checks/pay-as-built/**`, `apps/web/e2e/checks-pay-as-built.spec.ts` | T80 | |
+| `apps/web/app/(public)/check/before-you-pay/**`, `apps/web/src/features/checks/before-you-pay/**`, `apps/web/test/checks/before-you-pay/**`, `apps/web/e2e/checks-before-you-pay.spec.ts` | T81 | |
+| `apps/web/src/features/project/sections/{cost,wait}/**` | T20a, T20b, T82 | T82 makes the inputs live and adds "Your checks" inside the cost section |
+| `apps/web/e2e/project-money.spec.ts` | T82 | |
+| `apps/mobile/lib/features/checks/claims/**`, `apps/mobile/test/features/checks/claims/**` | T83 | |
+| `apps/mobile/lib/features/checks/cost_sheet/**`, `apps/mobile/test/features/checks/cost_sheet/**` | T84 | |
+| `apps/mobile/lib/features/checks/{pay_as_built,before_pay}/**`, `apps/mobile/test/features/checks/{pay_as_built,before_pay}/**` | T85 | |
+| `apps/mobile/lib/features/project/sections/{pay_section,wait_section}.dart` | T31a, T86 | T86 makes the inputs live |
+| `apps/mobile/lib/core/calc/**`, `apps/mobile/test/core/calc/**`, `apps/mobile/test/features/project/money/**` | T86 | The Dart preview port of `@plinth/calc` |
+| `apps/admin/app/(admin)/queue/**`, `apps/admin/src/features/queue/**`, `apps/admin/test/queue/**` | T54, T87 | T54 stubbed the queue page; T87 fills it |
+| `supabase/functions/wa-webhook/{index.ts,router.ts}` | T44, T88 | T88 adds the M3 router rules and the `check_ready` route |
+| `supabase/functions/wa-webhook/handlers/doc_intake*`, `supabase/functions/_shared/wa/media*`, `supabase/functions/_shared/wa/templates/check_updated*` | T88 | |
+| `supabase/functions/wa-webhook/handlers/{claims,cost}*` | T88, T89 | T88 stubs, T89 fills (with tests) |
+| `supabase/functions/wa-webhook/handlers/before_pay*` | T88, T90 | T88 stubs, T90 fills (with tests) |
+
+## Gate M3
+
+| Path | Owner | Notes |
+|---|---|---|
+| `apps/web/e2e/gates/m3.spec.ts`, `apps/mobile/test/gates/m3_test.dart`, `supabase/tests/gates/m3.sql`, `supabase/functions/_gates/**` | T99 | Lead. T91–T98 are free for gate follow-ups; M4 starts at T100 |
+
 ## Migration prefixes
 
 | Prefix | Task | Prefix | Task |
@@ -137,7 +196,10 @@ How to read this table:
 | 20261103 | lead | 20261122 | T43b |
 | 20261110 | T40 | 20261125 | T53 |
 | 20261111 | T41 | 20261126 | T54 |
-| 20261112 | T42 | ≥ 20261201 | M3+ (assigned per task) |
-| 20261113 | T43a | | |
+| 20261112 | T42 | 20261201 | T60 |
+| 20261113 | T43a | 20261202 | T68 |
+| 20261203 | T73 | 20261204 | T74 |
+| 20261205 | T75 | 20261206 | T77 |
+| ≥ 20261207 | M4+ (assigned per task) | | |
 
 File names are `<prefix>HHMMSS_<task>_<what>.sql`. Never edit a merged migration; add a new one in your range.
