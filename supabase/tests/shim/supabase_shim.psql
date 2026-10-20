@@ -49,11 +49,35 @@ create table auth.users (
   email varchar(255),
   phone text,
   phone_confirmed_at timestamptz,
+  -- The string columns Supabase Auth reads into Go strings (none may be NULL on a row it loads;
+  -- the M2 gate checks the seed). Same defaults as Supabase's own schema: none on the first five.
+  encrypted_password varchar(255),
+  confirmation_token varchar(255),
+  recovery_token varchar(255),
+  email_change_token_new varchar(255),
+  email_change varchar(255),
+  email_change_token_current varchar(255) default '',
+  phone_change text default '',
+  phone_change_token varchar(255) default '',
+  reauthentication_token varchar(255) default '',
   raw_app_meta_data jsonb default '{}'::jsonb,
   raw_user_meta_data jsonb default '{}'::jsonb,
   is_anonymous boolean not null default false,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
+);
+
+-- A sign-in method of a user (Supabase Auth's schema, without the generated email column).
+create table auth.identities (
+  provider_id text not null,
+  user_id uuid not null references auth.users (id) on delete cascade,
+  identity_data jsonb not null,
+  provider text not null,
+  last_sign_in_at timestamptz,
+  created_at timestamptz,
+  updated_at timestamptz,
+  id uuid primary key default gen_random_uuid(),
+  constraint identities_provider_id_provider_unique unique (provider_id, provider)
 );
 
 create function auth.jwt() returns jsonb language sql stable as $$

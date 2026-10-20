@@ -27,7 +27,7 @@ function CorridorPanel({ group, whenLine }: { group: CorridorGroup; whenLine: st
   if (group.items.length === 0) {
     return (
       <div className="flex min-h-[22.5rem] flex-col items-start justify-center gap-4 rounded-panel bg-track p-9">
-        <h3 className="m-0 font-display text-h3 font-extrabold tracking-[-0.025em]">
+        <h3 className="m-0 font-sans text-h3 font-bold tracking-[-0.025em]">
           {group.name} is planned{whenLine ? ` ${whenLine.replace(/^Planned /, "")}` : ""}
         </h3>
         <p className="m-0 max-w-[36ch] text-body">
@@ -70,7 +70,7 @@ function CorridorPanel({ group, whenLine }: { group: CorridorGroup; whenLine: st
               <span className="flex min-w-0 flex-col gap-2">
                 <span className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
                   <span className="flex min-w-0 flex-col">
-                    <strong className="font-display text-[1.625rem] leading-[1.15] font-extrabold tracking-[-0.02em]">
+                    <strong className="font-display text-[1.625rem] leading-[1.15] font-bold tracking-[-0.02em]">
                       {p.name}
                     </strong>
                     <span className="text-small text-ink2">
@@ -119,7 +119,7 @@ export function ExploreSection({
         <div className="flex min-w-0 flex-1 basis-[26rem] flex-col gap-6">
           <h2
             id="explore-h"
-            className="m-0 max-w-[18ch] font-display text-question font-extrabold tracking-[-0.03em]"
+            className="m-0 max-w-[18ch] font-display text-question font-bold tracking-[-0.03em]"
           >
             Which projects are on track?
           </h2>
@@ -143,7 +143,7 @@ export function ExploreSection({
                   defaultChecked={c.key === firstWithItems.key}
                   className="sr-only"
                 />
-                <span className="font-display text-[1.375rem] font-extrabold tracking-[-0.015em]">
+                <span className="font-display text-[1.375rem] font-bold tracking-[-0.015em]">
                   {c.tabLabel}
                 </span>
                 <span className="text-small text-ink2">{c.items.length || "—"}</span>

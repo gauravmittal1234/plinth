@@ -6,7 +6,7 @@ export function FactorsSection({ methodology }: { methodology: Methodology }) {
   return (
     <section aria-labelledby="factors-h" className="bg-bg py-18 text-ink md:py-30">
       <div className="mx-auto flex w-full max-w-[79rem] flex-col gap-6 px-4 sm:px-8">
-        <h2 id="factors-h" className="m-0 font-display text-h2 font-extrabold">
+        <h2 id="factors-h" className="m-0 font-display text-section font-bold">
           What is in the score?
         </h2>
         {methodology.how_line ? (
@@ -21,7 +21,7 @@ export function FactorsSection({ methodology }: { methodology: Methodology }) {
               className="flex items-center justify-between gap-6 rounded-panel bg-track px-6 py-4"
             >
               <span className="font-semibold">{factor.label}</span>
-              <span className="font-display text-h4 font-extrabold" aria-hidden="true">
+              <span className="font-display text-h4 font-bold" aria-hidden="true">
                 {factor.weight_pct}%
               </span>
               <span className="sr-only">{factor.weight_pct}% of the score</span>

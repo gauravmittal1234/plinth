@@ -28,7 +28,7 @@ export function ReplySection({ name, reply }: { name: string; reply: DeveloperPa
   return (
     <SectionBand id="reply" tone="track">
       <div className="flex flex-col gap-6">
-        <h2 className="m-0 max-w-[20ch] text-balance font-display text-h2 font-extrabold">
+        <h2 className="m-0 max-w-[20ch] text-balance font-display text-section font-bold">
           {REPLY_COPY.heading(name)}
         </h2>
 

@@ -25,9 +25,14 @@
 // after the call), so a mutation fixture (consent_withdraw) never changes what a later fixture
 // reads. Acknowledgements carry no envelope (API_CONTRACTS §1): ACKNOWLEDGEMENTS names their type.
 //
+// A request's `rpc` names the function when it differs from the folder (alert_prefs answers
+// api.alert_prefs_get, payee_check api.before_you_pay_check).
+//
 // Skipped on purpose:
 //   - keys ending in `--facts-only`, and any request carrying a `state`: design states that are
 //     not seeded (packages/fixtures CONFLICTS C-23, INTEGRATION_NOTES);
+//   - requests marked `"seeded": false`: fixture-mode answers the §5b seed cannot reach
+//     (link_whatsapp_follows: Rohan's WhatsApp contact is already linked);
 //   - functions whose api.<fn> does not exist yet (later tasks), unless named in --only.
 //
 // Seed top-up: ws.developer_claims and ws.developer_replies (T12's tables) are seeded by
@@ -111,7 +116,17 @@ function plan(fn) {
   return keys.map((key) => {
     const req = requests[key] ?? {};
     const designState = key.endsWith("--facts-only") || "state" in req;
-    return { fn, key, req, designState, expected: readJson(join(EXPECTED, fn, `${key}.json`)) };
+    // `rpc` names the function when it differs from the folder (alert_prefs → alert_prefs_get).
+    const rpc = typeof req.rpc === "string" ? req.rpc : fn;
+    return {
+      fn,
+      rpc,
+      key,
+      req,
+      designState,
+      unseeded: req.seeded === false,
+      expected: readJson(join(EXPECTED, fn, `${key}.json`)),
+    };
   });
 }
 
@@ -205,7 +220,7 @@ function runSql(cases, topUps) {
     block.push("  begin");
     block.push(`    execute 'set local role ${userId ? "authenticated" : "anon"}';`);
     block.push(`    perform pg_catalog.set_config('request.jwt.claims', ${lit(claims)}, true);`);
-    block.push(`    execute ${lit(callSql(c.fn, c.req))} into v_out;`);
+    block.push(`    execute ${lit(callSql(c.rpc, c.req))} into v_out;`);
     // Undo this call's writes, role and claims: the raise rolls the block back; v_out survives.
     block.push("    raise exception using errcode = 'P0001', message = '__contract_rollback__';");
     block.push("  exception when others then");
@@ -377,15 +392,22 @@ async function main() {
   const cases = [];
   const skipped = [];
   for (const fn of fns) {
-    if (!fnsInDb.has(fn)) {
+    const planned = plan(fn);
+    const rpcs = [...new Set(planned.map((c) => c.rpc))];
+    if (rpcs.length === 0) rpcs.push(fn);
+    if (!rpcs.some((rpc) => fnsInDb.has(rpc))) {
       if (opt.only) {
-        console.log(`FAIL api.${fn} does not exist in this database`);
+        console.log(`FAIL api.${rpcs.join(", api.")} does not exist in this database`);
         failures += 1;
-      } else skipped.push(`${fn} (api.${fn} not in this database yet)`);
+      } else skipped.push(`${fn} (api.${rpcs.join(", api.")} not in this database yet)`);
       continue;
     }
-    for (const c of plan(fn)) {
+    for (const c of planned) {
       if (c.designState) skipped.push(`${fn}/${c.key} (design state, not seeded: CONFLICTS C-23)`);
+      else if (c.unseeded)
+        skipped.push(`${fn}/${c.key} (not reachable from the seed: seeded false)`);
+      else if (!fnsInDb.has(c.rpc))
+        skipped.push(`${fn}/${c.key} (api.${c.rpc} not in this database yet)`);
       else cases.push(c);
     }
   }

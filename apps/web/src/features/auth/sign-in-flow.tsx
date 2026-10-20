@@ -9,7 +9,17 @@
 // ./actions.ts) — if that can't answer (no fixture key, or
 // `not_implemented` before T45a builds the real function), there's nothing
 // to bring, so the flow goes straight to Done (lead review of #62).
+//
+// Live mode (`live`, PLINTH_DATA=supabase; M2 gate gap 2): Supabase Auth
+// sends and checks the code (./session.ts), and its session cookies are set
+// on this browser. Nothing says "sent" or "signed in" before Auth answered
+// so (AGENTS.md rule 9). Once signed in, the Bring step runs on the buyer's
+// own session; then the reader goes back to `next` (`nextHref`), where the
+// pages read their own records. The Done step's list is the design
+// prototype's (a "Followed just now" row with no follow record behind it),
+// so live mode never shows it.
 import { Toast } from "@plinth/web-ui";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import type { ProjectPage } from "@/src/data";
 import { confirmWhatsappFollows, previewWhatsappFollows, type WaPreview } from "./actions";
@@ -21,6 +31,7 @@ import { buildFollowedList } from "./data";
 import { DoneStep } from "./done-step";
 import { digitsOnly, isPhoneValid, maskPhone, phoneError as phoneErrorFor } from "./phone";
 import { PhoneStep } from "./phone-step";
+import { sendSignInCode, verifySignInCode } from "./session";
 import type { PhoneChannel, SignInStep } from "./types";
 
 const RESEND_SECONDS = 30;
@@ -30,10 +41,17 @@ type DoneOutcome = "merged" | "failed" | "skipped";
 export function SignInFlow({
   projectPage,
   notNowHref,
+  live = false,
+  nextHref = notNowHref,
 }: {
   projectPage: ProjectPage | null;
   notNowHref: string;
+  /** PLINTH_DATA=supabase: Supabase Auth sends and checks the code. */
+  live?: boolean;
+  /** Where a live sign-in returns to: `next`, already reduced to a same-origin path. */
+  nextHref?: string;
 }) {
+  const router = useRouter();
   const projectName = projectPage?.risk.phase.name ?? null;
 
   const [step, setStep] = useState<SignInStep>("phone");
@@ -73,6 +91,7 @@ export function SignInFlow({
   }
 
   const maskedPhone = maskPhone(countryCode, phoneDigits);
+  const phoneE164 = `${countryCode}${phoneDigits}`;
   const resendSecondsLeft =
     sentAt === null ? 0 : Math.max(0, RESEND_SECONDS - Math.floor((now - sentAt) / 1000));
 
@@ -86,17 +105,39 @@ export function SignInFlow({
     setPhoneError("");
   }
 
+  /** The code step's countdown starts again: a code went out just now. */
+  function codeSent() {
+    setOtp("");
+    setOtpError("");
+    setSentAt(Date.now());
+    setNow(Date.now());
+  }
+
   function sendCode() {
     if (!isPhoneValid(countryCode, phoneDigits)) {
       setPhoneError(phoneErrorFor(countryCode));
       return;
     }
     setPhoneError("");
-    setOtp("");
-    setOtpError("");
-    setSentAt(Date.now());
-    setNow(Date.now());
-    setStep("code");
+    if (!live) {
+      codeSent();
+      setStep("code");
+      return;
+    }
+    startFlowTransition(async () => {
+      const { sent } = await sendSignInCode(phoneE164);
+      if (!sent) {
+        setPhoneError(COPY.sendFailed);
+        return;
+      }
+      codeSent();
+      setStep("code");
+    });
+  }
+
+  /** Live mode, once Auth has set the session: back to `next`. */
+  function returnToNext() {
+    router.replace(nextHref);
   }
 
   function changeNumber() {
@@ -112,10 +153,20 @@ export function SignInFlow({
     }
     setOtpError("");
     startFlowTransition(async () => {
+      if (live) {
+        const { signedIn } = await verifySignInCode(phoneE164, otp);
+        if (!signedIn) {
+          setOtpError(COPY.otpErrNoMatch);
+          return;
+        }
+      }
       const preview = await previewWhatsappFollows();
       if (preview) {
         setWaPreview(preview);
         setStep("bring");
+      } else if (live) {
+        // Signed in, nothing to bring: back to where the reader came from.
+        returnToNext();
       } else {
         // Nothing to bring (or the data can't answer yet): skip the step.
         setOutcome("skipped");
@@ -125,28 +176,55 @@ export function SignInFlow({
     });
   }
 
+  /** Live mode: a new code from Auth; the toast only once Auth said it went out. */
+  function sendAgain(after: () => void) {
+    startFlowTransition(async () => {
+      const { sent } = await sendSignInCode(phoneE164);
+      if (!sent) {
+        say(COPY.sendFailed);
+        return;
+      }
+      codeSent();
+      after();
+    });
+  }
+
   function resend() {
     if (resendSecondsLeft > 0) return;
-    setSentAt(Date.now());
-    setNow(Date.now());
-    setOtp("");
-    setOtpError("");
+    if (live) {
+      sendAgain(() => say(COPY.newCodeSentToast));
+      return;
+    }
+    codeSent();
     say(COPY.newCodeSentToast);
   }
 
   function switchChannel() {
     const next: PhoneChannel = channel === "wa" ? "sms" : "wa";
+    if (live) {
+      // Auth's Send-SMS hook picks the channel (WhatsApp first, then SMS), as for
+      // the app, so the toast says only what is known: a new code went out.
+      sendAgain(() => {
+        setChannel(next);
+        say(COPY.newCodeSentToast);
+      });
+      return;
+    }
     setChannel(next);
-    setSentAt(Date.now());
-    setNow(Date.now());
-    setOtp("");
-    setOtpError("");
+    codeSent();
     say(COPY.channelSwitchedToast(next));
   }
 
   function bring() {
     startFlowTransition(async () => {
       const confirmed = await confirmWhatsappFollows();
+      if (live) {
+        // Recorded: Following now lists them, from the records. Not recorded:
+        // say so and stay, so the reader can try again or choose Not now.
+        if (confirmed) returnToNext();
+        else say(COPY.doneLine("failed"));
+        return;
+      }
       if (confirmed) {
         setBrought(confirmed.follows);
         setOutcome("merged");
@@ -161,6 +239,10 @@ export function SignInFlow({
   }
 
   function skipBring() {
+    if (live) {
+      returnToNext();
+      return;
+    }
     setBrought([]);
     setOutcome("skipped");
     setStep("done");
@@ -183,6 +265,7 @@ export function SignInFlow({
           channel={channel}
           onChannel={setChannel}
           onSend={sendCode}
+          pending={isPending}
           notNowHref={notNowHref}
         />
       ) : null}

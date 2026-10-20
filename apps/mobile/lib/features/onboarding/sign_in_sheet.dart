@@ -1,48 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:plinth_tokens/plinth_tokens.dart';
 
-// Owned by T48 (AppOnboarding: sign in with a phone code). Stub from T06.
-//
-// The router opens this for account pages (`/you/*`) when signed out, and
-// account actions (Follow, alerts) will call it too. Keep the signature:
-// T48 signs the person in, then goes to [next] when it is set.
+import '../../core/widgets/widgets.dart';
+import '../../data/auth.dart';
+import 'onboarding_copy.dart';
+import 'sign_in_flow_controller.dart';
+import 'steps/code_step.dart';
+import 'steps/phone_step.dart';
 
-/// Opens the sign-in sheet. Completes when the sheet closes.
+/// Opens the quick sign-in sheet: the same phone-and-code logic as
+/// AppOnboarding's own Phone/Code steps ([SignInFlowController]), in the
+/// compact chrome a sheet needs. Completes when the sheet closes.
+///
+/// The router opens this for account pages (`/you/*`) when signed out
+/// (`app/account_gate.dart`'s `SignInOnOpen`), and account actions (Follow,
+/// alerts) open it too. Signing in here goes to [next] when it is set,
+/// rather than leaving the buyer on the sign-in sheet's own page.
 Future<void> showSignInSheet(BuildContext context, {String? next}) {
-  return showModalBottomSheet<void>(
+  return showPlinthSheet<void>(
     context: context,
-    isScrollControlled: true,
-    useSafeArea: true,
-    builder: (context) => _SignInSheetPlaceholder(next: next),
+    builder: (sheetContext) => _SignInSheet(
+      onVerified: () {
+        Navigator.of(sheetContext).maybePop();
+        if (next != null && context.mounted) context.go(next);
+      },
+    ),
   );
 }
 
-class _SignInSheetPlaceholder extends StatelessWidget {
-  const _SignInSheetPlaceholder({this.next});
+class _SignInSheet extends ConsumerStatefulWidget {
+  const _SignInSheet({required this.onVerified});
 
-  final String? next;
+  final VoidCallback onVerified;
+
+  @override
+  ConsumerState<_SignInSheet> createState() => _SignInSheetState();
+}
+
+class _SignInSheetState extends ConsumerState<_SignInSheet> {
+  late final SignInFlowController _signIn = SignInFlowController(ref.read(authRepositoryProvider));
+  bool _onCode = false;
+
+  @override
+  void dispose() {
+    _signIn.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final text = Theme.of(context).textTheme;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Sign in with your phone', style: text.headlineMedium),
-          const SizedBox(height: 8),
-          Text('AppOnboarding', style: text.titleMedium),
-          const SizedBox(height: 4),
-          Text('Placeholder. T48 builds the sign-in sheet in M2.', style: text.bodyMedium),
-          if (next != null) ...[const SizedBox(height: 8), Text('Then opens $next', style: text.bodySmall)],
-          const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Close')),
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: PlinthSpace.s16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            PlinthSheetHeader(title: OnboardingCopy.signInSheetTitle),
+            const SizedBox(height: PlinthSpace.s8),
+            _onCode ? CodeStep(signIn: _signIn) : PhoneStep(signIn: _signIn),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: PlinthLayout.gutterApp),
+              child: ListenableBuilder(
+                listenable: _signIn,
+                builder: (context, _) => PlinthButton(
+                  key: const Key('sign-in-sheet-primary'),
+                  expand: true,
+                  label: _onCode
+                      ? OnboardingCopy.verify
+                      : (_signIn.viaWhatsApp ? OnboardingCopy.sendCodeOnWhatsApp : OnboardingCopy.sendCodeBySms),
+                  onPressed: _signIn.busy ? null : _onPrimary,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> _onPrimary() async {
+    if (_onCode) {
+      final ok = await _signIn.verify();
+      if (ok) widget.onVerified();
+      return;
+    }
+    final ok = await _signIn.sendCode();
+    if (ok && mounted) setState(() => _onCode = true);
   }
 }

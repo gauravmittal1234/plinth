@@ -17,6 +17,11 @@ import { SignInFlow } from "@/src/features/auth/sign-in-flow";
 // cached project_page() calls inside src/features/auth/actions.ts run here.
 vi.mock("next/cache", () => ({ cacheTag: vi.fn(), cacheLife: vi.fn() }));
 vi.mock("next/server", () => ({ connection: vi.fn(async () => {}) }));
+const replace = vi.hoisted(() => vi.fn());
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace }) }));
+// Fixture mode never calls Supabase Auth: these must stay untouched.
+const auth = vi.hoisted(() => ({ sendSignInCode: vi.fn(), verifySignInCode: vi.fn() }));
+vi.mock("@/src/features/auth/session", () => auth);
 
 function fakePage(slug: string, name: string): ProjectPage {
   return {
@@ -143,6 +148,17 @@ describe("SignInFlow: bring follows", () => {
     expect(
       screen.getByText("Your WhatsApp follows are here now. The app and WhatsApp show the same list."),
     ).toBeInTheDocument();
+  });
+
+  it("never calls Supabase Auth, and never leaves the page on its own (fixture mode)", async () => {
+    const user = userEvent.setup();
+    renderFlow();
+    await reachBringStep(user);
+    await user.click(screen.getByRole("button", { name: "Bring them here" }));
+    await screen.findByRole("heading", { name: "One account, three places" });
+    expect(auth.sendSignInCode).not.toHaveBeenCalled();
+    expect(auth.verifySignInCode).not.toHaveBeenCalled();
+    expect(replace).not.toHaveBeenCalled();
   });
 
   it('"Not now" keeps only the new project in the Done list, with the honest line', async () => {

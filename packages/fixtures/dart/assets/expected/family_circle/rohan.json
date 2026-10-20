@@ -1,0 +1,38 @@
+{
+  "schema": "plinth.family_circle/1",
+  "members": [
+    {
+      "id": "6a4ec682-1447-52b9-8c7a-92979e185e0b",
+      "first_name": "Meera",
+      "scope_all": true,
+      "joined_on": "2026-10-06",
+      "joined_via": "whatsapp",
+      "can_add_notes": true,
+      "line": "Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes"
+    }
+  ],
+  "invites": [
+    {
+      "id": "0209e42c-7fec-5e5b-bfa8-525bb990232b",
+      "code": "AH2-7KQ",
+      "link": "https://plinth.in/j/AH2-7KQ",
+      "scope_line": "Aurelia Heights, Phase 2",
+      "invited_on": "2026-10-18",
+      "expires_on": "2026-10-25",
+      "line": "Invited today · Aurelia Heights Ph 2 · hasn't tapped the link yet"
+    },
+    {
+      "id": "f657dd3c-076d-5c17-97ae-f6e377cece22",
+      "code": "RC4-2MW",
+      "link": "https://plinth.in/j/RC4-2MW",
+      "scope_line": "4 projects: Aurelia Heights Ph 2, Kestrel Park, Sapphire Grove Ph 1 and Coral Towers",
+      "invited_on": "2026-10-18",
+      "expires_on": "2026-10-25",
+      "line": "Invited today · your 4 projects · hasn't tapped the link yet"
+    }
+  ],
+  "member_of": [],
+  "rules": ["Works for one person for 7 days.", "Carries no phone number."],
+  "private_line": "Stays private to you: cost sheets, visit passes, payment alerts and who has your number.",
+  "number_line": "Family in your circle never see your number."
+}

@@ -1,6 +1,6 @@
 // _shared/otp: login-code delivery for the Send-SMS auth hook (T41). Owner: T41.
 //
-//   import { readOtpConfig, selectAdapters, sendWithFallback } from "../_shared/otp/mod.ts";
+//   Functions take readOtpConfig, selectAdapters and sendWithFallback from _shared/otp/mod.ts.
 //
 //   rules.ts     OTP rules (10 min, 30 s, sender PLINTH), per-number limits, phone helpers
 //   adapter.ts   OtpAdapter, OtpSendError, postJson (timeout), sendWithFallback

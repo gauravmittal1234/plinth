@@ -37,8 +37,12 @@ Generated files are committed and never hand-edited. `npm run -w @plinth/fixture
 | `cost_breakdown`, `afford_the_wait` | `aurelia-heights-phase-2`, plus `--waive-plc-club` and `--delay-24` |
 | `payee_check` | `aurelia-eoi-whatsapp` (0 of 3), `aurelia-booking-form` (3 of 3); answers `api.before_you_pay_check` |
 | M2 writes: `follow`, `unfollow`, `mark_following_seen`, `alert_prefs_set`, `family_invite_create`, `family_invite_cancel`, `family_member_remove`, `family_member_undo`, `shortlist_note_add`, `consent_withdraw` | What each write returns in the fixture world (idempotent on `p_client_id`) |
+| T45a: `set_follow_type` | `<slug>--booked`, `<slug>--watching` for Rohan's 4 follows |
+| T45a: `family_circle`, `saved_searches` | `rohan` (his circle: Meera and the two open invites; no saved search in §5b, so an empty list) |
+| T45a: `request_project` | `indigo-terraces` (R-1018-07; a replay of Rohan's request, whose `p_client_id` `54_buyer_api.sql` seeds) |
+| T45a: `link_whatsapp_follows` | `preview` (`p_accept: false`), `confirmed` (`true`): WebSignIn's Bring step. `"seeded": false`: not reachable from the seed, so the contract runner skips them |
 
-Buyer calls carry `"as": {"user", "user_id"}` in `_requests.json`: the contract runner sets that user's JWT claims before calling. `"rpc"` names the function when it differs from the folder. Requests with a `"state"` are design states (not reachable from the seed) and are skipped like `--facts-only`.
+Buyer calls carry `"as": {"user", "user_id"}` in `_requests.json`: the contract runner sets that user's JWT claims before calling. `"rpc"` names the function when it differs from the folder. Requests with a `"state"` are design states (not reachable from the seed) and are skipped like `--facts-only`; so are requests marked `"seeded": false`, which clients still serve by their `p_` args.
 
 Contract tests (T12/T13) call the function with `_requests.json` args and deep-compare, ignoring ids and `meta.generated_at`. Keys ending `--facts-only` need Northfield's `facts_only_since` set and are skipped against the normal seed.
 

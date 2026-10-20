@@ -30,11 +30,11 @@ export function FamilyInviteView({
     >
       <Link href="/" className="flex items-center gap-2 text-ink no-underline">
         <PlinthMark />
-        <span className="font-display text-h3 font-extrabold">Plinth</span>
+        <span className="font-sans text-h3 font-bold">Plinth</span>
       </Link>
 
       <div className="flex flex-col gap-2">
-        <h1 className="m-0 font-display text-h1 font-extrabold">
+        <h1 className="m-0 font-display text-h1 font-bold">
           {invite.inviter_first_name} invited you
         </h1>
         <p className="m-0 max-w-measure text-lead text-ink2">to follow {invite.scope_line}.</p>

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/saved_searches.schema.json",
+  "title": "SavedSearches",
+  "description": "plinth.saved_searches/1, from api.saved_searches() (built by T45a): the caller's saved searches, newest first.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "items", "max_items"],
+  "properties": {
+    "schema": { "const": "plinth.saved_searches/1" },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "saved_search.schema.json#/$defs/SavedSearchItem" }
+    },
+    "max_items": {
+      "description": "How many searches a buyer can save.",
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

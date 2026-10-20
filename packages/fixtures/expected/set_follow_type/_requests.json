@@ -1,0 +1,85 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "aurelia-heights-phase-2--booked": {
+      "p_slug": "aurelia-heights-phase-2",
+      "p_follow_type": "booked",
+      "p_client_id": "3ff6a014-7254-54ff-aa93-caac146470fe",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Have you booked any of these? Booked: payment-stage alerts and the Pay-as-built links."
+    },
+    "aurelia-heights-phase-2--watching": {
+      "p_slug": "aurelia-heights-phase-2",
+      "p_follow_type": "watching",
+      "p_client_id": "e09d8201-d386-56e7-bbc3-54501a2766da",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Back to watching (Rohan's follows are all watching in DESIGN §5b)."
+    },
+    "kestrel-park--booked": {
+      "p_slug": "kestrel-park",
+      "p_follow_type": "booked",
+      "p_client_id": "70e2c1f7-4fe0-5c0d-8fee-c5dea3334028",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Have you booked any of these? Booked: payment-stage alerts and the Pay-as-built links."
+    },
+    "kestrel-park--watching": {
+      "p_slug": "kestrel-park",
+      "p_follow_type": "watching",
+      "p_client_id": "2c562757-b3fa-5ce4-b0f1-058a36f0ed4c",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Back to watching (Rohan's follows are all watching in DESIGN §5b)."
+    },
+    "sapphire-grove-phase-1--booked": {
+      "p_slug": "sapphire-grove-phase-1",
+      "p_follow_type": "booked",
+      "p_client_id": "b560723e-6108-5fde-a3d2-c829df366338",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Have you booked any of these? Booked: payment-stage alerts and the Pay-as-built links."
+    },
+    "sapphire-grove-phase-1--watching": {
+      "p_slug": "sapphire-grove-phase-1",
+      "p_follow_type": "watching",
+      "p_client_id": "4db2bb69-fc52-58dc-8cae-5ee2747d4ab4",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Back to watching (Rohan's follows are all watching in DESIGN §5b)."
+    },
+    "coral-towers--booked": {
+      "p_slug": "coral-towers",
+      "p_follow_type": "booked",
+      "p_client_id": "816981a1-2519-5417-af60-7b5b14c6e70c",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Have you booked any of these? Booked: payment-stage alerts and the Pay-as-built links."
+    },
+    "coral-towers--watching": {
+      "p_slug": "coral-towers",
+      "p_follow_type": "watching",
+      "p_client_id": "f3c424a9-f9eb-5bd5-a3a0-f2797552c276",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Back to watching (Rohan's follows are all watching in DESIGN §5b)."
+    }
+  }
+}

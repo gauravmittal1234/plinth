@@ -545,7 +545,7 @@ Count: **3 parties can reach you**.
 
 **Following, digest and family (added 18 Oct 2026):**
 - **Rohan's follows:** he has followed 4 projects since 1 Jul 2026. Last look was 14 Oct 2026 at 8:40 am, so 5 changes are unread.
-- **Sapphire Grove Ph 1 price list, 16 Oct 2026:** 3 BHK ₹1.89 Cr → ₹1.95 Cr (all-in ≈ ₹2.27 Cr). Kestrel's Jul–Sep QPR: built 59% → 63%. Aurelia complaints: 13 → 14.
+- **Sapphire Grove Ph 1 price list, 16 Oct 2026:** 3 BHK ₹1.89 Cr → ₹1.95 Cr (all-in ≈ ₹2.27 Cr). The previous list was dated 1 Sep 2026, 3 BHK ₹1.89 Cr, superseded by this one. Kestrel's Jul–Sep QPR: built 59% → 63%. Aurelia complaints: 13 → 14.
 - **Family circle:**
   - Meera joined 6 Oct 2026, with the same alerts on all 4 projects and the right to add notes.
   - Meera's father was invited 18 Oct 2026 to Aurelia Heights Ph 2.

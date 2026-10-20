@@ -39,9 +39,13 @@ select is(
     where n.nspname = 'api' and p.proname like 'wa\_%'
       and has_function_privilege('service_role', p.oid, 'EXECUTE')
   ),
-  7,
-  'service_role can execute the 7 api.wa_* functions'
+  8,
+  'service_role can execute the 8 api.wa_* functions'
 );
+-- 8, not T44's original 7: the lead's api.wa_match_share_card (M2 gap task, PR #76
+-- Handoff -- "mirroring T44's wa_* service-RPC naming") is service_role-only too and
+-- matches this same wildcard. Count only; the row above (no anon/authenticated
+-- execute on any wa_* function) already covers it without a hardcoded name.
 
 select is(
   (
