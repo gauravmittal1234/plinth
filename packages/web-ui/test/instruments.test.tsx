@@ -1,5 +1,6 @@
 // Data and instruments: fact tiles, the cost table, the 3D tower, the replay slider.
 import type { ProjectPage } from "@plinth/contracts";
+import { loadExpected } from "@plinth/fixtures/node";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
@@ -10,6 +11,9 @@ import { COPY, fixture } from "./fixtures";
 const aurelia = fixture("aurelia-heights-phase-2");
 const laurel = fixture("laurel-residency");
 const juniper = fixture("juniper-enclave");
+// Not scored (no QPR on file at all): outside FIXTURE_KEYS, loaded directly
+// like risk.test.tsx's own Heron case.
+const heron = loadExpected<ProjectPage>("project_page", "heron-point-phase-2");
 
 describe("FactTiles", () => {
   it("pairs each label with its value as a term and its definition", () => {
@@ -172,6 +176,11 @@ describe("ReplaySlider", () => {
     expect(screen.getByRole("slider")).toHaveAttribute("aria-valuetext", "Apr–Jun 2023");
     expect(earlier).toHaveAttribute("aria-disabled", "true");
     expect(earlier).toHaveFocus();
+  });
+
+  it("Heron's no reports yet: renders nothing, no crash (0 stops)", () => {
+    const { container } = render(<Replay page={heron} />);
+    expect(container).toBeEmptyDOMElement();
   });
 
   it("Juniper's single report: the range and both buttons are inert", () => {

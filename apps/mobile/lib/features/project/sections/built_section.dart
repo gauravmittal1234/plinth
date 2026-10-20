@@ -23,7 +23,7 @@ class ProjectBuiltSection extends StatefulWidget {
 }
 
 class _ProjectBuiltSectionState extends State<ProjectBuiltSection> {
-  late int _index = widget.progress.quarters.length - 1;
+  late int _index = widget.progress.quarters.isEmpty ? 0 : widget.progress.quarters.length - 1;
 
   /// null = "All".
   String? _tower;
@@ -33,6 +33,18 @@ class _ProjectBuiltSectionState extends State<ProjectBuiltSection> {
     final tokens = PlinthTokens.of(context);
     final progress = widget.progress;
     final quarters = progress.quarters;
+
+    // Not scored, or simply too new: no QPR has been filed yet. There is
+    // nothing to replay, so the section states that plainly instead of
+    // reaching for a quarter that doesn't exist (Heron Point Phase 2).
+    if (quarters.isEmpty) {
+      return SectionBand(
+        question: ProjectCopy.howMuchBuilt,
+        answer: widget.answer,
+        children: [Text(ProjectCopy.noQprOnFile, style: PlinthType.body.copyWith(color: tokens.ink2))],
+      );
+    }
+
     final quarter = quarters[_index];
     final floors = progress.floorsPerTower ?? 20;
     final towers = progress.towers ?? const [];
@@ -95,21 +107,26 @@ class _ProjectBuiltSectionState extends State<ProjectBuiltSection> {
           ],
         ),
         const SizedBox(height: PlinthSpace.s24),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: ReplaySlider(
-                labels: [for (final q in quarters) q.label],
-                index: _index,
-                onChanged: (v) => setState(() => _index = v),
+        // A single QPR on file (Limited history and newly-filed phases)
+        // has nothing to replay: a static, single-point view instead of
+        // the slider (ReplaySlider itself requires at least two labels).
+        if (quarters.length > 1) ...[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: ReplaySlider(
+                  labels: [for (final q in quarters) q.label],
+                  index: _index,
+                  onChanged: (v) => setState(() => _index = v),
+                ),
               ),
-            ),
-            const SizedBox(width: PlinthSpace.s12),
-            ReplayStepButtons(index: _index, count: quarters.length, onChanged: (v) => setState(() => _index = v)),
-          ],
-        ),
-        const SizedBox(height: PlinthSpace.s12),
+              const SizedBox(width: PlinthSpace.s12),
+              ReplayStepButtons(index: _index, count: quarters.length, onChanged: (v) => setState(() => _index = v)),
+            ],
+          ),
+          const SizedBox(height: PlinthSpace.s12),
+        ],
         Text('HARERA QPR · ${quarter.label}', style: PlinthType.small.copyWith(color: tokens.muted)),
         if (quarter.noteLine != null || towerNote != null) ...[
           const SizedBox(height: 6),

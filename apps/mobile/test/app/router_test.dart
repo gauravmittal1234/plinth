@@ -83,9 +83,9 @@ void main() {
       routerOf(container).go(s.location);
       await tester.pumpAndSettle();
       if (pattern == Routes.project) {
-        // T31a replaced this placeholder with the real AppProject screen;
-        // AppProjectStates (T31b) is still a placeholder, reached only
-        // through `?state=` (see the dedicated test below).
+        // T31a replaced this placeholder with the real AppProject screen.
+        // AppProjectStates (T31b) is reached only through `?state=` on the
+        // same path (see the dedicated test below), so it never shows here.
         expect(find.text('Will it be delivered on time?'), findsOneWidget, reason: '$pattern should show AppProject');
       } else if (pattern == Routes.risk) {
         // AppRisk (T32) is filled in: its own tests cover its content; here we
@@ -151,8 +151,10 @@ void main() {
 
   testWidgets('FIXTURES mode previews a project state with ?state=', (tester) async {
     await pumpPlinth(tester, location: '/gurugram/projects/aurelia-heights-phase-2?state=stale');
-    expect(find.text('AppProjectStates'), findsOneWidget);
-    expect(find.textContaining('state  stale'), findsOneWidget);
+    await tester.pumpAndSettle();
+    // AppProjectStates (T31b) takes over for ?state=; its app bar names the
+    // design state regardless of the slug's own data (ProjectDesignState).
+    expect(find.descendant(of: find.byType(AppBar), matching: find.text('Stale')), findsOneWidget);
   });
 
   testWidgets('an unknown link shows the not-found screen with a way back', (tester) async {

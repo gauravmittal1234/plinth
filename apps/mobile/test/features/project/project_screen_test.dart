@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:plinth/app/routes.dart';
+import 'package:plinth/core/widgets/widgets.dart';
 
 import '../../helpers/app_harness.dart';
 
@@ -138,5 +139,33 @@ void main() {
     await tester.tap(find.widgetWithText(TextButton, 'Back to the full page'));
     await tester.pumpAndSettle();
     expect(find.text('Will it be delivered on time?'), findsOneWidget);
+  });
+
+  // ProjectBuiltSection (sections/built_section.dart) used to crash when a
+  // phase had fewer than two QPR quarters on file: index -1 into an empty
+  // list (0 quarters), or ReplaySlider's own `labels.length > 1` assert
+  // (exactly 1 quarter). Real early-stage phases hit both: Heron Point
+  // Phase 2 is not scored yet and has none; Juniper Enclave has its first.
+  testWidgets('Heron Point Phase 2 (not scored, no QPR yet) renders without exceptions', (tester) async {
+    await pumpPlinth(tester, location: Routes.projectOf('heron-point-phase-2'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    final heading = find.text('How much is built?');
+    await reveal(tester, heading);
+    expect(heading, findsOneWidget);
+    expect(find.text('No QPR figures on file'), findsOneWidget);
+    expect(find.byType(ReplaySlider), findsNothing);
+  });
+
+  testWidgets('Juniper Enclave (a single QPR on file) renders without exceptions', (tester) async {
+    await pumpPlinth(tester, location: Routes.projectOf('juniper-enclave'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    final heading = find.text('How much is built?');
+    await reveal(tester, heading);
+    expect(heading, findsOneWidget);
+    // A single quarter is a static point, not a slider (no second quarter
+    // to replay towards).
+    expect(find.byType(ReplaySlider), findsNothing);
   });
 }
