@@ -48,14 +48,7 @@ export function FreeTextEditor({ query, sort }: FreeTextEditorProps) {
             className="min-h-24 resize-y rounded-panel bg-track p-3.5 text-body text-ink outline-none"
           />
           <div className="flex gap-3">
-            {/* variant="secondary", not the default primary: apps/web/app/globals.css
-                doesn't import @plinth/web-ui/styles.css yet (INTEGRATION_NOTES, "T14
-                handoffs, done at the T39 gate"), so text-on-accent never reaches this
-                build and a visible primary button reads ink-on-accent (axe
-                color-contrast). Revert once that import lands. */}
-            <Button type="submit" variant="secondary">
-              {SEARCH_COPY.updateResults}
-            </Button>
+            <Button type="submit">{SEARCH_COPY.updateResults}</Button>
             <Button type="button" variant="tertiary" onClick={() => setOpen(false)}>
               {SEARCH_COPY.cancel}
             </Button>

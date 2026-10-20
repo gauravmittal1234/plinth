@@ -28,16 +28,7 @@ export function ZeroResultsPanel({ zeroResults, name, hidden }: ZeroResultsPanel
 
       {zeroResults.kind === "no_match" && action?.kind === "drop_filter" ? (
         <>
-          {/* variant="secondary": see the note in free-text-editor.tsx (missing
-              @plinth/web-ui/styles.css import; a visible primary button fails
-              axe color-contrast until that lands). surface="track": the panel
-              itself sits on bg-track. */}
-          <Button
-            variant="secondary"
-            surface="track"
-            onClick={() => setRevealed(true)}
-            aria-expanded={revealed}
-          >
+          <Button onClick={() => setRevealed(true)} aria-expanded={revealed}>
             {action.label}
           </Button>
           {revealed && zeroResults.detail_line ? (
