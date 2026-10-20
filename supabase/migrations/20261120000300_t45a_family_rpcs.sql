@@ -718,13 +718,14 @@ begin
   if not exists (
     select 1 from comms.wa_messages m
     where m.wa_message_id = p_wa_message_id and m.contact_id = p_contact_id and m.direction = 'in'
+      and m.created_at >= pg_catalog.now() - interval '24 hours'
   ) then
     perform ops.raise_api_error('forbidden', 'Only the relative''s own message can join a circle.');
   end if;
   return ops.family_join_by_code(p_code, p_contact_id);
 end
 $$;
-comment on function api.whatsapp_family_join(uuid, text, text) is 'wa-webhook (service_role, T46b): "JOIN <code>" from p_contact_id, whose inbound message p_wa_message_id is the evidence. Calls ops.family_join_by_code. plinth.family_join/1.';
+comment on function api.whatsapp_family_join(uuid, text, text) is 'wa-webhook (service_role, T46b): "JOIN <code>" from p_contact_id, whose inbound message p_wa_message_id (received in the last 24 hours, the session window) is the evidence. Calls ops.family_join_by_code. plinth.family_join/1.';
 
 -- ---------------------------------------------------------------------------
 -- The shared shortlist: a dated note from the owner or a member allowed to add notes.

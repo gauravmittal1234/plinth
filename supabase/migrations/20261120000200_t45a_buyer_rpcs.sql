@@ -671,7 +671,8 @@ declare
   v_follows jsonb := '[]'::jsonb;
 begin
   -- The WhatsApp number is the account's own verified phone (phone OTP sign-in).
-  select pg_catalog.ltrim(u.phone, '+') into v_phone from auth.users u where u.id = v_uid;
+  select pg_catalog.ltrim(u.phone, '+') into v_phone
+  from auth.users u where u.id = v_uid and u.phone_confirmed_at is not null;
   if coalesce(v_phone, '') <> '' then
     select k.* into v_contact from pii.wa_contacts k where k.wa_id_e164 = '+' || v_phone for update;
   end if;
@@ -719,7 +720,7 @@ begin
   );
 end
 $$;
-comment on function api.link_whatsapp_follows(boolean) is 'plinth.link_whatsapp_follows/1 ("Bring them here", API_CONTRACTS §3.2): p_accept false lists what the caller''s own number follows on WhatsApp, changing nothing; true (the buyer''s tap) links that WhatsApp contact to the account and moves its follows into app.follows (source whatsapp). A number linked to another account is never touched. Idempotent. Errors: auth_required, forbidden.';
+comment on function api.link_whatsapp_follows(boolean) is 'plinth.link_whatsapp_follows/1 ("Bring them here", API_CONTRACTS §3.2): p_accept false lists what the caller''s own verified number follows on WhatsApp, changing nothing; true (the buyer''s tap) links that WhatsApp contact to the account and moves its follows into app.follows (source whatsapp). A number linked to another account is never touched. Idempotent. Errors: auth_required, forbidden.';
 
 -- ---------------------------------------------------------------------------
 -- api.whatsapp_follow_record (service role): "Follow project" tapped by an unlinked number.
@@ -745,8 +746,9 @@ begin
     select 1 from comms.wa_messages m
     where m.wa_message_id = p_wa_message_id and m.contact_id = p_contact_id
       and m.direction = 'in' and m.type in ('interactive', 'button')
+      and m.created_at >= pg_catalog.now() - interval '15 minutes'
   ) then
-    perform ops.raise_api_error('forbidden', 'Only the number''s own tap can follow a project.');
+    perform ops.raise_api_error('forbidden', 'Only the number''s own recent tap can follow a project.');
   end if;
   if v_contact.user_id is not null then
     perform ops.raise_api_error('conflict', 'This number is linked to an account: follow with api.follow under the tap token.');
@@ -762,7 +764,7 @@ begin
   return pg_catalog.jsonb_build_object('slug', v_phase.slug, 'since', ops.ist_date(v_row.followed_at), 'linked', v_row.linked_at is not null);
 end
 $$;
-comment on function api.whatsapp_follow_record(uuid, text, text) is 'wa-webhook (service_role, T46a): records "Follow project" tapped by a WhatsApp number with no account (app.wa_follows), once per phase. The tap must be an inbound button/interactive message from that contact. { slug, since, linked }. Errors: not_found, forbidden, conflict (linked number).';
+comment on function api.whatsapp_follow_record(uuid, text, text) is 'wa-webhook (service_role, T46a): records "Follow project" tapped by a WhatsApp number with no account (app.wa_follows), once per phase. The tap must be an inbound button/interactive message from that contact, received in the last 15 minutes (as comms.is_wa_tap). { slug, since, linked }. Errors: not_found, forbidden, conflict (linked number).';
 
 -- ---------------------------------------------------------------------------
 -- Grants. Buyer RPCs: authenticated only (never PUBLIC, anon or the service role).

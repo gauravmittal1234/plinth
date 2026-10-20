@@ -6,15 +6,15 @@
 -- X ...45a014 (no phone).
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(21);
+select plan(22);
 
 update ops.runtime_settings set value = 'test' where key = 'env';
 
-insert into auth.users (id, phone, raw_user_meta_data) values
-  ('00000000-0000-4000-8000-00000045a011', '919900000386', '{"first_name":"T45a Lata"}'),
-  ('00000000-0000-4000-8000-00000045a012', '919900000387', '{"first_name":"T45a Mona"}'),
-  ('00000000-0000-4000-8000-00000045a013', '919900000388', '{"first_name":"T45a Neel"}'),
-  ('00000000-0000-4000-8000-00000045a014', null, '{"first_name":"T45a Xavi"}');
+insert into auth.users (id, phone, phone_confirmed_at, raw_user_meta_data) values
+  ('00000000-0000-4000-8000-00000045a011', '919900000386', now(), '{"first_name":"T45a Lata"}'),
+  ('00000000-0000-4000-8000-00000045a012', '919900000387', now(), '{"first_name":"T45a Mona"}'),
+  ('00000000-0000-4000-8000-00000045a013', '919900000388', now(), '{"first_name":"T45a Neel"}'),
+  ('00000000-0000-4000-8000-00000045a014', null, null, '{"first_name":"T45a Xavi"}');
 insert into core.developer_groups (id, slug, name) values ('00000000-0000-4000-8000-00000045a101', 't45a-w1-group', 'T45a W1 Group');
 insert into core.projects (id, slug, name, group_id) values ('00000000-0000-4000-8000-00000045a102', 't45a-w1-project', 'T45a W1 Project', '00000000-0000-4000-8000-00000045a101');
 insert into core.phases (id, project_id, slug, name) values
@@ -149,6 +149,19 @@ select ok(
   exists (select 1 from ops.audit_log where entity = 'pii.wa_contacts' and action = 'link'
             and actor_user_id = '00000000-0000-4000-8000-00000045a011'),
   'the link is audited under L'
+);
+
+-- An unconfirmed phone links nothing ------------------------------------------------------
+reset role;
+insert into auth.users (id, phone, raw_user_meta_data) values
+  ('00000000-0000-4000-8000-00000045a015', '919900000389', '{"first_name":"T45a Unconfirmed"}');
+insert into pii.wa_contacts (wa_id_e164) values ('+919900000389');
+set local role authenticated;
+select set_config('request.jwt.claims', '{"sub":"00000000-0000-4000-8000-00000045a015","role":"authenticated"}', true);
+select is(
+  api.link_whatsapp_follows(true) -> 'linked',
+  'false'::jsonb,
+  'a phone the account never confirmed by code links no WhatsApp number'
 );
 
 -- A tap token cannot link a number --------------------------------------------------------
