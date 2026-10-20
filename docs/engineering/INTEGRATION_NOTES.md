@@ -138,7 +138,8 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
 - **SEO routes: no soft 404s.**
   - `not_found` → `notFound()`. A fixture gap renders, but with `robots: noindex`.
   - Titles name the entity, with a canonical URL (#35).
-  - T20a's project route still needs the same treatment; T20b was asked to fix it.
+  - Under Cache Components, `notFound()` inside `<Suspense>` runs after streaming starts. The status stays 200, but Next injects `<meta name="robots" content="noindex">` (Next docs, streaming.md). That is the accepted behaviour.
+  - E2E asserts the not-found UI plus noindex, not the status. T20c adds this for the project route.
 - **`evidence(p_fact_id, p_slug)`:** the SQL overload exists (T13), but `src/data` `evidence()` doesn't pass `p_slug`. Fix it after T20b lands; the call site is `features/project/page/evidence.ts`, and fixture `_requests` need slug variants.
 - **Stub tests:** filling a stub may break T06/T07 tests that assert placeholder text (`test/gates/m0_test.dart`, `test/app/router_test.dart`, `shell_test.dart`). The filling task updates them minimally and lists them in its PR.
 
