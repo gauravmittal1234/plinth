@@ -1,13 +1,22 @@
 // T47 accept (WORK_BREAKDOWN §4 T47): "a 9-digit number shows the validation
 // copy; Bring them here merges 2 follows; no checkbox starts ticked." The
-// full phone -> code -> bring -> done run, at the component level (Playwright
-// covers the rendered route in e2e/sign-in.spec.ts).
+// full phone -> code -> bring -> done run, at the component level
+// (Playwright covers the rendered route in e2e/sign-in.spec.ts). The Bring
+// step's data is the real api.link_whatsapp_follows fixture
+// (packages/fixtures/expected/link_whatsapp_follows/) read through
+// src/features/auth/actions.ts — not mocked — so this also exercises the
+// fixture wiring the lead's review asked for (lead review of #62).
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { ProjectPage } from "@/src/data";
-import { buildWaFollows, type WaProjectFollow } from "@/src/features/auth/data";
 import { SignInFlow } from "@/src/features/auth/sign-in-flow";
+
+// cacheTag()/cacheLife() need Next's real cacheComponents runtime
+// (test/data/cache.test.ts sets the same precedent); this lets the real,
+// cached project_page() calls inside src/features/auth/actions.ts run here.
+vi.mock("next/cache", () => ({ cacheTag: vi.fn(), cacheLife: vi.fn() }));
+vi.mock("next/server", () => ({ connection: vi.fn(async () => {}) }));
 
 function fakePage(slug: string, name: string): ProjectPage {
   return {
@@ -16,20 +25,11 @@ function fakePage(slug: string, name: string): ProjectPage {
   } as unknown as ProjectPage;
 }
 
-const AURELIA = fakePage("aurelia-heights-phase-2", "Aurelia Heights, Phase 2");
-const KESTREL = fakePage("kestrel-park", "Kestrel Park");
 const SAPPHIRE = fakePage("sapphire-grove-phase-1", "Sapphire Grove, Phase 1");
-const WA_FOLLOWS = buildWaFollows(AURELIA, KESTREL);
-const WA_PROJECTS = WA_FOLLOWS.slice(0, 2) as [WaProjectFollow, WaProjectFollow];
 
 function renderFlow(projectPage: ProjectPage | null = SAPPHIRE) {
   return render(
-    <SignInFlow
-      projectPage={projectPage}
-      waProjects={WA_PROJECTS}
-      waFollows={WA_FOLLOWS}
-      notNowHref="/gurugram/projects/sapphire-grove-phase-1"
-    />,
+    <SignInFlow projectPage={projectPage} notNowHref="/gurugram/projects/sapphire-grove-phase-1" />,
   );
 }
 
@@ -94,7 +94,9 @@ describe("SignInFlow: code step", () => {
     await sendValidCode(user);
     await user.type(screen.getByLabelText("6-digit code"), "123456");
     await user.click(screen.getByRole("button", { name: /Verify and follow/ }));
-    expect(screen.getByRole("heading", { name: "We found your WhatsApp follows" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "We found your WhatsApp follows" }),
+    ).toBeInTheDocument();
   });
 });
 
@@ -102,6 +104,7 @@ async function reachBringStep(user: ReturnType<typeof userEvent.setup>) {
   await sendValidCode(user);
   await user.type(screen.getByLabelText("6-digit code"), "123456");
   await user.click(screen.getByRole("button", { name: /Verify and follow/ }));
+  await screen.findByRole("heading", { name: "We found your WhatsApp follows" });
 }
 
 describe("SignInFlow: bring follows", () => {
@@ -112,22 +115,27 @@ describe("SignInFlow: bring follows", () => {
     expect(screen.getByRole("checkbox")).toHaveAttribute("aria-checked", "false");
   });
 
-  it("lists both WhatsApp projects and the cost sheet", async () => {
+  it("lists both WhatsApp projects and the cost sheet, with real counts", async () => {
     const user = userEvent.setup();
     renderFlow();
     await reachBringStep(user);
+    expect(
+      screen.getByText("This number follows 2 projects on WhatsApp and saved 1 cost sheet there. Bring them here?"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Aurelia Heights, Phase 2")).toBeInTheDocument();
     expect(screen.getByText("Kestrel Park")).toBeInTheDocument();
     expect(screen.getByText("Aurelia Heights, 3 BHK cost sheet")).toBeInTheDocument();
   });
 
-  it('"Bring them here" merges both follows into the Done list', async () => {
+  it('"Bring them here" merges both follows into the Done list, with the success line', async () => {
     const user = userEvent.setup();
     renderFlow();
     await reachBringStep(user);
     await user.click(screen.getByRole("button", { name: "Bring them here" }));
 
-    expect(screen.getByRole("heading", { name: "One account, three places" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "One account, three places" }),
+    ).toBeInTheDocument();
     const list = screen.getByRole("list", { name: "Projects you follow" });
     expect(list).toHaveTextContent("Sapphire Grove, Phase 1");
     expect(list).toHaveTextContent("Aurelia Heights, Phase 2");
@@ -137,13 +145,13 @@ describe("SignInFlow: bring follows", () => {
     ).toBeInTheDocument();
   });
 
-  it('"Not now" keeps only the new project in the Done list', async () => {
+  it('"Not now" keeps only the new project in the Done list, with the honest line', async () => {
     const user = userEvent.setup();
     renderFlow();
     await reachBringStep(user);
     await user.click(screen.getByRole("button", { name: "Not now" }));
 
-    const list = screen.getByRole("list", { name: "Projects you follow" });
+    const list = await screen.findByRole("list", { name: "Projects you follow" });
     expect(list).toHaveTextContent("Sapphire Grove, Phase 1");
     expect(list).not.toHaveTextContent("Aurelia Heights, Phase 2");
     expect(

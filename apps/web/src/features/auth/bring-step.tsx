@@ -2,12 +2,15 @@
 
 // State 3: Bring follows (DESIGN.md §5b "WebSignIn"). Nothing is pre-ticked
 // and nothing merges without a tap (AGENTS.md §9 "no confirmation without a
-// record" — this screen only ever shows what the reader is about to accept,
-// never a result the next step hasn't produced yet).
+// record" — this screen only ever shows what the preview call found, never a
+// result the next step hasn't produced yet). The counts and names are
+// `preview`'s own (src/features/auth/actions.ts), never fixed text (lead
+// review of #62).
 import { RiskChip } from "@plinth/web-ui";
 import Image from "next/image";
+import type { WaPreview } from "./actions";
 import { COPY } from "./copy";
-import type { WaFollowItem } from "./data";
+import { formatDate } from "./format";
 
 function SheetIcon() {
   return (
@@ -26,19 +29,21 @@ function SheetIcon() {
 export function BringStep({
   maskedPhone,
   projectName,
-  waFollows,
+  preview,
   alsoChecked,
   onToggleAlso,
   onBring,
   onSkip,
+  pending,
 }: {
   maskedPhone: string;
   projectName: string | null;
-  waFollows: readonly WaFollowItem[];
+  preview: WaPreview;
   alsoChecked: boolean;
   onToggleAlso: () => void;
   onBring: () => void;
   onSkip: () => void;
+  pending: boolean;
 }) {
   return (
     <div className="flex flex-col gap-4">
@@ -58,37 +63,42 @@ export function BringStep({
         </svg>
         {COPY.signedLine(maskedPhone, projectName)}
       </p>
-      <p className="m-0 text-lead">{COPY.bringIntro}</p>
+      <p className="m-0 text-lead">{COPY.bringIntro(preview.follows.length, preview.costSheets.length)}</p>
 
       <ul className="m-0 flex list-none flex-col gap-1 p-0">
-        {waFollows.map((item) => {
-          return (
-            <li key={item.kind === "project" ? item.slug : item.name} className="flex min-h-17 items-center gap-3.5">
-              {item.kind === "sheet" ? (
-                <span className="flex size-14 shrink-0 items-center justify-center bg-track text-ink">
-                  <SheetIcon />
-                </span>
-              ) : item.imageUrl ? (
-                <Image
-                  src={item.imageUrl}
-                  alt={item.imageAlt}
-                  width={56}
-                  height={56}
-                  className="size-14 shrink-0 bg-photo object-cover"
-                />
-              ) : (
-                <span className="size-14 shrink-0 bg-photo" aria-hidden="true" />
-              )}
-              <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                <span className="text-lead font-semibold">{item.name}</span>
-                <span className="text-small text-ink2">{item.metaLine}</span>
+        {preview.follows.map((follow) => (
+          <li key={follow.slug} className="flex min-h-17 items-center gap-3.5">
+            {follow.imageUrl ? (
+              <Image
+                src={follow.imageUrl}
+                alt={`Illustrative image: ${follow.name}`}
+                width={56}
+                height={56}
+                className="size-14 shrink-0 bg-photo object-cover"
+              />
+            ) : (
+              <span className="size-14 shrink-0 bg-photo" aria-hidden="true" />
+            )}
+            <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+              <span className="text-lead font-semibold">{follow.name}</span>
+              <span className="text-small text-ink2">
+                Followed on WhatsApp since {formatDate(follow.since)}
               </span>
-              {item.kind === "project" ? (
-                <RiskChip chip={item.chip} srPrefix={COPY.deliveryRiskSr} />
-              ) : null}
-            </li>
-          );
-        })}
+            </span>
+            <RiskChip chip={follow.chip} srPrefix={COPY.deliveryRiskSr} />
+          </li>
+        ))}
+        {preview.costSheets.map((sheet) => (
+          <li key={sheet.label} className="flex min-h-17 items-center gap-3.5">
+            <span className="flex size-14 shrink-0 items-center justify-center bg-track text-ink">
+              <SheetIcon />
+            </span>
+            <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+              <span className="text-lead font-semibold">{sheet.label}</span>
+              <span className="text-small text-ink2">{COPY.costSheetMeta(formatDate(sheet.savedOn))}</span>
+            </span>
+          </li>
+        ))}
       </ul>
 
       {projectName ? (
@@ -131,14 +141,16 @@ export function BringStep({
         <button
           type="button"
           onClick={onBring}
-          className="h-14 cursor-pointer rounded-pill border-0 bg-accent px-7 font-sans text-lead font-semibold text-on-accent"
+          disabled={pending}
+          className="h-14 cursor-pointer rounded-pill border-0 bg-accent px-7 font-sans text-lead font-semibold text-on-accent disabled:cursor-not-allowed disabled:bg-disabled-bg disabled:text-disabled-fg"
         >
           {COPY.bringThemHere}
         </button>
         <button
           type="button"
           onClick={onSkip}
-          className="min-h-11 border-0 bg-transparent p-0 font-sans text-body font-semibold text-ink underline underline-offset-5"
+          disabled={pending}
+          className="min-h-11 border-0 bg-transparent p-0 font-sans text-body font-semibold text-ink underline underline-offset-5 disabled:cursor-not-allowed disabled:text-disabled-fg"
         >
           {COPY.notNowBring}
         </button>
