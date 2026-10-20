@@ -795,6 +795,124 @@ Format: **Owns** · **Depends** · **Inputs** · **Build** · **Accept**.
 - **Depends:** waves 4 and 5.
 - **Accept:** the BUILD_PLAN §3 M2 list, in live mode on CI's seeded DB: sign in with test OTP → Following shows 5 → JOIN via a recorded payload → advance the clock → outbox rows → mock WhatsApp body snapshot.
 
+### Wave 6 (M3 foundations: schema, contracts, fixtures, AI gateway, data layers)
+
+M3 is planned by the lead (21 Oct 2026). Read these first; they bind every M3 task:
+
+- **AI reads; rules decide.** Readers return facts with a confidence. Every verdict, number and line comes from SQL rules (`app.decide_<kind>`, `core.check_rules` v2026.10). A row is `matches` or `differs` only when both readers agreed above the rule's confidence bar and the record exists; otherwise it is `cant_check` or `not_in_records`. A single reader never produces `differs`.
+- **One pipeline.** Web, app and WhatsApp all go `api.create_upload` → `doc-check` (OCR → classify → reader A + reader B → agreement) → `api.doc_check_ingest` → the buyer confirms the project → `app.doc_check_decide` → `api.doc_check`. Nothing is checked before the project is confirmed.
+- **AI in CI is recorded.** `AI_MODE=recorded` everywhere except the nightly live eval. Every AI task ships prompts, a response schema, recorded responses for every sample document and an eval with gates.
+- **PII before models.** Readers see only PII-stripped OCR text with line ids; bounding boxes come from the OCR lines, never from a reader. Bank account numbers become tokens before any reader call and are kept only as a salted hash plus the last 4 digits. The OCR call is the one place a model sees the page: in M3 it sees only the fictional sample documents (DECISIONS E-8), enforced by `AI_PROVIDER_TIER=free` (FOUNDER_QUESTIONS, M3).
+- **No new paid services.** Gemini runs recorded in CI and on the free tier with fictional documents in dev. The paid switches are listed under "M3" in `product/FOUNDER_QUESTIONS.md`.
+- **Reuse M2.** `app.uploads` and the private `uploads` bucket (T53), the outbox (T42), the WhatsApp webhook and session (T44, T46a/b), auth and `actAsUser` (T41), the consent ledger (T40: purpose `ai_processing`), rate limits (T41), retention and export (T53).
+- **UI v2.** Web and Flutter screens follow `product/design/review/benchmark-thapki.md` (Figtree text, Bricolage titles, the v2 kits: app #74, web #82). Artboard copy is layout, never data (AGENTS rule 10); every count, name, amount and verdict comes from the payload.
+- **Dependencies on M2.** Wave 6 starts once the open M2 PRs that touch the same paths have merged: T53 (#80, `app.uploads`), T45a (#75) and T46b (#84) (contracts and fixtures), T48 (#81, `apps/mobile/lib/data`). Their live wiring is checked at T59; M3 screens build in fixture mode and are wired at T99.
+
+#### T60 · DB: checks schema, review queue and AI log
+- **Owns:** `supabase/migrations/20261201*` (file names include the `m3_checks` marker), `supabase/tests/checks/**`.
+- **Depends:** T04, T40, T53 (#80 creates `app.uploads`; this task ALTERs it, never a second CREATE).
+- **Inputs:** DATA_MODEL §7 (every check table), §10 (`ops.review_tasks`, `ops.ai_generations`), §12 invariants 1, 3 and 5; BUILD_PLAN §5.4 (pgmq), §12.9–§12.10 (upload limits, PII tags), §13 (retention, export, erasure); AGENTS rules 11–12; T53's migration header (signed upload URLs come from an edge function).
+- **Build:**
+  - `ALTER app.uploads`: `channel` (web, app, whatsapp), `wa_message_id null` (idempotent forwards), `bytes`, `status` (awaiting_file, stored, rejected), `rejected_reason`, `stored_at`. T53's retention columns and tests stay as they are.
+  - Tables per DATA_MODEL §7 with RLS and `pii:` tags on every column: `app.doc_checks` (plus `wa_contact_id null`, `summary jsonb`, `rules_version`, `recheck jsonb`), `app.extracted_claims` (`reader_a`, `reader_b`, `agreed`, `confidence`, `line_ids`), `app.claim_verdicts`, `app.cost_sheet_reads`, `app.bookings`, `app.payee_checks` (`account_sha256` and `account_last4` only; **no column can hold a full account number**), `app.receipts`.
+  - `core.check_rules` (`version` '2026.10', `kind`, `claim_type`, `rule_code`, `params jsonb` with tolerances and the confidence bar, `text`, `source_line`): public (C0), read through `api` only. Rows arrive with T73–T75.
+  - `ops.review_tasks` (DATA_MODEL §10, plus kind `adviser_request`) and `ops.ai_generations` (§10, plus `tier` free/paid).
+  - Service-only RPCs used by the AI gateway (T63): `api.ai_generation_log(...)` and `api.ai_budget_status(p_task)` (calls and ₹ today against the catalogue budget). Granted by name to `service_role` (AGENTS rule 12).
+  - pgmq queue `doc_checks` (a no-op block where pgmq is absent, as T53 does for `storage` under PGlite).
+  - Family privacy (invariant 5): a circle member reads none of the owner's `doc_checks`, `extracted_claims`, `bookings`, `payee_checks` or `receipts`. No direct writes for anyone; RPCs only.
+  - DPDP: extend T53's export (saved cost-sheet reads and saved checks, as DESIGN §5b "Download my data" lists) and erasure (every new table) in this task's own migration, re-creating T53's functions; never edit a merged migration.
+- **Accept:**
+  - `npm run db:check` passes;
+  - pgTAP `supabase/tests/checks/`: anon and authenticated are denied on every new table; a buyer reads only their own rows; a circle member reads none of the five tables above; `ops.review_tasks` and `ops.ai_generations` are service and admin only; `api.ai_generation_log` refuses anon and authenticated;
+  - the PII-tag lint passes; no column of `app.payee_checks` or `app.extracted_claims` is wide enough or named to hold a full account number (catalogue query);
+  - T53's `supabase/tests/dpdp/**` still pass; an export for a user with a saved cost-sheet read includes it; erasure removes the user's checks and keeps no account digits.
+
+#### T61 · Contracts for M3
+- **Owns:** `packages/contracts/**` for M3 (handover T02 → T61, after the M2 contract PRs merge). T68–T77 send schema changes to T61 as Handoffs while it is open; after T61 merges, the lead owns M3 contract follow-ups.
+- **Depends:** T02; T45a (#75), T46b (#84) and T53 (#80) merged first (they edit contracts).
+- **Inputs:** API_CONTRACTS §3.2 (uploads and checks, bookings and receipts), §3.4 (admin queue), §3.5 (`doc-check`), §4.12–§4.14, §5.1 (the M3 router rows), §5.2 (templates); BUILD_PLAN §11 (events), §14 (AI tasks); DATA_MODEL §7; INTEGRATION_NOTES round 3 (`records_label`).
+- **Build:**
+  - Schemas (JSON Schema 2020-12, additive, optional fields so the existing expected files stay valid):
+    - `upload` (the `api.create_upload` result: `upload_id`, `bucket`, `storage_key`, `max_bytes`, `existing_check_id`), `doc_check_start` (the 202 body), `upload_url` (the signed URL and its expiry);
+    - `doc_check` additions: row `review` (`{line}`, while a person checks a reading), `edge` (`{title, body, primary, secondary}` for unreadable, partly readable, no claims, outside coverage, checks paused), `project_candidates[]` (the pick list), `stage` (pay-as-built: letter slab, filed slab, floors, as-of lines), `recheck` (`{armed, line}`), `saved`, `share` (`{card_url, card_alt, share_text}`); `cost` reuses CostBreakdown and `payee` reuses PayeeCheck;
+    - `my_checks`, `booking`, `receipt`, `adviser_request`, `review_queue`, `review_task`, `error_report` (the E-nnnn result);
+    - reader output schemas under `schemas/ai/`: `ocr_page`, `document_class`, `marketing_claims`, `cost_sheet_lines`, `demand_letter`, `payment_request`.
+  - Catalogues:
+    - `ai_tasks.json`: `response_schema` for every M3 task; readers `a` and `b` (different prompts) for every `extract.*` task, not only marketing claims; `budget_inr_per_day` stays null (the lead sets it); a `daily_call_cap` per task for the free tier;
+    - `wa_templates.json`: `check_updated` (UTILITY; project, check kind, what changed; button "Open the check");
+    - `events.json`: `cost_sheet_checked`, `payee_checked`, `pay_as_built_checked`, `check_saved`, `adviser_requested`;
+    - `flags.json` is unchanged (`ai_doc_check` exists).
+  - OpenAPI: the `doc-check` routes (`upload_url`, start, `process`, `internal`, `recheck`, `review_image`) and every new RPC.
+  - Regenerate TS, Dart and Python. One valid and one invalid example per new schema, using the §5b flyer, cost sheet, demand letter and payment request.
+- **Accept:** `npm run -w @plinth/contracts gen` leaves zero diff; `npm run -w @plinth/contracts test`; every file in `packages/fixtures/expected/{doc_check,cost_breakdown,afford_the_wait,payee_check}/` still validates; `dart analyze packages/contracts/dart`; `python -c "import plinth_contracts"`.
+
+#### T62 · Fixtures C: checks seed, sample documents, new expected keys, WhatsApp payloads
+- **Owns:**
+  - `packages/fixtures/src/author/checks_m3.mjs` and its registration lines in `packages/fixtures/src/author/build.mjs` (T03 → T62, those lines only);
+  - `packages/fixtures/canonical/checks.json` (T03b → T62);
+  - `packages/fixtures/expected/doc_check/**` (T03b → T62) and the new `packages/fixtures/expected/{my_checks,doc_check_card,booking,receipt,upload,review_queue}/**`; `packages/fixtures/expected/flags/**` (T03 → T62, for `ai_doc_check`);
+  - `packages/fixtures/seedmap/checks.mjs` (`requires` marker `m3_checks`; the decide call also requires `m3_rules`);
+  - `packages/fixtures/media/docs/**` and `packages/fixtures/scripts/make-docs.mjs`;
+  - `packages/fixtures/recorded/wa/m3-*.json`;
+  - the regenerated outputs (`supabase/seed/**`, `packages/fixtures/dart/**`).
+- **Depends:** T03b. Soft: T61 (validate against the new schemas once merged; until then author to API_CONTRACTS §4.12–§4.14), T60 (table names).
+- **Inputs:** DESIGN §5b (claims vs records example, the sample flyer and hoarding, cost sheet, cost-sheet photo, demand letter, Before you pay on WhatsApp, booking form, 10% cap, EOI receipt, Afford the wait); DATA_MODEL §7; API_CONTRACTS §4.12–§4.14; fix-claims.md, fix-visitpay.md; WebClaims.dc.html (edge-state copy: blurred photo, no claims, pick the project).
+- **Build:**
+  - **Sample documents** (`media/docs/`): text-layer PDFs written by `make-docs.mjs` with no new dependency (a minimal PDF writer, as T53's export does), carrying the §5b text so a live OCR can read them: the broker flyer, the hoarding, the 2-page cost sheet, Kavya's demand letter, the forwarded EOI request (as text), the booking-form bank page; plus three edge samples: the flyer with a blurred RERA number, a brochure page with no checkable claims, and a Noida flyer (outside coverage). A `manifest.json` lists each file's SHA-256: this is the fixture manifest the AI gateway's free tier checks (T63).
+  - **Seed** (`seedmap/checks.mjs`): uploads, doc checks (confirmed, status `checking`), extracted claims with `reader_a`, `reader_b`, `agreed` and confidence exactly as the recorded readers return them, Kavya's booking, the payee checks and the EOI receipt; then a guarded `select app.doc_check_decide(id)` for each check (skipped until `m3_rules` exists), so verdicts always come from the rules. The fixture world turns `ai_doc_check` on.
+  - **Expected keys:**
+    - `doc_check`: `cost-sheet` (₹2.74 Cr, ₹18,900 per sq ft carpet, 38% loading), `flyer--blurred` (pick path), `brochure--no-claims`, `flyer--noida` (outside coverage), `flyer--reader-disagreement` (one row `cant_check` with a `review` line), `checks-paused` (flag off);
+    - `my_checks` (Kavya: her demand letter; Rohan: none), `doc_check_card` (flyer, payment request, demand letter), `booking` (Kavya), `receipt` (the EOI receipt), `upload` (a new upload; a same-hash re-upload returning the earlier check), `review_queue` (the disagreement row and one adviser request).
+  - **WhatsApp payloads** (`recorded/wa/m3-*.json`): the forwarded EOI text, the booking-form image, the cost-sheet PDF, button replies "Yes, that one" / "No, another one", a typed pick ("aurelia"), "See all claims", the "See each line" list reply, "human".
+  - Every fact used carries a `source: "DESIGN §5b"` note. Missing facts go to `CONFLICTS.md` (handoff to the lead), never into code.
+- **Accept:** `npm run -w @plinth/fixtures gen` is deterministic (stable hash) and `check:generated` is clean; `npm run -w @plinth/fixtures validate` and `test`; every sample document's SHA is in `media/docs/manifest.json`; the seed applies on PGlite with and without the `m3_rules` marker present.
+
+#### T63 · AI gateway (TS) and eval harness
+- **Owns:** `supabase/functions/_shared/ai/**` except `prompts/<task>/**` (T69, T70), `evals/lib/**`, `evals/README.md`, `evals/deno.json`, `packages/fixtures/recorded/ai/README.md`, `.github/workflows/ci-evals.yml`.
+- **Depends:** T29. Soft: T60 (`api.ai_generation_log`, `api.ai_budget_status`; a fake RPC client until merged), T61 (`ai_tasks.json` response schemas), T62 (the fixture manifest).
+- **Inputs:** BUILD_PLAN §11 (AI budgets: alert at 80%, kill switch at 100%), §13 (Gemini terms), §14 (gateway, hard rules 1, 4, 5, 7); `packages/contracts/catalogues/ai_tasks.json`; DECISIONS E-8; INTEGRATION_NOTES T29 handoffs (`AI_MODE` defaults to `recorded`; tests refuse `live`); AGENTS rule 11.
+- **Build:**
+  - `gateway.ts`: `runTask(taskKey, input, ctx)` reads the catalogue; refuses with `flag_off` when the task's kill switch (`ai_doc_check`) is off; input SHA = sha256 of task@version, prompt version and the normalised input.
+    - `AI_MODE=recorded` (the default; tests refuse anything else) replays `packages/fixtures/recorded/ai/<task>/<sha>.json`. A miss is a `recorded_miss` error, never a live fallback.
+    - `AI_MODE=live` calls Gemini's REST `generateContent` with `responseSchema` through `fetch` (no SDK, no new dependency). A null `model_id` refuses. `AI_PROVIDER_TIER=free` (the default) refuses any input whose SHA is not in the fixture manifest, so the free tier only ever sees fictional documents (E-8). `paid` lifts that once the founder's paid key and DPA exist.
+    - Budgets: `api.ai_budget_status` before every live call; log at 80%, refuse at 100% of `daily_call_cap` or the ₹ budget.
+  - `pii.ts`: strips Indian phone formats (+91, 0-prefixed, spaced), emails, PAN, Aadhaar (12 digits, Verhoeff-checked) and, under `strip_and_redact_bank`, bank account numbers (9–18 digits near "A/c", "account", an IFSC) into stable tokens (`[ACCOUNT_1]`). It returns the stripped text and a vault (token → salted SHA-256 and last 4) that never leaves the process.
+  - `agree.ts`: field-by-field agreement of reader A and reader B with per-type normalisation (₹ amounts and "Rs 11,00,000" to integers, dates to month precision, areas with their basis); returns agreed fields, disagreements and the lower confidence.
+  - `validate.ts` (output must match the task's response schema; one retry, then `schema_mismatch`), `log.ts` (every call writes `ops.ai_generations` via `api.ai_generation_log`: redacted output, input SHA, tokens, ₹ cost, latency, mode, tier), `wrap.ts` (document text passed as fenced data with no instructions inside; extractors get no tools).
+  - `evals/lib/`: a Deno runner that reads `evals/<set>/golden/*.json` and `gates.json`, runs the gateway in recorded mode, and reports per-field precision, recall and F1, the agreement rate and the **agreed-but-wrong** count (the extraction-side guard for false Differs). Non-zero exit on any gate miss. `record.ts` re-records from a live run (nightly or dev only; free tier; manifest inputs only).
+  - `ci-evals.yml`: on PRs touching `evals/**`, `supabase/functions/_shared/ai/**` or `packages/fixtures/recorded/ai/**`, run every eval set with `AI_MODE=recorded`; a guard step fails if any workflow other than `nightly.yml` sets `AI_MODE=live`. Adding live evals to `nightly.yml` is a Handoff to the lead.
+- **Accept:** `npm run edge:verify` covers `_shared/ai`: recorded hit and miss; live refused under test; free tier refuses a SHA outside the manifest; PII cases ("+91 98765 43210", "098765 43210", an email, `ABCDE1234F`, a valid Aadhaar, "A/c 50200071824417" → a token with last 4 4417); schema-mismatch retry; budget refusal at 100%; every call logs. `deno task eval -- self-test` passes on a toy set; `ci-evals` is green.
+
+#### T64 · `@plinth/calc`: TS slider-preview ports
+- **Owns:** `packages/calc/**`.
+- **Depends:** T03 (vectors). The SQL in T13 is canonical; this is a preview port.
+- **Inputs:** BUILD_PLAN §1 rule 3, D-6; DECISIONS E-5; DESIGN §5b Afford the wait and C-22; API_CONTRACTS §4.13–§4.14; `packages/fixtures/vectors/{afford_the_wait,cap,cost,formatting}.json`; `supabase/migrations/20261102000400_t13_core_calculators.sql` (the arithmetic to port).
+- **Build:** pure functions `emi`, `preEmi`, `affordTheWait(inputs, plan)` (series, now, by completion, delay cost, after keys; the all-in rounded to the lakh first), `capLimit(basePlusCharges)` and the ₹ preview formatter. Previews only: no risk copy, no lines; the server's answer replaces the preview when the slider is released.
+- **Accept:** `npm run -w @plinth/calc test`: every vector reproduces exactly (₹1,18,077; ₹2,00,563; ₹24.1 L; ₹48.1 L; ₹1,90,227; ₹24.4 L; "₹2.74 Cr"); property tests (a higher rate never lowers the EMI; a longer delay never lowers the delay cost); lint and typecheck clean; the package has no runtime dependency.
+
+#### T65 · Web data layer: checks and calculators
+- **Owns:** `apps/web/src/data/**` and `apps/web/test/data/**` (T16 → T65, for the M3 additions).
+- **Depends:** T16. Soft: T61 (types), T62 (expected keys).
+- **Inputs:** API_CONTRACTS §1, §3.2 (uploads and checks, bookings and receipts), §3.5 (`doc-check`), §4.12–§4.14; T16's adapters and registry; AGENTS rule 9.
+- **Build:**
+  - Functions: `createUpload(kind, file, tapEventId)` (→ `api.create_upload` → the `doc-check` `upload_url` route → `uploadToSignedUrl`), `startDocCheck`, `docCheck(id)` (poll), `docCheckConfirm`, `docCheckSave`, `myChecks(slug?)`, `docCheckCost(id, buyer, waive)`, `costBreakdown`, `affordTheWait`, `beforeYouPayCheck` (a server action: the account number travels only in a POST body, never a URL, log or cache), `bookingSave`, `receiptAdd`, `adviserRequest`, `reportError`.
+  - Fixture adapter: serves the expected keys; the sample flyer walks `reading → confirm_project → checking → done` over successive polls (a deterministic clock hook for tests); sample uploads map to fixture ids; mutations return only what the fixture RPC result holds (no invented "Saved").
+- **Accept:** `npm run -w @plinth/web test -- data`: every new function returns schema-valid data for every new expected key; the supabase adapter calls `api.create_upload` and then the `doc-check` route (mocked fetch); a spy proves `beforeYouPayCheck` never puts the account number in a URL, log line or cache key; the fixture poll reaches `done` within 4 polls.
+
+#### T66 · App data layer: checks and calculators
+- **Owns:** `apps/mobile/lib/data/**` and `apps/mobile/test/data/**` (T17 → T66, for the M3 additions).
+- **Depends:** T17; T48 (#81) merged first if it still edits `lib/data`. Soft: T61, T62.
+- **Inputs:** API_CONTRACTS §1, §3.2, §3.5, §4.12–§4.14; pet_app `data/session.dart`; T17's repositories and `fixture_providers.dart`.
+- **Build:** `ChecksRepository` (upload through the signed URL with retry, start, a poll stream, confirm, save, my checks, cost variants, adviser request, report error), `CalculatorsRepository` (`costBreakdown`, `affordTheWait`, `beforeYouPayCheck`), `BookingsRepository` (`bookingSave`, `receiptAdd`), each with Fixture and Supabase implementations and Riverpod providers. Checks are online-only: an offline upload waits with a clear state, and the SyncQueue never holds a payee check (the account number stays in memory only).
+- **Accept:** `flutter test test/data`: fixture repositories return contract models for every new key; the poll stream reaches `done`; a test proves the payee request is never written to shared_preferences or the offline cache; Supabase repositories call the right `api` names and the `doc-check` route (fake client).
+
+#### T67 · Check cards: claims, payee and stage
+- **Owns:** `apps/web/src/features/cards/{claims-card,payee-card,stage-card}.tsx`, `apps/web/src/features/cards/cost-card.tsx` (T27 → T67, aligned to WaCost), the card-kind registry lines in `apps/web/app/cards/[...card]/route.ts` (T27 → T67, those lines only), `apps/web/test/cards/checks/**`.
+- **Depends:** T27. Soft: T61, T62 (`expected/doc_check_card`), T68 (`api.doc_check_card` for live mode).
+- **Inputs:** WaClaims.dc.html, WaCost.dc.html, WaBeforePay.dc.html (the card frames); whatsapp.md "card system"; FOUNDER_QUESTIONS P5 (greeked flyer image, live type over it); BUILD_PLAN §12.7.
+- **Build:** `next/og` cards at 1080×1350: claims (the summary line, the flyer thumbnail with verdict tags at each claim's bbox, at most 3 Says / Records rows, the source line), payee (matched of 3, three rows, "HARERA shows"), stage (the summary line, the letter slab against the filed slab on a tower bar), and the cost card aligned to WaCost. URLs are `/cards/{claims,payee,stage,cost}/<check_id>.<token>.png`: the token is an HMAC that `api.doc_check` issues to the owner, and `api.doc_check_card(p_id, p_token)` returns summary-only data, so no secret key reaches `apps/`. Never the file, never more than the last 4 digits of an account.
+- **Accept:** `npm run -w @plinth/web test -- cards`: exact PNG dimensions; snapshot hashes within tolerance; alt text equals `share.card_alt`; a wrong token gives 404; a scan of every rendered text node finds no run of more than 4 digits from an account; the copy lint passes.
+
 ---
 
 ## 5. Ownership summary for shared areas
