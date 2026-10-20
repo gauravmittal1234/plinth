@@ -13,6 +13,7 @@ import {
   deferForQuietHours,
   type DispatchDeps,
   dispatchHandler,
+  isTestBlockNumber,
   MAX_ATTEMPTS,
   type ResolveOutcome,
 } from "./logic.ts";
@@ -109,6 +110,24 @@ Deno.test("chooseWhatsAppChannel: exactly 24h ago → template (the window is a 
   const now = new Date("2026-10-18T12:00:00Z");
   const lastInbound = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
   assertEquals(chooseWhatsAppChannel(lastInbound, now), "whatsapp_template");
+});
+
+// ---------------------------------------------------------------------------
+// INTEGRATION_NOTES "T42/T44: outbound SMS and WhatsApp adapters refuse the test block
+// +91 99000 003NN in every environment."
+// ---------------------------------------------------------------------------
+
+Deno.test("isTestBlockNumber: matches the whole +91 99000 003NN block, however formatted", () => {
+  assertEquals(isTestBlockNumber("+919900000318"), true); // Rohan's fixture number
+  assertEquals(isTestBlockNumber("919900000300"), true); // NN = 00
+  assertEquals(isTestBlockNumber("9900000399"), true); // NN = 99, no country code
+  assertEquals(isTestBlockNumber("+91 99000 00318"), true); // with the brief's spacing
+  assertEquals(isTestBlockNumber("+91-9900-000-318"), true); // dashes
+});
+
+Deno.test("isTestBlockNumber: a neighbouring real-shaped number is not in the block", () => {
+  assertEquals(isTestBlockNumber("+919900000418"), false); // 99000004NN, not 003NN
+  assertEquals(isTestBlockNumber("+919811122233"), false);
 });
 
 // ---------------------------------------------------------------------------
@@ -479,6 +498,31 @@ Deno.test("dispatchHandler: a contact who replied STOP is suppressed, not sent",
   });
   await dispatchHandler(deps)(fakeRequest("outbox-dispatch", { method: "POST" }), {} as never);
   assertEquals(deps.resolved[0]!.outcome, { outcome: "suppressed", error: "contact replied STOP" });
+});
+
+Deno.test("dispatchHandler: a test-block WhatsApp number is refused, even in mock mode", async () => {
+  let sendCalled = false;
+  const deps = fakeDeps({
+    claimDue: () =>
+      Promise.resolve([row({ id: "w1", channel: "whatsapp_session", contact_id: "c1" })]),
+    getWaContact: () =>
+      Promise.resolve({
+        wa_id_e164: "+919900000318", // Rohan's fixture number, inside the test block
+        last_inbound_at: new Date().toISOString(),
+        utility_opt_in: true,
+        stopped_at: null,
+      }),
+    sendWhatsApp: () => {
+      sendCalled = true;
+      return Promise.resolve({ ok: true, providerMessageId: "wamid.1", mock: true });
+    },
+  });
+  await dispatchHandler(deps)(fakeRequest("outbox-dispatch", { method: "POST" }), {} as never);
+  assertEquals(sendCalled, false);
+  assertEquals(deps.resolved[0]!.outcome, {
+    outcome: "suppressed",
+    error: "refused: test block number (+91 99000 003NN)",
+  });
 });
 
 Deno.test("dispatchHandler: a failed send is scheduled for retry with backoff, not marked failed at attempt 0", async () => {

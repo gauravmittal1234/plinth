@@ -146,6 +146,21 @@ export function dedupeBatch(rows: readonly ClaimedRow[]): DedupeResult {
 }
 
 // ---------------------------------------------------------------------------
+// The test block (INTEGRATION_NOTES "T42/T44: outbound SMS and WhatsApp adapters refuse the
+// test block +91 99000 003NN in every environment"). These are the fixture phone numbers used
+// across the whole product (e.g. Rohan's +919900000318, packages/fixtures/canonical/people.json)
+// — a real send to one is always refused, fixture mode included, so a misconfigured deploy can
+// never message them for real.
+// ---------------------------------------------------------------------------
+
+const TEST_BLOCK_RE = /^(?:91)?99000003\d{2}$/;
+
+/** True for any +91 99000 003NN number, however it is formatted (spaces, dashes, +91 or 91). */
+export function isTestBlockNumber(phone: string): boolean {
+  return TEST_BLOCK_RE.test(phone.replace(/[^0-9]/g, ""));
+}
+
+// ---------------------------------------------------------------------------
 // WhatsApp: template vs. session (API_CONTRACTS §5.2 "a session message is sent only if
 // last_inbound_at is within 24h; otherwise an approved utility template is sent").
 // ---------------------------------------------------------------------------
@@ -382,6 +397,9 @@ async function dispatchWhatsApp(deps: DispatchDeps, row: ClaimedRow): Promise<Re
     return { outcome: "suppressed", error: "no pii.wa_contacts row for this contact_id" };
   }
   if (contact.stopped_at) return { outcome: "suppressed", error: "contact replied STOP" };
+  if (isTestBlockNumber(contact.wa_id_e164)) {
+    return { outcome: "suppressed", error: "refused: test block number (+91 99000 003NN)" };
+  }
 
   const channel = chooseWhatsAppChannel(contact.last_inbound_at, deps.now());
   let body: Record<string, unknown>;
@@ -446,6 +464,8 @@ async function dispatchOne(deps: DispatchDeps, row: ClaimedRow): Promise<Resolve
     case "email":
       return dispatchEmail(deps, row);
     case "sms":
+      // Not built in R1 (WORK_BREAKDOWN T42 only routes push, whatsapp and email). When it is,
+      // it must call isTestBlockNumber on the destination first (INTEGRATION_NOTES T42/T44).
       return { outcome: "suppressed", error: "sms is not built in R1" };
   }
 }
