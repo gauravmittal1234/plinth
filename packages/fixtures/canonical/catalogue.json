@@ -1955,6 +1955,20 @@
       "latest_order_on": "2026-10-09",
       "previous_count": 13,
       "units_history": null,
+      "count_history": [
+        {
+          "as_of": "2026-09-30",
+          "count": 13,
+          "per_100_units": 2.6,
+          "source": "DESIGN §5b (Aurelia complaints 13 → 14, latest order 9 Oct 2026); rate derived: 13 per 500 units"
+        },
+        {
+          "as_of": "2026-10-09",
+          "count": 14,
+          "per_100_units": 2.8,
+          "source": "DESIGN §5b"
+        }
+      ],
       "source": "DESIGN §5b; DESIGN §5b · Fixture decisions, round 2 (C-11)",
       "window_to": "2026-10-14"
     },
@@ -1970,6 +1984,7 @@
       "previous_count": null,
       "units_history": null,
       "source": "DESIGN §5b",
+      "count_history": null,
       "window_to": "2026-10-14"
     },
     {
@@ -1984,6 +1999,7 @@
       "previous_count": null,
       "units_history": null,
       "source": "DESIGN §5b",
+      "count_history": null,
       "window_to": "2026-10-14"
     },
     {
@@ -2008,6 +2024,7 @@
         }
       ],
       "source": "DESIGN §5b (24 complaints, 0.7 per 100 units); units base DESIGN §5b · Fixture decisions, round 2 (C-12)",
+      "count_history": null,
       "window_to": "2026-10-14"
     }
   ],

@@ -1,0 +1,48 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "rohan": {
+      "p_prefs": {
+        "push": {
+          "band_change": "instant",
+          "filings": "instant"
+        },
+        "whatsapp": {
+          "band_change": "instant",
+          "digest": "weekly_sun_9am"
+        },
+        "quiet_hours": {
+          "from": "22:00",
+          "to": "08:00"
+        }
+      },
+      "p_client_id": "72c06d6d-8d0c-5019-b875-83a8daff416b",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      }
+    },
+    "rohan--weekly-off": {
+      "p_prefs": {
+        "push": {
+          "band_change": "instant",
+          "filings": "instant"
+        },
+        "whatsapp": {
+          "band_change": "instant",
+          "digest": "off"
+        },
+        "quiet_hours": {
+          "from": "22:00",
+          "to": "08:00"
+        }
+      },
+      "p_client_id": "6dbaf595-26c6-5b27-9745-85569f2c313d",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Stop weekly: band changes still come."
+    }
+  }
+}

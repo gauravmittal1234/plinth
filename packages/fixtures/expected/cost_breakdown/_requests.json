@@ -1,0 +1,17 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "aurelia-heights-phase-2": {
+      "p_slug": "aurelia-heights-phase-2",
+      "p_unit": "3 BHK",
+      "p_buyer": "male",
+      "p_waive": []
+    },
+    "aurelia-heights-phase-2--waive-plc-club": {
+      "p_slug": "aurelia-heights-phase-2",
+      "p_unit": "3 BHK",
+      "p_buyer": "male",
+      "p_waive": ["plc", "club"]
+    }
+  }
+}

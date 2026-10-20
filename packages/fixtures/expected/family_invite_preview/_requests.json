@@ -1,0 +1,11 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "AH2-7KQ": {
+      "p_code": "AH2-7KQ"
+    },
+    "RC4-2MW": {
+      "p_code": "RC4-2MW"
+    }
+  }
+}

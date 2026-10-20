@@ -1,0 +1,42 @@
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "100000000000000",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "910000000000",
+              "phone_number_id": "100000000000001"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Kavya Nair"
+                },
+                "wa_id": "919900000321"
+              }
+            ],
+            "messages": [
+              {
+                "from": "919900000321",
+                "id": "wamid.fixture.3d0744f5-0424-50e2-81e3-487355e68d5a",
+                "timestamp": "1792305000",
+                "type": "document",
+                "document": {
+                  "filename": "NE-AH2-A-1104-12.pdf",
+                  "mime_type": "application/pdf",
+                  "sha256": "f1b6c3f06c835103a73e76c5d001d23c",
+                  "id": "273116407054922"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}

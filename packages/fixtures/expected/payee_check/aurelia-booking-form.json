@@ -1,0 +1,42 @@
+{
+  "schema": "plinth.payee_check/1",
+  "payee": {
+    "matched": 3,
+    "of": 3,
+    "verdict": "matches",
+    "verdict_line": "Matches the account registered with HARERA",
+    "rows": [
+      {
+        "field": "payee_name",
+        "entered_line": "Northfield Estates Pvt Ltd",
+        "registered_line": "Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd",
+        "result": "matches"
+      },
+      {
+        "field": "account",
+        "entered_line": "ending 4417",
+        "registered_line": "ending 4417",
+        "result": "matches"
+      },
+      {
+        "field": "ifsc",
+        "entered_line": "PEPL0000418 · Peepal Bank",
+        "registered_line": "PEPL0000418 · Peepal Bank",
+        "result": "matches"
+      }
+    ],
+    "advice": []
+  },
+  "cap": {
+    "limit_inr": 2442000,
+    "limit_label": "₹24.4 L",
+    "basis_line": "10% of ₹2.44 Cr (base + charges, cost sheet of 2 Oct 2026), RERA s.13",
+    "within": true,
+    "line": "₹11,00,000 is within the ₹24.4 L limit before a registered agreement."
+  },
+  "method": {
+    "ok": true,
+    "line": null
+  },
+  "never_line": "Plinth never takes, holds or moves your money."
+}

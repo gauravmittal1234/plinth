@@ -1,0 +1,38 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "flyer": {
+      "p_id": "9764ce45-f950-537c-8fe9-0e85d45c239f"
+    },
+    "flyer--confirm-project": {
+      "p_id": "9764ce45-f950-537c-8fe9-0e85d45c239f",
+      "state": "confirm_project",
+      "note": "Design state: before the buyer confirms the project (nothing is checked yet)."
+    },
+    "hoarding": {
+      "p_id": "d12ab48e-e721-521a-9248-e5b7adcd46ad"
+    },
+    "demand-letter": {
+      "p_id": "b067e9cf-9fb2-5421-987b-21d49aac0304",
+      "as": {
+        "user": "kavya-nair",
+        "user_id": "447abb24-4ceb-585d-b075-ce3536388b41"
+      }
+    },
+    "payment-request": {
+      "p_id": "36ab2a7a-8513-5241-9905-d8f02d56aab1"
+    },
+    "booking-form": {
+      "p_id": "750f1165-e668-5556-98dd-4c83a116726f"
+    },
+    "visit-recap": {
+      "p_id": "2ad2a3e0-ebc0-5a01-9c49-a78fe3634e78",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "state": "illustrative",
+      "note": "Illustrative visit-day frame of Sat 24 Oct 2026 (DESIGN §5b); not reachable at the fixture clock."
+    }
+  }
+}

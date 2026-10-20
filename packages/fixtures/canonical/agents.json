@@ -1,0 +1,280 @@
+{
+  "schema": "plinth.fixtures.agents/1",
+  "note": "The broker layer (M5): the agent registry, Larkspur's briefs, the agent of record, closings, a mandate and the resale societies. The agent-number format is a placeholder to confirm (DESIGN §5b). Money rows are R2 and illustrative: no broker money flows before counsel signs off. Owner: T03b. Generated; edit src/author.",
+  "agents": [
+    {
+      "id": "ef484441-3db2-51ab-9e09-1c3773d1b69b",
+      "slug": "larkspur-realty",
+      "name": "Larkspur Realty",
+      "kind": "firm",
+      "principal": "priya-khanna",
+      "rera_agent_no": "RC/REA/HARERA/GGM/2023/487",
+      "authority": "harera_ggm",
+      "valid_to": "2028-06-21",
+      "status": "active",
+      "office_locality": "sector-102",
+      "verified_since": "2026-04-06",
+      "badge_since": "2026-09-01",
+      "verified_reviews": 17,
+      "partner": null,
+      "source": "DESIGN §5b · Agents"
+    },
+    {
+      "id": "b00bd17c-08dd-55a9-abd3-0df83e86fc55",
+      "slug": "kabir-malhotra",
+      "name": "Kabir Malhotra",
+      "kind": "individual",
+      "principal": "kabir-malhotra",
+      "rera_agent_no": "GGM/2024/1187",
+      "authority": "harera_ggm",
+      "valid_to": null,
+      "status": "active",
+      "office_locality": null,
+      "verified_since": "2026-10-18",
+      "badge_since": null,
+      "verified_reviews": null,
+      "partner": null,
+      "source": "DESIGN §5b · Agents"
+    },
+    {
+      "id": "421784dc-ca27-5762-99c2-59294bbe730b",
+      "slug": "arora-estates",
+      "name": "Arora Estates",
+      "kind": null,
+      "principal": null,
+      "rera_agent_no": "GGM/2026/1342",
+      "authority": "harera_ggm",
+      "valid_to": null,
+      "status": "active",
+      "office_locality": null,
+      "verified_since": null,
+      "badge_since": null,
+      "verified_reviews": null,
+      "partner": null,
+      "source": "DESIGN §5b · Agents"
+    },
+    {
+      "id": "317da1f0-39eb-5356-b82d-e5f58added46",
+      "slug": "bluegate-homes",
+      "name": "Bluegate Homes",
+      "kind": null,
+      "principal": null,
+      "rera_agent_no": "GGM/2022/233",
+      "authority": "harera_ggm",
+      "valid_to": null,
+      "status": "active",
+      "office_locality": null,
+      "verified_since": null,
+      "badge_since": null,
+      "verified_reviews": null,
+      "partner": false,
+      "source": "DESIGN §5b · Agents"
+    },
+    {
+      "id": "b56b1378-d532-56dd-acb1-88392aa16a9b",
+      "slug": "northgate-realtors",
+      "name": "Northgate Realtors",
+      "kind": null,
+      "principal": null,
+      "rera_agent_no": null,
+      "authority": "harera_ggm",
+      "valid_to": "2026-06-30",
+      "status": "ended",
+      "office_locality": null,
+      "verified_since": null,
+      "badge_since": null,
+      "verified_reviews": null,
+      "partner": null,
+      "source": "DESIGN §5b · Agents"
+    },
+    {
+      "id": "cd594ce1-a2e6-5c09-a51c-ddd05d5d6b75",
+      "slug": "meadowline-realty",
+      "name": "Meadowline Realty",
+      "kind": null,
+      "principal": null,
+      "rera_agent_no": null,
+      "authority": "up_rera",
+      "valid_to": null,
+      "status": "active",
+      "office_locality": null,
+      "verified_since": null,
+      "badge_since": null,
+      "verified_reviews": null,
+      "partner": null,
+      "source": "DESIGN §5b · Agents"
+    }
+  ],
+  "agent_of_record": [
+    {
+      "id": "7b6d6e7d-327b-5dea-8ced-08def6dbc4b2",
+      "buyer": "rohan",
+      "phase": "kestrel-park",
+      "agent": "larkspur-realty",
+      "consent": "C-1012-05",
+      "set_at": "2026-10-12T00:00:00+05:30",
+      "source": "DESIGN §5b · Who has my number (Larkspur, your agent of record for Kestrel Park)"
+    }
+  ],
+  "briefs": [
+    {
+      "id": "47f715f4-5f89-5366-af33-b1a817bb8074",
+      "agent": "larkspur-realty",
+      "buyer": "ishita",
+      "phase": "aurelia-heights-phase-2",
+      "society": null,
+      "consent": "C-1017-09",
+      "visit_on": null,
+      "window_to": null,
+      "ended_on": null,
+      "source": "DESIGN §5b · Agents (Larkspur's briefs)"
+    },
+    {
+      "id": "e3dec772-c83d-5896-aba4-cf34c46ef196",
+      "agent": "larkspur-realty",
+      "buyer": "rohan",
+      "phase": "kestrel-park",
+      "society": null,
+      "consent": "C-1012-04",
+      "visit_on": null,
+      "window_to": null,
+      "ended_on": null,
+      "source": "DESIGN §5b · Agents (Larkspur's briefs)"
+    },
+    {
+      "id": "f3e69de5-bb1c-5d71-9e1d-8cb0b4906d1c",
+      "agent": "larkspur-realty",
+      "buyer": "rohan",
+      "phase": "kestrel-park",
+      "society": null,
+      "consent": "C-1012-05",
+      "visit_on": null,
+      "window_to": null,
+      "ended_on": null,
+      "source": "DESIGN §5b · Agents (Larkspur's briefs)"
+    },
+    {
+      "id": "b5cb38a3-37e4-5547-8eca-9f8172479523",
+      "agent": "larkspur-realty",
+      "buyer": "meera",
+      "phase": null,
+      "society": "Cobalt Square",
+      "consent": "C-1007-04",
+      "visit_on": "2026-10-09",
+      "window_to": "2026-12-08",
+      "ended_on": null,
+      "source": "DESIGN §5b · Agents (Larkspur's briefs)"
+    },
+    {
+      "id": "58d9a443-a986-5347-8b2f-c473747d64a8",
+      "agent": "larkspur-realty",
+      "buyer": "tanvi",
+      "phase": "sapphire-grove-phase-1",
+      "society": null,
+      "consent": "C-1002-02",
+      "visit_on": null,
+      "window_to": null,
+      "ended_on": "2026-10-14",
+      "source": "DESIGN §5b · Agents (Larkspur's briefs)"
+    }
+  ],
+  "closings": [
+    {
+      "id": "bc98b464-909d-52fe-acc7-dedd757ebd61",
+      "agent": "larkspur-realty",
+      "society": "Cobalt Square",
+      "unit_label": "2 BHK",
+      "closed_on": "2026-07-14",
+      "found_on_plinth": true,
+      "plinth_share_pct": 20,
+      "plinth_share_inr": 31000,
+      "release": "R2",
+      "source": "DESIGN §5b · Agents (Plinth's 20% share ₹31,000; split rules v1 are a draft)"
+    },
+    {
+      "id": "4d37d1e4-6eeb-5645-8027-2fea73be62d4",
+      "agent": "larkspur-realty",
+      "society": "Larchwood Residency",
+      "unit_label": "3 BHK",
+      "closed_on": "2026-08-28",
+      "found_on_plinth": false,
+      "deal_value_inr": 22400000,
+      "fee_pct": 1,
+      "agent_share_pct": 75,
+      "agent_share_inr": 168000,
+      "paid_on": "2026-09-03",
+      "release": "R2",
+      "source": "DESIGN §5b · Agents (desk deal: 1% of ₹2.24 Cr; Larkspur 75% = ₹1,68,000; paid 3 Sep)"
+    }
+  ],
+  "mandates": [
+    {
+      "id": "16db7f43-99df-56c8-944a-d2e32e438cdf",
+      "agent": "arora-estates",
+      "society": "Amberwood Greens",
+      "unit_no": "T4-902",
+      "unit_label": "3 BHK",
+      "carpet_sqft": 1210,
+      "price_inr": 24500000,
+      "owner_otp_on": "2026-10-18",
+      "valid_to": "2027-01-16",
+      "release": "R2",
+      "source": "DESIGN §5b · Agents"
+    }
+  ],
+  "resale_societies": [
+    {
+      "id": "51ca4e55-6550-5e82-b989-a92628a282f2",
+      "name": "Amberwood Greens",
+      "sector": "Sector 66",
+      "source": "DESIGN §5b · Agents (resale societies, fictional)"
+    },
+    {
+      "id": "518b4df9-b243-5e34-ad43-0b4b106de50b",
+      "name": "Wrenfield Towers",
+      "sector": "Sector 65",
+      "source": "DESIGN §5b · Agents (resale societies, fictional)"
+    },
+    {
+      "id": "5b035aea-1615-53be-94c0-fce81aa9a46f",
+      "name": "Palisade Court",
+      "sector": "Sector 62",
+      "source": "DESIGN §5b · Agents (resale societies, fictional)"
+    },
+    {
+      "id": "1107312f-d67f-5880-8556-6b63ce4ac766",
+      "name": "Saffron Crest",
+      "sector": "Sector 70A",
+      "source": "DESIGN §5b · Agents (resale societies, fictional)"
+    },
+    {
+      "id": "36e90201-42b0-5b15-93d5-dce42b476861",
+      "name": "Cobalt Square",
+      "sector": "Sector 104",
+      "source": "DESIGN §5b · Agents (resale societies, fictional)"
+    },
+    {
+      "id": "7bd82929-1133-5a8a-a0e5-34ad59d243b8",
+      "name": "Larchwood Residency",
+      "sector": "Sector 109",
+      "source": "DESIGN §5b · Agents (resale societies, fictional)"
+    },
+    {
+      "id": "2ae25688-576e-529b-82c7-1168968374c7",
+      "name": "Marigold Enclave",
+      "sector": "Sector 82",
+      "source": "DESIGN §5b · Agents (resale societies, fictional)"
+    },
+    {
+      "id": "70a572d7-7d41-523b-85c4-a500ea15f1ad",
+      "name": "Hollybrook Residency",
+      "sector": "Sector 49",
+      "source": "DESIGN §5b · Agents (resale societies, fictional)"
+    }
+  ],
+  "split_rules": {
+    "status": "draft",
+    "line": "Split rules v1 are a draft. No broker money flows before counsel signs off and Plinth is HARERA-registered.",
+    "source": "DESIGN §5b · Agents"
+  }
+}

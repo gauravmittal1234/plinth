@@ -278,6 +278,7 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
   const sourceLabel = (f) => {
     switch (f.attribute) {
       case "qpr.progress":
+      case "qpr.tower_slabs":
         return `HARERA QPR · ${fmtQuarter(f.value.quarter)}`;
       case "qpr.filing_record":
       case "qpr.filing_status":
@@ -2126,6 +2127,8 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
   });
 
   return {
+    // Shared with the T03b expected outputs (expected_b.mjs), so both use one copy rule.
+    helpers: { run, chipFor, freqShort, sourceRefKeys, costOf, affordOf, shareOf },
     riskSummary,
     projectPage,
     evidence,

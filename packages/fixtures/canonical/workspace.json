@@ -1,0 +1,422 @@
+{
+  "schema": "plinth.fixtures.workspace/1",
+  "note": "Northfield's developer workspace (ws.*, M4): org, team, site office, inbox, disputes, legal intake, Live Record, notices. Facts keys in `facts` are evidence keys. Owner: T03b. Generated; edit src/author.",
+  "orgs": [
+    {
+      "id": "a3789e36-f6a8-5e75-b050-79d39f37193d",
+      "kind": "developer",
+      "group": "northfield-estates",
+      "name": "Northfield Estates",
+      "invited_on": "2025-11-24",
+      "claimed_on": "2025-12-02",
+      "covers": ["heronstone-projects"],
+      "signatory": "ananya-rao",
+      "signatory_verified_at": null,
+      "source": "DESIGN §5b · Developer onboarding and capture (invited 24 Nov 2025, claimed 2 Dec 2025); DESIGN §5b · Project pages, round 2 (the claim covers Heronstone Projects)"
+    },
+    {
+      "id": "a178c305-2026-571c-a945-58acc7dcb26a",
+      "kind": "developer",
+      "group": "ashgrove-realty",
+      "name": "Ashgrove Realty",
+      "invited_on": "2026-10-16",
+      "claimed_on": null,
+      "covers": [],
+      "signatory": null,
+      "signatory_verified_at": null,
+      "example_phase_name": "Ashgrove Meadows Ph 1",
+      "source": "DESIGN §5b · Developer onboarding and capture (invited 16 Oct 2026, not yet claimed; the onboarding example)"
+    }
+  ],
+  "members": [
+    {
+      "id": "0d7122b0-c959-5b9b-a946-2b0998b9b95a",
+      "org": "northfield-estates",
+      "user": "ananya-rao",
+      "user_id": "6250f35f-2fc1-5f3e-b446-535b3fdf5b76",
+      "role": "admin",
+      "display_name": "Ananya Rao",
+      "line": "Admin, authorised signatory",
+      "authorised_signatory": true,
+      "invited_at": null,
+      "accepted_at": null,
+      "whatsapp_alerts": null,
+      "source": "DESIGN §5b · Developer workspace (team)"
+    },
+    {
+      "id": "23fdc659-cab4-59f3-99ad-29107195b25c",
+      "org": "northfield-estates",
+      "user": "vikram-sethi",
+      "user_id": "c57703fa-6293-5516-9ce9-bafff797a61b",
+      "role": "sales",
+      "display_name": "Vikram Sethi",
+      "line": "Sales",
+      "authorised_signatory": false,
+      "invited_at": null,
+      "accepted_at": null,
+      "whatsapp_alerts": null,
+      "source": "DESIGN §5b · Developer workspace (team)"
+    },
+    {
+      "id": "f28f1aad-b4bb-5968-8ded-bb1f4d58200b",
+      "org": "northfield-estates",
+      "user": "neha-kapoor",
+      "user_id": "f9bcb772-b9f8-5065-be17-86a65248c52a",
+      "role": "compliance",
+      "display_name": "Neha Kapoor",
+      "line": "Compliance",
+      "authorised_signatory": false,
+      "invited_at": null,
+      "accepted_at": null,
+      "whatsapp_alerts": null,
+      "source": "DESIGN §5b · Developer workspace (team)"
+    },
+    {
+      "id": "59042eb4-1ff9-5795-ae58-279800bc604c",
+      "org": "northfield-estates",
+      "user": "arjun-mehta",
+      "user_id": "2e6920fd-32f9-5c14-b6eb-7d5cba3be6c1",
+      "role": "marketing",
+      "display_name": "Arjun Mehta",
+      "line": "Marketing",
+      "authorised_signatory": false,
+      "invited_at": null,
+      "accepted_at": null,
+      "whatsapp_alerts": null,
+      "source": "DESIGN §5b · Developer workspace (team)"
+    },
+    {
+      "id": "c837f282-2f6e-5684-81ad-b60e2004708f",
+      "org": "northfield-estates",
+      "user": "pradeep-yadav",
+      "user_id": "f919c01c-e147-5b5f-b262-01ba9075b6fb",
+      "role": "site",
+      "display_name": "Pradeep Yadav",
+      "line": "Site, Sector 37D sales gallery",
+      "authorised_signatory": false,
+      "invited_at": null,
+      "accepted_at": null,
+      "whatsapp_alerts": null,
+      "source": "DESIGN §5b · Developer workspace (team)"
+    }
+  ],
+  "site_offices": [
+    {
+      "id": "b991e31b-7cff-5db9-88b1-b2fce209cad7",
+      "org": "northfield-estates",
+      "phase": "aurelia-heights-phase-2",
+      "name": "Sector 37D sales gallery",
+      "member": "pradeep-yadav",
+      "source": "DESIGN §5b · Developer workspace (Pradeep Yadav, Site, Sector 37D sales gallery); DESIGN §5b · Site-visit co-pilot and Pay-as-built (visit at the sales gallery)"
+    }
+  ],
+  "inbox": [
+    {
+      "id": "8bd6aa27-7372-5cc2-9c69-3d841c23f975",
+      "buyer": "rohan",
+      "kind": "visit",
+      "phase": "aurelia-heights-phase-2",
+      "record_line": "Aurelia visit, Sat 24 Oct, 11 am, code 4821",
+      "slot_at": "2026-10-24T11:00:00+05:30",
+      "code": "4821",
+      "on": null,
+      "agent": null,
+      "agent_line": "none",
+      "consent": "C-1018-11",
+      "number_shared": false,
+      "replied_on": null,
+      "sent_ahead": [
+        "Can I see the HARERA receipt for the Jul–Sep 2026 QPR?",
+        "Which charges on the cost sheet are optional?"
+      ],
+      "source": "DESIGN §5b · Developer workspace (inbox); DESIGN §5b · Site-visit co-pilot and Pay-as-built (the two sent-ahead questions)"
+    },
+    {
+      "id": "eeeb2f1e-8bdf-5b0f-a90e-1deb5f98b8d3",
+      "buyer": "aman",
+      "kind": "visit",
+      "phase": "aurelia-heights-phase-2",
+      "record_line": "Aurelia visit, Sat 24 Oct, 3 pm, code 5190",
+      "slot_at": "2026-10-24T15:00:00+05:30",
+      "code": "5190",
+      "on": null,
+      "agent": null,
+      "agent_line": null,
+      "consent": "C-1017-03",
+      "number_shared": false,
+      "replied_on": null,
+      "sent_ahead": [],
+      "source": "DESIGN §5b · Developer workspace (inbox)"
+    },
+    {
+      "id": "987482e3-82f7-573e-a19a-c393f89ec6ad",
+      "buyer": "nisha",
+      "kind": "visit",
+      "phase": "cedar-walk-phase-2",
+      "record_line": "Cedar Walk Ph 2 visit, Sun 25 Oct, 4 pm, code 3376",
+      "slot_at": "2026-10-25T16:00:00+05:30",
+      "code": "3376",
+      "on": null,
+      "agent": "bluegate-homes",
+      "agent_line": "Bluegate Homes",
+      "consent": "C-1017-05",
+      "number_shared": false,
+      "replied_on": null,
+      "sent_ahead": [],
+      "source": "DESIGN §5b · Developer workspace (inbox)"
+    },
+    {
+      "id": "1b2e1a75-2007-5eab-bca1-6b3a9434d647",
+      "buyer": "ishita",
+      "kind": "enquiry",
+      "phase": "aurelia-heights-phase-2",
+      "record_line": "3 BHK price-list enquiry, 17 Oct",
+      "slot_at": null,
+      "code": null,
+      "on": "2026-10-17",
+      "agent": "larkspur-realty",
+      "agent_line": "Larkspur Realty",
+      "consent": "C-1017-06",
+      "number_shared": false,
+      "replied_on": null,
+      "sent_ahead": [],
+      "source": "DESIGN §5b · Developer workspace (inbox); phase derived: Larkspur's brief for Ishita is Aurelia (C-1017-09)"
+    },
+    {
+      "id": "ee8cc0d6-0511-5af8-bf54-87e23cdd1207",
+      "buyer": "farah",
+      "kind": "enquiry",
+      "phase": "cedar-walk-phase-2",
+      "record_line": "Cedar Walk payment-plan enquiry, 16 Oct",
+      "slot_at": null,
+      "code": null,
+      "on": "2026-10-16",
+      "agent": null,
+      "agent_line": null,
+      "consent": "C-1016-04",
+      "number_shared": false,
+      "replied_on": null,
+      "sent_ahead": [],
+      "source": "DESIGN §5b · Developer workspace (inbox)"
+    },
+    {
+      "id": "a4f681d9-eec9-5f28-ac47-db7086606d91",
+      "buyer": "kabir",
+      "kind": "visit_done",
+      "phase": null,
+      "record_line": "Visited 16 Oct; shared his number by his own tap",
+      "slot_at": null,
+      "code": null,
+      "on": "2026-10-16",
+      "agent": null,
+      "agent_line": null,
+      "consent": "C-1016-08",
+      "number_shared": true,
+      "replied_on": null,
+      "sent_ahead": [],
+      "source": "DESIGN §5b · Developer workspace (inbox)"
+    },
+    {
+      "id": "957ba83f-d9d4-5d95-97c3-46929901a391",
+      "buyer": "dev",
+      "kind": "enquiry",
+      "phase": "aurelia-heights-phase-2",
+      "record_line": "4 BHK enquiry, 15 Oct; replied 16 Oct",
+      "slot_at": null,
+      "code": null,
+      "on": "2026-10-15",
+      "agent": null,
+      "agent_line": null,
+      "consent": "C-1015-07",
+      "number_shared": false,
+      "replied_on": "2026-10-16",
+      "sent_ahead": [],
+      "source": "DESIGN §5b · Developer workspace (inbox)"
+    }
+  ],
+  "disputes": [
+    {
+      "id": "5d4f89f6-e65c-5c72-b50c-ddac9bf83bb8",
+      "ref": "D-097",
+      "lane": "dispute",
+      "phase": "aurelia-heights-phase-2",
+      "facts": ["aurelia-heights-phase-2/registration"],
+      "about": "Registration month shown as Jan 2023",
+      "raised_on": "2026-01-12",
+      "status": "upheld",
+      "outcome_line": "Upheld; corrected to Dec 2022 (decided 28 Jan)",
+      "decided_on": "2026-01-28",
+      "sla_due": null,
+      "source": "DESIGN §5b · Final sweep rulings (19 Oct 2026) (dispute and clerical log)"
+    },
+    {
+      "id": "d93d478a-d06a-5c7b-9229-14e52b71fa23",
+      "ref": "D-104",
+      "lane": "dispute",
+      "phase": "aurelia-heights-phase-2",
+      "facts": ["aurelia-heights-phase-2/qpr-register"],
+      "about": "Oct–Dec 2025 QPR marked late",
+      "raised_on": "2026-02-26",
+      "status": "rejected",
+      "outcome_line": "Not upheld, decided in 11 working days",
+      "decided_on": null,
+      "sla_due": null,
+      "source": "DESIGN §5b · Final sweep rulings (19 Oct 2026) (dispute and clerical log)"
+    },
+    {
+      "id": "b7315873-d852-5862-bc0c-02f276d0036b",
+      "ref": "D-118",
+      "lane": "dispute",
+      "phase": "aurelia-heights-phase-2",
+      "facts": [
+        "aurelia-heights-phase-2/qpr/2026-Q2/status",
+        "aurelia-heights-phase-2/qpr-register"
+      ],
+      "about": "Apr–Jun 2026 QPR marked late",
+      "raised_on": "2026-08-14",
+      "status": "upheld",
+      "outcome_line": "Upheld: it was filed 15 Jul 2026, on time",
+      "decided_on": "2026-09-03",
+      "sla_due": null,
+      "source": "DESIGN §5b · Final sweep rulings (19 Oct 2026) (dispute and clerical log); dates DESIGN §5b · Fixture decisions, round 2 (C-14)"
+    },
+    {
+      "id": "8ed6f392-e9f5-5705-ac9d-ff3a552e74ec",
+      "ref": "CL-196",
+      "lane": "clerical",
+      "phase": null,
+      "facts": [],
+      "about": "Developer office address",
+      "raised_on": "2026-09-22",
+      "status": null,
+      "outcome_line": "Fixed the same day",
+      "decided_on": "2026-09-22",
+      "sla_due": null,
+      "source": "DESIGN §5b · Final sweep rulings (19 Oct 2026) (dispute and clerical log)"
+    },
+    {
+      "id": "b4ed9bdc-dfd0-57b1-9df4-8989681ee976",
+      "ref": "CL-201",
+      "lane": "clerical",
+      "phase": "aurelia-heights-phase-2",
+      "facts": ["aurelia-heights-phase-2/tower-A/floors"],
+      "about": "“Tower A shown with 21 floors”",
+      "raised_on": "2026-10-06",
+      "status": "fixed_our_error",
+      "outcome_line": "Fixed 7 Oct; our error",
+      "decided_on": "2026-10-07",
+      "sla_due": null,
+      "source": "DESIGN §5b · Final sweep rulings (19 Oct 2026) (dispute and clerical log)"
+    },
+    {
+      "id": "3d69cf97-0fd6-5a6e-b4ea-c715f6de165b",
+      "ref": "D-127",
+      "lane": "dispute",
+      "phase": "aurelia-heights-phase-2",
+      "facts": ["aurelia-heights-phase-2/complaints-24m"],
+      "about": "Complaint count, Aurelia Heights Ph 2",
+      "raised_on": "2026-10-10",
+      "status": "checking",
+      "outcome_line": "Under review",
+      "decided_on": null,
+      "sla_due": null,
+      "source": "DESIGN §5b · Final sweep rulings (19 Oct 2026) (dispute and clerical log)"
+    },
+    {
+      "id": "a2b33b4c-d2a2-5bc1-bf15-3e21342ab4bf",
+      "ref": "CL-202",
+      "lane": "clerical",
+      "phase": "aurelia-heights-phase-2",
+      "facts": ["aurelia-heights-phase-2/qpr/2026-Q3/missing"],
+      "about": "Reply to the heads-up via WhatsApp Flow (Jul–Sep QPR receipt)",
+      "raised_on": "2026-10-18",
+      "status": "received",
+      "outcome_line": "Received; we check the HARERA register by 20 Oct 2026",
+      "decided_on": null,
+      "sla_due": "2026-10-20",
+      "source": "DESIGN §5b · Final sweep rulings (19 Oct 2026) (dispute and clerical log)"
+    }
+  ],
+  "dispute_quota": {
+    "org": "northfield-estates",
+    "per_scored_phase": 6,
+    "scored_phases": ["aurelia-heights-phase-2", "cedar-walk-phase-2"],
+    "total": 12,
+    "source": "DESIGN §5b · Developer workspace (6 per scored phase, so 12 for Northfield)"
+  },
+  "legal_intakes": [
+    {
+      "id": "325face4-0895-5663-9905-48b2fd20f847",
+      "ref": "LN-031",
+      "org": "northfield-estates",
+      "kind": null,
+      "received_at": null,
+      "ack_due_line": "48 hours",
+      "pack_due_line": "5 working days",
+      "reply_due_line": "15 working days",
+      "routed_to": "counsel",
+      "source": "DESIGN §5b · Developer onboarding and capture (formal-notice intake LN-031, SLA 48 h / 5 / 15 working days)"
+    }
+  ],
+  "notices": {
+    "heads_up": "af47febe-8eff-5755-a262-e03c344a8217",
+    "pending": "6b9b0ddb-1ab4-5e94-b438-da9d0c8e4285",
+    "heads_up_line": "Heads-up sent 30 Sep 2026 for the 2 Oct Moderate → Elevated change, 48 hours before buyers saw it.",
+    "pending_line": "Elevated → High, effective 25 Oct 2026 unless the Jul–Sep QPR is on record before then.",
+    "source": "DESIGN §5b · Developer workspace (heads-up, pending notice); rows canonical/scoring.json band_notices"
+  },
+  "developer_reply": {
+    "reply": "944f86c1-af0b-5868-9d9f-16be9d905477",
+    "published_on": "2026-10-15",
+    "check_by": "2026-11-05",
+    "source": "DESIGN §5b · Developer workspace (published 15 Oct 2026; checked by 5 Nov)"
+  },
+  "live_record": {
+    "link": "c44a9a8b-3430-5131-890c-f70006fb8ac6",
+    "short_url": "https://plinth.in/r/AH2",
+    "placements": [
+      {
+        "id": "1291adf8-f745-587b-ab83-ac10ba2141d5",
+        "code": "AH2-H1",
+        "kind": "hoarding",
+        "month": "2026-10",
+        "scans": 214,
+        "source": "DESIGN §5b · Developer workspace (Live Record; October scans)"
+      },
+      {
+        "id": "92d6aced-9f93-59d5-a89e-d0bef25c242b",
+        "code": "AH2-B3",
+        "kind": "brochure",
+        "month": "2026-10",
+        "scans": 61,
+        "source": "DESIGN §5b · Developer workspace (Live Record; October scans)"
+      },
+      {
+        "id": "9bd47e8e-3cf1-570a-9cba-1946d09f4d27",
+        "code": "AH2-W",
+        "kind": "website",
+        "month": "2026-10",
+        "scans": 138,
+        "source": "DESIGN §5b · Developer workspace (Live Record; October scans)"
+      }
+    ],
+    "brand_terms_accepted_on": "2026-09-02",
+    "source": "DESIGN §5b · Developer workspace"
+  },
+  "buyer_signals": {
+    "k_min": 20,
+    "line": "Counts under 20 show as fewer than 20.",
+    "source": "DESIGN §5b · Developer onboarding and capture (buyer signals k ≥ 20)"
+  },
+  "draft_phases": [
+    {
+      "id": "e2b68ead-94d9-55ba-bb17-e220b06ea68e",
+      "org": "northfield-estates",
+      "name": "Cedar Walk Ph 3",
+      "line": "A private draft, not registered.",
+      "source": "DESIGN §5b · Developer onboarding and capture (Cedar Walk Ph 3)"
+    }
+  ],
+  "complaint_rate_line": "24 complaints · 0.7 per 100 units",
+  "complaint_rate_source": "DESIGN §5b · Developer onboarding and capture (Northfield group, 24 complaints in 24 months = 0.7 per 100 units)"
+}

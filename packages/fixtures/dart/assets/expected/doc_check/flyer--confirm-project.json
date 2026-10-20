@@ -1,0 +1,22 @@
+{
+  "schema": "plinth.doc_check/1",
+  "rules_version": "2026.10",
+  "id": "9764ce45-f950-537c-8fe9-0e85d45c239f",
+  "kind": "claims",
+  "status": "confirm_project",
+  "doc_label": "Flyer",
+  "project_match": {
+    "slug": "aurelia-heights-phase-2",
+    "method": "rera_number",
+    "confirmed": false,
+    "line": "We matched the RERA number on the flyer: GGM/673/405/2022/117."
+  },
+  "summary_line": null,
+  "breakdown_line": null,
+  "rows": [],
+  "actions": null,
+  "notes": [
+    "Not legal advice. We never certify title.",
+    "We keep this file for 30 days, then delete it, unless you save it to your account."
+  ]
+}

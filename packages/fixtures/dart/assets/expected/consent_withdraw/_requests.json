@@ -1,0 +1,26 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "C-1012-04": {
+      "p_ref": "C-1012-04",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      }
+    },
+    "C-1012-05": {
+      "p_ref": "C-1012-05",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      }
+    },
+    "C-1015-02": {
+      "p_ref": "C-1015-02",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      }
+    }
+  }
+}

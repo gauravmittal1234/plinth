@@ -1,0 +1,25 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "aurelia-heights-phase-2": {
+      "p_slug": "aurelia-heights-phase-2",
+      "p_tower": "A",
+      "p_take_home_inr": 450000,
+      "p_rent_inr": 55000,
+      "p_down_pct": 20,
+      "p_rate_pct": 8.5,
+      "p_tenure_years": 20,
+      "p_delay_months": 12
+    },
+    "aurelia-heights-phase-2--delay-24": {
+      "p_slug": "aurelia-heights-phase-2",
+      "p_tower": "A",
+      "p_take_home_inr": 450000,
+      "p_rent_inr": 55000,
+      "p_down_pct": 20,
+      "p_rate_pct": 8.5,
+      "p_tenure_years": 20,
+      "p_delay_months": 24
+    }
+  }
+}

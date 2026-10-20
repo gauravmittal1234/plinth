@@ -100,6 +100,20 @@ export const REQUIRED = {
   methodology: ["schema"],
   about: ["schema"],
   flags: [],
+  // T03b (API_CONTRACTS §4.7–§4.14); the schemas hold the full lists.
+  following_feed: ["schema", "since", "summary_line", "changes", "quiet", "projects", "replay"],
+  who_has_my_number: ["schema", "count_line", "rule_line", "parties", "relays", "ended"],
+  family_invite_preview: ["schema", "inviter_first_name", "scope_line", "number_line"],
+  family_invite: ["schema", "code", "link", "expires_on", "rules", "private_line"],
+  alert_prefs: ["schema", "prefs", "whatsapp_optin", "lines", "number_line"],
+  share_card: ["schema", "kind", "phase", "sent", "now", "changed", "changes", "live_url"],
+  doc_check: ["schema", "id", "kind", "status", "rows", "notes", "rules_version"],
+  cost_breakdown: ["schema", "rules_version", "lines", "all_in_inr", "all_in_label"],
+  afford_the_wait: ["schema", "answer_line", "now", "by_completion", "delay", "series"],
+  payee_check: ["schema", "payee", "cap", "method", "never_line"],
+  follow: ["schema", "slug", "follow_type", "followed_at", "alerts_line", "private_line"],
+  ok: ["ok"],
+  consent_withdrawal: ["ref", "withdrawn_at", "effects"],
 };
 const FN_TYPE = {
   risk_summary: "risk_summary",
@@ -111,6 +125,33 @@ const FN_TYPE = {
   methodology: "methodology",
   about: "about",
   flags: "flags",
+  // T03b: M2–M3 reads and the M2 write answers. A folder is named after the RPC; where the RPC
+  // differs from the folder (alert_prefs_get, before_you_pay_check), _requests.json says `rpc`.
+  following_feed: "following_feed",
+  who_has_my_number: "who_has_my_number",
+  family_invite_preview: "family_invite_preview",
+  alert_prefs: "alert_prefs",
+  share_card: "share_card",
+  doc_check: "doc_check",
+  cost_breakdown: "cost_breakdown",
+  afford_the_wait: "afford_the_wait",
+  payee_check: "payee_check",
+  follow: "follow",
+  alert_prefs_set: "alert_prefs",
+  family_invite_create: "family_invite",
+  consent_withdraw: "consent_withdrawal",
+  unfollow: "ok",
+  mark_following_seen: "ok",
+  family_invite_cancel: "ok",
+  family_member_remove: "ok",
+  family_member_undo: "ok",
+  shortlist_note_add: "ok",
+};
+/** Acknowledgements without a `schema` envelope, validated against a $def (API_CONTRACTS §1). */
+const DEF_REF = {
+  ok: "https://plinth.in/schemas/common.schema.json#/$defs/Ok",
+  consent_withdrawal:
+    "https://plinth.in/schemas/who_has_my_number.schema.json#/$defs/ConsentWithdrawal",
 };
 const LANES = new Set([
   "records_show",
@@ -175,7 +216,9 @@ export function structuralProblems(fn, body) {
       if (typeof v !== "boolean") problems.push(`flag ${k} is not a boolean`);
     return problems;
   }
-  if (body.schema !== `plinth.${type}/1`)
+  if (DEF_REF[type]) {
+    if ("schema" in body) problems.push(`an acknowledgement (${type}) carries no schema envelope`);
+  } else if (body.schema !== `plinth.${type}/1`)
     problems.push(`schema is ${JSON.stringify(body.schema)}, expected "plinth.${type}/1"`);
   for (const k of REQUIRED[type]) if (!(k in body)) problems.push(`missing ${k}`);
   walkStrings(body, (s, p) => {
@@ -224,6 +267,7 @@ async function loadAjv() {
   }));
   for (const s of schemas) ajv.addSchema(s.schema, s.schema.$id ?? s.file);
   const find = (type) => {
+    if (DEF_REF[type]) return ajv.getSchema(DEF_REF[type]) ?? null;
     const s =
       schemas.find((x) =>
         (x.schema.$id ?? "").match(new RegExp(`(^|[/.])${type}(\\.schema)?(\\.json)?(/\\d+)?$`)),
@@ -266,7 +310,10 @@ async function main() {
         if (!validate(body))
           for (const e of validate.errors)
             problems.push(`schema: ${e.instancePath || "/"} ${e.message}`);
-      } else noSchema++;
+      } else {
+        noSchema++;
+        problems.push(`no JSON Schema in packages/contracts for "${FN_TYPE[it.fn]}"`);
+      }
     }
     if (problems.length) {
       failures++;

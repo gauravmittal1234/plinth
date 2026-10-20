@@ -1,0 +1,113 @@
+{
+  "schema": "plinth.doc_check/1",
+  "rules_version": "2026.10",
+  "id": "d12ab48e-e721-521a-9248-e5b7adcd46ad",
+  "kind": "claims",
+  "status": "done",
+  "doc_label": "Hoarding",
+  "project_match": {
+    "slug": "aurelia-heights-phase-2",
+    "method": "rera_number",
+    "confirmed": true,
+    "line": "We matched the RERA number on the hoarding: GGM/673/405/2022/117."
+  },
+  "summary_line": "1 of 3 claims differs from the records.",
+  "breakdown_line": "2 match: the price list's 3 BHK price and the RERA number.",
+  "rows": [
+    {
+      "seq": 1,
+      "says_label": "Hoarding says",
+      "says_text": "AURELIA HEIGHTS · PHASE 2 · POSSESSION DEC 2026",
+      "verdict": "differs",
+      "verdict_label": "Differs",
+      "records_line": "Original completion Dec 2027, no extensions; 41% built.",
+      "how_checked": "Date compared with the HARERA registration.",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": [
+            "fd56a69a-53cb-5997-9291-5a24bcdc3387",
+            "77c2d27a-14a1-5c36-8e8a-c81e799e1adb"
+          ],
+          "evidence_url": "/evidence/fd56a69a-53cb-5997-9291-5a24bcdc3387",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        },
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["196cb4f5-27eb-57a5-99f8-e5ab1b599c93"],
+          "evidence_url": "/evidence/196cb4f5-27eb-57a5-99f8-e5ab1b599c93",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-15"
+        }
+      ],
+      "broker_question": "Which completion date will my agreement carry?",
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    },
+    {
+      "seq": 2,
+      "says_label": "Hoarding says",
+      "says_text": "3 BHK FROM ₹2.35 CR*",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "The developer's price list of 2 Oct 2026 shows 3 BHK from ₹2.35 Cr. All-in ₹2.74 Cr.",
+      "how_checked": "Price compared with the developer's latest price list.",
+      "sources": [
+        {
+          "label": "Developer price list · 2 Oct 2026",
+          "fact_ids": ["df98bb14-8dc5-52ef-a38f-2235752df336"],
+          "evidence_url": "/evidence/df98bb14-8dc5-52ef-a38f-2235752df336",
+          "official_url": null,
+          "as_of": "2026-10-02"
+        },
+        {
+          "label": "Developer cost sheet · 2 Oct 2026 · Plinth cost rules v2026.10",
+          "fact_ids": ["98bd9a68-98ed-5fda-856d-a005015cf594"],
+          "evidence_url": "/evidence/98bd9a68-98ed-5fda-856d-a005015cf594",
+          "official_url": null,
+          "as_of": "2026-10-02"
+        }
+      ],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    },
+    {
+      "seq": 3,
+      "says_label": "Hoarding says",
+      "says_text": "RERA No. GGM/673/405/2022/117",
+      "verdict": "matches",
+      "verdict_label": "Matches",
+      "records_line": "The HARERA registration of Aurelia Heights, Phase 2.",
+      "how_checked": "Number looked up on the HARERA register.",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["fd56a69a-53cb-5997-9291-5a24bcdc3387"],
+          "evidence_url": "/evidence/fd56a69a-53cb-5997-9291-5a24bcdc3387",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ],
+      "broker_question": null,
+      "page": 1,
+      "bbox": null,
+      "checkable_on": null,
+      "developer_says": null
+    }
+  ],
+  "actions": {
+    "share_text": "1 of 3 claims on this hoarding differs from the records for Aurelia Heights, Phase 2.",
+    "broker_questions": ["Which completion date will my agreement carry?"]
+  },
+  "notes": [
+    "A matching RERA number shows the project is registered. It doesn't make the other claims true.",
+    "Not legal advice. We never certify title.",
+    "We keep this file for 30 days, then delete it, unless you save it to your account."
+  ]
+}

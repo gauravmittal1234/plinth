@@ -5,9 +5,29 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
   'about': <String>[
     'default',
   ],
+  'afford_the_wait': <String>[
+    'aurelia-heights-phase-2--delay-24',
+    'aurelia-heights-phase-2',
+  ],
+  'alert_prefs': <String>[
+    'rohan',
+  ],
+  'alert_prefs_set': <String>[
+    'rohan--weekly-off',
+    'rohan',
+  ],
   'compare': <String>[
     'aurelia-heights-phase-2_kestrel-park_sapphire-grove-phase-1_coral-towers',
     'aurelia-heights-phase-2_kestrel-park_sapphire-grove-phase-1',
+  ],
+  'consent_withdraw': <String>[
+    'C-1012-04',
+    'C-1012-05',
+    'C-1015-02',
+  ],
+  'cost_breakdown': <String>[
+    'aurelia-heights-phase-2--waive-plc-club',
+    'aurelia-heights-phase-2',
   ],
   'developer_page': <String>[
     'elmstone-developers',
@@ -18,17 +38,59 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
     'orbis-land',
     'vantage-buildcon',
   ],
+  'doc_check': <String>[
+    'booking-form',
+    'demand-letter',
+    'flyer--confirm-project',
+    'flyer',
+    'hoarding',
+    'payment-request',
+    'visit-recap',
+  ],
   'evidence': <String>[
     '145c288f-31dd-5955-9677-170f82ffd80c',
     '196cb4f5-27eb-57a5-99f8-e5ab1b599c93',
     'd56b2adf-6ea3-598a-8cef-cbd1b0c74895',
     'dff74c62-2384-5736-88b1-02fac3a33a69',
   ],
+  'family_invite_cancel': <String>[
+    'AH2-7KQ',
+  ],
+  'family_invite_create': <String>[
+    'AH2-7KQ',
+    'RC4-2MW',
+  ],
+  'family_invite_preview': <String>[
+    'AH2-7KQ',
+    'RC4-2MW',
+  ],
+  'family_member_remove': <String>[
+    'meera',
+  ],
+  'family_member_undo': <String>[
+    'meera',
+  ],
   'flags': <String>[
     'anon',
   ],
+  'follow': <String>[
+    'aurelia-heights-phase-2',
+    'coral-towers',
+    'kestrel-park',
+    'sapphire-grove-phase-1',
+  ],
+  'following_feed': <String>[
+    'rohan',
+  ],
+  'mark_following_seen': <String>[
+    'rohan',
+  ],
   'methodology': <String>[
     'default',
+  ],
+  'payee_check': <String>[
+    'aurelia-booking-form',
+    'aurelia-eoi-whatsapp',
   ],
   'project_page': <String>[
     'aurelia-heights-phase-2--facts-only',
@@ -58,6 +120,18 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
     'outside-coverage',
     'unknown-project',
     'zero-results',
+  ],
+  'share_card': <String>[
+    'aurelia-old-card',
+  ],
+  'shortlist_note_add': <String>[
+    'aurelia-heights-phase-2',
+  ],
+  'unfollow': <String>[
+    'kestrel-park',
+  ],
+  'who_has_my_number': <String>[
+    'rohan',
   ],
 };
 
