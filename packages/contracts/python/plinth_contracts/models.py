@@ -18,6 +18,10 @@ class AboutMoney(BaseModel):
     lines: list[str]
 
 
+class AccountDeletionStatus(StrEnum):
+    requested = "requested"
+
+
 class AgreementStage(StrEnum):
     before_agreement = "before_agreement"
     after_agreement = "after_agreement"
@@ -296,6 +300,16 @@ class ConfidenceLevelLine(BaseModel):
     line: str
 
 
+class ConsentChannel(StrEnum):
+    """
+    app.consents.channel: where the buyer tapped.
+    """
+
+    web = "web"
+    app = "app"
+    whatsapp = "whatsapp"
+
+
 class ContactStatus(StrEnum):
     active = "active"
     ended = "ended"
@@ -331,6 +345,11 @@ class CoverageToday(BaseModel):
     )
     line: str
     items: list[str]
+
+
+class DataExportStatus(StrEnum):
+    preparing = "preparing"
+    ready = "ready"
 
 
 class DataRules(BaseModel):
@@ -738,6 +757,16 @@ class Pct(RootModel[float]):
     """
     A percentage. Time used can pass 100 after the promised date (Laurel Residency: 106).
     """
+
+
+class PlatformRole(StrEnum):
+    buyer = "buyer"
+    agent = "agent"
+    developer_member = "developer_member"
+    reviewer = "reviewer"
+    methodology = "methodology"
+    admin = "admin"
+    support = "support"
 
 
 class PreReraItem(BaseModel):
@@ -1181,6 +1210,34 @@ class AboutIdentity(BaseModel):
     register_: Annotated[list[RegisterRow], Field(alias="register")]
 
 
+class AccountDeletion(BaseModel):
+    """
+    plinth.account_delete_request/1, from api.account_delete_request() (API_CONTRACTS §3.2; BUILD_PLAN §13). The record of a DPDP erasure request (app.data_requests, kind erasure): erasure within 30 days (due_at = requested_at + 30 days), with legal-hold exceptions (delete-account, T53). One open request at a time: a repeat call returns it.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[
+        Literal["plinth.account_delete_request/1"], Field(alias="schema")
+    ]
+    request_id: Annotated[UUID, Field(title="Uuid")]
+    status: AccountDeletionStatus
+    requested_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    due_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    due_line: str
+    """
+    "We'll erase your account by 17 Nov 2026."
+    """
+    lines: list[str]
+
+
 class AffordInputs(BaseModel):
     """
     The inputs this answer used (echoed, so a page can show and edit them).
@@ -1510,6 +1567,26 @@ class Confidence(BaseModel):
     line: str
 
 
+class ConsentRelay(BaseModel):
+    """
+    A WhatsApp text relay instead of the number. It never counts toward the cap.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    relay_id: Annotated[UUID, Field(title="Uuid")]
+    open: bool
+    closes_on: date_aliased | None
+    """
+    When an open relay closes (null while a deal is active and no end is set), or the day a closed one closed.
+    """
+    counts_toward_cap: bool
+    """
+    Always false: a relay is not a number holder.
+    """
+
+
 class ConsentWithdrawal(BaseModel):
     """
     Result of api.consent_withdraw(p_ref). An acknowledgement, so no schema envelope (as Ok).
@@ -1598,6 +1675,36 @@ class Coverage(BaseModel):
     )
     today: CoverageToday
     next: list[CoverageNext]
+
+
+class DataExport(BaseModel):
+    """
+    plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2; BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request (app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24 hours); the link works for 7 days and opens only after a fresh sign-in code (export-data, T53). One open request at a time: a repeat call returns it.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.data_export_request/1"], Field(alias="schema")]
+    request_id: Annotated[UUID, Field(title="Uuid")]
+    status: DataExportStatus
+    requested_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    due_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    link_expires_at: AwareDatetime | None
+    """
+    Set once the file is ready; the link opens only after a fresh sign-in code.
+    """
+    status_line: str
+    """
+    "Ready by 19 Oct 2026, 12:00 pm." or "Ready. The link works until 26 Oct 2026."
+    """
+    lines: list[str]
 
 
 class DelayCost(BaseModel):
@@ -2073,6 +2180,34 @@ class LatestQpr(BaseModel):
     """
 
 
+class Me(BaseModel):
+    """
+    plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The number itself never leaves auth: only the masked form.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.me/1"], Field(alias="schema")]
+    user_id: Annotated[UUID, Field(title="Uuid")]
+    first_name: str | None
+    """
+    The only name a site office ever sees (with a visit consent).
+    """
+    phone_masked: str | None
+    """
+    "+91 99••• ••318" (app.profiles.phone_masked).
+    """
+    adult_attested_at: AwareDatetime | None
+    """
+    When the user confirmed they are 18 or over; null until then.
+    """
+    roles: list[PlatformRole]
+    """
+    Platform roles (app.user_roles; plinth_roles in the JWT).
+    """
+
+
 class MethodologyVersion(BaseModel):
     """
     A published model version and its changelog (newest first).
@@ -2385,6 +2520,32 @@ class Reason(BaseModel):
     factor_label: str
     text: Annotated[str, Field(min_length=1)]
     sources: Annotated[list[SourceRef], Field(min_length=1)]
+
+
+class RelayRenewal(BaseModel):
+    """
+    Result of api.relay_renew(p_relay_id): the relay stays open 30 more days (D13), or a new session opens for the same parties when it had closed. An acknowledgement, so no schema envelope (as Ok). relay_id is the session now open; ref is the consent that backs it.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    relay_id: Annotated[UUID, Field(title="Uuid")]
+    ref: Annotated[
+        str,
+        Field(
+            pattern="^C-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$",
+            title="ConsentRef",
+        ),
+    ]
+    """
+    Consent reference C-MMDD-NN (IST date; NN widens past 99). Must equal catalogues/ref_formats.json prefix C.
+    """
+    closes_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    line: str
 
 
 class Replay(BaseModel):
@@ -2757,6 +2918,67 @@ class Compare(BaseModel):
     meta: PageMeta | None = None
 
 
+class ConsentHistoryItem(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    ref: Annotated[
+        str,
+        Field(
+            pattern="^C-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$",
+            title="ConsentRef",
+        ),
+    ]
+    """
+    Consent reference C-MMDD-NN (IST date; NN widens past 99). Must equal catalogues/ref_formats.json prefix C.
+    """
+    granted_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    party: str
+    detail: str
+    purpose: Annotated[str, Field(pattern="^[a-z][a-z0-9_]*$")]
+    """
+    app.purposes code (catalogues/purposes.json), e.g. number_share, visit_share.
+    """
+    purpose_line: str
+    """
+    The purpose as the privacy notice words it.
+    """
+    channel: ConsentChannel
+    notice_version: str
+    """
+    The privacy notice version shown at the tap.
+    """
+    status: ContactStatus
+    status_line: str
+    """
+    "Number shared, until 14 Nov 2026", "Ended 2 Oct 2026", "Withdrawn 18 Oct 2026".
+    """
+    number_shared: bool
+    """
+    The party can see the number now (a live share made by the buyer's tap).
+    """
+    access_until: date_aliased | None
+    """
+    Last day of a live number share; null when it has no end or the number is not shared.
+    """
+    ended_on: date_aliased | None
+    """
+    The day the consent ended or was withdrawn; null while active.
+    """
+    withdrawn_at: AwareDatetime | None
+    can_withdraw: bool
+    """
+    True until withdrawn; api.consent_withdraw(ref) withdraws it.
+    """
+    relay: ConsentRelay | None
+    """
+    The WhatsApp relay this consent backs, if any. Pass relay_id to api.relay_renew.
+    """
+
+
 class CostBreakdown(BaseModel):
     """
     plinth.cost_breakdown/1, from api.cost_breakdown(p_slug, p_unit, p_buyer, p_waive) (API_CONTRACTS §4.13). Charges and all-in are totals, never lines.
@@ -3037,6 +3259,23 @@ class About(BaseModel):
     grievance: GrievanceOfficer
     coverage: Coverage
     meta: PageMeta
+
+
+class ConsentHistory(BaseModel):
+    """
+    plinth.consent_history/1, from api.consent_history() (API_CONTRACTS §3.2; DESIGN §5b Rohan's consent history). Every consent the buyer gave, newest first, each by its C-MMDD-NN ref. Identical on web and app. Refs, dates and counts come from the ledger rows; party and detail are what the buyer saw at the tap.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.consent_history/1"], Field(alias="schema")]
+    count_line: str
+    """
+    Distinct parties holding the number now, as in WhoHasMyNumber.
+    """
+    rule_line: str
+    items: list[ConsentHistoryItem]
 
 
 class DocCheck(BaseModel):

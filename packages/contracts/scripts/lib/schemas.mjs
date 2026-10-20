@@ -11,13 +11,20 @@ export const SCHEMAS_DIR = join(PKG, "schemas");
 /** Defs that are exported (validators, examples, top-level codegen) besides
  * every file's top-level type and every `*Request` def. Acknowledgements carry
  * no schema envelope (API_CONTRACTS §1). */
-export const EXTRA_EXPORTS = ["Ok", "ConsentWithdrawal", "DocCheckStarted", "RpcError"];
+export const EXTRA_EXPORTS = [
+  "Ok",
+  "ConsentWithdrawal",
+  "RelayRenewal",
+  "DocCheckStarted",
+  "RpcError",
+];
 
 /** Exported types without the "schema" envelope. */
 export const NO_ENVELOPE = new Set([
   "ApiError",
   "Ok",
   "ConsentWithdrawal",
+  "RelayRenewal",
   "DocCheckStarted",
   "RpcError",
 ]);
