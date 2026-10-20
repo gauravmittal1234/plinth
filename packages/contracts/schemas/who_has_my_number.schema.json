@@ -89,6 +89,19 @@
         "withdrawn_at": { "$ref": "common.schema.json#/$defs/Timestamp" },
         "effects": { "type": "array", "items": { "type": "string" } }
       }
+    },
+    "RelayRenewal": {
+      "title": "RelayRenewal",
+      "description": "Result of api.relay_renew(p_relay_id): the relay stays open 30 more days (D13), or a new session opens for the same parties when it had closed. An acknowledgement, so no schema envelope (as Ok). relay_id is the session now open; ref is the consent that backs it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relay_id", "ref", "closes_at", "line"],
+      "properties": {
+        "relay_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+        "ref": { "$ref": "common.schema.json#/$defs/ConsentRef" },
+        "closes_at": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "line": { "type": "string" }
+      }
     }
   }
 }

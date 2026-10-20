@@ -316,6 +316,33 @@ describe("scale rules", () => {
     expect(layout.touchApp).toBeGreaterThanOrEqual(48);
   });
 
+  it("app UI v2: Figtree text, Bricolage 700 only for display, title and section", () => {
+    const app = typography.app;
+    const display = new Set(["display", "title", "section", "h1", "h2"]);
+    for (const [role, r] of Object.entries(app)) {
+      expect(r.family, role).toBe(display.has(role) ? "display" : "ui");
+      if (display.has(role)) expect(r.weight, role).toBe(700);
+    }
+    expect(app.rowTitle).toMatchObject({ size: 16, weight: 600 });
+    expect(app.button).toMatchObject({ size: 16, weight: 700 });
+    expect(app.label).toMatchObject({ size: 13, weight: 600 });
+    expect(app.section).toMatchObject({ size: 20, weight: 700 });
+  });
+
+  it("app UI v2: radii and sizes from the benchmark", () => {
+    expect(radius).toMatchObject({ tile: 12, button: 16, field: 16, card: 20, sheet: 28 });
+    expect(layout).toMatchObject({
+      gutterApp: 20,
+      rowMin: 64,
+      buttonApp: 56,
+      buttonSecondaryApp: 48,
+      fieldApp: 56,
+      navFloating: 72,
+      iconTile: 40,
+    });
+    expect(layout.buttonSecondaryApp).toBeGreaterThanOrEqual(layout.touchApp);
+  });
+
   it("cssVar references point at properties that exist", () => {
     const declared = new Set([...css.matchAll(/^\s*(--pl-[\w-]+):/gm)].map((m) => m[1]));
     const refs: string[] = [];

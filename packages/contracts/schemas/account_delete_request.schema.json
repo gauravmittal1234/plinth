@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/account_delete_request.schema.json",
+  "title": "AccountDeletion",
+  "description": "plinth.account_delete_request/1, from api.account_delete_request() (API_CONTRACTS §3.2; BUILD_PLAN §13). The record of a DPDP erasure request (app.data_requests, kind erasure): erasure within 30 days (due_at = requested_at + 30 days), with legal-hold exceptions (delete-account, T53). One open request at a time: a repeat call returns it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "request_id", "status", "requested_at", "due_at", "due_line", "lines"],
+  "properties": {
+    "schema": { "const": "plinth.account_delete_request/1" },
+    "request_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+    "status": { "$ref": "#/$defs/AccountDeletionStatus" },
+    "requested_at": { "$ref": "common.schema.json#/$defs/Timestamp" },
+    "due_at": { "$ref": "common.schema.json#/$defs/Timestamp" },
+    "due_line": {
+      "description": "\"We'll erase your account by 17 Nov 2026.\"",
+      "type": "string"
+    },
+    "lines": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "AccountDeletionStatus": {
+      "title": "AccountDeletionStatus",
+      "type": "string",
+      "enum": ["requested"]
+    }
+  }
+}

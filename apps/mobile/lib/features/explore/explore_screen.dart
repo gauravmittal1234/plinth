@@ -84,96 +84,101 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
 
   Widget _body(BuildContext context, PlinthTokens tokens, SearchResults results) {
     final items = _filtered(results.items);
+    Widget gutter(Widget child) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: PlinthLayout.gutterApp),
+      child: child,
+    );
     return ListView(
-      padding: const EdgeInsets.fromLTRB(
-        PlinthLayout.gutterPhone,
-        PlinthSpace.s24,
-        PlinthLayout.gutterPhone,
-        PlinthSpace.s40,
-      ),
+      padding: const EdgeInsets.only(top: PlinthSpace.s16, bottom: PlinthSpace.s24),
       children: [
-        Text('Which home are you buying?', style: PlinthType.h1.copyWith(color: tokens.ink)),
+        gutter(
+          Semantics(
+            header: true,
+            child: Text('Which home are you buying?', style: PlinthType.title.copyWith(color: tokens.ink)),
+          ),
+        ),
+        const SizedBox(height: PlinthSpace.s8),
+        gutter(
+          Text(
+            'Check any Gurugram project against its public records. No developer pays us. Ever.',
+            style: PlinthType.body.copyWith(color: tokens.ink2),
+          ),
+        ),
+        const SizedBox(height: PlinthSpace.s20),
+        gutter(
+          PlinthSearchField(
+            controller: _queryController,
+            hint: 'Project, developer or sector',
+            onChanged: (v) => setState(() => _query = v),
+          ),
+        ),
         const SizedBox(height: PlinthSpace.s12),
-        Text(
-          'Check any Gurugram project against its public records. No developer pays us. Ever.',
-          style: PlinthType.lead.copyWith(color: tokens.ink2),
-        ),
-        const SizedBox(height: PlinthSpace.s24),
-        _searchField(tokens),
-        const SizedBox(height: PlinthSpace.s16),
         _corridorChips(),
-        const SizedBox(height: PlinthSpace.s16),
-        Row(
-          children: [
-            Expanded(
-              child: PlinthButton(
-                label: 'Scan RERA QR',
-                kind: PlinthButtonKind.tonal,
-                onPressed: () => context.push(Routes.scan),
+        const SizedBox(height: PlinthSpace.s12),
+        gutter(
+          Row(
+            children: [
+              Expanded(
+                child: PlinthButton(
+                  label: 'Scan RERA QR',
+                  icon: Icons.qr_code_scanner_rounded,
+                  kind: PlinthButtonKind.tonal,
+                  expand: true,
+                  onPressed: () => context.push(Routes.scan),
+                ),
               ),
-            ),
-            const SizedBox(width: PlinthSpace.s12),
-            Expanded(
-              child: PlinthButton(
-                label: 'Map',
-                kind: PlinthButtonKind.tonal,
-                onPressed: () => context.push(Routes.map),
+              const SizedBox(width: PlinthSpace.s12),
+              Expanded(
+                child: PlinthButton(
+                  label: 'Map',
+                  icon: Icons.map_rounded,
+                  kind: PlinthButtonKind.tonal,
+                  expand: true,
+                  onPressed: () => context.push(Routes.map),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        const SizedBox(height: PlinthSpace.s24),
-        Text(results.sortLine, style: PlinthType.small.copyWith(color: tokens.ink2)),
+        const SizedBox(height: PlinthSpace.s32),
+        gutter(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 1),
+                child: Icon(Icons.sort_rounded, size: PlinthLayout.iconMd, color: tokens.ink2),
+              ),
+              const SizedBox(width: PlinthSpace.s8),
+              Expanded(
+                child: Text(results.sortLine, style: PlinthType.meta.copyWith(color: tokens.ink2)),
+              ),
+            ],
+          ),
+        ),
         const SizedBox(height: PlinthSpace.s12),
         if (items.isEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: PlinthSpace.s32),
-            child: Text('No projects match this search.', style: PlinthType.body.copyWith(color: tokens.ink2)),
+          gutter(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: PlinthSpace.s32),
+              child: Text('No projects match this search.', style: PlinthType.body.copyWith(color: tokens.ink2)),
+            ),
           )
         else
           for (final card in items) ...[
-            ProjectCardTile(card: card, onTap: () => context.push(Routes.projectOf(card.slug))),
+            gutter(ProjectCardTile(card: card, onTap: () => context.push(Routes.projectOf(card.slug)))),
             const SizedBox(height: PlinthSpace.s12),
           ],
       ],
     );
   }
 
-  Widget _searchField(PlinthTokens tokens) {
-    return DecoratedBox(
-      decoration: BoxDecoration(color: tokens.track, borderRadius: BorderRadius.circular(PlinthRadius.pill)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: PlinthSpace.s16),
-        child: Row(
-          children: [
-            Icon(Icons.search, color: tokens.ink2, size: PlinthLayout.iconMd),
-            const SizedBox(width: PlinthSpace.s8),
-            Expanded(
-              child: TextField(
-                controller: _queryController,
-                onChanged: (v) => setState(() => _query = v),
-                style: PlinthType.body.copyWith(color: tokens.ink),
-                decoration: InputDecoration(
-                  isCollapsed: true,
-                  border: InputBorder.none,
-                  hintText: 'Project, developer or sector',
-                  hintStyle: PlinthType.body.copyWith(color: tokens.ink2),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // A Wrap, not a scrolling row: with 3 corridors it never needs one, and the
-  // app's test harness (scrollIntoView) assumes a single Scrollable per
-  // screen.
+  // One horizontally scrolling row (app UI v2): never wraps onto a second
+  // line. A SingleChildScrollView, not a ListView, so the page's one
+  // ListView stays the screen's main list.
   Widget _corridorChips() {
-    return Wrap(
-      spacing: PlinthSpace.s8,
-      runSpacing: PlinthSpace.s8,
+    return PlinthChipRow(
+      padding: const EdgeInsets.symmetric(horizontal: PlinthLayout.gutterApp),
       children: [
         for (final corridor in _Corridor.values)
           PlinthPill(

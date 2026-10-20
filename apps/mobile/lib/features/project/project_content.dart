@@ -126,7 +126,7 @@ class _Loaded extends ConsumerWidget {
           risk: page.risk,
           nextSteps: page.nextSteps,
           followed: followed,
-          onFollow: () => _toggleFollow(context, ref, slug, page.risk.phase.name),
+          onFollow: () => _toggleFollow(context, ref, slug, page.risk.phase.name, imageUrl: page.hero.imageUrl),
           onBackToFullPage: onBackToFullPage,
         ),
       );
@@ -150,7 +150,7 @@ class _Loaded extends ConsumerWidget {
   }
 }
 
-Future<void> _toggleFollow(BuildContext context, WidgetRef ref, String slug, String name) async {
+Future<void> _toggleFollow(BuildContext context, WidgetRef ref, String slug, String name, {String? imageUrl}) async {
   final controller = ref.read(followsProvider.notifier);
   final wasFollowed = ref.read(followTypeProvider(slug)) != null;
   if (wasFollowed) {
@@ -163,7 +163,12 @@ Future<void> _toggleFollow(BuildContext context, WidgetRef ref, String slug, Str
     if (!context.mounted) return;
     // Shown whether the server answered at once or the follow is still
     // queued (offline): either way the buyer just followed, successfully.
-    await showAlertsSheet(context, projectName: name, alertsLine: result?.alertsLine ?? ProjectCopy.alertsLineFallback);
+    await showAlertsSheet(
+      context,
+      projectName: name,
+      imageUrl: imageUrl,
+      alertsLine: result?.alertsLine ?? ProjectCopy.alertsLineFallback,
+    );
   } on Exception {
     if (context.mounted) showPlinthToast(context, 'Could not follow $name. Try again.');
   }
@@ -182,19 +187,21 @@ class _BottomBar extends ConsumerWidget {
     final name = page.risk.phase.name;
     return BottomActionBar(
       actions: [
+        // App UI v2: Follow (primary, icon), Ask Plinth (tonal, icon) and
+        // Share as an icon button, so no label ever wraps.
         BottomAction(
           label: followed ? ProjectCopy.following : ProjectCopy.follow,
-          glyph: KitGlyph.bookmark,
+          glyph: followed ? KitGlyph.bookmarkAdded : KitGlyph.bookmark,
           pressed: followed,
-          primary: !followed,
-          onPressed: () => _toggleFollow(context, ref, slug, name),
+          primary: true,
+          onPressed: () => _toggleFollow(context, ref, slug, name, imageUrl: page.hero.imageUrl),
         ),
         BottomAction(
           label: ProjectCopy.ask,
           glyph: KitGlyph.sparkle,
-          onPressed: () => showAskSheet(context, projectName: name),
+          onPressed: () => showAskSheet(context, projectName: name, imageUrl: page.hero.imageUrl),
         ),
-        BottomAction(label: ProjectCopy.share, glyph: KitGlyph.share, onPressed: () => _share(page)),
+        BottomAction(label: ProjectCopy.share, glyph: KitGlyph.share, iconOnly: true, onPressed: () => _share(page)),
       ],
     );
   }

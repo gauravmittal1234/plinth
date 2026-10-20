@@ -9,11 +9,11 @@ import '../helpers/app_harness.dart';
 
 void main() {
   testWidgets('Day is the default; the toggle switches to Night and back', (tester) async {
-    // AppExplore is filled (T30) and has no theme toggle of its own; Following
-    // is still the ArtboardPlaceholder, which carries the toggle this test
-    // exercises.
-    final container = await pumpPlinth(tester, location: Routes.following);
-    BuildContext page() => tester.element(find.text('AppFollowing'));
+    // AppExplore (T30), Following (T50) and You (T51) are all filled now and
+    // have no theme toggle of their own. Ask Plinth (AppVoice, M5) is still
+    // the ArtboardPlaceholder that carries the toggle this test exercises.
+    final container = await pumpPlinth(tester, location: Routes.ask);
+    BuildContext page() => tester.element(find.text('AppVoice'));
 
     expect(container.read(themeModeProvider), ThemeMode.light);
     expect(Theme.of(page()).brightness, Brightness.light);
@@ -57,12 +57,22 @@ void main() {
     expect(night.colorScheme.error, PlinthTokens.night.error);
   });
 
-  test('type: Bricolage Grotesque 800 for display, Mukta for text', () {
+  test('type (P10): Bricolage Grotesque 700 for display, titles and sections; Figtree for text', () {
     final text = AppTheme.day().textTheme;
-    expect(text.headlineLarge?.fontFamily, AppTheme.displayFamily);
-    expect(text.headlineLarge?.fontWeight, FontWeight.w800);
-    expect(text.bodyMedium?.fontFamily, AppTheme.textFamily);
-    expect(text.bodyMedium?.fontFamilyFallback, AppTheme.textFallback);
+    expect(AppTheme.textFamily, 'Figtree');
+    expect(AppTheme.textFallback, ['Noto Sans']);
+    for (final s in [text.displaySmall, text.headlineLarge, text.titleLarge]) {
+      expect(s?.fontFamily, AppTheme.displayFamily);
+      expect(s?.fontWeight, FontWeight.w700);
+    }
+    expect(text.headlineLarge?.fontSize, 26, reason: 'screen titles');
+    expect(text.titleLarge?.fontSize, 20, reason: 'section headings');
+    for (final s in [text.titleMedium, text.bodyMedium, text.bodySmall, text.labelLarge]) {
+      expect(s?.fontFamily, AppTheme.textFamily);
+      expect(s?.fontFamilyFallback, AppTheme.textFallback);
+    }
+    expect(text.titleMedium?.fontWeight, FontWeight.w600, reason: 'row titles');
+    expect(text.labelLarge?.fontWeight, FontWeight.w700, reason: 'buttons');
     expect(text.bodyMedium?.fontSize, 16);
   });
 
@@ -71,6 +81,6 @@ void main() {
     expect(theme.appBarTheme.elevation, 0);
     expect(theme.appBarTheme.scrolledUnderElevation, 0);
     expect(theme.navigationBarTheme.elevation, 0);
-    expect(theme.navigationBarTheme.height, 64);
+    expect(theme.navigationBarTheme.height, PlinthLayout.navFloating, reason: 'app UI v2: a floating 72 dp bar');
   });
 }

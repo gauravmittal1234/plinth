@@ -86,6 +86,12 @@ abstract final class KitCopy {
   // Sheets.
   static const close = 'Close';
 
+  // Search field.
+  static const clearSearch = 'Clear search';
+
+  /// The project picture's screen-reader name when it carries no caption.
+  static const illustrativePicture = 'Illustrative picture';
+
   /// The results sheet's handle (AppMap): where it is, and what a tap does.
   static const peekHandlePeek = 'Results sheet is collapsed. Tap to open halfway';
   static const peekHandleHalf = 'Results sheet is half open. Tap to open fully';
