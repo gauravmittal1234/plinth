@@ -18,6 +18,7 @@ export function CodeStep({
   onOtp,
   otpError,
   onVerify,
+  pending,
   resendSecondsLeft,
   onResend,
   onSwitchChannel,
@@ -30,6 +31,8 @@ export function CodeStep({
   onOtp: (digits: string) => void;
   otpError: string;
   onVerify: () => void;
+  /** Checking what this number already does on WhatsApp (src/features/auth/actions.ts). */
+  pending: boolean;
   resendSecondsLeft: number;
   onResend: () => void;
   onSwitchChannel: () => void;
@@ -63,8 +66,8 @@ export function CodeStep({
         </p>
       </div>
 
-      <Button size="lg" onClick={onVerify}>
-        {COPY.verifyAndFollow(projectName)}
+      <Button size="lg" onClick={onVerify} disabled={pending}>
+        {pending ? "Checking…" : COPY.verifyAndFollow(projectName)}
       </Button>
 
       <div className="flex flex-wrap items-center gap-x-6 gap-y-1">

@@ -86,6 +86,10 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
   'following_feed': <String>[
     'rohan',
   ],
+  'link_whatsapp_follows': <String>[
+    'confirmed',
+    'preview',
+  ],
   'mark_following_seen': <String>[
     'rohan',
   ],

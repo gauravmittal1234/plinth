@@ -1,8 +1,10 @@
 // Layout copy from the artboard (WebSignIn.dc.html, via
 // docs/engineering/briefs/T47.md and DESIGN.md §5b "WebSignIn"). Facts (the
-// project's name, band, price, reasons) always come from risk_summary; this
-// file only holds the words around them. Copy lint (AGENTS.md §5) bans
-// "Unlock", "seamless" and the trust/probability words, so these stay plain.
+// project's name, band, price, reasons, and the Bring step's WhatsApp
+// follow/cost-sheet counts and names) always come from data — project_page
+// or api.link_whatsapp_follows (src/features/auth/actions.ts) — never fixed
+// here. Copy lint (AGENTS.md §5) bans "Unlock", "seamless" and the
+// trust/probability words, so these stay plain.
 
 export const COPY = {
   pageTitle: "Sign in to Plinth",
@@ -53,25 +55,37 @@ export const COPY = {
       ? "It comes from Plinth’s verified WhatsApp business account and says “…is your verification code. For your security, do not share this code.” Plinth never calls to ask for it."
       : "It comes from the sender PLINTH and says “…is your Plinth sign-in code.” Plinth never calls to ask for it.",
 
-  // Bring-follows step
+  // Bring-follows step. Counts and names are never fixed here (lead review
+  // of #62: in live mode every reader would see this same hard-coded
+  // number) — they come from the preview src/features/auth/actions.ts reads
+  // off api.link_whatsapp_follows.
   bringHeading: "We found your WhatsApp follows",
   signedLine: (masked: string, name: string | null) =>
     name ? `Signed in as ${masked} · following ${name}` : `Signed in as ${masked}`,
-  bringIntro: "This number follows 2 projects on WhatsApp and saved 1 cost sheet there. Bring them here?",
+  bringIntro: (followCount: number, sheetCount: number) => {
+    const parts = [`follows ${followCount} project${followCount === 1 ? "" : "s"} on WhatsApp`];
+    if (sheetCount > 0) parts.push(`saved ${sheetCount} cost sheet${sheetCount === 1 ? "" : "s"} there`);
+    return `This number ${parts.join(" and ")}. Bring them here?`;
+  },
   alsoSendAlerts: (name: string) => `Also send ${name} alerts on WhatsApp`,
   alsoSendAlertsHint: "Utility alerts only: band changes, filings and orders. Reply STOP to end them.",
   bringThemHere: "Bring them here",
   notNowBring: "Not now",
   bringFooter: "Nothing changes on WhatsApp; alerts keep coming there. You can unlink WhatsApp in Your account.",
-  costSheetName: "Aurelia Heights, 3 BHK cost sheet",
-  costSheetMeta: "Sheet of 2 Oct 2026, saved on WhatsApp",
+  costSheetMeta: (savedOn: string) => `Sheet of ${savedOn}, saved on WhatsApp`,
 
-  // Done step
+  // Done step. `outcome` is "merged" only once a write answer recorded it;
+  // "failed" is the tap that didn't get a record; "skipped" covers both
+  // "Not now" and there being nothing to bring in the first place
+  // (AGENTS.md §9 "no confirmation without a record", lead review of #62).
   doneHeading: "One account, three places",
-  doneLine: (merged: boolean) =>
-    merged
-      ? "Your WhatsApp follows are here now. The app and WhatsApp show the same list."
-      : "Your WhatsApp follows stay on WhatsApp. Bring them here any time from Your account.",
+  doneLine: (outcome: "merged" | "failed" | "skipped") => {
+    if (outcome === "merged")
+      return "Your WhatsApp follows are here now. The app and WhatsApp show the same list.";
+    if (outcome === "failed")
+      return "We couldn’t bring your WhatsApp follows over just now. Nothing was saved; they stay on WhatsApp.";
+    return "Your WhatsApp follows stay on WhatsApp. Bring them here any time from Your account.";
+  },
   followedJustNow: "Followed just now, on the web",
   broughtOverFromWhatsapp: "Brought over from WhatsApp",
   placeWeb: "Web",
@@ -80,10 +94,17 @@ export const COPY = {
   placeWebLine: (count: number) =>
     `Signed in on this browser. Following ${count} ${count === 1 ? "project." : "projects."}`,
   placeAndroidLine: "Sign in with the same number and your follows are there.",
-  placeWhatsappLine: (masked: string, alsoName: string | null) =>
-    `${masked} · alerts for Aurelia Heights and Kestrel Park, as before${
-      alsoName ? `, now with ${alsoName}` : ""
-    }. Reply STOP to end them.`,
+  placeWhatsappLine: (masked: string, waNames: readonly string[], alsoName: string | null) => {
+    const as_before = waNames.length ? ` · alerts for ${joinNames(waNames)}, as before` : "";
+    const also = alsoName ? `, now with ${alsoName}` : "";
+    return `${masked}${as_before}${also}. Reply STOP to end them.`;
+  },
   openFollowing: "Open Following",
   whoHasMyNumber: "Who has my number",
 } as const;
+
+/** "Aurelia Heights" / "Aurelia Heights and Kestrel Park" / "A, B and C". */
+function joinNames(names: readonly string[]): string {
+  if (names.length <= 1) return names.join("");
+  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+}
