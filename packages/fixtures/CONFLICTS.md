@@ -2,7 +2,7 @@
 
 Owner: T03 (then T03b). WORK_BREAKDOWN §1 rule 5: facts come only from DESIGN.md §5/§5b. When a fixture needs a fact that is missing, or two sources disagree, it is listed here. The lead decides and adds the fact to §5b. Then the fixtures change in `src/author`, and `npm run -w @plinth/fixtures gen` regenerates everything.
 
-**Round 3 (T03b, 20 Oct 2026):** rows C-30 to C-41 are new and **open**. Until the lead decides, the fixtures follow the "How the fixtures behave" rules below, and each row says what they do now.
+**Round 3 (20 Oct 2026):** the lead answered every row in DESIGN §5b "Fixture decisions, round 3" (20 Oct 2026). All rows are now **resolved**. Each one says how the fixtures apply the decision. Canonical records cite the decision as `DESIGN §5b · Fixture decisions, round 3 (C-xx)`.
 
 **Round 2 (19 Oct 2026):** the lead answered every row in DESIGN §5b "Fixture decisions, round 2" (PR #8). All rows are now **resolved**. Each one says how the fixtures apply the decision. Canonical records cite the decision as `DESIGN §5b · Fixture decisions, round 2 (C-xx)`.
 
@@ -43,18 +43,18 @@ How the fixtures behave:
 | C-27 | resolved | Northfield's finished projects |
 | C-28 | resolved | Schema gaps (T04 PR #4) |
 | C-29 | resolved | AI kill switches off until M5 |
-| C-30 | **open** | Replay inputs §5b does not give (T11 handoff) |
-| C-31 | **open** | Test phone numbers |
-| C-32 | **open** | Rohan's push alerts and quiet hours |
-| C-33 | **open** | Consents whose project is not named |
-| C-34 | **open** | How and when Meera joined |
-| C-35 | **open** | Shortlist notes and the ₹2.5 Cr budget |
-| C-36 | **open** | Kabir the buyer and Kabir Malhotra the agent |
-| C-37 | **open** | The old share card's issue date and code |
-| C-38 | **open** | Values left to column defaults |
-| C-39 | **open** | Contract gaps found by the T03b payloads |
-| C-40 | **open** | The number-holder cap and Rohan's 4 shares |
-| C-41 | **open** | Order of the Since you last looked changes |
+| C-30 | resolved | Replay inputs: Aurelia's complaint history, Sapphire's and Coral's earlier QPRs, Coral's v1.0 stale flip |
+| C-31 | resolved | Test phone numbers confirmed safe to use |
+| C-32 | resolved | Rohan's push alerts and quiet hours (22:00–08:00 IST) |
+| C-33 | resolved | Consents whose project is not named, now named |
+| C-34 | resolved | How and when Meera joined (8:12 pm IST, "JOIN RC4-8TD") |
+| C-35 | resolved | Shortlist notes and the ₹2.5 Cr budget |
+| C-36 | resolved | Kabir the buyer and Kabir Malhotra the agent, confirmed distinct |
+| C-37 | resolved | The old share card's issue date and code |
+| C-38 | resolved | Consent notice version; other defaults kept |
+| C-39 | resolved | Contract gaps found by the T03b payloads (verdict label; the rest is T02's) |
+| C-40 | resolved | The number-holder cap counts distinct active recipients |
+| C-41 | resolved | "Since you last looked" lists changes newest first |
 
 ---
 
@@ -146,25 +146,22 @@ How the fixtures behave:
 
 ---
 
-## Round 3 (T03b): open
+## Round 3 (20 Oct 2026): resolved
 
-- **C-30 · Replay inputs §5b does not give.** T11's replay audit re-computes 6 of 10 earlier runs. T03b added what §5b supports:
-  - Aurelia had **13** complaints until the 9 Oct 2026 order ("13 → 14"), so the 30 Sep 2026 run saw 13. This is a `count_history` on the catalogue record and a superseded fact as of 30 Sep (rate 2.6, derived).
-  - Coral's v1.0 run of 15 Jul 2026 should **not be stale**: its newest QPR (Jan–Mar 2026, filed 14 Apr 2026) was 92 days old, under v1.0's 180-day line. `scoring.json` still says `stale: true`, because T11's `fixture_world/ledger.yaml` records it and ci-scoring diffs the two byte for byte. **Lead:** have T11's ledger and `src/author/scoring.mjs` flip it together (one line each). The replay audit compares state, band and confidence, so this does not change its count.
-  - **Still missing (lead to add to §5b):** Aurelia's complaint count on 15 Jul and 2 Sep 2026, and the dates of the "new complaint orders" behind the 2 Oct change; Sapphire Grove Ph 1's QPRs before Apr–Jun 2026 (Jan–Mar 2025 to Jan–Mar 2026: filed dates and built %), which its 15 Jul v1.0 run used; Coral's QPRs before Jan–Mar 2026 (for "late in the last 8").
-  - With these fixtures T11's audit still agrees on 6 of 10 runs (Aurelia 30 Sep agrees; Aurelia 15 Jul and 2 Sep, Sapphire 15 Jul and Coral 15 Jul differ), and `score --fixtures --as-of 2026-10-14 --emit json` still reproduces `scoring.json` exactly.
-- **C-31 · Test phone numbers.** AGENTS.md makes `canonical/people.json` the home of test numbers. The block is `+91 99000 003NN`, starting from Rohan's `+919900000318` in API_CONTRACTS §5.4 (masked `+91 99••• ••318`, DATA_MODEL). They are never displayed and only sign in on local, CI and dev. **Lead:** confirm the block is safe to use (not real subscribers), or name a reserved range; the generator changes in one line.
-- **C-32 · Rohan's push alerts and quiet hours.** §5b says WhatsApp alerts and the weekly digest are on. Push on and quiet hours 10 pm–8 am come from the WebFollowing and AppYou artboards (both agree). API_CONTRACTS §4.9's example says 21:00. The fixtures use 22:00–08:00. **Lead:** add both to §5b and align the §4.9 example.
-- **C-33 · Consents whose project is not named.** C-0902-01 (Meridian Habitat sales office, price list) and C-1016-08 (Kabir's visit of 16 Oct) carry no phase. Three are derived: Ishita's price-list enquiry C-1017-06 is Aurelia (her Larkspur brief C-1017-09 is Aurelia); Farah's C-1016-04 is Cedar Walk Ph 2 (Northfield's only Cedar Walk phase on sale); Dev's 4 BHK enquiry C-1015-07 is Aurelia (the only Northfield 4 BHK). **Lead:** confirm or name them.
-- **C-34 · How and when Meera joined.** §5b gives 6 Oct 2026. Her invite code, the channel (WhatsApp or app) and the time are not given; they are null. Times of day not in §5b are 00:00 IST everywhere (README convention).
-- **C-35 · Shortlist notes and the ₹2.5 Cr budget.** §5b says "dated notes from 12–17 Oct". The 6 note texts come from the WebFollowing artboard, and two mention a "₹2.5 Cr all-in limit" that is not in §5b. **Lead:** add the notes (or the budget) to §5b, or rule that user-written notes may come from the artboard.
-- **C-36 · Kabir the buyer and Kabir Malhotra the agent.** Northfield's inbox has a buyer Kabir (visited 16 Oct, shared his number); the agents list has Kabir Malhotra (verified 18 Oct). They are two people in the fixtures. **Lead:** confirm.
-- **C-37 · The old share card.** It is issued from Aurelia's v1.1 Moderate run of 2 Sep 2026, data as of 30 Sep 2026 (C-24, INTEGRATION_NOTES). Issue date 30 Sep 2026 comes from WaDigest ("Card of 30 Sep 2026"); two WaDigest labels still say "card of 26 Jun", and DATA_MODEL's `core.share_cards` note still says "26 Jun 2026 v1.1". The short code is derived (first 8 hex digits of the card id) and the perceptual hash is null. **Lead:** fix the stale labels and, if wanted, name a code.
-- **C-38 · Values left to column defaults.** Not in §5b, so the seed writes `default` (or null): a consent's `notice_version` and `channel`, a follow's `source`, `can_add_notes` on open invites, account creation times. **T40:** keep defaults (or nullability) on those columns, or the lead adds a privacy-notice version to §5b.
-- **C-39 · Contract gaps found by the T03b payloads (T02 / the API tasks).**
-  - `DocCheckRow` has no records label, but §5b rows say "Price list shows" (hoarding, recap) and WebPayAsBuilt says "Your plan shows" / "Your price shows". The fixtures name the developer's paper inside `records_line`. Suggest an optional `records_label`.
-  - §5b's recap and Pay-as-built say "Can't check yet"; API_CONTRACTS §4.12 allows only "Can't check". The fixtures use "Can't check".
-  - No result schema exists for `saved_search_save`, `request_project`, `family_join`, `consent_history`, `me`, `link_whatsapp_follows`, `data_export_request`, `account_delete_request`, so they have no write answers yet. `shortlist_note_add`, `family_invite_cancel`, `family_member_remove`/`undo` return `Ok`. §5b has no saved searches either (only the WebFollowing artboard has them).
-  - `api.set_follow_type`'s "What a booked buyer can do" link has no route yet.
-- **C-40 · The number-holder cap and Rohan's 4 shares.** Within 30 days of 15 Oct, Rohan's number reached Meridian Habitat's sales office (ended 2 Oct), Orbis Land, Larkspur and Meridian Habitat's site office: 4 share rows but 3 recipients, and 3 active on 18 Oct. **T40:** the cap trigger must count distinct recipients (or active shares), or the seed will not load. Shares are seeded in date order with Rohan's JWT and a tap event id.
-- **C-41 · Order of the Since you last looked changes.** The fixtures list changes newest first, as WebFollowing and AppFollowing do. API_CONTRACTS §4.8's two-item example lists the 14 Oct extension before the 15 Oct missing QPR. **Lead:** confirm newest first (T43b reproduces it).
+- **C-30 · Replay inputs.** Applied in `src/author/canonical.mjs` and `src/author/scoring.mjs`:
+  - Aurelia's complaint-count history is now a 4-point chain on the catalogue record (`count_history`): 11 on 15 Jul 2026 (first scoring), 12 after the 28 Aug 2026 order (seen by the 2 Sep 2026 run), 13 after the 24 Sep 2026 order (in effect through 30 Sep 2026), 14 after the 9 Oct 2026 order (the current count). Each point is also a superseded evidence fact (`${AH2}/complaints-24m/<as_of>`), chained by `superseded_by` down to the live fact. `expected_b.mjs`'s share-card "before" line now picks the latest history entry at or before the card's `data_as_of`, not just the first array entry (it has to, now that there are 4).
+  - Sapphire Grove Ph 1's QPRs from Jan–Mar 2025 to Jan–Mar 2026 (5 new rows, all on time; filed dates and built % as given) were added; Apr–Jun 2026 and Jul–Sep 2026 were already seeded.
+  - Coral Towers' QPRs from Jul–Sep 2024 to Oct–Dec 2025 (6 new rows, 2 late) were added; Jan–Mar 2026, and the missing Apr–Jun/Jul–Sep 2026 rows, were already seeded.
+  - Coral's v1.0 run of 15 Jul 2026 is now `stale: false` in both `src/author/scoring.mjs` and `pipelines/plinth/scoring/fixture_world/ledger.yaml` (same source string in both, so `score --fixtures --as-of 2026-10-14 --emit json` still reproduces `canonical/scoring.json` byte for byte — verified).
+  - **Replay audit result: still 6 of 10 agree, same as before this round.** The new Sapphire/Coral facts change *which* runs disagree and *why*, but not the count: Sapphire's 15 Jul 2026 run now reaches `state: scored` (progress is available), but the scorecard computes **Low** (p≈0.13, just under the Moderate line) against the recorded **Moderate**; Coral's 15 Jul 2026 run now shows 2 late filings in its window, moving p from 0.354 to 0.392, still inside **Elevated**, against the recorded **High**. Aurelia's 15 Jul and 2 Sep runs still disagree because `World.complaints()` only ever returns the single current `complaint_counts` record, gated by `window_to` ("2026-10-14" for every subject): the new complaint history feeds the evidence trail and the share card, but the scoring engine (`pipelines/plinth/scoring/**`, out of this task's scope) never sees a complaint count before 14 Oct 2026 for any phase. Closing this gap would need either a time-varying `window_to`/complaints feature in T11's engine, or §5b facts this round does not give (an earlier known-as-of date for Sapphire's and Coral's complaint counts). Reported to the lead rather than invented.
+- **C-31 · Test phone numbers.** Confirmed safe to use as-is: the block `+91 99000 003NN` stays the test-OTP/fixture range; outbound SMS/WhatsApp adapters refuse it in every environment and run in mock mode outside prod (T42/T44, already specified). No fixture change; citations updated to DESIGN §5b round 3.
+- **C-32 · Rohan's push alerts and quiet hours.** Confirmed: WhatsApp alerts on, the weekly digest on, push on, quiet hours 22:00–08:00 IST — already what the fixtures seed (`src/author/people.mjs`'s `alert_subscriptions`). Citations updated; aligning API_CONTRACTS §4.9's example to 22:00 is the lead's/T02's edit (`docs/engineering/**` is lead-owned).
+- **C-33 · Consents whose project is not named.** Applied in `src/author/people.mjs`: C-0902-01 now carries `phase: sapphire-grove-phase-1`; C-1016-08 now carries `phase: aurelia-heights-phase-2`. The three already-derived phases (Ishita's C-1017-06, Farah's C-1016-04, Dev's C-1015-07) are confirmed correct; their sources now also cite the round-3 decision.
+- **C-34 · How and when Meera joined.** Applied in `src/author/people.mjs`: `members[rohan/meera]` now carries `invite_code: "RC4-8TD"`, `joined_via: "whatsapp"`, `joined_at` 6 Oct 2026 20:12 IST, and `invited_at` 3 Oct 2026 (time of day not given; 00:00 IST, README convention) with a 7-day `expires_at` (10 Oct 2026).
+- **C-35 · Shortlist notes and the ₹2.5 Cr budget.** Confirmed: the note texts (including the two mentioning "₹2.5 Cr all-in limit") may come from the WebFollowing artboard, and the budget matches the canonical search's `all_in_max_inr: 25000000` in `src/author/expected.mjs` (already consistent; no change needed there). Citation updated.
+- **C-36 · Kabir the buyer and Kabir Malhotra the agent.** Confirmed two distinct people, already modelled that way (`person("kabir")` vs `person("kabir-malhotra")`). Citation updated.
+- **C-37 · The old share card.** Confirmed: issued 30 Sep 2026, from Aurelia's v1.1 run of 2 Sep 2026, data as of 30 Sep 2026, Moderate — already what `src/author/people.mjs`'s `share_cards[0]` encodes, with the short code already derived from the card id and the perceptual hash already null. No fixture change. The stale "26 Jun" WaDigest/DATA_MODEL labels C-37 flagged are outside `packages/fixtures` (lead-owned docs/artboards); not fixed here.
+- **C-38 · Values left to column defaults.** Applied in `src/author/people.mjs`: every consent's `notice_version` now reads `"Privacy notice v1.0, 1 Oct 2026"` (a module constant, `NOTICE_VERSION`). `channel` (and the other previously-null columns C-38 listed) keep the column default, as instructed.
+- **C-39 · Contract gaps found by the T03b payloads.** The verdict label is now `"Can't check yet"` everywhere (`src/author/expected_b.mjs`'s `VERDICT_LABEL.cant_check`); `verdict_label` is a free string in `doc_check.schema.json` so no schema change was needed for this. The `records_label` field, the missing write-result schemas, and the "What a booked buyer can do" route are T02/API-task follow-ups (out of scope here, per the task brief).
+- **C-40 · The number-holder cap and Rohan's 4 shares.** Confirmed: the cap counts distinct active recipients (3: Orbis Land site office, Larkspur Realty, Meridian Habitat site office), already how `src/author/people.mjs`'s `buildConsents()` computes `count_line`/`count_rule`. Citation updated.
+- **C-41 · Order of the Since you last looked changes.** Confirmed newest first. `src/author/people.mjs`'s `events` array was already authored newest-first; `src/author/expected_b.mjs`'s `followingFeed()` now also sorts `after`/`before` explicitly (`byNewest`), so the order is an invariant rather than an accident of array order.
