@@ -1,0 +1,11 @@
+{
+  "base": "today.json",
+  "why": "The grievance officer is always listed (a placeholder until supplied).",
+  "expect": "",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/grievance"
+    }
+  ]
+}

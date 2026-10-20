@@ -2,17 +2,26 @@
   "name": "@plinth/contracts",
   "version": "0.0.0",
   "private": true,
-  "description": "API contracts: JSON Schema 2020-12, OpenAPI, catalogues -> TS types + ajv validators, Dart (plinth_contracts), Python (plinth_contracts).",
+  "description": "API contracts: JSON Schema 2020-12, OpenAPI 3.1, catalogues -> TS types + ajv standalone validators, Dart (plinth_contracts), Python (plinth_contracts, Pydantic v2).",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./validators": {
+      "types": "./gen/ts/validators.d.ts",
+      "default": "./gen/ts/validators.js"
+    },
+    "./schemas/*": "./schemas/*",
+    "./catalogues/*": "./catalogues/*",
+    "./examples/*": "./examples/*",
+    "./openapi/plinth.yaml": "./openapi/plinth.yaml"
   },
   "scripts": {
-    "build": "echo '@plinth/contracts: the codegen build arrives with T02'",
-    "gen": "echo '@plinth/contracts: schema codegen arrives with T02'",
+    "gen": "node scripts/gen.mjs",
+    "gen:check": "node scripts/gen.mjs --check",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run",
+    "test:dart": "cd dart && dart pub get && dart analyze && dart test"
   },
   "dependencies": {
     "ajv": "^8.20.0",

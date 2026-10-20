@@ -1,0 +1,21 @@
+{
+  "base": "rohan.json",
+  "why": "At most 3 parties hold the number in any 30 days.",
+  "expect": "/parties",
+  "patch": [
+    {
+      "op": "add",
+      "path": "/parties/-",
+      "value": {
+        "ref": "C-1018-12",
+        "party": "Northfield Estates site office",
+        "detail": "Aurelia site visit",
+        "shared_on": "2026-10-18",
+        "access_until": null,
+        "pays_line": "Developer · pays us nothing",
+        "number_shared": true,
+        "status": "active"
+      }
+    }
+  ]
+}

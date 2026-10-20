@@ -1,0 +1,286 @@
+{
+  "catalogue": "wa_templates",
+  "version": 1,
+  "source": "API_CONTRACTS §5.2. Mirrored by comms.templates. Language en.",
+  "notes": [
+    "Utility templates only for what the user asked for, plus the authentication template for login codes. No marketing templates in R1.",
+    "Meta limits (tested): at most 3 buttons; quick-reply and CTA text at most 20 characters; at most one CTA URL button.",
+    "Bodies are written by the task that owns each template (T46b for M2 buyer alerts) and submitted to Meta; this catalogue fixes the code, category, header, variables and buttons.",
+    "status: draft = not yet submitted to Meta."
+  ],
+  "templates": [
+    {
+      "code": "login_code",
+      "meta_name": "login_code",
+      "category": "AUTHENTICATION",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["code"],
+      "buttons": [{ "type": "copy_code", "text": "Copy code" }],
+      "subscription": null,
+      "artboard": "WaAlerts",
+      "milestone": "M2",
+      "status": "draft"
+    },
+    {
+      "code": "band_change_alert",
+      "meta_name": "band_change_alert",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "image", "aspect": "1.91:1", "note": "The band on its fill" },
+      "variables": ["project", "from_band", "to_band", "trigger", "date"],
+      "buttons": [
+        { "type": "quick_reply", "text": "Open full card" },
+        { "type": "quick_reply", "text": "Stop alerts" }
+      ],
+      "subscription": "band_change",
+      "artboard": "WaAlerts",
+      "milestone": "M2",
+      "status": "draft"
+    },
+    {
+      "code": "filing_alert",
+      "meta_name": "filing_alert",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["project", "event_line", "date"],
+      "buttons": [
+        { "type": "quick_reply", "text": "Open full card" },
+        { "type": "quick_reply", "text": "Stop alerts" }
+      ],
+      "subscription": "filings",
+      "artboard": "WaAlerts",
+      "milestone": "M2",
+      "status": "draft"
+    },
+    {
+      "code": "weekly_digest",
+      "meta_name": "weekly_digest",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "image", "aspect": "1080x570", "note": "One floor per project" },
+      "variables": ["week_range", "change_count", "band_moving_fact"],
+      "buttons": [
+        { "type": "quick_reply", "text": "See changes" },
+        { "type": "quick_reply", "text": "Stop weekly" }
+      ],
+      "subscription": "digest",
+      "artboard": "WaDigest",
+      "milestone": "M2",
+      "status": "draft"
+    },
+    {
+      "code": "daily_digest",
+      "meta_name": "daily_digest",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["date", "change_count"],
+      "buttons": [
+        { "type": "quick_reply", "text": "See changes" },
+        { "type": "quick_reply", "text": "Stop daily" }
+      ],
+      "subscription": "digest",
+      "artboard": "WaDigest",
+      "milestone": "M2",
+      "status": "draft"
+    },
+    {
+      "code": "family_removed",
+      "meta_name": "family_removed",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["inviter_first_name", "project"],
+      "buttons": [],
+      "subscription": null,
+      "artboard": "AppFamily",
+      "milestone": "M2",
+      "status": "draft"
+    },
+    {
+      "code": "export_ready",
+      "meta_name": "export_ready",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["expiry_date"],
+      "buttons": [{ "type": "cta_url", "text": null }],
+      "subscription": null,
+      "artboard": "AppYou",
+      "milestone": "M2",
+      "status": "draft"
+    },
+    {
+      "code": "developer_replied",
+      "meta_name": "developer_replied",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["developer", "project", "date"],
+      "buttons": [{ "type": "quick_reply", "text": "Read the reply" }],
+      "subscription": "band_change",
+      "artboard": "WaDevAlerts",
+      "milestone": "M4",
+      "status": "draft"
+    },
+    {
+      "code": "relay_message",
+      "meta_name": "relay_message",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["party", "project"],
+      "buttons": [{ "type": "quick_reply", "text": "Reply" }],
+      "subscription": null,
+      "artboard": "WebDevInbox",
+      "milestone": "M4",
+      "status": "draft"
+    },
+    {
+      "code": "dev_heads_up",
+      "meta_name": "dev_heads_up",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["project", "date", "ref"],
+      "buttons": [{ "type": "cta_url", "text": null }],
+      "subscription": null,
+      "artboard": "WaDevAlerts",
+      "milestone": "M4",
+      "status": "draft"
+    },
+    {
+      "code": "dev_notice_7day",
+      "meta_name": "dev_notice_7day",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["project", "date", "ref"],
+      "buttons": [{ "type": "cta_url", "text": null }],
+      "subscription": null,
+      "artboard": "WaDevAlerts",
+      "milestone": "M4",
+      "status": "draft"
+    },
+    {
+      "code": "dev_new_enquiry",
+      "meta_name": "dev_new_enquiry",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["project", "date", "ref"],
+      "buttons": [{ "type": "cta_url", "text": null }],
+      "subscription": null,
+      "artboard": "WaDevAlerts",
+      "milestone": "M4",
+      "status": "draft"
+    },
+    {
+      "code": "dev_visits_today",
+      "meta_name": "dev_visits_today",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["project", "date", "ref"],
+      "buttons": [{ "type": "cta_url", "text": null }],
+      "subscription": null,
+      "artboard": "WaDevAlerts",
+      "milestone": "M4",
+      "status": "draft"
+    },
+    {
+      "code": "dev_capture_link",
+      "meta_name": "dev_capture_link",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["project", "date", "ref"],
+      "buttons": [{ "type": "cta_url", "text": null }],
+      "subscription": null,
+      "artboard": "WaDevAlerts",
+      "milestone": "M4",
+      "status": "draft"
+    },
+    {
+      "code": "dev_stale_price_list",
+      "meta_name": "dev_stale_price_list",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["project", "date", "ref"],
+      "buttons": [{ "type": "cta_url", "text": null }],
+      "subscription": null,
+      "artboard": "WaDevAlerts",
+      "milestone": "M4",
+      "status": "draft"
+    },
+    {
+      "code": "visit_booked",
+      "meta_name": "visit_booked",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "image", "aspect": "1080x1350", "note": "The visit pass" },
+      "variables": ["project", "datetime", "code"],
+      "buttons": [
+        { "type": "quick_reply", "text": "Directions" },
+        { "type": "quick_reply", "text": "Cancel visit" }
+      ],
+      "subscription": null,
+      "artboard": "WaVisitPass",
+      "milestone": "M5",
+      "status": "draft"
+    },
+    {
+      "code": "visit_reminder",
+      "meta_name": "visit_reminder",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "image", "aspect": "1080x1350", "note": "The visit pass" },
+      "variables": ["project", "datetime", "code"],
+      "buttons": [
+        { "type": "quick_reply", "text": "Directions" },
+        { "type": "quick_reply", "text": "Cancel visit" }
+      ],
+      "subscription": null,
+      "artboard": "WaVisitPass",
+      "milestone": "M5",
+      "status": "draft"
+    },
+    {
+      "code": "visit_recap_prompt",
+      "meta_name": "visit_recap_prompt",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "image", "aspect": "1080x1350", "note": "The visit pass" },
+      "variables": ["project", "datetime", "code"],
+      "buttons": [{ "type": "quick_reply", "text": "Send recap" }],
+      "subscription": null,
+      "artboard": "WaVisitPass",
+      "milestone": "M5",
+      "status": "draft"
+    },
+    {
+      "code": "agent_verified",
+      "meta_name": "agent_verified",
+      "category": "UTILITY",
+      "language": "en",
+      "header": { "type": "none" },
+      "variables": ["agent_name", "registration"],
+      "buttons": [{ "type": "cta_url", "text": null }],
+      "subscription": null,
+      "artboard": "WaAgentOnboarding",
+      "milestone": "M5",
+      "status": "draft"
+    }
+  ],
+  "interactive_limits": {
+    "reply_buttons_max": 3,
+    "reply_button_chars_max": 20,
+    "cta_url_buttons_max": 1,
+    "cta_url_chars_max": 20,
+    "list_rows_max": 10,
+    "list_row_title_chars_max": 24
+  }
+}

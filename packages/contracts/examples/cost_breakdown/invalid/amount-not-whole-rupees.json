@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-3bhk.json",
+  "why": "Money is whole rupees.",
+  "expect": "/all_in_inr",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/all_in_inr",
+      "value": 27400400.5
+    }
+  ]
+}

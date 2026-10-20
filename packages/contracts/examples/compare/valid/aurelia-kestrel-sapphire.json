@@ -1,0 +1,82 @@
+{
+  "schema": "plinth.compare/1",
+  "columns": [
+    {
+      "slug": "aurelia-heights-phase-2",
+      "name": "Aurelia Heights, Phase 2",
+      "chip": {
+        "kind": "band",
+        "label": "Elevated",
+        "step": 3,
+        "meter_filled": 3
+      },
+      "state": "scored"
+    },
+    {
+      "slug": "kestrel-park",
+      "name": "Kestrel Park",
+      "chip": {
+        "kind": "band",
+        "label": "Low",
+        "step": 1,
+        "meter_filled": 1
+      },
+      "state": "scored"
+    },
+    {
+      "slug": "sapphire-grove-phase-1",
+      "name": "Sapphire Grove, Phase 1",
+      "chip": {
+        "kind": "band",
+        "label": "Moderate",
+        "step": 2,
+        "meter_filled": 2
+      },
+      "state": "scored"
+    }
+  ],
+  "rows": [
+    {
+      "key": "frequency",
+      "label": "Out of 100 similar projects",
+      "cells": [
+        "Between 30 and 45 were more than 12 months late",
+        "About 10 were more than 12 months late",
+        "About 20 were more than 12 months late"
+      ]
+    },
+    {
+      "key": "all_in",
+      "label": "All-in, 3 BHK",
+      "cells": [
+        "₹2.74 Cr · ₹18,900 per sq ft carpet",
+        "₹2.44 Cr · ₹17,400 per sq ft carpet",
+        "₹2.27 Cr · ₹16,200 per sq ft carpet"
+      ]
+    },
+    {
+      "key": "built",
+      "label": "Built vs time used",
+      "cells": [
+        "41% built · 77% of time used",
+        "63% built · 58% of time used",
+        "48% built · 55% of time used"
+      ]
+    },
+    {
+      "key": "complaints",
+      "label": "Complaints, 24 months",
+      "cells": ["14 · 2.8 per 100 units", "2 · 0.5 per 100 units", "5 · 1.4 per 100 units"]
+    },
+    {
+      "key": "pending",
+      "label": "On record now",
+      "cells": [
+        "Jul–Sep 2026 QPR not on HARERA yet (due 15 Oct)",
+        null,
+        "New QPR in · re-score due by 19 Oct"
+      ]
+    }
+  ],
+  "notes": ["Facts-only projects show “Band withheld · facts only”."]
+}

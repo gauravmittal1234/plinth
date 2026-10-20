@@ -6,15 +6,23 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./node": "./src/node.ts",
+    "./canonical/*": "./canonical/*",
     "./expected/*": "./expected/*",
-    "./vectors/*": "./vectors/*"
+    "./vectors/*": "./vectors/*",
+    "./media/*": "./media/*"
   },
   "scripts": {
-    "gen": "echo '@plinth/fixtures: seed generation arrives with T03'",
-    "validate": "echo '@plinth/fixtures: schema validation arrives with T03'",
+    "author": "node src/author/build.mjs",
+    "seed": "node scripts/build-seed.mjs",
+    "sync-dart": "node scripts/sync-dart.mjs",
+    "gen": "node src/author/build.mjs && node scripts/build-seed.mjs && node scripts/sync-dart.mjs",
+    "check:generated": "node src/author/build.mjs --check && node scripts/build-seed.mjs --check && node scripts/sync-dart.mjs --check",
+    "validate": "node scripts/validate.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run",
+    "test:api": "node scripts/api-contract-test.mjs"
   },
   "devDependencies": {
     "@plinth/config": "*",

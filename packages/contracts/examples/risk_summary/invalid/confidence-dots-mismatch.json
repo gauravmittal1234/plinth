@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "Low confidence shows one dot.",
+  "expect": "/confidence/dots",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/confidence/dots",
+      "value": 2
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+# Published history before the v1.2 recalculation of 14 Oct 2026: the fixture world's
+# core.score_runs and core.band_notices rows (DESIGN §5b band history; C-17, C-24).
+#
+# A published run is a record. The engine never rewrites one: it reads these to chain
+# `supersedes`, decide notices for the next run and extend band history, and it derives
+# their ids, statuses and frequencies itself. Their bands are not re-computed because the
+# point-in-time inputs behind them are not all in the canonical facts (complaint counts are
+# one fact as of 9 Oct 2026, C-11; Sapphire's first QPR on record is Apr-Jun 2026), so a
+# replay could not tell 2 Sep (Moderate) from 30 Sep (Elevated). `plinth-pipe score
+# --replay-audit` shows what each model would say on the facts that are on record.
+#
+# `source` is the run's provenance; `history_source` is its band-history row's.
+runs:
+  - phase: aurelia-heights-phase-2
+    model_version: v1.0
+    data_cutoff: 2026-07-15
+    computed_on: 2026-07-15
+    published_on: 2026-07-15
+    state: scored
+    band: moderate
+    set_by: model
+    rule_code: null
+    confidence: low
+    stall: false
+    stale: false
+    source: "DESIGN §5b (Moderate from first scoring until 2 Oct 2026); first scoring 15 Jul 2026 per DATA_MODEL §3 and BUILD_PLAN §7.1"
+    history_source: "DESIGN §5b"
+  - phase: aurelia-heights-phase-2
+    model_version: v1.1
+    data_cutoff: 2026-09-02
+    computed_on: 2026-09-02
+    published_on: 2026-09-02
+    state: scored
+    band: moderate
+    set_by: model
+    rule_code: null
+    confidence: low
+    stall: false
+    stale: false
+    source: "DESIGN §5b (Moderate until 2 Oct 2026; old card of 30 Sep 2026 shows v1.1 Moderate); v1.1 release DESIGN §5b · Fixture decisions, round 2 (C-15)"
+    history_source: "DESIGN §5b (old card, 30 Sep 2026, v1.1, Moderate)"
+  - phase: aurelia-heights-phase-2
+    model_version: v1.1
+    data_cutoff: 2026-09-30
+    computed_on: 2026-09-30
+    published_on: 2026-10-02
+    state: scored
+    band: elevated
+    set_by: model
+    rule_code: null
+    confidence: low
+    stall: false
+    stale: false
+    source: "DESIGN §5b (Elevated since 2 Oct 2026; heads-up sent 30 Sep 2026, 48 hours before)"
+    history_source: "DESIGN §5b"
+  # C-17: every other phase has held its band since the first public scoring, 15 Jul 2026.
+  - phase: kestrel-park
+    model_version: v1.0
+    data_cutoff: 2026-07-15
+    computed_on: 2026-07-15
+    published_on: 2026-07-15
+    state: scored
+    band: low
+    set_by: model
+    rule_code: null
+    confidence: high
+    stall: false
+    stale: false
+    source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+    history_source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+  - phase: sapphire-grove-phase-1
+    model_version: v1.0
+    data_cutoff: 2026-07-15
+    computed_on: 2026-07-15
+    published_on: 2026-07-15
+    state: scored
+    band: moderate
+    set_by: model
+    rule_code: null
+    confidence: high
+    stall: false
+    stale: false
+    source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+    history_source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+  - phase: coral-towers
+    model_version: v1.0
+    data_cutoff: 2026-07-15
+    computed_on: 2026-07-15
+    published_on: 2026-07-15
+    state: scored
+    band: high
+    set_by: model
+    rule_code: null
+    confidence: low
+    stall: false
+    stale: true
+    source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+    history_source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+  - phase: laurel-residency
+    model_version: v1.0
+    data_cutoff: 2026-07-15
+    computed_on: 2026-07-15
+    published_on: 2026-07-15
+    state: scored
+    band: severe
+    set_by: red_flag_rule
+    rule_code: RF1_GROUP_CIRP
+    confidence: null
+    stall: true
+    stale: false
+    source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+    history_source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+  - phase: juniper-enclave
+    model_version: v1.0
+    data_cutoff: 2026-07-15
+    computed_on: 2026-07-15
+    published_on: 2026-07-15
+    state: limited_history
+    band: null
+    set_by: null
+    rule_code: null
+    confidence: null
+    stall: false
+    stale: false
+    source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+    history_source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+  - phase: heron-point-phase-2
+    model_version: v1.0
+    data_cutoff: 2026-07-15
+    computed_on: 2026-07-15
+    published_on: 2026-07-15
+    state: not_scored
+    band: null
+    set_by: null
+    rule_code: null
+    confidence: null
+    stall: false
+    stale: false
+    source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+    history_source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+  - phase: cedar-walk-phase-2
+    model_version: v1.0
+    data_cutoff: 2026-07-15
+    computed_on: 2026-07-15
+    published_on: 2026-07-15
+    state: scored
+    band: moderate
+    set_by: model
+    rule_code: null
+    confidence: low
+    stall: false
+    stale: false
+    source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+    history_source: "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+
+notices:
+  # The 48-hour heads-up before the 2 Oct 2026 Moderate -> Elevated change (DESIGN §5b).
+  - phase: aurelia-heights-phase-2
+    kind: heads_up_48h
+    from_band: moderate
+    to_band: elevated
+    proposed_run: { model_version: v1.1, computed_on: 2026-09-30 }
+    reason_text: "The Apr–Jun 2026 QPR together with new complaint orders."
+    trigger_facts: ["aurelia-heights-phase-2/qpr/2026-Q2/progress", "aurelia-heights-phase-2/complaints-24m"]
+    sent_on: 2026-09-30
+    effective_on: 2026-10-02
+    public_marker_text: null
+    status: effective
+    source: "DESIGN §5b"

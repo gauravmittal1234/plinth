@@ -1,0 +1,74 @@
+{
+  "schema": "plinth.vectors.cost/1",
+  "source": "DESIGN §5b (Aurelia cost sheet of 2 Oct 2026); rules v2026.10 from DATA_MODEL core.cost_rule_sets",
+  "phase": "aurelia-heights-phase-2",
+  "unit": "3 BHK",
+  "carpet_sqft": 1450,
+  "super_sqft": 2000,
+  "rules_version": "2026.10",
+  "rules": {
+    "gst_pct": 5,
+    "gst_base": "base + charges",
+    "stamp_duty_pct": {
+      "male": 7,
+      "female": 5,
+      "joint": 6
+    },
+    "stamp_base": "base + charges",
+    "registration_fee_inr": 50000,
+    "per_sqft_round_to_inr": 100
+  },
+  "inputs": {
+    "lines_inr": {
+      "base": 23500000,
+      "plc": 290000,
+      "club": 150000,
+      "parking": 350000,
+      "ifms": 130000
+    },
+    "buyer": "male"
+  },
+  "cases": [
+    {
+      "name": "as quoted",
+      "waive": [],
+      "expected": {
+        "charges_total_inr": 920000,
+        "base_plus_charges_inr": 24420000,
+        "gst_inr": 1221000,
+        "stamp_registration_inr": 1759400,
+        "all_in_inr": 27400400,
+        "all_in_label": "₹2.74 Cr",
+        "all_in_exact_label": "₹2,74,00,400",
+        "per_sqft_carpet_inr": 18900,
+        "vs_quoted_pct": 17,
+        "charges_total_label": "₹9.2 L",
+        "gst_label": "₹12.2 L",
+        "stamp_registration_label": "₹17.6 L",
+        "base_plus_charges_label": "₹2.44 Cr",
+        "negotiable_inr": 440000,
+        "negotiable_label": "₹4.4 L",
+        "loading_pct": 38,
+        "price_list_per_sqft_carpet_inr": 16207
+      }
+    },
+    {
+      "name": "waive PLC and club",
+      "waive": ["plc", "club"],
+      "expected": {
+        "charges_total_inr": 480000,
+        "base_plus_charges_inr": 23980000,
+        "gst_inr": 1199000,
+        "stamp_registration_inr": 1728600,
+        "all_in_inr": 26907600,
+        "all_in_label": "₹2.69 Cr",
+        "all_in_exact_label": "₹2,69,07,600",
+        "per_sqft_carpet_inr": 18600,
+        "vs_quoted_pct": 15,
+        "saving_inr": 492800,
+        "saving_label": "₹4.9 L",
+        "saving_exact_label": "₹4,92,800"
+      }
+    }
+  ]
+}

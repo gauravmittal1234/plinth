@@ -1,0 +1,12 @@
+{
+  "base": "ah2-7kq.json",
+  "why": "Invite codes are upper case, e.g. AH2-7KQ.",
+  "expect": "/code",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/code",
+      "value": "ah2-7kq"
+    }
+  ]
+}

@@ -1,0 +1,243 @@
+{
+  "schema": "plinth.vectors.afford_the_wait/1",
+  "source": "DESIGN §5b (defaults and results); rounding: BUILD_PLAN D-6 and §5b Engineering fixture decisions; payout steps and series: CONFLICTS.md C-22 (proposed)",
+  "phase": "aurelia-heights-phase-2",
+  "tower": "A",
+  "inputs": {
+    "all_in_inr": 27400400,
+    "take_home_inr": 450000,
+    "rent_inr": 55000,
+    "down_pct": 20,
+    "rate_pct": 8.5,
+    "tenure_years": 20,
+    "paid_out_today_pct": 52.5,
+    "paid_out_by_completion_pct": 95,
+    "completion": "2027-12",
+    "first_month": "2026-11"
+  },
+  "method": [
+    "Round the all-in to the nearest ₹1 lakh: ₹2,74,00,400 becomes ₹2,74,00,000.",
+    "Down payment = 20% of the rounded all-in; the loan is the rest.",
+    "The buyer's own money goes first, so the bank has paid out (share of the rounded all-in due) minus the down payment.",
+    "Pre-EMI = paid out × 8.50% ÷ 12, rounded to the rupee (half up). Monthly outgo = pre-EMI + rent.",
+    "Due today: 52.5% (Tower A, booking to slab 9). By Dec 2027: 95% (all but the last 5% at possession).",
+    "Series: the paid-out share rises in equal monthly steps from Nov 2026 to Dec 2027; a delay holds the Dec 2027 level.",
+    "Delay cost = months of delay × the rounded Dec 2027 monthly outgo.",
+    "EMI after keys = standard amortisation of the loan over 240 months, rounded to the rupee."
+  ],
+  "derived": {
+    "all_in_rounded_inr": 27400000,
+    "down_payment_inr": 5480000,
+    "loan_inr": 21920000,
+    "paid_out_now_inr": 8905000,
+    "paid_out_by_completion_inr": 20550000
+  },
+  "expected": {
+    "now_pre_emi_inr": 63077,
+    "now_monthly_inr": 118077,
+    "now_monthly_label": "₹1,18,077",
+    "now_share_pct": 26,
+    "by_completion_pre_emi_inr": 145563,
+    "by_completion_monthly_inr": 200563,
+    "by_completion_monthly_label": "₹2,00,563",
+    "by_completion_share_pct": 45,
+    "emi_after_keys_inr": 190227,
+    "emi_after_keys_label": "₹1,90,227"
+  },
+  "cases": [
+    {
+      "delay_months": 12,
+      "cost_inr": 2406756,
+      "cost_label": "₹24.1 L"
+    },
+    {
+      "delay_months": 24,
+      "cost_inr": 4813512,
+      "cost_label": "₹48.1 L"
+    }
+  ],
+  "series": [
+    {
+      "month": "2026-11",
+      "paid_out_pct": 52.5,
+      "pre_emi_inr": 63077,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2026-12",
+      "paid_out_pct": 55.8,
+      "pre_emi_inr": 69422,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-01",
+      "paid_out_pct": 59,
+      "pre_emi_inr": 75767,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-02",
+      "paid_out_pct": 62.3,
+      "pre_emi_inr": 82112,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-03",
+      "paid_out_pct": 65.6,
+      "pre_emi_inr": 88457,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-04",
+      "paid_out_pct": 68.8,
+      "pre_emi_inr": 94802,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-05",
+      "paid_out_pct": 72.1,
+      "pre_emi_inr": 101147,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-06",
+      "paid_out_pct": 75.4,
+      "pre_emi_inr": 107492,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-07",
+      "paid_out_pct": 78.7,
+      "pre_emi_inr": 113837,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-08",
+      "paid_out_pct": 81.9,
+      "pre_emi_inr": 120182,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-09",
+      "paid_out_pct": 85.2,
+      "pre_emi_inr": 126527,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-10",
+      "paid_out_pct": 88.5,
+      "pre_emi_inr": 132872,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-11",
+      "paid_out_pct": 91.7,
+      "pre_emi_inr": 139217,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2027-12",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": false
+    },
+    {
+      "month": "2028-01",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-02",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-03",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-04",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-05",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-06",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-07",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-08",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-09",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-10",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-11",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    },
+    {
+      "month": "2028-12",
+      "paid_out_pct": 95,
+      "pre_emi_inr": 145563,
+      "rent_inr": 55000,
+      "delay": true
+    }
+  ]
+}

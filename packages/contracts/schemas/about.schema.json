@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/about.schema.json",
+  "title": "About",
+  "description": "plinth.about/1, from api.about() (API_CONTRACTS §3.1; the WebAbout page): who runs Plinth (the company register), the illustrative calibration table, how we make money, the response-time board, the grievance officer and coverage today and next. Founder details are placeholders until supplied.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "identity",
+    "calibration",
+    "money",
+    "response_times",
+    "grievance",
+    "coverage",
+    "meta"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.about/1" },
+    "identity": { "$ref": "#/$defs/AboutIdentity" },
+    "calibration": { "$ref": "#/$defs/AboutCalibration" },
+    "money": { "$ref": "#/$defs/AboutMoney" },
+    "response_times": { "type": "array", "items": { "$ref": "#/$defs/ResponseTime" } },
+    "grievance": { "$ref": "#/$defs/GrievanceOfficer" },
+    "coverage": { "$ref": "#/$defs/Coverage" },
+    "meta": { "$ref": "common.schema.json#/$defs/PageMeta" }
+  },
+  "$defs": {
+    "AboutIdentity": {
+      "title": "AboutIdentity",
+      "description": "The company register, including who funds us (the holdings line). Placeholders until the founder supplies them.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["placeholder_note", "register"],
+      "properties": {
+        "placeholder_note": { "type": ["string", "null"] },
+        "photo_line": { "type": ["string", "null"] },
+        "register": { "type": "array", "items": { "$ref": "#/$defs/RegisterRow" } }
+      }
+    },
+    "RegisterRow": {
+      "title": "RegisterRow",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "value"],
+      "properties": {
+        "label": { "type": "string" },
+        "value": { "type": "string" }
+      }
+    },
+    "AboutCalibration": {
+      "title": "AboutCalibration",
+      "description": "What we said against what happened, per band (illustrative until the first backtest is published).",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["pill", "rows", "base_rate", "brier_line"],
+      "properties": {
+        "pill": { "type": ["string", "null"], "examples": ["Illustrative numbers"] },
+        "rows": { "type": "array", "items": { "$ref": "#/$defs/AboutCalibrationRow" } },
+        "base_rate": { "$ref": "common.schema.json#/$defs/BaseRate" },
+        "brier_line": { "type": ["string", "null"] },
+        "first_public_bands_on": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        }
+      }
+    },
+    "AboutCalibrationRow": {
+      "title": "AboutCalibrationRow",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "band",
+        "label",
+        "said_low",
+        "said_high",
+        "n_projects",
+        "n_late",
+        "per_100",
+        "inside_range"
+      ],
+      "properties": {
+        "band": { "$ref": "common.schema.json#/$defs/BandCode" },
+        "label": { "type": "string" },
+        "said_low": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "said_high": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "n_projects": { "type": "integer", "minimum": 0 },
+        "n_late": { "type": "integer", "minimum": 0 },
+        "per_100": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "inside_range": { "type": "boolean" }
+      }
+    },
+    "AboutMoney": {
+      "title": "AboutMoney",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["never_line", "lines"],
+      "properties": {
+        "never_line": { "type": "string" },
+        "lines": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "ResponseTime": {
+      "title": "ResponseTime",
+      "description": "One row of the response-time board.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["what", "promise_line", "ref_prefix"],
+      "properties": {
+        "what": { "type": "string" },
+        "promise_line": { "type": "string" },
+        "ref_prefix": {
+          "description": "The reference prefix this kind of request gets (E-, CL-, G-), or null.",
+          "type": ["string", "null"],
+          "pattern": "^[A-Z]{1,3}$"
+        },
+        "actual_line": {
+          "description": "How we actually did, once there is a track record.",
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "GrievanceOfficer": {
+      "title": "GrievanceOfficer",
+      "description": "Always listed; placeholders until the founder supplies them.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["officer", "contact", "line"],
+      "properties": {
+        "officer": { "type": "string" },
+        "contact": { "type": "string" },
+        "line": { "type": "string" }
+      }
+    },
+    "Coverage": {
+      "title": "Coverage",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["today", "next"],
+      "properties": {
+        "today": { "$ref": "#/$defs/CoverageToday" },
+        "next": { "type": "array", "items": { "$ref": "#/$defs/CoverageNext" } }
+      }
+    },
+    "CoverageToday": {
+      "title": "CoverageToday",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["line", "items"],
+      "properties": {
+        "line": { "type": "string" },
+        "items": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "CoverageNext": {
+      "title": "CoverageNext",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["name", "when_line", "notify"],
+      "properties": {
+        "name": { "type": "string" },
+        "when_line": { "type": "string" },
+        "notify": {
+          "description": "True when a buyer can ask to hear when it arrives.",
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

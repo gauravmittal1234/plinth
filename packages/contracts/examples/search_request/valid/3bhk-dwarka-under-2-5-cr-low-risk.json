@@ -1,0 +1,14 @@
+{
+  "p_q": "3 bhk dwarka expresway under 2.5 cr low risk",
+  "p_filters": {
+    "bhk": [3],
+    "all_in_max_inr": 25000000,
+    "corridors": ["dwarka-expressway"],
+    "bands": ["low"],
+    "possession_by": null
+  },
+  "p_sort": "lowest_risk",
+  "p_bbox": null,
+  "p_cursor": null,
+  "p_limit": 20
+}

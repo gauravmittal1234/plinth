@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/suggest.schema.json",
+  "title": "SuggestResults",
+  "description": "plinth.suggest/1, from api.suggest(p_q) (API_CONTRACTS §3.1): at most 8 typo- and Hinglish-tolerant name, RERA number and sector matches.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "q", "items"],
+  "properties": {
+    "schema": { "const": "plinth.suggest/1" },
+    "q": { "type": "string" },
+    "items": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/Suggestion" } }
+  },
+  "$defs": {
+    "Suggestion": {
+      "title": "Suggestion",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "slug", "label", "detail_line", "matched_on"],
+      "properties": {
+        "kind": { "$ref": "#/$defs/SuggestionKind" },
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "label": { "type": "string" },
+        "detail_line": { "type": ["string", "null"] },
+        "matched_on": { "$ref": "#/$defs/SuggestionMatch" }
+      }
+    },
+    "SuggestionKind": {
+      "title": "SuggestionKind",
+      "type": "string",
+      "enum": ["phase", "developer", "locality"]
+    },
+    "SuggestionMatch": {
+      "title": "SuggestionMatch",
+      "type": "string",
+      "enum": ["name", "rera_number", "sector", "synonym"]
+    }
+  }
+}

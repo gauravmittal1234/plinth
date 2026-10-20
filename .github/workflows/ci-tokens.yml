@@ -1,0 +1,74 @@
+# ci-tokens (owner: T01). BUILD_PLAN §8: build tokens → git diff --exit-code → CSS/Dart parity.
+#   js     npm ci, rebuild from tokens.json, fail on any drift, then lint, typecheck and
+#          the Vitest suite (CSS ↔ Dart colour parity, WCAG, no glass, Tailwind compile)
+#   dart   dart analyze, dart test (pure Dart), flutter test (ThemeExtension), dart format check
+name: ci-tokens
+
+on:
+  pull_request:
+    paths:
+      - "packages/tokens/**"
+      - "packages/config/**"
+      - ".github/workflows/ci-tokens.yml"
+  push:
+    branches: [main]
+    paths:
+      - "packages/tokens/**"
+      - "packages/config/**"
+      - ".github/workflows/ci-tokens.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-tokens-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  js:
+    name: tokens (build, drift, parity, WCAG)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TURBO_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Build tokens from tokens.json
+        run: npm run -w @plinth/tokens build
+      - name: Generated files match tokens.json (no drift)
+        run: |
+          git status --porcelain -- packages/tokens
+          git diff --exit-code -- packages/tokens
+          test -z "$(git status --porcelain -- packages/tokens)"
+      - run: npm run -w @plinth/tokens lint
+      - run: npm run -w @plinth/tokens typecheck
+      - name: Parity, WCAG, no glass, Tailwind compile
+        run: npm run -w @plinth/tokens test
+
+  dart:
+    name: plinth_tokens (dart analyze, dart test, flutter test)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: packages/tokens/dart
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.5
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: dart analyze --fatal-infos
+      - run: dart format --output=none --set-exit-if-changed lib test
+      - name: dart test (pure Dart values)
+        run: dart test
+      - name: flutter test (ThemeExtension, lerp, TextStyles)
+        run: flutter test

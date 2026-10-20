@@ -1,0 +1,564 @@
+{
+  "schema": "plinth.project_page/1",
+  "risk": {
+    "schema": "plinth.risk_summary/1",
+    "phase": {
+      "slug": "sapphire-grove-phase-1",
+      "name": "Sapphire Grove, Phase 1",
+      "short_code": null,
+      "rera_number": "GGM/867/599/2025/03",
+      "authority": {
+        "code": "harera_ggm",
+        "name": "HARERA Gurugram",
+        "url": "https://haryanarera.gov.in"
+      },
+      "locality_line": "Sector 106, Dwarka Expressway",
+      "units": 360,
+      "developer": {
+        "slug": "meridian-habitat",
+        "name": "Meridian Habitat",
+        "claim": {
+          "state": "claimed",
+          "line": "claimed developer page, replies here",
+          "since": "2025-12-05"
+        }
+      }
+    },
+    "display": {
+      "state": "scored",
+      "overlays": ["rescoring"],
+      "bands_public": true
+    },
+    "band": {
+      "code": "moderate",
+      "label": "Moderate",
+      "step": 2,
+      "since": "2026-07-15",
+      "set_by": "model",
+      "rule": null
+    },
+    "chip": {
+      "kind": "band",
+      "label": "Moderate",
+      "step": 2,
+      "meter_filled": 2
+    },
+    "confidence": {
+      "level": "high",
+      "dots": 2,
+      "line": "We're more certain about this one. Meridian Habitat has 11 finished RERA projects to learn from."
+    },
+    "frequency": {
+      "kind": "point",
+      "low": 20,
+      "high": 20,
+      "sentence": "About 20 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+      "reference_class_line": "Gurugram RERA phases registered 2017–2021 (illustrative backtest).",
+      "icon_array": {
+        "filled": 20,
+        "hatched": 0,
+        "empty": 80
+      },
+      "hatch_legend": null
+    },
+    "late12": {
+      "original_completion": "2028-03",
+      "blanket_extension_months": 4,
+      "late_after": "2029-07",
+      "line": "Original completion Mar 2028. More than 12 months late here means an OC after Jul 2029, with the 4-month blanket extension of Jul 2026.",
+      "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+    },
+    "reasons": [
+      {
+        "rank": 1,
+        "factor": "timeline",
+        "factor_label": "Timeline",
+        "text": "48% built with 55% of the promised time used.",
+        "sources": [
+          {
+            "label": "HARERA QPR · Apr–Jun 2026",
+            "fact_ids": ["bcbeac16-a68a-587d-a18b-c83ab2cd672e"],
+            "evidence_url": "/evidence/bcbeac16-a68a-587d-a18b-c83ab2cd672e",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-07-27"
+          },
+          {
+            "label": "HARERA registration",
+            "fact_ids": ["4070ee84-2622-578f-8bb6-2e605e103e94"],
+            "evidence_url": "/evidence/4070ee84-2622-578f-8bb6-2e605e103e94",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
+      },
+      {
+        "rank": 2,
+        "factor": "legal",
+        "factor_label": "Legal",
+        "text": "5 complaints decided against the promoter in 24 months · 1.4 per 100 units. Median count for similar projects: 3.",
+        "sources": [
+          {
+            "label": "HARERA orders · 24 months",
+            "fact_ids": ["e5b0c43a-518c-5c39-8b5a-d712debe364a"],
+            "evidence_url": "/evidence/e5b0c43a-518c-5c39-8b5a-d712debe364a",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
+      },
+      {
+        "rank": 3,
+        "factor": "timeline",
+        "factor_label": "Timeline",
+        "text": "The Apr–Jun 2026 QPR was filed 12 days late.",
+        "sources": [
+          {
+            "label": "HARERA QPR register",
+            "fact_ids": ["fc2e6392-b9da-5aea-9c72-3f9b9e8c48c1"],
+            "evidence_url": "/evidence/fc2e6392-b9da-5aea-9c72-3f9b9e8c48c1",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-07-27"
+          }
+        ]
+      },
+      {
+        "rank": 4,
+        "factor": "track_record",
+        "factor_label": "Track record",
+        "text": "2 of the group's 11 finished RERA projects got OC more than 12 months late.",
+        "sources": [
+          {
+            "label": "HARERA · DTCP OC records",
+            "fact_ids": ["a5f17432-e654-5866-a9a4-7de0202d7591"],
+            "evidence_url": "/evidence/a5f17432-e654-5866-a9a4-7de0202d7591",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
+      }
+    ],
+    "what_would_change": "Two consecutive quarters of construction at or ahead of schedule would move this to Low.",
+    "pending": [
+      {
+        "code": "rescore_due",
+        "line": "The Jul–Sep 2026 QPR was filed 15 Oct and fetched 16 Oct, 7:40 pm. We update this by 19 Oct 2026, 7:40 pm.",
+        "since": "2026-10-16",
+        "developer_says": null,
+        "marker_line": "If the new figures move the band, followers hear first, with what changed and why."
+      }
+    ],
+    "developer_response": null,
+    "progress": {
+      "built_pct": 48,
+      "sold_pct": null,
+      "time_used_pct": 55,
+      "latest_qpr": {
+        "quarter": "2026-Q2",
+        "label": "Apr–Jun 2026",
+        "filed_on": "2026-07-27",
+        "age_days": 83
+      },
+      "line": "48% built · 55% of the promised time used"
+    },
+    "price": {
+      "all_in_inr": 22700000,
+      "all_in_label": "₹2.27 Cr",
+      "quoted_label": "₹1.95 Cr",
+      "per_sqft_carpet_label": "₹16,200 per sq ft carpet",
+      "basis_line": "3 BHK, 1,400 sq ft carpet · developer cost sheet",
+      "display_line": "₹2.27 Cr all-in · quoted ₹1.95 Cr"
+    },
+    "complaints": {
+      "count_24m": 5,
+      "per_100_units": 1.4,
+      "units_base": 360,
+      "median_count_similar": 3,
+      "line": "5 complaints · 1.4 per 100 units"
+    },
+    "withheld": null,
+    "meta": {
+      "data_as_of": "2026-10-14",
+      "model_version": "v1.2",
+      "score_run_id": "0cbf78fd-3b74-5440-bb85-2cefde33f927",
+      "generated_at": "2026-10-18T12:00:00+05:30",
+      "methodology_url": "/methodology",
+      "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+      "promise_line": "No developer pays us. Ever.",
+      "live_url": "https://plinth.in/gurugram/projects/sapphire-grove-phase-1",
+      "short_url": null
+    },
+    "share": {
+      "card_url": "https://plinth.in/cards/risk/sapphire-grove-phase-1.png?run=0cbf78fd-3b74-5440-bb85-2cefde33f927",
+      "card_alt": "Sapphire Grove, Phase 1: Delivery risk Moderate. About 20 of 100 similar projects were more than 12 months late.",
+      "lines": [
+        "Delivery risk: Moderate",
+        "About 20 of 100 similar Gurugram projects got their OC more than 12 months late.",
+        "48% built with 55% of the promised time used."
+      ],
+      "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+      "caption": "Plinth · No developer pays us. Ever."
+    }
+  },
+  "hero": {
+    "image_url": "/media/heroSapphire.jpg",
+    "image_caption": "Images on this page are illustrative",
+    "summary_line": "Delivery risk: Moderate, re-scoring now · 48% built · 55% of the time used · Original completion Mar 2028",
+    "rera_badge": {
+      "number": "GGM/867/599/2025/03",
+      "authority_url": "https://haryanarera.gov.in",
+      "qr_url": null
+    }
+  },
+  "truth_panel": [
+    {
+      "key": "completion",
+      "label": "Original vs current completion",
+      "value_line": "Mar 2028 · no extensions",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["71a2805c-894e-5cd4-b34a-9ae708e8c06a"],
+          "evidence_url": "/evidence/71a2805c-894e-5cd4-b34a-9ae708e8c06a",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "key": "progress",
+      "label": "Built vs time used",
+      "value_line": "48% built · 55% of time used",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["bcbeac16-a68a-587d-a18b-c83ab2cd672e"],
+          "evidence_url": "/evidence/bcbeac16-a68a-587d-a18b-c83ab2cd672e",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-27"
+        },
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["4070ee84-2622-578f-8bb6-2e605e103e94"],
+          "evidence_url": "/evidence/4070ee84-2622-578f-8bb6-2e605e103e94",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "key": "complaints",
+      "label": "Complaints decided",
+      "value_line": "5 complaints · 1.4 per 100 units",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA orders · 24 months",
+          "fact_ids": ["e5b0c43a-518c-5c39-8b5a-d712debe364a"],
+          "evidence_url": "/evidence/e5b0c43a-518c-5c39-8b5a-d712debe364a",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "progress": {
+    "floors_per_tower": null,
+    "towers": null,
+    "quarters": [
+      {
+        "quarter": "2026-Q2",
+        "label": "Apr–Jun 2026",
+        "sold_pct": null,
+        "built_pct": 48,
+        "time_used_pct": null,
+        "band_then": "moderate",
+        "towers": null,
+        "filed_on": "2026-07-27",
+        "status": "late",
+        "note_line": "Filed 27 Jul 2026, 12 days late."
+      }
+    ],
+    "today": {
+      "time_used_pct": 55,
+      "band": "moderate",
+      "band_since_line": "Moderate since 15 Jul 2026"
+    },
+    "late_filings_line": null
+  },
+  "homes": {
+    "units_line": "360 homes in this phase.",
+    "configurations": [
+      {
+        "label": "3 BHK",
+        "carpet_line": "1,400 sq ft carpet",
+        "carpet_lane": "from_developer",
+        "super_line": "1,960 sq ft super",
+        "super_lane": "from_developer",
+        "loading_line": "40% loading",
+        "price_line": "From ₹1.95 Cr",
+        "price_lane": "from_developer",
+        "all_in_line": "₹2.27 Cr all-in",
+        "all_in_note": null,
+        "rooms": []
+      },
+      {
+        "label": "3 BHK + study",
+        "carpet_line": "1,620 sq ft carpet",
+        "carpet_lane": "from_developer",
+        "super_line": null,
+        "super_lane": null,
+        "loading_line": null,
+        "price_line": "From ₹2.26 Cr",
+        "price_lane": "from_developer",
+        "all_in_line": null,
+        "all_in_note": "No 3 BHK + study cost sheet, so no all-in yet.",
+        "rooms": []
+      }
+    ],
+    "amenities": null,
+    "getting_around": {
+      "lane": "our_estimate",
+      "source_line": "Our estimate · road distances, Oct 2026",
+      "items": ["Cyber City: 20 km, 40–60 min at 9 am", "IGI Airport T3: 16 km, 25–40 min"]
+    },
+    "waterlogging": null
+  },
+  "from_developer": {
+    "label": "From the developer · not verified by Plinth",
+    "updated_line": null,
+    "note_line": "Meridian Habitat added this in its free Plinth workspace. We show it as given and date every change. It is not a public record, and it never moves the delivery risk.",
+    "price_lists": [
+      {
+        "published_on": "2026-10-16",
+        "label": "16 Oct 2026",
+        "items": [
+          {
+            "unit_label": "3 BHK",
+            "base_price_inr": 19500000,
+            "price_line": "from ₹1.95 Cr",
+            "per_sqft_line": null
+          },
+          {
+            "unit_label": "3 BHK + study",
+            "base_price_inr": 22600000,
+            "price_line": "from ₹2.26 Cr",
+            "per_sqft_line": null
+          }
+        ]
+      }
+    ],
+    "price_basis_line": "Base prices, before charges, GST and stamp duty.",
+    "payment_plan": null,
+    "transfer_policy": null,
+    "draft_agreement_line": null
+  },
+  "cost": null,
+  "wait_defaults": {
+    "take_home_inr": 450000,
+    "rent_inr": 55000,
+    "down_pct": 20,
+    "rate_pct": 8.5,
+    "tenure_years": 20
+  },
+  "afford_default": null,
+  "next_steps": {
+    "intro_line": "We never say buy or don't buy. At Moderate, these steps keep less of your money at stake.",
+    "steps": [
+      {
+        "heading": "Ask for it in writing.",
+        "body": "The CA certificate on escrow withdrawals, filed with each QPR.",
+        "source_label": null
+      },
+      {
+        "heading": "Prefer a plan that pays as it's built.",
+        "body": "Construction-linked, and only for stages on record.",
+        "source_label": null
+      },
+      {
+        "heading": "Keep a rent buffer.",
+        "body": "About 12 months of rent and pre-EMI, in case keys come late.",
+        "source_label": null
+      },
+      {
+        "heading": "Follow it.",
+        "body": "Late filings and new orders reach you first.",
+        "source_label": null
+      }
+    ],
+    "base_rate_line": "About 36 of 100 Gurugram projects got their OC more than 12 months late. Moderate sits below that.",
+    "lower_band_nearby": [
+      {
+        "slug": "kestrel-park",
+        "name": "Kestrel Park",
+        "chip": {
+          "kind": "band",
+          "label": "Low",
+          "step": 1,
+          "meter_filled": 1
+        },
+        "price_line": "₹2.44 Cr all-in"
+      }
+    ],
+    "rule_line": "Same corridor, lower band, all-in within 20%. Nobody pays to appear."
+  },
+  "before_booking": {
+    "intro_line": "Four things buyers ask about before the first cheque, with the rules behind them.",
+    "note_line": "General information, not legal, tax or financial advice.",
+    "payment_plans": {
+      "title": "Which payment plan?",
+      "sub": "Construction-linked, down payment or subvention, and what each one risks.",
+      "paras": [
+        {
+          "lead": "Construction-linked.",
+          "text": "You pay each stage once it is built, so your money follows the building. Check each demand against the latest QPR.",
+          "tone": "body"
+        },
+        {
+          "lead": "Down payment.",
+          "text": "You pay most of the price early, often for a discount. If the project is late, more of your money waits with it. Before a registered agreement, the law still caps you at 10%.",
+          "tone": "body"
+        },
+        {
+          "lead": "Subvention, or “no EMI till possession”.",
+          "text": "The bank pays the developer early, and the developer promises to pay your pre-EMI. You are still the borrower: if the developer stops paying, the bank collects from you.",
+          "tone": "body"
+        },
+        {
+          "lead": "Before a subvention booking,",
+          "text": "get the lender's confirmation in writing: what it pays out, when, and who pays the pre-EMI if the developer stops.",
+          "tone": "key"
+        }
+      ]
+    },
+    "loans": {
+      "line": "Loan checks arrive in 2027",
+      "title": "Home loans",
+      "sub": "Loan checks arrive in 2027. What to check with your bank now.",
+      "paras": [
+        {
+          "lead": "Loan checks arrive in 2027.",
+          "text": "Plinth doesn't arrange loans or pass your number to any lender today.",
+          "tone": "body"
+        },
+        {
+          "lead": "Check now:",
+          "text": "is this project approved by your bank? Ask the bank, in writing, not the developer.",
+          "tone": "key"
+        },
+        {
+          "lead": "Banks usually don't lend for stamp duty or registration.",
+          "text": "Plan for those from your own money.",
+          "tone": "body"
+        }
+      ]
+    },
+    "nri": {
+      "title": "Buying from abroad (NRI)",
+      "sub": "Paying from NRE or NRO, a power of attorney, and FEMA basics.",
+      "paras": [
+        {
+          "lead": "Paying.",
+          "text": "From an NRE, FCNR(B) or NRO account, or money sent to India through a bank. FEMA doesn't allow paying in foreign currency notes or traveller's cheques.",
+          "tone": "body"
+        },
+        {
+          "lead": "Loans.",
+          "text": "Indian banks lend to NRIs. EMIs come from an NRE or NRO account.",
+          "tone": "body"
+        },
+        {
+          "lead": "TDS.",
+          "text": "Like any buyer, you deduct 1% from each instalment when the price is ₹50 L or more (s.194-IA). You need a PAN.",
+          "tone": "body"
+        },
+        {
+          "lead": "Power of attorney.",
+          "text": "Make it specific to this flat, and list what your relative may sign: booking form, agreement, payments, registration. One signed abroad is attested at an Indian mission or apostilled, then stamped in India within 3 months.",
+          "tone": "body"
+        }
+      ]
+    },
+    "selling_before_possession": {
+      "title": "Selling before possession",
+      "sub": "Transfer charges, the builder's NOC and what RERA says.",
+      "paras": [
+        {
+          "lead": null,
+          "text": "Selling before possession means transferring your allotment. The developer endorses the new buyer on your agreement and issues a no-objection certificate (NOC).",
+          "tone": "body"
+        },
+        {
+          "lead": "Under RERA,",
+          "text": "whoever takes your allotment becomes the allottee, with your rights, including delay interest (s.2(d)).",
+          "tone": "body"
+        },
+        {
+          "lead": "Ask a CA",
+          "text": "about capital-gains tax, and a lawyer about stamp duty on the transfer.",
+          "tone": "body"
+        },
+        {
+          "lead": null,
+          "text": "Our resale and transfer checks are planned for Apr–Jun 2027.",
+          "tone": "body"
+        }
+      ]
+    }
+  },
+  "pre_rera": null,
+  "records": [
+    {
+      "fact_id": "71a2805c-894e-5cd4-b34a-9ae708e8c06a",
+      "chip": "HARERA registration · 2025",
+      "line": "Registered Jan 2025. Original completion date: Mar 2028.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/71a2805c-894e-5cd4-b34a-9ae708e8c06a"
+    },
+    {
+      "fact_id": "bcbeac16-a68a-587d-a18b-c83ab2cd672e",
+      "chip": "HARERA QPR · Apr–Jun 2026",
+      "line": "48% built.",
+      "lane": "records_show",
+      "as_of": "2026-07-27",
+      "evidence_url": "/evidence/bcbeac16-a68a-587d-a18b-c83ab2cd672e"
+    },
+    {
+      "fact_id": "56a520eb-f5c1-582d-a9ca-a79ec018333e",
+      "chip": "HARERA QPR · Jul–Sep 2026 · filed 15 Oct 2026",
+      "line": "Filed 15 Oct 2026, on time. We fetched it 16 Oct 2026, 7:40 pm, and are reading it now.",
+      "lane": "records_show",
+      "as_of": "2026-10-16",
+      "evidence_url": "/evidence/56a520eb-f5c1-582d-a9ca-a79ec018333e"
+    },
+    {
+      "fact_id": "e5b0c43a-518c-5c39-8b5a-d712debe364a",
+      "chip": "HARERA orders · 24 months",
+      "line": "5 complaints decided against the promoter in 24 months · 1.4 per 100 units (360 units). Median count for similar projects: 3.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/e5b0c43a-518c-5c39-8b5a-d712debe364a"
+    },
+    {
+      "fact_id": "a5f17432-e654-5866-a9a4-7de0202d7591",
+      "chip": "HARERA · DTCP OC records",
+      "line": "2 of the group's 11 finished RERA projects got OC more than 12 months late.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/a5f17432-e654-5866-a9a4-7de0202d7591"
+    }
+  ],
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "0cbf78fd-3b74-5440-bb85-2cefde33f927",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/sapphire-grove-phase-1",
+    "short_url": null
+  }
+}

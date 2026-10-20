@@ -1,0 +1,16 @@
+{
+  "base": "anon-defaults.json",
+  "why": "Flags are nested under \"flags\" (T04's api.flags), not flat.",
+  "expect": "",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/flags"
+    },
+    {
+      "op": "add",
+      "path": "/bands_public",
+      "value": false
+    }
+  ]
+}

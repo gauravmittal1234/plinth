@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-kestrel-sapphire.json",
+  "why": "Slugs are unique.",
+  "expect": "/p_slugs",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/p_slugs/2",
+      "value": "kestrel-park"
+    }
+  ]
+}

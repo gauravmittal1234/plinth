@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/developer_page.schema.json",
+  "title": "DeveloperPage",
+  "description": "plinth.developer_page/1, from api.developer_page(p_slug) (API_CONTRACTS §4.4). One page per developer group.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "group",
+    "track_record",
+    "ongoing",
+    "complaints",
+    "insolvency_line",
+    "pre_rera",
+    "reply",
+    "how_buyers_find_you",
+    "meta"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.developer_page/1" },
+    "group": { "$ref": "#/$defs/DeveloperGroup" },
+    "track_record": { "$ref": "#/$defs/TrackRecord" },
+    "ongoing": { "type": "array", "items": { "$ref": "#/$defs/OngoingPhase" } },
+    "complaints": { "anyOf": [{ "$ref": "#/$defs/GroupComplaints" }, { "type": "null" }] },
+    "insolvency_line": {
+      "description": "Null when the group has no insolvency event on record and §5b gives no checked line.",
+      "type": ["string", "null"]
+    },
+    "pre_rera": { "anyOf": [{ "$ref": "common.schema.json#/$defs/PreRera" }, { "type": "null" }] },
+    "reply": { "anyOf": [{ "$ref": "#/$defs/DeveloperPageReply" }, { "type": "null" }] },
+    "how_buyers_find_you": {
+      "anyOf": [{ "$ref": "#/$defs/HowBuyersFindYou" }, { "type": "null" }]
+    },
+    "meta": { "$ref": "common.schema.json#/$defs/PageMeta" },
+    "summary_line": {
+      "description": "The page's one-line summary under the group name, or null.",
+      "type": ["string", "null"]
+    },
+    "facts_only": {
+      "description": "The facts-only notice (mode = facts_only), else null.",
+      "anyOf": [{ "$ref": "#/$defs/FactsOnlyNotice" }, { "type": "null" }]
+    },
+    "claim_explainer_line": {
+      "description": "What claiming a page does (and never does).",
+      "type": ["string", "null"]
+    }
+  },
+  "$defs": {
+    "DeveloperGroup": {
+      "title": "DeveloperGroup",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["slug", "name", "linked_companies", "claim", "mode"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "name": { "type": "string" },
+        "linked_companies": {
+          "description": "Companies linked to the group, or null when §5b gives no count.",
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "claim": { "$ref": "#/$defs/GroupClaim" },
+        "mode": { "$ref": "#/$defs/DeveloperPageMode" },
+        "facts_only_line": { "type": ["string", "null"] }
+      }
+    },
+    "DeveloperPageMode": {
+      "title": "DeveloperPageMode",
+      "description": "Facts-only is data on the group (core.developer_groups.facts_only_since), not a flag.",
+      "type": "string",
+      "enum": ["scored", "facts_only"]
+    },
+    "GroupClaim": {
+      "title": "GroupClaim",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "line"],
+      "properties": {
+        "state": { "$ref": "common.schema.json#/$defs/ClaimState" },
+        "line": { "type": "string" },
+        "since": { "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }] }
+      }
+    },
+    "TrackRecord": {
+      "title": "TrackRecord",
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Null counts and line when the group has no finished RERA project yet.",
+      "required": ["finished", "late", "line", "projects"],
+      "properties": {
+        "finished": { "type": ["integer", "null"], "minimum": 0 },
+        "late": { "type": ["integer", "null"], "minimum": 0 },
+        "line": { "type": ["string", "null"] },
+        "projects": { "type": "array", "items": { "$ref": "#/$defs/TrackRecordProject" } }
+      }
+    },
+    "TrackRecordProject": {
+      "title": "TrackRecordProject",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["name", "promised", "oc_on", "late"],
+      "properties": {
+        "name": { "type": "string" },
+        "promised": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/DateOrMonth" }, { "type": "null" }]
+        },
+        "oc_on": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/DateOrMonth" }, { "type": "null" }]
+        },
+        "late": { "type": "boolean" }
+      }
+    },
+    "OngoingPhase": {
+      "title": "OngoingPhase",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "chip"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "name": { "type": "string" },
+        "chip": { "$ref": "common.schema.json#/$defs/Chip" },
+        "state": { "$ref": "common.schema.json#/$defs/DisplayState" },
+        "price_line": { "type": ["string", "null"] },
+        "progress_line": { "type": ["string", "null"] }
+      }
+    },
+    "FactsOnlyNotice": {
+      "title": "FactsOnlyNotice",
+      "description": "Why a group's bands are withheld, from when, and what still shows.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["since", "line", "explainer_lines"],
+      "properties": {
+        "since": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "line": { "type": "string" },
+        "anchor": { "type": ["string", "null"], "examples": ["facts-only"] },
+        "explainer_lines": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "GroupComplaints": {
+      "title": "GroupComplaints",
+      "description": "Count and rate together. A bigger group isn't penalised for its size.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["line_24m", "half_years", "fairness_line"],
+      "properties": {
+        "line_24m": { "type": "string" },
+        "half_years": { "type": "array", "items": { "$ref": "#/$defs/HalfYearComplaints" } },
+        "fairness_line": { "type": ["string", "null"] }
+      }
+    },
+    "HalfYearComplaints": {
+      "title": "HalfYearComplaints",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "count", "per_100_units", "units_base"],
+      "properties": {
+        "label": { "type": "string" },
+        "count": { "type": "integer", "minimum": 0 },
+        "per_100_units": { "type": "number", "minimum": 0 },
+        "units_base": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "DeveloperPageReply": {
+      "title": "DeveloperPageReply",
+      "description": "The group's published reply, in the Developer says tone.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["line"],
+      "properties": {
+        "line": { "type": "string" },
+        "text": { "type": ["string", "null"] },
+        "published_on": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        }
+      }
+    },
+    "HowBuyersFindYou": {
+      "title": "HowBuyersFindYou",
+      "description": "The three published rules for how buyers find a developer on Plinth.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["rules"],
+      "properties": {
+        "line": { "type": ["string", "null"] },
+        "rules": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

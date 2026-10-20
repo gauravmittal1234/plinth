@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-eoi-mismatch.json",
+  "why": "Rows check payee_name, account and ifsc.",
+  "expect": "/payee/rows/0/field",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/payee/rows/0/field",
+      "value": "upi"
+    }
+  ]
+}

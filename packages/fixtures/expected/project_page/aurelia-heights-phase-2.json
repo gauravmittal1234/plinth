@@ -1,0 +1,1331 @@
+{
+  "schema": "plinth.project_page/1",
+  "risk": {
+    "schema": "plinth.risk_summary/1",
+    "phase": {
+      "slug": "aurelia-heights-phase-2",
+      "name": "Aurelia Heights, Phase 2",
+      "short_code": "AH2",
+      "rera_number": "GGM/673/405/2022/117",
+      "authority": {
+        "code": "harera_ggm",
+        "name": "HARERA Gurugram",
+        "url": "https://haryanarera.gov.in"
+      },
+      "locality_line": "Sector 37D, Dwarka Expressway",
+      "units": 500,
+      "developer": {
+        "slug": "northfield-estates",
+        "name": "Northfield Estates",
+        "claim": {
+          "state": "claimed",
+          "line": "claimed developer page, replies here",
+          "since": "2025-12-02"
+        }
+      }
+    },
+    "display": {
+      "state": "scored",
+      "overlays": ["pending_change"],
+      "bands_public": true
+    },
+    "band": {
+      "code": "elevated",
+      "label": "Elevated",
+      "step": 3,
+      "since": "2026-10-02",
+      "set_by": "model",
+      "rule": null
+    },
+    "chip": {
+      "kind": "band",
+      "label": "Elevated",
+      "step": 3,
+      "meter_filled": 3
+    },
+    "confidence": {
+      "level": "low",
+      "dots": 1,
+      "line": "We're less certain about this one. Northfield has only 6 finished RERA projects to learn from, so we show a range, not one number."
+    },
+    "frequency": {
+      "kind": "range",
+      "low": 30,
+      "high": 45,
+      "sentence": "Between 30 and 45 of 100 similar Gurugram projects got their OC more than 12 months after the original RERA date.",
+      "reference_class_line": "Gurugram RERA phases registered 2017–2021 (illustrative backtest).",
+      "icon_array": {
+        "filled": 30,
+        "hatched": 15,
+        "empty": 55
+      },
+      "hatch_legend": "Hatched: the 15 of 100 we're less certain about"
+    },
+    "late12": {
+      "original_completion": "2027-12",
+      "blanket_extension_months": 4,
+      "late_after": "2029-04",
+      "line": "Original completion Dec 2027. More than 12 months late here means an OC after Apr 2029, with the 4-month blanket extension of Jul 2026.",
+      "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+    },
+    "reasons": [
+      {
+        "rank": 1,
+        "factor": "finances",
+        "factor_label": "Finances",
+        "text": "72% of units sold, 41% built.",
+        "sources": [
+          {
+            "label": "HARERA QPR · Apr–Jun 2026",
+            "fact_ids": ["196cb4f5-27eb-57a5-99f8-e5ab1b599c93"],
+            "evidence_url": "/evidence/196cb4f5-27eb-57a5-99f8-e5ab1b599c93",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-07-15"
+          }
+        ]
+      },
+      {
+        "rank": 2,
+        "factor": "timeline",
+        "factor_label": "Timeline",
+        "text": "77% of the promised time used. QPRs filed late in 3 of the last 8 quarters.",
+        "sources": [
+          {
+            "label": "HARERA QPR register",
+            "fact_ids": ["dff74c62-2384-5736-88b1-02fac3a33a69"],
+            "evidence_url": "/evidence/dff74c62-2384-5736-88b1-02fac3a33a69",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
+      },
+      {
+        "rank": 3,
+        "factor": "legal",
+        "factor_label": "Legal",
+        "text": "14 complaints decided against the promoter in 24 months · 2.8 per 100 units. Median count for similar projects: 3.",
+        "sources": [
+          {
+            "label": "HARERA orders · 24 months",
+            "fact_ids": ["d56b2adf-6ea3-598a-8cef-cbd1b0c74895"],
+            "evidence_url": "/evidence/d56b2adf-6ea3-598a-8cef-cbd1b0c74895",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-09"
+          }
+        ]
+      },
+      {
+        "rank": 4,
+        "factor": "track_record",
+        "factor_label": "Track record",
+        "text": "2 of the group's 6 finished RERA projects got OC more than 12 months late.",
+        "sources": [
+          {
+            "label": "HARERA · DTCP OC records",
+            "fact_ids": ["145c288f-31dd-5955-9677-170f82ffd80c"],
+            "evidence_url": "/evidence/145c288f-31dd-5955-9677-170f82ffd80c",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          }
+        ]
+      }
+    ],
+    "what_would_change": "Two consecutive quarters with construction ahead of sales would move this to Moderate.",
+    "pending": [
+      {
+        "code": "qpr_missing",
+        "line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026.",
+        "since": "2026-10-15",
+        "developer_says": {
+          "text": "Filed on 12 Oct 2026.",
+          "verified": false,
+          "said_on": "2026-10-15",
+          "check_by": "2026-11-05",
+          "line": "Developer says: filed 12 Oct, not yet verified."
+        },
+        "marker_line": "If it is still missing on 25 Oct 2026, this band may change; followers hear first."
+      }
+    ],
+    "developer_response": {
+      "text": "Tower B structure was completed in September 2026. The QPR for Jul–Sep 2026 was filed on 12 October.",
+      "signatory_title": "Authorised signatory",
+      "published_on": "2026-10-15",
+      "check_by": "2026-11-05",
+      "line": "Developer says · not yet verified · 15 Oct 2026 · we check it by 5 Nov 2026"
+    },
+    "progress": {
+      "built_pct": 41,
+      "sold_pct": 72,
+      "time_used_pct": 77,
+      "latest_qpr": {
+        "quarter": "2026-Q2",
+        "label": "Apr–Jun 2026",
+        "filed_on": "2026-07-15",
+        "age_days": 95
+      },
+      "line": "41% built · 77% of the promised time used · 72% sold"
+    },
+    "price": {
+      "all_in_inr": 27400400,
+      "all_in_label": "₹2.74 Cr",
+      "quoted_label": "₹2.35 Cr",
+      "per_sqft_carpet_label": "₹18,900 per sq ft carpet",
+      "basis_line": "3 BHK, 1,450 sq ft carpet, park-facing · cost sheet of 2 Oct 2026",
+      "display_line": "₹2.74 Cr all-in · quoted ₹2.35 Cr"
+    },
+    "complaints": {
+      "count_24m": 14,
+      "per_100_units": 2.8,
+      "units_base": 500,
+      "median_count_similar": 3,
+      "line": "14 complaints · 2.8 per 100 units"
+    },
+    "withheld": null,
+    "meta": {
+      "data_as_of": "2026-10-14",
+      "model_version": "v1.2",
+      "score_run_id": "f1bf715a-ccdc-57ca-afcc-b5dcda92abe3",
+      "generated_at": "2026-10-18T12:00:00+05:30",
+      "methodology_url": "/methodology",
+      "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+      "promise_line": "No developer pays us. Ever.",
+      "live_url": "https://plinth.in/gurugram/projects/aurelia-heights-phase-2",
+      "short_url": "https://plinth.in/r/AH2"
+    },
+    "share": {
+      "card_url": "https://plinth.in/cards/risk/aurelia-heights-phase-2.png?run=f1bf715a-ccdc-57ca-afcc-b5dcda92abe3",
+      "card_alt": "Aurelia Heights, Phase 2: Delivery risk Elevated. Between 30 and 45 of 100 similar projects were more than 12 months late.",
+      "lines": [
+        "Delivery risk: Elevated",
+        "Between 30 and 45 of 100 similar Gurugram projects got their OC more than 12 months late.",
+        "41% built with 77% of the promised time used."
+      ],
+      "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+      "caption": "Plinth · No developer pays us. Ever."
+    }
+  },
+  "hero": {
+    "image_url": "/media/heroAurelia.jpg",
+    "image_caption": "Images on this page are illustrative",
+    "summary_line": "Delivery risk: Elevated · All-in ₹2.74 Cr · 41% built · Original completion Dec 2027",
+    "rera_badge": {
+      "number": "GGM/673/405/2022/117",
+      "authority_url": "https://haryanarera.gov.in",
+      "qr_url": null
+    }
+  },
+  "truth_panel": [
+    {
+      "key": "completion",
+      "label": "Original vs current completion",
+      "value_line": "Dec 2027 · no extensions",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["fd56a69a-53cb-5997-9291-5a24bcdc3387"],
+          "evidence_url": "/evidence/fd56a69a-53cb-5997-9291-5a24bcdc3387",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "key": "progress",
+      "label": "Built vs time used",
+      "value_line": "41% built · 77% of time used",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["196cb4f5-27eb-57a5-99f8-e5ab1b599c93"],
+          "evidence_url": "/evidence/196cb4f5-27eb-57a5-99f8-e5ab1b599c93",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-15"
+        },
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["8b9479fc-7de8-5f90-add5-fcc41a0c362b"],
+          "evidence_url": "/evidence/8b9479fc-7de8-5f90-add5-fcc41a0c362b",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "key": "complaints",
+      "label": "Complaints decided",
+      "value_line": "14 complaints · 2.8 per 100 units",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA orders · 24 months",
+          "fact_ids": ["d56b2adf-6ea3-598a-8cef-cbd1b0c74895"],
+          "evidence_url": "/evidence/d56b2adf-6ea3-598a-8cef-cbd1b0c74895",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-09"
+        }
+      ]
+    },
+    {
+      "key": "collection_account",
+      "label": "RERA collection account",
+      "value_line": "Peepal Bank, Golf Course Road · ending 4417",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["364b3691-3068-5e22-a17f-e4e49bbeee90"],
+          "evidence_url": "/evidence/364b3691-3068-5e22-a17f-e4e49bbeee90",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "progress": {
+    "floors_per_tower": 20,
+    "towers": ["A", "B", "C"],
+    "quarters": [
+      {
+        "quarter": "2023-Q2",
+        "label": "Apr–Jun 2023",
+        "sold_pct": 24,
+        "built_pct": 6,
+        "time_used_pct": 10,
+        "band_then": "moderate",
+        "towers": null,
+        "filed_on": null,
+        "status": "on_time",
+        "note_line": "This QPR reports Phase 2 as a whole, not by tower."
+      },
+      {
+        "quarter": "2023-Q4",
+        "label": "Oct–Dec 2023",
+        "sold_pct": 38,
+        "built_pct": 12,
+        "time_used_pct": 20,
+        "band_then": "moderate",
+        "towers": null,
+        "filed_on": null,
+        "status": "on_time",
+        "note_line": "This QPR reports Phase 2 as a whole, not by tower."
+      },
+      {
+        "quarter": "2024-Q2",
+        "label": "Apr–Jun 2024",
+        "sold_pct": 49,
+        "built_pct": 19,
+        "time_used_pct": 30,
+        "band_then": "moderate",
+        "towers": null,
+        "filed_on": null,
+        "status": "on_time",
+        "note_line": "This QPR reports Phase 2 as a whole, not by tower."
+      },
+      {
+        "quarter": "2024-Q4",
+        "label": "Oct–Dec 2024",
+        "sold_pct": 58,
+        "built_pct": 26,
+        "time_used_pct": 40,
+        "band_then": "moderate",
+        "towers": {
+          "A": 4,
+          "B": 3,
+          "C": 1
+        },
+        "filed_on": null,
+        "status": "on_time",
+        "note_line": null
+      },
+      {
+        "quarter": "2025-Q2",
+        "label": "Apr–Jun 2025",
+        "sold_pct": 64,
+        "built_pct": 31,
+        "time_used_pct": 50,
+        "band_then": "moderate",
+        "towers": {
+          "A": 6,
+          "B": 4,
+          "C": 2
+        },
+        "filed_on": null,
+        "status": "on_time",
+        "note_line": null
+      },
+      {
+        "quarter": "2025-Q4",
+        "label": "Oct–Dec 2025",
+        "sold_pct": 68,
+        "built_pct": 36,
+        "time_used_pct": 60,
+        "band_then": "moderate",
+        "towers": {
+          "A": 8,
+          "B": 6,
+          "C": 4
+        },
+        "filed_on": "2026-02-22",
+        "status": "late",
+        "note_line": "Filed 38 days late, on 22 Feb 2026."
+      },
+      {
+        "quarter": "2026-Q1",
+        "label": "Jan–Mar 2026",
+        "sold_pct": 70,
+        "built_pct": 38,
+        "time_used_pct": 65,
+        "band_then": "moderate",
+        "towers": {
+          "A": 9,
+          "B": 6,
+          "C": 4
+        },
+        "filed_on": null,
+        "status": "on_time",
+        "note_line": "Tower A slab 9 cast."
+      },
+      {
+        "quarter": "2026-Q2",
+        "label": "Apr–Jun 2026",
+        "sold_pct": 72,
+        "built_pct": 41,
+        "time_used_pct": 70,
+        "band_then": "moderate",
+        "towers": {
+          "A": 9,
+          "B": 7,
+          "C": 5
+        },
+        "filed_on": "2026-07-15",
+        "status": "on_time",
+        "note_line": "Filed 15 Jul 2026, on time. A demand for slab 12 went out on 10 Oct 2026."
+      }
+    ],
+    "today": {
+      "time_used_pct": 77,
+      "band": "elevated",
+      "band_since_line": "Elevated since 2 Oct 2026"
+    },
+    "late_filings_line": "Filed late: Jul–Sep 2024 (12 days), Jan–Mar 2025 (41 days) and Oct–Dec 2025 (38 days)."
+  },
+  "homes": {
+    "units_line": "Towers A, B and C, 20 floors each, with 500 homes in Phase 2. Latest QPR: Tower A at slab 9, Tower B at slab 7, Tower C at slab 5.",
+    "configurations": [
+      {
+        "label": "3 BHK",
+        "carpet_line": "1,450 sq ft carpet",
+        "carpet_lane": "records_show",
+        "super_line": "2,000 sq ft super",
+        "super_lane": "from_developer",
+        "loading_line": "38% loading",
+        "price_line": "From ₹2.35 Cr",
+        "price_lane": "from_developer",
+        "all_in_line": "₹2.74 Cr all-in",
+        "all_in_note": null,
+        "rooms": [
+          "Living + dining 22′ × 13′",
+          "Master bedroom 14′ × 14′ with dress and toilet",
+          "Bedroom 2 12′ × 14′",
+          "Bedroom 3 12′ × 12′",
+          "Kitchen 10′ × 11′",
+          "Utility 12′ × 8′",
+          "3 toilets",
+          "Balcony 22′ × 5′"
+        ]
+      },
+      {
+        "label": "4 BHK",
+        "carpet_line": "2,100 sq ft carpet",
+        "carpet_lane": "records_show",
+        "super_line": null,
+        "super_lane": null,
+        "loading_line": null,
+        "price_line": "From ₹3.38 Cr",
+        "price_lane": "from_developer",
+        "all_in_line": null,
+        "all_in_note": "No 4 BHK cost sheet, so no all-in yet.",
+        "rooms": [
+          "Living + dining 27′ × 15′",
+          "Master bedroom 14′ × 16′",
+          "Bedrooms 13′ × 15′, 13′ × 13′ and 12′ × 14′",
+          "Kitchen 9′ × 12′",
+          "Utility",
+          "Store",
+          "4 toilets"
+        ]
+      }
+    ],
+    "amenities": {
+      "lane": "from_developer",
+      "source_line": "Developer says · brochure, 2 Oct 2026",
+      "items": [
+        "A clubhouse with a pool and a gym",
+        "A central park (park-facing homes pay the PLC)",
+        "Covered parking on two basement levels",
+        "Power back-up for lifts and common areas"
+      ]
+    },
+    "getting_around": {
+      "lane": "our_estimate",
+      "source_line": "Our estimate · road distances, Oct 2026",
+      "items": [
+        "Dwarka Expressway: 0.8 km",
+        "Cyber City: 18 km, 35–55 min at 9 am",
+        "IGI Airport T3: 22 km, 30–45 min",
+        "Schools: 3 within 3 km · metro: none within 5 km"
+      ]
+    },
+    "waterlogging": {
+      "lane": "reported_unverified",
+      "reports": [
+        {
+          "reported_on": "2026-07-28",
+          "line": "Dwarka Expressway service road at the Sector 37D turn · news report, 28 Jul 2026"
+        },
+        {
+          "reported_on": "2025-08-21",
+          "line": "Sector 37C–37D dividing road · news report, 21 Aug 2025"
+        }
+      ],
+      "note_line": "Reported, not verified by Plinth. No report names the Aurelia site itself."
+    }
+  },
+  "from_developer": {
+    "label": "From the developer · not verified by Plinth",
+    "updated_line": "Northfield Estates · updated 2 Oct 2026",
+    "note_line": "Northfield added this in its free Plinth workspace. We show it as given and date every change. It is not a public record, and it never moves the delivery risk.",
+    "price_lists": [
+      {
+        "published_on": "2026-10-02",
+        "label": "2 Oct 2026",
+        "items": [
+          {
+            "unit_label": "3 BHK",
+            "base_price_inr": 23500000,
+            "price_line": "from ₹2.35 Cr",
+            "per_sqft_line": "₹16,207 per sq ft carpet"
+          },
+          {
+            "unit_label": "4 BHK",
+            "base_price_inr": 33800000,
+            "price_line": "from ₹3.38 Cr",
+            "per_sqft_line": "₹16,095 per sq ft carpet"
+          }
+        ]
+      },
+      {
+        "published_on": "2026-04-01",
+        "label": "1 Apr 2026",
+        "items": [
+          {
+            "unit_label": "3 BHK",
+            "base_price_inr": 22400000,
+            "price_line": "from ₹2.24 Cr",
+            "per_sqft_line": null
+          },
+          {
+            "unit_label": "4 BHK",
+            "base_price_inr": 32200000,
+            "price_line": "from ₹3.22 Cr",
+            "per_sqft_line": null
+          }
+        ]
+      },
+      {
+        "published_on": "2025-07-01",
+        "label": "1 Jul 2025",
+        "items": [
+          {
+            "unit_label": "3 BHK",
+            "base_price_inr": 20300000,
+            "price_line": "from ₹2.03 Cr",
+            "per_sqft_line": null
+          },
+          {
+            "unit_label": "4 BHK",
+            "base_price_inr": 29200000,
+            "price_line": "from ₹2.92 Cr",
+            "per_sqft_line": null
+          }
+        ]
+      },
+      {
+        "published_on": "2023-01-01",
+        "label": "Launch, Jan 2023",
+        "items": [
+          {
+            "unit_label": "3 BHK",
+            "base_price_inr": 15800000,
+            "price_line": "from ₹1.58 Cr",
+            "per_sqft_line": null
+          },
+          {
+            "unit_label": "4 BHK",
+            "base_price_inr": 22700000,
+            "price_line": "from ₹2.27 Cr",
+            "per_sqft_line": null
+          }
+        ]
+      }
+    ],
+    "price_basis_line": "Base prices, before charges, GST and stamp duty.",
+    "payment_plan": {
+      "kind": "construction_linked",
+      "name": "Construction-linked plan",
+      "published_on": "2026-10-02",
+      "stages": [
+        {
+          "seq": 1,
+          "label": "Booking",
+          "stage_kind": "booking",
+          "slab_no": null,
+          "pct": 10
+        },
+        {
+          "seq": 2,
+          "label": "Registered agreement (within 45 days)",
+          "stage_kind": "agreement",
+          "slab_no": null,
+          "pct": 10
+        },
+        {
+          "seq": 3,
+          "label": "Foundation",
+          "stage_kind": "foundation",
+          "slab_no": null,
+          "pct": 10
+        },
+        {
+          "seq": 4,
+          "label": "Slab 3",
+          "stage_kind": "slab",
+          "slab_no": 3,
+          "pct": 7.5
+        },
+        {
+          "seq": 5,
+          "label": "Slab 6",
+          "stage_kind": "slab",
+          "slab_no": 6,
+          "pct": 7.5
+        },
+        {
+          "seq": 6,
+          "label": "Slab 9",
+          "stage_kind": "slab",
+          "slab_no": 9,
+          "pct": 7.5
+        },
+        {
+          "seq": 7,
+          "label": "Slab 12",
+          "stage_kind": "slab",
+          "slab_no": 12,
+          "pct": 7.5
+        },
+        {
+          "seq": 8,
+          "label": "Slab 15",
+          "stage_kind": "slab",
+          "slab_no": 15,
+          "pct": 7.5
+        },
+        {
+          "seq": 9,
+          "label": "Slab 18",
+          "stage_kind": "slab",
+          "slab_no": 18,
+          "pct": 7.5
+        },
+        {
+          "seq": 10,
+          "label": "Slab 20 (top)",
+          "stage_kind": "slab",
+          "slab_no": 20,
+          "pct": 7.5
+        },
+        {
+          "seq": 11,
+          "label": "Brickwork and plaster",
+          "stage_kind": "brickwork",
+          "slab_no": null,
+          "pct": 7.5
+        },
+        {
+          "seq": 12,
+          "label": "Flooring and finishing",
+          "stage_kind": "finishing",
+          "slab_no": null,
+          "pct": 5
+        },
+        {
+          "seq": 13,
+          "label": "Offer of possession",
+          "stage_kind": "possession",
+          "slab_no": null,
+          "pct": 5
+        }
+      ],
+      "line": "You pay as the building rises. A buyer booking today pays 10%, then, once the agreement for sale is registered, every stage already on record: 52.5% in all.",
+      "by_tower_line": "Booking today, by registration you would pay 52.5% in Tower A, 45% in Tower B and 37.5% in Tower C.",
+      "demand_line": "A demand for Tower A slab 12 went out on 10 Oct 2026, while the latest QPR shows slab 9."
+    },
+    "transfer_policy": "₹150 per sq ft of super area, so ₹3.0 L on a 2,000 sq ft 3 BHK. All dues to date first. No transfer before the agreement for sale is registered.",
+    "draft_agreement_line": "The draft agreement for sale (2 Oct 2026) lets Northfield bill each buyer a share of any later government EDC/IDC increase, by super area."
+  },
+  "cost": {
+    "schema": "plinth.cost_breakdown/1",
+    "rules_version": "2026.10",
+    "basis_line": "3 BHK, 1,450 sq ft carpet / 2,000 super · park-facing · cost sheet of 2 Oct 2026",
+    "lines": [
+      {
+        "code": "base",
+        "label": "Base",
+        "amount_inr": 23500000,
+        "amount_label": "₹2.35 Cr",
+        "tag": null
+      },
+      {
+        "code": "plc",
+        "label": "PLC (park-facing)",
+        "amount_inr": 290000,
+        "amount_label": "₹2.9 L",
+        "tag": "often_negotiable"
+      },
+      {
+        "code": "club",
+        "label": "Club",
+        "amount_inr": 150000,
+        "amount_label": "₹1.5 L",
+        "tag": "often_negotiable"
+      },
+      {
+        "code": "parking",
+        "label": "Parking",
+        "amount_inr": 350000,
+        "amount_label": "₹3.5 L",
+        "tag": null
+      },
+      {
+        "code": "ifms",
+        "label": "IFMS",
+        "amount_inr": 130000,
+        "amount_label": "₹1.3 L",
+        "tag": "refundable_deposit"
+      },
+      {
+        "code": "gst",
+        "label": "GST 5%",
+        "amount_inr": 1221000,
+        "amount_label": "₹12.2 L",
+        "tag": "set_by_law"
+      },
+      {
+        "code": "stamp_registration",
+        "label": "Stamp duty + registration",
+        "amount_inr": 1759400,
+        "amount_label": "₹17.6 L",
+        "tag": "set_by_law"
+      }
+    ],
+    "charges_total_label": "₹9.2 L",
+    "all_in_inr": 27400400,
+    "all_in_label": "₹2.74 Cr",
+    "per_sqft_carpet_label": "₹18,900 per sq ft carpet",
+    "vs_quoted_line": "17% more than quoted",
+    "negotiable_line": "Often negotiable: PLC and club (₹4.4 L).",
+    "edc_idc_line": "EDC and IDC: included in the base.",
+    "area_line": "You pay for 2,000 sq ft of super area. You can use 1,450 sq ft of carpet area. Loading is 38%.",
+    "move_in_line": "About ₹12–18 L on top, around the offer of possession (Plinth estimate)."
+  },
+  "wait_defaults": {
+    "take_home_inr": 450000,
+    "rent_inr": 55000,
+    "down_pct": 20,
+    "rate_pct": 8.5,
+    "tenure_years": 20
+  },
+  "afford_default": {
+    "schema": "plinth.afford_the_wait/1",
+    "inputs": {
+      "tower": "A",
+      "take_home_inr": 450000,
+      "rent_inr": 55000,
+      "down_pct": 20,
+      "rate_pct": 8.5,
+      "tenure_years": 20,
+      "delay_months": 12
+    },
+    "loan": {
+      "all_in_rounded_inr": 27400000,
+      "down_payment_inr": 5480000,
+      "loan_inr": 21920000
+    },
+    "answer_line": "Rent and pre-EMI come to ₹1,18,077 a month now, rising to ₹2,00,563 by Dec 2027 (26% → 45% of take-home).",
+    "now": {
+      "monthly_inr": 118077,
+      "share_pct": 26
+    },
+    "by_completion": {
+      "label": "By Dec 2027",
+      "monthly_inr": 200563,
+      "share_pct": 45
+    },
+    "delay": {
+      "months": 12,
+      "cost_inr": 2406756,
+      "cost_label": "₹24.1 L"
+    },
+    "delay_options": [
+      {
+        "months": 12,
+        "cost_inr": 2406756,
+        "cost_label": "₹24.1 L"
+      },
+      {
+        "months": 24,
+        "cost_inr": 4813512,
+        "cost_label": "₹48.1 L"
+      }
+    ],
+    "after_keys": {
+      "emi_inr": 190227
+    },
+    "series": [
+      {
+        "month": "2026-11",
+        "paid_out_pct": 52.5,
+        "pre_emi_inr": 63077,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2026-12",
+        "paid_out_pct": 55.8,
+        "pre_emi_inr": 69422,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-01",
+        "paid_out_pct": 59,
+        "pre_emi_inr": 75767,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-02",
+        "paid_out_pct": 62.3,
+        "pre_emi_inr": 82112,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-03",
+        "paid_out_pct": 65.6,
+        "pre_emi_inr": 88457,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-04",
+        "paid_out_pct": 68.8,
+        "pre_emi_inr": 94802,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-05",
+        "paid_out_pct": 72.1,
+        "pre_emi_inr": 101147,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-06",
+        "paid_out_pct": 75.4,
+        "pre_emi_inr": 107492,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-07",
+        "paid_out_pct": 78.7,
+        "pre_emi_inr": 113837,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-08",
+        "paid_out_pct": 81.9,
+        "pre_emi_inr": 120182,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-09",
+        "paid_out_pct": 85.2,
+        "pre_emi_inr": 126527,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-10",
+        "paid_out_pct": 88.5,
+        "pre_emi_inr": 132872,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-11",
+        "paid_out_pct": 91.7,
+        "pre_emi_inr": 139217,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2027-12",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": false
+      },
+      {
+        "month": "2028-01",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-02",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-03",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-04",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-05",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-06",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-07",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-08",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-09",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-10",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-11",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      },
+      {
+        "month": "2028-12",
+        "paid_out_pct": 95,
+        "pre_emi_inr": 145563,
+        "rent_inr": 55000,
+        "delay": true
+      }
+    ],
+    "frequency_line": "Between 30 and 45 of 100 similar projects were more than 12 months late.",
+    "assumptions": [
+      "Loan = 80% of the all-in (₹2.74 Cr, rounded to the lakh).",
+      "Payout follows the plan for Tower A.",
+      "The delay comes after finishing.",
+      "RERA s.18 interest is left out."
+    ],
+    "framing_line": "Arithmetic, not advice."
+  },
+  "next_steps": {
+    "intro_line": "We never say buy or don't buy. At Elevated, these steps keep less of your money at stake.",
+    "steps": [
+      {
+        "heading": "Ask for it in writing.",
+        "body": "The slab schedule for your tower, and the CA certificate on escrow withdrawals with the latest QPR.",
+        "source_label": null
+      },
+      {
+        "heading": "Prefer a plan that pays as it's built.",
+        "body": "Construction-linked, and only for stages on record. Tower A is at slab 9, but a demand for slab 12 went out on 10 Oct 2026.",
+        "source_label": null
+      },
+      {
+        "heading": "Keep a rent buffer.",
+        "body": "If keys come 12 months after Dec 2027, rent and pre-EMI cost about ₹24.1 L more on our default loan.",
+        "source_label": null
+      },
+      {
+        "heading": "Watch the next QPR.",
+        "body": "Jul–Sep 2026 is not on HARERA yet. If it is still missing on 25 Oct 2026, this band may change.",
+        "source_label": null
+      }
+    ],
+    "base_rate_line": "About 36 of 100 Gurugram projects got their OC more than 12 months late. Elevated sits around that.",
+    "lower_band_nearby": [
+      {
+        "slug": "kestrel-park",
+        "name": "Kestrel Park",
+        "chip": {
+          "kind": "band",
+          "label": "Low",
+          "step": 1,
+          "meter_filled": 1
+        },
+        "price_line": "₹2.44 Cr all-in"
+      },
+      {
+        "slug": "sapphire-grove-phase-1",
+        "name": "Sapphire Grove, Phase 1",
+        "chip": {
+          "kind": "band",
+          "label": "Moderate",
+          "step": 2,
+          "meter_filled": 2
+        },
+        "price_line": "₹2.27 Cr all-in"
+      }
+    ],
+    "rule_line": "Same corridor, lower band, all-in within 20%. Nobody pays to appear."
+  },
+  "before_booking": {
+    "intro_line": "Four things buyers ask about before the first cheque, with the rules behind them.",
+    "note_line": "General information, not legal, tax or financial advice.",
+    "payment_plans": {
+      "title": "Which payment plan?",
+      "sub": "Construction-linked, down payment or subvention, and what each one risks.",
+      "paras": [
+        {
+          "lead": null,
+          "text": "Northfield's plan for Phase 2 is construction-linked: 13 stages, from 10% on booking to 5% on offer of possession. It is under “From the developer” in Homes.",
+          "tone": "body"
+        },
+        {
+          "lead": "Construction-linked.",
+          "text": "You pay each stage once it is built, so your money follows the building. Watch for demands ahead of the filings: Northfield asked for Tower A slab 12 on 10 Oct 2026, and the latest QPR shows slab 9.",
+          "tone": "body"
+        },
+        {
+          "lead": "Down payment.",
+          "text": "You pay most of the price early, often for a discount. If the project is late, more of your money waits with it. Before a registered agreement, the law still caps you at 10%.",
+          "tone": "body"
+        },
+        {
+          "lead": "Subvention, or “no EMI till possession”.",
+          "text": "The bank pays the developer early, and the developer promises to pay your pre-EMI. You are still the borrower: if the developer stops paying, the bank collects from you.",
+          "tone": "body"
+        },
+        {
+          "lead": "Before a subvention booking,",
+          "text": "get the lender's confirmation in writing: what it pays out, when, and who pays the pre-EMI if the developer stops.",
+          "tone": "key"
+        },
+        {
+          "lead": "Slab stages follow your tower.",
+          "text": "Booking today, by registration you would pay 52.5% in Tower A, 45% in Tower B and 37.5% in Tower C.",
+          "tone": "body"
+        }
+      ]
+    },
+    "loans": {
+      "line": "Loan checks arrive in 2027",
+      "title": "Home loans",
+      "sub": "Loan checks arrive in 2027. What to check with your bank now.",
+      "paras": [
+        {
+          "lead": "Loan checks arrive in 2027.",
+          "text": "Plinth doesn't arrange loans or pass your number to any lender today.",
+          "tone": "body"
+        },
+        {
+          "lead": "Check now:",
+          "text": "is this project approved by your bank? Ask the bank, in writing, not the developer.",
+          "tone": "key"
+        },
+        {
+          "lead": "Developer says · brochure, 2 Oct 2026 · not verified:",
+          "text": "“Approved by major banks.”",
+          "tone": "developer_says"
+        },
+        {
+          "lead": "Banks usually don't lend for stamp duty or registration.",
+          "text": "Plan for those from your own money.",
+          "tone": "body"
+        }
+      ]
+    },
+    "nri": {
+      "title": "Buying from abroad (NRI)",
+      "sub": "Paying from NRE or NRO, a power of attorney, and FEMA basics.",
+      "paras": [
+        {
+          "lead": "Paying.",
+          "text": "From an NRE, FCNR(B) or NRO account, or money sent to India through a bank. FEMA doesn't allow paying in foreign currency notes or traveller's cheques.",
+          "tone": "body"
+        },
+        {
+          "lead": "Loans.",
+          "text": "Indian banks lend to NRIs. EMIs come from an NRE or NRO account.",
+          "tone": "body"
+        },
+        {
+          "lead": "TDS.",
+          "text": "Like any buyer, you deduct 1% from each instalment when the price is ₹50 L or more (s.194-IA). You need a PAN.",
+          "tone": "body"
+        },
+        {
+          "lead": "Power of attorney.",
+          "text": "Make it specific to this flat, and list what your relative may sign: booking form, agreement, payments, registration. One signed abroad is attested at an Indian mission or apostilled, then stamped in India within 3 months.",
+          "tone": "body"
+        }
+      ]
+    },
+    "selling_before_possession": {
+      "title": "Selling before possession",
+      "sub": "Transfer charges, the builder's NOC and what RERA says.",
+      "paras": [
+        {
+          "lead": null,
+          "text": "Selling before possession means transferring your allotment. The developer endorses the new buyer on your agreement and issues a no-objection certificate (NOC).",
+          "tone": "body"
+        },
+        {
+          "lead": "From the developer · not verified by Plinth · transfer policy, 2 Oct 2026:",
+          "text": "₹150 per sq ft of super area, so ₹3.0 L on a 2,000 sq ft 3 BHK. All dues to date first. No transfer before the agreement for sale is registered.",
+          "tone": "from_developer"
+        },
+        {
+          "lead": "Under RERA,",
+          "text": "whoever takes your allotment becomes the allottee, with your rights, including delay interest (s.2(d)).",
+          "tone": "body"
+        },
+        {
+          "lead": "Ask a CA",
+          "text": "about capital-gains tax, and a lawyer about stamp duty on the transfer.",
+          "tone": "body"
+        },
+        {
+          "lead": null,
+          "text": "Our resale and transfer checks are planned for Apr–Jun 2027.",
+          "tone": "body"
+        }
+      ]
+    }
+  },
+  "pre_rera": {
+    "line": "None of this counts in the band.",
+    "intro_line": "The track record counts RERA-era projects only, registered 2017 or later. Northfield built before that too.",
+    "coverage_line": "Before May 2017 there was no public register of promised dates, so this list may be incomplete.",
+    "items": [
+      {
+        "name": "Northfield Greens, Sector 52",
+        "line": "Promised Dec 2011. OC Mar 2014, about 27 months late.",
+        "sources": [
+          "Haryana State Consumer Commission order, Aug 2015 (delay compensation for 38 buyers)",
+          "news report, Feb 2013"
+        ]
+      },
+      {
+        "name": "Alder Court, Sector 49",
+        "line": "Promised Jun 2013. OC Sep 2013.",
+        "sources": ["DTCP OC record", "news report, Oct 2013"]
+      },
+      {
+        "name": "Larch Enclave, Sector 21 (2004)",
+        "line": "No court order or news found. Absence is not proof.",
+        "sources": []
+      }
+    ]
+  },
+  "records": [
+    {
+      "fact_id": "fd56a69a-53cb-5997-9291-5a24bcdc3387",
+      "chip": "HARERA registration · 2022",
+      "line": "Registered Dec 2022. Original completion date: Dec 2027. Towers A–C, 500 homes: 3 BHK 1,450 sq ft and 4 BHK 2,100 sq ft carpet.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/fd56a69a-53cb-5997-9291-5a24bcdc3387"
+    },
+    {
+      "fact_id": "77c2d27a-14a1-5c36-8e8a-c81e799e1adb",
+      "chip": "HARERA extension orders",
+      "line": "No Section 6 extension found for Phase 2.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/77c2d27a-14a1-5c36-8e8a-c81e799e1adb"
+    },
+    {
+      "fact_id": "a907dc15-0322-5b7b-b4fd-a240ffd66d66",
+      "chip": "HARERA QPR · Apr–Jun 2023",
+      "line": "24% of units sold, 6% built.",
+      "lane": "records_show",
+      "as_of": "2023-06-30",
+      "evidence_url": "/evidence/a907dc15-0322-5b7b-b4fd-a240ffd66d66"
+    },
+    {
+      "fact_id": "74ef2531-324e-5bad-823e-d98155bae53b",
+      "chip": "HARERA QPR · Oct–Dec 2023",
+      "line": "38% of units sold, 12% built.",
+      "lane": "records_show",
+      "as_of": "2023-12-31",
+      "evidence_url": "/evidence/74ef2531-324e-5bad-823e-d98155bae53b"
+    },
+    {
+      "fact_id": "2e3ab7b8-7ecd-57b7-9257-29bd87cf9bb8",
+      "chip": "HARERA QPR · Apr–Jun 2024",
+      "line": "49% of units sold, 19% built.",
+      "lane": "records_show",
+      "as_of": "2024-06-30",
+      "evidence_url": "/evidence/2e3ab7b8-7ecd-57b7-9257-29bd87cf9bb8"
+    },
+    {
+      "fact_id": "9a244899-85ba-56f5-8992-213579658883",
+      "chip": "HARERA QPR · Oct–Dec 2024",
+      "line": "58% of units sold, 26% built.",
+      "lane": "records_show",
+      "as_of": "2024-12-31",
+      "evidence_url": "/evidence/9a244899-85ba-56f5-8992-213579658883"
+    },
+    {
+      "fact_id": "78654671-e806-5ff4-8e10-7f763c2769b2",
+      "chip": "HARERA QPR · Apr–Jun 2025",
+      "line": "64% of units sold, 31% built.",
+      "lane": "records_show",
+      "as_of": "2025-06-30",
+      "evidence_url": "/evidence/78654671-e806-5ff4-8e10-7f763c2769b2"
+    },
+    {
+      "fact_id": "a18baddc-16e8-5ecb-9dbf-1fbc4b8f03aa",
+      "chip": "HARERA QPR · Oct–Dec 2025",
+      "line": "68% of units sold, 36% built.",
+      "lane": "records_show",
+      "as_of": "2026-02-22",
+      "evidence_url": "/evidence/a18baddc-16e8-5ecb-9dbf-1fbc4b8f03aa"
+    },
+    {
+      "fact_id": "70f3c09e-d623-54ce-9b38-cfd3f49c185d",
+      "chip": "HARERA QPR · Jan–Mar 2026",
+      "line": "70% of units sold, 38% built.",
+      "lane": "records_show",
+      "as_of": "2026-03-31",
+      "evidence_url": "/evidence/70f3c09e-d623-54ce-9b38-cfd3f49c185d"
+    },
+    {
+      "fact_id": "196cb4f5-27eb-57a5-99f8-e5ab1b599c93",
+      "chip": "HARERA QPR · Apr–Jun 2026",
+      "line": "72% of units sold, 41% built.",
+      "lane": "records_show",
+      "as_of": "2026-07-15",
+      "evidence_url": "/evidence/196cb4f5-27eb-57a5-99f8-e5ab1b599c93"
+    },
+    {
+      "fact_id": "dff74c62-2384-5736-88b1-02fac3a33a69",
+      "chip": "HARERA QPR register",
+      "line": "QPRs filed late in 3 of the last 8 quarters. Longest delay: 41 days.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/dff74c62-2384-5736-88b1-02fac3a33a69"
+    },
+    {
+      "fact_id": "bc3ff166-6be3-5805-8401-0dbd4260c1ea",
+      "chip": "HARERA QPR register · 18 Oct 2026",
+      "line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026.",
+      "lane": "records_show",
+      "as_of": "2026-10-18",
+      "evidence_url": "/evidence/bc3ff166-6be3-5805-8401-0dbd4260c1ea"
+    },
+    {
+      "fact_id": "d56b2adf-6ea3-598a-8cef-cbd1b0c74895",
+      "chip": "HARERA orders · 24 months",
+      "line": "14 complaints decided against the promoter in 24 months · 2.8 per 100 units (500 units). Median count for similar projects: 3.",
+      "lane": "records_show",
+      "as_of": "2026-10-09",
+      "evidence_url": "/evidence/d56b2adf-6ea3-598a-8cef-cbd1b0c74895"
+    },
+    {
+      "fact_id": "145c288f-31dd-5955-9677-170f82ffd80c",
+      "chip": "HARERA · DTCP OC records",
+      "line": "2 of the group's 6 finished RERA projects got OC more than 12 months late.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/145c288f-31dd-5955-9677-170f82ffd80c"
+    },
+    {
+      "fact_id": "7cf44469-de9b-59b3-8577-7440050eb698",
+      "chip": "IBBI · NCLT search",
+      "line": "No insolvency found for the Northfield Estates group.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/7cf44469-de9b-59b3-8577-7440050eb698"
+    },
+    {
+      "fact_id": "364b3691-3068-5e22-a17f-e4e49bbeee90",
+      "chip": "HARERA registration · collection account",
+      "line": "RERA collection account: Peepal Bank, Golf Course Road, Gurugram, account ending 4417, IFSC PEPL0000418.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/364b3691-3068-5e22-a17f-e4e49bbeee90"
+    }
+  ],
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "f1bf715a-ccdc-57ca-afcc-b5dcda92abe3",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/aurelia-heights-phase-2",
+    "short_url": "https://plinth.in/r/AH2"
+  }
+}

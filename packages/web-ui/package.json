@@ -2,16 +2,20 @@
   "name": "@plinth/web-ui",
   "version": "0.0.0",
   "private": true,
-  "description": "React components shared by web and admin (RiskChip, BandMeter, IconArray, EvidenceDrawer...).",
+  "description": "React components shared by web and admin (RiskChip, Meter, IconArray, Riskometer, EvidenceDrawer...).",
   "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles.css"
   },
   "scripts": {
-    "build": "echo '@plinth/web-ui: the component build arrives with T14'",
+    "build": "echo '@plinth/web-ui ships TypeScript source; apps compile it (transpilePackages)'",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run"
   },
   "dependencies": {
     "@plinth/contracts": "*",
@@ -28,7 +32,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "jest-axe": "^10.0.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   }
 }

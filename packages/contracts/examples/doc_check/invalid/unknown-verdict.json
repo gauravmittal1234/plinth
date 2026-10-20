@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-broker-flyer.json",
+  "why": "Verdicts are only Matches · Differs · Not in records · Can't check.",
+  "expect": "/rows/0/verdict",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/rows/0/verdict",
+      "value": "misleading"
+    }
+  ]
+}

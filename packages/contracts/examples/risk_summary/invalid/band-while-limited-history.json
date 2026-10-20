@@ -1,0 +1,22 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "A limited-history phase has no band.",
+  "expect": "/band",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/display/state",
+      "value": "limited_history"
+    },
+    {
+      "op": "replace",
+      "path": "/chip",
+      "value": {
+        "kind": "limited_history",
+        "label": "Not enough history to score · no penalty",
+        "step": null,
+        "meter_filled": 0
+      }
+    }
+  ]
+}

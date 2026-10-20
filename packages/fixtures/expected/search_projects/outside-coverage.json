@@ -1,0 +1,29 @@
+{
+  "schema": "plinth.search_results/1",
+  "query": "3 bhk noida",
+  "parsed": {
+    "bhk": [3],
+    "place": "noida"
+  },
+  "notes": [],
+  "sort_line": "Sorted by lowest delivery risk. Order never follows money.",
+  "legend_line": "Pins show all-in prices",
+  "items": [],
+  "hidden_count": 0,
+  "hidden": [],
+  "next_cursor": null,
+  "zero_results": {
+    "kind": "outside_coverage",
+    "line": "We don't cover Noida yet, so we won't guess. Plinth covers Gurugram today. Noida and Greater Noida West are planned for Jul–Sep 2027.",
+    "action": {
+      "kind": "waitlist",
+      "label": "Join the Noida waitlist"
+    },
+    "detail_line": "One WhatsApp message when Noida opens, planned for Jul–Sep 2027. Nothing else."
+  },
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "generated_at": "2026-10-18T12:00:00+05:30"
+  }
+}

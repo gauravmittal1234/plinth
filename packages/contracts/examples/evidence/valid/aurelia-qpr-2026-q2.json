@@ -1,0 +1,23 @@
+{
+  "schema": "plinth.evidence/1",
+  "chip": "HARERA QPR · Apr–Jun 2026",
+  "lane": "records_show",
+  "document": "HARERA · Quarterly Progress Report · Apr–Jun 2026 · Aurelia Heights, Phase 2",
+  "dates_line": "Filed 15 Jul 2026 · we fetched it 16 Jul 2026 · last checked live 14 Oct 2026",
+  "page": "p. 3",
+  "extract": "Units booked: 72% of total. Physical progress, all towers: 41%.",
+  "read_line": "Read by two AI extractors; they matched. Checked by a person on 16 Jul 2026.",
+  "used_in": ["Reason 1 of Delivery risk", "Records → QPR filings"],
+  "developer_says": null,
+  "corrections_line": "No corrections.",
+  "snapshot": {
+    "sha256_short": "91f4c6a2…5e0d7b38",
+    "fetched_at": "2026-07-16T00:00:00+05:30"
+  },
+  "official_url": "https://haryanarera.gov.in",
+  "view_label": "View on HARERA",
+  "report_error": {
+    "ref_prefix": "E",
+    "sla_line": "We answer within 15 working days."
+  }
+}

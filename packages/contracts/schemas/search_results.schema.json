@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/search_results.schema.json",
+  "title": "SearchResults",
+  "description": "plinth.search_results/1, from api.search_projects(...) (API_CONTRACTS §4.3). Facts-only phases stay in risk-filtered results, listed with Not scored ones, never hidden. Order never follows money.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "parsed",
+    "notes",
+    "sort_line",
+    "items",
+    "hidden_count",
+    "next_cursor",
+    "zero_results"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.search_results/1" },
+    "parsed": { "$ref": "#/$defs/SearchFilters" },
+    "notes": { "type": "array", "items": { "type": "string" } },
+    "sort_line": { "type": "string" },
+    "items": { "type": "array", "maxItems": 50, "items": { "$ref": "#/$defs/ProjectCard" } },
+    "hidden_count": { "type": "integer", "minimum": 0 },
+    "next_cursor": { "type": ["string", "null"] },
+    "zero_results": { "anyOf": [{ "$ref": "#/$defs/ZeroResults" }, { "type": "null" }] },
+    "query": {
+      "description": "The query as the buyer typed it (echoed for the search box).",
+      "type": ["string", "null"]
+    },
+    "legend_line": {
+      "description": "The map legend (\"Pins show all-in prices\").",
+      "type": ["string", "null"]
+    },
+    "hidden": {
+      "description": "The projects the filters hid, each with why (hidden_count of them).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/HiddenProject" }
+    },
+    "meta": { "$ref": "common.schema.json#/$defs/PageMeta" }
+  },
+  "$defs": {
+    "SearchFilters": {
+      "title": "SearchFilters",
+      "description": "Structured filters. Also the response schema of the AI task parse.search_query@1 (a deterministic parser runs first).",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bhk": {
+          "type": ["array", "null"],
+          "items": { "type": "integer", "minimum": 1, "maximum": 6 }
+        },
+        "all_in_max_inr": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Inr" }, { "type": "null" }]
+        },
+        "corridors": {
+          "type": ["array", "null"],
+          "items": { "$ref": "common.schema.json#/$defs/Slug" }
+        },
+        "bands": {
+          "type": ["array", "null"],
+          "items": { "$ref": "common.schema.json#/$defs/BandCode" }
+        },
+        "possession_by": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/YearMonth" }, { "type": "null" }]
+        },
+        "name": {
+          "description": "A project name the query names (\"Indigo Terraces\"), when it matches no phase.",
+          "type": ["string", "null"]
+        },
+        "place": {
+          "description": "A place the query names outside coverage (\"noida\").",
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "Bbox": {
+      "title": "Bbox",
+      "description": "[min longitude, min latitude, max longitude, max latitude], WGS 84.",
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "SearchRequest": {
+      "title": "SearchRequest",
+      "description": "Arguments of api.search_projects. Keyset pagination: p_cursor, p_limit ≤ 50.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "p_q": { "type": ["string", "null"], "maxLength": 200 },
+        "p_filters": { "anyOf": [{ "$ref": "#/$defs/SearchFilters" }, { "type": "null" }] },
+        "p_sort": {
+          "description": "Sort key. lowest_risk is the default; T13 publishes the others.",
+          "type": ["string", "null"],
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "examples": ["lowest_risk"]
+        },
+        "p_bbox": { "anyOf": [{ "$ref": "#/$defs/Bbox" }, { "type": "null" }] },
+        "p_cursor": { "type": ["string", "null"] },
+        "p_limit": { "type": "integer", "minimum": 1, "maximum": 50 }
+      }
+    },
+    "ProjectCard": {
+      "title": "ProjectCard",
+      "description": "A phase on a list, map or Ask Plinth card. price_line puts the all-in first; pin_label is the all-in alone.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slug",
+        "name",
+        "locality_line",
+        "developer_name",
+        "chip",
+        "state",
+        "price_line",
+        "pin_label",
+        "built_line",
+        "completion_line",
+        "image_url",
+        "centroid"
+      ],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "name": { "type": "string" },
+        "locality_line": { "type": "string" },
+        "developer_name": { "type": "string" },
+        "chip": { "$ref": "common.schema.json#/$defs/Chip" },
+        "state": { "$ref": "common.schema.json#/$defs/DisplayState" },
+        "price_line": { "type": "string" },
+        "pin_label": { "type": ["string", "null"] },
+        "built_line": { "type": ["string", "null"] },
+        "completion_line": { "type": ["string", "null"] },
+        "image_url": { "type": ["string", "null"] },
+        "centroid": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Centroid" }, { "type": "null" }]
+        },
+        "chip_note": {
+          "description": "The line under the chip (\"Delivery risk · as of 14 Oct 2026\").",
+          "type": ["string", "null"]
+        },
+        "progress_line": {
+          "type": ["string", "null"],
+          "examples": ["63% built · 58% of time used"]
+        },
+        "built_pct": { "anyOf": [{ "$ref": "common.schema.json#/$defs/Pct" }, { "type": "null" }] },
+        "time_used_pct": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Pct" }, { "type": "null" }]
+        },
+        "config_line": { "type": ["string", "null"], "examples": ["3 BHK, 1,400 sq ft carpet"] }
+      }
+    },
+    "HiddenProject": {
+      "title": "HiddenProject",
+      "description": "A project the buyer's filters hid, and why.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "name", "why_line"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "name": { "type": "string" },
+        "why_line": { "type": "string" }
+      }
+    },
+    "ZeroResults": {
+      "title": "ZeroResults",
+      "description": "WebSearch guidance when nothing matches.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["line"],
+      "properties": {
+        "line": { "type": "string" },
+        "hints": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

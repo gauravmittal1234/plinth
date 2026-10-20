@@ -1,0 +1,134 @@
+{
+  "schema": "plinth.developer_page/1",
+  "group": {
+    "slug": "northfield-estates",
+    "name": "Northfield Estates",
+    "linked_companies": 9,
+    "claim": {
+      "state": "claimed",
+      "line": "Claimed by Northfield · verified signatory",
+      "since": "2025-12-02"
+    },
+    "mode": "scored",
+    "facts_only_line": null
+  },
+  "track_record": {
+    "finished": 6,
+    "late": 2,
+    "line": "2 of the group's 6 finished RERA projects got OC more than 12 months late.",
+    "projects": [
+      {
+        "name": "Cedar Walk",
+        "promised": null,
+        "oc_on": null,
+        "late": false
+      },
+      {
+        "name": "Aurelia Heights, Phase 1",
+        "promised": null,
+        "oc_on": null,
+        "late": true
+      },
+      {
+        "name": "Wren Court",
+        "promised": null,
+        "oc_on": null,
+        "late": false
+      },
+      {
+        "name": "Opaline Residences",
+        "promised": null,
+        "oc_on": null,
+        "late": false
+      },
+      {
+        "name": "Heron Point, Phase 1",
+        "promised": null,
+        "oc_on": null,
+        "late": true
+      },
+      {
+        "name": "Linden Square",
+        "promised": null,
+        "oc_on": null,
+        "late": false
+      }
+    ]
+  },
+  "ongoing": [
+    {
+      "slug": "aurelia-heights-phase-2",
+      "name": "Aurelia Heights, Phase 2",
+      "chip": {
+        "kind": "band",
+        "label": "Elevated",
+        "step": 3,
+        "meter_filled": 3
+      }
+    },
+    {
+      "slug": "cedar-walk-phase-2",
+      "name": "Cedar Walk, Phase 2",
+      "chip": {
+        "kind": "band",
+        "label": "Moderate",
+        "step": 2,
+        "meter_filled": 2
+      }
+    },
+    {
+      "slug": "heron-point-phase-2",
+      "name": "Heron Point, Phase 2",
+      "chip": {
+        "kind": "not_scored",
+        "label": "Not scored",
+        "step": null,
+        "meter_filled": 0
+      }
+    }
+  ],
+  "complaints": {
+    "line_24m": "24 decided against the group, or 0.7 per 100 units.",
+    "half_years": [],
+    "fairness_line": "A bigger group isn't penalised for its size."
+  },
+  "insolvency_line": "No insolvency found (checked 14 Oct 2026).",
+  "pre_rera": {
+    "line": "None of this counts in the band.",
+    "items": [
+      {
+        "name": "Northfield Greens, Sector 52",
+        "line": "Promised Dec 2011, OC Mar 2014, about 27 months late.",
+        "sources": [
+          "Haryana State Consumer Commission order, Aug 2015 (delay compensation for 38 buyers)",
+          "News report, Feb 2013"
+        ]
+      },
+      {
+        "name": "Alder Court, Sector 49",
+        "line": "Promised Jun 2013, OC Sep 2013.",
+        "sources": ["DTCP OC record", "News report, Oct 2013"]
+      },
+      {
+        "name": "Larch Enclave, Sector 21 (2004)",
+        "line": "No court order or news found. Absence is not proof.",
+        "sources": []
+      }
+    ]
+  },
+  "reply": {
+    "line": "Developer says · not yet verified · 15 Oct 2026 · we check it by 5 Nov 2026",
+    "text": null,
+    "published_on": "2026-10-15"
+  },
+  "how_buyers_find_you": null,
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "model_version": "v1.2",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/developers/northfield-estates"
+  }
+}

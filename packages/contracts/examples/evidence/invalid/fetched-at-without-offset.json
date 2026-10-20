@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-qpr-2026-q2.json",
+  "why": "Timestamps carry an offset.",
+  "expect": "/snapshot/fetched_at",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/snapshot/fetched_at",
+      "value": "16 Jul 2026"
+    }
+  ]
+}

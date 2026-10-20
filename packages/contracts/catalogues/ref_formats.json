@@ -1,0 +1,90 @@
+{
+  "catalogue": "ref_formats",
+  "version": 1,
+  "source": "DATA_MODEL §0 (human references from ops.next_ref(prefix), IST date); DECISIONS E-3 and BUILD_PLAN D-4 (store the year; the sequence widens past 99).",
+  "notes": [
+    "Each format is unique within a year; the year is stored alongside (uq(ref_year, ref)). Lookups always carry user context.",
+    "Regexes are ECMAScript, Dart and Python compatible (anchored, \\d only)."
+  ],
+  "formats": [
+    {
+      "prefix": "C",
+      "name": "consent",
+      "used_for": "Consents (app.consents)",
+      "display": "C-MMDD-NN",
+      "regex": "^C-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$",
+      "examples": ["C-1018-11", "C-1012-04", "C-1012-05", "C-1015-02", "C-0902-01", "C-1018-104"],
+      "invalid_examples": [
+        "PLN-C-261017-0623",
+        "C-1318-01",
+        "C-1032-01",
+        "C-1018-1",
+        "c-1018-11",
+        "C-101811"
+      ]
+    },
+    {
+      "prefix": "R",
+      "name": "project_request",
+      "used_for": "Project requests (app.project_requests)",
+      "display": "R-MMDD-NN",
+      "regex": "^R-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$",
+      "examples": ["R-1018-07"],
+      "invalid_examples": ["R-018-07", "R-1018-7"]
+    },
+    {
+      "prefix": "CL",
+      "name": "clerical_dispute",
+      "used_for": "Clerical-lane disputes (ws.disputes, lane clerical)",
+      "display": "CL-nnn",
+      "regex": "^CL-\\d{3,}$",
+      "examples": ["CL-201", "CL-196", "CL-202"],
+      "invalid_examples": ["CL-20", "C-201"]
+    },
+    {
+      "prefix": "D",
+      "name": "fact_dispute",
+      "used_for": "Fact disputes (ws.disputes, lane dispute)",
+      "display": "D-nnn",
+      "regex": "^D-\\d{3,}$",
+      "examples": ["D-118", "D-097", "D-104", "D-127"],
+      "invalid_examples": ["D-18", "DD-118"]
+    },
+    {
+      "prefix": "EV",
+      "name": "evidence_submission",
+      "used_for": "Evidence submissions (ws.disputes, lane evidence)",
+      "display": "EV-nnn",
+      "regex": "^EV-\\d{3,}$",
+      "examples": [],
+      "invalid_examples": ["EV-1", "E-118"]
+    },
+    {
+      "prefix": "LN",
+      "name": "legal_notice",
+      "used_for": "Legal notices (ws.legal_intakes)",
+      "display": "LN-nnn",
+      "regex": "^LN-\\d{3,}$",
+      "examples": ["LN-031"],
+      "invalid_examples": ["LN-31"]
+    },
+    {
+      "prefix": "E",
+      "name": "error_report",
+      "used_for": "Error reports (ops.error_reports)",
+      "display": "E-nnnn",
+      "regex": "^E-\\d{4,}$",
+      "examples": ["E-0431"],
+      "invalid_examples": ["E-431", "EV-0431"]
+    },
+    {
+      "prefix": "G",
+      "name": "grievance",
+      "used_for": "Grievances (ops.grievances)",
+      "display": "G-nnnn",
+      "regex": "^G-\\d{4,}$",
+      "examples": ["G-0019"],
+      "invalid_examples": ["G-19"]
+    }
+  ]
+}

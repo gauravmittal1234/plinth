@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-old-card-v1-1.json",
+  "why": "A card has at most 3 short lines.",
+  "expect": "/now/lines",
+  "patch": [
+    {
+      "op": "add",
+      "path": "/now/lines/-",
+      "value": "No developer pays us. Ever."
+    }
+  ]
+}

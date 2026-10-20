@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-defaults-12-months.json",
+  "why": "A loan runs for at least a year.",
+  "expect": "/p_tenure_years",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/p_tenure_years",
+      "value": 0
+    }
+  ]
+}

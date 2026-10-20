@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/error.schema.json",
+  "title": "ApiError",
+  "description": "Edge function error body: { \"error\": { \"code\", \"message\" } } (API_CONTRACTS §1). RPCs raise SQLSTATE PT<http> through ops.raise_api_error() (T04) instead; PostgREST returns that as RpcError.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["error"],
+  "properties": {
+    "error": {
+      "$ref": "#/$defs/ApiErrorBody"
+    }
+  },
+  "$defs": {
+    "ApiErrorCode": {
+      "title": "ApiErrorCode",
+      "description": "HTTP status: not_found 404, not_in_coverage 404, invalid_input 422, auth_required 401, forbidden 403, consent_required 409, cap_reached 409, conflict 409, rate_limited 429, flag_off 503.",
+      "type": "string",
+      "enum": [
+        "not_found",
+        "not_in_coverage",
+        "invalid_input",
+        "auth_required",
+        "forbidden",
+        "consent_required",
+        "cap_reached",
+        "conflict",
+        "rate_limited",
+        "flag_off"
+      ]
+    },
+    "ApiErrorBody": {
+      "title": "ApiErrorBody",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ApiErrorCode"
+        },
+        "message": {
+          "type": "string",
+          "description": "A human sentence in house copy."
+        }
+      }
+    },
+    "RpcError": {
+      "title": "RpcError",
+      "description": "PostgREST error for a function that raised SQLSTATE PT<http> via ops.raise_api_error(): code is PT<http status>, message the domain code, details the house-copy sentence. Each domain code has exactly one status (see ApiErrorCode).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "details", "hint"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^PT\\d{3}$"
+        },
+        "message": {
+          "$ref": "#/$defs/ApiErrorCode"
+        },
+        "details": {
+          "type": ["string", "null"]
+        },
+        "hint": {
+          "type": ["string", "null"]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "const": "not_found"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "PT404"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "const": "not_in_coverage"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "PT404"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "const": "invalid_input"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "PT422"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "const": "auth_required"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "PT401"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "const": "forbidden"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "PT403"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "const": "consent_required"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "PT409"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "const": "cap_reached"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "PT409"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "const": "conflict"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "PT409"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "const": "rate_limited"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "PT429"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "const": "flag_off"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "PT503"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

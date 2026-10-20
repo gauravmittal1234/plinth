@@ -1,0 +1,12 @@
+{
+  "base": "v1-2.json",
+  "why": "A factor weight is a percentage.",
+  "expect": "/factors/0/weight_pct",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/factors/0/weight_pct",
+      "value": 120
+    }
+  ]
+}

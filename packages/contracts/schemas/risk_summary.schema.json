@@ -1,0 +1,1140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/risk_summary.schema.json",
+  "title": "RiskSummary",
+  "description": "plinth.risk_summary/1, served by api.risk_summary(p_slug) (API_CONTRACTS §2). The one risk object: web, app, WhatsApp and the risk card render this and nothing else for risk.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "phase",
+    "display",
+    "band",
+    "chip",
+    "confidence",
+    "frequency",
+    "late12",
+    "reasons",
+    "what_would_change",
+    "pending",
+    "developer_response",
+    "progress",
+    "price",
+    "complaints",
+    "withheld",
+    "meta",
+    "share"
+  ],
+  "properties": {
+    "schema": {
+      "const": "plinth.risk_summary/1"
+    },
+    "phase": {
+      "$ref": "#/$defs/PhaseSummary"
+    },
+    "display": {
+      "$ref": "#/$defs/Display"
+    },
+    "band": {
+      "description": "Null whenever display.state is not scored or bands are not public (DATA_MODEL §12 invariant 8).",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Band"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "chip": {
+      "$ref": "common.schema.json#/$defs/Chip"
+    },
+    "confidence": {
+      "description": "Never part of the band name.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Confidence"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "frequency": {
+      "description": "Null when a red-flag rule sets the band, and whenever the band is null.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Frequency"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "late12": {
+      "$ref": "#/$defs/Late12"
+    },
+    "reasons": {
+      "description": "At most 4. Empty unless scored and public.",
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/Reason"
+      }
+    },
+    "what_would_change": {
+      "type": ["string", "null"]
+    },
+    "pending": {
+      "description": "Public facts that may move the band. Never the proposed band.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PendingFact"
+      }
+    },
+    "developer_response": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DeveloperResponse"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "progress": {
+      "$ref": "#/$defs/Progress"
+    },
+    "price": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Price"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "complaints": {
+      "description": "Always count and rate together. Null when not in our records yet.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Complaints"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "withheld": {
+      "description": "Facts-only state only.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Withheld"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "meta": {
+      "$ref": "common.schema.json#/$defs/RiskMeta"
+    },
+    "share": {
+      "$ref": "#/$defs/RiskShare"
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "No band, frequency or reasons unless the phase is scored and bands are public. Limited-history and not-scored phases keep their what-would-change line (DESIGN §5b); S1 nulls it (next rule).",
+      "if": {
+        "type": "object",
+        "required": ["display"],
+        "properties": {
+          "display": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": ["state"],
+                "properties": {
+                  "state": {
+                    "not": {
+                      "const": "scored"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "required": ["bands_public"],
+                "properties": {
+                  "bands_public": {
+                    "const": false
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "band": {
+            "type": "null"
+          },
+          "frequency": {
+            "type": "null"
+          },
+          "reasons": {
+            "type": "array",
+            "maxItems": 0
+          }
+        }
+      },
+      "else": {
+        "type": "object",
+        "properties": {
+          "band": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "$comment": "With bands not public (S1) there is no what-would-change line either (API_CONTRACTS §2.2).",
+      "if": {
+        "type": "object",
+        "required": ["display"],
+        "properties": {
+          "display": {
+            "type": "object",
+            "required": ["bands_public"],
+            "properties": {
+              "bands_public": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "what_would_change": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "$comment": "A red-flag rule sets the band without a natural frequency.",
+      "if": {
+        "type": "object",
+        "required": ["band"],
+        "properties": {
+          "band": {
+            "type": "object",
+            "required": ["set_by"],
+            "properties": {
+              "set_by": {
+                "const": "red_flag_rule"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "frequency": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "$comment": "withheld is present exactly in the facts-only state.",
+      "if": {
+        "type": "object",
+        "required": ["display"],
+        "properties": {
+          "display": {
+            "type": "object",
+            "required": ["state"],
+            "properties": {
+              "state": {
+                "const": "facts_only"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "withheld": {
+            "type": "object"
+          },
+          "chip": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "withheld"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "type": "object",
+        "properties": {
+          "withheld": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": ["display"],
+        "properties": {
+          "display": {
+            "type": "object",
+            "required": ["state"],
+            "properties": {
+              "state": {
+                "const": "limited_history"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "chip": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "limited_history"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": ["display"],
+        "properties": {
+          "display": {
+            "type": "object",
+            "required": ["state"],
+            "properties": {
+              "state": {
+                "const": "not_scored"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "chip": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "not_scored"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "$comment": "A visible band uses a band chip.",
+      "if": {
+        "type": "object",
+        "required": ["display"],
+        "properties": {
+          "display": {
+            "type": "object",
+            "required": ["state", "bands_public"],
+            "properties": {
+              "state": {
+                "const": "scored"
+              },
+              "bands_public": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "chip": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "band"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "PhaseSummary": {
+      "title": "PhaseSummary",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slug",
+        "name",
+        "short_code",
+        "rera_number",
+        "authority",
+        "locality_line",
+        "units",
+        "developer"
+      ],
+      "properties": {
+        "slug": {
+          "$ref": "common.schema.json#/$defs/Slug"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "short_code": {
+          "description": "The phase's short code for WhatsApp and invite codes; null until one is assigned (only Aurelia has one in §5b).",
+          "type": ["string", "null"],
+          "pattern": "^[A-Z0-9]{2,6}$",
+          "examples": ["AH2"]
+        },
+        "rera_number": {
+          "$ref": "common.schema.json#/$defs/ReraNumber"
+        },
+        "authority": {
+          "$ref": "#/$defs/Authority"
+        },
+        "locality_line": {
+          "type": "string"
+        },
+        "units": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "developer": {
+          "$ref": "#/$defs/DeveloperRef"
+        }
+      }
+    },
+    "Authority": {
+      "title": "Authority",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "name", "url"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "examples": ["harera_ggm"]
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "DeveloperRef": {
+      "title": "DeveloperRef",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "name", "claim"],
+      "properties": {
+        "slug": {
+          "$ref": "common.schema.json#/$defs/Slug"
+        },
+        "name": {
+          "type": "string"
+        },
+        "claim": {
+          "$ref": "#/$defs/DeveloperClaim"
+        }
+      }
+    },
+    "DeveloperClaim": {
+      "title": "DeveloperClaim",
+      "description": "line is \"claimed developer page, replies here\" or \"invited 24 Nov 2025 · not yet claimed\".",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "line", "since"],
+      "properties": {
+        "state": {
+          "$ref": "common.schema.json#/$defs/ClaimState"
+        },
+        "line": {
+          "type": "string"
+        },
+        "since": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/IsoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "Display": {
+      "title": "Display",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "overlays", "bands_public"],
+      "properties": {
+        "state": {
+          "$ref": "common.schema.json#/$defs/DisplayState"
+        },
+        "overlays": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/Overlay"
+          }
+        },
+        "bands_public": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Band": {
+      "title": "Band",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "label", "step", "since", "set_by", "rule"],
+      "properties": {
+        "code": {
+          "$ref": "common.schema.json#/$defs/BandCode"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "step": {
+          "$ref": "common.schema.json#/$defs/BandStep"
+        },
+        "since": {
+          "$ref": "common.schema.json#/$defs/IsoDate"
+        },
+        "set_by": {
+          "$ref": "#/$defs/BandSetBy"
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BandRule"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "low"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "step": {
+                "const": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "moderate"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "step": {
+                "const": 2
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "elevated"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "step": {
+                "const": 3
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "high"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "step": {
+                "const": 4
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "const": "severe"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "step": {
+                "const": 5
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "set_by": {
+                "const": "red_flag_rule"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "rule": {
+                "type": "object"
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "rule": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "BandSetBy": {
+      "title": "BandSetBy",
+      "type": "string",
+      "enum": ["model", "red_flag_rule"]
+    },
+    "BandRule": {
+      "title": "BandRule",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "line"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^RF\\d+_[A-Z0-9_]+$",
+          "examples": ["RF1_GROUP_CIRP"]
+        },
+        "line": {
+          "type": "string"
+        }
+      }
+    },
+    "Confidence": {
+      "title": "Confidence",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "dots", "line"],
+      "properties": {
+        "level": {
+          "$ref": "#/$defs/ConfidenceLevel"
+        },
+        "dots": {
+          "type": "integer",
+          "enum": [1, 2]
+        },
+        "line": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "level": {
+                "const": "high"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "dots": {
+                "const": 2
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "dots": {
+                "const": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ConfidenceLevel": {
+      "title": "ConfidenceLevel",
+      "type": "string",
+      "enum": ["high", "low"]
+    },
+    "Frequency": {
+      "title": "Frequency",
+      "description": "The natural frequency: \"Between 30 and 45 of 100 …\". Never \"% chance\" or \"1 in X\".",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "low",
+        "high",
+        "sentence",
+        "reference_class_line",
+        "icon_array",
+        "hatch_legend"
+      ],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/FrequencyKind"
+        },
+        "low": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "high": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "sentence": {
+          "type": "string"
+        },
+        "reference_class_line": {
+          "type": "string"
+        },
+        "icon_array": {
+          "$ref": "#/$defs/IconArray"
+        },
+        "hatch_legend": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "FrequencyKind": {
+      "title": "FrequencyKind",
+      "type": "string",
+      "enum": ["point", "range"]
+    },
+    "IconArray": {
+      "title": "IconArray",
+      "description": "100 icons: filled + hatched + empty = 100.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["filled", "hatched", "empty"],
+      "properties": {
+        "filled": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "hatched": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "empty": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "Late12": {
+      "title": "Late12",
+      "description": "What \"more than 12 months late\" means for this phase. Aurelia: late after 2029-04.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "original_completion",
+        "blanket_extension_months",
+        "late_after",
+        "line",
+        "oc_not_keys_line"
+      ],
+      "properties": {
+        "original_completion": {
+          "$ref": "common.schema.json#/$defs/YearMonth"
+        },
+        "blanket_extension_months": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "late_after": {
+          "$ref": "common.schema.json#/$defs/YearMonth"
+        },
+        "line": {
+          "type": "string"
+        },
+        "oc_not_keys_line": {
+          "type": "string"
+        }
+      }
+    },
+    "Reason": {
+      "title": "Reason",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rank", "factor", "factor_label", "text", "sources"],
+      "properties": {
+        "rank": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "factor": {
+          "$ref": "common.schema.json#/$defs/Factor"
+        },
+        "factor_label": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "common.schema.json#/$defs/SourceRef"
+          }
+        }
+      }
+    },
+    "PendingFact": {
+      "title": "PendingFact",
+      "description": "A public fact that may move the band (catalogues/reason_codes.json pending_codes). Never carries the proposed band.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "line", "since", "developer_says", "marker_line"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "examples": ["qpr_missing", "rescore_due"]
+        },
+        "line": {
+          "type": "string"
+        },
+        "since": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/IsoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "developer_says": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/DeveloperSays"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "marker_line": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "DeveloperResponse": {
+      "title": "DeveloperResponse",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "signatory_title", "published_on", "check_by", "line"],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "signatory_title": {
+          "type": "string"
+        },
+        "published_on": {
+          "$ref": "common.schema.json#/$defs/IsoDate"
+        },
+        "check_by": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/IsoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "line": {
+          "type": "string"
+        }
+      }
+    },
+    "Progress": {
+      "title": "Progress",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["built_pct", "sold_pct", "time_used_pct", "latest_qpr", "line"],
+      "properties": {
+        "built_pct": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/Pct"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sold_pct": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/Pct"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "time_used_pct": {
+          "$ref": "common.schema.json#/$defs/Pct"
+        },
+        "latest_qpr": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LatestQpr"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "line": {
+          "type": "string"
+        }
+      }
+    },
+    "LatestQpr": {
+      "title": "LatestQpr",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quarter", "label", "filed_on", "age_days"],
+      "properties": {
+        "quarter": {
+          "$ref": "common.schema.json#/$defs/Quarter"
+        },
+        "label": {
+          "type": "string",
+          "examples": ["Apr–Jun 2026"]
+        },
+        "filed_on": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/IsoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "age_days": {
+          "description": "Days since filed_on; null when the filing date is not on record (Cedar Walk Ph 2).",
+          "type": ["integer", "null"],
+          "minimum": 0
+        }
+      }
+    },
+    "Price": {
+      "title": "Price",
+      "description": "All-in first, quoted second. Without a cost sheet the all-in fields are null and display_line says so.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "all_in_inr",
+        "all_in_label",
+        "quoted_label",
+        "per_sqft_carpet_label",
+        "basis_line",
+        "display_line"
+      ],
+      "properties": {
+        "all_in_inr": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/Inr"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "all_in_label": {
+          "type": ["string", "null"]
+        },
+        "quoted_label": {
+          "type": ["string", "null"]
+        },
+        "per_sqft_carpet_label": {
+          "type": ["string", "null"]
+        },
+        "basis_line": {
+          "type": ["string", "null"]
+        },
+        "display_line": {
+          "type": "string"
+        }
+      }
+    },
+    "Complaints": {
+      "title": "Complaints",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count_24m", "per_100_units", "units_base", "median_count_similar", "line"],
+      "properties": {
+        "count_24m": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "per_100_units": {
+          "type": "number",
+          "minimum": 0
+        },
+        "units_base": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "median_count_similar": {
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "line": {
+          "type": "string"
+        }
+      }
+    },
+    "Withheld": {
+      "title": "Withheld",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["since", "line", "explainer_line", "explainer_url"],
+      "properties": {
+        "since": {
+          "$ref": "common.schema.json#/$defs/IsoDate"
+        },
+        "line": {
+          "type": "string"
+        },
+        "explainer_line": {
+          "type": "string"
+        },
+        "explainer_url": {
+          "type": "string"
+        }
+      }
+    },
+    "RiskShare": {
+      "title": "RiskShare",
+      "description": "WhatsApp and the share card (F-05): at most 3 short lines plus a source-and-date line.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["card_url", "card_alt", "lines", "source_line", "caption"],
+      "properties": {
+        "card_url": {
+          "type": "string"
+        },
+        "card_alt": {
+          "type": "string"
+        },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_line": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

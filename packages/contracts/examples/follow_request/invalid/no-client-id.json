@@ -1,0 +1,11 @@
+{
+  "base": "aurelia-watching-web.json",
+  "why": "Mutations take p_client_id (idempotent replays).",
+  "expect": "",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/p_client_id"
+    }
+  ]
+}

@@ -1,0 +1,510 @@
+{
+  "schema": "plinth.project_page/1",
+  "risk": {
+    "schema": "plinth.risk_summary/1",
+    "phase": {
+      "slug": "laurel-residency",
+      "name": "Laurel Residency",
+      "short_code": null,
+      "rera_number": "GGM/447/179/2020/52",
+      "authority": {
+        "code": "harera_ggm",
+        "name": "HARERA Gurugram",
+        "url": "https://haryanarera.gov.in"
+      },
+      "locality_line": "Sector 92, New Gurugram",
+      "units": null,
+      "developer": {
+        "slug": "elmstone-developers",
+        "name": "Elmstone Developers",
+        "claim": {
+          "state": "invited",
+          "line": "invited 24 Nov 2025 · not yet claimed",
+          "since": "2025-11-24"
+        }
+      }
+    },
+    "display": {
+      "state": "scored",
+      "overlays": ["stalled"],
+      "bands_public": true
+    },
+    "band": {
+      "code": "severe",
+      "label": "Severe",
+      "step": 5,
+      "since": "2026-07-15",
+      "set_by": "red_flag_rule",
+      "rule": {
+        "code": "RF1_GROUP_CIRP",
+        "line": "Set by red-flag rule 1, not our model: a group company was admitted to insolvency (NCLT order, 12 Mar 2023)."
+      }
+    },
+    "chip": {
+      "kind": "band",
+      "label": "Severe",
+      "step": 5,
+      "meter_filled": 5
+    },
+    "confidence": null,
+    "frequency": null,
+    "late12": {
+      "original_completion": "2026-06",
+      "blanket_extension_months": 4,
+      "late_after": "2027-10",
+      "line": "Original completion Jun 2026. More than 12 months late here means an OC after Oct 2027, with the 4-month blanket extension of Jul 2026.",
+      "oc_not_keys_line": "The OC is not the keys. Possession comes after it: the developer offers it, you pay the last 5% and register the sale deed."
+    },
+    "reasons": [
+      {
+        "rank": 1,
+        "factor": "legal",
+        "factor_label": "Legal",
+        "text": "A group company of Elmstone Developers was admitted to insolvency by NCLT order on 12 Mar 2023.",
+        "sources": [
+          {
+            "label": "IBBI · NCLT order 12 Mar 2023",
+            "fact_ids": ["9f0f09ed-5fda-5c98-b18c-f02ddf1c8c46"],
+            "evidence_url": "/evidence/9f0f09ed-5fda-5c98-b18c-f02ddf1c8c46",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2023-03-12"
+          }
+        ]
+      },
+      {
+        "rank": 2,
+        "factor": "timeline",
+        "factor_label": "Timeline",
+        "text": "Original completion was Jun 2026. That date has passed with 34% built.",
+        "sources": [
+          {
+            "label": "HARERA registration",
+            "fact_ids": ["f2020584-2a6a-584f-8926-2e1334ba1182"],
+            "evidence_url": "/evidence/f2020584-2a6a-584f-8926-2e1334ba1182",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-10-14"
+          },
+          {
+            "label": "HARERA QPR · Apr–Jun 2026",
+            "fact_ids": ["c640c448-4244-5d92-8506-022c6ef33369"],
+            "evidence_url": "/evidence/c640c448-4244-5d92-8506-022c6ef33369",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-07-15"
+          }
+        ]
+      },
+      {
+        "rank": 3,
+        "factor": "site",
+        "factor_label": "Site",
+        "text": "No QPR progress for 4 quarters: 34% built in each QPR from Jul–Sep 2025 to Apr–Jun 2026.",
+        "sources": [
+          {
+            "label": "HARERA QPR · Jul–Sep 2025",
+            "fact_ids": ["bda0d3f0-dac6-5315-b6e9-331d47f48a78"],
+            "evidence_url": "/evidence/bda0d3f0-dac6-5315-b6e9-331d47f48a78",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2025-10-13"
+          },
+          {
+            "label": "HARERA QPR · Oct–Dec 2025",
+            "fact_ids": ["77e91e5a-b9b7-571e-90a4-5d6f17e13c8c"],
+            "evidence_url": "/evidence/77e91e5a-b9b7-571e-90a4-5d6f17e13c8c",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-01-12"
+          },
+          {
+            "label": "HARERA QPR · Jan–Mar 2026",
+            "fact_ids": ["b932f577-9426-5fdd-877e-8c02c0a556f9"],
+            "evidence_url": "/evidence/b932f577-9426-5fdd-877e-8c02c0a556f9",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-04-14"
+          },
+          {
+            "label": "HARERA QPR · Apr–Jun 2026",
+            "fact_ids": ["c640c448-4244-5d92-8506-022c6ef33369"],
+            "evidence_url": "/evidence/c640c448-4244-5d92-8506-022c6ef33369",
+            "official_url": "https://haryanarera.gov.in",
+            "as_of": "2026-07-15"
+          }
+        ]
+      }
+    ],
+    "what_would_change": "The rule applies while the insolvency case stands. If it is closed or set aside, the model sets the band again, and we log the change.",
+    "pending": [],
+    "developer_response": null,
+    "progress": {
+      "built_pct": 34,
+      "sold_pct": null,
+      "time_used_pct": 106,
+      "latest_qpr": {
+        "quarter": "2026-Q2",
+        "label": "Apr–Jun 2026",
+        "filed_on": "2026-07-15",
+        "age_days": 95
+      },
+      "line": "34% built · 106% of the promised time used"
+    },
+    "price": {
+      "all_in_inr": null,
+      "all_in_label": null,
+      "quoted_label": "₹1.48 Cr",
+      "per_sqft_carpet_label": null,
+      "basis_line": "3 BHK quoted price · no cost sheet with us",
+      "display_line": "Quoted ₹1.48 Cr · all-in not known yet"
+    },
+    "complaints": null,
+    "withheld": null,
+    "meta": {
+      "data_as_of": "2026-10-14",
+      "model_version": "v1.2",
+      "score_run_id": "6ef63dab-b260-5412-8b9b-af416d6835af",
+      "generated_at": "2026-10-18T12:00:00+05:30",
+      "methodology_url": "/methodology",
+      "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+      "promise_line": "No developer pays us. Ever.",
+      "live_url": "https://plinth.in/gurugram/projects/laurel-residency",
+      "short_url": null
+    },
+    "share": {
+      "card_url": "https://plinth.in/cards/risk/laurel-residency.png?run=6ef63dab-b260-5412-8b9b-af416d6835af",
+      "card_alt": "Laurel Residency: Delivery risk Severe, set by red-flag rule 1, not our model.",
+      "lines": [
+        "Delivery risk: Severe, set by red-flag rule 1",
+        "A group company of Elmstone Developers was admitted to insolvency (NCLT order, 12 Mar 2023).",
+        "34% built. The original date, Jun 2026, has passed."
+      ],
+      "source_line": "HARERA records · data as of 14 Oct 2026 · v1.2",
+      "caption": "Plinth · No developer pays us. Ever."
+    }
+  },
+  "hero": {
+    "image_url": "/media/heroLaurel.jpg",
+    "image_caption": "Images on this page are illustrative",
+    "summary_line": "Delivery risk: Severe, set by a published rule · Stall flag · 34% built · Original completion Jun 2026, passed",
+    "rera_badge": {
+      "number": "GGM/447/179/2020/52",
+      "authority_url": "https://haryanarera.gov.in",
+      "qr_url": null
+    }
+  },
+  "truth_panel": [
+    {
+      "key": "completion",
+      "label": "Original vs current completion",
+      "value_line": "Jun 2026 · no extensions",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["f2020584-2a6a-584f-8926-2e1334ba1182"],
+          "evidence_url": "/evidence/f2020584-2a6a-584f-8926-2e1334ba1182",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "key": "progress",
+      "label": "Built vs time used",
+      "value_line": "34% built · 106% of time used",
+      "lane": "records_show",
+      "sources": [
+        {
+          "label": "HARERA QPR · Apr–Jun 2026",
+          "fact_ids": ["c640c448-4244-5d92-8506-022c6ef33369"],
+          "evidence_url": "/evidence/c640c448-4244-5d92-8506-022c6ef33369",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-07-15"
+        },
+        {
+          "label": "HARERA registration",
+          "fact_ids": ["90bd8880-a5ec-5c83-9734-4333ef59b69a"],
+          "evidence_url": "/evidence/90bd8880-a5ec-5c83-9734-4333ef59b69a",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "progress": {
+    "floors_per_tower": null,
+    "towers": null,
+    "quarters": [
+      {
+        "quarter": "2025-Q3",
+        "label": "Jul–Sep 2025",
+        "sold_pct": null,
+        "built_pct": 34,
+        "time_used_pct": null,
+        "band_then": "severe",
+        "towers": null,
+        "filed_on": "2025-10-13",
+        "status": "on_time",
+        "note_line": null
+      },
+      {
+        "quarter": "2025-Q4",
+        "label": "Oct–Dec 2025",
+        "sold_pct": null,
+        "built_pct": 34,
+        "time_used_pct": null,
+        "band_then": "severe",
+        "towers": null,
+        "filed_on": "2026-01-12",
+        "status": "on_time",
+        "note_line": null
+      },
+      {
+        "quarter": "2026-Q1",
+        "label": "Jan–Mar 2026",
+        "sold_pct": null,
+        "built_pct": 34,
+        "time_used_pct": null,
+        "band_then": "severe",
+        "towers": null,
+        "filed_on": "2026-04-14",
+        "status": "on_time",
+        "note_line": null
+      },
+      {
+        "quarter": "2026-Q2",
+        "label": "Apr–Jun 2026",
+        "sold_pct": null,
+        "built_pct": 34,
+        "time_used_pct": null,
+        "band_then": "severe",
+        "towers": null,
+        "filed_on": "2026-07-15",
+        "status": "on_time",
+        "note_line": null
+      }
+    ],
+    "today": {
+      "time_used_pct": 106,
+      "band": "severe",
+      "band_since_line": "Severe since 15 Jul 2026"
+    },
+    "late_filings_line": null
+  },
+  "homes": {
+    "units_line": null,
+    "configurations": [
+      {
+        "label": "3 BHK",
+        "carpet_line": "Carpet not in our records yet",
+        "carpet_lane": null,
+        "super_line": null,
+        "super_lane": null,
+        "loading_line": null,
+        "price_line": "Quoted ₹1.48 Cr",
+        "price_lane": "from_developer",
+        "all_in_line": null,
+        "all_in_note": "No 3 BHK cost sheet, so no all-in yet.",
+        "rooms": []
+      }
+    ],
+    "amenities": null,
+    "getting_around": null,
+    "waterlogging": null
+  },
+  "from_developer": null,
+  "cost": null,
+  "wait_defaults": {
+    "take_home_inr": 450000,
+    "rent_inr": 55000,
+    "down_pct": 20,
+    "rate_pct": 8.5,
+    "tenure_years": 20
+  },
+  "afford_default": null,
+  "next_steps": {
+    "intro_line": "We never say buy or don't buy. At Severe, these steps keep less of your money at stake.",
+    "steps": [
+      {
+        "heading": "Read the reason first.",
+        "body": "A published rule or the record sets this band. Open its source.",
+        "source_label": null
+      },
+      {
+        "heading": "If you've paid already,",
+        "body": "your RERA rights to a refund or delay interest still stand. See “If you've already booked here”.",
+        "source_label": null
+      },
+      {
+        "heading": "Before paying anything more,",
+        "body": "ask for the project's status in writing, and keep every receipt.",
+        "source_label": null
+      }
+    ],
+    "base_rate_line": "About 36 of 100 Gurugram projects got their OC more than 12 months late. Severe sits above that.",
+    "lower_band_nearby": [],
+    "rule_line": "Same corridor, lower band, all-in within 20%. Nobody pays to appear."
+  },
+  "before_booking": {
+    "intro_line": "Four things buyers ask about before the first cheque, with the rules behind them.",
+    "note_line": "General information, not legal, tax or financial advice.",
+    "payment_plans": {
+      "title": "Which payment plan?",
+      "sub": "Construction-linked, down payment or subvention, and what each one risks.",
+      "paras": [
+        {
+          "lead": "Construction-linked.",
+          "text": "You pay each stage once it is built, so your money follows the building. Check each demand against the latest QPR.",
+          "tone": "body"
+        },
+        {
+          "lead": "Down payment.",
+          "text": "You pay most of the price early, often for a discount. If the project is late, more of your money waits with it. Before a registered agreement, the law still caps you at 10%.",
+          "tone": "body"
+        },
+        {
+          "lead": "Subvention, or “no EMI till possession”.",
+          "text": "The bank pays the developer early, and the developer promises to pay your pre-EMI. You are still the borrower: if the developer stops paying, the bank collects from you.",
+          "tone": "body"
+        },
+        {
+          "lead": "Before a subvention booking,",
+          "text": "get the lender's confirmation in writing: what it pays out, when, and who pays the pre-EMI if the developer stops.",
+          "tone": "key"
+        }
+      ]
+    },
+    "loans": {
+      "line": "Loan checks arrive in 2027",
+      "title": "Home loans",
+      "sub": "Loan checks arrive in 2027. What to check with your bank now.",
+      "paras": [
+        {
+          "lead": "Loan checks arrive in 2027.",
+          "text": "Plinth doesn't arrange loans or pass your number to any lender today.",
+          "tone": "body"
+        },
+        {
+          "lead": "Check now:",
+          "text": "is this project approved by your bank? Ask the bank, in writing, not the developer.",
+          "tone": "key"
+        },
+        {
+          "lead": "Banks usually don't lend for stamp duty or registration.",
+          "text": "Plan for those from your own money.",
+          "tone": "body"
+        }
+      ]
+    },
+    "nri": {
+      "title": "Buying from abroad (NRI)",
+      "sub": "Paying from NRE or NRO, a power of attorney, and FEMA basics.",
+      "paras": [
+        {
+          "lead": "Paying.",
+          "text": "From an NRE, FCNR(B) or NRO account, or money sent to India through a bank. FEMA doesn't allow paying in foreign currency notes or traveller's cheques.",
+          "tone": "body"
+        },
+        {
+          "lead": "Loans.",
+          "text": "Indian banks lend to NRIs. EMIs come from an NRE or NRO account.",
+          "tone": "body"
+        },
+        {
+          "lead": "TDS.",
+          "text": "Like any buyer, you deduct 1% from each instalment when the price is ₹50 L or more (s.194-IA). You need a PAN.",
+          "tone": "body"
+        },
+        {
+          "lead": "Power of attorney.",
+          "text": "Make it specific to this flat, and list what your relative may sign: booking form, agreement, payments, registration. One signed abroad is attested at an Indian mission or apostilled, then stamped in India within 3 months.",
+          "tone": "body"
+        }
+      ]
+    },
+    "selling_before_possession": {
+      "title": "Selling before possession",
+      "sub": "Transfer charges, the builder's NOC and what RERA says.",
+      "paras": [
+        {
+          "lead": null,
+          "text": "Selling before possession means transferring your allotment. The developer endorses the new buyer on your agreement and issues a no-objection certificate (NOC).",
+          "tone": "body"
+        },
+        {
+          "lead": "Under RERA,",
+          "text": "whoever takes your allotment becomes the allottee, with your rights, including delay interest (s.2(d)).",
+          "tone": "body"
+        },
+        {
+          "lead": "Ask a CA",
+          "text": "about capital-gains tax, and a lawyer about stamp duty on the transfer.",
+          "tone": "body"
+        },
+        {
+          "lead": null,
+          "text": "Our resale and transfer checks are planned for Apr–Jun 2027.",
+          "tone": "body"
+        }
+      ]
+    }
+  },
+  "pre_rera": null,
+  "records": [
+    {
+      "fact_id": "f2020584-2a6a-584f-8926-2e1334ba1182",
+      "chip": "HARERA registration · 2020",
+      "line": "Registered Nov 2020. Original completion date: Jun 2026.",
+      "lane": "records_show",
+      "as_of": "2026-10-14",
+      "evidence_url": "/evidence/f2020584-2a6a-584f-8926-2e1334ba1182"
+    },
+    {
+      "fact_id": "bda0d3f0-dac6-5315-b6e9-331d47f48a78",
+      "chip": "HARERA QPR · Jul–Sep 2025",
+      "line": "34% built.",
+      "lane": "records_show",
+      "as_of": "2025-10-13",
+      "evidence_url": "/evidence/bda0d3f0-dac6-5315-b6e9-331d47f48a78"
+    },
+    {
+      "fact_id": "77e91e5a-b9b7-571e-90a4-5d6f17e13c8c",
+      "chip": "HARERA QPR · Oct–Dec 2025",
+      "line": "34% built.",
+      "lane": "records_show",
+      "as_of": "2026-01-12",
+      "evidence_url": "/evidence/77e91e5a-b9b7-571e-90a4-5d6f17e13c8c"
+    },
+    {
+      "fact_id": "b932f577-9426-5fdd-877e-8c02c0a556f9",
+      "chip": "HARERA QPR · Jan–Mar 2026",
+      "line": "34% built.",
+      "lane": "records_show",
+      "as_of": "2026-04-14",
+      "evidence_url": "/evidence/b932f577-9426-5fdd-877e-8c02c0a556f9"
+    },
+    {
+      "fact_id": "c640c448-4244-5d92-8506-022c6ef33369",
+      "chip": "HARERA QPR · Apr–Jun 2026",
+      "line": "34% built.",
+      "lane": "records_show",
+      "as_of": "2026-07-15",
+      "evidence_url": "/evidence/c640c448-4244-5d92-8506-022c6ef33369"
+    },
+    {
+      "fact_id": "9f0f09ed-5fda-5c98-b18c-f02ddf1c8c46",
+      "chip": "IBBI · NCLT order 12 Mar 2023",
+      "line": "A group company of Elmstone Developers was admitted to insolvency by NCLT order on 12 Mar 2023.",
+      "lane": "records_show",
+      "as_of": "2023-03-12",
+      "evidence_url": "/evidence/9f0f09ed-5fda-5c98-b18c-f02ddf1c8c46"
+    }
+  ],
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "score_run_id": "6ef63dab-b260-5412-8b9b-af416d6835af",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/projects/laurel-residency",
+    "short_url": null
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "plinth.afford_the_wait/1",
+  "answer_line": "Rent and pre-EMI come to ₹1,18,077 a month now, rising to ₹2,00,563 by Dec 2027 (26% → 45% of take-home).",
+  "now": {
+    "monthly_inr": 118077,
+    "share_pct": 26
+  },
+  "by_completion": {
+    "label": "By Dec 2027",
+    "monthly_inr": 200563,
+    "share_pct": 45
+  },
+  "delay": {
+    "months": 12,
+    "cost_inr": 2406756,
+    "cost_label": "₹24.1 L"
+  },
+  "after_keys": {
+    "emi_inr": 190227
+  },
+  "series": [
+    {
+      "month": "2026-11",
+      "pre_emi_inr": 63077,
+      "rent_inr": 55000,
+      "delay": false
+    }
+  ],
+  "frequency_line": "Between 30 and 45 of 100 similar projects were more than 12 months late.",
+  "assumptions": [
+    "Loan = 80% of the all-in (₹2.74 Cr, rounded to the lakh).",
+    "Payout follows the plan for Tower A.",
+    "The delay comes after finishing.",
+    "RERA s.18 interest is left out."
+  ],
+  "framing_line": "Arithmetic, not advice."
+}

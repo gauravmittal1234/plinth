@@ -1,0 +1,86 @@
+# ci-scoring (owner: T11). WORK_BREAKDOWN T11 acceptance, BUILD_PLAN §7.1.
+#   scoring   uv env from pipelines/uv.lock + plinth_contracts; ruff and ruff format on the
+#             scoring paths; mypy --strict pipelines/plinth/scoring; pytest
+#             pipelines/tests/scoring (§7.1 cases + hypothesis properties + vectors); then
+#             `score --fixtures --as-of 2026-10-14 --emit json | diff - canonical/scoring.json`.
+# Fixtures only: no network data, no secrets. ci-pipelines (T10) covers the rest of pipelines/.
+name: ci-scoring
+
+on:
+  pull_request:
+    paths:
+      - "pipelines/plinth/scoring/**"
+      - "pipelines/tests/scoring/**"
+      - "packages/fixtures/canonical/**"
+      - "packages/fixtures/vectors/**"
+      - "packages/contracts/python/**"
+      - "pipelines/pyproject.toml"
+      - "pipelines/uv.lock"
+      - ".github/workflows/ci-scoring.yml"
+  push:
+    branches: [main]
+    paths:
+      - "pipelines/plinth/scoring/**"
+      - "pipelines/tests/scoring/**"
+      - "packages/fixtures/canonical/**"
+      - "packages/fixtures/vectors/**"
+      - "packages/contracts/python/**"
+      - "pipelines/pyproject.toml"
+      - "pipelines/uv.lock"
+      - ".github/workflows/ci-scoring.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-scoring-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scoring:
+    name: scoring (§5b reproduction, properties, mypy strict)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      # setup-uv publishes exact tags only (no floating major).
+      - uses: astral-sh/setup-uv@v10.3.0
+
+      - name: Python env from pipelines/uv.lock (+ plinth_contracts)
+        run: |
+          uv sync --project pipelines --frozen --extra dev
+          uv pip install --python pipelines/.venv/bin/python -e packages/contracts/python
+
+      - name: ruff (scoring paths)
+        working-directory: pipelines
+        run: |
+          .venv/bin/ruff check plinth/scoring tests/scoring
+          .venv/bin/ruff format --check plinth/scoring tests/scoring
+
+      - name: mypy --strict pipelines/plinth/scoring
+        run: pipelines/.venv/bin/mypy --strict pipelines/plinth/scoring
+
+      - name: pytest pipelines/tests/scoring (§7.1 cases, hypothesis properties, vectors)
+        run: pipelines/.venv/bin/python -m pytest pipelines/tests/scoring -q
+
+      - name: score --fixtures --as-of 2026-10-14 --emit json reproduces canonical/scoring.json
+        run: |
+          # `plinth-pipe score` once T10's CLI registers the subcommand (the T00 placeholder
+          # rejects it); the module entry point runs the same parser until then.
+          out="$RUNNER_TEMP/scoring.json"
+          args=(score --fixtures --as-of 2026-10-14 --emit json)
+          if pipelines/.venv/bin/plinth-pipe "${args[@]}" >"$out" 2>/dev/null; then
+            echo "via plinth-pipe score"
+          else
+            echo "plinth-pipe has no score subcommand yet (T10 handoff): python -m plinth.scoring"
+            pipelines/.venv/bin/python -m plinth.scoring "${args[@]}" >"$out"
+          fi
+          diff "$out" packages/fixtures/canonical/scoring.json
+          echo "identical to packages/fixtures/canonical/scoring.json"
+
+      - name: Explain and replay audit (log only)
+        run: |
+          pipelines/.venv/bin/python -m plinth.scoring score --fixtures --as-of 2026-10-14 --emit explain
+          pipelines/.venv/bin/python -m plinth.scoring score --fixtures --as-of 2026-10-14 --replay-audit

@@ -1,0 +1,67 @@
+{
+  "schema": "plinth.developer_page/1",
+  "group": {
+    "slug": "orbis-land",
+    "name": "Orbis Land",
+    "linked_companies": null,
+    "claim": {
+      "state": "claimed",
+      "line": "Claimed developer page · replies here",
+      "since": "2025-12-03"
+    },
+    "mode": "scored"
+  },
+  "summary_line": null,
+  "facts_only": null,
+  "track_record": {
+    "finished": 9,
+    "late": 1,
+    "line": "1 of the group's 9 finished RERA projects got OC more than 12 months late.",
+    "projects": [],
+    "sources": [
+      {
+        "label": "HARERA · DTCP OC records",
+        "fact_ids": ["72eef155-40ac-5405-96a7-fdd8cc9a5dfa"],
+        "evidence_url": "/evidence/72eef155-40ac-5405-96a7-fdd8cc9a5dfa",
+        "official_url": "https://haryanarera.gov.in",
+        "as_of": "2026-10-14"
+      }
+    ]
+  },
+  "ongoing": [
+    {
+      "slug": "kestrel-park",
+      "name": "Kestrel Park",
+      "state": "scored",
+      "chip": {
+        "kind": "band",
+        "label": "Low",
+        "step": 1,
+        "meter_filled": 1
+      },
+      "price_line": "₹2.44 Cr all-in · quoted ₹2.10 Cr",
+      "progress_line": "63% built · 58% of the promised time used"
+    }
+  ],
+  "complaints": null,
+  "insolvency_line": null,
+  "pre_rera": null,
+  "reply": null,
+  "claim_explainer_line": "Claiming lets a developer correct facts, reply next to the records and hear from buyers who ask. It never changes a band. A developer that hasn't claimed is shown as “Invited” with the date, and we never call anyone uncooperative.",
+  "how_buyers_find_you": {
+    "rules": [
+      "Order never follows money. The default sort is lowest delivery risk first. No developer pays us, and no fee we earn ever touches ranking. Nobody can buy a place, above or below anyone.",
+      "Only verified facts count. Bands, dates and costs come from records we have matched to HARERA, DTCP or MCA. A price list or photo a developer adds is shown and labelled as theirs, but never used to rank. Claiming a page doesn't move it either.",
+      "Bands show in Compare. Buyers see each band side by side with the all-in cost and progress. A buyer who asks for low delivery risk gets two tiles, Low and Moderate, and can remove either. Buyers always see how many projects their filters hid."
+    ]
+  },
+  "meta": {
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "generated_at": "2026-10-18T12:00:00+05:30",
+    "methodology_url": "/methodology",
+    "disclaimer_line": "Our opinion, based on public records. Not a credit rating. Not issued by any RERA.",
+    "promise_line": "No developer pays us. Ever.",
+    "live_url": "https://plinth.in/gurugram/developers/orbis-land"
+  }
+}

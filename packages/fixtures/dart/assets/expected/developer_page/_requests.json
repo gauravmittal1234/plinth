@@ -1,0 +1,28 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "northfield-estates": {
+      "p_slug": "northfield-estates"
+    },
+    "orbis-land": {
+      "p_slug": "orbis-land"
+    },
+    "meridian-habitat": {
+      "p_slug": "meridian-habitat"
+    },
+    "vantage-buildcon": {
+      "p_slug": "vantage-buildcon"
+    },
+    "elmstone-developers": {
+      "p_slug": "elmstone-developers"
+    },
+    "halcyon-homes": {
+      "p_slug": "halcyon-homes"
+    },
+    "northfield-estates--facts-only": {
+      "p_slug": "northfield-estates",
+      "state": "facts_only",
+      "note": "Design state (CONFLICTS.md C-23)."
+    }
+  }
+}

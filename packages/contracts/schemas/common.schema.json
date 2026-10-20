@@ -1,0 +1,497 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/common.schema.json",
+  "$comment": "Shared definitions (API_CONTRACTS §1, §2; DATA_MODEL §0). Every object type is a named $def with a title equal to its key, so TS, Dart and Python get the same names.",
+  "$defs": {
+    "IsoDate": {
+      "title": "IsoDate",
+      "description": "A calendar date, YYYY-MM-DD (IST business date).",
+      "type": "string",
+      "format": "date"
+    },
+    "YearMonth": {
+      "title": "YearMonth",
+      "description": "Month precision, YYYY-MM. \"Dec 2027\" is 2027-12.",
+      "type": "string",
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+    },
+    "DateOrMonth": {
+      "title": "DateOrMonth",
+      "description": "YYYY-MM-DD or, for month precision, YYYY-MM.",
+      "type": "string",
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])(-(0[1-9]|[12]\\d|3[01]))?$"
+    },
+    "Quarter": {
+      "title": "Quarter",
+      "description": "Calendar quarter, YYYY-Qn. Apr–Jun 2026 is 2026-Q2.",
+      "type": "string",
+      "pattern": "^\\d{4}-Q[1-4]$"
+    },
+    "Timestamp": {
+      "title": "Timestamp",
+      "description": "ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "Slug": {
+      "title": "Slug",
+      "description": "Lower-case page key, e.g. aurelia-heights-phase-2.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "Uuid": {
+      "title": "Uuid",
+      "type": "string",
+      "format": "uuid"
+    },
+    "FactId": {
+      "title": "FactId",
+      "description": "Opaque id of a core.facts row (a uuid in the database). Clients never parse it.",
+      "type": "string",
+      "minLength": 1
+    },
+    "Inr": {
+      "title": "Inr",
+      "description": "Whole rupees. Always paired with a server-formatted *_label.",
+      "type": "integer"
+    },
+    "Pct": {
+      "title": "Pct",
+      "description": "A percentage. Time used can pass 100 after the promised date (Laurel Residency: 106).",
+      "type": "number",
+      "minimum": 0
+    },
+    "ModelVersion": {
+      "title": "ModelVersion",
+      "description": "Scoring model version, e.g. v1.2.",
+      "type": "string",
+      "pattern": "^v\\d+\\.\\d+$"
+    },
+    "ReraNumber": {
+      "title": "ReraNumber",
+      "description": "RERA registration number as the authority prints it, e.g. GGM/673/405/2022/117.",
+      "type": "string",
+      "minLength": 1
+    },
+    "ConsentRef": {
+      "title": "ConsentRef",
+      "description": "Consent reference C-MMDD-NN (IST date; NN widens past 99). Must equal catalogues/ref_formats.json prefix C.",
+      "type": "string",
+      "pattern": "^C-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$"
+    },
+    "InviteCode": {
+      "title": "InviteCode",
+      "description": "Family invite code, e.g. AH2-7KQ or RC4-2MW.",
+      "type": "string",
+      "pattern": "^[A-Z0-9]{2,4}-[A-Z0-9]{3}$"
+    },
+    "BandCode": {
+      "title": "BandCode",
+      "description": "core.band. Step: low 1, moderate 2, elevated 3, high 4, severe 5.",
+      "type": "string",
+      "enum": ["low", "moderate", "elevated", "high", "severe"]
+    },
+    "BandStep": {
+      "title": "BandStep",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "Lane": {
+      "title": "Lane",
+      "description": "core.lane. Clients style every fact-bearing item by lane (DESIGN §0 tone fields).",
+      "type": "string",
+      "enum": [
+        "records_show",
+        "developer_says",
+        "from_developer",
+        "our_estimate",
+        "reported_unverified",
+        "buyer_upload"
+      ]
+    },
+    "Factor": {
+      "title": "Factor",
+      "description": "core.factor.",
+      "type": "string",
+      "enum": ["finances", "track_record", "timeline", "legal", "site"]
+    },
+    "ScoreState": {
+      "title": "ScoreState",
+      "description": "core.score_state.",
+      "type": "string",
+      "enum": ["scored", "limited_history", "not_scored"]
+    },
+    "DisplayState": {
+      "title": "DisplayState",
+      "description": "What a page shows: a score state, or facts_only when the developer group's band is withheld.",
+      "type": "string",
+      "enum": ["scored", "limited_history", "not_scored", "facts_only"]
+    },
+    "Overlay": {
+      "title": "Overlay",
+      "type": "string",
+      "enum": ["stale", "rescoring", "stalled", "pending_change"]
+    },
+    "ChipKind": {
+      "title": "ChipKind",
+      "type": "string",
+      "enum": ["band", "limited_history", "not_scored", "withheld"]
+    },
+    "ClaimState": {
+      "title": "ClaimState",
+      "description": "core.developer_groups.claim_state.",
+      "type": "string",
+      "enum": ["claimed", "invited", "unclaimed"]
+    },
+    "Verdict": {
+      "title": "Verdict",
+      "description": "app.verdict. Labels are only Matches · Differs · Not in records · Can't check.",
+      "type": "string",
+      "enum": ["matches", "differs", "not_in_records", "cant_check"]
+    },
+    "FollowType": {
+      "title": "FollowType",
+      "type": "string",
+      "enum": ["watching", "booked"]
+    },
+    "Channel": {
+      "title": "Channel",
+      "description": "The surface a request came from.",
+      "type": "string",
+      "enum": ["web", "app", "whatsapp"]
+    },
+    "Cadence": {
+      "title": "Cadence",
+      "description": "app.alert_subscriptions.cadence.",
+      "type": "string",
+      "enum": ["instant", "daily_8am", "weekly_sun_9am", "off"]
+    },
+    "EventKind": {
+      "title": "EventKind",
+      "description": "core.events.kind. Drives alerts, Since you last looked, the digest and the replay.",
+      "type": "string",
+      "enum": [
+        "band_changed",
+        "qpr_filed",
+        "qpr_missing",
+        "qpr_late",
+        "extension_granted",
+        "order_decided",
+        "price_list_published",
+        "oc_granted",
+        "cirp_admitted",
+        "rescore_started",
+        "developer_replied",
+        "construction_update"
+      ]
+    },
+    "Centroid": {
+      "title": "Centroid",
+      "description": "[longitude, latitude], WGS 84.",
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "Chip": {
+      "title": "Chip",
+      "description": "The borderless risk chip, identical on every surface. A non-band chip has no step and no meter fill.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "label", "step", "meter_filled"],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ChipKind"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "Elevated",
+            "Not enough history to score · no penalty",
+            "Not scored",
+            "Band withheld · facts only"
+          ]
+        },
+        "step": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BandStep"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "meter_filled": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "band"
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "step": {
+                "type": "integer"
+              },
+              "meter_filled": {
+                "type": "number",
+                "minimum": 1
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "step": {
+                "type": "null"
+              },
+              "meter_filled": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "SourceRef": {
+      "title": "SourceRef",
+      "description": "Where a line comes from. evidence_url opens the evidence drawer; official_url opens the authority's page.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "fact_ids", "evidence_url", "official_url", "as_of"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "examples": ["HARERA QPR · Apr–Jun 2026"]
+        },
+        "fact_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FactId"
+          }
+        },
+        "evidence_url": {
+          "type": ["string", "null"]
+        },
+        "official_url": {
+          "type": ["string", "null"]
+        },
+        "as_of": {
+          "$ref": "#/$defs/IsoDate"
+        }
+      }
+    },
+    "DeveloperSays": {
+      "title": "DeveloperSays",
+      "description": "A developer's claim shown in the Developer says tone. Never a record.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "verified", "said_on", "check_by", "line"],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "said_on": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "check_by": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/IsoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "line": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "DeveloperSaysLine": {
+      "title": "DeveloperSaysLine",
+      "description": "The short form of DeveloperSays used in feeds and check rows: the finished line only.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["line"],
+      "properties": {
+        "line": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "RiskMeta": {
+      "title": "RiskMeta",
+      "description": "RiskSummary.meta, reused by ProjectPage.meta.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "data_as_of",
+        "model_version",
+        "score_run_id",
+        "generated_at",
+        "methodology_url",
+        "disclaimer_line",
+        "promise_line",
+        "live_url",
+        "short_url"
+      ],
+      "properties": {
+        "data_as_of": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "model_version": {
+          "$ref": "#/$defs/ModelVersion"
+        },
+        "score_run_id": {
+          "type": ["string", "null"]
+        },
+        "generated_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "methodology_url": {
+          "type": "string"
+        },
+        "disclaimer_line": {
+          "type": "string"
+        },
+        "promise_line": {
+          "type": "string"
+        },
+        "live_url": {
+          "type": "string"
+        },
+        "short_url": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "PageMeta": {
+      "title": "PageMeta",
+      "description": "Meta block of the non-risk pages (developer, methodology, about). generated_at is \"today\" for clients.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["data_as_of", "generated_at"],
+      "properties": {
+        "data_as_of": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "generated_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "model_version": {
+          "$ref": "#/$defs/ModelVersion"
+        },
+        "methodology_url": {
+          "type": "string"
+        },
+        "disclaimer_line": {
+          "type": "string"
+        },
+        "promise_line": {
+          "type": "string"
+        },
+        "live_url": {
+          "type": "string"
+        }
+      }
+    },
+    "BaseRate": {
+      "title": "BaseRate",
+      "description": "How many past Gurugram projects got their OC more than 12 months late (the calibration base rate).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n_projects", "n_late", "per_100"],
+      "properties": {
+        "n_projects": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_late": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "per_100": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "line": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "PreRera": {
+      "title": "PreRera",
+      "description": "Before-RERA history from court orders and news. Never counted in a band.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["line", "items"],
+      "properties": {
+        "line": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PreReraItem"
+          }
+        }
+      }
+    },
+    "PreReraItem": {
+      "title": "PreReraItem",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["name", "line"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "line": {
+          "type": "string"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Ok": {
+      "title": "Ok",
+      "description": "Acknowledgement of a mutation that returns nothing else (api.unfollow, api.mark_following_seen).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ok"],
+      "properties": {
+        "ok": {
+          "const": true
+        }
+      }
+    }
+  }
+}

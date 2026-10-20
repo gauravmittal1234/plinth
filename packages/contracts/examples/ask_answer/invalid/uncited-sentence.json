@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-possession.json",
+  "why": "Citations or silence: every answer sentence cites a source.",
+  "expect": "/sentences/1/cite",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/sentences/1/cite",
+      "value": []
+    }
+  ]
+}

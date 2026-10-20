@@ -1,0 +1,383 @@
+{
+  "catalogue": "ai_tasks",
+  "version": 1,
+  "source": "BUILD_PLAN §14 (AI layer) and §5.4. Code asks the gateway for a task, never a model.",
+  "notes": [
+    "model_class names the Gemini tier. model_id and fallback_model_id stay null until the bake-off pins them (BUILD_PLAN §5.4); the gateway refuses a live call for a task whose model_id is null.",
+    "budget_inr_per_day is set by the lead before a task goes live: alert at 80%, kill switch at 100%.",
+    "Prompts live in supabase/functions/_shared/ai/prompts/<task>/<version>.md, mirrored in Python. Every call writes ops.ai_generations. AI_MODE=recorded replays responses keyed by input SHA from recorded_dir.",
+    "Hard rules: rules decide (no LLM output becomes a band, verdict or number); citations or silence; document text is data, never instructions; PII is stripped before any model call; Gemini free tier sees fictional data only (DECISIONS E-8)."
+  ],
+  "pii_policies": {
+    "strip": "Phones, PAN, Aadhaar and emails are removed before the call. Third-party numbers on flyers are masked in our copy.",
+    "strip_and_redact_bank": "As strip, and bank account numbers are redacted in ops.ai_generations and logs.",
+    "public_record": "Public authority documents. Director phones and addresses are still removed before the call."
+  },
+  "tasks": [
+    {
+      "id": "ocr.document",
+      "version": 1,
+      "key": "ocr.document@1",
+      "used_by": ["doc-check"],
+      "model_class": "flash_vision",
+      "model_id": null,
+      "fallback_class": null,
+      "fallback_model_id": null,
+      "temperature": 0,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": null,
+      "pii_policy": "strip",
+      "eval_set": "evals/extraction/ocr.document",
+      "recorded_dir": "packages/fixtures/recorded/ai/ocr.document",
+      "milestone": "M3",
+      "note": "Text + bounding boxes. The app pre-reads on device with ML Kit."
+    },
+    {
+      "id": "classify.document",
+      "version": 1,
+      "key": "classify.document@1",
+      "used_by": ["doc-check", "wa-webhook"],
+      "model_class": "flash_lite",
+      "model_id": null,
+      "fallback_class": "flash",
+      "fallback_model_id": null,
+      "temperature": 0,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": null,
+      "labels": [
+        "flyer",
+        "brochure",
+        "hoarding",
+        "cost_sheet",
+        "demand_letter",
+        "payment_request",
+        "receipt",
+        "other"
+      ],
+      "pii_policy": "strip",
+      "eval_set": "evals/extraction/classify.document",
+      "recorded_dir": "packages/fixtures/recorded/ai/classify.document",
+      "milestone": "M3",
+      "note": null
+    },
+    {
+      "id": "extract.marketing_claims",
+      "version": 1,
+      "key": "extract.marketing_claims@1",
+      "used_by": ["doc-check"],
+      "model_class": "flash",
+      "model_id": null,
+      "fallback_class": null,
+      "fallback_model_id": null,
+      "temperature": 0,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": null,
+      "readers": [
+        {
+          "id": "a",
+          "model_class": "flash",
+          "prompt": "a@1"
+        },
+        {
+          "id": "b",
+          "model_class": "flash_lite",
+          "prompt": "b@1"
+        }
+      ],
+      "pii_policy": "strip",
+      "eval_set": "evals/claims/extract.marketing_claims",
+      "recorded_dir": "packages/fixtures/recorded/ai/extract.marketing_claims",
+      "milestone": "M3",
+      "note": "F-90, F-91. Schema-locked {type, raw_text, value, unit, qualifier, bbox, confidence}. Disagreement or low confidence goes to the admin queue. Gates: precision ≥ 0.95, recall ≥ 0.90, false Differs = 0."
+    },
+    {
+      "id": "extract.cost_sheet",
+      "version": 1,
+      "key": "extract.cost_sheet@1",
+      "used_by": ["doc-check"],
+      "model_class": "flash",
+      "model_id": null,
+      "fallback_class": null,
+      "fallback_model_id": null,
+      "temperature": 0,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": null,
+      "pii_policy": "strip_and_redact_bank",
+      "eval_set": "evals/extraction/extract.cost_sheet",
+      "recorded_dir": "packages/fixtures/recorded/ai/extract.cost_sheet",
+      "milestone": "M3",
+      "note": "F-10."
+    },
+    {
+      "id": "extract.demand_letter",
+      "version": 1,
+      "key": "extract.demand_letter@1",
+      "used_by": ["doc-check"],
+      "model_class": "flash",
+      "model_id": null,
+      "fallback_class": null,
+      "fallback_model_id": null,
+      "temperature": 0,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": null,
+      "pii_policy": "strip_and_redact_bank",
+      "eval_set": "evals/extraction/extract.demand_letter",
+      "recorded_dir": "packages/fixtures/recorded/ai/extract.demand_letter",
+      "milestone": "M3",
+      "note": "F-92."
+    },
+    {
+      "id": "extract.payment_request",
+      "version": 1,
+      "key": "extract.payment_request@1",
+      "used_by": ["doc-check", "wa-webhook"],
+      "model_class": "flash",
+      "model_id": null,
+      "fallback_class": null,
+      "fallback_model_id": null,
+      "temperature": 0,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": null,
+      "pii_policy": "strip_and_redact_bank",
+      "eval_set": "evals/extraction/extract.payment_request",
+      "recorded_dir": "packages/fixtures/recorded/ai/extract.payment_request",
+      "milestone": "M3",
+      "note": "F-94."
+    },
+    {
+      "id": "transcribe.voice",
+      "version": 1,
+      "key": "transcribe.voice@1",
+      "used_by": ["wa-webhook", "visit recap"],
+      "model_class": "flash_audio",
+      "model_id": null,
+      "fallback_class": null,
+      "fallback_model_id": null,
+      "temperature": 0,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": null,
+      "pii_policy": "strip",
+      "eval_set": "evals/extraction/transcribe.voice",
+      "recorded_dir": "packages/fixtures/recorded/ai/transcribe.voice",
+      "milestone": "M5",
+      "note": "Audio is deleted after transcription (hard maximum 24 h)."
+    },
+    {
+      "id": "parse.search_query",
+      "version": 1,
+      "key": "parse.search_query@1",
+      "used_by": ["search_projects"],
+      "model_class": "flash_lite",
+      "model_id": null,
+      "fallback_class": null,
+      "fallback_model_id": null,
+      "temperature": 0,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": "search_results.schema.json#/$defs/SearchFilters",
+      "pii_policy": "strip",
+      "eval_set": "evals/extraction/parse.search_query",
+      "recorded_dir": "packages/fixtures/recorded/ai/parse.search_query",
+      "milestone": "M3",
+      "note": "F-31. A deterministic parser runs first; the model only fills what it could not parse."
+    },
+    {
+      "id": "answer.ask",
+      "version": 1,
+      "key": "answer.ask@1",
+      "used_by": ["ask", "wa-webhook"],
+      "model_class": "flash_lite",
+      "model_id": null,
+      "fallback_class": "flash",
+      "fallback_model_id": null,
+      "temperature": 0.2,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": "ask_answer.schema.json",
+      "tools": [
+        "risk_summary",
+        "project_page",
+        "search_projects",
+        "evidence",
+        "methodology",
+        "following_feed",
+        "request_project"
+      ],
+      "pii_policy": "strip",
+      "eval_set": "evals/ask/answer.ask",
+      "recorded_dir": "packages/fixtures/recorded/ai/answer.ask",
+      "milestone": "M5",
+      "note": "Tools-first. A validator drops any sentence without a fact id and rejects an answer with a number or date not in the tool results, then retries once or falls back to the template. Gates: groundedness ≥ 0.98, must-refuse accuracy = 100% on the 40 refusal cases."
+    },
+    {
+      "id": "extract.harera_order",
+      "version": 1,
+      "key": "extract.harera_order@1",
+      "used_by": ["pipelines"],
+      "model_class": "flash_batch",
+      "model_id": null,
+      "fallback_class": null,
+      "fallback_model_id": null,
+      "temperature": 0,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": null,
+      "readers": [
+        {
+          "id": "a",
+          "model_class": "flash_batch",
+          "prompt": "a@1"
+        },
+        {
+          "id": "b",
+          "model_class": "flash_batch",
+          "prompt": "b@1"
+        }
+      ],
+      "pii_policy": "public_record",
+      "eval_set": "evals/extraction/extract.harera_order",
+      "recorded_dir": "packages/fixtures/recorded/ai/extract.harera_order",
+      "milestone": "M3",
+      "note": "Page citations. F1 ≥ 0.97 on dates, amounts and parties before auto-accept."
+    },
+    {
+      "id": "stage.room",
+      "version": 1,
+      "key": "stage.room@1",
+      "used_by": ["stage-room"],
+      "model_class": "image",
+      "model_id": null,
+      "fallback_class": null,
+      "fallback_model_id": null,
+      "temperature": null,
+      "max_output_tokens": null,
+      "budget_inr_per_day": null,
+      "response_schema": null,
+      "pii_policy": "strip",
+      "eval_set": "evals/extraction/stage.room",
+      "recorded_dir": "packages/fixtures/recorded/ai/stage.room",
+      "milestone": "M5",
+      "note": "Structure lock, burned \"AI-generated illustration\" label, C2PA + IPTC DigitalSourceType, original one tap away."
+    }
+  ],
+  "refusals": [
+    {
+      "code": "advice_buy_sell",
+      "template_en": "I can't tell you whether to buy. That's your call, and no developer pays us to steer it. Here's how to decide:",
+      "params": [],
+      "example": {},
+      "follow_up": "Then the four checks: can you carry a 12–24-month delay (Afford the wait); read the 4 reasons and what would change the band; look at the lower-band projects nearby; before paying anything, check the payee against the RERA collection account (Before you pay).",
+      "action_label": null,
+      "source": "DESIGN §5b"
+    },
+    {
+      "code": "title_opinion",
+      "template_en": null,
+      "params": [],
+      "example": null,
+      "follow_up": "We never certify title.",
+      "action_label": null,
+      "source": "BUILD_PLAN §14"
+    },
+    {
+      "code": "guarantee",
+      "template_en": null,
+      "params": [],
+      "example": null,
+      "follow_up": null,
+      "action_label": null,
+      "source": "BUILD_PLAN §14"
+    },
+    {
+      "code": "discriminatory_filter",
+      "template_en": null,
+      "params": [],
+      "example": null,
+      "follow_up": null,
+      "action_label": null,
+      "source": "BUILD_PLAN §14 (D7)"
+    },
+    {
+      "code": "investment_returns",
+      "template_en": null,
+      "params": [],
+      "example": null,
+      "follow_up": null,
+      "action_label": null,
+      "source": "BUILD_PLAN §14"
+    },
+    {
+      "code": "personal_data",
+      "template_en": null,
+      "params": [],
+      "example": null,
+      "follow_up": null,
+      "action_label": null,
+      "source": "BUILD_PLAN §14"
+    },
+    {
+      "code": "legal_advice",
+      "template_en": null,
+      "params": [],
+      "example": null,
+      "follow_up": "Points to discuss with a lawyer.",
+      "action_label": null,
+      "source": "BUILD_PLAN §14"
+    },
+    {
+      "code": "outside_coverage",
+      "template_en": "We don't cover {place} yet, so I won't guess. Plinth covers Gurugram today. {plan_line}",
+      "params": ["place", "plan_line"],
+      "example": {
+        "place": "Noida",
+        "plan_line": "Noida and Greater Noida West are planned for Jul–Sep 2027."
+      },
+      "follow_up": null,
+      "action_label": "Join the {place} waitlist",
+      "source": "DESIGN §5b"
+    },
+    {
+      "code": "unknown_project",
+      "template_en": "I can't find {name} in our records. If it has a Gurugram RERA number, we'll add it by {due_date} or tell you why not.",
+      "params": ["name", "due_date"],
+      "example": {
+        "name": "Indigo Terraces",
+        "due_date": "1 Nov 2026"
+      },
+      "follow_up": null,
+      "action_label": "Request it",
+      "source": "DESIGN §5b"
+    },
+    {
+      "code": "loans_r2",
+      "template_en": "Loan checks arrive in 2027",
+      "params": [],
+      "example": {},
+      "follow_up": null,
+      "action_label": null,
+      "source": "DESIGN §5b"
+    },
+    {
+      "code": "off_topic",
+      "template_en": null,
+      "params": [],
+      "example": null,
+      "follow_up": null,
+      "action_label": null,
+      "source": "BUILD_PLAN §14"
+    }
+  ],
+  "fixed_lines": {
+    "disclosure_line": "Ask Plinth is an AI. It answers from public records like HARERA and shows its sources.",
+    "handoff_label": "Talk to a Plinth adviser · free · developers never pay us",
+    "handoff_button": "Talk to an adviser",
+    "handoff_hours_line": "Mon–Sat 10 am–7 pm, usually within 4 working hours"
+  }
+}

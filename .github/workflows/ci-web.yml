@@ -1,0 +1,83 @@
+# ci-web (owner: T05). BUILD_PLAN §8: lint, typecheck, Vitest → next build
+# (fixtures) → Playwright smoke + axe → Lighthouse CI budgets.
+# Lean on minutes (DECISIONS E-9): path filters, one job so Playwright and
+# Lighthouse reuse the one build, superseded runs cancelled, Chromium headless
+# shell only. Fixture mode: no accounts, no secrets, no network data.
+name: ci-web
+
+on:
+  pull_request:
+    paths:
+      - "apps/web/**"
+      - "packages/config/**"
+      - "packages/tokens/**"
+      - "packages/contracts/**"
+      - "packages/fixtures/**"
+      - "packages/web-ui/**"
+      - "packages/calc/**"
+      - "package.json"
+      - "package-lock.json"
+      - "turbo.json"
+      - ".nvmrc"
+      - ".github/workflows/ci-web.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - "packages/config/**"
+      - "packages/tokens/**"
+      - "packages/contracts/**"
+      - "packages/fixtures/**"
+      - "packages/web-ui/**"
+      - "packages/calc/**"
+      - "package.json"
+      - "package-lock.json"
+      - "turbo.json"
+      - ".nvmrc"
+      - ".github/workflows/ci-web.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-web-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    name: web (lint, typecheck, test, build, smoke, lighthouse)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PLINTH_DATA: fixtures
+      NEXT_TELEMETRY_DISABLED: "1"
+      TURBO_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+
+      - name: Lint (ESLint incl. no hex colours, copy lint)
+        run: npm run -w @plinth/web lint
+      - name: Shared ESLint rules (packages/config)
+        run: |
+          npm run -w @plinth/config lint
+          npm run -w @plinth/config test
+      - run: npm run -w @plinth/web typecheck
+      - name: Vitest
+        run: npm run -w @plinth/web test
+
+      - name: Build (fixture mode)
+        run: npm run -w @plinth/web build
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps --only-shell chromium
+      - name: Playwright smoke + axe (every WORK_BREAKDOWN §2.1 route)
+        run: npm run -w @plinth/web e2e:smoke
+
+      - name: Lighthouse CI budgets
+        run: npm run -w @plinth/web lhci

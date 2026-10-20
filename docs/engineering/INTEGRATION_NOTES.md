@@ -35,3 +35,83 @@ Kept by the lead. Handoffs that cross task boundaries, collected from the wave-1
   - T16: swap the placeholder types for `@plinth/contracts` and implement `call()`. Production must refuse an unset `PLINTH_DATA`.
   - T14: needs a `@source` line for `web-ui` in `globals.css`.
 - **Compare route:** `/compare/[pair]`, not `[a]-vs-[b]`.
+
+## Done at the T07 gate (PR #10, 19 Oct 2026)
+Every item above under "From T05" is done, and `supabase/seed` is the real §5b seed. Status per item is in the PR body.
+
+**Contracts ↔ fixtures (T02 ↔ T03).** T02's schemas and T03's expected outputs met for the first time here: 37 of 39 payloads failed validation. The rule used: the schema stays the source of truth in code (API_CONTRACTS header), and it is widened only to describe what §5b and the artboards already put in the fixtures. Additions are optional, so older examples stay valid. T12 builds the RPCs to these shapes; T16, T17 and the page tasks read them.
+- **Fixtures changed (generator `packages/fixtures/src/author/expected.mjs`):** `flags` uses T04's envelope `{schema, flags}`; `PreReraItem` is `{name, line, sources[]}`; `how_buyers_find_you` is `{rules[]}`; methodology factors use `factor`, not `code`; about and methodology `meta` carry `data_as_of`.
+- **Schemas widened (optional fields):**
+  - search results: `query`, `legend_line`, `hidden[]` (HiddenProject), `meta`; ProjectCard `chip_note`, `progress_line`, `built_pct`, `time_used_pct`, `config_line`; SearchFilters `name`, `place`;
+  - compare: column `locality_line`, `developer_name`, `price_line`, `image_url`; row `source_line`, `developer_says[]`; `meta`;
+  - evidence: `fact_id`;
+  - developer page: `summary_line`, `facts_only` (FactsOnlyNotice), `claim_explainer_line`; ongoing `state`, `price_line`, `progress_line`;
+  - cost breakdown: `edc_idc_line`, `area_line`;
+  - afford the wait: `inputs`, `loan`, `delay_options[]`, series `paid_out_pct`;
+  - common: `BaseRate`.
+- **Schemas relaxed (nullable):** `phase.short_code` (only Aurelia has one), `latest_qpr.age_days` (filing date unknown), `group.linked_companies`, `track_record.finished/late/line` (no finished RERA project), `insolvency_line`, `progress.towers`, `from_developer`, configuration lanes. `what_would_change` is null only when bands are not public: limited-history and not-scored phases keep their §5b line.
+- **Schemas reshaped to the fixture (M1 pages, no live consumer yet):** `about` and `methodology` follow the WebAbout and WebMethodology payloads; project page `NextStep {heading, body}`, `BookingTopic {title, sub, paras[]}`, `EvidenceSummary.chip`, `PriceList.published_on`, `rooms[]` and `getting_around.items[]` as finished lines, `ReportedIncident {reported_on, line}`.
+- **Examples:** the about, methodology and project-page valid examples are now the fixture payloads; the §2.1 RiskSummary example is unchanged apart from the round-2 signatory.
+
+## Wave 2 (M1) decisions by the lead (19 Oct 2026)
+- **Stacking:** wave-2 PRs are built on `task/T07-m0-gate` (PR #10) and target it. After #10 merges, retarget them to `main`. A wave-2 integration PR (T39 gate) may combine them, the same way #10 combines wave 1.
+- **Scratch files:** agents share the session scratchpad, so every scratch file is task-prefixed (`t16-pr-body.md`). A generic `pr-body.md` collision briefly put T14's text on PR #11; it was restored.
+- **T12 → T13 and the bands-off copy:**
+  - Confirmed: when `bands_public` is off, the chip is `kind: "withheld"` with the copy "Facts only · bands not published yet".
+  - T13 adds the optional `p_slug` to `api.evidence`, so a shared group fact names the reason for the phase being viewed.
+  - T13 re-creates `core.risk_price` once `ws.cost_sheets` exists. That restores Aurelia's "park-facing" in `price.basis_line`.
+- **T03 / T03b:** the claims and replies seedmap requires only 20261101 and inserts `signatory_name` and `scope`.
+- **T11 (PR #14) handoffs:**
+  - T10 registers `add_score_parser` in `plinth/cli.py`. The import tolerates the module being absent, so T10 works on its own branch before T11 merges.
+  - T12 and T13: the published band is the latest run with `published_on <= today`. A `pending_notice` run (Aurelia's High) never surfaces. Frequency fields are null for red-flag and unscored phases.
+  - T13: methodology weights and calibration figures come from `pipelines/plinth/scoring/models/v1.2.yaml`.
+  - **Reason codes (decision):** the scoring engine's codes in `canonical/scoring.json` are canonical. At the T39 gate the integrator aligns `packages/contracts` `reason_codes.json` to them and regenerates.
+  - **OWNERSHIP:** `.github/workflows/ci-scoring.yml` belongs to T11; added at the T39 gate.
+  - **Replay gap (T03b):** the replay audit re-computes 6 of the 10 earlier runs. To reach 10, add the complaint-count history, Sapphire's QPRs before Jul 2026, and Coral's stale QPR state on 15 Jul. Facts come from §5b, and the lead adds any missing ones.
+- **T14 (PR #13) handoffs, done at the T39 gate:**
+  - Add `@import "@plinth/web-ui/styles.css";` after the tokens import in `apps/web/app/globals.css`.
+  - Add the web-ui lint, typecheck and test steps to `ci-web.yml`.
+  - Expose the kit showcase at a dev-only route (`app/(dev)/kit/page.tsx`, hidden in production), with a `screens.test.ts` row.
+  - Optionally add `@plinth/fixtures` to the web-ui devDependencies.
+  - Screen tasks (T20a–T28): layout copy comes from the artboards and band names from `Methodology.bands`. T20a replaces `src/m0/risk-chip.tsx` with `RiskChip`. T27's OG images use `riskVar` or the tokens, not Tailwind.
+- **T15 (PR #12) handoffs:**
+  - **Contract gap:** `ProjectCard` has no confidence level, so app cards can't show confidence dots. Add `confidence` to ProjectCard (T02 schema, plus T13 and the fixtures) at the T39 gate.
+  - **Band names:** T17 exposes a provider for `Methodology.bands`; `BandScale` and `Riskometer` need all five names.
+  - T31a uses `Riskometer(sweep: false)`, because the tower is that page's one animation. T30's map sheet is `PeekSheet`.
+  - Once the fonts are bundled, re-run the ci-mobile `update_goldens` dispatch.
+- **gitleaks:** an old T12 commit was flagged as a false positive; T12 rewrote it out of its branch. A stale red check on PR #12 passed on re-run. Rename fixture "key" fields in scripts if gitleaks flags them again.
+- **T16 (PR #15) handoffs:**
+  - **OWNERSHIP:** add `apps/web/test/data/**` to T16's row. T05's stub `test/data.test.ts` is deleted.
+  - **Screens (T20a–T28):**
+    - Import only from `@/src/data`. On `isDataError(e, "not_found")`, call `notFound()` before the first Suspense boundary streams.
+    - Design states: pass `{fixtureState: "facts_only"}`.
+    - T20a replaces `src/m0/fixture-risk.ts` with `riskSummary(slug)`. T21's `suggest("aure")` returns Aurelia first.
+    - T22/T24: a query without a fixture key gives `fixture_missing`; new keys come from the fixtures owner.
+  - **T13:** SQL defaults on every `api.search_projects` argument.
+  - **T41/T47:** `proxy.ts` with `refreshSession`.
+  - **T42/T43:** post `phase:<slug>` tags to `/api/revalidate`.
+- **T10 (PR #16) handoffs:**
+  - **DB (T39 gate or the next DB task):**
+    - Create `ops.job_runs`; pipelines log to JSONL until it exists.
+    - Grant `pipeline_writer` read access to the flag (`harera_live_fetch`); today it reads as off, which is the safe default.
+  - **Live HARERA fetching:** stays off. It needs the `harera_live_fetch` flag, `HARERA_LIVE_FETCH_APPROVED=yes`, and a contact email, and it is always refused in CI and tests. The founder approves this only after the legal memo.
+  - **T18:** add `plinth/sources/harera/cli.py` with `add_harera_parser`. Fixtures go in `tests/fixtures/harera/manifest.json`. Parse only snapshots that changed. Facts use `key_fields=("quarter",)`.
+  - **Commit author:** T10's commits carry the auto-detected identity `macbook`. Squash-merging sets the author, so nothing needs rewriting.
+- **Stacking for wave 3:** T13 builds on T12's branch, and T18 builds on T10's. Screen tasks (T20+) need T14 and T16 together, so they start from a wave-2 integration branch the lead creates once T17, T29 and T03b finish.
+- **T29 (PR #18) handoffs:**
+  - **Integrator:**
+    - `config.toml` `[functions.health] verify_jwt = false`.
+    - `.env.example` gains `PLINTH_ENV` (hosted dev = `fixture`) and `PLINTH_HASH_SALT`.
+    - `.prettierignore` gains `supabase/functions/`.
+    - A DB hook copies `x-request-id` into `plinth.request_id` for the audit log.
+  - **T02:** add the `internal` (500) error code. `validators.d.ts` imports `./types.ts` with the extension, so `deno.json` can drop `sloppy-imports`.
+  - **T41:**
+    - Create `ops.rate_limits` and `api.rate_limit_hit` (service-role only); the SQL is in the header of `_shared/core/ratelimit.ts`.
+    - Verify Auth hooks with `readStandardWebhook`.
+    - OTP rate limits use `onStoreError: "deny"`.
+  - **T42–T46:**
+    - Wrap every function in `createHandler`.
+    - Dispatch uses `verifyDispatchSecret`; T44's Meta signature check uses `hmacSha256`/`timingSafeEqual`.
+    - Gate WhatsApp functions with `flagsReader(...).require(...)`.
+    - `META_MODE` defaults to `mock`.
+  - **M5 AI:** `parseBody(req, "AskRequest")`. `require("ai_ask")` and the other AI flags answer `flag_off` until M5. `AI_MODE` defaults to `recorded`, and tests refuse `live`.

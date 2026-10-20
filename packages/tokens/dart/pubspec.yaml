@@ -1,5 +1,7 @@
 name: plinth_tokens
 description: "Plinth design tokens for Flutter (PlinthTokens ThemeExtension). Generated from packages/tokens/tokens.json by T01."
+# Kept at 0.0.1: apps/mobile/pubspec.lock (frozen) records this path package's
+# version. The token set's own version is plinthTokensVersion.
 version: 0.0.1
 publish_to: 'none'
 
@@ -15,3 +17,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  # `dart test` runs test/values/ (pure Dart, see dart_test.yaml); `flutter test`
+  # runs everything. Dev-only: apps/mobile does not resolve it.
+  test: ^1.25.0

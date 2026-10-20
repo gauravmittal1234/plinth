@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-3bhk.json",
+  "why": "Stamp duty depends on male, female or joint.",
+  "expect": "/p_buyer",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/p_buyer",
+      "value": "nri"
+    }
+  ]
+}

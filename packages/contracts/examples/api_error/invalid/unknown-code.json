@@ -1,0 +1,12 @@
+{
+  "base": "not-found.json",
+  "why": "Codes are the domain codes of API_CONTRACTS §1.",
+  "expect": "/error/code",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/error/code",
+      "value": "teapot"
+    }
+  ]
+}

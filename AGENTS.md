@@ -13,7 +13,7 @@ Read this first, then [BUILD_PLAN.md](docs/engineering/BUILD_PLAN.md) §1 (the e
 - **Clock.** Frozen at `2026-10-18T12:00:00+05:30` in tests and fixture mode. SQL uses `ops.now()`; clients take "today" from `meta.generated_at`, never the device.
 - **Definition of done.** Your task's acceptance commands pass locally (where the toolchain allows) and in CI. New behaviour has tests (fixture-mode UI tests, pgTAP, Deno, pytest). No secrets in the diff. `npm run verify` passes.
 - **Commits** end with a blank line and `Co-Authored-By: <your model> <noreply@anthropic.com>` when you are an AI agent.
-- **Workflow files.** The agents' `gh` token has no `workflow` scope, so GitHub rejects any push that touches `.github/workflows/`. Until the founder adds the scope (`gh auth refresh -h github.com -s workflow`), put your task's workflow in `.github/workflows-pending/<name>.yml`, say so in the PR, and keep the rest of the push free of `.github/workflows/` changes. See `.github/workflows-pending/README.md`.
+- **Workflow files.** A task's workflow lives in `.github/workflows/<name>.yml` and is owned like any other path (OWNERSHIP.md). Workflows run on `pull_request`, so a new or changed one is exercised by its own PR.
 
 ## 2. Commands
 

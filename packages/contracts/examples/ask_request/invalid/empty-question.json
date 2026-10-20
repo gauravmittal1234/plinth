@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-hinglish-voice.json",
+  "why": "A question has text.",
+  "expect": "/question",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/question",
+      "value": ""
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "catalogue": "purposes",
+  "version": 1,
+  "source": "DATA_MODEL §6 (app.purposes); BUILD_PLAN §13 (DPDP by construction, retention proposal for lawyer review).",
+  "notes": [
+    "Every consent row (app.consents, C-MMDD-NN) names one purpose. A buyer's number reaches a party only through number_share, created by the buyer's own tap.",
+    "notice_section is the anchor of the purpose in the privacy notice; the notice text is versioned in app.notice_versions."
+  ],
+  "retention_classes": [
+    {
+      "code": "account_life",
+      "kept": "For the life of the account; erased within 30 days of an erasure request, with legal-hold exceptions."
+    },
+    { "code": "consent_proof", "kept": "Life of the account + 3 years, as proof of consent." },
+    { "code": "partner_ledger_12m", "kept": "12 months after the buyer ends a relay or a share." },
+    { "code": "conversations_24m", "kept": "24 months after last activity, then anonymised." },
+    { "code": "ai_generations_12m", "kept": "Redacted output 12 months; the input hash is kept." },
+    {
+      "code": "analytics_pseudonymous",
+      "kept": "Pseudonymous ids only, under analytics consent; deleted with the account."
+    }
+  ],
+  "purposes": [
+    {
+      "code": "account",
+      "description": "Run your account: sign-in by phone code, your follows, saved cost sheets and settings.",
+      "recipient_kinds": ["plinth"],
+      "retention_class": "account_life",
+      "notice_section": "account",
+      "milestone": "M2"
+    },
+    {
+      "code": "alerts",
+      "description": "Send the utility alerts and digests you turned on, by push, WhatsApp or email.",
+      "recipient_kinds": ["plinth"],
+      "retention_class": "conversations_24m",
+      "notice_section": "alerts",
+      "milestone": "M2"
+    },
+    {
+      "code": "family_alerts",
+      "description": "Send a relative who joined your circle the same alerts for the projects you shared. They never see your number.",
+      "recipient_kinds": ["plinth"],
+      "retention_class": "account_life",
+      "notice_section": "family",
+      "milestone": "M2"
+    },
+    {
+      "code": "visit_share",
+      "description": "Give a site office your first name, the visit time and only the questions you chose to send ahead, with a relay instead of your number.",
+      "recipient_kinds": ["site_office"],
+      "retention_class": "partner_ledger_12m",
+      "notice_section": "sharing",
+      "milestone": "M5"
+    },
+    {
+      "code": "enquiry_share",
+      "description": "Send a developer's office only the enquiry fields you ticked, with a relay instead of your number.",
+      "recipient_kinds": ["sales_office"],
+      "retention_class": "partner_ledger_12m",
+      "notice_section": "sharing",
+      "milestone": "M4"
+    },
+    {
+      "code": "agent_brief",
+      "description": "Brief the agent you chose with the fields you picked; other fields read \"Not shared\".",
+      "recipient_kinds": ["agent"],
+      "retention_class": "partner_ledger_12m",
+      "notice_section": "sharing",
+      "milestone": "M5"
+    },
+    {
+      "code": "number_share",
+      "description": "Share your phone number with one party, by your own tap. At most 3 parties in any 30 days.",
+      "recipient_kinds": ["site_office", "sales_office", "agent"],
+      "retention_class": "consent_proof",
+      "notice_section": "sharing",
+      "milestone": "M5"
+    },
+    {
+      "code": "analytics",
+      "description": "Measure how pages are used, with pseudonymous ids. No session replay on account pages.",
+      "recipient_kinds": ["plinth"],
+      "retention_class": "analytics_pseudonymous",
+      "notice_section": "analytics",
+      "milestone": "M2"
+    },
+    {
+      "code": "ai_processing",
+      "description": "Read your uploads and questions with an AI model, after phones, PAN, Aadhaar and emails are removed.",
+      "recipient_kinds": ["plinth"],
+      "retention_class": "ai_generations_12m",
+      "notice_section": "ai",
+      "milestone": "M3"
+    }
+  ]
+}
