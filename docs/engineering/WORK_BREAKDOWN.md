@@ -1,6 +1,6 @@
-# Work breakdown: M0–M2, agent-sized tasks
+# Work breakdown: M0–M3, agent-sized tasks
 
-Status: ready, 19 Oct 2026 · Read [BUILD_PLAN.md](BUILD_PLAN.md) §1 first. Contracts: [API_CONTRACTS.md](API_CONTRACTS.md). Tables: [DATA_MODEL.md](DATA_MODEL.md).
+Status: ready, 19 Oct 2026; M3 added 21 Oct 2026 · Read [BUILD_PLAN.md](BUILD_PLAN.md) §1 first. Contracts: [API_CONTRACTS.md](API_CONTRACTS.md). Tables: [DATA_MODEL.md](DATA_MODEL.md).
 
 Each task is at most about one day of agent work. It owns its paths exclusively, lists its dependencies and inputs, and ends with acceptance tests that a reviewer (or CI) can run.
 
@@ -51,10 +51,11 @@ The artboards are in `product/design/artboards/` (T00 copies them in). In fixtur
 | WebFollowing | `/following` | `app/(account)/following/`, `src/features/following/` | T49 | M2 |
 | WebPrivacy | `/privacy` | `app/(account)/privacy/`, `src/features/privacy/` | T51 | M2 |
 | (family opt-in, relative's page) | `/j/[code]` | `app/j/[code]/`, `src/features/family/` | T52 | M2 |
-| WebCostSheet | `/check/cost-sheet` | `app/(public)/check/cost-sheet/` | — | M3 |
-| WebClaims | `/check/claims`, `/check/claims/[id]` | `app/(public)/check/claims/` | — | M3 |
-| WebBeforePay | `/check/before-you-pay` | `app/(public)/check/before-you-pay/` | — | M3 |
-| WebPayAsBuilt | `/check/pay-as-built` | `app/(public)/check/pay-as-built/` | — | M3 |
+| WebCostSheet | `/check/cost-sheet` | `app/(public)/check/cost-sheet/`, `src/features/checks/cost-sheet/` | T79 | M3 |
+| WebClaims | `/check/claims`, `/check/claims/[id]` | `app/(public)/check/claims/`, `src/features/checks/claims/` | T78 | M3 |
+| WebBeforePay | `/check/before-you-pay` | `app/(public)/check/before-you-pay/`, `src/features/checks/before-you-pay/` | T81 | M3 |
+| WebPayAsBuilt | `/check/pay-as-built` | `app/(public)/check/pay-as-built/`, `src/features/checks/pay-as-built/` | T80 | M3 |
+| (shared check kit, money sections, cards) | the four `/check/*` routes; project cost and wait sections; `/cards/{claims,payee,stage,cost}` | `src/features/checks/shared/`; `src/features/project/sections/{cost,wait}/`; `src/features/cards/` | T71; T82; T67 | M3 |
 | WebDevOnboarding | `/workspace/claim` | `app/(workspace)/workspace/claim/` | — | M4 |
 | WebDevPortal | `/workspace` (anchors `#legal`, `#signals`, `#path-back`) | `app/(workspace)/workspace/` | — | M4 |
 | WebDevInbox | `/workspace/inbox` | `app/(workspace)/workspace/inbox/` | — | M4 |
@@ -81,10 +82,11 @@ The artboards are in `product/design/artboards/` (T00 copies them in). In fixtur
 | AppYou | `/you` (tab 4), `/you/privacy` | `lib/features/you/` | T51 | M2 |
 | AppVoice (Ask Plinth) | `/ask` (tab 3) | `lib/features/ask/` (placeholder until M5) | — | M5 |
 | AppScan | `/scan` (RERA QR · Where am I? · Check claims) | `lib/features/scan/` | — | M5 |
-| AppClaims | `/check/claims`, `/check/claims/:id`; share-sheet intake | `lib/features/checks/claims/` | — | M3 |
-| AppCostSheet (*artboard pending*) | `/check/cost-sheet` | `lib/features/checks/cost_sheet/` | — | M3 |
-| AppBeforePay | `/check/before-you-pay` | `lib/features/checks/before_pay/` | — | M3 |
-| AppPayAsBuilt (*artboard pending*) | `/check/pay-as-built` | `lib/features/checks/pay_as_built/` | — | M3 |
+| AppClaims | `/check/claims`, `/check/claims/:id`; share-sheet intake | `lib/features/checks/claims/` (intake and capture in `checks/shared/`, T72) | T83 | M3 |
+| AppCostSheet | `/check/cost-sheet` | `lib/features/checks/cost_sheet/` | T84 | M3 |
+| AppBeforePay | `/check/before-you-pay` | `lib/features/checks/before_pay/` | T85 | M3 |
+| AppPayAsBuilt | `/check/pay-as-built` | `lib/features/checks/pay_as_built/` | T85 | M3 |
+| (project money sections, Dart calc) | `/gurugram/projects/:slug` Pay and Afford the wait | `lib/features/project/sections/{pay,wait}_section.dart`, `lib/core/calc/` | T86 | M3 |
 | AppVisitPass | `/visits/:id` | `lib/features/visits/` | — | M5 |
 | AppVisualiseCapture / AppVisualiseResult | `/visualise`, `/visualise/:id` | `lib/features/visualise/` | — | M5 |
 
@@ -95,9 +97,9 @@ The artboards are in `product/design/artboards/` (T00 copies them in). In fixtur
 | WaRisk | `wa-webhook/handlers/risk_card.ts`, `handlers/card_changed.ts` | Session card + replies | T46a | M2 |
 | WaAlerts | `handlers/prefs.ts`; `_shared/wa/templates/{band_change_alert,filing_alert,login_code}.ts` | `band_change_alert`, `filing_alert`, `login_code`; visit Flow M5 | T46b (+T41 login) | M2 |
 | WaDigest | `handlers/digest.ts`, `handlers/family_join.ts`; `templates/{weekly_digest,daily_digest,family_removed}.ts` | `weekly_digest` (Sun 9 am), `daily_digest` | T46b | M2 |
-| WaCost | `handlers/cost.ts` | Session card + list | — | M3 |
-| WaClaims | `handlers/claims.ts` | Session card + confirm buttons | — | M3 |
-| WaBeforePay (*artboard pending*) | `handlers/before_pay.ts` | Session card | — | M3 |
+| WaCost | `handlers/cost.ts` (intake: `handlers/doc_intake.ts`, T88) | Session card + list | T89 | M3 |
+| WaClaims | `handlers/claims.ts` (intake and confirm: `handlers/doc_intake.ts`, T88) | Session card + confirm buttons | T89 | M3 |
+| WaBeforePay | `handlers/before_pay.ts` | Session card; `check_updated` template (T88) | T90 | M3 |
 | WaDevAlerts | `handlers/dev.ts`; `templates/dev_*.ts`; `wa-flows/flows/dev_receipt.ts` | `dev_*`, `developer_replied` | — | M4 |
 | WaVisitPass | `handlers/visit.ts`; `wa-flows/flows/visit_booking.ts` | `visit_*` | — | M5 |
 | WaAgentOnboarding | `wa-flows/flows/agent_onboarding.ts` | `agent_verified` | — | M5 |
@@ -122,9 +124,18 @@ Wave 4 (M2, ×11)   T40 DB people+consent · T41 Auth · T42 Outbox · T43a Even
 Wave 5 (M2, ×7)    T43b Fan-out+digest+feed · T45a Buyer RPCs · T45b Privacy RPCs · T46a WaRisk · T48 AppOnboarding+push
                    then T46b WaAlerts+Digest (after T45a) · T53 DPDP edge functions (after T45b)
 Gate               T59 M2 exit gate
+Wave 6 (M3, ×8)    T60 DB checks schema · T61 Contracts · T62 Fixtures C · T63 AI gateway + evals · T64 @plinth/calc
+                   T65 Web data: checks · T66 App data: checks · T67 Check cards
+Wave 7 (M3, ×8)    T68 doc_check API · T69 AI claims reading · T70 AI money reading · T71 Web checks kit · T72 App checks kit
+                   then (after T68) T73 Claims rules · T74 Cost rules v2026.10 · T75 Payee, cap and stage rules
+Wave 8 (M3, ×11)   T76 doc-check edge · T77 Review queue + re-check · T78 WebClaims · T79 WebCostSheet · T80 WebPayAsBuilt
+                   T81 WebBeforePay · T82 WebProject money · T83 AppClaims · T84 AppCostSheet · T85 AppPayAsBuilt+BeforePay
+                   T86 AppProject money + Dart calc
+Wave 8b (M3, ×4)   T87 Admin queue · T88 WhatsApp intake (after T76, T77) · then T89 WaClaims+WaCost · T90 WaBeforePay
+Gate               T99 M3 exit gate (T91–T98 free for gate follow-ups; M4 starts at T100)
 ```
 
-The wave-4 UI tasks (T47, T49–T52) build and pass in **fixture mode**. Their live wiring is checked in T59, once the wave-5 RPCs exist.
+The wave-4 UI tasks (T47, T49–T52) build and pass in **fixture mode**. Their live wiring is checked in T59, once the wave-5 RPCs exist. The M3 screens (T78–T86) work the same way: fixture mode on the kits and data layers, live wiring at T99.
 
 ---
 
@@ -1182,7 +1193,10 @@ T87 and T88 start when T76 and T77 have merged; T89 and T90 follow T88.
 | 20261110 | T40 | 20261122 | T43b |
 | 20261111 | T41 | 20261125 | T53 |
 | 20261112 | T42 | 20261126 | T54 |
-| 20261113 | T43a | ≥ 20261201 | M3+ (assigned per task) |
+| 20261113 | T43a | 20261201 | T60 |
+| 20261202 | T68 | 20261203 | T73 |
+| 20261204 | T74 | 20261205 | T75 |
+| 20261206 | T77 | ≥ 20261207 | M4+ (assigned per task) |
 
 **Shared areas and their owners:**
 
@@ -1191,16 +1205,20 @@ T87 and T88 start when T76 and T77 have merged; T89 and T90 follow T88.
 | `supabase/config.toml` | T00 → T41 (`[auth]`) → the lead |
 | `supabase/seed/**` | Generated (T03 / T03b) |
 | `supabase/functions/_shared/core` | T29 |
-| `supabase/functions/_shared/wa` | T44 (templates: T46b) |
+| `supabase/functions/_shared/wa` | T44 (templates: T46b; `check_updated.ts` and `media.ts`: T88) |
+| `supabase/functions/_shared/ai` | T63 (prompts per task: T69, T70) |
+| `supabase/functions/wa-webhook/{index.ts,router.ts}` | T44 → T88 |
+| `evals/**` | Per set: T63 (`lib/`), T69 (claims, OCR, classify), T70 (money documents) |
 | `supabase/functions/_shared/outbox` | T42 |
-| `apps/web/src/data` | T16 |
+| `apps/web/src/data` | T16 → T65 (M3 additions) |
 | `apps/web/src/shell` + layouts | T05 |
 | `packages/web-ui` | T14 |
 | `apps/mobile/lib/app` | T06 |
 | `apps/mobile/lib/core/widgets` | T15 |
-| `apps/mobile/lib/data` | T17 |
-| `packages/contracts` | T02 (new schemas in M3+ go to that milestone's API task) |
-| `packages/fixtures` | T03 / T03b (expected files for M3+ go to that milestone's fixtures task) |
+| `apps/mobile/lib/data` | T17 → T66 (M3 additions) |
+| `packages/contracts` | T02 → T61 for M3 (the others send Handoffs); M4+ go to that milestone's contracts or API task |
+| `packages/fixtures` | T03 / T03b; M3: T62 (checks seed, documents, expected keys), T69/T70 (`recorded/ai/*`) |
+| `packages/calc` | T64 (Dart port in `apps/mobile/lib/core/calc`: T86) |
 | `.github/workflows/*` | One file per owner (BUILD_PLAN §8) |
 
 ---
@@ -1209,7 +1227,7 @@ T87 and T88 start when T76 and T77 have merged; T89 and T90 follow T88.
 
 | Milestone | Planned tasks |
 |---|---|
-| **M3** | `doc-check` pipeline + AI gateway + recorded AI fixtures + evals; `packages/calc` (TS) + Dart calc (vector-tested); cost/afford/payee RPCs; WebClaims, WebCostSheet, WebBeforePay, WebPayAsBuilt; AppClaims (share-sheet intake), AppCostSheet\*, AppBeforePay, AppPayAsBuilt\*; WaCost, WaClaims, WaBeforePay\*; admin review queue. (\* the artboard must be drawn first) |
+| **M3** | Broken down in §4, waves 6–8b (T60–T90) and the T99 gate. All three artboards that were pending (AppCostSheet, AppPayAsBuilt, WaBeforePay) are now drawn |
 | **M4** | Workspace claim and verify; inbox and check-in; Live Record + `/r/`; facts editor; three lanes; notice workflow + heads-up; facts-only admin switch; signals; capture page; WaDevAlerts; legal intake; admin disputes and notices queues |
 | **M5** | Visit booking Flow + web/app booking; visit pass + co-pilot questions + recap; agent of record + cap; WebForAgents, WebAgentProfile, WebBrokerCheck, WaAgentOnboarding; Ask Plinth (`ask`, AppVoice, web Ask, WhatsApp); AppScan; Visualise beta (WebVisualise, AppVisualiseCapture/Result) |
 | **M6** | Live HARERA (pulled into M2–M3; no legal gate), Cloud Run jobs, backfill, entity resolution, real calibration, S1/S2 gates, performance and security hardening, the Play release workflow, runbooks |
