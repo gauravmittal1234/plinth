@@ -25,7 +25,11 @@ export const SEARCH_COPY = {
     "We’re not showing a band for this project while a court considers an application about our bands for the Northfield Estates group.",
   hareraDownLine:
     "HARERA’s website hasn’t answered since 7:10 am today. These results use our last full read, 17 Oct 2026, 11:40 pm. We retry every 30 minutes.",
-  alsoWhatsapp: "Also tell me on WhatsApp",
+  // DESIGN §5b "Request a project": 14 days, or a written reason why not.
+  requested: (ref: string) => `Requested · ${ref}. We’ll add it within 14 days or tell you why not.`,
+  requestFixtureMode:
+    "Fixture mode doesn’t record requests yet. In the live product, we add any Gurugram project with a RERA number within 14 days, or say why not in writing.",
+  requestFailed: "We couldn’t send that request. Try again in a minute.",
   requestIt: "Request it",
   joinWaitlist: "Join the Noida waitlist",
   onWaitlist: "On the waitlist",
