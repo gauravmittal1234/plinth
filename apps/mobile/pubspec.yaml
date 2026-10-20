@@ -86,7 +86,7 @@ flutter:
   fonts:
     - family: Bricolage Grotesque
       fonts:
-        - asset: assets/fonts/bricolage-grotesque/BricolageGrotesque[opsz,wdth,wght].ttf
+        - asset: assets/fonts/bricolage-grotesque/BricolageGrotesque-Variable.ttf
           weight: 800
     - family: Mukta
       fonts:
@@ -100,4 +100,4 @@ flutter:
           weight: 700
     - family: Noto Sans
       fonts:
-        - asset: assets/fonts/noto-sans/NotoSans[wdth,wght].ttf
+        - asset: assets/fonts/noto-sans/NotoSans-Variable.ttf
