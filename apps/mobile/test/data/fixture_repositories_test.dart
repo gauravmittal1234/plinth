@@ -216,7 +216,9 @@ void main() {
     });
 
     test('an evidence item is the fact asked for', () async {
-      for (final id in plinthExpectedKeys['evidence']!) {
+      // Keys like '<fact id>--<slug>' are the web's per-page variants (api.evidence with
+      // p_slug); the app asks by fact id only, so it reads the plain keys.
+      for (final id in plinthExpectedKeys['evidence']!.where((k) => !k.contains('--'))) {
         final item = await container.read(evidenceRepositoryProvider).evidence(EvidenceRef(id));
         expect(item.factId, id);
       }

@@ -12,6 +12,9 @@ class ThemeModeController extends Notifier<ThemeMode> {
   bool get isNight => state == ThemeMode.dark;
 
   void toggle() => state = isNight ? ThemeMode.light : ThemeMode.dark;
+
+  /// Explicit Day/Night pick (AppYou "How should Plinth look?", T51).
+  void pick(ThemeMode mode) => state = mode;
 }
 
 final themeModeProvider = NotifierProvider<ThemeModeController, ThemeMode>(ThemeModeController.new);

@@ -117,4 +117,19 @@ test.describe("WebMethodology", () => {
     const serious = violations.filter((v) => v.impact === "serious" || v.impact === "critical");
     expect(serious.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
   });
+
+  test("carries Organization and BreadcrumbList JSON-LD, server-rendered (M1 polish)", async ({
+    page,
+  }) => {
+    await page.goto("/methodology");
+    const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+    const parsed = blocks.map((b) => JSON.parse(b) as Record<string, unknown>);
+
+    const organization = parsed.find((b) => b["@type"] === "Organization");
+    expect(organization?.name).toBe("Plinth");
+
+    const breadcrumb = parsed.find((b) => b["@type"] === "BreadcrumbList");
+    const items = breadcrumb?.itemListElement as { name: string }[] | undefined;
+    expect(items?.map((i) => i.name)).toEqual(["Home", "Methodology"]);
+  });
 });

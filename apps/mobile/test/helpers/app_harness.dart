@@ -5,7 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:plinth/app/app.dart';
 import 'package:plinth/app/router.dart';
-import 'package:plinth/fixtures/fixture_mode.dart';
+import 'package:plinth/core/clock.dart';
+import 'package:plinth/data/fixture_providers.dart';
+import 'package:plinth_fixtures/plinth_fixtures.dart' show plinthFixedNow;
 
 /// A phone-sized test window: 360 x 800 dp.
 void usePhoneWindow(WidgetTester tester, {double pixelRatio = 3}) {
@@ -16,13 +18,27 @@ void usePhoneWindow(WidgetTester tester, {double pixelRatio = 3}) {
 
 /// Pumps the whole app in FIXTURES mode, as `main.dart` does, then opens
 /// [location] when given. Returns the container to read providers from.
+///
+/// [signedIn] signs the fixture buyer in at the one place that matters: the
+/// [FixtureWorld]'s own session (`fixtureOverrides`), not just the
+/// `signedInProvider` the router reads. Overriding that provider alone would
+/// let a route render while every buyer call it makes (`who_has_my_number`,
+/// `alert_prefs_get`, …) still throws `auth_required` against a fixture world
+/// that was never told anyone signed in.
 Future<ProviderContainer> pumpPlinth(
   WidgetTester tester, {
   String? location,
+  bool signedIn = false,
   List<Override> overrides = const [],
 }) async {
   usePhoneWindow(tester);
-  final container = ProviderContainer(overrides: [...fixtureModeOverrides(), ...overrides]);
+  final container = ProviderContainer(
+    overrides: [
+      clockProvider.overrideWithValue(() => plinthFixedNow),
+      ...fixtureOverrides(signedIn: signedIn),
+      ...overrides,
+    ],
+  );
   addTearDown(container.dispose);
   await tester.pumpWidget(UncontrolledProviderScope(container: container, child: const PlinthApp()));
   await tester.pumpAndSettle();

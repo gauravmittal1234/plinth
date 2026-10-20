@@ -141,6 +141,7 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
   - Under Cache Components, `notFound()` inside `<Suspense>` runs after streaming starts. The status stays 200, but Next injects `<meta name="robots" content="noindex">` (Next docs, streaming.md). That is the accepted behaviour.
   - E2E asserts the not-found UI plus noindex, not the status. T20c adds this for the project route.
 - **`evidence(p_fact_id, p_slug)`:** the SQL overload exists (T13), but `src/data` `evidence()` doesn't pass `p_slug`. Fix it after T20b lands; the call site is `features/project/page/evidence.ts`, and fixture `_requests` need slug variants.
+  - Fixed in the M1-polish PR: `evidence()` takes an optional `slug`, `loadEvidenceMap` passes the page's own slug, and `packages/fixtures/src/author/build.mjs` grew a `<fact_id>--<slug>` request/expected variant per fact (generated, not hand-edited).
 - **Stub tests:** filling a stub may break T06/T07 tests that assert placeholder text (`test/gates/m0_test.dart`, `test/app/router_test.dart`, `shell_test.dart`). The filling task updates them minimally and lists them in its PR.
 - **Free at launch (founder, 20 Oct 2026; FOUNDER_QUESTIONS P7).**
   - No Pro plan and no agent fee at launch.

@@ -35,7 +35,7 @@ const READS: Record<string, (req: Req) => Promise<unknown>> = {
   suggest: (r) => data.suggest(s(r.p_q)),
   developer_page: (r) => data.developerPage(s(r.p_slug), state(r)),
   compare: (r) => data.compare(r.p_slugs as string[]),
-  evidence: (r) => data.evidence(s(r.p_fact_id)),
+  evidence: (r) => data.evidence(s(r.p_fact_id), r.p_slug as string | undefined),
   methodology: () => data.methodology(),
   about: () => data.about(),
   flags: () => data.flags(),
