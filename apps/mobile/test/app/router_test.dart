@@ -8,6 +8,7 @@ import 'package:plinth/app/not_found_screen.dart';
 import 'package:plinth/app/router.dart';
 import 'package:plinth/app/routes.dart';
 import 'package:plinth/data/session.dart';
+import 'package:plinth/features/risk/risk_screen.dart' show riskScreenKey;
 
 import '../helpers/app_harness.dart';
 
@@ -86,6 +87,10 @@ void main() {
         // AppProjectStates (T31b) is still a placeholder, reached only
         // through `?state=` (see the dedicated test below).
         expect(find.text('Will it be delivered on time?'), findsOneWidget, reason: '$pattern should show AppProject');
+      } else if (pattern == Routes.risk) {
+        // AppRisk (T32) is filled in: its own tests cover its content; here we
+        // only confirm the route resolves to it, by its root key.
+        expect(find.byKey(riskScreenKey), findsOneWidget, reason: '$pattern should show AppRisk');
       } else {
         expect(find.text(s.artboard), findsOneWidget, reason: '$pattern should show ${s.artboard}');
       }
