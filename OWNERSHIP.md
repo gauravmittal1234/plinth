@@ -134,9 +134,10 @@ How to read this table:
 | 20261020 | T04 | 20261114 | T44 |
 | 20261101 | T12 | 20261120 | T45a |
 | 20261102 | T13 | 20261121 | T45b |
-| 20261110 | T40 | 20261122 | T43b |
-| 20261111 | T41 | 20261125 | T53 |
-| 20261112 | T42 | 20261126 | T54 |
-| 20261113 | T43a | ≥ 20261201 | M3+ (assigned per task) |
+| 20261103 | lead | 20261122 | T43b |
+| 20261110 | T40 | 20261125 | T53 |
+| 20261111 | T41 | 20261126 | T54 |
+| 20261112 | T42 | ≥ 20261201 | M3+ (assigned per task) |
+| 20261113 | T43a | | |
 
 File names are `<prefix>HHMMSS_<task>_<what>.sql`. Never edit a merged migration; add a new one in your range.

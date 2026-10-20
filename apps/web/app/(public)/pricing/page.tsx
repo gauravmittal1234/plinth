@@ -4,9 +4,9 @@ import { loadPricingData } from "@/src/features/pricing/data";
 import { PricingView } from "@/src/features/pricing/pricing-view";
 
 export const metadata: Metadata = {
-  title: "What's free and what's Pro",
+  title: "What does Plinth cost?",
   description:
-    "Everything that tells you whether to trust a project is free, for everyone, for good. Pro is a deeper report on one project.",
+    "Nothing. Plinth is free while we launch: every band, reason, source, alert and comparison, for everyone.",
 };
 
 export default async function Page() {
