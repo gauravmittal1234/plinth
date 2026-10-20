@@ -27,6 +27,7 @@ const Map<String, String> schemaIds = {
   'plinth.risk_summary/1': 'RiskSummary',
   'plinth.search_results/1': 'SearchResults',
   'plinth.share_card/1': 'ShareCard',
+  'plinth.short_link/1': 'ShortLink',
   'plinth.suggest/1': 'SuggestResults',
   'plinth.who_has_my_number/1': 'WhoHasMyNumber',
 };

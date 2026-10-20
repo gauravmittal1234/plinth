@@ -43,6 +43,7 @@
 //     final searchRequest = searchRequestFromJson(jsonString);
 //     final searchResults = searchResultsFromJson(jsonString);
 //     final shareCard = shareCardFromJson(jsonString);
+//     final shortLink = shortLinkFromJson(jsonString);
 //     final suggestResults = suggestResultsFromJson(jsonString);
 //     final whoHasMyNumber = whoHasMyNumberFromJson(jsonString);
 
@@ -207,6 +208,10 @@ String searchResultsToJson(SearchResults data) => json.encode(data.toJson());
 ShareCard shareCardFromJson(String str) => ShareCard.fromJson(json.decode(str));
 
 String shareCardToJson(ShareCard data) => json.encode(data.toJson());
+
+ShortLink shortLinkFromJson(String str) => ShortLink.fromJson(json.decode(str));
+
+String shortLinkToJson(ShortLink data) => json.encode(data.toJson());
 
 SuggestResults suggestResultsFromJson(String str) => SuggestResults.fromJson(json.decode(str));
 
@@ -6250,6 +6255,42 @@ class ShareCardPhase {
 
     Map<String, dynamic> toJson() => {
         "name": name,
+        "slug": slug,
+    };
+}
+
+///plinth.short_link/1, from api.resolve_short_link(p_code): what a plinth.in/r/<code> link
+///names -- a project's own short code (kind phase) or an issued share card's short code
+///(kind card). Read-only; never increments the Live Record placement count that
+///api.live_record (M4) owns.
+class ShortLink {
+    
+    ///The share card's short code when kind is card; null when kind is phase.
+    final String? cardCode;
+    final String kind;
+    final String schema;
+    
+    ///The phase's slug when kind is phase; null when kind is card.
+    final String? slug;
+
+    ShortLink({
+        required this.cardCode,
+        required this.kind,
+        required this.schema,
+        required this.slug,
+    });
+
+    factory ShortLink.fromJson(Map<String, dynamic> json) => ShortLink(
+        cardCode: json["card_code"],
+        kind: json["kind"],
+        schema: json["schema"],
+        slug: json["slug"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "card_code": cardCode,
+        "kind": kind,
+        "schema": schema,
         "slug": slug,
     };
 }
