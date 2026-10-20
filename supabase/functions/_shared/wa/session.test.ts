@@ -15,7 +15,11 @@ Deno.test("a card opens card_shown for 24 hours; follow and ask need a card firs
   assertThrows(() => nextSession(IDLE, { type: "ask_opened" }, NOW), InvalidTransition);
 
   const follow = nextSession(card, { type: "follow_offered" }, NOW);
-  assertEquals(at(follow), ["follow_offer", SLUG, new Date(NOW.getTime() + 30 * MINUTE).toISOString()]);
+  assertEquals(at(follow), [
+    "follow_offer",
+    SLUG,
+    new Date(NOW.getTime() + 30 * MINUTE).toISOString(),
+  ]);
   const ask = nextSession(card, { type: "ask_opened" }, NOW);
   assertEquals(at(ask).slice(0, 2), ["ask_open", SLUG]);
 });
@@ -27,7 +31,11 @@ Deno.test("done returns to the card; stop always ends in idle", () => {
     [nextSession(card, { type: "ask_opened" }, NOW), { type: "done" }, "card_shown"],
     [nextSession(card, { type: "follow_offered" }, NOW), { type: "done" }, "card_shown"],
     [nextSession(card, { type: "follow_offered" }, NOW), { type: "ask_opened" }, "ask_open"],
-    [nextSession(card, { type: "ask_opened" }, NOW), { type: "card_sent", slug: "kestrel-park" }, "card_shown"],
+    [
+      nextSession(card, { type: "ask_opened" }, NOW),
+      { type: "card_sent", slug: "kestrel-park" },
+      "card_shown",
+    ],
   ];
   for (const [from, event, to] of table) assertEquals(nextSession(from, event, NOW).state, to);
   for (const s of ["card_shown", "follow_offer", "ask_open"] as const) {
@@ -42,7 +50,10 @@ Deno.test("readSession: expired, unknown or slug-less sessions read as idle", ()
   const later = new Date(NOW.getTime() + 25 * HOUR).toISOString();
   const earlier = new Date(NOW.getTime() - 1).toISOString();
   assertEquals(readSession(null, NOW), IDLE);
-  assertEquals(readSession({ state: "card_shown", context: { slug: SLUG }, expires_at: earlier }, NOW), IDLE);
+  assertEquals(
+    readSession({ state: "card_shown", context: { slug: SLUG }, expires_at: earlier }, NOW),
+    IDLE,
+  );
   assertEquals(readSession({ state: "warp", context: {}, expires_at: null }, NOW), IDLE);
   assertEquals(readSession({ state: "ask_open", context: {}, expires_at: later }, NOW), IDLE);
   assertEquals(

@@ -186,7 +186,8 @@ export async function routeInbound(msg: InboundMessage, ctx: RouterContext): Pro
   if (stop) return route("prefs", "stop", stop);
 
   // digest: "See changes".
-  const see = (reply && DIGEST_ACTIONS[reply]) ?? (msg.type !== "text" ? null : DIGEST_ACTIONS[norm]);
+  const see = (reply && DIGEST_ACTIONS[reply]) ??
+    (msg.type !== "text" ? null : DIGEST_ACTIONS[norm]);
   if (see) return route("digest", "digest", see);
 
   // card_button: buttons under a risk card or a band-change alert.

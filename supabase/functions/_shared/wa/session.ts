@@ -108,7 +108,9 @@ export function nextSession(current: WaSession, event: SessionEvent, now: Date):
   if (to === "idle") return IDLE;
   const eventSlug = "slug" in event ? event.slug : undefined;
   const slug = eventSlug ?? current.context.slug;
-  if (typeof slug !== "string" || slug === "") throw new InvalidTransition(current.state, event.type);
+  if (typeof slug !== "string" || slug === "") {
+    throw new InvalidTransition(current.state, event.type);
+  }
   const ttl = SESSION_TTL_MS[to];
   return {
     state: to,

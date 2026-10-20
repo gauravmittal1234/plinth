@@ -27,14 +27,21 @@ import {
 import { sequentialIds } from "./mock.ts";
 
 const buttons = (...titles: string[]) =>
-  replyButtons({ body: "Aurelia Heights, Phase 2", buttons: titles.map((t, i) => ({ id: `b${i}`, title: t })) });
+  replyButtons({
+    body: "Aurelia Heights, Phase 2",
+    buttons: titles.map((t, i) => ({ id: `b${i}`, title: t })),
+  });
 
 Deno.test("the whatsapp.md limits audit controls all pass", () => {
   for (
     const msg of [
       buttons("Why this band", "Follow project", "Ask"),
       buttons("Yes, alert me", "Not now"),
-      ctaUrl({ body: "Every source we used.", label: "See all sources", url: "https://plinth.in/x" }),
+      ctaUrl({
+        body: "Every source we used.",
+        label: "See all sources",
+        url: "https://plinth.in/x",
+      }),
       buttons("Yes, that one", "No, another one", "Talk to a person"),
       listMessage({
         body: "Cost sheet",
@@ -61,8 +68,16 @@ Deno.test("the whatsapp.md limits audit controls all pass", () => {
 
 Deno.test("≤ 3 reply buttons of ≤ 20 characters", () => {
   assertWithinLimits(buttons("12345678901234567890", "b", "c"));
-  assertThrows(() => assertWithinLimits(buttons("a", "b", "c", "d")), WaLimitError, "4 reply buttons");
-  assertThrows(() => assertWithinLimits(buttons("123456789012345678901")), WaLimitError, "21 chars");
+  assertThrows(
+    () => assertWithinLimits(buttons("a", "b", "c", "d")),
+    WaLimitError,
+    "4 reply buttons",
+  );
+  assertThrows(
+    () => assertWithinLimits(buttons("123456789012345678901")),
+    WaLimitError,
+    "21 chars",
+  );
   assertThrows(() => assertWithinLimits(buttons()), WaLimitError, "0 reply buttons");
   assertThrows(() => assertWithinLimits(buttons("Same", "Same")), WaLimitError, "titles repeat");
   // Characters, not bytes: "₹" counts once.
@@ -71,7 +86,10 @@ Deno.test("≤ 3 reply buttons of ≤ 20 characters", () => {
 
 Deno.test("one CTA URL button ≤ 20 characters; lists ≤ 10 rows with titles ≤ 24", () => {
   assertThrows(
-    () => assertWithinLimits(ctaUrl({ body: "x", label: "Open the full risk card", url: "https://plinth.in" })),
+    () =>
+      assertWithinLimits(
+        ctaUrl({ body: "x", label: "Open the full risk card", url: "https://plinth.in" }),
+      ),
     WaLimitError,
   );
   assertThrows(
@@ -81,9 +99,12 @@ Deno.test("one CTA URL button ≤ 20 characters; lists ≤ 10 rows with titles �
   );
   const rows = (n: number, title = "Row") =>
     Array.from({ length: n }, (_, i) => ({ id: `r${i}`, title: `${title} ${i}`.slice(0, 30) }));
-  assertWithinLimits(listMessage({ body: "x", button: "See each line", sections: [{ rows: rows(10) }] }));
+  assertWithinLimits(
+    listMessage({ body: "x", button: "See each line", sections: [{ rows: rows(10) }] }),
+  );
   assertThrows(
-    () => assertWithinLimits(listMessage({ body: "x", button: "See", sections: [{ rows: rows(11) }] })),
+    () =>
+      assertWithinLimits(listMessage({ body: "x", button: "See", sections: [{ rows: rows(11) }] })),
     WaLimitError,
     "11 list rows",
   );
@@ -100,7 +121,15 @@ Deno.test("one CTA URL button ≤ 20 characters; lists ≤ 10 rows with titles �
 });
 
 Deno.test("the fixture test block is +91 99000 003NN in any spelling", () => {
-  for (const n of ["919900000318", "+919900000318", "+91 99000 00318", "0091 99000 00399", "919900000300"]) {
+  for (
+    const n of [
+      "919900000318",
+      "+919900000318",
+      "+91 99000 00318",
+      "0091 99000 00399",
+      "919900000300",
+    ]
+  ) {
     assert(isTestBlockNumber(n), n);
   }
   for (const n of ["919900000418", "+919900003180", "+14155550100", "9900000318"]) {
@@ -118,7 +147,11 @@ Deno.test("mock mode records the request body as mock_sent and never fetches", a
     fetch: net.fetch,
     mockId: sequentialIds(),
   });
-  const res = await graph.send({ to: "919900000318", contactId: "c-1", message: textMessage("Hello") });
+  const res = await graph.send({
+    to: "919900000318",
+    contactId: "c-1",
+    message: textMessage("Hello"),
+  });
   assertEquals(res, { waMessageId: "wamid.mock.0001", status: "mock_sent" });
   assertEquals(records, [{
     contactId: "c-1",
@@ -129,7 +162,10 @@ Deno.test("mock mode records the request body as mock_sent and never fetches", a
     templateCode: null,
   }]);
   assertEquals(net.calls.length, 0);
-  await assertRejects(() => graph.send({ to: "1", message: buttons("a", "b", "c", "d") }), WaLimitError);
+  await assertRejects(
+    () => graph.send({ to: "1", message: buttons("a", "b", "c", "d") }),
+    WaLimitError,
+  );
   assertEquals(records.length, 1);
 });
 
@@ -155,7 +191,9 @@ Deno.test("live sends refuse the test block in every environment, before any net
 });
 
 Deno.test("live mode sends only in prod (C-31) and records status sent", async () => {
-  const net = fakeFetch(() => jsonResponse({ messaging_product: "whatsapp", messages: [{ id: "wamid.live-1" }] }));
+  const net = fakeFetch(() =>
+    jsonResponse({ messaging_product: "whatsapp", messages: [{ id: "wamid.live-1" }] })
+  );
   const records: OutboundRecord[] = [];
   const opts = {
     mode: "live" as const,
@@ -165,7 +203,11 @@ Deno.test("live mode sends only in prod (C-31) and records status sent", async (
     record: (r: OutboundRecord) => Promise.resolve(void records.push(r)),
   };
   await assertRejects(
-    () => createGraphClient({ ...opts, plinthEnv: "dev" }).send({ to: "14155550100", message: textMessage("x") }),
+    () =>
+      createGraphClient({ ...opts, plinthEnv: "dev" }).send({
+        to: "14155550100",
+        message: textMessage("x"),
+      }),
     Error,
     "META_MODE",
   );
@@ -189,7 +231,9 @@ Deno.test("live mode sends only in prod (C-31) and records status sent", async (
   assertEquals(records.map((r) => [r.waMessageId, r.status]), [["wamid.live-1", "sent"]]);
   assert(!JSON.stringify(records).includes("14155550100"), "records carry no number");
 
-  const failing = fakeFetch(() => jsonResponse({ error: { code: 131047, message: "window" } }, 400));
+  const failing = fakeFetch(() =>
+    jsonResponse({ error: { code: 131047, message: "window" } }, 400)
+  );
   await assertRejects(
     () =>
       createGraphClient({ ...opts, plinthEnv: "prod", fetch: failing.fetch }).send({

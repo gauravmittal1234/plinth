@@ -70,7 +70,8 @@ export async function verifyHandshake(
 /** The body's exact bytes, refusing anything over maxBytes (invalid_input). */
 export async function readRawBody(req: Request, maxBytes = MAX_WEBHOOK_BYTES): Promise<Bytes> {
   const declared = Number(req.headers.get("content-length") ?? "NaN");
-  const tooBig = () => new HttpError("invalid_input", `The request body is over ${maxBytes} bytes.`);
+  const tooBig = () =>
+    new HttpError("invalid_input", `The request body is over ${maxBytes} bytes.`);
   if (Number.isFinite(declared) && declared > maxBytes) {
     await req.body?.cancel();
     throw tooBig();

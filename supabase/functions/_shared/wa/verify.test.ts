@@ -48,10 +48,19 @@ Deno.test("verifyHandshake echoes the challenge for subscribe + the right token"
   const token = new Secret("verify-token-for-tests");
   const p = (mode: string, t: string, c = "1158201444") =>
     new URLSearchParams({ "hub.mode": mode, "hub.verify_token": t, "hub.challenge": c });
-  assertEquals(await verifyHandshake(p("subscribe", "verify-token-for-tests"), token), "1158201444");
+  assertEquals(
+    await verifyHandshake(p("subscribe", "verify-token-for-tests"), token),
+    "1158201444",
+  );
   await assertRejects(() => verifyHandshake(p("subscribe", "nope"), token), HttpError);
-  await assertRejects(() => verifyHandshake(p("other", "verify-token-for-tests"), token), HttpError);
-  await assertRejects(() => verifyHandshake(p("subscribe", "verify-token-for-tests", "<x>"), token), HttpError);
+  await assertRejects(
+    () => verifyHandshake(p("other", "verify-token-for-tests"), token),
+    HttpError,
+  );
+  await assertRejects(
+    () => verifyHandshake(p("subscribe", "verify-token-for-tests", "<x>"), token),
+    HttpError,
+  );
   await assertRejects(() => verifyHandshake(p("subscribe", "x"), null), Error, "WA_VERIFY_TOKEN");
 });
 
@@ -73,7 +82,9 @@ Deno.test("parseWebhook normalises every recorded kind and drops profile names",
     assertEquals(statuses.length, 0, file);
     assertEquals(messages.length, 1, file);
     const m = messages[0]!;
-    for (const [k, v] of Object.entries(want)) assertEquals(m[k as keyof InboundMessage], v, `${file} ${k}`);
+    for (const [k, v] of Object.entries(want)) {
+      assertEquals(m[k as keyof InboundMessage], v, `${file} ${k}`);
+    }
     assert(m.timestamp instanceof Date, `${file} timestamp`);
     if (m.type === "image" || m.type === "audio" || m.type === "document") assert(m.mediaId, file);
   }
@@ -132,13 +143,20 @@ Deno.test("mintTapToken signs ≤ 60 s claims for the verified tap", async () =>
   });
   const header = JSON.parse(new TextDecoder().decode(fromBase64(token.split(".")[0]!)));
   assertEquals(header, { alg: "HS256", typ: "JWT" });
-  assertEquals(tapClaims({ secret: JWT, userId: USER, message: tap, now, ttlSeconds: 30 }).exp, 1792305030);
+  assertEquals(
+    tapClaims({ secret: JWT, userId: USER, message: tap, now, ttlSeconds: 30 }).exp,
+    1792305030,
+  );
 });
 
 Deno.test("mintTapToken refuses: no secret, unlinked, not a tap, stale tap, TTL over 60 s", async () => {
   const tap = await message("interactive-follow-project.json");
   const now = tap.timestamp!;
-  await assertRejects(() => mintTapToken({ secret: null, userId: USER, message: tap, now }), Error, "PLINTH_JWT_SECRET");
+  await assertRejects(
+    () => mintTapToken({ secret: null, userId: USER, message: tap, now }),
+    Error,
+    "PLINTH_JWT_SECRET",
+  );
   const code = async (p: Promise<unknown>) => {
     try {
       await p;
@@ -147,13 +165,21 @@ Deno.test("mintTapToken refuses: no secret, unlinked, not a tap, stale tap, TTL 
     }
     return "ok";
   };
-  assertEquals(await code(mintTapToken({ secret: JWT, userId: null, message: tap, now })), "auth_required");
   assertEquals(
-    await code(mintTapToken({ secret: JWT, userId: USER, message: await message("text-aurelia.json"), now })),
+    await code(mintTapToken({ secret: JWT, userId: null, message: tap, now })),
+    "auth_required",
+  );
+  assertEquals(
+    await code(
+      mintTapToken({ secret: JWT, userId: USER, message: await message("text-aurelia.json"), now }),
+    ),
     "forbidden",
   );
   const late = new Date(now.getTime() + TAP_MAX_AGE_MS + 1000);
-  assertEquals(await code(mintTapToken({ secret: JWT, userId: USER, message: tap, now: late })), "forbidden");
+  assertEquals(
+    await code(mintTapToken({ secret: JWT, userId: USER, message: tap, now: late })),
+    "forbidden",
+  );
   assertEquals(
     await code(mintTapToken({ secret: JWT, userId: USER, message: tap, now, ttlSeconds: 61 })),
     "RangeError",

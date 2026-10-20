@@ -335,7 +335,10 @@ export function createGraphClient(opts: GraphClientOptions): GraphClient {
 
       if (isTestBlockNumber(input.to)) throw new TestNumberRefused();
       if (opts.plinthEnv !== "prod") {
-        throw new EnvError(["META_MODE"], "can be live only when PLINTH_ENV=prod (DESIGN §5b C-31)");
+        throw new EnvError(
+          ["META_MODE"],
+          "can be live only when PLINTH_ENV=prod (DESIGN §5b C-31)",
+        );
       }
       const phoneNumberId = opts.phoneNumberId;
       const token = opts.accessToken?.reveal();

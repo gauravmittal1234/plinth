@@ -260,7 +260,9 @@ async function sweep(req: Request, ctx: RequestContext, deps: WaDeps, wa: WaEnv)
 let isolateWa: WaEnv | null = null;
 
 /** The deployed function. */
-export function makeWaWebhook(opts: MakeWaWebhookOptions = {}): (req: Request) => Promise<Response> {
+export function makeWaWebhook(
+  opts: MakeWaWebhookOptions = {},
+): (req: Request) => Promise<Response> {
   const { wa: waOption, deps: depsOption, defer: deferOption, ...handlerOptions } = opts;
   return createHandler(
     FN,

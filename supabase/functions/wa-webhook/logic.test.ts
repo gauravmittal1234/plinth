@@ -23,7 +23,13 @@ import { memoryWaStore, sequentialIds } from "../_shared/wa/mock.ts";
 import { decodeJwtPayload, metaSignature } from "../_shared/wa/verify.ts";
 import type { WaDeps, WaEnv } from "./logic.ts";
 import { assertSessionWindow, makeWaWebhook } from "./logic.ts";
-import type { HandlerInput, HandlerName, HandlerResult, HandlerTools, WaHandler } from "./router.ts";
+import type {
+  HandlerInput,
+  HandlerName,
+  HandlerResult,
+  HandlerTools,
+  WaHandler,
+} from "./router.ts";
 import { HANDLER_NAMES, suggestProjectFinder } from "./router.ts";
 
 const FIXTURES = new URL("../../../packages/fixtures/", import.meta.url);
@@ -37,7 +43,9 @@ interface IndexEntry {
   route: string;
   expect: Record<string, unknown>;
 }
-const INDEX = JSON.parse(await readFixture("recorded/wa/_index.json")) as { payloads: IndexEntry[] };
+const INDEX = JSON.parse(await readFixture("recorded/wa/_index.json")) as {
+  payloads: IndexEntry[];
+};
 const PAYLOADS = new Map<string, string>();
 for (const p of INDEX.payloads) PAYLOADS.set(p.file, await readFixture(`recorded/wa/${p.file}`));
 const payload = (file: string) => PAYLOADS.get(file)!;
@@ -151,7 +159,8 @@ async function post(h: ReturnType<typeof harness>, file: string): Promise<Respon
   return res;
 }
 
-const inbound = (h: ReturnType<typeof harness>) => h.store.messages.filter((m) => m.direction === "in");
+const inbound = (h: ReturnType<typeof harness>) =>
+  h.store.messages.filter((m) => m.direction === "in");
 
 // ---------------------------------------------------------------------------------------------
 // Acceptance
@@ -162,7 +171,10 @@ Deno.test("a bad signature returns 403 and nothing is stored or routed", async (
   const body = payload("text-aurelia.json");
   const cases: [string, Request][] = [
     ["wrong secret", await signed(body, await metaSignature("not-the-app-secret", body))],
-    ["tampered body", await signed(body.replace("aurelia", "aurelia "), await metaSignature(APP_SECRET, body))],
+    [
+      "tampered body",
+      await signed(body.replace("aurelia", "aurelia "), await metaSignature(APP_SECRET, body)),
+    ],
     ["no header", await signed(body, null)],
     ["not hex", await signed(body, "sha256=xyz")],
   ];
@@ -329,7 +341,12 @@ Deno.test("a failed route is retried by the sweeper a minute later", async () =>
   assertEquals(seen.length, 2);
   assertExists(inbound(h)[0]!.routedAt);
   assertEquals(inbound(h)[0]!.routeAttempts, 2);
-  assertEquals(await readBody(await sweep(DISPATCH_SECRET)), { ok: true, claimed: 0, routed: 0, failed: 0 });
+  assertEquals(await readBody(await sweep(DISPATCH_SECRET)), {
+    ok: true,
+    claimed: 0,
+    routed: 0,
+    failed: 0,
+  });
 });
 
 // ---------------------------------------------------------------------------------------------
@@ -350,7 +367,10 @@ Deno.test("reply records the request body as mock_sent (snapshot) and sets the s
     handlers: {
       risk_card: async (input: HandlerInput, tools: HandlerTools) => {
         await tools.reply(cardButtons);
-        return { outcome: "card_sent", session: { type: "card_sent", slug: String(input.route.args.slug) } };
+        return {
+          outcome: "card_sent",
+          session: { type: "card_sent", slug: String(input.route.args.slug) },
+        };
       },
     },
   });
@@ -385,7 +405,9 @@ Deno.test("reply sends nothing when wa_outbound is off, and a limit breach fails
   const replies: unknown[] = [];
   const off = harness({
     flags: { wa_outbound: false },
-    handlers: { prefs: async (_i, t) => (replies.push(await t.reply(cardButtons)), { outcome: "x" }) },
+    handlers: {
+      prefs: async (_i, t) => (replies.push(await t.reply(cardButtons)), { outcome: "x" }),
+    },
   });
   await post(off, "text-stop.json");
   assertEquals(replies, [null]);
@@ -446,7 +468,10 @@ Deno.test('"Ask" opens the session; the next text is a question about that proje
   await h.settle();
   const last = h.calls.at(-1)!;
   assertEquals([last.name, last.input.route.rule], ["ask_fallback", "ask_session"]);
-  assertEquals(last.input.route.args, { slug: "aurelia-heights-phase-2", question: "When is possession due?" });
+  assertEquals(last.input.route.args, {
+    slug: "aurelia-heights-phase-2",
+    question: "When is possession due?",
+  });
 });
 
 async function hs256(token: string, secret: string): Promise<boolean> {
