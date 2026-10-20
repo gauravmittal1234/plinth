@@ -115,6 +115,10 @@ export const REQUIRED = {
   follow: ["schema", "slug", "follow_type", "followed_at", "alerts_line", "private_line"],
   ok: ["ok"],
   consent_withdrawal: ["ref", "withdrawn_at", "effects"],
+  // T47's interim shape for api.link_whatsapp_follows (x-plinth-shape:
+  // pending in openapi/plinth.yaml; T45a/T45b own the real one,
+  // INTEGRATION_NOTES.md). See PENDING_SHAPE below.
+  link_whatsapp_follows: ["schema", "follows", "cost_sheets"],
 };
 const FN_TYPE = {
   risk_summary: "risk_summary",
@@ -148,6 +152,7 @@ const FN_TYPE = {
   family_member_remove: "ok",
   family_member_undo: "ok",
   shortlist_note_add: "ok",
+  link_whatsapp_follows: "link_whatsapp_follows",
 };
 /** Acknowledgements without a `schema` envelope, validated against a $def (API_CONTRACTS §1). */
 const DEF_REF = {
@@ -155,6 +160,14 @@ const DEF_REF = {
   consent_withdrawal:
     "https://plinth.in/schemas/who_has_my_number.schema.json#/$defs/ConsentWithdrawal",
 };
+/**
+ * Functions the OpenAPI marks `x-plinth-shape: pending` (no contract schema
+ * yet, by design — the owning milestone task hasn't defined the real one).
+ * Their fixture payloads still get every structural check above; only the
+ * ajv "no JSON Schema" check is expected here, not a failure, until that
+ * task adds the real schema and this entry comes out.
+ */
+const PENDING_SHAPE = new Set(["link_whatsapp_follows"]);
 const LANES = new Set([
   "records_show",
   "developer_says",
@@ -314,7 +327,9 @@ async function main() {
             problems.push(`schema: ${e.instancePath || "/"} ${e.message}`);
       } else {
         noSchema++;
-        problems.push(`no JSON Schema in packages/contracts for "${FN_TYPE[it.fn]}"`);
+        if (!PENDING_SHAPE.has(it.fn))
+          problems.push(`no JSON Schema in packages/contracts for "${FN_TYPE[it.fn]}"`);
+        else console.log(`PENDING ${rel}: x-plinth-shape: pending, no JSON Schema yet (expected)`);
       }
     }
     if (problems.length) {

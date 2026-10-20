@@ -1,5 +1,3 @@
-"use client";
-
 // "Picture yourself here" (WORK_BREAKDOWN §4 T20b; DESIGN §4b "Picture it
 // furnished"; DESIGN §5b "Visualise: under construction"). The real AI
 // furnishing (Gemini, `stage-room`) is M5 (BUILD_PLAN §1); this section
@@ -9,17 +7,17 @@
 // placeholder element" until the real asset lands). Structure is never
 // claimed to move; style names come from DESIGN §4's token table, and their
 // budgets are explicitly rough, same as the artboard's own framing.
+//
+// Only the drag-to-compare range needs the client, so it is the one piece
+// that ships JS (compare-slider.tsx); this section itself stays
+// server-rendered (project-page JS budget, lighthouserc.cjs).
 import { SectionBand } from "@plinth/web-ui";
-import { useId, useState } from "react";
+import { CompareSlider } from "./compare-slider";
 
 const PICTURE_COPY = {
   heading: "Picture yourself here",
   intro:
     "Start from the brochure floor plan, or photograph the sample flat on your site visit. AI furnishes it to scale. Walls, windows and floors never move.",
-  compareLabel: "Or drag to compare the original photo and the AI-generated illustration",
-  original: "Original photo",
-  aiLabel: "AI-generated illustration",
-  illustrative: "Illustrative image",
   note: "AI-staged: furniture added. The original photo always shows first. Prices are rough furnishing budgets; items are illustrative.",
   stylesHeading: "Styles",
 };
@@ -31,9 +29,6 @@ const STYLES = [
 ] as const;
 
 export function PictureSection() {
-  const id = useId();
-  const [reveal, setReveal] = useState(0);
-
   return (
     <SectionBand id="picture" tone="bg">
       <div className="flex flex-col gap-8">
@@ -44,36 +39,7 @@ export function PictureSection() {
           <p className="m-0 max-w-measure text-lead">{PICTURE_COPY.intro}</p>
         </div>
 
-        <div className="flex flex-col gap-3">
-          <label htmlFor={`${id}-range`} className="text-body">
-            {PICTURE_COPY.compareLabel}
-          </label>
-          <div className="relative aspect-[4/3] w-full max-w-[32rem] overflow-hidden rounded-panel bg-track">
-            <div className="absolute inset-0 flex items-end p-3">
-              <span className="rounded-pill bg-inverse px-3 py-1 text-caption font-semibold text-on-inverse">
-                {PICTURE_COPY.original} · {PICTURE_COPY.illustrative}
-              </span>
-            </div>
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 flex items-end bg-claim-bg p-3"
-              style={{ clipPath: `inset(0 ${100 - reveal}% 0 0)` }}
-            >
-              <span className="rounded-pill bg-ai-label-bg px-3 py-1 text-caption font-semibold text-ai-label-fg">
-                {PICTURE_COPY.aiLabel}
-              </span>
-            </div>
-          </div>
-          <input
-            id={`${id}-range`}
-            type="range"
-            min={0}
-            max={100}
-            value={reveal}
-            onChange={(e) => setReveal(Number(e.currentTarget.value))}
-            className="h-7 w-full max-w-[32rem] cursor-pointer accent-accent"
-          />
-        </div>
+        <CompareSlider />
 
         <div className="flex flex-col gap-3">
           <h3 className="m-0 text-small font-semibold text-ink2 uppercase">

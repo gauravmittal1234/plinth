@@ -106,8 +106,8 @@ How to read this table:
 | `supabase/migrations/20261111*`, `supabase/functions/auth-sms-hook/**`, `supabase/functions/_shared/otp/**`, `supabase/tests/auth/**` | T41 | Plus the `[auth]` sections of `supabase/config.toml` |
 | `supabase/migrations/20261112*`, `supabase/functions/outbox-dispatch/**`, `supabase/functions/_shared/outbox/**`, `supabase/tests/outbox/**` | T42 | Migration names include `m2_comms` |
 | `supabase/migrations/20261113*`, `supabase/tests/events/**` | T43a | |
-| `supabase/migrations/20261114*`, `supabase/functions/wa-webhook/{index.ts,router.ts,logic.ts,logic.test.ts}`, `supabase/functions/wa-flows/**`, `supabase/functions/_shared/wa/{verify,graph,mock,session}.ts`, `supabase/tests/wa/**` | T44 | Creates the handler stubs below |
-| `apps/admin/**`, `supabase/migrations/20261126*`, `.github/workflows/ci-admin.yml` | T54 | |
+| `supabase/migrations/20261114*`, `supabase/functions/wa-webhook/{index.ts,router.ts,logic.ts,logic.test.ts}`, `supabase/functions/wa-flows/**`, `supabase/functions/_shared/wa/{verify,graph,mock,session}.ts` and their `*.test.ts`, `supabase/tests/wa/**` | T44 | Creates the handler stubs below |
+| `apps/admin/**`, `supabase/migrations/20261126*`, `supabase/tests/admin/**`, `.github/workflows/ci-admin.yml` | T54 | |
 | `apps/web/app/(auth)/sign-in/**`, `apps/web/src/features/auth/**`, `apps/web/e2e/sign-in.spec.ts` | T47 | |
 | `apps/web/app/(account)/following/**`, `apps/web/src/features/following/**`, `apps/web/e2e/following.spec.ts` | T49 | |
 | `apps/mobile/lib/features/{following,family}/**`, `apps/mobile/test/features/{following,family}/**` | T50 | |

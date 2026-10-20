@@ -5,6 +5,13 @@
 // new one, staggered by position (`--ui-stagger`). `ui-rise`
 // (packages/web-ui/src/styles.css) already turns itself off under
 // prefers-reduced-motion, so this needs no motion check of its own.
+//
+// `outcome` only ever says "merged" when confirmWhatsappFollows() actually
+// recorded it; otherwise this shows the honest "stay on WhatsApp" or
+// "nothing was saved" line (AGENTS.md §9, lead review of #62). `waNames` are
+// the preview's own follows — WhatsApp keeps sending them alerts whether or
+// not the reader brought them to the web, so this line doesn't depend on
+// `outcome` either.
 import { RiskChip } from "@plinth/web-ui";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,14 +20,16 @@ import { COPY } from "./copy";
 import type { FollowedProject } from "./data";
 
 export function DoneStep({
-  merged,
+  outcome,
   followed,
+  waNames,
   maskedPhone,
   alsoChecked,
   projectName,
 }: {
-  merged: boolean;
+  outcome: "merged" | "failed" | "skipped";
   followed: readonly FollowedProject[];
+  waNames: readonly string[];
   maskedPhone: string;
   alsoChecked: boolean;
   projectName: string | null;
@@ -30,7 +39,7 @@ export function DoneStep({
     { k: COPY.placeAndroid, v: COPY.placeAndroidLine },
     {
       k: COPY.placeWhatsapp,
-      v: COPY.placeWhatsappLine(maskedPhone, alsoChecked && projectName ? projectName : null),
+      v: COPY.placeWhatsappLine(maskedPhone, waNames, alsoChecked && projectName ? projectName : null),
     },
   ];
 
@@ -39,7 +48,7 @@ export function DoneStep({
       <h1 id="flow-h" className="m-0 font-display text-h2 leading-tight font-extrabold">
         {COPY.doneHeading}
       </h1>
-      <p className="m-0 text-lead">{COPY.doneLine(merged)}</p>
+      <p className="m-0 text-lead">{COPY.doneLine(outcome)}</p>
 
       <ul aria-label="Projects you follow" className="m-0 mt-1 flex list-none flex-col gap-1 p-0">
         {followed.map((f, i) => {
@@ -52,7 +61,7 @@ export function DoneStep({
               {f.imageUrl ? (
                 <Image
                   src={f.imageUrl}
-                  alt={f.imageAlt}
+                  alt={`Illustrative image: ${f.name}`}
                   width={48}
                   height={48}
                   className="size-12 shrink-0 bg-photo object-cover"
@@ -86,10 +95,7 @@ export function DoneStep({
         >
           {COPY.openFollowing}
         </Link>
-        <Link
-          href="/privacy"
-          className="text-body font-semibold text-ink underline underline-offset-5"
-        >
+        <Link href="/privacy" className="text-body font-semibold text-ink underline underline-offset-5">
           {COPY.whoHasMyNumber}
         </Link>
       </div>
