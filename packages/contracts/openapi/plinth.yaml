@@ -1289,32 +1289,6 @@ paths:
               additionalProperties: false
               required: []
               properties: {}
-    get:
-      operationId: me_get
-      summary: api.me
-      tags:
-        - Buyer API
-      x-plinth-milestone: M2
-      parameters:
-        - $ref: "#/components/parameters/ContentProfile"
-        - $ref: "#/components/parameters/AcceptProfile"
-      security:
-        - apikey: []
-          bearer: []
-      responses:
-        "200":
-          description: Me
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Me"
-        default:
-          description: SQLSTATE PT<http> raised by the function; message is the domain code.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RpcError"
-      description: "STABLE: the same arguments as query parameters."
   /rest/v1/rpc/device_register:
     post:
       operationId: device_register

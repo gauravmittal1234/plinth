@@ -123,7 +123,7 @@ export const PUBLIC_RPCS = [
 
 /** Buyer API (user JWT). Mutations take p_client_id and are idempotent. */
 export const BUYER_RPCS = [
-  { fn: "me", m: "M2", request: noArgs, response: "Me", stable: true },
+  { fn: "me", m: "M2", request: noArgs, response: "Me" },
   {
     fn: "device_register",
     m: "M2",
