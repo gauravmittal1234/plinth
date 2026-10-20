@@ -43,6 +43,7 @@ describe("seed", () => {
       "10_catalogue.sql",
       "20_evidence.sql",
       "30_scoring.sql",
+      "33_developer_says.sql",
       "35_developer_content.sql",
     ]);
     for (const c of Object.values(a))
@@ -56,6 +57,18 @@ describe("seed", () => {
     expect(t04["10_catalogue.sql"]).toContain("insert into core.phases");
     expect(t04["30_scoring.sql"]).toContain("insert into core.score_runs");
     expect(t04["35_developer_content.sql"]).toContain("-- SKIPPED");
+    expect(t04["33_developer_says.sql"]).toContain("-- SKIPPED");
+    // Claims and replies need only T12's tables (20261101), not T13's.
+    const t12 = (await buildSeed({
+      migrations: [
+        "20261020000400_t04_core_catalogue.sql",
+        "20261101000100_t12_ws_developer_claims_replies.sql",
+      ],
+    })) as Record<string, string>;
+    expect(t12["33_developer_says.sql"]).toContain("insert into ws.developer_replies");
+    expect(t12["33_developer_says.sql"]).toContain("'Ananya Rao'");
+    expect(t12["33_developer_says.sql"]).toContain("'group'");
+    expect(t12["35_developer_content.sql"]).toContain("-- SKIPPED");
     const none = (await buildSeed({ migrations: [] })) as Record<string, string>;
     for (const c of Object.values(none)) expect(c).toContain("-- SKIPPED");
   });

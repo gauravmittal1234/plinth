@@ -1,14 +1,14 @@
 // Seedmap: canonical/developer_content.json -> supabase/seed/35_developer_content.sql
 // ("From the developer" ws.* tables and core.cost_rule_sets; DATA_MODEL §1, §4).
-// ws.developer_claims and ws.developer_replies arrive with T12 (20261101); the price lists, plans,
-// cost sheets, documents and core.cost_rule_sets with T13 (20261102).
+// The price lists, plans, cost sheets, documents and core.cost_rule_sets arrive with T13 (20261102).
+// ws.developer_claims and ws.developer_replies (T12, 20261101) are seeded by developer_says.mjs.
 export const output = "35_developer_content.sql";
-export const requires = ["20261101", "20261102"];
+export const requires = ["20261102"];
 
 export function build({ load, sql }) {
   const c = load("catalogue");
   const d = load("developer_content");
-  const { q, date, ts, jsonb, insert } = sql;
+  const { q, date, jsonb, insert } = sql;
   const ph = Object.fromEntries(c.phases.map((p) => [p.slug, p.id]));
   const parts = [];
   parts.push(
@@ -138,46 +138,6 @@ export function build({ load, sql }) {
         q(x.storage_key),
         jsonb(x.summary),
         q(x.lane),
-      ]),
-    ),
-  );
-  parts.push(
-    insert(
-      "ws.developer_claims",
-      [
-        "id",
-        "phase_id",
-        "text",
-        "said_on",
-        "check_by",
-        "verified_state",
-        "linked_fact_id",
-        "public",
-      ],
-      d.developer_claims.map((x) => [
-        q(x.id),
-        q(ph[x.phase]),
-        q(x.text),
-        date(x.said_on),
-        date(x.check_by),
-        q(x.verified_state),
-        q(x.linked_fact),
-        q(x.public),
-      ]),
-    ),
-  );
-  parts.push(
-    insert(
-      "ws.developer_replies",
-      ["id", "phase_id", "text", "signatory_title", "published_at", "check_by", "status"],
-      d.developer_replies.map((x) => [
-        q(x.id),
-        q(ph[x.phase]),
-        q(x.text),
-        q(x.signatory_title),
-        ts(`${x.published_on}T00:00:00+05:30`),
-        date(x.check_by),
-        q(x.status),
       ]),
     ),
   );
