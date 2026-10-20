@@ -8,12 +8,7 @@
 import type { Slug } from "@plinth/contracts";
 import { Pill } from "@plinth/web-ui";
 import { useState } from "react";
-import {
-  BOOKED_INTRO,
-  BOOKED_INTRO_DEFAULT,
-  BOOKED_PANEL_COPY,
-  BOOKED_WATCH,
-} from "./copy";
+import { BOOKED_INTRO, BOOKED_INTRO_DEFAULT, BOOKED_PANEL_COPY } from "./copy";
 
 function Bullet({ heading, body, chip }: { heading: string; body: string; chip: string }) {
   return (
@@ -31,16 +26,21 @@ export function BookedPanel({
   slug,
   notScored = false,
   insolvency = false,
+  insolvencyDate,
+  watch = [],
 }: {
   slug: Slug;
   /** Adds the s.13 10% rule (fixpass-buyer.md §4: "Not-scored projects add the s.13 10% rule"). */
   notScored?: boolean;
-  /** Laurel only: homebuyers claim as financial creditors if insolvency is admitted against the promoter. */
+  /** True when a red-flag rule (RF1_GROUP_CIRP) admits insolvency against the promoter's group. */
   insolvency?: boolean;
+  /** The NCLT order's own date, read from `risk.reasons` by the caller; required when `insolvency`. */
+  insolvencyDate?: string;
+  /** "What to watch" bullets, built from the payload by `watch.ts` (project-states-section.tsx). */
+  watch?: readonly string[];
 }) {
   const [booked, setBooked] = useState(false);
   const intro = BOOKED_INTRO[slug] ?? BOOKED_INTRO_DEFAULT;
-  const watch = BOOKED_WATCH[slug] ?? [];
   const copy = BOOKED_PANEL_COPY;
 
   return (
@@ -68,7 +68,10 @@ export function BookedPanel({
         />
         <Bullet
           heading={copy.associations.heading}
-          body={copy.associations.body + (insolvency ? copy.associationsInsolvencyAddendum : "")}
+          body={
+            copy.associations.body +
+            (insolvency && insolvencyDate ? copy.associationsInsolvencyAddendum(insolvencyDate) : "")
+          }
           chip={copy.associations.chip}
         />
       </div>

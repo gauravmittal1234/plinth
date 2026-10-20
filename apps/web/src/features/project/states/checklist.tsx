@@ -14,7 +14,9 @@ export function Checklist({ items }: { items: readonly ChecklistItem[] }) {
       <ul role="list" className="m-0 flex flex-col gap-4 p-0">
         {items.map((item, i) => (
           <li key={i} className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4">
-            <SourceChip source={{ label: item.chip, evidence_url: null }} surface="track" />
+            {item.chip ? (
+              <SourceChip source={{ label: item.chip, evidence_url: null }} surface="track" />
+            ) : null}
             <p className="m-0 min-w-0 flex-1 text-ink2">
               {item.heading ? <strong className="font-semibold text-ink">{item.heading}: </strong> : null}
               {item.body}

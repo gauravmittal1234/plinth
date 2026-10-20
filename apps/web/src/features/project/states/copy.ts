@@ -1,11 +1,11 @@
 // Layout copy for WebProjectStates (T20c; WORK_BREAKDOWN §4 T20c;
 // WebProjectStates.dc.html, extracted via scripts/artboard_text.py; also
 // fixpass-buyer.md §4 and fix-project2.md §2(b)(c)). Headings and labels here
-// are the artboard's own chrome; every number, date and band word still comes
-// from RiskSummary/ProjectPage. The handful of per-project checklist and
-// "what to watch" bullets below are facts from DESIGN.md §5b that have no
-// field of their own in the contract yet (AGENTS.md §1 "Facts": DESIGN.md
-// §5b and fixtures, not only fixtures).
+// are the artboard's own chrome; every number, date, name and band word is
+// read from RiskSummary/ProjectPage at render time (project-states-section.tsx,
+// watch.ts) — never hard-coded here by project slug (AGENTS.md §5: "risk copy
+// ... comes from the server or the fixture JSON, never composed in a
+// client"; AGENTS.md §1: "Never invent a fact in code").
 import type { Slug } from "@plinth/contracts";
 
 export const STALL_COPY = {
@@ -21,40 +21,12 @@ export const CHECKLIST_COPY = {
   heading: "What to check instead",
 };
 
-export type ChecklistItem = { heading?: string; body: string; chip: string };
-
-/** Juniper Enclave (Limited history): directors, DTCP licence, escrow, progress (fixpass-buyer.md §4). */
-export const LIMITED_HISTORY_CHECKLIST: readonly ChecklistItem[] = [
-  { body: "Halcyon Homes' directors, and their other companies, in MCA filings.", chip: "MCA company records" },
-  { body: "The DTCP licence for the Sector 102 site, and that it is in force.", chip: "DTCP licence register" },
-  {
-    heading: "The escrow account",
-    body: "A CA certificate with each QPR on money taken out of the project account.",
-    chip: "HARERA Form 3 · with each QPR",
-  },
-  {
-    heading: "Progress against time",
-    body: "", // filled from risk.progress.line in the component
-    chip: "HARERA QPR · latest",
-  },
-];
-
-/** Heron Point, Phase 2 (Not scored): the group's record, registration, first QPRs (fixpass-buyer.md §4). */
-export const NOT_SCORED_CHECKLIST: readonly ChecklistItem[] = [
-  {
-    body:
-      "The Northfield Estates group's record: 2 of 6 finished RERA projects got OC more than 12 months late. Its ongoing phases: Aurelia Heights, Phase 2 (Elevated) and Cedar Walk, Phase 2 (Moderate).",
-    chip: "HARERA + DTCP OC records",
-  },
-  {
-    body: "The approved plans, the DTCP licence and the promised date, all filed with HARERA.",
-    chip: "HARERA registration · Apr 2026",
-  },
-  {
-    body: "The first QPRs, due 15 days after each quarter ends. They show whether building starts on time.",
-    chip: "HARERA QPR register",
-  },
-];
+/** Shaped like `NextStep` (`@plinth/contracts`): Limited history and Not
+ * scored read their checklist straight off `ProjectPage.next_steps.steps` —
+ * the same records-to-read list "So what do we do now?" shows further down
+ * the page, just with a source chip per line (project-states-section.tsx).
+ * No per-project body text lives here. */
+export type ChecklistItem = { heading?: string; body: string; chip?: string | null };
 
 export const AGE_BARS_COPY = {
   heading: "How old is each record?",
@@ -119,9 +91,12 @@ export const BOOKED_PANEL_COPY = {
     body: "RERA s.31 lets an association of allottees file a complaint.",
     chip: "RERA Act 2016 · s.31",
   },
-  /** For Laurel only (fixpass-buyer.md §4): insolvency admitted → homebuyers claim as financial creditors. */
-  associationsInsolvencyAddendum:
-    " The NCLT order of 12 Mar 2023 is against a group company. If a case is ever admitted against this project's promoter, homebuyers file claims with the resolution professional as financial creditors.",
+  /** Red-flag rule RF1_GROUP_CIRP only (fixpass-buyer.md §4): insolvency admitted → homebuyers
+   * claim as financial creditors. `dateLine` is the NCLT order's own date (`risk.reasons`,
+   * factor "legal"), formatted by the caller — never a fixed date here, so this reads correctly
+   * for any project the rule fires on, not only Laurel. */
+  associationsInsolvencyAddendum: (dateLine: string) =>
+    ` The NCLT order of ${dateLine} is against a group company. If a case is ever admitted against this project's promoter, homebuyers file claims with the resolution professional as financial creditors.`,
 };
 
 /** `bk.intro` per state (WebProjectStates.dc.html), by phase slug. */
@@ -142,38 +117,3 @@ export const BOOKED_INTRO: Readonly<Record<Slug, string>> = {
 
 export const BOOKED_INTRO_DEFAULT =
   "These are the rights every allottee has, and the records we keep watching.";
-
-/** `{{wi}}` "What to watch" bullets per state (WebProjectStates.dc.html). */
-export const BOOKED_WATCH: Readonly<Partial<Record<Slug, readonly string[]>>> = {
-  "laurel-residency": [
-    "Each QPR: does the built share move from 34%?",
-    "Any demand letter: it should match work on record. Check it with Pay-as-built first.",
-    "NCLT and IBBI lists for Elmstone Developers and its group.",
-    "New HARERA orders on this project.",
-  ],
-  "juniper-enclave": [
-    "The CA certificate on escrow withdrawals with each QPR.",
-    "Demand letters against stages on record, with Pay-as-built.",
-    "Halcyon Homes' first finished project, when it comes.",
-  ],
-  "heron-point-phase-2": [
-    "Its first QPR, once filed.",
-    "The group's ongoing phases: Aurelia Heights, Phase 2 (Elevated) and Cedar Walk, Phase 2 (Moderate).",
-    "New HARERA orders on this project or Heronstone Projects.",
-  ],
-  "coral-towers": [
-    "The Apr–Jun 2026 and Jul–Sep 2026 QPRs, both overdue.",
-    "Whether a third extension follows Extension 2 (to Aug 2029).",
-    "Demand letters against stages on record, with Pay-as-built.",
-  ],
-  "sapphire-grove-phase-1": [
-    "The re-score, due by 19 Oct 2026, 7:40 pm.",
-    "Whether the new filing moves the band — followers hear first, with what changed and why.",
-    "Demand letters against stages on record, with Pay-as-built.",
-  ],
-  "aurelia-heights-phase-2": [
-    "The Jul–Sep 2026 QPR: due 15 Oct 2026, not on HARERA yet.",
-    "Demand letters against stages on record. Tower A slab 12 was demanded on 10 Oct 2026; the latest QPR shows slab 9.",
-    "This page: we note the day the review ends.",
-  ],
-};

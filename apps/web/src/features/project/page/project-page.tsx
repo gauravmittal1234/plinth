@@ -41,7 +41,7 @@ export function ProjectPageView({
       <HeroSection page={page} />
       <OnThisPageRail slug={page.risk.phase.slug} />
       <RiskSection risk={page.risk} bands={bands} />
-      <ProjectStatesSection risk={page.risk} records={page.records} />
+      <ProjectStatesSection risk={page.risk} records={page.records} nextSteps={page.next_steps} />
       <NextSection nextSteps={page.next_steps} />
       <BookingSection beforeBooking={page.before_booking} />
       <BuiltSection page={page} bands={bands} />

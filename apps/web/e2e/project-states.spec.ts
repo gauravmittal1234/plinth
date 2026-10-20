@@ -66,7 +66,12 @@ test.describe("WebProjectStates: Not scored (Heron Point, Phase 2)", { tag: "@sm
 
     const states = page.locator("#booked-buyer");
     await expect(states.getByRole("heading", { name: "What to check instead" })).toBeVisible();
-    await expect(states.getByText("2 of 6 finished RERA projects", { exact: false })).toBeVisible();
+    // The group's record line is the page's own next_steps.steps line, not a
+    // re-typed fact (T20c fix-up, PR #46).
+    await expect(states.getByText("2 of 6 finished projects late", { exact: false })).toBeVisible();
+    await expect(
+      states.getByText("New HARERA orders on this project or Northfield Estates.", { exact: false }),
+    ).toBeVisible();
     await expect(
       states.getByText("RERA s.13 caps what a developer can collect at 10% of the cost", {
         exact: false,
@@ -114,6 +119,14 @@ test.describe("WebProjectStates: Facts-only (?state=facts_only, Aurelia)", { tag
     await expect(
       states.getByRole("link", { name: "How facts-only works" }),
     ).toHaveAttribute("href", "/gurugram/developers/northfield-estates#facts-only");
+
+    // No band word anywhere in the states section while the group's bands
+    // are withheld (T20c fix-up, PR #46: "band words would leak when a group
+    // is in facts-only mode"). The withheld chip itself never names a band.
+    const statesText = (await states.innerText()).replace(/\s+/g, " ");
+    for (const word of ["Low", "Moderate", "Elevated", "High", "Severe"]) {
+      expect(statesText).not.toMatch(new RegExp(`\\b${word}\\b`));
+    }
   });
 
   test("the plain, scored page shows none of this (Aurelia's default fixture)", async ({ page }) => {
