@@ -813,11 +813,11 @@ M3 is planned by the lead (21 Oct 2026). Read these first; they bind every M3 ta
 - **AI reads; rules decide.** Readers return facts with a confidence. Every verdict, number and line comes from SQL rules (`app.decide_<kind>`, `core.check_rules` v2026.10). A row is `matches` or `differs` only when both readers agreed above the rule's confidence bar and the record exists; otherwise it is `cant_check` or `not_in_records`. A single reader never produces `differs`.
 - **One pipeline.** Web, app and WhatsApp all go `api.create_upload` → `doc-check` (OCR → classify → reader A + reader B → agreement) → `api.doc_check_ingest` → the buyer confirms the project → `app.doc_check_decide` → `api.doc_check`. Nothing is checked before the project is confirmed.
 - **AI in CI is recorded.** `AI_MODE=recorded` everywhere except the nightly live eval. Every AI task ships prompts, a response schema, recorded responses for every sample document and an eval with gates.
-- **PII before models.** Readers see only PII-stripped OCR text with line ids; bounding boxes come from the OCR lines, never from a reader. Bank account numbers become tokens before any reader call and are kept only as a salted hash plus the last 4 digits. The OCR call is the one place a model sees the page: in M3 it sees only the fictional sample documents (DECISIONS E-8), enforced by `AI_PROVIDER_TIER=free` (FOUNDER_QUESTIONS, M3).
-- **No new paid services.** Gemini runs recorded in CI and on the free tier with fictional documents in dev. The paid switches are listed under "M3" in `product/FOUNDER_QUESTIONS.md`.
+- **PII before models.** Readers see only PII-stripped OCR text with line ids; bounding boxes come from the OCR lines, never from a reader. Bank account numbers become tokens before any reader call and are kept only as a salted hash plus the last 4 digits. The OCR call is the one place a model sees the page: in M3 it sees only the fictional sample documents (DECISIONS E-8), enforced by `AI_PROVIDER_TIER=free` (FOUNDER_QUESTIONS M3-3).
+- **No new paid services.** Gemini runs recorded in CI and on the free tier with fictional documents in dev. The paid switches are listed under "M3" in `product/FOUNDER_QUESTIONS.md`; the M3-1 to M3-13 defaults bind until the founder overturns them.
 - **Reuse M2.** `app.uploads` and the private `uploads` bucket (T53), the outbox (T42), the WhatsApp webhook and session (T44, T46a/b), auth and `actAsUser` (T41), the consent ledger (T40: purpose `ai_processing`), rate limits (T41), retention and export (T53).
 - **UI v2.** Web and Flutter screens follow `product/design/review/benchmark-thapki.md` (Figtree text, Bricolage titles, the v2 kits: app #74, web #82). Artboard copy is layout, never data (AGENTS rule 10); every count, name, amount and verdict comes from the payload.
-- **Dependencies on M2.** Wave 6 starts once the open M2 PRs that touch the same paths have merged: T53 (#80, `app.uploads`), T45a (#75) and T46b (#84) (contracts and fixtures), T48 (#81, `apps/mobile/lib/data`). Their live wiring is checked at T59; M3 screens build in fixture mode and are wired at T99.
+- **Dependencies on M2.** Wave 6 starts once the open M2 PRs that touch the same paths have merged: T53 (#80, `app.uploads`), and T45a (#75), T43b (#77), the share-card API (#78) and T46b (#84), which all edit `packages/contracts` and `packages/fixtures`. Their live wiring is checked at T59; M3 screens build in fixture mode and are wired at T99.
 
 #### T60 · DB: checks schema, review queue and AI log
 - **Owns:** `supabase/migrations/20261201*` (file names include the `m3_checks` marker), `supabase/tests/checks/**`.
@@ -840,7 +840,7 @@ M3 is planned by the lead (21 Oct 2026). Read these first; they bind every M3 ta
 
 #### T61 · Contracts for M3
 - **Owns:** `packages/contracts/**` for M3 (handover T02 → T61, after the M2 contract PRs merge). T68–T77 send schema changes to T61 as Handoffs while it is open; after T61 merges, the lead owns M3 contract follow-ups.
-- **Depends:** T02; T45a (#75), T46b (#84) and T53 (#80) merged first (they edit contracts).
+- **Depends:** T02; #75 (T45a), #77 (T43b), #78 (share-card API) and #84 (T46b) merged first (they edit contracts).
 - **Inputs:** the M3 rules (WORK_BREAKDOWN.md, top of Wave 6); API_CONTRACTS §3.2 (uploads and checks, bookings and receipts), §3.4 (admin queue), §3.5 (`doc-check`), §4.12–§4.14, §5.1 (the M3 router rows), §5.2 (templates); BUILD_PLAN §11 (events), §14 (AI tasks); DATA_MODEL §7; INTEGRATION_NOTES round 3 (`records_label`).
 - **Build:**
   - Schemas (JSON Schema 2020-12, additive, optional fields so the existing expected files stay valid):
@@ -866,7 +866,7 @@ M3 is planned by the lead (21 Oct 2026). Read these first; they bind every M3 ta
   - `packages/fixtures/media/docs/**` and `packages/fixtures/scripts/make-docs.mjs`;
   - `packages/fixtures/recorded/wa/m3-*.json`;
   - the regenerated outputs (`supabase/seed/**`, `packages/fixtures/dart/**`).
-- **Depends:** T03b. Soft: T61 (validate against the new schemas once merged; until then author to API_CONTRACTS §4.12–§4.14), T60 (table names).
+- **Depends:** T03b; #75, #77 and #84 merged first (they edit fixtures). Soft: T61 (validate against the new schemas once merged; until then author to API_CONTRACTS §4.12–§4.14), T60 (table names).
 - **Inputs:** the M3 rules (WORK_BREAKDOWN.md, top of Wave 6); DESIGN §5b (claims vs records example, the sample flyer and hoarding, cost sheet, cost-sheet photo, demand letter, Before you pay on WhatsApp, booking form, 10% cap, EOI receipt, Afford the wait); DATA_MODEL §7; API_CONTRACTS §4.12–§4.14; fix-claims.md, fix-visitpay.md; WebClaims.dc.html (edge-state copy: blurred photo, no claims, pick the project).
 - **Build:**
   - **Sample documents** (`media/docs/`): text-layer PDFs written by `make-docs.mjs` with no new dependency (a minimal PDF writer, as T53's export does), carrying the §5b text so a live OCR can read them: the broker flyer, the hoarding, the 2-page cost sheet, Kavya's demand letter, the forwarded EOI request (as text), the booking-form bank page; plus three edge samples: the flyer with a blurred RERA number, a brochure page with no checkable claims, and a Noida flyer (outside coverage). A `manifest.json` lists each file's SHA-256: this is the fixture manifest the AI gateway's free tier checks (T63).
@@ -912,7 +912,7 @@ M3 is planned by the lead (21 Oct 2026). Read these first; they bind every M3 ta
 
 #### T66 · App data layer: checks and calculators
 - **Owns:** `apps/mobile/lib/data/**` and `apps/mobile/test/data/**` (T17 → T66, for the M3 additions).
-- **Depends:** T17; T48 (#81) merged first if it still edits `lib/data`. Soft: T61, T62.
+- **Depends:** T17. Soft: T61, T62.
 - **Inputs:** the M3 rules (WORK_BREAKDOWN.md, top of Wave 6); API_CONTRACTS §1, §3.2, §3.5, §4.12–§4.14; pet_app `data/session.dart`; T17's repositories and `fixture_providers.dart`.
 - **Build:** `ChecksRepository` (upload through the signed URL with retry, start, a poll stream, confirm, save, my checks, cost variants, adviser request, report error), `CalculatorsRepository` (`costBreakdown`, `affordTheWait`, `beforeYouPayCheck`), `BookingsRepository` (`bookingSave`, `receiptAdd`), each with Fixture and Supabase implementations and Riverpod providers. Checks are online-only: an offline upload waits with a clear state, and the SyncQueue never holds a payee check (the account number stays in memory only).
 - **Accept:** `flutter test test/data`: fixture repositories return contract models for every new key; the poll stream reaches `done`; a test proves the payee request is never written to shared_preferences or the offline cache; Supabase repositories call the right `api` names and the `doc-check` route (fake client).
@@ -977,7 +977,7 @@ T68, T69, T70, T71 and T72 run in parallel. T73, T74 and T75 start when T68 has 
   - `ConfirmProject` and `PickProject` (`suggest` search; nothing is checked before the tap);
   - `EdgeState` for unreadable, partly readable, no claims, outside coverage, checks paused (`flag_off`) and offline, all from `edge` in the payload;
   - `ShareSummarySheet` (the summary only: WhatsApp link and copy), `SaveCheck`, `AskAdviser`, `ReportErrorRow`, `DeleteMyFile`, `PrivacyLine`. Each shows "Saved", "Sent" or a reference only from its RPC's result (rule 9).
-  - The "Or paste a link" box renders as FOUNDER_QUESTIONS M3 decides (default: it fetches nothing and asks for a screenshot).
+  - The "Or paste a link" box follows FOUNDER_QUESTIONS M3-10 (default: it fetches nothing and asks for a screenshot).
 - **Accept:** `npm run -w @plinth/web test -- checks/shared`: every component renders each state from fixture payloads; jest-axe finds no violations; the poll hook stops at each terminal state; an SVG or a 16 MB file is refused before any upload; a spy proves no "Saved" or "Sent" renders before the RPC resolves.
 
 #### T72 · App checks kit: capture, share-sheet intake, upload and progress
@@ -1133,7 +1133,7 @@ T87 and T88 start when T76 and T77 have merged; T89 and T90 follow T88.
 #### T87 · Admin concierge queue
 - **Owns:** `apps/admin/app/(admin)/queue/**`, `apps/admin/src/features/queue/**`, `apps/admin/test/queue/**` (T54 → T87).
 - **Depends:** T54, T76 (`review_image`), T77.
-- **Inputs:** the M3 rules (WORK_BREAKDOWN.md, top of Wave 6); BUILD_PLAN §11, §14 (concierge-first); API_CONTRACTS §3.4; DESIGN §5b (adviser hours); FOUNDER_QUESTIONS M3 (who staffs the queue).
+- **Inputs:** the M3 rules (WORK_BREAKDOWN.md, top of Wave 6); BUILD_PLAN §11, §14 (concierge-first); API_CONTRACTS §3.4; DESIGN §5b (adviser hours); FOUNDER_QUESTIONS M3-6 (who staffs the queue) and M3-7 (concierge-first).
 - **Build:** the queue (TanStack Table: kind, check kind, priority, due, status, assignee); the task view: the page image through `review_image`, reader A and reader B side by side over the bbox, the rule that applies; choose A, choose B, type the value, or mark unreadable, with a note → `admin_task_resolve`; adviser requests with the buyer's note and the same-day clock. No buyer phone number appears anywhere in the queue.
 - **Accept:** `npm run -w @plinth/admin lint typecheck test build`; the fixture queue renders the disagreement row and the adviser request; resolve sends the chosen value; without `aal2` the shell shows the MFA step; a test proves the page renders no phone number.
 

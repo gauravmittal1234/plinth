@@ -139,7 +139,7 @@ How to read this table:
 | `supabase/functions/_shared/ai/**`, `evals/lib/**`, `evals/README.md`, `evals/deno.json`, `packages/fixtures/recorded/ai/README.md`, `.github/workflows/ci-evals.yml` | T63 | Except the prompt folders below (T69, T70) |
 | `packages/calc/**` | T64 | TS preview ports; the Dart port is T86's |
 | `apps/web/src/data/**`, `apps/web/test/data/**` | T16, T65 | T65 adds the M3 functions (sequential handover) |
-| `apps/mobile/lib/data/**`, `apps/mobile/test/data/**` | T17, T66 | T66 adds the M3 repositories (after T48 if it still edits `lib/data`) |
+| `apps/mobile/lib/data/**`, `apps/mobile/test/data/**` | T17, T66 | T66 adds the M3 repositories (sequential handover) |
 | `apps/web/src/features/cards/{claims-card,payee-card,stage-card}.tsx`, `apps/web/test/cards/checks/**` | T67 | |
 | `apps/web/src/features/cards/cost-card.tsx`, `apps/web/app/cards/[...card]/route.ts` | T27, T67 | T67: the cost card aligned to WaCost and the card-kind registry lines only |
 
