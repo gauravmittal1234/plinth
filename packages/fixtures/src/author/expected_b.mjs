@@ -9,6 +9,8 @@ const KP = "kestrel-park";
 const SG1 = "sapphire-grove-phase-1";
 const CT = "coral-towers";
 const BASE = "https://plinth.in";
+/** The fixture clock's IST day (FIXED_NOW, 18 Oct 2026, 12:00 IST). */
+const FIXED_DAY = "2026-10-18";
 const RETENTION =
   "We keep this file for 30 days, then delete it, unless you save it to your account.";
 const NOT_ADVICE = "Not legal advice. We never certify title.";
@@ -748,6 +750,38 @@ export function makeExpectedB({ cat, ev, sc, dc, vec, X, B }) {
         "Stays private to you: cost sheets, visit passes, payment alerts and who has your number.",
     };
   };
+  // api.set_follow_type (T45a): the same follow, watching or booked. Booked adds payment-stage
+  // alerts and the Pay-as-built and booked-buyer links (API_CONTRACTS §4.7; DESIGN §5b C-39).
+  const setFollowType = (slug, type) => {
+    const base = { ...follow(slug), follow_type: type };
+    if (type !== "booked") return base;
+    return {
+      ...base,
+      alerts_line:
+        "Band changes, filings, orders and extensions, plus payment-stage alerts. Utility alerts only.",
+      links: [
+        { label: "Pay-as-built", href: "/check/pay-as-built" },
+        { label: "What a booked buyer can do", href: "/guides/booked-buyer" },
+      ],
+    };
+  };
+  // api.request_project (T45a): the R-1018-07 receipt of DESIGN §5b's Indigo Terraces example.
+  const requestProject = (ref) => {
+    const r = P.project_requests.find((x) => x.ref === ref);
+    const line = `We'll add it by ${fmtDate(r.due_on)} or tell you why not.`;
+    if (line !== r.line) throw new Error(`request ${ref}: ${line} vs ${r.line}`);
+    return {
+      schema: "plinth.request_project/1",
+      ref: r.ref,
+      name: r.name_text,
+      rera: r.rera_text,
+      requested_on: r.requested_at.slice(0, 10),
+      due_on: r.due_on,
+      status: r.status,
+      line: r.line,
+      whatsapp_line: null,
+    };
+  };
   const consentWithdraw = (ref) => {
     const c = K.consents.find((x) => x.ref === ref && x.principal === "rohan");
     if (!c?.number_shared || c.ended_on) throw new Error(`no active number share ${ref}`);
@@ -763,8 +797,105 @@ export function makeExpectedB({ cat, ev, sc, dc, vec, X, B }) {
     };
   };
 
+  // ------------------------------------------------------------- family_circle (T45a)
+  // Rohan's circle as api.family_circle answers it: Meera (joined) and the two open invites.
+  const nameList = (a) =>
+    a.length < 2 ? a.join("") : `${a.slice(0, -1).join(", ")} and ${a.at(-1)}`;
+  const shortName = (slug) => phase(slug).short_name ?? phase(slug).name;
+  const familyCircle = () => {
+    const owned = P.follows.filter((f) => f.user === "rohan").length;
+    const phrase = (m) =>
+      m.scope_all
+        ? `your ${owned} ${owned === 1 ? "project" : "projects"}`
+        : nameList(m.scope_phases.map(shortName));
+    const today = FIXED_DAY;
+    const members = F.members
+      .filter((m) => m.status === "joined")
+      .sort((a, b) => a.joined_at.localeCompare(b.joined_at) || a.id.localeCompare(b.id))
+      .map((m) => {
+        const joinedOn = m.joined_at.slice(0, 10);
+        const line = `Joined ${fmtDate(joinedOn)} · same alerts for ${phrase(m)}${m.can_add_notes ? " · can add notes" : ""}`;
+        if (m.line && m.line !== line) throw new Error(`family line drifted: ${line} vs ${m.line}`);
+        return {
+          id: m.id,
+          first_name: person(m.member).first_name,
+          scope_all: m.scope_all,
+          joined_on: joinedOn,
+          joined_via: m.joined_via,
+          can_add_notes: m.can_add_notes,
+          line,
+        };
+      });
+    const invites = F.members
+      .filter((m) => m.status === "invited" && m.expires_at.slice(0, 10) > today)
+      .sort(
+        (a, b) =>
+          b.invited_at.localeCompare(a.invited_at) || a.invite_code.localeCompare(b.invite_code),
+      )
+      .map((m) => {
+        const invitedOn = m.invited_at.slice(0, 10);
+        const line = `Invited ${invitedOn === today ? "today" : fmtDate(invitedOn)} · ${phrase(m)} · hasn't tapped the link yet`;
+        if (m.line && m.line !== line) throw new Error(`invite line drifted: ${line} vs ${m.line}`);
+        return {
+          id: m.id,
+          code: m.invite_code,
+          link: `${BASE}/j/${m.invite_code}`,
+          scope_line: invitePreview(m.invite_code).scope_line,
+          invited_on: invitedOn,
+          expires_on: m.expires_at.slice(0, 10),
+          line,
+        };
+      });
+    return {
+      schema: "plinth.family_circle/1",
+      members,
+      invites,
+      member_of: [],
+      rules: ["Works for one person for 7 days.", "Carries no phone number."],
+      private_line:
+        "Stays private to you: cost sheets, visit passes, payment alerts and who has your number.",
+      number_line: "Family in your circle never see your number.",
+    };
+  };
+
+  // ------------------------------------------------------------- saved searches (T45a)
+  // DESIGN §5b gives Rohan no saved search, so his list is empty (never an invented one).
+  const savedSearches = () => ({ schema: "plinth.saved_searches/1", items: [], max_items: 25 });
+
+  // ------------------------------------------------------------- link_whatsapp_follows (T45a)
+  // WebSignIn's Bring step: a number that follows 2 projects on WhatsApp and saved 1 cost sheet
+  // there. Not §5b and not reachable from the seed (Rohan's WhatsApp contact is linked and his
+  // follows date from 1 Jul 2026): T47's interim fixture (#69), kept as is so web sign-in keeps
+  // its Bring step, now in the real plinth.link_whatsapp_follows/1 shape. A §5b fact is proposed
+  // in the T45a PR. The live function lists no cost sheet before uploads exist (M3).
+  const SIGN_IN_WA = {
+    follows: [
+      { slug: AH2, since: "2026-09-14" },
+      { slug: KP, since: "2026-10-09" },
+    ],
+    cost_sheets: [{ label: "Aurelia Heights, 3 BHK cost sheet", saved_on: "2026-10-02" }],
+  };
+  const linkWhatsappFollows = (accept) => ({
+    schema: "plinth.link_whatsapp_follows/1",
+    accepted: accept,
+    linked: accept,
+    follows: SIGN_IN_WA.follows,
+    cost_sheets: SIGN_IN_WA.cost_sheets,
+  });
+
   return {
-    writes: { follow, OK, alertPrefsSet, inviteCreate, consentWithdraw },
+    writes: {
+      follow,
+      OK,
+      alertPrefsSet,
+      inviteCreate,
+      consentWithdraw,
+      setFollowType,
+      requestProject,
+      linkWhatsappFollows,
+    },
+    familyCircle,
+    savedSearches,
     followingFeed,
     whoHasMyNumber,
     consentHistory,

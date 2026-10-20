@@ -44,13 +44,17 @@
     },
     "FamilyInviteCreateRequest": {
       "title": "FamilyInviteCreateRequest",
-      "description": "Arguments of api.family_invite_create.",
+      "description": "Arguments of api.family_invite_create. Idempotent on p_client_id. The scope may name only phases the caller follows.",
       "type": "object",
       "additionalProperties": false,
       "required": ["p_scope"],
       "properties": {
         "p_scope": { "$ref": "#/$defs/FamilyInviteScope" },
-        "p_client_id": { "$ref": "common.schema.json#/$defs/Uuid" }
+        "p_client_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+        "p_can_add_notes": {
+          "description": "The relative may add notes to the shared shortlist (default false).",
+          "type": "boolean"
+        }
       }
     }
   }
