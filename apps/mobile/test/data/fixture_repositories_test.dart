@@ -45,6 +45,7 @@ final Map<String, Object Function(JsonMap)> _parsers = {
   'ShareCard': ShareCard.fromJson,
   'SuggestResults': SuggestResults.fromJson,
   'WhoHasMyNumber': WhoHasMyNumber.fromJson,
+  'ConsentHistory': ConsentHistory.fromJson,
 };
 
 /// Expected-payload folders with no app repository in M2: M3 calculators and
@@ -56,6 +57,9 @@ const _m3Folders = {'doc_check', 'cost_breakdown', 'afford_the_wait', 'payee_che
 /// app has no saved-searches read yet). Their payloads parse; typing the
 /// repositories is the app's follow-up (T45a Handoff).
 const _untypedFolders = {'family_circle', 'saved_searches'};
+
+/// Reads the app has no repository for yet (T45b added the RPC; the app reads who_has_my_number).
+const _noAppRepository = {'consent_history'};
 
 /// Calls the fixture repository that serves [folder] with the request's
 /// arguments, as a screen would, and returns the contract model.
@@ -131,6 +135,7 @@ void main() {
 
           if (_m3Folders.contains(folder)) return; // repositories arrive in M3
           if (_untypedFolders.contains(folder)) return; // typed by the app's follow-up
+          if (_noAppRepository.contains(folder)) return;
           final request = (await world.requests(folder))[key];
           expect(request, isNotNull, reason: '_requests.json has no "$key"');
           final model = await _viaRepository(container, folder, request!);

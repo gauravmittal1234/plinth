@@ -3,6 +3,7 @@ import type { ValidateFunction } from "ajv";
 import type * as T from "./types";
 
 export declare const validateAbout: ValidateFunction<T.About>;
+export declare const validateAccountDeletion: ValidateFunction<T.AccountDeletion>;
 export declare const validateAffordTheWait: ValidateFunction<T.AffordTheWait>;
 export declare const validateAffordTheWaitRequest: ValidateFunction<T.AffordTheWaitRequest>;
 export declare const validateAlertPrefs: ValidateFunction<T.AlertPrefs>;
@@ -12,9 +13,11 @@ export declare const validateAskAnswer: ValidateFunction<T.AskAnswer>;
 export declare const validateAskRequest: ValidateFunction<T.AskRequest>;
 export declare const validateCompare: ValidateFunction<T.Compare>;
 export declare const validateCompareRequest: ValidateFunction<T.CompareRequest>;
+export declare const validateConsentHistory: ValidateFunction<T.ConsentHistory>;
 export declare const validateConsentWithdrawal: ValidateFunction<T.ConsentWithdrawal>;
 export declare const validateCostBreakdown: ValidateFunction<T.CostBreakdown>;
 export declare const validateCostBreakdownRequest: ValidateFunction<T.CostBreakdownRequest>;
+export declare const validateDataExport: ValidateFunction<T.DataExport>;
 export declare const validateDeveloperPage: ValidateFunction<T.DeveloperPage>;
 export declare const validateDocCheck: ValidateFunction<T.DocCheck>;
 export declare const validateDocCheckStartRequest: ValidateFunction<T.DocCheckStartRequest>;
@@ -36,6 +39,7 @@ export declare const validateOk: ValidateFunction<T.Ok>;
 export declare const validatePayeeCheck: ValidateFunction<T.PayeeCheck>;
 export declare const validatePayeeCheckRequest: ValidateFunction<T.PayeeCheckRequest>;
 export declare const validateProjectPage: ValidateFunction<T.ProjectPage>;
+export declare const validateRelayRenewal: ValidateFunction<T.RelayRenewal>;
 export declare const validateRequestProject: ValidateFunction<T.RequestProject>;
 export declare const validateRiskSummary: ValidateFunction<T.RiskSummary>;
 export declare const validateRpcError: ValidateFunction<T.RpcError>;
@@ -50,6 +54,7 @@ export declare const validateWhoHasMyNumber: ValidateFunction<T.WhoHasMyNumber>;
 /** Exported type name → payload type. */
 export interface TypeByName {
   About: T.About;
+  AccountDeletion: T.AccountDeletion;
   AffordTheWait: T.AffordTheWait;
   AffordTheWaitRequest: T.AffordTheWaitRequest;
   AlertPrefs: T.AlertPrefs;
@@ -59,9 +64,11 @@ export interface TypeByName {
   AskRequest: T.AskRequest;
   Compare: T.Compare;
   CompareRequest: T.CompareRequest;
+  ConsentHistory: T.ConsentHistory;
   ConsentWithdrawal: T.ConsentWithdrawal;
   CostBreakdown: T.CostBreakdown;
   CostBreakdownRequest: T.CostBreakdownRequest;
+  DataExport: T.DataExport;
   DeveloperPage: T.DeveloperPage;
   DocCheck: T.DocCheck;
   DocCheckStartRequest: T.DocCheckStartRequest;
@@ -83,6 +90,7 @@ export interface TypeByName {
   PayeeCheck: T.PayeeCheck;
   PayeeCheckRequest: T.PayeeCheckRequest;
   ProjectPage: T.ProjectPage;
+  RelayRenewal: T.RelayRenewal;
   RequestProject: T.RequestProject;
   RiskSummary: T.RiskSummary;
   RpcError: T.RpcError;
@@ -100,11 +108,14 @@ export type ExportedTypeName = keyof TypeByName;
 /** Envelope id → payload type. */
 export interface PayloadBySchemaId {
   "plinth.about/1": T.About;
+  "plinth.account_delete_request/1": T.AccountDeletion;
   "plinth.afford_the_wait/1": T.AffordTheWait;
   "plinth.alert_prefs/1": T.AlertPrefs;
   "plinth.ask_answer/1": T.AskAnswer;
   "plinth.compare/1": T.Compare;
+  "plinth.consent_history/1": T.ConsentHistory;
   "plinth.cost_breakdown/1": T.CostBreakdown;
+  "plinth.data_export_request/1": T.DataExport;
   "plinth.developer_page/1": T.DeveloperPage;
   "plinth.doc_check/1": T.DocCheck;
   "plinth.evidence/1": T.Evidence;

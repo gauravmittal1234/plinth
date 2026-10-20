@@ -8,17 +8,23 @@ import 'project_copy.dart';
 /// (INTEGRATION_NOTES.md), so this sheet states what Ask Plinth is and
 /// offers a human adviser instead of a working text answer; M5 wires the
 /// real answer behind the same sheet.
-Future<void> showAskSheet(BuildContext context, {required String projectName}) {
+Future<void> showAskSheet(BuildContext context, {required String projectName, String? imageUrl}) {
   return showPlinthSheet<void>(
     context: context,
-    builder: (_) => AskSheet(projectName: projectName),
+    builder: (_) => AskSheet(projectName: projectName, imageUrl: imageUrl),
   );
 }
 
+/// The Ask sheet in the app UI v2 pattern: the project's thumbnail and the
+/// title, a 56 dp question field, the AI disclaimer as a tinted hint, and the
+/// adviser as a grouped row with an icon tile.
 class AskSheet extends StatefulWidget {
-  const AskSheet({super.key, required this.projectName});
+  const AskSheet({super.key, required this.projectName, this.imageUrl});
 
   final String projectName;
+
+  /// The project's `image_url`, for the header thumbnail.
+  final String? imageUrl;
 
   @override
   State<AskSheet> createState() => _AskSheetState();
@@ -40,41 +46,46 @@ class _AskSheetState extends State<AskSheet> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        PlinthSheetHeader(title: ProjectCopy.ask, subtitle: ProjectCopy.askAbout(widget.projectName)),
+        PlinthSheetHeader(
+          leading: ProjectThumb(imageUrl: widget.imageUrl, size: 48),
+          title: ProjectCopy.ask,
+          subtitle: ProjectCopy.askAbout(widget.projectName),
+        ),
         Flexible(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 14, 20, 24),
+            padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterApp, PlinthSpace.s16, PlinthLayout.gutterApp, 24),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(ProjectCopy.askDisclaimer, style: PlinthType.body.copyWith(height: 1.5, color: tokens.ink2)),
-                const SizedBox(height: PlinthSpace.s20),
                 TextField(
                   controller: _controller,
                   minLines: 1,
                   maxLines: 4,
+                  style: PlinthType.body.copyWith(color: tokens.ink),
                   decoration: InputDecoration(
                     hintText: ProjectCopy.askHint(widget.projectName),
-                    filled: true,
-                    fillColor: tokens.track,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(PlinthRadius.panel),
-                      borderSide: BorderSide.none,
+                    prefixIcon: Padding(
+                      padding: const EdgeInsetsDirectional.only(start: 16, end: 10),
+                      child: Icon(Icons.auto_awesome_rounded, size: PlinthLayout.iconMd, color: tokens.ink),
                     ),
+                    prefixIconConstraints: const BoxConstraints(minWidth: 46, minHeight: PlinthLayout.fieldApp),
                   ),
                 ),
-                const SizedBox(height: PlinthSpace.s24),
-                const Divider(height: 1),
+                const SizedBox(height: PlinthSpace.s12),
+                PlinthHintRow(icon: Icons.info_rounded, title: ProjectCopy.askDisclaimer, emphasized: false),
                 const SizedBox(height: PlinthSpace.s20),
-                Text(
-                  ProjectCopy.wantAPerson,
-                  style: PlinthType.body.copyWith(fontWeight: FontWeight.w600, color: tokens.ink),
+                PlinthGroup(
+                  gapTone: tokens.sheet,
+                  tone: tokens.track,
+                  children: [
+                    PlinthListRow(
+                      leading: PlinthIconTile(icon: Icons.support_agent_rounded, tone: tokens.bgSolid),
+                      title: ProjectCopy.wantAPerson,
+                      subtitle: '${ProjectCopy.talkToAdviser}\n${ProjectCopy.adviserHours}',
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 6),
-                Text(ProjectCopy.talkToAdviser, style: PlinthType.body.copyWith(color: tokens.ink)),
-                const SizedBox(height: 2),
-                Text(ProjectCopy.adviserHours, style: PlinthType.small.copyWith(color: tokens.muted)),
               ],
             ),
           ),

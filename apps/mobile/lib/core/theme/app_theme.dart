@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:plinth_tokens/plinth_tokens.dart';
 
-/// Material 3 themes for Day (the default) and Night (DESIGN §3, §3.2b, §0).
+/// Material 3 themes for Day (the default) and Night (DESIGN §3, §3.2b, §0),
+/// with the app UI v2 type, shape and control sizes (benchmark-thapki.md,
+/// FOUNDER_QUESTIONS P10).
 ///
 /// Every colour comes from T01's generated [PlinthTokens]
 /// (`PlinthTokens.day` / `PlinthTokens.night`), which is also registered in
@@ -10,10 +12,10 @@ import 'package:plinth_tokens/plinth_tokens.dart';
 /// Do not add colours here; change `packages/tokens/tokens.json` and
 /// regenerate.
 abstract final class AppTheme {
-  /// Display face: headlines, big numbers, band names.
+  /// Display face: display, screen titles and section headings, at 700.
   static const displayFamily = PlinthType.displayFamily;
 
-  /// Text and UI face; Noto Sans covers missing glyphs.
+  /// Text and UI face (Figtree); Noto Sans covers Devanagari.
   static const textFamily = PlinthType.textFamily;
   static const textFallback = PlinthType.textFallback;
 
@@ -52,7 +54,8 @@ abstract final class AppTheme {
       onInverseSurface: p.bg,
     );
     final text = _textTheme(p);
-    const pill = StadiumBorder();
+    final button = RoundedRectangleBorder(borderRadius: BorderRadius.circular(PlinthRadius.button));
+    final field = BorderRadius.circular(PlinthRadius.field);
     return ThemeData(
       useMaterial3: true,
       brightness: p.brightness,
@@ -62,6 +65,12 @@ abstract final class AppTheme {
       fontFamily: textFamily,
       fontFamilyFallback: textFallback,
       textTheme: text,
+      // App UI v2: Material rounded icons only, 24 dp by default.
+      iconTheme: IconThemeData(color: p.ink, size: PlinthLayout.iconLg),
+      actionIconTheme: ActionIconThemeData(
+        backButtonIconBuilder: (_) => const Icon(Icons.arrow_back_rounded),
+        closeButtonIconBuilder: (_) => const Icon(Icons.close_rounded),
+      ),
       // DESIGN §0: no shadows at rest, no hairline dividers.
       appBarTheme: AppBarTheme(
         backgroundColor: p.bg,
@@ -70,63 +79,89 @@ abstract final class AppTheme {
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: false,
-        titleTextStyle: text.titleLarge,
+        titleTextStyle: PlinthType.h3.copyWith(color: p.ink),
+        iconTheme: IconThemeData(color: p.ink, size: PlinthLayout.iconLg),
       ),
       dividerTheme: const DividerThemeData(color: Colors.transparent, space: 24, thickness: 0),
-      // DESIGN §4.16: a 64 dp bar with 4 tabs.
+      // App UI v2: a floating 72 dp bar (AppShell), selected icon on the
+      // indicator, label 13 · 700 when selected.
       navigationBarTheme: NavigationBarThemeData(
-        height: 64,
+        height: PlinthLayout.navFloating,
         elevation: 0,
         backgroundColor: p.nav,
         surfaceTintColor: Colors.transparent,
         indicatorColor: p.navIndicator,
-        indicatorShape: pill,
+        indicatorShape: const StadiumBorder(),
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         labelTextStyle: WidgetStateProperty.resolveWith(
-          (s) => TextStyle(
-            fontFamily: textFamily,
-            fontFamilyFallback: textFallback,
-            fontSize: 13,
-            height: 16 / 13,
-            fontWeight: s.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500,
+          (s) => PlinthType.label.copyWith(
+            fontWeight: s.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w600,
             color: s.contains(WidgetState.selected) ? p.ink : p.ink2,
           ),
         ),
         iconTheme: WidgetStateProperty.resolveWith(
-          (s) => IconThemeData(size: 24, color: s.contains(WidgetState.selected) ? p.onAccentSoft : p.ink2),
+          (s) => IconThemeData(
+            size: PlinthLayout.iconLg,
+            color: s.contains(WidgetState.selected) ? p.onAccentSoft : p.ink2,
+          ),
         ),
       ),
-      // DESIGN §4.2 and §3.4: one primary action, 52 px pills, 48 dp targets.
+      // App UI v2: radius 16, 56 dp primary, 48 dp secondary, labels 16 · 700
+      // on one line.
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: p.accent,
           foregroundColor: p.onAccent,
-          minimumSize: const Size(48, 52),
-          shape: pill,
+          minimumSize: const Size(48, PlinthLayout.buttonApp),
+          shape: button,
           textStyle: text.labelLarge,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: p.ink,
-          minimumSize: const Size(48, 48),
-          shape: pill,
+          minimumSize: const Size(48, PlinthLayout.buttonSecondaryApp),
+          shape: button,
           side: BorderSide(color: p.ink),
           textStyle: text.labelLarge,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: p.ink,
-          minimumSize: const Size(48, 48),
-          shape: pill,
-          textStyle: text.labelLarge?.copyWith(decoration: TextDecoration.underline),
+          minimumSize: const Size(48, PlinthLayout.touchApp),
+          shape: button,
+          textStyle: text.labelLarge?.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(foregroundColor: p.ink, minimumSize: const Size(48, 48)),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: p.track,
+        hintStyle: text.bodyLarge?.copyWith(color: p.ink2),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        border: OutlineInputBorder(borderRadius: field, borderSide: BorderSide.none),
+        enabledBorder: OutlineInputBorder(borderRadius: field, borderSide: BorderSide.none),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: field,
+          borderSide: BorderSide(color: p.focus, width: 2),
+        ),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? p.onAccent : p.ink2),
+        trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? p.accent : p.track),
+        trackOutlineColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected) ? Colors.transparent : p.lineStrong,
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        fillColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? p.accent : null),
+        checkColor: WidgetStatePropertyAll(p.onAccent),
       ),
       // Sheets float, so they are the one place with a shadow (DESIGN §3.4).
       bottomSheetTheme: BottomSheetThemeData(
@@ -138,18 +173,26 @@ abstract final class AppTheme {
         shadowColor: shadow,
         showDragHandle: true,
         dragHandleColor: p.lineStrong,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+        dragHandleSize: const Size(36, 4),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(PlinthRadius.sheet)),
+        ),
       ),
       listTileTheme: ListTileThemeData(
         iconColor: p.ink2,
         textColor: p.ink,
+        titleTextStyle: text.titleMedium,
+        subtitleTextStyle: text.bodySmall,
         minVerticalPadding: 12,
+        minTileHeight: PlinthLayout.rowMin,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: p.ink,
         contentTextStyle: text.bodyMedium?.copyWith(color: p.bg),
         behavior: SnackBarBehavior.floating,
+        shape: button,
+        elevation: 0,
       ),
       splashFactory: InkSparkle.splashFactory,
       visualDensity: VisualDensity.standard,
@@ -158,44 +201,27 @@ abstract final class AppTheme {
     );
   }
 
-  /// DESIGN §3.3, Android sp. Tabular, lining numerals throughout.
+  /// App UI v2 type scale (benchmark-thapki.md; PlinthType from the tokens):
+  /// Bricolage Grotesque 700 for display, screen titles and section headings;
+  /// Figtree for everything else. Tabular, lining numerals throughout.
   static TextTheme _textTheme(PlinthTokens p) {
-    const numerals = PlinthType.numerals;
-    TextStyle display(double size, double height) => TextStyle(
-      fontFamily: displayFamily,
-      fontWeight: FontWeight.w800,
-      fontSize: size,
-      height: height,
-      letterSpacing: -0.02 * size,
-      color: p.ink,
-      fontFeatures: numerals,
-    );
-    TextStyle body(double size, double height, {FontWeight weight = FontWeight.w400, Color? color}) => TextStyle(
-      fontFamily: textFamily,
-      fontFamilyFallback: textFallback,
-      fontWeight: weight,
-      fontSize: size,
-      height: height,
-      letterSpacing: 0,
-      color: color ?? p.ink,
-      fontFeatures: numerals,
-    );
+    TextStyle ink(TextStyle s, [Color? c]) => s.copyWith(color: c ?? p.ink);
     return TextTheme(
-      displayLarge: display(36, 1.02),
-      displayMedium: display(36, 1.02),
-      displaySmall: display(36, 1.02),
-      headlineLarge: display(30, 1.08),
-      headlineMedium: display(26, 1.1),
-      headlineSmall: display(26, 1.1),
-      titleLarge: display(20, 1.2),
-      titleMedium: body(16, 1.4, weight: FontWeight.w600),
-      titleSmall: body(14, 1.4, weight: FontWeight.w600),
-      bodyLarge: body(18, 1.4),
-      bodyMedium: body(16, 1.55),
-      bodySmall: body(14, 1.45, color: p.ink2),
-      labelLarge: body(16, 1.25, weight: FontWeight.w600),
-      labelMedium: body(14, 1.3, weight: FontWeight.w600),
-      labelSmall: body(13, 1.4, color: p.muted),
+      displayLarge: ink(PlinthType.display),
+      displayMedium: ink(PlinthType.display),
+      displaySmall: ink(PlinthType.display),
+      headlineLarge: ink(PlinthType.title),
+      headlineMedium: ink(PlinthType.title),
+      headlineSmall: ink(PlinthType.title),
+      titleLarge: ink(PlinthType.section),
+      titleMedium: ink(PlinthType.rowTitle),
+      titleSmall: ink(PlinthType.meta.copyWith(fontWeight: FontWeight.w600)),
+      bodyLarge: ink(PlinthType.body),
+      bodyMedium: ink(PlinthType.body),
+      bodySmall: ink(PlinthType.meta, p.ink2),
+      labelLarge: ink(PlinthType.button),
+      labelMedium: ink(PlinthType.label),
+      labelSmall: ink(PlinthType.caption, p.muted),
     );
   }
 }

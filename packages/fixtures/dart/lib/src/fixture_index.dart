@@ -20,6 +20,9 @@ const Map<String, List<String>> plinthExpectedKeys = <String, List<String>>{
     'aurelia-heights-phase-2_kestrel-park_sapphire-grove-phase-1_coral-towers',
     'aurelia-heights-phase-2_kestrel-park_sapphire-grove-phase-1',
   ],
+  'consent_history': <String>[
+    'rohan',
+  ],
   'consent_withdraw': <String>[
     'C-1012-04',
     'C-1012-05',

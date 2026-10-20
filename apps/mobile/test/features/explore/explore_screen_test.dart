@@ -70,6 +70,10 @@ void main() {
 
   testWidgets('a corridor chip narrows the list to that corridor', (tester) async {
     await pumpPlinth(tester, location: Routes.explore);
+    // The chips are one horizontally scrolling row (app UI v2): bring the
+    // last one on screen first.
+    await tester.ensureVisible(find.text('New Gurugram'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('New Gurugram'));
     await tester.pumpAndSettle();
     expect(find.text('Coral Towers'), findsOneWidget);

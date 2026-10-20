@@ -207,6 +207,66 @@ export function makeExpectedB({ cat, ev, sc, dc, vec, X, B }) {
     };
   };
 
+  // ------------------------------------------------------------- consent_history (T45b)
+  // DESIGN §5b Rohan's consent history: every consent, newest first, with the status the
+  // ledger implies at the frozen clock (18 Oct 2026, 12:00 IST). Shape: consent_history.schema.json.
+  const consentHistory = () => {
+    const NOW = "2026-10-18T12:00:00+05:30";
+    const day = (ts) => ts.slice(0, 10);
+    const purpose = (code) => K.purposes.find((p) => p.code === code);
+    const items = K.consents
+      .filter((c) => c.principal === "rohan")
+      .sort((a, b) => b.granted_at.localeCompare(a.granted_at) || b.ref.localeCompare(a.ref))
+      .map((c) => {
+        const expired = c.expires_at !== null && c.expires_at <= NOW;
+        const ended = expired || (c.number_shared && c.ended_on !== null);
+        const endedOn = ended ? (expired ? day(c.expires_at) : c.ended_on) : null;
+        const live = !ended && c.number_shared;
+        const relay = K.relay_sessions.find((r) => r.consent === c.ref);
+        const activeLine = live
+          ? c.expires_at
+            ? `Number shared, until ${fmtDate(day(c.expires_at))}`
+            : "Number shared by your tap"
+          : ({
+              visit_share: "First name and a relay, not your number",
+              enquiry_share: "The enquiry fields you ticked and a relay, not your number",
+              agent_brief: "The brief fields you picked, not your number",
+            }[c.purpose_code] ?? "Active");
+        return {
+          ref: c.ref,
+          granted_on: day(c.granted_at),
+          party: c.party,
+          detail: c.detail,
+          purpose: c.purpose_code,
+          purpose_line: purpose(c.purpose_code).description,
+          channel: c.channel ?? "web",
+          notice_version: c.notice_version,
+          status: ended ? "ended" : "active",
+          status_line: ended ? `Ended ${fmtDate(endedOn)}` : activeLine,
+          number_shared: live,
+          access_until: live && c.expires_at ? day(c.expires_at) : null,
+          ended_on: endedOn,
+          withdrawn_at: null,
+          can_withdraw: true,
+          relay: relay
+            ? {
+                relay_id: relay.id,
+                open: true,
+                closes_on: relay.closes_at ? day(relay.closes_at) : null,
+                counts_toward_cap: false,
+              }
+            : null,
+        };
+      });
+    const who = whoHasMyNumber();
+    return {
+      schema: "plinth.consent_history/1",
+      count_line: who.count_line,
+      rule_line: who.rule_line,
+      items,
+    };
+  };
+
   // ------------------------------------------------------------- family_invite_preview (§4.11)
   const invitePreview = (code) => {
     const inv = F.invites.find((i) => i.code === code);
@@ -838,6 +898,7 @@ export function makeExpectedB({ cat, ev, sc, dc, vec, X, B }) {
     savedSearches,
     followingFeed,
     whoHasMyNumber,
+    consentHistory,
     invitePreview,
     alertPrefs,
     shareCard,

@@ -4,6 +4,7 @@ import 'package:plinth_contracts/plinth_contracts.dart';
 /// examples/(folder) → decode with the generated model, then encode again.
 final Map<String, Map<String, dynamic> Function(Map<String, dynamic>)> roundTrips = {
   'about': (json) => About.fromJson(json).toJson(),
+  'account_deletion': (json) => AccountDeletion.fromJson(json).toJson(),
   'afford_the_wait': (json) => AffordTheWait.fromJson(json).toJson(),
   'afford_the_wait_request': (json) => AffordTheWaitRequest.fromJson(json).toJson(),
   'alert_prefs': (json) => AlertPrefs.fromJson(json).toJson(),
@@ -13,9 +14,11 @@ final Map<String, Map<String, dynamic> Function(Map<String, dynamic>)> roundTrip
   'ask_request': (json) => AskRequest.fromJson(json).toJson(),
   'compare': (json) => Compare.fromJson(json).toJson(),
   'compare_request': (json) => CompareRequest.fromJson(json).toJson(),
+  'consent_history': (json) => ConsentHistory.fromJson(json).toJson(),
   'consent_withdrawal': (json) => ConsentWithdrawal.fromJson(json).toJson(),
   'cost_breakdown': (json) => CostBreakdown.fromJson(json).toJson(),
   'cost_breakdown_request': (json) => CostBreakdownRequest.fromJson(json).toJson(),
+  'data_export': (json) => DataExport.fromJson(json).toJson(),
   'developer_page': (json) => DeveloperPage.fromJson(json).toJson(),
   'doc_check': (json) => DocCheck.fromJson(json).toJson(),
   'doc_check_start_request': (json) => DocCheckStartRequest.fromJson(json).toJson(),
@@ -37,6 +40,7 @@ final Map<String, Map<String, dynamic> Function(Map<String, dynamic>)> roundTrip
   'payee_check': (json) => PayeeCheck.fromJson(json).toJson(),
   'payee_check_request': (json) => PayeeCheckRequest.fromJson(json).toJson(),
   'project_page': (json) => ProjectPage.fromJson(json).toJson(),
+  'relay_renewal': (json) => RelayRenewal.fromJson(json).toJson(),
   'request_project': (json) => RequestProject.fromJson(json).toJson(),
   'risk_summary': (json) => RiskSummary.fromJson(json).toJson(),
   'rpc_error': (json) => RpcError.fromJson(json).toJson(),

@@ -24,6 +24,7 @@ flutter:
     - assets/expected/alert_prefs/
     - assets/expected/alert_prefs_set/
     - assets/expected/compare/
+    - assets/expected/consent_history/
     - assets/expected/consent_withdraw/
     - assets/expected/cost_breakdown/
     - assets/expected/developer_page/

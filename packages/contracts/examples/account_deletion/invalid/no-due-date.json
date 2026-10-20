@@ -1,0 +1,11 @@
+{
+  "base": "rohan.json",
+  "why": "The erasure request always says when it is due (30 days).",
+  "expect": "",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/due_at"
+    }
+  ]
+}
