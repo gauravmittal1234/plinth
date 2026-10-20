@@ -182,8 +182,7 @@ begin
     from core.listed_phase_ids() as l(id)
     where core.phase_group_id(l.id) = p_group_id
   ) as x;
-  select coalesce(v_city, (y.v ->> 'city_slug')) into v_city
-  from (select core.phase_view(v_phase_ids[1]) as v) as y;
+  select coalesce(core.phase_view(v_phase_ids[1]) ->> 'city_slug', v_city) into v_city;
 
   select * into v_tr from core.current_fact('group', p_group_id, 'track_record.late12');
   if v_tr.id is not null then
@@ -413,7 +412,11 @@ declare
   v_bands text[];
   v_risk text;
   v_corridors text[];
-  v_outside record;
+  v_out_term text;
+  v_out_slug text;
+  v_out_name text;
+  v_out_plan text;
+  v_out_when text;
   v_name text;
   v_words text[];
 begin
@@ -456,7 +459,8 @@ begin
   where p.kind = 'corridor'
     and (v_rest ~ ('(^|\s)' || pg_catalog.regexp_replace(p.term, '([.^$*+?()\[\]{}|\\-])', '\\\1', 'g') || '(\s|$)')
          or (pg_catalog.length(p.term) >= 8 and extensions.word_similarity(p.term, v_rest) >= 0.75));
-  select p.* into v_outside
+  select p.term, p.slug, p.name, p.plan_line, p.plan_when
+    into v_out_term, v_out_slug, v_out_name, v_out_plan, v_out_when
   from core.search_places() p
   where p.kind = 'outside'
     and (v_rest ~ ('(^|\s)' || p.term || '(\s|$)')
@@ -476,7 +480,7 @@ begin
       'gurgaon', 'ggn', 'dwarka', 'expressway', 'road', 'extension', 'golf', 'course', 'noida', 'greater', 'west')
     and not exists (select 1 from core.search_places() p where p.term = w);
   if v_words is not null and v_bhk is null and v_budget is null and v_bands is null and v_corridors is null
-     and v_outside.term is null then
+     and v_out_term is null then
     -- Keep the words as typed ("Indigo Terraces").
     v_name := pg_catalog.btrim(pg_catalog.regexp_replace(coalesce(p_q, ''), '\s+', ' ', 'g'));
   elsif v_words is not null then
@@ -489,13 +493,13 @@ begin
     'corridors', pg_catalog.to_jsonb(v_corridors),
     'bands', pg_catalog.to_jsonb(v_bands),
     'low_note', v_risk = 'low',
-    'place', v_outside.slug,
-    'place_name', v_outside.name,
-    'plan_line', v_outside.plan_line,
-    'plan_when', v_outside.plan_when,
+    'place', v_out_slug,
+    'place_name', v_out_name,
+    'plan_line', v_out_plan,
+    'plan_when', v_out_when,
     'name', v_name,
     'name_only', v_words is not null and v_bhk is null and v_budget is null and v_bands is null
-      and v_corridors is null and v_outside.term is null);
+      and v_corridors is null and v_out_term is null);
 end
 $$;
 comment on function core.search_parse(text) is 'The deterministic query parser (runs before any AI): BHK, budget ("under 2.5 cr"), risk ("low risk" keeps Low and Moderate), corridors by name, synonym or typo (pg_trgm), places outside coverage, and leftover words that may name a project.';
@@ -614,7 +618,10 @@ declare
   v_back jsonb;
   v_back_labels text[];
   v_one jsonb;
-  v_unit record;
+  v_unit_label text;
+  v_unit_carpet numeric;
+  v_unit_price bigint;
+  v_unit_all_in bigint;
   v_meta jsonb;
 begin
   v_meta := pg_catalog.jsonb_build_object(
@@ -794,9 +801,9 @@ begin
       select r -> 'v' as v into v_one
       from pg_catalog.jsonb_array_elements(v_rows) r where r -> 'v' ->> 'slug' = v_back ->> 0;
       select u.label, u.carpet_sqft, li.base_price_inr,
-             (select f.value ->> 'all_in_inr' from core.phase_facts(u.phase_id, 'price.all_in') f
-               where f.value ->> 'unit' = u.label order by f.as_of desc limit 1) as all_in
-        into v_unit
+             (select (f.value ->> 'all_in_inr')::bigint from core.phase_facts(u.phase_id, 'price.all_in') f
+               where f.value ->> 'unit' = u.label order by f.as_of desc limit 1)
+        into v_unit_label, v_unit_carpet, v_unit_price, v_unit_all_in
       from core.unit_types u
       left join lateral (
         select li.base_price_inr from ws.price_list_items li join ws.price_lists pl on pl.id = li.price_list_id
@@ -812,11 +819,11 @@ begin
         'kind', 'drop_filter', 'label', 'Risk: add ' || core.list_join(v_back_labels), 'drop', 'bands',
         'brings_back', v_back) end,
       'detail_line', case
-        when v_one is not null and v_bhk is not null and v_unit.label is not null then
-          'It''s the only ' || v_area_name || ' project here with a ' || v_unit.label || ': '
-          || coalesce(core.fmt_count(pg_catalog.round(v_unit.carpet_sqft)::bigint) || ' sq ft carpet, ', '')
-          || coalesce('quoted from ' || ops.fmt_inr_short(v_unit.base_price_inr) || ', ', '')
-          || coalesce(ops.fmt_inr_short(v_unit.all_in::bigint) || ' all-in', 'all-in not known yet')
+        when v_one is not null and v_bhk is not null and v_unit_label is not null then
+          'It''s the only ' || v_area_name || ' project here with a ' || v_unit_label || ': '
+          || coalesce(core.fmt_count(pg_catalog.round(v_unit_carpet)::bigint) || ' sq ft carpet, ', '')
+          || coalesce('quoted from ' || ops.fmt_inr_short(v_unit_price) || ', ', '')
+          || coalesce(ops.fmt_inr_short(v_unit_all_in) || ' all-in', 'all-in not known yet')
           || '. Its delivery risk is ' || (v_one ->> 'band_label') || '.'
         when v_back is not null then pg_catalog.jsonb_array_length(v_back) || ' projects come back if you add '
           || core.list_join(v_back_labels) || '.'

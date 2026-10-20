@@ -625,7 +625,8 @@ declare
   v_steps jsonb;
   v_demand core.editorial_notes%rowtype;
   v_slab integer;
-  v_missing record;
+  v_missing_quarter text;
+  v_missing_fact uuid;
   v_marker text;
   v_rule_line text := 'Same corridor, lower band, all-in within 20%. Nobody pays to appear.';
   v_track jsonb;
@@ -658,21 +659,21 @@ begin
   if (p_view ->> 'show_band')::boolean then
     select * into v_demand from core.editorial('phase', v_phase_id, 'demand');
     select ts.slab into v_slab from core.tower_slabs(v_phase_id) ts where ts.tower = v_demand.body ->> 'tower';
-    select q.quarter, q.due_on, (
+    select q.quarter, (
              select f.id from core.facts f
              where f.subject_type = 'registration' and f.subject_id = q.registration_id
                and f.attribute = 'qpr.missing' and f.value ->> 'quarter' = q.quarter
                and f.superseded_by is null and f.learned_at <= ops.now()
-             order by f.learned_at desc limit 1) as fact_id
-      into v_missing
+             order by f.learned_at desc limit 1)
+      into v_missing_quarter, v_missing_fact
     from core.qpr_filings q
     where q.registration_id = (p_view ->> 'reg_id')::uuid and q.status = 'missing' and q.due_on <= ops.today()
     order by q.quarter desc limit 1;
-    if v_missing.quarter is not null then
+    if v_missing_quarter is not null then
       select n.public_marker_text into v_marker
       from core.band_notices n
       where n.phase_id = v_phase_id and n.status = 'pending' and n.public_marker_text is not null
-        and v_missing.fact_id = any (n.trigger_fact_ids)
+        and v_missing_fact = any (n.trigger_fact_ids)
       order by n.sent_at desc nulls last limit 1;
     end if;
 
@@ -700,8 +701,8 @@ begin
             || ops.fmt_month((p_view ->> 'original_completion')::date) || ', rent and pre-EMI cost about '
             || (p_afford -> 'delay' ->> 'cost_label') || ' more on our default loan.'
           else 'About 12 months of rent and pre-EMI, in case keys come late.' end),
-        core.step('Watch the next QPR.', case when v_missing.quarter is not null
-          then ops.fmt_quarter(v_missing.quarter) || ' is not on ' || (p_view ->> 'authority_short') || ' yet.'
+        core.step('Watch the next QPR.', case when v_missing_quarter is not null
+          then ops.fmt_quarter(v_missing_quarter) || ' is not on ' || (p_view ->> 'authority_short') || ' yet.'
             -- The step names the marker's condition only; the risk card says who hears first.
             || coalesce(' ' || pg_catalog.regexp_replace(v_marker, '\s*;[^;]*$', '.'), '')
           else 'We tell you the day it is filed, or the day it is late.' end))
@@ -809,8 +810,10 @@ declare
   v_phase_id uuid := (p_view ->> 'id')::uuid;
   v_brand text := p_view ->> 'group_brand';
   v_plan ws.payment_plans%rowtype;
-  v_first record;
-  v_last record;
+  v_first_label text;
+  v_first_pct numeric;
+  v_last_label text;
+  v_last_pct numeric;
   v_n integer;
   v_demand core.editorial_notes%rowtype;
   v_slab integer;
@@ -835,15 +838,15 @@ begin
 
   if v_plan.id is not null then
     select pg_catalog.count(*)::integer into v_n from ws.payment_plan_stages s where s.plan_id = v_plan.id;
-    select s.label, s.pct into v_first from ws.payment_plan_stages s where s.plan_id = v_plan.id order by s.seq limit 1;
-    select s.label, s.pct into v_last from ws.payment_plan_stages s where s.plan_id = v_plan.id order by s.seq desc limit 1;
+    select s.label, s.pct into v_first_label, v_first_pct from ws.payment_plan_stages s where s.plan_id = v_plan.id order by s.seq limit 1;
+    select s.label, s.pct into v_last_label, v_last_pct from ws.payment_plan_stages s where s.plan_id = v_plan.id order by s.seq desc limit 1;
     select pg_catalog.array_agg(core.fmt_num(d.due_pct) || '% in Tower ' || d.tower order by d.tower) into v_by_tower
     from core.plan_tower_dues(v_phase_id, v_plan.id) d;
     v_plans := v_plans || core.para(null,
       core.possessive(v_brand) || ' plan for ' || (p_view ->> 'label') || ' is '
       || pg_catalog.replace(v_plan.kind, '_', '-') || ': ' || v_n || ' stages, from '
-      || core.fmt_num(v_first.pct) || '% on ' || pg_catalog.lower(v_first.label) || ' to '
-      || core.fmt_num(v_last.pct) || '% on ' || pg_catalog.lower(v_last.label)
+      || core.fmt_num(v_first_pct) || '% on ' || pg_catalog.lower(v_first_label) || ' to '
+      || core.fmt_num(v_last_pct) || '% on ' || pg_catalog.lower(v_last_label)
       || '. It is under “From the developer” in Homes.');
   end if;
   v_plans := v_plans || pg_catalog.jsonb_build_array(
