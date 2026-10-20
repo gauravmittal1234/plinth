@@ -1,9 +1,11 @@
 -- T13 · api.about (API_CONTRACTS §3.1; WebAbout): the identity register with founder
 -- placeholders, the calibration table with the "Illustrative numbers" pill, money (never from
 -- developers; "Loan checks arrive in 2027"), response times and coverage.
+-- Money lines updated by lead/20261103000100_lead_free_launch_about_money.sql (founder decision,
+-- 20 Oct 2026): free at launch, no Pro plan, no agent fee.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(10);
+select plan(13);
 
 select ok(to_regprocedure('api.about()') is not null, 'api.about() exists');
 select ok(
@@ -34,6 +36,18 @@ select is((select j -> 'calibration' ->> 'first_public_bands_on' from t13_a), '2
 select is((select j -> 'money' ->> 'never_line' from t13_a), 'No developer pays us. Ever.', 'no developer pays us');
 select ok((select j -> 'money' -> 'lines' ? 'Loans: Loan checks arrive in 2027. No lender pays us in R1.' from t13_a),
   'loans: "Loan checks arrive in 2027", no lender paid in R1');
+select ok((select j -> 'money' -> 'lines'
+    ? 'Buyers: free. Every band, reason, source, alert and comparison costs nothing while we launch.' from t13_a),
+  'buyers: free while we launch, every band, reason, source, alert and comparison');
+select ok((select j -> 'money' -> 'lines' ? 'Agents: no fee to us. We earn nothing when you choose an agent.' from t13_a),
+  'agents: no fee to us, we earn nothing when you choose an agent');
+select ok(
+  not exists (
+    select 1 from t13_a, pg_catalog.jsonb_array_elements_text(j -> 'money' -> 'lines') line
+    where line like '%₹999%'
+  ),
+  'no money line names a Pro price (free at launch, founder decision 20 Oct 2026)'
+);
 
 select * from finish();
 rollback;
