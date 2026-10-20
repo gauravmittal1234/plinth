@@ -50,7 +50,10 @@ class AlreadyBookedSection extends ConsumerWidget {
           if (booked) ...[
             const SizedBox(height: PlinthSpace.s12),
             DecoratedBox(
-              decoration: BoxDecoration(color: tokens.chipFillOnTrack, borderRadius: BorderRadius.circular(PlinthRadius.pill)),
+              decoration: BoxDecoration(
+                color: tokens.chipFillOnTrack,
+                borderRadius: BorderRadius.circular(PlinthRadius.pill),
+              ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
                 child: Text(
@@ -102,7 +105,10 @@ class _Right extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(heading, style: PlinthType.body.copyWith(fontWeight: FontWeight.w700, color: tokens.ink)),
+        Text(
+          heading,
+          style: PlinthType.body.copyWith(fontWeight: FontWeight.w700, color: tokens.ink),
+        ),
         const SizedBox(height: 4),
         Text(body, style: PlinthType.body.copyWith(height: 1.5, color: tokens.ink2)),
       ],

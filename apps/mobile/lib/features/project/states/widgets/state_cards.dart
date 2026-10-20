@@ -39,7 +39,10 @@ class _FlagPill extends StatelessWidget {
       decoration: BoxDecoration(color: tokens.track, borderRadius: BorderRadius.circular(PlinthRadius.pill)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-        child: Text(label, style: PlinthType.small.copyWith(fontWeight: FontWeight.w600, color: tokens.ink)),
+        child: Text(
+          label,
+          style: PlinthType.small.copyWith(fontWeight: FontWeight.w600, color: tokens.ink),
+        ),
       ),
     );
   }
@@ -83,10 +86,7 @@ class RedFlagRuleCard extends StatelessWidget {
           Text(rule.line, style: PlinthType.body.copyWith(height: 1.5, color: tokens.ink)),
           if (match != null) ...[
             const SizedBox(height: 10),
-            Text(
-              '${match.title}. ${match.line}',
-              style: PlinthType.small.copyWith(color: tokens.ink2, height: 1.4),
-            ),
+            Text('${match.title}. ${match.line}', style: PlinthType.small.copyWith(color: tokens.ink2, height: 1.4)),
           ],
           const SizedBox(height: 12),
           Text(ProjectStatesCopy.redFlagExplainer, style: PlinthType.small.copyWith(color: tokens.muted, height: 1.4)),
@@ -205,16 +205,28 @@ class _RecordRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(record.chip, style: PlinthType.small.copyWith(fontWeight: FontWeight.w600, color: tokens.ink2)),
+        Text(
+          record.chip,
+          style: PlinthType.small.copyWith(fontWeight: FontWeight.w600, color: tokens.ink2),
+        ),
         const SizedBox(height: 4),
         Text(record.line, style: PlinthType.body.copyWith(color: tokens.ink)),
         if (age != null) ...[
           const SizedBox(height: 10),
-          _AgeBar(fraction: (age / barMax).clamp(0.0, 1.0), markerFraction: (staleDays / barMax).clamp(0.0, 1.0), stale: stale),
+          _AgeBar(
+            fraction: (age / barMax).clamp(0.0, 1.0),
+            markerFraction: (staleDays / barMax).clamp(0.0, 1.0),
+            stale: stale,
+          ),
           const SizedBox(height: 4),
           Text(
-            stale ? '${ProjectStatesCopy.daysOld(age)} · ${ProjectStatesCopy.staleTag}' : ProjectStatesCopy.daysOld(age),
-            style: PlinthType.small.copyWith(color: stale ? tokens.ink : tokens.muted, fontWeight: stale ? FontWeight.w700 : null),
+            stale
+                ? '${ProjectStatesCopy.daysOld(age)} · ${ProjectStatesCopy.staleTag}'
+                : ProjectStatesCopy.daysOld(age),
+            style: PlinthType.small.copyWith(
+              color: stale ? tokens.ink : tokens.muted,
+              fontWeight: stale ? FontWeight.w700 : null,
+            ),
           ),
         ],
       ],
@@ -236,7 +248,9 @@ class _AgeBar extends StatelessWidget {
       height: 8,
       child: Stack(
         children: [
-          DecoratedBox(decoration: BoxDecoration(color: tokens.track, borderRadius: BorderRadius.circular(4))),
+          DecoratedBox(
+            decoration: BoxDecoration(color: tokens.track, borderRadius: BorderRadius.circular(4)),
+          ),
           FractionallySizedBox(
             widthFactor: fraction,
             child: DecoratedBox(
