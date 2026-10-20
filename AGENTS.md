@@ -110,3 +110,5 @@ The founder's plan has usage limits, so efficiency is part of quality.
 5. **Visual checks:** no screenshots or browser sessions unless you are fixing a visual or layout bug.
 6. **Finishing:** commit in small steps. When local acceptance passes, push, open the PR against `main`, and **stop**. Don't wait for or poll CI; the lead watches CI and sends you only the failing lines.
 7. **Scratch files:** prefix them with your task id (e.g. `t23-…`). The session scratchpad is shared.
+8. **E2E on a shared machine:** Playwright reuses any server on its port and skips the build when `.next/BUILD_ID` exists. Always run `PLINTH_DATA=fixtures npm run build`, then `PLAYWRIGHT_PORT=31NN npm run e2e -- <spec>`, with NN unique to your task. Never use 3100.
+9. **No confirmation without a record:** UI confirms only what an RPC returned (INTEGRATION_NOTES, "Lead review of M1 screens").
