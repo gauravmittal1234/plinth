@@ -8,6 +8,7 @@ import 'package:plinth/app/not_found_screen.dart';
 import 'package:plinth/app/router.dart';
 import 'package:plinth/app/routes.dart';
 import 'package:plinth/data/session.dart';
+import 'package:plinth/features/risk/risk_screen.dart' show riskScreenKey;
 
 import '../helpers/app_harness.dart';
 
@@ -79,7 +80,13 @@ void main() {
     for (final MapEntry(key: pattern, value: s) in samples.entries) {
       routerOf(container).go(s.location);
       await tester.pumpAndSettle();
-      expect(find.text(s.artboard), findsOneWidget, reason: '$pattern should show ${s.artboard}');
+      // AppRisk (T32) is filled in: its own tests cover its content; here we
+      // only confirm the route resolves to it, by its root key.
+      if (pattern == Routes.risk) {
+        expect(find.byKey(riskScreenKey), findsOneWidget, reason: '$pattern should show AppRisk');
+      } else {
+        expect(find.text(s.artboard), findsOneWidget, reason: '$pattern should show ${s.artboard}');
+      }
       expect(find.byType(NavigationBar), s.tabs ? findsOneWidget : findsNothing, reason: '$pattern tabs');
       expect(find.byType(NotFoundScreen), findsNothing, reason: pattern);
       expect(tester.takeException(), isNull, reason: pattern);
