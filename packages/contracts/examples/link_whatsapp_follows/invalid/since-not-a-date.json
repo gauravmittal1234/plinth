@@ -1,0 +1,12 @@
+{
+  "base": "brought.json",
+  "why": "since is the IST date the number followed it (YYYY-MM-DD).",
+  "expect": "/follows/0/since",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/follows/0/since",
+      "value": "14 Sep 2026"
+    }
+  ]
+}

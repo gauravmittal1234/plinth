@@ -1,0 +1,21 @@
+{
+  "schema": "plinth.link_whatsapp_follows/1",
+  "accepted": true,
+  "linked": true,
+  "follows": [
+    {
+      "slug": "aurelia-heights-phase-2",
+      "since": "2026-09-14"
+    },
+    {
+      "slug": "kestrel-park",
+      "since": "2026-10-09"
+    }
+  ],
+  "cost_sheets": [
+    {
+      "label": "Aurelia Heights, 3 BHK cost sheet",
+      "saved_on": "2026-10-02"
+    }
+  ]
+}
