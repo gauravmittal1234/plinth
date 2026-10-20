@@ -1,0 +1,81 @@
+# ci-evals (owner: T63). BUILD_PLAN §14 hard rule 7; WORK_BREAKDOWN T63.
+#   guard   no workflow but nightly.yml may set AI_MODE to anything but recorded
+#   evals   in evals/: fmt, lint, type-check, the harness tests, the self-test, then every eval set,
+#           all in recorded mode: no secrets, no network permission, no model call, no cost.
+# Live evals run only in nightly.yml (adding them there is the lead's call).
+# Lean on minutes (DECISIONS E-9): a path filter, and superseded runs are cancelled.
+# Skipped jobs report success, so this check can be required without blocking other PRs.
+name: ci-evals
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-evals-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    name: evals or AI changed?
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      ai: ${{ steps.filter.outputs.ai }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            ai:
+              - 'evals/**'
+              - 'supabase/functions/_shared/ai/**'
+              - 'supabase/functions/_shared/core/**'
+              - 'packages/fixtures/recorded/ai/**'
+              - 'packages/fixtures/media/docs/**'
+              - 'packages/contracts/catalogues/ai_tasks.json'
+              - 'packages/contracts/schemas/**'
+              - '.github/workflows/**'
+
+  evals:
+    name: evals (recorded)
+    needs: changes
+    if: needs.changes.outputs.ai == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: evals
+    env:
+      AI_MODE: recorded
+      AI_PROVIDER_TIER: free
+      PLINTH_ENV: test
+    steps:
+      - uses: actions/checkout@v7
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: deno --version
+      - name: Guard (only nightly.yml may run AI live)
+        run: deno task guard
+      - name: Format
+        run: deno fmt --check
+      - name: Lint
+        run: deno lint
+      - name: Type-check the harness
+        run: deno check lib/
+      - name: Harness tests (no network permission)
+        run: deno task test
+      - name: Self-test (the toy set passes, the broken one fails)
+        run: deno task eval -- self-test
+      - name: Every eval set, recorded
+        run: deno task eval -- --all

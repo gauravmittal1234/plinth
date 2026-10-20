@@ -1,0 +1,26 @@
+{
+  "format": "plinth.eval_gates/1",
+  "task": "extract.toy_claims@1",
+  "catalogue": "../catalogue.json",
+  "prompts": "../prompts",
+  "readers": ["a", "b"],
+  "compare": {
+    "items": "claims",
+    "key": ["type"],
+    "fields": {
+      "value": {
+        "by": "type",
+        "kinds": { "price": "inr", "possession": "date", "area": "area", "rera_number": "text" },
+        "default": "text"
+      }
+    }
+  },
+  "confidence_bar": 0.8,
+  "gates": {
+    "precision_min": 0.95,
+    "recall_min": 0.8,
+    "agreement_rate_min": 0.8,
+    "agreed_but_wrong_max": 0,
+    "errors_max": 0
+  }
+}

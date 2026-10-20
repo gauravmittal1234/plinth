@@ -1,0 +1,20 @@
+{
+  "format": "plinth.eval_golden/1",
+  "id": "flyer-1",
+  "note": "Toy flyer for the harness self-test; fictional project and test-block phone number.",
+  "input": {
+    "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "lines": [
+      { "id": "L1", "text": "Skyline Residences Phase 1 · RERA GGM/TOY/2026/01" },
+      { "id": "L2", "text": "3 BHK from ₹1.95 Cr" },
+      { "id": "L3", "text": "Possession Dec 2028 · sales +91 99000 00301" }
+    ]
+  },
+  "expected": {
+    "claims": [
+      { "type": "rera_number", "value": "GGM/TOY/2026/01" },
+      { "type": "price", "value": "₹1.95 Cr" },
+      { "type": "possession", "value": "Dec 2028" }
+    ]
+  }
+}

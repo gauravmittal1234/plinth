@@ -1,0 +1,12 @@
+{
+  "format": "plinth.eval_golden/1",
+  "id": "flyer-3",
+  "note": "No recorded response exists for this input: the runner reports recorded_miss as a case error.",
+  "input": {
+    "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "lines": [{ "id": "L1", "text": "Hillcrest Enclave · RERA GGM/TOY/2026/03" }]
+  },
+  "expected": {
+    "claims": [{ "type": "rera_number", "value": "GGM/TOY/2026/03" }]
+  }
+}
