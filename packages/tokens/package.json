@@ -7,14 +7,15 @@
   "exports": {
     ".": "./src/index.ts",
     "./css": "./dist/tokens.css",
-    "./theme.css": "./dist/theme.css"
+    "./theme.css": "./dist/theme.css",
+    "./tokens.json": "./tokens.json"
   },
   "scripts": {
-    "build": "echo '@plinth/tokens: the Style Dictionary build arrives with T01'",
-    "gen": "echo '@plinth/tokens: token generation arrives with T01'",
+    "build": "node scripts/build.mjs",
+    "gen": "node scripts/build.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@plinth/config": "*",

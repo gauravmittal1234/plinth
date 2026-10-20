@@ -1,0 +1,5 @@
+# `dart test` runs only the pure-Dart tests (no Flutter engine needed).
+# `flutter test` lists every *_test.dart under test/ itself, so it also runs
+# test/flutter/ (ThemeExtension, lerp, TextStyles).
+paths:
+  - test/values
