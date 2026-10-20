@@ -15,7 +15,7 @@ Sources: `product/PRD.md` (§6, §8, §12–§16, §20), `product/inputs/platfor
 5. **Consent is a database constraint.** A buyer's number reaches a party only through a row the buyer's own tap created. Triggers and pgTAP tests enforce this: "never shared without your tap".
 6. **Exclusive file ownership.** Each task in WORK_BREAKDOWN.md owns its paths. Two parallel agents never edit the same file. Dependencies are frozen after T00; only the integrator adds one.
 7. **Boring tech, pinned.** Supabase, Next.js, Flutter, Python. No Kubernetes, no Redis, no search cluster, no second backend language.
-8. **No scraping before the legal memo.** The HARERA pipeline is built and tested on saved fixture HTML/PDF/JSON only. Live fetch is behind two keys: the `harera_live_fetch` flag *and* `HARERA_LIVE_FETCH_APPROVED=yes`.
+8. **Live HARERA fetch is a switched, polite job.** Tests and CI always run on saved fixture HTML/PDF/JSON. Live fetch runs only in the scheduled pipeline job, behind two keys that act as an operational kill switch: the `harera_live_fetch` flag *and* `HARERA_LIVE_FETCH_APPROVED=yes`. Rate limits: at most one request in flight per host. Legal review is post-launch (founder, 20 Oct 2026; FOUNDER_QUESTIONS P8); it no longer gates live data.
 
 ---
 
@@ -39,7 +39,7 @@ R1 runs about **26 weeks** (PRD D14). Gurugram only (D2). Web, Android and Whats
 
 ## 3. Milestones M0–M6
 
-Week 1 starts **Mon 19 Oct 2026**. Agent throughput can compress M1–M5. External gates cannot be compressed: Meta business verification, TRAI DLT, the Play Console organisation account, the legal memo and the HARERA permission letter. Start those this week (SETUP_FOR_FOUNDER.md).
+Week 1 starts **Mon 19 Oct 2026**. Agent throughput can compress M1–M5. External setup cannot be compressed: Meta business verification, TRAI DLT, the Play Console organisation account, and a GCP project in asia-south1 for live HARERA fetch from an Indian IP. Start those this week (SETUP_FOR_FOUNDER.md). The legal memo and HARERA permission letter are post-launch (FOUNDER_QUESTIONS P8).
 
 | M | Weeks (dates) | Theme | Scope |
 |---|---|---|---|
@@ -49,9 +49,9 @@ Week 1 starts **Mon 19 Oct 2026**. Agent throughput can compress M1–M5. Extern
 | **M3** | W9–W13 (21 Dec–24 Jan) | Money and claims checks | One `doc-check` pipeline (OCR → two readers → rules) for Claims, Cost sheet, Pay-as-built and Before you pay, on web, app and WhatsApp. Cost rules v2026.10 in SQL. Afford the wait. Admin concierge queue for low-confidence reads |
 | **M4** | W12–W16 (11 Jan–14 Feb) | Developer workspace and due process | Claim and verify, inbox and site check-in, Live Record `/r/` links and scan counts, facts editor, three lanes (CL-/D-/EV-), 7-day notice and 48-hour heads-up workflow, developer replies, facts-only mode, buyer signals (k ≥ 20), phone capture, WaDevAlerts, legal intake (LN-) |
 | **M5** | W15–W20 (1 Feb–14 Mar) | Visits, agents, Ask Plinth, camera | Visit booking (WhatsApp Flow, web, app), visit pass with 5 questions, recap check, agent of record, the thin broker layer, Ask Plinth (text and voice), AppScan (QR, Where am I?, claims camera), Visualise beta with labels and C2PA |
-| **M6** | W19–W26 (1 Mar–25 Apr 2027) | Real data, hardening, launch | Legal memo → live HARERA fetch from an Indian IP, backfill, entity resolution, first real calibration. S1 truth panel public, then the S2 bands gate. Performance, security and DPDP review. Templates approved. Play production. Runbooks. **Public launch target: week of 19 Apr 2027** |
+| **M6** | W19–W26 (1 Mar–25 Apr 2027) | Real data, hardening, launch | Live HARERA fetch from an Indian IP, backfill, entity resolution, first real calibration. S1 truth panel public, then the S2 bands gate. Performance, security and DPDP review. Templates approved. Play production. Runbooks. **Public launch target: week of 19 Apr 2027** |
 
-**Fast path.** If the legal memo lands by W4, pull M6's data track into M2–M3. It is independent of the UI work, and PRD §15 wants S1 SEO pages live around week 6.
+**Fast path (taken, 20 Oct 2026).** The legal memo is no longer a gate, so M6's data track (live fetch, backfill, entity resolution, first calibration) moves into M2–M3 as soon as the GCP project exists. It is independent of the UI work, and PRD §15 wants S1 SEO pages live around week 6.
 
 ### Exit criteria (each must be demonstrable in CI or on the dev environment)
 
@@ -100,7 +100,7 @@ Week 1 starts **Mon 19 Oct 2026**. Agent throughput can compress M1–M5. Extern
 - The Ask Plinth eval set passes its groundedness and refusal gates. All four edge answers are templated. QR, Where am I? and the claims camera work on a mid-range Android phone. Every staged image carries a burned label and C2PA.
 
 **M6: Launch**
-- Live HARERA runs from an Indian IP: ≥ 250 Gurugram projects ingested with QPR history (PRD R0 exit), at most one request in flight per host, permission letter on file.
+- Live HARERA runs from an Indian IP: ≥ 250 Gurugram projects ingested with QPR history (PRD R0 exit), at most one request in flight per host.
 - The S1 gate (methodology v0.9 published, evidence vault live, 14-day developer notice delivered) is passed. The S2 gate is passed or consciously deferred.
 - Security review and RLS audit are clean. The DPDP review is done. WhatsApp templates are approved. The Play production release is live.
 - p75 LCP ≤ 2.5 s. Error budget is green for 14 days. Breach, takedown and portal-change runbooks are drilled once.

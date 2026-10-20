@@ -94,7 +94,7 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
   - **DB (T39 gate or the next DB task):**
     - Create `ops.job_runs`; pipelines log to JSONL until it exists.
     - Grant `pipeline_writer` read access to the flag (`harera_live_fetch`); today it reads as off, which is the safe default.
-  - **Live HARERA fetching:** stays off. It needs the `harera_live_fetch` flag, `HARERA_LIVE_FETCH_APPROVED=yes`, and a contact email, and it is always refused in CI and tests. The founder approves this only after the legal memo.
+  - **Live HARERA fetching:** stays off. It needs the `harera_live_fetch` flag, `HARERA_LIVE_FETCH_APPROVED=yes`, and a contact email, and it is always refused in CI and tests. The founder sets the approval key when the Cloud Run job is ready; the legal memo is post-launch (P8).
   - **T18:** add `plinth/sources/harera/cli.py` with `add_harera_parser`. Fixtures go in `tests/fixtures/harera/manifest.json`. Parse only snapshots that changed. Facts use `key_fields=("quarter",)`.
   - **Commit author:** T10's commits carry the auto-detected identity `macbook`. Squash-merging sets the author, so nothing needs rewriting.
 - **Stacking for wave 3:** T13 builds on T12's branch, and T18 builds on T10's. Screen tasks (T20+) need T14 and T16 together, so they start from a wave-2 integration branch the lead creates once T17, T29 and T03b finish.

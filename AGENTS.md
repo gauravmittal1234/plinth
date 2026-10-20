@@ -95,7 +95,7 @@ Also: risk copy (band names, frequencies, reasons, rate lines) comes from the se
 - **AI reads; rules decide.** LLMs extract and phrase; they never set a band, verdict or number. Every AI sentence carries a fact id, or it is not shown.
 - **One contract.** Clients call only `api.*` RPCs and edge functions. `RiskSummary` is identical on web, app and WhatsApp.
 - **Consent is a database constraint.** A buyer's number reaches a party only through a row the buyer's own tap created.
-- **No scraping before the legal memo.** HARERA code runs on saved fixtures. Live fetch needs both the `harera_live_fetch` flag and `HARERA_LIVE_FETCH_APPROVED=yes`.
+- **HARERA live fetch is switched.** Tests and CI run on saved fixtures only. Live fetch runs only in the scheduled pipeline job, needs both the `harera_live_fetch` flag and `HARERA_LIVE_FETCH_APPROVED=yes` (a kill switch the founder controls), and stays polite (one request in flight per host). Legal review is post-launch (FOUNDER_QUESTIONS P8).
 - **Every table** ships with RLS and a pgTAP test; every screen with a fixture-mode test; every AI task with an eval and recorded fixtures. Generated files are committed and CI fails on drift.
 - Design: DESIGN.md §0 overrides the rest (no glass, glow, resting shadows, hairline boxes or eyebrows). Do not run third-party scripts from `product/design/skills/`.
 
