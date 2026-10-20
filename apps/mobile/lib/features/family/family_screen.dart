@@ -7,7 +7,9 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../app/routes.dart';
 import '../../core/widgets/widgets.dart';
+import '../../data/api_client.dart' show noRetry;
 import '../../data/family.dart';
+import '../../data/follow.dart';
 import '../../data/session.dart';
 import '../onboarding/sign_in_sheet.dart';
 import 'family_copy.dart';
@@ -74,9 +76,29 @@ class _SignedOut extends StatelessWidget {
   }
 }
 
-/// The scope an invite covers. The real link, share text and rules come
-/// from the fixture (`_familyInviteProvider`); this only picks which one.
-enum _Scope { aurelia, all }
+/// One thing an invite can cover: a single followed project, or (when there
+/// are at least two) all of them. `key` is the project's slug, or `'all'`
+/// (`_familyInviteProvider` turns it back into a `FamilyInviteScope`: that
+/// contract class has no value equality of its own, so a provider family
+/// keyed on an instance of it would never hit its cache — see 1f31b1a's
+/// note on this file). Labels and slugs both come from
+/// `FollowingFeed.projects` — never hard-coded, so this works for any
+/// buyer's own follows, not only the fixture's four.
+class _ScopeChoice {
+  const _ScopeChoice({required this.key, required this.label});
+
+  final String key;
+  final String label;
+}
+
+List<_ScopeChoice> _scopeChoicesOf(c.FollowingFeed feed) {
+  final projects = feed.projects;
+  final choices = [for (final p in projects) _ScopeChoice(key: p.slug, label: p.name ?? p.slug)];
+  if (projects.length >= 2) {
+    choices.add(_ScopeChoice(key: 'all', label: 'All ${projects.length} projects'));
+  }
+  return choices;
+}
 
 class _Circle extends ConsumerStatefulWidget {
   const _Circle();
@@ -86,13 +108,13 @@ class _Circle extends ConsumerStatefulWidget {
 }
 
 class _CircleState extends ConsumerState<_Circle> {
-  _Scope _scope = _Scope.aurelia;
+  String? _selectedKey;
   String _inviteStatus = '';
 
   @override
   Widget build(BuildContext context) {
     final tokens = PlinthTokens.of(context);
-    final inviteAsync = ref.watch(_familyInviteProvider(_scope));
+    final feedAsync = ref.watch(followingFeedProvider);
     return ListView(
       padding: const EdgeInsets.fromLTRB(PlinthLayout.gutterPhone, 8, PlinthLayout.gutterPhone, 40),
       children: [
@@ -108,47 +130,18 @@ class _CircleState extends ConsumerState<_Circle> {
         const SizedBox(height: PlinthSpace.s8),
         Text(FamilyCopy.inviteSomeone, style: PlinthType.h3.copyWith(color: tokens.ink)),
         const SizedBox(height: PlinthSpace.s8),
-        Text(FamilyCopy.whatTheyFollow, style: PlinthType.small.copyWith(color: tokens.ink2)),
-        const SizedBox(height: PlinthSpace.s8),
-        PlinthSegmented<_Scope>(
-          options: const [
-            SegmentOption(_Scope.aurelia, FamilyCopy.scopeAurelia),
-            SegmentOption(_Scope.all, FamilyCopy.scopeAll),
-          ],
-          value: _scope,
-          onChanged: (s) => setState(() {
-            _scope = s;
-            _inviteStatus = '';
-          }),
-          semanticLabel: FamilyCopy.whatTheyFollow,
-        ),
-        const SizedBox(height: PlinthSpace.s12),
-        switch (inviteAsync) {
-          AsyncData(:final value) => Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              PlinthButton(
-                label: FamilyCopy.inviteOnWhatsApp,
-                glyph: KitGlyph.share,
-                onPressed: () => _shareInvite(value),
-              ),
-              const SizedBox(height: PlinthSpace.s8),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      _inviteStatus.isEmpty ? _bareLink(value.link) : _inviteStatus,
-                      style: PlinthType.small.copyWith(color: tokens.ink2),
-                    ),
-                  ),
-                  TextButton(onPressed: () => _copyLink(value), child: const Text(FamilyCopy.copyLink)),
-                ],
-              ),
-              const SizedBox(height: PlinthSpace.s12),
-              Text(value.privateLine, style: PlinthType.small.copyWith(color: tokens.ink)),
-            ],
+        switch (feedAsync) {
+          AsyncData(value: final cached?) => _InviteSection(
+            feed: cached.value,
+            selectedKey: _selectedKey,
+            inviteStatus: _inviteStatus,
+            onSelect: (key) => setState(() {
+              _selectedKey = key;
+              _inviteStatus = '';
+            }),
+            onStatus: (status) => setState(() => _inviteStatus = status),
           ),
-          AsyncError() => const SizedBox.shrink(),
+          AsyncError() => _honestLine(tokens, FamilyCopy.followsUnavailableLine),
           _ => const Padding(
             padding: EdgeInsets.symmetric(vertical: PlinthSpace.s12),
             child: Center(child: CircularProgressIndicator()),
@@ -171,29 +164,111 @@ class _CircleState extends ConsumerState<_Circle> {
     );
   }
 
+  Widget _honestLine(PlinthTokens tokens, String text) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: PlinthSpace.s8),
+    child: Text(text, style: PlinthType.body.copyWith(color: tokens.ink2)),
+  );
+}
+
+class _InviteSection extends ConsumerWidget {
+  const _InviteSection({
+    required this.feed,
+    required this.selectedKey,
+    required this.inviteStatus,
+    required this.onSelect,
+    required this.onStatus,
+  });
+
+  final c.FollowingFeed feed;
+  final String? selectedKey;
+  final String inviteStatus;
+  final ValueChanged<String> onSelect;
+  final ValueChanged<String> onStatus;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tokens = PlinthTokens.of(context);
+    final choices = _scopeChoicesOf(feed);
+    if (choices.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: PlinthSpace.s8),
+        child: Text(FamilyCopy.noProjectsToInviteLine, style: PlinthType.body.copyWith(color: tokens.ink2)),
+      );
+    }
+    final selected = choices.firstWhere((o) => o.key == selectedKey, orElse: () => choices.first);
+    final inviteAsync = ref.watch(_familyInviteProvider(selected.key));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(FamilyCopy.whatTheyFollow, style: PlinthType.small.copyWith(color: tokens.ink2)),
+        const SizedBox(height: PlinthSpace.s8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final choice in choices)
+              PlinthPill(label: choice.label, selected: choice.key == selected.key, onPressed: () => onSelect(choice.key)),
+          ],
+        ),
+        const SizedBox(height: PlinthSpace.s12),
+        switch (inviteAsync) {
+          AsyncData(:final value) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PlinthButton(
+                label: FamilyCopy.inviteOnWhatsApp,
+                glyph: KitGlyph.share,
+                onPressed: () => _shareInvite(context, value),
+              ),
+              const SizedBox(height: PlinthSpace.s8),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      inviteStatus.isEmpty ? _bareLink(value.link) : inviteStatus,
+                      style: PlinthType.small.copyWith(color: tokens.ink2),
+                    ),
+                  ),
+                  TextButton(onPressed: () => _copyLink(value), child: const Text(FamilyCopy.copyLink)),
+                ],
+              ),
+              const SizedBox(height: PlinthSpace.s12),
+              Text(value.privateLine, style: PlinthType.small.copyWith(color: tokens.ink)),
+            ],
+          ),
+          AsyncError() => Padding(
+            padding: const EdgeInsets.symmetric(vertical: PlinthSpace.s8),
+            child: Text(FamilyCopy.inviteNotReadyLine, style: PlinthType.small.copyWith(color: tokens.ink2)),
+          ),
+          _ => const Padding(
+            padding: EdgeInsets.symmetric(vertical: PlinthSpace.s12),
+            child: Center(child: CircularProgressIndicator()),
+          ),
+        },
+      ],
+    );
+  }
+
   String _bareLink(String link) => link.replaceFirst(RegExp(r'^https?://'), '');
 
-  Future<void> _shareInvite(c.FamilyInvite invite) async {
+  Future<void> _shareInvite(BuildContext context, c.FamilyInvite invite) async {
     await SharePlus.instance.share(ShareParams(text: invite.shareText));
-    if (!mounted) return;
-    setState(
-      () => _inviteStatus = 'WhatsApp is open with your message. Pick who to send it to; they opt in themselves.',
-    );
+    onStatus('WhatsApp is open with your message. Pick who to send it to; they opt in themselves.');
   }
 
   Future<void> _copyLink(c.FamilyInvite invite) async {
     await Clipboard.setData(ClipboardData(text: invite.link));
-    if (!mounted) return;
-    setState(() => _inviteStatus = 'Copied ${_bareLink(invite.link)}. ${invite.rules.join(' ')}');
+    onStatus('Copied ${_bareLink(invite.link)}. ${invite.rules.join(' ')}');
   }
 }
 
-final _familyInviteProvider = FutureProvider.family<c.FamilyInvite, _Scope>((ref, scope) {
-  final args = scope == _Scope.all
-      ? c.FamilyInviteScope(all: true)
-      : c.FamilyInviteScope(slugs: const ['aurelia-heights-phase-2']);
-  return ref.watch(familyRepositoryProvider).createInvite(args);
-});
+/// Keyed by a `_ScopeChoice.key` (a project slug, or `'all'`): a plain
+/// `String` has real value equality, so picking the same choice twice
+/// reuses the one request instead of sending a fresh one every rebuild.
+final _familyInviteProvider = FutureProvider.family<c.FamilyInvite, String>((ref, key) {
+  final scope = key == 'all' ? c.FamilyInviteScope(all: true) : c.FamilyInviteScope(slugs: [key]);
+  return ref.watch(familyRepositoryProvider).createInvite(scope);
+}, retry: noRetry);
 
 /// The signed-in buyer's own row: no name (none in the data layer yet), no
 /// join date (there is no "circle" record to date), just who they are.

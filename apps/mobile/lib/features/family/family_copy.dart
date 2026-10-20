@@ -19,12 +19,26 @@ abstract final class FamilyCopy {
   static const membersAppearLine = 'Members appear here once they join your circle.';
 
   static const inviteSomeone = 'Invite someone';
+
+  /// The scope picker's label. The choices themselves — one per followed
+  /// project, plus "All N projects" once there are at least two — are
+  /// built from `FollowingFeed.projects` (`_scopeChoicesOf`), never listed
+  /// here: a hard-coded "Aurelia Heights Ph 2" would be wrong for any buyer
+  /// who doesn't follow that phase.
   static const whatTheyFollow = 'What they follow with you';
-  static const scopeAurelia = 'Aurelia Heights Ph 2';
-  static const scopeAll = 'All 4 projects';
   static const inviteOnWhatsApp = 'Invite on WhatsApp';
   static const copyLink = 'Copy link';
   static const linkCopied = 'Copied';
+
+  /// `followingFeedProvider` itself failed to load.
+  static const followsUnavailableLine = 'Couldn’t load your followed projects, so there’s nothing to invite someone to yet.';
+
+  /// Loaded, but the buyer follows nothing yet.
+  static const noProjectsToInviteLine = 'Follow a project to invite someone to it.';
+
+  /// `api.family_invite_create` has no fixture answer for this particular
+  /// choice (only Aurelia Heights Ph 2 and "all" do, today).
+  static const inviteNotReadyLine = 'Invite isn’t ready for this one yet.';
 
   static const theyCanSee = 'They can see';
   static const theyCanSeeItems = [
