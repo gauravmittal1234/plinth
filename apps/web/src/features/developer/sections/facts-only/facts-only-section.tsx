@@ -12,7 +12,7 @@ export function FactsOnlySection({ notice }: { notice: FactsOnlyNotice }) {
   return (
     <SectionBand id={notice.anchor ?? FACTS_ONLY_COPY.anchor} tone="track">
       <div className="flex flex-col gap-5">
-        <h2 className="m-0 max-w-[22ch] text-balance font-display text-h2 font-extrabold">
+        <h2 className="m-0 max-w-[22ch] text-balance font-display text-section font-bold">
           {FACTS_ONLY_COPY.heading}
         </h2>
         <p className="m-0 max-w-measure text-small text-ink2">

@@ -11,7 +11,7 @@
 // already real: the per-project `family_line` the hero/projects sections
 // show ("Meera follows too · her father is invited"), the static "they
 // can/can't" rules the artboard writes, and these two working actions.
-import { Button, Pill, SectionBand, Toast } from "@plinth/web-ui";
+import { Button, SectionBand, SegmentedControl, Toast } from "@plinth/web-ui";
 import type { FamilyInvite, FollowedProject } from "@plinth/contracts";
 import { useId, useState, useTransition } from "react";
 import { addShortlistNoteAction, createFamilyInviteAction } from "../actions";
@@ -51,14 +51,15 @@ function InviteCard({
 
   return (
     <div className="flex flex-col gap-4 rounded-panel bg-bg-solid p-5 sm:p-7">
-      <div role="radiogroup" aria-label="Who to invite them to follow" className="flex flex-wrap gap-2">
-        <Pill as="button" pressed={scope === "one"} onClick={() => setScope("one")}>
-          {FAMILY_COPY.inviteThisProject}
-        </Pill>
-        <Pill as="button" pressed={scope === "all"} onClick={() => setScope("all")}>
-          {FAMILY_COPY.inviteAllProjects}
-        </Pill>
-      </div>
+      <SegmentedControl
+        ariaLabel="Who to invite them to follow"
+        value={scope}
+        onChange={setScope}
+        options={[
+          { value: "one", label: FAMILY_COPY.inviteThisProject },
+          { value: "all", label: FAMILY_COPY.inviteAllProjects },
+        ]}
+      />
       {scope === "one" ? (
         <>
           <label htmlFor={selectId} className="sr-only">
@@ -153,7 +154,7 @@ function NoteComposer({ projects }: { projects: readonly FollowedProject[] }) {
         });
       }}
     >
-      <h3 className="m-0 font-display text-h4 font-extrabold">{FAMILY_COPY.shortlistHeading}</h3>
+      <h3 className="m-0 font-display text-section font-bold">{FAMILY_COPY.shortlistHeading}</h3>
       <p className="m-0 text-small text-ink2">{FAMILY_COPY.shortlistSub}</p>
       <label htmlFor={selectId} className="text-small font-semibold">
         {FAMILY_COPY.noteLabel}
@@ -205,7 +206,7 @@ export function FamilySection({ projects }: { projects: readonly FollowedProject
     <SectionBand id="family" tone="track">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-2">
-          <h2 className="m-0 font-display text-h2 font-extrabold">{FAMILY_COPY.heading}</h2>
+          <h2 className="m-0 font-display text-section font-bold">{FAMILY_COPY.heading}</h2>
           <p className="m-0 max-w-[60ch] text-body text-ink2">{FAMILY_COPY.subheading}</p>
         </div>
 

@@ -19,14 +19,14 @@ export function DigestSection({ feed }: { feed: FollowingFeed }) {
     <SectionBand id="digest" tone="track">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <h2 className="m-0 font-display text-h2 font-extrabold">{DIGEST_COPY.heading}</h2>
+          <h2 className="m-0 font-display text-section font-bold">{DIGEST_COPY.heading}</h2>
           <p className="m-0 max-w-[60ch] text-body text-ink2">{DIGEST_COPY.subheading}</p>
         </div>
 
         {today && weekStart ? (
           <div className="flex flex-col gap-4 rounded-panel bg-bg-solid p-5 sm:p-7">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="m-0 font-display text-h4 font-extrabold">{DIGEST_COPY.weekHeading}</h3>
+              <h3 className="m-0 font-display text-section font-bold">{DIGEST_COPY.weekHeading}</h3>
               <p className="m-0 text-small text-ink2">
                 {`${formatDate(weekStart)} – ${formatDate(today)} · ${DIGEST_COPY.weekCount(week.length)}`}
               </p>

@@ -13,8 +13,9 @@
 @import "@plinth/web-ui/styles.css";
 
 :root {
-  /* next/font serves Bricolage Grotesque and Mukta under generated family names;
-     point the token families at them (DESIGN §3.3). */
+  /* next/font serves Bricolage Grotesque and Figtree under generated family
+     names; point the token families at them (UI v2, FOUNDER_QUESTIONS P10).
+     Noto Sans is the Devanagari fallback, not self-hosted here. */
   --pl-font-family-display: var(--font-plinth-display), system-ui, sans-serif;
   --pl-font-family-text: var(--font-plinth-text), "Noto Sans", system-ui, sans-serif;
 }

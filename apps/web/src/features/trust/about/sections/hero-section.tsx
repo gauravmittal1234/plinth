@@ -6,7 +6,7 @@ export function HeroSection({ about }: { about: About }) {
   return (
     <section aria-label="Who is Plinth" className="bg-bg py-18 text-ink md:py-30">
       <div className="mx-auto flex w-full max-w-[79rem] flex-col gap-5 px-4 sm:px-8">
-        <h1 className="m-0 max-w-[20ch] text-balance font-display text-h1 font-extrabold tracking-[-0.03em]">
+        <h1 className="m-0 max-w-[20ch] text-balance font-display text-h1 font-bold tracking-[-0.03em]">
           Who is Plinth?
         </h1>
         <p className="m-0 max-w-measure text-lead">

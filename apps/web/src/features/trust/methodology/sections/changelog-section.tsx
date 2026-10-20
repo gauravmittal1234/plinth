@@ -9,7 +9,7 @@ export function ChangelogSection({ methodology }: { methodology: Methodology }) 
   return (
     <section aria-labelledby="changelog-h" className="bg-track py-18 text-ink md:py-30">
       <div className="mx-auto flex w-full max-w-[79rem] flex-col gap-6 px-4 sm:px-8">
-        <h2 id="changelog-h" className="m-0 font-display text-h2 font-extrabold">
+        <h2 id="changelog-h" className="m-0 font-display text-section font-bold">
           What changed, and when?
         </h2>
         <p className="m-0 max-w-measure text-body text-ink2">
@@ -26,7 +26,7 @@ export function ChangelogSection({ methodology }: { methodology: Methodology }) 
               className="rounded-panel bg-bg-solid px-6 py-5"
             >
               <div className="flex flex-wrap items-center gap-3">
-                <p className="m-0 font-display text-h4 font-extrabold">{version.version}</p>
+                <p className="m-0 font-display text-section font-bold">{version.version}</p>
                 <p className="m-0 text-small text-ink2">{formatDate(version.released_on)}</p>
                 {version.current ? (
                   <span className="inline-flex h-6 items-center rounded-pill bg-track px-2.5 text-caption font-semibold">

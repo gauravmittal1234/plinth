@@ -8,7 +8,7 @@ export function CoverageSection({ coverage }: { coverage: About["coverage"] }) {
     <section aria-labelledby="coverage-h" className="bg-bg py-18 text-ink md:py-30">
       <div className="mx-auto flex w-full max-w-[79rem] flex-col gap-8 px-4 sm:px-8">
         <div className="flex flex-col gap-3">
-          <h2 id="coverage-h" className="m-0 font-display text-h2 font-extrabold">
+          <h2 id="coverage-h" className="m-0 font-display text-section font-bold">
             What do we cover today?
           </h2>
           <p className="m-0 max-w-measure text-lead">{coverage.today.line}</p>
@@ -20,7 +20,7 @@ export function CoverageSection({ coverage }: { coverage: About["coverage"] }) {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h3 className="m-0 font-display text-h4 font-extrabold">Not yet, and when</h3>
+          <h3 className="m-0 font-display text-section font-bold">Not yet, and when</h3>
           <ul role="list" className="m-0 flex flex-col gap-4 p-0">
             {coverage.next.map((next) => (
               <li

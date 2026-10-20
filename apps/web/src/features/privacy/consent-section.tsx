@@ -81,7 +81,7 @@ export function ConsentSection({ numbers }: { numbers: WhoHasMyNumber }) {
   return (
     <>
       <section aria-labelledby="who-h" className="flex flex-col gap-6">
-        <h2 id="who-h" className="m-0 font-display text-h3 font-extrabold">
+        <h2 id="who-h" className="m-0 font-sans text-h3 font-bold">
           Who has it, and why?
         </h2>
         <p className="m-0 max-w-measure text-body text-ink2">
@@ -148,7 +148,7 @@ export function ConsentSection({ numbers }: { numbers: WhoHasMyNumber }) {
       </section>
 
       <section aria-labelledby="history-h" className="flex flex-col gap-4">
-        <h2 id="history-h" className="m-0 font-display text-h3 font-extrabold">
+        <h2 id="history-h" className="m-0 font-sans text-h3 font-bold">
           What did I say yes to?
         </h2>
         <p className="m-0 max-w-measure text-body text-ink2">

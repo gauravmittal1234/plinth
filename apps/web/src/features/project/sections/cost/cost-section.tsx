@@ -55,14 +55,14 @@ export function CostSection({
     <SectionBand id="cost" tone="bg">
       <div className="flex flex-col gap-10">
         <div className="flex flex-col gap-4">
-          <h2 className="m-0 max-w-[18ch] text-balance font-display text-h2 font-extrabold">
+          <h2 className="m-0 max-w-[18ch] text-balance font-display text-section font-bold">
             {COST_COPY.heading}
           </h2>
         </div>
 
         {cost ? (
           <div className="flex flex-col gap-3">
-            <h3 className="m-0 font-display text-h4 font-extrabold">
+            <h3 className="m-0 font-display text-section font-bold">
               Where the {cost.all_in_label} goes
             </h3>
             <p className="m-0 max-w-measure text-ink2">{cost.basis_line}</p>
@@ -80,27 +80,27 @@ export function CostSection({
 
         {affordDefault ? (
           <div className="flex flex-col gap-3 rounded-panel bg-bg-solid p-5 sm:p-7">
-            <h3 className="m-0 font-display text-h4 font-extrabold">{COST_COPY.emiHeading}</h3>
+            <h3 className="m-0 font-display text-section font-bold">{COST_COPY.emiHeading}</h3>
             <dl className="m-0 grid grid-cols-2 gap-4 sm:grid-cols-4">
               <div>
                 <dt className="text-small text-ink2">Monthly EMI</dt>
-                <dd className="m-0 font-display text-number font-extrabold">
+                <dd className="m-0 font-sans text-number font-bold">
                   {formatInr(affordDefault.after_keys.emi_inr)}
                 </dd>
               </div>
               <div>
                 <dt className="text-small text-ink2">Down payment</dt>
-                <dd className="m-0 font-display text-number font-extrabold">{waitDefaults.down_pct}%</dd>
+                <dd className="m-0 font-sans text-number font-bold">{waitDefaults.down_pct}%</dd>
               </div>
               <div>
                 <dt className="text-small text-ink2">Interest</dt>
-                <dd className="m-0 font-display text-number font-extrabold">
+                <dd className="m-0 font-sans text-number font-bold">
                   {formatRatePct(waitDefaults.rate_pct)}%
                 </dd>
               </div>
               <div>
                 <dt className="text-small text-ink2">Tenure</dt>
-                <dd className="m-0 font-display text-number font-extrabold">
+                <dd className="m-0 font-sans text-number font-bold">
                   {waitDefaults.tenure_years} years
                 </dd>
               </div>

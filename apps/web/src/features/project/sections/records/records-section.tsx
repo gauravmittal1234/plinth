@@ -59,7 +59,7 @@ export function RecordsSection({
   return (
     <SectionBand id="records" tone="track">
       <div className="flex flex-col gap-8">
-        <h2 className="m-0 max-w-[18ch] text-balance font-display text-h2 font-extrabold">
+        <h2 className="m-0 max-w-[18ch] text-balance font-display text-section font-bold">
           {RECORDS_COPY.heading}
         </h2>
 
@@ -78,7 +78,7 @@ export function RecordsSection({
 
         {records.length > 0 ? (
           <div className="flex flex-col gap-4">
-            <h3 className="m-0 font-display text-h4 font-extrabold">
+            <h3 className="m-0 font-display text-section font-bold">
               {RECORDS_COPY.listHeading}
             </h3>
             <ul role="list" className="m-0 flex flex-col gap-4 p-0">

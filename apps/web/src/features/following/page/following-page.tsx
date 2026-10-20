@@ -17,7 +17,7 @@ export async function FollowingPage() {
   if (!load.ok) {
     return (
       <div className="mx-auto flex max-w-[48rem] flex-col gap-4 px-4 py-16 sm:px-8">
-        <h1 className="m-0 font-display text-h2 font-extrabold text-ink">Following</h1>
+        <h1 className="m-0 font-display text-h2 font-bold text-ink">Following</h1>
         <p className="m-0 text-body text-ink2">{load.message}</p>
       </div>
     );
