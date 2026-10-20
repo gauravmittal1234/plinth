@@ -76,12 +76,16 @@ export function Sheet({
           }}
           className={cx(
             "ui-sheet fixed z-50 flex flex-col gap-4 overflow-y-auto bg-sheet text-ink shadow-sheet",
-            "inset-x-0 bottom-0 max-h-[88dvh] rounded-t-panel px-5 pt-5 pb-7",
-            "sm:inset-x-auto sm:top-4 sm:right-4 sm:bottom-auto sm:max-h-[calc(100dvh-2rem)] sm:w-[min(27.5rem,calc(100vw-2rem))] sm:rounded-panel sm:px-6.5 sm:pt-6 sm:pb-7",
+            "inset-x-0 bottom-0 max-h-[88dvh] rounded-t-sheet px-5 pt-3 pb-7",
+            "sm:inset-x-auto sm:top-4 sm:right-4 sm:bottom-auto sm:max-h-[calc(100dvh-2rem)] sm:w-[min(27.5rem,calc(100vw-2rem))] sm:rounded-sheet sm:px-6.5 sm:pt-6 sm:pb-7",
             "focus-visible:outline-none",
             className,
           )}
         >
+          {/* The grabber (UI v2, benchmark-thapki.md "Sheets": "Grabber,
+              avatar and title…"). Phone bottom-sheet only: the sm+ side
+              drawer isn't drag-dismissed, so it carries no handle. */}
+          <div aria-hidden="true" className="mx-auto h-1.5 w-10 shrink-0 rounded-pill bg-line-strong sm:hidden" />
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">{headerStart}</div>
             <Dialog.Close
