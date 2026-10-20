@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-3bhk-cost-sheet.json",
+  "why": "confidence is 0 to 1.",
+  "expect": "/lines/0/confidence",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/lines/0/confidence",
+      "value": 1.2
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "base": "kavya-a-1104.json",
+  "why": "p_price_inr cannot be negative.",
+  "expect": "/p_price_inr",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/p_price_inr",
+      "value": -1
+    }
+  ]
+}

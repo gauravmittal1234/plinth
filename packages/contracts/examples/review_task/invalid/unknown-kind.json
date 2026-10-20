@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-claims-disagreement.json",
+  "why": "kind is ReviewTaskKind (ops.review_tasks.kind, DATA_MODEL §10, plus adviser_request for M3).",
+  "expect": "/kind",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/kind",
+      "value": "spot_check"
+    }
+  ]
+}

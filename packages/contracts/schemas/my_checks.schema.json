@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/my_checks.schema.json",
+  "title": "MyChecks",
+  "description": "plinth.my_checks/1, from api.my_checks() (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). The caller's own document checks, newest first. Never a circle member's (DATA_MODEL §12 invariant 5).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "items"],
+  "properties": {
+    "schema": { "const": "plinth.my_checks/1" },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/MyCheckItem" }
+    }
+  },
+  "$defs": {
+    "MyCheckItem": {
+      "title": "MyCheckItem",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "status", "doc_label", "checked_on", "summary_line", "saved"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/Uuid" },
+        "kind": { "$ref": "doc_check.schema.json#/$defs/DocCheckKind" },
+        "status": { "$ref": "doc_check.schema.json#/$defs/DocCheckStatus" },
+        "doc_label": { "type": ["string", "null"] },
+        "project_slug": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Slug" }, { "type": "null" }]
+        },
+        "project_label": { "type": ["string", "null"] },
+        "checked_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "summary_line": { "type": ["string", "null"] },
+        "saved": {
+          "description": "True once api.doc_check_save was called; an unsaved check is deleted after 30 days.",
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

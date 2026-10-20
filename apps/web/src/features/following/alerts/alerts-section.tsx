@@ -39,7 +39,7 @@ export function AlertsSection({ alertPrefs }: { alertPrefs: AlertPrefs | null })
     <SectionBand id="alerts" tone="bg">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <h2 className="m-0 font-display text-h2 font-extrabold">{ALERTS_COPY.heading}</h2>
+          <h2 className="m-0 font-display text-section font-bold">{ALERTS_COPY.heading}</h2>
           <p className="m-0 max-w-[60ch] text-body text-ink2">{ALERTS_COPY.subheading}</p>
         </div>
 

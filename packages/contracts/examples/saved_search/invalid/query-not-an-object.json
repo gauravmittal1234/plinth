@@ -1,0 +1,12 @@
+{
+  "base": "canonical-search.json",
+  "why": "query is the search as the client sent it, an object.",
+  "expect": "/search/query",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/search/query",
+      "value": "3 bhk dwarka expresway"
+    }
+  ]
+}

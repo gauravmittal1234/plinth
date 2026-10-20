@@ -1,0 +1,8 @@
+{
+  "schema": "plinth.follow/1",
+  "slug": "aurelia-heights-phase-2",
+  "follow_type": "watching",
+  "followed_at": "2026-07-01T00:00:00+05:30",
+  "alerts_line": "Band changes, filings, orders and extensions. Utility alerts only.",
+  "private_line": "Your family circle doesn't see your follow type."
+}

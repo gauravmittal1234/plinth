@@ -22,6 +22,13 @@ class AccountDeletionStatus(StrEnum):
     requested = "requested"
 
 
+class AdviserRequestStatus(StrEnum):
+    open = "open"
+    in_progress = "in_progress"
+    answered = "answered"
+    closed = "closed"
+
+
 class AgreementStage(StrEnum):
     before_agreement = "before_agreement"
     after_agreement = "after_agreement"
@@ -320,6 +327,41 @@ class PWaiveItem(RootModel[str]):
     root: Annotated[str, Field(pattern="^[a-z][a-z0-9_]*$")]
 
 
+class LineId(RootModel[str]):
+    root: Annotated[str, Field(min_length=1)]
+
+
+class CostSheetLine(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    raw_text: str
+    """
+    The line label as printed, e.g. "PLC (Park facing)".
+    """
+    code: Annotated[str | None, Field(pattern="^[a-z][a-z0-9_]*$")] = None
+    """
+    A guess at the matching cost_breakdown.schema.json CostLine.code, when the label is recognisable.
+    """
+    amount_inr: int | None
+    line_ids: list[LineId]
+    """
+    ai/ocr_page.schema.json OcrLine ids the line was read from.
+    """
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
+
+
+class CostSheetLines(BaseModel):
+    """
+    Response schema of extract.cost_sheet@1, one reader's answer (BUILD_PLAN §14, F-10). The raw lines of a photographed cost sheet, feeding app.cost_sheet_reads.lines; the rules (core.cost_rule_sets) turn them into CostBreakdown, never a reader. No envelope: validated by the AI gateway directly.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    lines: list[CostSheetLine]
+
+
 class CostTag(StrEnum):
     often_negotiable = "often_negotiable"
     set_by_law = "set_by_law"
@@ -347,6 +389,14 @@ class CoverageToday(BaseModel):
     items: list[str]
 
 
+class PMime(StrEnum):
+    application_pdf = "application/pdf"
+    image_jpeg = "image/jpeg"
+    image_png = "image/png"
+    image_webp = "image/webp"
+    image_heic = "image/heic"
+
+
 class DataExportStatus(StrEnum):
     preparing = "preparing"
     ready = "ready"
@@ -372,6 +422,35 @@ class DateOrMonth(RootModel[str]):
     """
     YYYY-MM-DD or, for month precision, YYYY-MM.
     """
+
+
+class DemandLetterClaimQualifier(StrEnum):
+    super = "super"
+    carpet = "carpet"
+    all_in = "all_in"
+    base = "base"
+
+
+class DemandLetterClaimType(StrEnum):
+    """
+    app.extracted_claims.claim_type (DATA_MODEL §7).
+    """
+
+    possession_date = "possession_date"
+    price = "price"
+    all_in = "all_in"
+    area = "area"
+    rera_number = "rera_number"
+    oc_status = "oc_status"
+    sold_left = "sold_left"
+    amenity = "amenity"
+    demand_stage = "demand_stage"
+    plan_stage = "plan_stage"
+    amount = "amount"
+    payee_name = "payee_name"
+    account_number = "account_number"
+    ifsc = "ifsc"
+    banned_phrase = "banned_phrase"
 
 
 class DeveloperPageMode(StrEnum):
@@ -432,6 +511,24 @@ class DocCheckKind(StrEnum):
     visit_recap = "visit_recap"
 
 
+class DocCheckRecheck(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    armed: bool
+    """
+    True once a later filing changed this check's answer; the re-check line and the check_updated alert follow.
+    """
+    line: str | None
+
+
+class DocCheckReview(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    line: Annotated[str, Field(min_length=1)]
+
+
 class Bbox1Item(RootModel[float]):
     root: Annotated[float, Field(ge=0.0, le=1.0)]
 
@@ -443,9 +540,39 @@ class Bbox1(RootModel[list[Bbox1Item]]):
     """
 
 
+class DocCheckShare(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    card_url: Annotated[str, Field(min_length=1)]
+    card_alt: Annotated[str, Field(min_length=1)]
+    share_text: str
+    """
+    A summary only, never the file.
+    """
+
+
+class Floors(RootModel[int]):
+    root: Annotated[int, Field(ge=1)]
+
+
+class DocCheckStage(BaseModel):
+    """
+    kind = pay_as_built: the letter's claimed slab against the latest filed slab.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    letter_slab_line: str
+    filed_slab_line: str
+    floors: Floors | None
+    as_of_line: str
+
+
 class DocCheckStatus(StrEnum):
     """
-    Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable or outside_coverage.
+    Poll until the status is confirm_project, done, unreadable, no_claims, partly_readable, outside_coverage or checks_paused. checks_paused is the ai_doc_check kill switch (T61; catalogues/flags.json).
     """
 
     reading = "reading"
@@ -456,6 +583,35 @@ class DocCheckStatus(StrEnum):
     partly_readable = "partly_readable"
     no_claims = "no_claims"
     outside_coverage = "outside_coverage"
+    checks_paused = "checks_paused"
+
+
+class DocumentLabel(StrEnum):
+    flyer = "flyer"
+    brochure = "brochure"
+    hoarding = "hoarding"
+    cost_sheet = "cost_sheet"
+    demand_letter = "demand_letter"
+    payment_request = "payment_request"
+    receipt = "receipt"
+    other = "other"
+
+
+class EdgeAction(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    label: Annotated[str, Field(min_length=1)]
+    action: Annotated[str, Field(pattern="^[a-z][a-z0-9_]*$")]
+    """
+    A code the client switches on, e.g. "retry_upload", "pick_project", "talk_to_adviser".
+    """
+
+
+class ErrorReportStatus(StrEnum):
+    open = "open"
+    in_progress = "in_progress"
+    resolved = "resolved"
 
 
 class EventKind(StrEnum):
@@ -503,6 +659,11 @@ class FactorWeight(BaseModel):
     factor: Factor
     label: str
     weight_pct: Annotated[float, Field(ge=0.0, le=100.0)]
+
+
+class JoinedVia(StrEnum):
+    whatsapp = "whatsapp"
+    app = "app"
 
 
 class FlagValues(BaseModel):
@@ -673,6 +834,35 @@ class Late12Explainer(BaseModel):
     """
 
 
+class MarketingClaimQualifier(StrEnum):
+    super = "super"
+    carpet = "carpet"
+    all_in = "all_in"
+    base = "base"
+
+
+class MarketingClaimType(StrEnum):
+    """
+    app.extracted_claims.claim_type (DATA_MODEL §7).
+    """
+
+    possession_date = "possession_date"
+    price = "price"
+    all_in = "all_in"
+    area = "area"
+    rera_number = "rera_number"
+    oc_status = "oc_status"
+    sold_left = "sold_left"
+    amenity = "amenity"
+    demand_stage = "demand_stage"
+    plan_stage = "plan_stage"
+    amount = "amount"
+    payee_name = "payee_name"
+    account_number = "account_number"
+    ifsc = "ifsc"
+    banned_phrase = "banned_phrase"
+
+
 class MatchMethod(StrEnum):
     rera_number = "rera_number"
     name_sector = "name_sector"
@@ -694,6 +884,38 @@ class NextStep(BaseModel):
     body: str
     source_label: str | None = None
     href: str | None = None
+
+
+class BboxItem(RootModel[float]):
+    root: Annotated[float, Field(ge=0.0, le=1.0)]
+
+
+class OcrLine(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[str, Field(min_length=1)]
+    """
+    Stable within the document; the only thing a reader may cite.
+    """
+    page: Annotated[int, Field(ge=1)]
+    text: str
+    bbox: Annotated[list[BboxItem], Field(max_length=4, min_length=4)]
+    """
+    [x0, y0, x1, y1] as fractions of the page.
+    """
+
+
+class OcrPage(BaseModel):
+    """
+    Response schema of ocr.document@1 (BUILD_PLAN §14). Every line gets a stable id and a bounding box; readers cite line ids and never produce their own coordinates (Wave 6 M3 rules, PII before models). No envelope: this is validated by the AI gateway directly, never sent over an api.* contract.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    lines: list[OcrLine]
+    page_count: Annotated[int, Field(ge=1)]
 
 
 class Ok(BaseModel):
@@ -750,6 +972,35 @@ class PaymentMethodCheck(BaseModel):
     )
     ok: bool
     line: str | None
+
+
+class PaymentRequestClaimQualifier(StrEnum):
+    super = "super"
+    carpet = "carpet"
+    all_in = "all_in"
+    base = "base"
+
+
+class PaymentRequestClaimType(StrEnum):
+    """
+    app.extracted_claims.claim_type (DATA_MODEL §7).
+    """
+
+    possession_date = "possession_date"
+    price = "price"
+    all_in = "all_in"
+    area = "area"
+    rera_number = "rera_number"
+    oc_status = "oc_status"
+    sold_left = "sold_left"
+    amenity = "amenity"
+    demand_stage = "demand_stage"
+    plan_stage = "plan_stage"
+    amount = "amount"
+    payee_name = "payee_name"
+    account_number = "account_number"
+    ifsc = "ifsc"
+    banned_phrase = "banned_phrase"
 
 
 class Pct(RootModel[float]):
@@ -814,6 +1065,12 @@ class ProgressToday(BaseModel):
     """
     band: BandCode | None
     band_since_line: str | None
+
+
+class ProjectRequestStatus(StrEnum):
+    open = "open"
+    added = "added"
+    declined = "declined"
 
 
 TowersAdditionalProperty = TypeAliasType(
@@ -954,6 +1211,45 @@ class ReportedIncident(BaseModel):
     url: str | None = None
 
 
+class RequestProject(BaseModel):
+    """
+    plinth.request_project/1, from api.request_project(p_name, p_rera, p_whatsapp_consent) (API_CONTRACTS §3.2; DESIGN §5b Request a project; built by T45a). The record of the request: reference R-MMDD-NN (IST date), added by due_on (requested + 14 days) or told why not. p_whatsapp_consent is the buyer's own tap asking to hear back on WhatsApp too; it needs a linked, opted-in WhatsApp contact (otherwise consent_required). The same open request again returns the same reference.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.request_project/1"], Field(alias="schema")]
+    ref: Annotated[
+        str, Field(pattern="^R-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$")
+    ]
+    """
+    R-MMDD-NN (catalogues/ref_formats.json prefix R).
+    """
+    name: str | None
+    """
+    The project as the buyer typed it.
+    """
+    rera: str | None
+    requested_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    due_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    status: ProjectRequestStatus
+    line: str
+    """
+    "We'll add it by 1 Nov 2026 or tell you why not."
+    """
+    whatsapp_line: str | None
+    """
+    Set when the buyer asked to hear back on WhatsApp too.
+    """
+
+
 class ReraNumber(RootModel[str]):
     root: Annotated[str, Field(min_length=1, title="ReraNumber")]
     """
@@ -979,6 +1275,42 @@ class ResponseTime(BaseModel):
     """
     How we actually did, once there is a track record.
     """
+
+
+class Counts(BaseModel):
+    """
+    Open queue work (ReviewTaskStatus open/assigned); resolved and dismissed are not counted here.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    open: Annotated[int, Field(ge=0)]
+    assigned: Annotated[int, Field(ge=0)]
+
+
+class ReviewTaskKind(StrEnum):
+    extraction_disagreement = "extraction_disagreement"
+    low_confidence_claim = "low_confidence_claim"
+    dispute = "dispute"
+    clerical = "clerical"
+    notice = "notice"
+    legal = "legal"
+    capture = "capture"
+    entity_merge = "entity_merge"
+    demand_check = "demand_check"
+    adviser_request = "adviser_request"
+
+
+class ReviewTaskStatus(StrEnum):
+    """
+    ops.review_tasks.status (DATA_MODEL §10; the check constraint T60 migrates, PR #91).
+    """
+
+    open = "open"
+    assigned = "assigned"
+    resolved = "resolved"
+    dismissed = "dismissed"
 
 
 class RiskShare(BaseModel):
@@ -1010,6 +1342,17 @@ class RpcError(BaseModel):
     hint: str | None
 
 
+class SavedCostSheet(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    label: str
+    saved_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+
+
 class ScoreState(StrEnum):
     """
     core.score_state.
@@ -1039,6 +1382,11 @@ class ShareCardKind(StrEnum):
     cost = "cost"
     visit = "visit"
     digest = "digest"
+
+
+class Kind(StrEnum):
+    phase = "phase"
+    card = "card"
 
 
 class Slug(RootModel[str]):
@@ -1112,6 +1460,22 @@ class TruthPanelRow(BaseModel):
     value_line: str
     lane: Lane
     sources: list[SourceRef]
+
+
+class UploadKind(StrEnum):
+    """
+    app.uploads.kind (DATA_MODEL §7).
+    """
+
+    flyer = "flyer"
+    brochure = "brochure"
+    hoarding_photo = "hoarding_photo"
+    cost_sheet = "cost_sheet"
+    demand_letter = "demand_letter"
+    payment_request = "payment_request"
+    receipt = "receipt"
+    voice_note = "voice_note"
+    room_photo = "room_photo"
 
 
 class Verdict(StrEnum):
@@ -1236,6 +1600,35 @@ class AccountDeletion(BaseModel):
     "We'll erase your account by 17 Nov 2026."
     """
     lines: list[str]
+
+
+class AdviserRequest(BaseModel):
+    """
+    plinth.adviser_request/1, from api.adviser_request_create (API_CONTRACTS §4.12 "Talk to a Plinth adviser"; ops.review_tasks kind adviser_request, DATA_MODEL §10). Answered by the founder, Mon–Sat 10 am–7 pm IST, the same working day (FOUNDER_QUESTIONS M3-6).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.adviser_request/1"], Field(alias="schema")]
+    id: Annotated[UUID, Field(title="Uuid")]
+    check_id: UUID | None
+    status: AdviserRequestStatus
+    hours_line: str
+    line: str
+
+
+class AdviserRequestCreateRequest(BaseModel):
+    """
+    Arguments of api.adviser_request_create.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    p_check_id: UUID | None = None
+    p_question: Annotated[str | None, Field(max_length=1000)] = None
+    p_client_id: UUID | None = None
 
 
 class AffordInputs(BaseModel):
@@ -1433,6 +1826,48 @@ class BandRange(BaseModel):
     example_slug: Slug | None = None
 
 
+class Booking(BaseModel):
+    """
+    plinth.booking/1, from api.booking_save (API_CONTRACTS §3.2; app.bookings, DATA_MODEL §7). Powers the pay-as-built check's "confirm home" step. Never visible to the family circle (DATA_MODEL §12 invariant 5).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.booking/1"], Field(alias="schema")]
+    id: Annotated[UUID, Field(title="Uuid")]
+    phase_slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    tower: Annotated[str, Field(min_length=1)]
+    unit_no: Annotated[str, Field(min_length=1)]
+    price_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+    price_label: str
+    booked_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    agreement_registered_on: date_aliased | None
+    paid_to_date_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+    paid_to_date_label: str
+    paid_pct: Annotated[float, Field(ge=0.0, title="Pct")]
+    """
+    A percentage. Time used can pass 100 after the promised date (Laurel Residency: 106).
+    """
+    plan_id: str | None = None
+    line: str
+    """
+    "Unit A-1104 (Tower A) · 52.5% paid"
+    """
+
+
 class BookingPara(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -1440,6 +1875,31 @@ class BookingPara(BaseModel):
     lead: str | None
     text: str
     tone: BookingParaTone
+
+
+class BookingSaveRequest(BaseModel):
+    """
+    Arguments of api.booking_save. The same unit saved again updates the one booking.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    p_slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    p_tower: Annotated[str, Field(min_length=1)]
+    p_unit_no: Annotated[str, Field(min_length=1)]
+    p_price_inr: Annotated[int, Field(ge=0)]
+    p_booked_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    p_agreement_registered_on: date_aliased | None = None
+    p_paid_to_date_inr: Annotated[int, Field(ge=0)]
+    p_plan_id: str | None = None
+    p_client_id: UUID | None = None
 
 
 class BookingTopic(BaseModel):
@@ -1677,6 +2137,25 @@ class Coverage(BaseModel):
     next: list[CoverageNext]
 
 
+class CreateUploadRequest(BaseModel):
+    """
+    Arguments of api.create_upload.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    p_kind: UploadKind
+    p_mime: PMime
+    p_bytes: Annotated[int, Field(ge=1, le=15728640)]
+    p_sha256: Annotated[str, Field(pattern="^[0-9a-f]{64}$")]
+    p_channel: Channel
+    p_tap_event_id: str | None = None
+    """
+    Evidence for the first upload's ai_processing consent (DATA_MODEL §13; BUILD_PLAN §13).
+    """
+
+
 class DataExport(BaseModel):
     """
     plinth.data_export_request/1, from api.data_export_request() (API_CONTRACTS §3.2; BUILD_PLAN §13; DESIGN §5b Download my data). The record of a DPDP export request (app.data_requests, kind export): ready within 24 hours (due_at = requested_at + 24 hours); the link works for 7 days and opens only after a fresh sign-in code (export-data, T53). One open request at a time: a repeat call returns it.
@@ -1717,6 +2196,28 @@ class DelayCost(BaseModel):
     Whole rupees. Always paired with a server-formatted *_label.
     """
     cost_label: str
+
+
+class DemandLetterClaim(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    type: DemandLetterClaimType
+    raw_text: str
+    """
+    The claim exactly as printed, before any normalisation.
+    """
+    value: str | float | None
+    """
+    Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+    """
+    unit: str | None = None
+    qualifier: DemandLetterClaimQualifier | None = None
+    line_ids: list[LineId]
+    """
+    ai/ocr_page.schema.json OcrLine ids the claim was read from.
+    """
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
 
 
 class DeveloperClaim(BaseModel):
@@ -1798,6 +2299,20 @@ class Display(BaseModel):
     bands_public: bool
 
 
+class DocCheckEdge(BaseModel):
+    """
+    Unreadable, partly readable, no claims, outside coverage or checks paused (FOUNDER_QUESTIONS M3-7, M3-13).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    title: Annotated[str, Field(min_length=1)]
+    body: str
+    primary: EdgeAction | None
+    secondary: EdgeAction | None
+
+
 class DocCheckRow(BaseModel):
     """
     One claim (or stage, amount, payee) against the records.
@@ -1812,7 +2327,15 @@ class DocCheckRow(BaseModel):
     verdict: Verdict
     verdict_label: str
     records_line: str
+    records_label: str | None = None
+    """
+    INTEGRATION_NOTES round 3: optional, e.g. "Records show", "Price list shows", "Your plan shows" (API_CONTRACTS §4.12).
+    """
     how_checked: str | None = None
+    review: DocCheckReview | None = None
+    """
+    Set while a person checks this reading (concierge-first, FOUNDER_QUESTIONS M3-7): "Can't check yet" + "A person is checking this reading."
+    """
     sources: list[SourceRef] | None = None
     broker_question: str | None = None
     page: Annotated[int | None, Field(ge=1)] = None
@@ -1851,6 +2374,18 @@ class DocCheckStarted(BaseModel):
     poll_after_ms: Annotated[int, Field(ge=0)]
 
 
+class DocumentClass(BaseModel):
+    """
+    Response schema of classify.document@1 (BUILD_PLAN §14; catalogues/ai_tasks.json labels). No envelope: validated by the AI gateway directly.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    label: DocumentLabel
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
+
+
 class EndedParty(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -1871,6 +2406,46 @@ class EndedParty(BaseModel):
     """
     A calendar date, YYYY-MM-DD (IST business date).
     """
+
+
+class ErrorReport(BaseModel):
+    """
+    plinth.error_report/1, from api.error_report_create ("Report an error in this row"; ops.error_reports, DATA_MODEL §10). Reference E-nnnn (catalogues/ref_formats.json prefix E); resolved within 15 working days (ops.error_reports.sla_due).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.error_report/1"], Field(alias="schema")]
+    ref: Annotated[str, Field(pattern="^E-\\d{4,}$")]
+    """
+    E-nnnn (catalogues/ref_formats.json prefix E).
+    """
+    status: ErrorReportStatus
+    sla_due: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    line: str
+    """
+    "Reported. We'll reply by 5 Nov 2026."
+    """
+
+
+class ErrorReportCreateRequest(BaseModel):
+    """
+    Arguments of api.error_report_create.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    p_slug: Slug | None = None
+    p_fact_id: FactId | None = None
+    p_check_id: UUID | None = None
+    p_row_seq: Annotated[int | None, Field(ge=1)] = None
+    p_text: Annotated[str, Field(max_length=1000, min_length=1)]
+    p_client_id: UUID | None = None
 
 
 class EvidenceSnapshot(BaseModel):
@@ -1969,6 +2544,36 @@ class FamilyInvitePreview(BaseModel):
     number_line: str
 
 
+class FamilyInviteRow(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    """
+    The invite id (api.family_member_remove cancels it like api.family_invite_cancel).
+    """
+    code: Annotated[
+        str, Field(pattern="^[A-Z0-9]{2,4}-[A-Z0-9]{3}$", title="InviteCode")
+    ]
+    """
+    Family invite code, e.g. AH2-7KQ or RC4-2MW.
+    """
+    link: str
+    scope_line: str
+    invited_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    expires_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    line: str
+    """
+    "Invited today · Aurelia Heights Ph 2 · hasn't tapped the link yet"
+    """
+
+
 class FamilyInviteScope(BaseModel):
     """
     Either some followed phases (slugs) or all of them (all = true).
@@ -1979,6 +2584,73 @@ class FamilyInviteScope(BaseModel):
     )
     slugs: Annotated[list[Slug] | None, Field(min_length=1)] = None
     all: bool | None = None
+
+
+class FamilyJoin(BaseModel):
+    """
+    plinth.family_join/1, from api.family_join(p_code) (the app path) and the relative's own WhatsApp "JOIN <code>" (ops.family_join_by_code via api.whatsapp_family_join; API_CONTRACTS §4.11; built by T45a). The join itself is the relative's opt-in. An unknown, used, cancelled or expired code is a neutral not_found, never this payload. Never a phone number.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.family_join/1"], Field(alias="schema")]
+    member_id: Annotated[UUID, Field(title="Uuid")]
+    inviter_first_name: str
+    scope_line: str
+    joined_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    can_add_notes: bool
+    joined_line: str
+    """
+    "You'll get the same alerts as Rohan for Aurelia Heights, Phase 2."
+    """
+    what_you_get: list[str]
+    number_line: str
+
+
+class FamilyMember(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    """
+    The member id for api.family_member_remove and api.family_member_undo.
+    """
+    first_name: str | None
+    """
+    The relative's first name when they have an account; null for a WhatsApp-only member.
+    """
+    scope_all: bool
+    """
+    Same alerts for all of the owner's projects.
+    """
+    joined_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    joined_via: JoinedVia
+    can_add_notes: bool
+    line: str
+    """
+    "Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes"
+    """
+
+
+class FamilyMembership(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    member_id: Annotated[UUID, Field(title="Uuid")]
+    owner_first_name: str | None
+    scope_line: str
+    joined_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    can_add_notes: bool
 
 
 class Follow(BaseModel):
@@ -2180,6 +2852,53 @@ class LatestQpr(BaseModel):
     """
 
 
+class LinkedFollow(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    since: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    The IST date the number followed it on WhatsApp.
+    """
+
+
+class MarketingClaim(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    type: MarketingClaimType
+    raw_text: str
+    """
+    The claim exactly as printed, before any normalisation.
+    """
+    value: str | float | None
+    """
+    Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+    """
+    unit: str | None = None
+    qualifier: MarketingClaimQualifier | None = None
+    line_ids: list[LineId]
+    """
+    ai/ocr_page.schema.json OcrLine ids the claim was read from. Never a bounding box: that comes from the cited OCR lines.
+    """
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
+
+
+class MarketingClaims(BaseModel):
+    """
+    Response schema of extract.marketing_claims@1, one reader's answer (BUILD_PLAN §14, F-90/F-91; schema-locked per the hard rules). A flyer, brochure or hoarding read as a list of claims; app.extracted_claims.claim_type names the same set. No envelope: the AI gateway validates each reader's raw answer directly, then agree() compares reader A and reader B before any rule runs (rules decide, never a single reader).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    claims: list[MarketingClaim]
+
+
 class Me(BaseModel):
     """
     plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The number itself never leaves auth: only the masked form.
@@ -2242,6 +2961,39 @@ class MonthlyShare(BaseModel):
     """
     A percentage. Time used can pass 100 after the promised date (Laurel Residency: 106).
     """
+
+
+class MyCheckItem(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    kind: DocCheckKind
+    status: DocCheckStatus
+    doc_label: str | None
+    project_slug: Slug | None = None
+    project_label: str | None = None
+    checked_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    summary_line: str | None
+    saved: bool
+    """
+    True once api.doc_check_save was called; an unsaved check is deleted after 30 days.
+    """
+
+
+class MyChecks(BaseModel):
+    """
+    plinth.my_checks/1, from api.my_checks() (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). The caller's own document checks, newest first. Never a circle member's (DATA_MODEL §12 invariant 5).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.my_checks/1"], Field(alias="schema")]
+    items: list[MyCheckItem]
 
 
 class NearbyProject(BaseModel):
@@ -2350,6 +3102,28 @@ class PayeeRow(BaseModel):
     result: Verdict
 
 
+class PaymentRequestClaim(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    type: PaymentRequestClaimType
+    raw_text: str
+    """
+    The claim exactly as printed, before any normalisation.
+    """
+    value: str | float | None
+    """
+    Normalised value. account_number carries the PII-vault token (e.g. "[ACCOUNT_1]"), never a raw digit.
+    """
+    unit: str | None = None
+    qualifier: PaymentRequestClaimQualifier | None = None
+    line_ids: list[LineId]
+    """
+    ai/ocr_page.schema.json OcrLine ids the claim was read from.
+    """
+    confidence: Annotated[float, Field(ge=0.0, le=1.0)]
+
+
 class PaymentStage(BaseModel):
     model_config = ConfigDict(
         extra="allow",
@@ -2439,6 +3213,22 @@ class Progress(BaseModel):
     line: str
 
 
+class ProjectCandidate(BaseModel):
+    """
+    One row of the pick list; the buyer's tap becomes api.doc_check_confirm(p_id, p_slug).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    label: Annotated[str, Field(min_length=1)]
+    sector_line: str | None = None
+
+
 class ProjectCard(BaseModel):
     """
     A phase on a list, map or Ask Plinth card. price_line puts the all-in first; pin_label is the all-in alone.
@@ -2522,6 +3312,63 @@ class Reason(BaseModel):
     sources: Annotated[list[SourceRef], Field(min_length=1)]
 
 
+class Receipt(BaseModel):
+    """
+    plinth.receipt/1, from api.receipt_add (API_CONTRACTS §3.2; app.receipts, DATA_MODEL §7). Typed in R1 (FOUNDER_QUESTIONS M3-12): amount, date and the last 4 UTR digits only, no AI reading. Kept until the user deletes it.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.receipt/1"], Field(alias="schema")]
+    id: Annotated[UUID, Field(title="Uuid")]
+    phase_slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    amount_inr: Annotated[int, Field(title="Inr")]
+    """
+    Whole rupees. Always paired with a server-formatted *_label.
+    """
+    amount_label: str
+    paid_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    utr_last4: Annotated[str, Field(pattern="^\\d{4}$")]
+    payee_check_id: UUID | None = None
+    """
+    The before_you_pay check this receipt follows up on, when there was one.
+    """
+    line: str
+    """
+    "₹11,00,000 paid 18 Oct 2026 · UTR …7731"
+    """
+
+
+class ReceiptAddRequest(BaseModel):
+    """
+    Arguments of api.receipt_add.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    p_slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    p_upload_id: UUID | None = None
+    p_amount_inr: Annotated[int, Field(ge=0)]
+    p_paid_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    p_utr_last4: Annotated[str, Field(pattern="^\\d{4}$")]
+    p_payee_check_id: UUID | None = None
+    p_client_id: UUID | None = None
+
+
 class RelayRenewal(BaseModel):
     """
     Result of api.relay_renew(p_relay_id): the relay stays open 30 more days (D13), or a new session opens for the same parties when it had closed. An acknowledgement, so no schema envelope (as Ok). relay_id is the session now open; ref is the consent that backs it.
@@ -2578,6 +3425,32 @@ class ReraBadge(BaseModel):
     """
     authority_url: str
     qr_url: str | None
+
+
+class ReviewTask(BaseModel):
+    """
+    plinth.review_task/1, one row of the admin review queue (ops.review_tasks, DATA_MODEL §10, plus kind adviser_request for M3). Reviewer and admin only (admin_review_queue, API_CONTRACTS §3.4).
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.review_task/1"], Field(alias="schema")]
+    id: Annotated[UUID, Field(title="Uuid")]
+    kind: ReviewTaskKind
+    entity: Annotated[str, Field(min_length=1)]
+    """
+    The table the review is about, e.g. "extracted_claims".
+    """
+    entity_id: Annotated[UUID, Field(title="Uuid")]
+    priority: float
+    """
+    impact × uncertainty; higher sorts first.
+    """
+    status: ReviewTaskStatus
+    assignee: str | None
+    due_at: AwareDatetime | None
+    summary_line: str
 
 
 class RiskMeta(BaseModel):
@@ -2655,6 +3528,46 @@ class RiskSummary(BaseModel):
     """
     meta: RiskMeta
     share: RiskShare
+
+
+class SavedSearchItem(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    name: str | None
+    """
+    The buyer's own name for it (at most 80 characters).
+    """
+    query: dict[str, Any]
+    """
+    The search as the client sent it in p_query (what was asked, without the page: q, filters, sort, bbox).
+    """
+    in_digest: bool
+    saved_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    updated_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+
+
+class SavedSearches(BaseModel):
+    """
+    plinth.saved_searches/1, from api.saved_searches() (built by T45a): the caller's saved searches, newest first.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.saved_searches/1"], Field(alias="schema")]
+    items: list[SavedSearchItem]
+    max_items: Annotated[int, Field(ge=1)]
+    """
+    How many searches a buyer can save.
+    """
 
 
 class SearchFilters(BaseModel):
@@ -2757,6 +3670,26 @@ class ShareCardState(BaseModel):
     card_url: str | None
 
 
+class ShortLink(BaseModel):
+    """
+    plinth.short_link/1, from api.resolve_short_link(p_code): what a plinth.in/r/<code> link names -- a project's own short code (kind phase) or an issued share card's short code (kind card). Read-only; never increments the Live Record placement count that api.live_record (M4) owns.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.short_link/1"], Field(alias="schema")]
+    kind: Kind
+    slug: Slug | None
+    """
+    The phase's slug when kind is phase; null when kind is card.
+    """
+    card_code: str | None
+    """
+    The share card's short code when kind is card; null when kind is phase.
+    """
+
+
 class Suggestion(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -2783,6 +3716,59 @@ class TrackRecord(BaseModel):
     late: Annotated[int | None, Field(ge=0)]
     line: str | None
     projects: list[TrackRecordProject]
+
+
+class Upload(BaseModel):
+    """
+    plinth.upload/1, from api.create_upload(p_kind, p_mime, p_bytes, p_sha256, p_channel, p_tap_event_id) (API_CONTRACTS §3.2; WORK_BREAKDOWN T68). Does not carry the signed PUT URL: that comes only from the doc-check edge function's upload-url route (upload_url.schema.json), never from SQL or a client storage policy.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.upload/1"], Field(alias="schema")]
+    upload_id: Annotated[UUID, Field(title="Uuid")]
+    bucket: Annotated[str, Field(min_length=1)]
+    """
+    The private storage bucket (BUILD_PLAN §12 principle 7).
+    """
+    storage_key: Annotated[str, Field(min_length=1)]
+    max_bytes: Annotated[int, Field(ge=1)]
+    """
+    The upload limit, BUILD_PLAN §12.9.
+    """
+    existing_check_id: UUID | None
+    """
+    Set when the same file hash was already uploaded by this owner ("Checked again").
+    """
+
+
+class UploadUrl(BaseModel):
+    """
+    plinth.upload_url/1, from the doc-check edge function's upload-url route (API_CONTRACTS §4.12; WORK_BREAKDOWN T68: "the signed upload URL itself comes from the doc-check edge function, never from SQL or a client storage policy"). The client PUTs the file to url before starting the check.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.upload_url/1"], Field(alias="schema")]
+    upload_id: Annotated[UUID, Field(title="Uuid")]
+    url: Annotated[str, Field(min_length=1)]
+    expires_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+
+
+class UploadUrlRequest(BaseModel):
+    """
+    POST /functions/v1/doc-check/upload-url body.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    upload_id: Annotated[UUID, Field(title="Uuid")]
 
 
 class WhoHasMyNumber(BaseModel):
@@ -3016,6 +4002,17 @@ class CostBreakdown(BaseModel):
     """
 
 
+class DemandLetter(BaseModel):
+    """
+    Response schema of extract.demand_letter@1, one reader's answer (BUILD_PLAN §14, F-92; pii_policy strip_and_redact_bank). A payment-demand letter read as a list of claims (stage, plan, amount, payee), the same shape as ai/marketing_claims.schema.json so agree() compares every extract.* reader uniformly (app.extracted_claims.claim_type, DATA_MODEL §7). No envelope: validated by the AI gateway directly.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    claims: list[DemandLetterClaim]
+
+
 class DeveloperGroup(BaseModel):
     model_config = ConfigDict(
         extra="allow",
@@ -3101,9 +4098,35 @@ class Evidence(BaseModel):
     report_error: ReportError
 
 
+class FamilyCircle(BaseModel):
+    """
+    plinth.family_circle/1, from api.family_circle() (API_CONTRACTS §3.2, §4.11; built by T45a). The caller's own circle (joined members and open invites) and the circles they joined. Never a phone number, follow type, payment alert or "who has my number" (DATA_MODEL §12 inv. 5). Every line is final server copy.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.family_circle/1"], Field(alias="schema")]
+    members: list[FamilyMember]
+    """
+    Relatives who joined the caller's circle, earliest first.
+    """
+    invites: list[FamilyInviteRow]
+    """
+    Open invites (not used, cancelled or expired), newest first.
+    """
+    member_of: list[FamilyMembership]
+    """
+    Other people's circles the caller joined.
+    """
+    rules: list[str]
+    private_line: str
+    number_line: str
+
+
 class FamilyInviteCreateRequest(BaseModel):
     """
-    Arguments of api.family_invite_create.
+    Arguments of api.family_invite_create. Idempotent on p_client_id. The scope may name only phases the caller follows.
     """
 
     model_config = ConfigDict(
@@ -3111,6 +4134,10 @@ class FamilyInviteCreateRequest(BaseModel):
     )
     p_scope: FamilyInviteScope
     p_client_id: Annotated[UUID | None, Field(title="Uuid")] = None
+    p_can_add_notes: bool | None = None
+    """
+    The relative may add notes to the shared shortlist (default false).
+    """
 
 
 class FollowingFeed(BaseModel):
@@ -3135,6 +4162,33 @@ class FollowingFeed(BaseModel):
     Changes before the replay date.
     """
     digest: DigestInfo | None
+
+
+class LinkWhatsappFollows(BaseModel):
+    """
+    plinth.link_whatsapp_follows/1, from api.link_whatsapp_follows(p_accept) ("Bring them here", API_CONTRACTS §3.2; built by T45a). The WhatsApp number is the account's own verified phone. p_accept false is the peek before any tap: what that number follows on WhatsApp, nothing changes. p_accept true is the buyer's own tap: the WhatsApp contact is linked to the account and its follows move into the account (source whatsapp); the answer lists the follows now brought. A number linked to another account answers linked false with nothing listed.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.link_whatsapp_follows/1"], Field(alias="schema")]
+    accepted: bool
+    """
+    Echoes p_accept: true only for the "Bring them here" tap.
+    """
+    linked: bool
+    """
+    This WhatsApp number is linked to the caller's account now.
+    """
+    follows: list[LinkedFollow]
+    """
+    Peek: the number's WhatsApp follows not brought yet. Accepted: the follows brought into the account. Oldest first.
+    """
+    cost_sheets: list[SavedCostSheet]
+    """
+    Cost sheets the number saved on WhatsApp (uploads, M3). Empty until uploads exist.
+    """
 
 
 class Methodology(BaseModel):
@@ -3201,6 +4255,17 @@ class PaymentPlan(BaseModel):
     due_by_registration_line: str | None = None
 
 
+class PaymentRequest(BaseModel):
+    """
+    Response schema of extract.payment_request@1, one reader's answer (BUILD_PLAN §14, F-94; pii_policy strip_and_redact_bank). A forwarded payment request (WhatsApp image or text) read as a list of claims (payee, account, IFSC, amount), the same shape as ai/marketing_claims.schema.json so agree() compares every extract.* reader uniformly (app.extracted_claims.claim_type, DATA_MODEL §7). The rules (before_you_pay_check) decide the verdict, never a reader. No envelope: validated by the AI gateway directly.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    claims: list[PaymentRequestClaim]
+
+
 class ProjectHero(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -3209,6 +4274,35 @@ class ProjectHero(BaseModel):
     image_caption: str | None
     summary_line: str
     rera_badge: ReraBadge
+
+
+class ReviewQueue(BaseModel):
+    """
+    plinth.review_queue/1, from admin_review_queue (API_CONTRACTS §3.4). Highest priority first.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.review_queue/1"], Field(alias="schema")]
+    items: list[ReviewTask]
+    counts: Counts
+    """
+    Open queue work (ReviewTaskStatus open/assigned); resolved and dismissed are not counted here.
+    """
+
+
+class SavedSearch(BaseModel):
+    """
+    plinth.saved_search/1, from api.saved_search_save(p_query, p_name, p_in_digest, p_id, p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved (app.saved_searches). The same query saved again updates the one saved search; at most 25 per buyer. Matches are digest material, never utility alerts.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.saved_search/1"], Field(alias="schema")]
+    search: SavedSearchItem
+    line: str
 
 
 class ShareCard(BaseModel):
@@ -3306,6 +4400,27 @@ class DocCheck(BaseModel):
     """
     kind = before_you_pay only.
     """
+    edge: DocCheckEdge | None = None
+    """
+    Set for an edge status (unreadable, partly_readable, no_claims, outside_coverage, checks_paused); null once status is confirm_project or done.
+    """
+    project_candidates: list[ProjectCandidate] | None = None
+    """
+    The pick list, when the match needs the buyer's confirmation (project_match.method user_pick and not yet confirmed).
+    """
+    stage: DocCheckStage | None = None
+    """
+    kind = pay_as_built only: the tower chart (letter slab against filed slab).
+    """
+    recheck: DocCheckRecheck | None = None
+    """
+    Set once a later filing could change this check's answer (FOUNDER_QUESTIONS M3-11).
+    """
+    saved: bool | None = None
+    """
+    True once api.doc_check_save was called; an unsaved check is deleted after 30 days.
+    """
+    share: DocCheckShare | None = None
 
 
 class FromDeveloper(BaseModel):

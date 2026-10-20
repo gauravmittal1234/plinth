@@ -1,0 +1,49 @@
+{
+  "claims": [
+    {
+      "type": "demand_stage",
+      "raw_text": "On casting of Tower A slab 12",
+      "value": "slab 12",
+      "unit": null,
+      "qualifier": null,
+      "line_ids": ["l1"],
+      "confidence": 0.95
+    },
+    {
+      "type": "amount",
+      "raw_text": "Total Rs 13,16,700",
+      "value": 1316700,
+      "unit": "inr",
+      "qualifier": null,
+      "line_ids": ["l2"],
+      "confidence": 0.97
+    },
+    {
+      "type": "payee_name",
+      "raw_text": "Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd",
+      "value": "Aurelia Heights Ph 2 RERA Collection Account, Northfield Estates Pvt Ltd",
+      "unit": null,
+      "qualifier": null,
+      "line_ids": ["l3"],
+      "confidence": 0.94
+    },
+    {
+      "type": "account_number",
+      "raw_text": "A/c [ACCOUNT_1]",
+      "value": "[ACCOUNT_1]",
+      "unit": null,
+      "qualifier": null,
+      "line_ids": ["l4"],
+      "confidence": 0.9
+    },
+    {
+      "type": "ifsc",
+      "raw_text": "IFSC PEPL0000418",
+      "value": "PEPL0000418",
+      "unit": null,
+      "qualifier": null,
+      "line_ids": ["l5"],
+      "confidence": 0.98
+    }
+  ]
+}

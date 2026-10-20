@@ -20,7 +20,7 @@ export function HowSection({
         <div className="flex flex-wrap items-end justify-between gap-x-18 gap-y-5">
           <h2
             id="how-h"
-            className="m-0 max-w-[16ch] font-display text-question font-extrabold tracking-[-0.03em]"
+            className="m-0 max-w-[16ch] font-display text-question font-bold tracking-[-0.03em]"
           >
             How does Plinth know?
           </h2>
@@ -39,7 +39,7 @@ export function HowSection({
                   bands={bands}
                 />
                 <div className="flex flex-wrap items-baseline gap-3">
-                  <span className="font-display text-h3 font-extrabold tracking-[-0.02em] text-(--ui-band-text)">
+                  <span className="font-sans text-h3 font-bold tracking-[-0.02em] text-(--ui-band-text)">
                     {band.label}
                   </span>
                   <span className="text-small text-ink2">since {formatIsoDate(band.since)}</span>
@@ -53,7 +53,7 @@ export function HowSection({
           <div className="min-w-0 flex-1 basis-[22rem] rounded-panel bg-bg-solid p-8">
             {reasons[0] ? (
               <div className="flex flex-col gap-5">
-                <h3 className="m-0 font-display text-h3 font-extrabold tracking-[-0.025em]">
+                <h3 className="m-0 font-sans text-h3 font-bold tracking-[-0.025em]">
                   Why {band?.label}? The first of {reasons.length} reasons
                 </h3>
                 <div className="flex flex-col gap-3 rounded-panel bg-track px-6 py-5.5">

@@ -1,6 +1,6 @@
-// Loads packages/contracts/schemas/*.schema.json, checks the house conventions
-// and builds the type registry every emitter shares (one name per type, the
-// same in TS, Dart and Python).
+// Loads packages/contracts/schemas/**/*.schema.json, checks the house
+// conventions and builds the type registry every emitter shares (one name per
+// type, the same in TS, Dart and Python).
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { PKG } from "./paths.mjs";
@@ -19,7 +19,10 @@ export const EXTRA_EXPORTS = [
   "RpcError",
 ];
 
-/** Exported types without the "schema" envelope. */
+/** Exported types without the "schema" envelope. Besides the acknowledgement
+ * types, the schemas/ai/** reader-output types (T61) are never sent over an
+ * api.* contract: the AI gateway validates a model's raw answer against them
+ * directly (BUILD_PLAN §14), so they carry no "plinth.<type>/1" envelope. */
 export const NO_ENVELOPE = new Set([
   "ApiError",
   "Ok",
@@ -27,16 +30,35 @@ export const NO_ENVELOPE = new Set([
   "RelayRenewal",
   "DocCheckStarted",
   "RpcError",
+  "OcrPage",
+  "DocumentClass",
+  "MarketingClaims",
+  "CostSheetLines",
+  "DemandLetter",
+  "PaymentRequest",
 ]);
 
 function fail(msg) {
   throw new Error(`contracts: ${msg}`);
 }
 
+/** Every *.schema.json under `dir`, as paths relative to SCHEMAS_DIR with
+ * forward slashes (e.g. "ai/ocr_page.schema.json"), one level of subfolder
+ * deep (schemas/ai/** for the AI gateway's reader-output schemas, T61). */
+function listSchemaFiles(dir, prefix = "") {
+  const out = [];
+  const dirents = readdirSync(dir, { withFileTypes: true }).sort((a, b) =>
+    a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
+  );
+  for (const d of dirents) {
+    if (d.isDirectory()) out.push(...listSchemaFiles(join(dir, d.name), `${prefix}${d.name}/`));
+    else if (d.name.endsWith(".schema.json")) out.push(`${prefix}${d.name}`);
+  }
+  return out;
+}
+
 export function loadSchemas() {
-  const files = readdirSync(SCHEMAS_DIR)
-    .filter((f) => f.endsWith(".schema.json"))
-    .sort();
+  const files = listSchemaFiles(SCHEMAS_DIR).sort();
   const entries = [];
   /** name -> { name, file, pointer, schema, top } */
   const types = new Map();

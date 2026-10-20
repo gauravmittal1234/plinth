@@ -21,6 +21,32 @@ Collected while closing the design gaps (18 Oct 2026). None of these block desig
 | P9 | **Google Cloud and live HARERA data come last** (founder, 20 Oct 2026). The GCP project is a running cost, so it waits until M6, just before launch. M2–M5 run on fixtures. `scripts/gcp/bootstrap.sh` (#54) sets it up in one command when needed | Founder decision: keep running costs down until they are needed |
 | P10 | **Fonts: Figtree text + Bricolage titles** (founder, 20 Oct 2026, after the Thapki benchmark). Figtree for all text, buttons and labels on app and web; Bricolage Grotesque for display, title and section headings only, at 700; Noto Sans stays as the Hindi fallback; Mukta retired. Spec: `product/design/review/benchmark-thapki.md` | Founder decision: the UI must beat Thapki's on cleanliness, type, icons and interactive elements |
 
+## M3: money and claims checks (21 Oct 2026; none of these block the build)
+
+The M3 plan is WORK_BREAKDOWN.md waves 6–8b (T60–T90, gate T99). Each question has the default the agents build with. Overturn any of them and the lead updates the affected tasks.
+
+| # | Question | Default we build with |
+|---|---|---|
+| M3-1 | **OCR provider.** Which service reads the page? | Gemini's vision model through the one AI gateway, so there is one vendor and one budget. The Android app reads the page on the phone first (ML Kit) and sends the text, so most app checks skip the OCR call. Google Document AI (paid) only if OCR misses its eval gates on real documents |
+| M3-2 | **AI models.** Which models read the claims and the money documents? | Reader A is Gemini Flash-class, reader B is Flash-Lite-class with a different prompt; OCR uses Flash vision and classifying uses Flash-Lite. Exact model versions are pinned after a one-day bake-off on the eval set (free tier, fictional documents). One vendor until launch |
+| M3-3 | **When may AI see a real buyer's document?** | Only after a paid Gemini key (or Vertex AI in Mumbai) with a data-processing agreement, planned for staging in M6. Until then the gateway runs `AI_PROVIDER_TIER=free` and refuses anything that isn't one of our fictional sample documents (DECISIONS E-8) |
+| M3-4 | **Cost-rule sources (rules v2026.10).** Whose reading of the law do we publish? | Haryana stamp duty (7% man, 5% woman, 6% joint) and the ₹50,000 registration fee; GST 5% on an under-construction home; TDS 1% under Income-tax Act 2025 s.393(1), shown as withheld, not added; the 10% cap before a registered agreement (RERA s.13). Published as "Plinth's reading of the rules, Oct 2026" with each source named on the page. A chartered accountant's review joins the post-launch legal list (P8) |
+| M3-5 | **Circle rates.** Stamp duty is due on the circle rate when it is higher than the price | Not used in R1: the page states the rule without a number. Gurugram collector rates join the M6 data track |
+| M3-6 | **Who answers the review queue and "Talk to a Plinth adviser"?** | You, Mon–Sat 10 am–7 pm IST, the same working day (the hours already on the screens) |
+| M3-7 | **Concierge-first.** Should a person check every reading before the buyer sees it? | No. Rows the two AI readers disagree on, or read with low confidence, show "Can't check yet" with "A person is checking this reading" and go to the queue; everything else shows at once. The first 500 checks also get a spot check that never blocks the buyer, to grow the test sets |
+| M3-8 | **Checks without an account.** | The sample checks work signed out. Checking your own file on web or app needs the sign-in code, because a file needs an owner for deletion and export. WhatsApp needs nothing extra: the number is the account |
+| M3-9 | **Consent for AI reading.** | The first upload records an `ai_processing` consent (a C-MMDD-NN ref in the consent history) from the buyer's tap. On WhatsApp the forwarded file is the request, and the first reply says "This is Ask Plinth, an AI". The lawyer confirms the wording post-launch (P8) |
+| M3-10 | **"Or paste a link to an ad or a listing"** (WebClaims). | No link fetching in R1: fetching arbitrary pages and listing sites is a legal and security risk. The box asks for a screenshot instead |
+| M3-11 | **Re-check alerts.** When a new filing changes a check (Kavya's slab 12), do we message the buyer? | Yes: one WhatsApp utility message (`check_updated`, which needs Meta approval like the other templates) or a push, once per check per filing, inside quiet hours and only for people who turned WhatsApp alerts on |
+| M3-12 | **Receipts.** Read the receipt with AI, or have the buyer type it? | Typed in R1: amount, date and the last 4 digits of the UTR. No AI on receipts |
+| M3-13 | **Limits.** | 15 MB and 20 pages per file (BUILD_PLAN §12.9). At most 20 checks per person per day. AI calls capped per task per day at the free tier's limits, with the kill switch at 100% |
+
+**Paid switches for later** (nothing here is needed before launch; M3 runs on recorded AI in CI and the free tier with fictional documents in dev):
+- **Gemini paid tier or Vertex AI (Mumbai) with a DPA:** set `AI_PROVIDER_TIER=paid` and `AI_MODE=live` in staging and prod. Needed before the first real buyer document (M3-3).
+- **Google Document AI:** only if OCR misses its gates on real documents (M3-1).
+- **Meta approval of `check_updated`:** free, but needs the verified business account (M3-11).
+- **Supabase Pro:** storage and egress for uploads at launch, already in the M6 environment plan.
+
 ## Start this week (long lead times; steps in `docs/engineering/SETUP_FOR_FOUNDER.md`)
 - **Meta Business verification**, needed for the WhatsApp Business API and its templates.
 - **D-U-N-S number**, needed for a Google Play *organisation* account.

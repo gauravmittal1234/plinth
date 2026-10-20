@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/booking.schema.json",
+  "title": "Booking",
+  "description": "plinth.booking/1, from api.booking_save (API_CONTRACTS §3.2; app.bookings, DATA_MODEL §7). Powers the pay-as-built check's \"confirm home\" step. Never visible to the family circle (DATA_MODEL §12 invariant 5).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "phase_slug",
+    "tower",
+    "unit_no",
+    "price_inr",
+    "price_label",
+    "booked_on",
+    "agreement_registered_on",
+    "paid_to_date_inr",
+    "paid_to_date_label",
+    "paid_pct",
+    "line"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.booking/1" },
+    "id": { "$ref": "common.schema.json#/$defs/Uuid" },
+    "phase_slug": { "$ref": "common.schema.json#/$defs/Slug" },
+    "tower": {
+      "type": "string",
+      "minLength": 1,
+      "examples": ["A"]
+    },
+    "unit_no": {
+      "type": "string",
+      "minLength": 1,
+      "examples": ["A-1104"]
+    },
+    "price_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+    "price_label": { "type": "string" },
+    "booked_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+    "agreement_registered_on": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+    },
+    "paid_to_date_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+    "paid_to_date_label": { "type": "string" },
+    "paid_pct": { "$ref": "common.schema.json#/$defs/Pct" },
+    "plan_id": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }]
+    },
+    "line": {
+      "description": "\"Unit A-1104 (Tower A) · 52.5% paid\"",
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "BookingSaveRequest": {
+      "title": "BookingSaveRequest",
+      "description": "Arguments of api.booking_save. The same unit saved again updates the one booking.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "p_slug",
+        "p_tower",
+        "p_unit_no",
+        "p_price_inr",
+        "p_booked_on",
+        "p_paid_to_date_inr"
+      ],
+      "properties": {
+        "p_slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "p_tower": { "type": "string", "minLength": 1 },
+        "p_unit_no": { "type": "string", "minLength": 1 },
+        "p_price_inr": { "type": "integer", "minimum": 0 },
+        "p_booked_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "p_agreement_registered_on": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/IsoDate" }, { "type": "null" }]
+        },
+        "p_paid_to_date_inr": { "type": "integer", "minimum": 0 },
+        "p_plan_id": {
+          "anyOf": [{ "type": "string" }, { "type": "null" }]
+        },
+        "p_client_id": { "type": "string", "format": "uuid" }
+      }
+    }
+  }
+}

@@ -36,6 +36,11 @@ export { ReplaySlider, type ReplaySliderProps, type ReplayStop } from "./data/re
 export { SectionBand, type SectionBandProps } from "./primitives/section-band";
 export { Pill, type PillProps, type PillTone } from "./primitives/pill";
 export { Button, type ButtonProps, type ButtonVariant } from "./primitives/button";
+export {
+  SegmentedControl,
+  type SegmentedControlOption,
+  type SegmentedControlProps,
+} from "./primitives/segmented-control";
 export { Sheet, type SheetProps } from "./primitives/sheet";
 export { Toast, type ToastProps } from "./primitives/toast";
 

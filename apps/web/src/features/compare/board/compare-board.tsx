@@ -83,7 +83,7 @@ export function CompareBoard({
               ))}
               {canAdd ? (
                 <th scope="col" className="min-w-52 px-4 py-4 align-bottom">
-                  <p className="m-0 font-display text-body font-extrabold text-ink">
+                  <p className="m-0 font-display text-body font-bold text-ink">
                     {COPY.addSlotHeading}
                   </p>
                   <p className="m-0 mt-1 text-caption text-ink2">{COPY.addSlotHint}</p>
@@ -162,14 +162,14 @@ function ColumnHead({
       className="min-w-52 px-4 py-4 text-left align-bottom"
     >
       {column.image_url ? (
-        <div className="relative mb-3 h-20 w-full overflow-hidden rounded-panel bg-track">
+        <div className="relative mb-3 h-20 w-full overflow-hidden rounded-tile bg-track">
           <Image src={column.image_url} alt="" fill sizes="220px" className="object-cover" />
           <span className="absolute top-2 right-2 rounded-pill bg-bg-solid/90 px-2.5 py-0.5 text-caption">
             {COPY.illustrativeImage}
           </span>
         </div>
       ) : null}
-      <h2 className="m-0 font-display text-body font-extrabold text-ink">{column.name}</h2>
+      <h2 className="m-0 font-sans text-row-title font-semibold text-ink">{column.name}</h2>
       <p className="m-0 mt-1 text-caption text-ink2">
         {[column.developer_name, column.locality_line].filter(Boolean).join(" · ")}
       </p>

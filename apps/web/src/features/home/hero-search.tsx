@@ -51,19 +51,21 @@ export function HeroSearch({ defaultSummary }: { defaultSummary: RiskSummary }) 
         <label htmlFor="ask" className="sr-only">
           Type a project or developer to build its risk card, or ask Plinth a question
         </label>
-        <div className="flex items-center gap-2 rounded-pill bg-bg-solid px-5 py-1">
+        {/* UI v2 (benchmark-thapki.md "Inputs"): a 56 px filled field, radius
+            16 — Thapki's benchmark called the old 36 px pill "disabled"-looking. */}
+        <div className="flex items-center gap-2 rounded-field bg-bg-solid px-5 py-1">
           <input
             id="ask"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.currentTarget.value)}
             placeholder="Type a project, e.g. Kestrel Park, or ask Plinth anything"
-            className="h-13 min-w-0 flex-1 border-0 bg-transparent font-sans text-body text-ink outline-none placeholder:text-ink2"
+            className="h-14 min-w-0 flex-1 border-0 bg-transparent font-sans text-body text-ink outline-none placeholder:text-ink2"
           />
           <button
             type="submit"
             aria-label="Ask Plinth"
-            className="flex size-13 shrink-0 cursor-pointer items-center justify-center rounded-pill border-0 bg-accent text-on-accent transition-transform duration-(--pl-motion-duration-press) ease-out hover:brightness-95 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+            className="flex size-14 shrink-0 cursor-pointer items-center justify-center rounded-field border-0 bg-accent text-on-accent transition-transform duration-(--pl-motion-duration-press) ease-out hover:brightness-95 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
           >
             <svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true">
               <path

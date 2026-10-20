@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-broker-flyer.json",
+  "why": "expires_at needs an offset, like every Timestamp (common.schema.json).",
+  "expect": "/expires_at",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/expires_at",
+      "value": "2026-10-18 12:15:00"
+    }
+  ]
+}

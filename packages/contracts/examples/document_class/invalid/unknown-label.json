@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-broker-flyer.json",
+  "why": "label is one of the catalogues/ai_tasks.json classify.document labels.",
+  "expect": "/label",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/label",
+      "value": "price_list"
+    }
+  ]
+}

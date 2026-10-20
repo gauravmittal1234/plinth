@@ -1,0 +1,11 @@
+{
+  "base": "one.json",
+  "why": "Each saved search carries its id (api.saved_search_delete needs it).",
+  "expect": "/items/0",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/items/0/id"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/review_task.schema.json",
+  "title": "ReviewTask",
+  "description": "plinth.review_task/1, one row of the admin review queue (ops.review_tasks, DATA_MODEL §10, plus kind adviser_request for M3). Reviewer and admin only (admin_review_queue, API_CONTRACTS §3.4).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "kind", "entity", "entity_id", "priority", "status", "assignee", "due_at", "summary_line"],
+  "properties": {
+    "schema": { "const": "plinth.review_task/1" },
+    "id": { "$ref": "common.schema.json#/$defs/Uuid" },
+    "kind": { "$ref": "#/$defs/ReviewTaskKind" },
+    "entity": {
+      "description": "The table the review is about, e.g. \"extracted_claims\".",
+      "type": "string",
+      "minLength": 1
+    },
+    "entity_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+    "priority": {
+      "description": "impact × uncertainty; higher sorts first.",
+      "type": "number"
+    },
+    "status": { "$ref": "#/$defs/ReviewTaskStatus" },
+    "assignee": {
+      "type": ["string", "null"]
+    },
+    "due_at": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/Timestamp" }, { "type": "null" }]
+    },
+    "summary_line": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "ReviewTaskKind": {
+      "title": "ReviewTaskKind",
+      "type": "string",
+      "enum": [
+        "extraction_disagreement",
+        "low_confidence_claim",
+        "dispute",
+        "clerical",
+        "notice",
+        "legal",
+        "capture",
+        "entity_merge",
+        "demand_check",
+        "adviser_request"
+      ]
+    },
+    "ReviewTaskStatus": {
+      "title": "ReviewTaskStatus",
+      "description": "ops.review_tasks.status (DATA_MODEL §10; the check constraint T60 migrates, PR #91).",
+      "type": "string",
+      "enum": ["open", "assigned", "resolved", "dismissed"]
+    }
+  }
+}

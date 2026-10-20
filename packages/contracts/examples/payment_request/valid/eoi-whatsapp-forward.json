@@ -1,0 +1,40 @@
+{
+  "claims": [
+    {
+      "type": "amount",
+      "raw_text": "EOI Rs 11,00,000",
+      "value": 1100000,
+      "unit": "inr",
+      "qualifier": null,
+      "line_ids": ["l1"],
+      "confidence": 0.96
+    },
+    {
+      "type": "payee_name",
+      "raw_text": "Northfield Realty Services LLP",
+      "value": "Northfield Realty Services LLP",
+      "unit": null,
+      "qualifier": null,
+      "line_ids": ["l2"],
+      "confidence": 0.95
+    },
+    {
+      "type": "account_number",
+      "raw_text": "A/c [ACCOUNT_1]",
+      "value": "[ACCOUNT_1]",
+      "unit": null,
+      "qualifier": null,
+      "line_ids": ["l3"],
+      "confidence": 0.92
+    },
+    {
+      "type": "ifsc",
+      "raw_text": "IFSC MRGL0000912",
+      "value": "MRGL0000912",
+      "unit": null,
+      "qualifier": null,
+      "line_ids": ["l4"],
+      "confidence": 0.97
+    }
+  ]
+}
