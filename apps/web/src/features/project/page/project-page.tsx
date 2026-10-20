@@ -1,0 +1,52 @@
+// The guided story (DESIGN §4a): Hero → Will it be delivered on time? → So
+// what do we do now? → What else before booking? → How much is built? → What
+// are the homes like? → What will I really pay? → Can we afford the wait? →
+// Picture yourself here → What do the records show? → Ask anything. T20a
+// builds Hero, Risk, Next, Built and Records; the rest are stubs T20b fills
+// (OWNERSHIP.md). One <h1> lives in HeroSection; every other heading is an
+// <h2>, so the page keeps exactly one top-level heading (e2e/smoke.spec.ts).
+import type { Evidence } from "@plinth/contracts";
+import { AskSection } from "../sections/ask/ask-section";
+import { BookingSection } from "../sections/booking/booking-section";
+import { BuiltSection } from "../sections/built/built-section";
+import { CostSection } from "../sections/cost/cost-section";
+import { HeroSection } from "../sections/hero/hero-section";
+import { HomesSection } from "../sections/homes/homes-section";
+import { NextSection } from "../sections/next/next-section";
+import { PictureSection } from "../sections/picture/picture-section";
+import { RecordsSection } from "../sections/records/records-section";
+import { RiskSection } from "../sections/risk/risk-section";
+import { WaitSection } from "../sections/wait/wait-section";
+import { EvidenceProvider } from "./evidence-context";
+import type { ProjectData } from "./load-project";
+import { OnThisPageRail } from "./on-this-page-rail";
+
+export function ProjectPageView({
+  data,
+  evidence,
+}: {
+  data: ProjectData;
+  evidence: Readonly<Record<string, Evidence>>;
+}) {
+  const { page, bands } = data;
+  return (
+    <EvidenceProvider evidence={evidence}>
+      <HeroSection page={page} />
+      <OnThisPageRail />
+      <RiskSection risk={page.risk} bands={bands} />
+      <NextSection nextSteps={page.next_steps} />
+      <BookingSection />
+      <BuiltSection page={page} bands={bands} />
+      <HomesSection />
+      <CostSection />
+      <WaitSection />
+      <PictureSection />
+      <RecordsSection
+        truthPanel={page.truth_panel}
+        records={page.records}
+        preRera={page.pre_rera}
+      />
+      <AskSection />
+    </EvidenceProvider>
+  );
+}

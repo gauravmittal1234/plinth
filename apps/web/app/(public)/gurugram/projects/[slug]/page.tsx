@@ -1,35 +1,35 @@
-// Stub from T05 (web skeleton). T20a replaces it with the real page (WORK_BREAKDOWN §2.1, OWNERSHIP.md).
-// M0 gate (T07): the stub also shows the phase's borderless risk chip from the
-// fixture RiskSummary (Aurelia: Elevated; Kestrel: Low). T20a replaces both.
-import { Suspense } from "react";
-import { FIXTURE_RISK_SLUGS, fixtureRiskSummary } from "@/src/m0/fixture-risk";
-import { RiskChip } from "@/src/m0/risk-chip";
-import { Placeholder, placeholderMetadata } from "@/src/shell/placeholder";
+// WebProject (T20a; WORK_BREAKDOWN §4 T20a, OWNERSHIP.md). The 8 seeded
+// phases are prerendered; any other slug renders on request and 404s through
+// `loadProject`'s `notFound()` when the fixtures (or, in time, the backend)
+// have no such phase.
+import { PHASE_SLUGS } from "@plinth/fixtures";
+import type { Metadata } from "next";
+import { loadEvidenceMap } from "@/src/features/project/page/evidence";
+import { loadProject } from "@/src/features/project/page/load-project";
+import { ProjectPageView } from "@/src/features/project/page/project-page";
 
-export const metadata = placeholderMetadata("WebProject");
-
-/** The 8 seeded phases are prerendered; any other slug renders on request. */
 export function generateStaticParams() {
-  return FIXTURE_RISK_SLUGS.map((slug) => ({ slug }));
+  return PHASE_SLUGS.map((slug) => ({ slug }));
 }
 
-async function PhaseRiskChip({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
-  const summary = fixtureRiskSummary(slug);
-  if (!summary) return null;
-  return (
-    <p className="mt-5 mb-0">
-      <RiskChip chip={summary.chip} band={summary.band?.code ?? null} />
-    </p>
-  );
+  const { page } = await loadProject(slug);
+  const { phase } = page.risk;
+  return {
+    title: phase.name,
+    description: page.hero.summary_line,
+    alternates: { canonical: page.risk.meta.live_url },
+  };
 }
 
-export default function Page({ params }: PageProps<"/gurugram/projects/[slug]">) {
-  return (
-    <Placeholder artboard="WebProject">
-      <Suspense fallback={null}>
-        <PhaseRiskChip params={params} />
-      </Suspense>
-    </Placeholder>
-  );
+export default async function Page(props: PageProps<"/gurugram/projects/[slug]">) {
+  const { slug } = await props.params;
+  const data = await loadProject(slug);
+  const evidence = await loadEvidenceMap(data.page);
+  return <ProjectPageView data={data} evidence={evidence} />;
 }

@@ -3,6 +3,29 @@
 // (packages/fixtures/expected/risk_summary): Aurelia Heights Phase 2 is
 // Elevated, Kestrel Park is Low. Colours must come from @plinth/tokens.
 // Tagged @smoke so ci-web runs it on every PR; T20a's project page keeps it green.
+//
+// T20a note: two small updates once the stand-in page (src/m0/*) this gate was
+// written against became the real one (src/features/project):
+// - The chip's text colour. The stand-in's own chip painted each band's text
+//   in that band's dedicated "-text" token. @plinth/web-ui's real RiskChip
+//   (T14) paints it in plain `ink` instead on every band, which is the design
+//   T20a was told to adopt verbatim (INTEGRATION_NOTES "replace risk-chip.tsx
+//   with web-ui's RiskChip") and matches T01's own accept note that some band
+//   names "use ink" for contrast on the fill. Checked against `--pl-color-ink`
+//   below instead of the band's "-text" token.
+// - A slug with no fixture RiskSummary. The stand-in showed its Placeholder,
+//   200 and all. The real page calls `notFound()` instead (INTEGRATION_NOTES
+//   "call notFound() on not_found before the first Suspense boundary";
+//   apps/web/app/not-found.tsx exists for exactly this, and e2e/smoke.spec.ts
+//   already asserts it for `/no-such-page`, a route that matches nothing).
+//   `/gurugram/projects/no-such-phase` does match a route, just not one of
+//   generateStaticParams' 8 phases, and `cacheComponents` (next.config.ts,
+//   frozen) prerenders a shell for the pattern so the other 8 can be static
+//   and fast; Next ships that shell's 200 before the dynamic part resolves to
+//   notFound(), so the status header never becomes 404 even though the body
+//   that finishes streaming in is the real not-found page (verified: the
+//   rendered heading is "We couldn't find that page.", not "WebProject").
+//   Asserted as 200 with that heading below, not as a 404 status.
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -66,7 +89,7 @@ test.describe(
         const fill = await tokenColour(page, `--pl-risk-${c.band}-fill`);
         expect(fill, "the tokens CSS is loaded").not.toBe("rgba(0, 0, 0, 0)");
         expect(await css(chip, "background-color")).toBe(fill);
-        expect(await css(chip, "color")).toBe(await tokenColour(page, `--pl-risk-${c.band}-text`));
+        expect(await css(chip, "color")).toBe(await tokenColour(page, "--pl-color-ink"));
         expect(await css(chip.locator("[data-on]").first(), "background-color")).toBe(
           await tokenColour(page, `--pl-risk-${c.band}-ink`),
         );
@@ -85,10 +108,14 @@ test.describe(
       );
     });
 
-    test("a phase without a fixture RiskSummary shows no chip", async ({ page }) => {
+    test("a phase without a fixture RiskSummary renders the 404 page, not a bare stub", async ({
+      page,
+    }) => {
       const res = await page.goto("/gurugram/projects/no-such-phase");
-      expect(res?.status()).toBe(200);
-      await expect(page.getByRole("heading", { level: 1 })).toHaveText("WebProject");
+      expect(res?.status()).toBe(200); // see the T20a note above: the PPR shell's own status
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+        "We couldn't find that page.",
+      );
       await expect(page.getByTestId("risk-chip")).toHaveCount(0);
     });
   },
