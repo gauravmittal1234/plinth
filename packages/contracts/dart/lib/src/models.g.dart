@@ -21,20 +21,27 @@
 //     final docCheckStartRequest = docCheckStartRequestFromJson(jsonString);
 //     final docCheckStarted = docCheckStartedFromJson(jsonString);
 //     final evidence = evidenceFromJson(jsonString);
+//     final familyCircle = familyCircleFromJson(jsonString);
 //     final familyInvite = familyInviteFromJson(jsonString);
 //     final familyInviteCreateRequest = familyInviteCreateRequestFromJson(jsonString);
 //     final familyInvitePreview = familyInvitePreviewFromJson(jsonString);
+//     final familyJoin = familyJoinFromJson(jsonString);
 //     final flags = flagsFromJson(jsonString);
 //     final follow = followFromJson(jsonString);
 //     final followRequest = followRequestFromJson(jsonString);
 //     final followingFeed = followingFeedFromJson(jsonString);
+//     final linkWhatsappFollows = linkWhatsappFollowsFromJson(jsonString);
+//     final me = meFromJson(jsonString);
 //     final methodology = methodologyFromJson(jsonString);
 //     final ok = okFromJson(jsonString);
 //     final payeeCheck = payeeCheckFromJson(jsonString);
 //     final payeeCheckRequest = payeeCheckRequestFromJson(jsonString);
 //     final projectPage = projectPageFromJson(jsonString);
+//     final requestProject = requestProjectFromJson(jsonString);
 //     final riskSummary = riskSummaryFromJson(jsonString);
 //     final rpcError = rpcErrorFromJson(jsonString);
+//     final savedSearch = savedSearchFromJson(jsonString);
+//     final savedSearches = savedSearchesFromJson(jsonString);
 //     final searchRequest = searchRequestFromJson(jsonString);
 //     final searchResults = searchResultsFromJson(jsonString);
 //     final shareCard = shareCardFromJson(jsonString);
@@ -115,6 +122,10 @@ Evidence evidenceFromJson(String str) => Evidence.fromJson(json.decode(str));
 
 String evidenceToJson(Evidence data) => json.encode(data.toJson());
 
+FamilyCircle familyCircleFromJson(String str) => FamilyCircle.fromJson(json.decode(str));
+
+String familyCircleToJson(FamilyCircle data) => json.encode(data.toJson());
+
 FamilyInvite familyInviteFromJson(String str) => FamilyInvite.fromJson(json.decode(str));
 
 String familyInviteToJson(FamilyInvite data) => json.encode(data.toJson());
@@ -126,6 +137,10 @@ String familyInviteCreateRequestToJson(FamilyInviteCreateRequest data) => json.e
 FamilyInvitePreview familyInvitePreviewFromJson(String str) => FamilyInvitePreview.fromJson(json.decode(str));
 
 String familyInvitePreviewToJson(FamilyInvitePreview data) => json.encode(data.toJson());
+
+FamilyJoin familyJoinFromJson(String str) => FamilyJoin.fromJson(json.decode(str));
+
+String familyJoinToJson(FamilyJoin data) => json.encode(data.toJson());
 
 Flags flagsFromJson(String str) => Flags.fromJson(json.decode(str));
 
@@ -142,6 +157,14 @@ String followRequestToJson(FollowRequest data) => json.encode(data.toJson());
 FollowingFeed followingFeedFromJson(String str) => FollowingFeed.fromJson(json.decode(str));
 
 String followingFeedToJson(FollowingFeed data) => json.encode(data.toJson());
+
+LinkWhatsappFollows linkWhatsappFollowsFromJson(String str) => LinkWhatsappFollows.fromJson(json.decode(str));
+
+String linkWhatsappFollowsToJson(LinkWhatsappFollows data) => json.encode(data.toJson());
+
+Me meFromJson(String str) => Me.fromJson(json.decode(str));
+
+String meToJson(Me data) => json.encode(data.toJson());
 
 Methodology methodologyFromJson(String str) => Methodology.fromJson(json.decode(str));
 
@@ -163,6 +186,10 @@ ProjectPage projectPageFromJson(String str) => ProjectPage.fromJson(json.decode(
 
 String projectPageToJson(ProjectPage data) => json.encode(data.toJson());
 
+RequestProject requestProjectFromJson(String str) => RequestProject.fromJson(json.decode(str));
+
+String requestProjectToJson(RequestProject data) => json.encode(data.toJson());
+
 RiskSummary riskSummaryFromJson(String str) => RiskSummary.fromJson(json.decode(str));
 
 String riskSummaryToJson(RiskSummary data) => json.encode(data.toJson());
@@ -170,6 +197,14 @@ String riskSummaryToJson(RiskSummary data) => json.encode(data.toJson());
 RpcError rpcErrorFromJson(String str) => RpcError.fromJson(json.decode(str));
 
 String rpcErrorToJson(RpcError data) => json.encode(data.toJson());
+
+SavedSearch savedSearchFromJson(String str) => SavedSearch.fromJson(json.decode(str));
+
+String savedSearchToJson(SavedSearch data) => json.encode(data.toJson());
+
+SavedSearches savedSearchesFromJson(String str) => SavedSearches.fromJson(json.decode(str));
+
+String savedSearchesToJson(SavedSearches data) => json.encode(data.toJson());
 
 SearchRequest searchRequestFromJson(String str) => SearchRequest.fromJson(json.decode(str));
 
@@ -2679,6 +2714,180 @@ class EvidenceSnapshot {
     };
 }
 
+///plinth.family_circle/1, from api.family_circle() (API_CONTRACTS §3.2, §4.11; built by
+///T45a). The caller's own circle (joined members and open invites) and the circles they
+///joined. Never a phone number, follow type, payment alert or "who has my number"
+///(DATA_MODEL §12 inv. 5). Every line is final server copy.
+class FamilyCircle {
+    
+    ///Open invites (not used, cancelled or expired), newest first.
+    final List<FamilyInviteRow> invites;
+    
+    ///Other people's circles the caller joined.
+    final List<FamilyMembership> memberOf;
+    
+    ///Relatives who joined the caller's circle, earliest first.
+    final List<FamilyMember> members;
+    final String numberLine;
+    final String privateLine;
+    final List<String> rules;
+    final String schema;
+
+    FamilyCircle({
+        required this.invites,
+        required this.memberOf,
+        required this.members,
+        required this.numberLine,
+        required this.privateLine,
+        required this.rules,
+        required this.schema,
+    });
+
+    factory FamilyCircle.fromJson(Map<String, dynamic> json) => FamilyCircle(
+        invites: List<FamilyInviteRow>.from(json["invites"].map((x) => FamilyInviteRow.fromJson(x))),
+        memberOf: List<FamilyMembership>.from(json["member_of"].map((x) => FamilyMembership.fromJson(x))),
+        members: List<FamilyMember>.from(json["members"].map((x) => FamilyMember.fromJson(x))),
+        numberLine: json["number_line"],
+        privateLine: json["private_line"],
+        rules: List<String>.from(json["rules"].map((x) => x)),
+        schema: json["schema"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "invites": List<dynamic>.from(invites.map((x) => x.toJson())),
+        "member_of": List<dynamic>.from(memberOf.map((x) => x.toJson())),
+        "members": List<dynamic>.from(members.map((x) => x.toJson())),
+        "number_line": numberLine,
+        "private_line": privateLine,
+        "rules": List<dynamic>.from(rules.map((x) => x)),
+        "schema": schema,
+    };
+}
+
+class FamilyInviteRow {
+    final String code;
+    final String expiresOn;
+    
+    ///The invite id (api.family_member_remove cancels it like api.family_invite_cancel).
+    final String id;
+    final String invitedOn;
+    
+    ///"Invited today · Aurelia Heights Ph 2 · hasn't tapped the link yet"
+    final String line;
+    final String link;
+    final String scopeLine;
+
+    FamilyInviteRow({
+        required this.code,
+        required this.expiresOn,
+        required this.id,
+        required this.invitedOn,
+        required this.line,
+        required this.link,
+        required this.scopeLine,
+    });
+
+    factory FamilyInviteRow.fromJson(Map<String, dynamic> json) => FamilyInviteRow(
+        code: json["code"],
+        expiresOn: json["expires_on"],
+        id: json["id"],
+        invitedOn: json["invited_on"],
+        line: json["line"],
+        link: json["link"],
+        scopeLine: json["scope_line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "code": code,
+        "expires_on": expiresOn,
+        "id": id,
+        "invited_on": invitedOn,
+        "line": line,
+        "link": link,
+        "scope_line": scopeLine,
+    };
+}
+
+class FamilyMembership {
+    final bool canAddNotes;
+    final String joinedOn;
+    final String memberId;
+    final String? ownerFirstName;
+    final String scopeLine;
+
+    FamilyMembership({
+        required this.canAddNotes,
+        required this.joinedOn,
+        required this.memberId,
+        required this.ownerFirstName,
+        required this.scopeLine,
+    });
+
+    factory FamilyMembership.fromJson(Map<String, dynamic> json) => FamilyMembership(
+        canAddNotes: json["can_add_notes"],
+        joinedOn: json["joined_on"],
+        memberId: json["member_id"],
+        ownerFirstName: json["owner_first_name"],
+        scopeLine: json["scope_line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "can_add_notes": canAddNotes,
+        "joined_on": joinedOn,
+        "member_id": memberId,
+        "owner_first_name": ownerFirstName,
+        "scope_line": scopeLine,
+    };
+}
+
+class FamilyMember {
+    final bool canAddNotes;
+    
+    ///The relative's first name when they have an account; null for a WhatsApp-only member.
+    final String? firstName;
+    
+    ///The member id for api.family_member_remove and api.family_member_undo.
+    final String id;
+    final String joinedOn;
+    final String joinedVia;
+    
+    ///"Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes"
+    final String line;
+    
+    ///Same alerts for all of the owner's projects.
+    final bool scopeAll;
+
+    FamilyMember({
+        required this.canAddNotes,
+        required this.firstName,
+        required this.id,
+        required this.joinedOn,
+        required this.joinedVia,
+        required this.line,
+        required this.scopeAll,
+    });
+
+    factory FamilyMember.fromJson(Map<String, dynamic> json) => FamilyMember(
+        canAddNotes: json["can_add_notes"],
+        firstName: json["first_name"],
+        id: json["id"],
+        joinedOn: json["joined_on"],
+        joinedVia: json["joined_via"],
+        line: json["line"],
+        scopeAll: json["scope_all"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "can_add_notes": canAddNotes,
+        "first_name": firstName,
+        "id": id,
+        "joined_on": joinedOn,
+        "joined_via": joinedVia,
+        "line": line,
+        "scope_all": scopeAll,
+    };
+}
+
 ///plinth.family_invite/1, from api.family_invite_create(p_scope) (API_CONTRACTS §4.11). A
 ///code works for one person for 7 days and carries no phone number; the relative's own
 ///"JOIN <code>" message is the opt-in.
@@ -2726,22 +2935,29 @@ class FamilyInvite {
     };
 }
 
-///Arguments of api.family_invite_create.
+///Arguments of api.family_invite_create. Idempotent on p_client_id. The scope may name only
+///phases the caller follows.
 class FamilyInviteCreateRequest {
+    
+    ///The relative may add notes to the shared shortlist (default false).
+    final bool? pCanAddNotes;
     final String? pClientId;
     final FamilyInviteScope pScope;
 
     FamilyInviteCreateRequest({
+        this.pCanAddNotes,
         this.pClientId,
         required this.pScope,
     });
 
     factory FamilyInviteCreateRequest.fromJson(Map<String, dynamic> json) => FamilyInviteCreateRequest(
+        pCanAddNotes: json["p_can_add_notes"],
         pClientId: json["p_client_id"],
         pScope: FamilyInviteScope.fromJson(json["p_scope"]),
     );
 
     Map<String, dynamic> toJson() => {
+        "p_can_add_notes": pCanAddNotes,
         "p_client_id": pClientId,
         "p_scope": pScope.toJson(),
     };
@@ -2802,6 +3018,61 @@ class FamilyInvitePreview {
         "inviter_first_name": inviterFirstName,
         "number_line": numberLine,
         "rera_number": reraNumber,
+        "schema": schema,
+        "scope_line": scopeLine,
+        "what_you_get": List<dynamic>.from(whatYouGet.map((x) => x)),
+    };
+}
+
+///plinth.family_join/1, from api.family_join(p_code) (the app path) and the relative's own
+///WhatsApp "JOIN <code>" (ops.family_join_by_code via api.whatsapp_family_join;
+///API_CONTRACTS §4.11; built by T45a). The join itself is the relative's opt-in. An
+///unknown, used, cancelled or expired code is a neutral not_found, never this payload.
+///Never a phone number.
+class FamilyJoin {
+    final bool canAddNotes;
+    final String inviterFirstName;
+    
+    ///"You'll get the same alerts as Rohan for Aurelia Heights, Phase 2."
+    final String joinedLine;
+    final String joinedOn;
+    final String memberId;
+    final String numberLine;
+    final String schema;
+    final String scopeLine;
+    final List<String> whatYouGet;
+
+    FamilyJoin({
+        required this.canAddNotes,
+        required this.inviterFirstName,
+        required this.joinedLine,
+        required this.joinedOn,
+        required this.memberId,
+        required this.numberLine,
+        required this.schema,
+        required this.scopeLine,
+        required this.whatYouGet,
+    });
+
+    factory FamilyJoin.fromJson(Map<String, dynamic> json) => FamilyJoin(
+        canAddNotes: json["can_add_notes"],
+        inviterFirstName: json["inviter_first_name"],
+        joinedLine: json["joined_line"],
+        joinedOn: json["joined_on"],
+        memberId: json["member_id"],
+        numberLine: json["number_line"],
+        schema: json["schema"],
+        scopeLine: json["scope_line"],
+        whatYouGet: List<String>.from(json["what_you_get"].map((x) => x)),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "can_add_notes": canAddNotes,
+        "inviter_first_name": inviterFirstName,
+        "joined_line": joinedLine,
+        "joined_on": joinedOn,
+        "member_id": memberId,
+        "number_line": numberLine,
         "schema": schema,
         "scope_line": scopeLine,
         "what_you_get": List<dynamic>.from(whatYouGet.map((x) => x)),
@@ -3183,6 +3454,143 @@ class ReplayMark {
         "band": band,
         "date": date,
         "kind": kind,
+    };
+}
+
+///plinth.link_whatsapp_follows/1, from api.link_whatsapp_follows(p_accept) ("Bring them
+///here", API_CONTRACTS §3.2; built by T45a). The WhatsApp number is the account's own
+///verified phone. p_accept false is the peek before any tap: what that number follows on
+///WhatsApp, nothing changes. p_accept true is the buyer's own tap: the WhatsApp contact is
+///linked to the account and its follows move into the account (source whatsapp); the answer
+///lists the follows now brought. A number linked to another account answers linked false
+///with nothing listed.
+class LinkWhatsappFollows {
+    
+    ///Echoes p_accept: true only for the "Bring them here" tap.
+    final bool accepted;
+    
+    ///Cost sheets the number saved on WhatsApp (uploads, M3). Empty until uploads exist.
+    final List<SavedCostSheet> costSheets;
+    
+    ///Peek: the number's WhatsApp follows not brought yet. Accepted: the follows brought into
+    ///the account. Oldest first.
+    final List<LinkedFollow> follows;
+    
+    ///This WhatsApp number is linked to the caller's account now.
+    final bool linked;
+    final String schema;
+
+    LinkWhatsappFollows({
+        required this.accepted,
+        required this.costSheets,
+        required this.follows,
+        required this.linked,
+        required this.schema,
+    });
+
+    factory LinkWhatsappFollows.fromJson(Map<String, dynamic> json) => LinkWhatsappFollows(
+        accepted: json["accepted"],
+        costSheets: List<SavedCostSheet>.from(json["cost_sheets"].map((x) => SavedCostSheet.fromJson(x))),
+        follows: List<LinkedFollow>.from(json["follows"].map((x) => LinkedFollow.fromJson(x))),
+        linked: json["linked"],
+        schema: json["schema"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "accepted": accepted,
+        "cost_sheets": List<dynamic>.from(costSheets.map((x) => x.toJson())),
+        "follows": List<dynamic>.from(follows.map((x) => x.toJson())),
+        "linked": linked,
+        "schema": schema,
+    };
+}
+
+class SavedCostSheet {
+    final String label;
+    final String savedOn;
+
+    SavedCostSheet({
+        required this.label,
+        required this.savedOn,
+    });
+
+    factory SavedCostSheet.fromJson(Map<String, dynamic> json) => SavedCostSheet(
+        label: json["label"],
+        savedOn: json["saved_on"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "label": label,
+        "saved_on": savedOn,
+    };
+}
+
+class LinkedFollow {
+    
+    ///The IST date the number followed it on WhatsApp.
+    final String since;
+    final String slug;
+
+    LinkedFollow({
+        required this.since,
+        required this.slug,
+    });
+
+    factory LinkedFollow.fromJson(Map<String, dynamic> json) => LinkedFollow(
+        since: json["since"],
+        slug: json["slug"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "since": since,
+        "slug": slug,
+    };
+}
+
+///plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b
+///per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The
+///number itself never leaves auth: only the masked form.
+class Me {
+    
+    ///When the user confirmed they are 18 or over; null until then.
+    final String? adultAttestedAt;
+    
+    ///The only name a site office ever sees (with a visit consent).
+    final String? firstName;
+    
+    ///"+91 99••• ••318" (app.profiles.phone_masked).
+    final String? phoneMasked;
+    
+    ///Platform roles (app.user_roles; plinth_roles in the JWT).
+    final List<String> roles;
+    final String schema;
+    final String userId;
+
+    Me({
+        required this.adultAttestedAt,
+        required this.firstName,
+        required this.phoneMasked,
+        required this.roles,
+        required this.schema,
+        required this.userId,
+    });
+
+    factory Me.fromJson(Map<String, dynamic> json) => Me(
+        adultAttestedAt: json["adult_attested_at"],
+        firstName: json["first_name"],
+        phoneMasked: json["phone_masked"],
+        roles: List<String>.from(json["roles"].map((x) => x)),
+        schema: json["schema"],
+        userId: json["user_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "adult_attested_at": adultAttestedAt,
+        "first_name": firstName,
+        "phone_masked": phoneMasked,
+        "roles": List<dynamic>.from(roles.map((x) => x)),
+        "schema": schema,
+        "user_id": userId,
     };
 }
 
@@ -5419,6 +5827,68 @@ class WaitDefaults {
     };
 }
 
+///plinth.request_project/1, from api.request_project(p_name, p_rera, p_whatsapp_consent)
+///(API_CONTRACTS §3.2; DESIGN §5b Request a project; built by T45a). The record of the
+///request: reference R-MMDD-NN (IST date), added by due_on (requested + 14 days) or told
+///why not. p_whatsapp_consent is the buyer's own tap asking to hear back on WhatsApp too;
+///it needs a linked, opted-in WhatsApp contact (otherwise consent_required). The same open
+///request again returns the same reference.
+class RequestProject {
+    final String dueOn;
+    
+    ///"We'll add it by 1 Nov 2026 or tell you why not."
+    final String line;
+    
+    ///The project as the buyer typed it.
+    final String? name;
+    
+    ///R-MMDD-NN (catalogues/ref_formats.json prefix R).
+    final String ref;
+    final String requestedOn;
+    final String? rera;
+    final String schema;
+    final String status;
+    
+    ///Set when the buyer asked to hear back on WhatsApp too.
+    final String? whatsappLine;
+
+    RequestProject({
+        required this.dueOn,
+        required this.line,
+        required this.name,
+        required this.ref,
+        required this.requestedOn,
+        required this.rera,
+        required this.schema,
+        required this.status,
+        required this.whatsappLine,
+    });
+
+    factory RequestProject.fromJson(Map<String, dynamic> json) => RequestProject(
+        dueOn: json["due_on"],
+        line: json["line"],
+        name: json["name"],
+        ref: json["ref"],
+        requestedOn: json["requested_on"],
+        rera: json["rera"],
+        schema: json["schema"],
+        status: json["status"],
+        whatsappLine: json["whatsapp_line"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "due_on": dueOn,
+        "line": line,
+        "name": name,
+        "ref": ref,
+        "requested_on": requestedOn,
+        "rera": rera,
+        "schema": schema,
+        "status": status,
+        "whatsapp_line": whatsappLine,
+    };
+}
+
 ///plinth.risk_summary/1, served by api.risk_summary(p_slug) (API_CONTRACTS §2). The one
 ///risk object: web, app, WhatsApp and the risk card render this and nothing else for risk.
 class RiskSummary {
@@ -5548,6 +6018,102 @@ class RpcError {
         "details": details,
         "hint": hint,
         "message": message,
+    };
+}
+
+///plinth.saved_search/1, from api.saved_search_save(p_filters, p_label, p_in_digest, p_id,
+///p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved
+///(app.saved_searches). The same filters saved again update the one saved search; at most
+///25 per buyer. Matches are digest material, never utility alerts.
+class SavedSearch {
+    final String line;
+    final String schema;
+    final SavedSearchItem search;
+
+    SavedSearch({
+        required this.line,
+        required this.schema,
+        required this.search,
+    });
+
+    factory SavedSearch.fromJson(Map<String, dynamic> json) => SavedSearch(
+        line: json["line"],
+        schema: json["schema"],
+        search: SavedSearchItem.fromJson(json["search"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "line": line,
+        "schema": schema,
+        "search": search.toJson(),
+    };
+}
+
+class SavedSearchItem {
+    
+    ///The search's arguments as the client sent them (api.search_projects p_* args).
+    final Map<String, dynamic> filters;
+    final String id;
+    final bool inDigest;
+    
+    ///The buyer's own name for it (at most 80 characters).
+    final String? label;
+    final String savedAt;
+    final String updatedAt;
+
+    SavedSearchItem({
+        required this.filters,
+        required this.id,
+        required this.inDigest,
+        required this.label,
+        required this.savedAt,
+        required this.updatedAt,
+    });
+
+    factory SavedSearchItem.fromJson(Map<String, dynamic> json) => SavedSearchItem(
+        filters: Map.from(json["filters"]).map((k, v) => MapEntry<String, dynamic>(k, v)),
+        id: json["id"],
+        inDigest: json["in_digest"],
+        label: json["label"],
+        savedAt: json["saved_at"],
+        updatedAt: json["updated_at"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "filters": Map.from(filters).map((k, v) => MapEntry<String, dynamic>(k, v)),
+        "id": id,
+        "in_digest": inDigest,
+        "label": label,
+        "saved_at": savedAt,
+        "updated_at": updatedAt,
+    };
+}
+
+///plinth.saved_searches/1, from api.saved_searches() (built by T45a): the caller's saved
+///searches, newest first.
+class SavedSearches {
+    final List<SavedSearchItem> items;
+    
+    ///How many searches a buyer can save.
+    final int maxItems;
+    final String schema;
+
+    SavedSearches({
+        required this.items,
+        required this.maxItems,
+        required this.schema,
+    });
+
+    factory SavedSearches.fromJson(Map<String, dynamic> json) => SavedSearches(
+        items: List<SavedSearchItem>.from(json["items"].map((x) => SavedSearchItem.fromJson(x))),
+        maxItems: json["max_items"],
+        schema: json["schema"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "max_items": maxItems,
+        "schema": schema,
     };
 }
 

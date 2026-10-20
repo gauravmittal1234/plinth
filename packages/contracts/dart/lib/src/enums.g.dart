@@ -241,6 +241,24 @@ abstract final class PaymentMethod {
   static const List<String> values = ['transfer', 'cheque', 'cash'];
 }
 
+abstract final class PlatformRole {
+  static const String buyer = 'buyer';
+  static const String agent = 'agent';
+  static const String developerMember = 'developer_member';
+  static const String reviewer = 'reviewer';
+  static const String methodology = 'methodology';
+  static const String admin = 'admin';
+  static const String support = 'support';
+  static const List<String> values = ['buyer', 'agent', 'developer_member', 'reviewer', 'methodology', 'admin', 'support'];
+}
+
+abstract final class ProjectRequestStatus {
+  static const String open = 'open';
+  static const String added = 'added';
+  static const String declined = 'declined';
+  static const List<String> values = ['open', 'added', 'declined'];
+}
+
 /// BUILD_PLAN §14 rule 3. Each is templated and evaluated (must-refuse accuracy = 100%).
 abstract final class RefusalCode {
   static const String adviceBuySell = 'advice_buy_sell';

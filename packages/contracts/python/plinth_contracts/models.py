@@ -486,6 +486,11 @@ class FactorWeight(BaseModel):
     weight_pct: Annotated[float, Field(ge=0.0, le=100.0)]
 
 
+class JoinedVia(StrEnum):
+    whatsapp = "whatsapp"
+    app = "app"
+
+
 class FlagValues(BaseModel):
     """
     Flag key → on/off. Unknown keys are allowed (a newer server) and must be booleans.
@@ -740,6 +745,16 @@ class Pct(RootModel[float]):
     """
 
 
+class PlatformRole(StrEnum):
+    buyer = "buyer"
+    agent = "agent"
+    developer_member = "developer_member"
+    reviewer = "reviewer"
+    methodology = "methodology"
+    admin = "admin"
+    support = "support"
+
+
 class PreReraItem(BaseModel):
     model_config = ConfigDict(
         extra="allow",
@@ -785,6 +800,12 @@ class ProgressToday(BaseModel):
     """
     band: BandCode | None
     band_since_line: str | None
+
+
+class ProjectRequestStatus(StrEnum):
+    open = "open"
+    added = "added"
+    declined = "declined"
 
 
 TowersAdditionalProperty = TypeAliasType(
@@ -925,6 +946,45 @@ class ReportedIncident(BaseModel):
     url: str | None = None
 
 
+class RequestProject(BaseModel):
+    """
+    plinth.request_project/1, from api.request_project(p_name, p_rera, p_whatsapp_consent) (API_CONTRACTS §3.2; DESIGN §5b Request a project; built by T45a). The record of the request: reference R-MMDD-NN (IST date), added by due_on (requested + 14 days) or told why not. p_whatsapp_consent is the buyer's own tap asking to hear back on WhatsApp too; it needs a linked, opted-in WhatsApp contact (otherwise consent_required). The same open request again returns the same reference.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.request_project/1"], Field(alias="schema")]
+    ref: Annotated[
+        str, Field(pattern="^R-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$")
+    ]
+    """
+    R-MMDD-NN (catalogues/ref_formats.json prefix R).
+    """
+    name: str | None
+    """
+    The project as the buyer typed it.
+    """
+    rera: str | None
+    requested_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    due_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    status: ProjectRequestStatus
+    line: str
+    """
+    "We'll add it by 1 Nov 2026 or tell you why not."
+    """
+    whatsapp_line: str | None
+    """
+    Set when the buyer asked to hear back on WhatsApp too.
+    """
+
+
 class ReraNumber(RootModel[str]):
     root: Annotated[str, Field(min_length=1, title="ReraNumber")]
     """
@@ -979,6 +1039,17 @@ class RpcError(BaseModel):
     message: ApiErrorCode
     details: str | None
     hint: str | None
+
+
+class SavedCostSheet(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    label: str
+    saved_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
 
 
 class ScoreState(StrEnum):
@@ -1862,6 +1933,36 @@ class FamilyInvitePreview(BaseModel):
     number_line: str
 
 
+class FamilyInviteRow(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    """
+    The invite id (api.family_member_remove cancels it like api.family_invite_cancel).
+    """
+    code: Annotated[
+        str, Field(pattern="^[A-Z0-9]{2,4}-[A-Z0-9]{3}$", title="InviteCode")
+    ]
+    """
+    Family invite code, e.g. AH2-7KQ or RC4-2MW.
+    """
+    link: str
+    scope_line: str
+    invited_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    expires_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    line: str
+    """
+    "Invited today · Aurelia Heights Ph 2 · hasn't tapped the link yet"
+    """
+
+
 class FamilyInviteScope(BaseModel):
     """
     Either some followed phases (slugs) or all of them (all = true).
@@ -1872,6 +1973,73 @@ class FamilyInviteScope(BaseModel):
     )
     slugs: Annotated[list[Slug] | None, Field(min_length=1)] = None
     all: bool | None = None
+
+
+class FamilyJoin(BaseModel):
+    """
+    plinth.family_join/1, from api.family_join(p_code) (the app path) and the relative's own WhatsApp "JOIN <code>" (ops.family_join_by_code via api.whatsapp_family_join; API_CONTRACTS §4.11; built by T45a). The join itself is the relative's opt-in. An unknown, used, cancelled or expired code is a neutral not_found, never this payload. Never a phone number.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.family_join/1"], Field(alias="schema")]
+    member_id: Annotated[UUID, Field(title="Uuid")]
+    inviter_first_name: str
+    scope_line: str
+    joined_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    can_add_notes: bool
+    joined_line: str
+    """
+    "You'll get the same alerts as Rohan for Aurelia Heights, Phase 2."
+    """
+    what_you_get: list[str]
+    number_line: str
+
+
+class FamilyMember(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    """
+    The member id for api.family_member_remove and api.family_member_undo.
+    """
+    first_name: str | None
+    """
+    The relative's first name when they have an account; null for a WhatsApp-only member.
+    """
+    scope_all: bool
+    """
+    Same alerts for all of the owner's projects.
+    """
+    joined_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    joined_via: JoinedVia
+    can_add_notes: bool
+    line: str
+    """
+    "Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes"
+    """
+
+
+class FamilyMembership(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    member_id: Annotated[UUID, Field(title="Uuid")]
+    owner_first_name: str | None
+    scope_line: str
+    joined_on: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    A calendar date, YYYY-MM-DD (IST business date).
+    """
+    can_add_notes: bool
 
 
 class Follow(BaseModel):
@@ -2070,6 +2238,48 @@ class LatestQpr(BaseModel):
     age_days: Annotated[int | None, Field(ge=0)]
     """
     Days since filed_on; null when the filing date is not on record (Cedar Walk Ph 2).
+    """
+
+
+class LinkedFollow(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    slug: Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$", title="Slug")]
+    """
+    Lower-case page key, e.g. aurelia-heights-phase-2.
+    """
+    since: Annotated[date_aliased, Field(title="IsoDate")]
+    """
+    The IST date the number followed it on WhatsApp.
+    """
+
+
+class Me(BaseModel):
+    """
+    plinth.me/1, from api.me() (API_CONTRACTS §3.2; built by T45a; shape defined with T45b per INTEGRATION_NOTES round 3). The signed-in account as app.profiles holds it. The number itself never leaves auth: only the masked form.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.me/1"], Field(alias="schema")]
+    user_id: Annotated[UUID, Field(title="Uuid")]
+    first_name: str | None
+    """
+    The only name a site office ever sees (with a visit consent).
+    """
+    phone_masked: str | None
+    """
+    "+91 99••• ••318" (app.profiles.phone_masked).
+    """
+    adult_attested_at: AwareDatetime | None
+    """
+    When the user confirmed they are 18 or over; null until then.
+    """
+    roles: list[PlatformRole]
+    """
+    Platform roles (app.user_roles; plinth_roles in the JWT).
     """
 
 
@@ -2496,6 +2706,46 @@ class RiskSummary(BaseModel):
     share: RiskShare
 
 
+class SavedSearchItem(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    id: Annotated[UUID, Field(title="Uuid")]
+    label: str | None
+    """
+    The buyer's own name for it (at most 80 characters).
+    """
+    filters: dict[str, Any]
+    """
+    The search's arguments as the client sent them (api.search_projects p_* args).
+    """
+    in_digest: bool
+    saved_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+    updated_at: Annotated[AwareDatetime, Field(title="Timestamp")]
+    """
+    ISO 8601 timestamp with an offset, e.g. 2026-10-18T12:00:00+05:30.
+    """
+
+
+class SavedSearches(BaseModel):
+    """
+    plinth.saved_searches/1, from api.saved_searches() (built by T45a): the caller's saved searches, newest first.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.saved_searches/1"], Field(alias="schema")]
+    items: list[SavedSearchItem]
+    max_items: Annotated[int, Field(ge=1)]
+    """
+    How many searches a buyer can save.
+    """
+
+
 class SearchFilters(BaseModel):
     """
     Structured filters. Also the response schema of the AI task parse.search_query@1 (a deterministic parser runs first).
@@ -2879,9 +3129,35 @@ class Evidence(BaseModel):
     report_error: ReportError
 
 
+class FamilyCircle(BaseModel):
+    """
+    plinth.family_circle/1, from api.family_circle() (API_CONTRACTS §3.2, §4.11; built by T45a). The caller's own circle (joined members and open invites) and the circles they joined. Never a phone number, follow type, payment alert or "who has my number" (DATA_MODEL §12 inv. 5). Every line is final server copy.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.family_circle/1"], Field(alias="schema")]
+    members: list[FamilyMember]
+    """
+    Relatives who joined the caller's circle, earliest first.
+    """
+    invites: list[FamilyInviteRow]
+    """
+    Open invites (not used, cancelled or expired), newest first.
+    """
+    member_of: list[FamilyMembership]
+    """
+    Other people's circles the caller joined.
+    """
+    rules: list[str]
+    private_line: str
+    number_line: str
+
+
 class FamilyInviteCreateRequest(BaseModel):
     """
-    Arguments of api.family_invite_create.
+    Arguments of api.family_invite_create. Idempotent on p_client_id. The scope may name only phases the caller follows.
     """
 
     model_config = ConfigDict(
@@ -2889,6 +3165,10 @@ class FamilyInviteCreateRequest(BaseModel):
     )
     p_scope: FamilyInviteScope
     p_client_id: Annotated[UUID | None, Field(title="Uuid")] = None
+    p_can_add_notes: bool | None = None
+    """
+    The relative may add notes to the shared shortlist (default false).
+    """
 
 
 class FollowingFeed(BaseModel):
@@ -2913,6 +3193,33 @@ class FollowingFeed(BaseModel):
     Changes before the replay date.
     """
     digest: DigestInfo | None
+
+
+class LinkWhatsappFollows(BaseModel):
+    """
+    plinth.link_whatsapp_follows/1, from api.link_whatsapp_follows(p_accept) ("Bring them here", API_CONTRACTS §3.2; built by T45a). The WhatsApp number is the account's own verified phone. p_accept false is the peek before any tap: what that number follows on WhatsApp, nothing changes. p_accept true is the buyer's own tap: the WhatsApp contact is linked to the account and its follows move into the account (source whatsapp); the answer lists the follows now brought. A number linked to another account answers linked false with nothing listed.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.link_whatsapp_follows/1"], Field(alias="schema")]
+    accepted: bool
+    """
+    Echoes p_accept: true only for the "Bring them here" tap.
+    """
+    linked: bool
+    """
+    This WhatsApp number is linked to the caller's account now.
+    """
+    follows: list[LinkedFollow]
+    """
+    Peek: the number's WhatsApp follows not brought yet. Accepted: the follows brought into the account. Oldest first.
+    """
+    cost_sheets: list[SavedCostSheet]
+    """
+    Cost sheets the number saved on WhatsApp (uploads, M3). Empty until uploads exist.
+    """
 
 
 class Methodology(BaseModel):
@@ -2987,6 +3294,19 @@ class ProjectHero(BaseModel):
     image_caption: str | None
     summary_line: str
     rera_badge: ReraBadge
+
+
+class SavedSearch(BaseModel):
+    """
+    plinth.saved_search/1, from api.saved_search_save(p_filters, p_label, p_in_digest, p_id, p_client_id) (API_CONTRACTS §3.2; built by T45a). The search as saved (app.saved_searches). The same filters saved again update the one saved search; at most 25 per buyer. Matches are digest material, never utility alerts.
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    schema_: Annotated[Literal["plinth.saved_search/1"], Field(alias="schema")]
+    search: SavedSearchItem
+    line: str
 
 
 class ShareCard(BaseModel):

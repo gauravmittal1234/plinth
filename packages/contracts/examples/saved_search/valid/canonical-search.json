@@ -1,0 +1,15 @@
+{
+  "schema": "plinth.saved_search/1",
+  "search": {
+    "id": "0f6b9d2e-3c41-5a8e-9d77-2b1f0c6a4e51",
+    "label": null,
+    "filters": {
+      "p_q": "3 bhk dwarka expresway under 2.5 cr low risk",
+      "p_sort": "lowest_risk"
+    },
+    "in_digest": false,
+    "saved_at": "2026-10-18T12:00:00+05:30",
+    "updated_at": "2026-10-18T12:00:00+05:30"
+  },
+  "line": "Saved."
+}

@@ -1,0 +1,12 @@
+{
+  "base": "canonical-search.json",
+  "why": "filters are the search's arguments, an object.",
+  "expect": "/search/filters",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/search/filters",
+      "value": "3 bhk dwarka expresway"
+    }
+  ]
+}

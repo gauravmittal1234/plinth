@@ -123,16 +123,20 @@ export const PUBLIC_RPCS = [
 
 /** Buyer API (user JWT). Mutations take p_client_id and are idempotent. */
 export const BUYER_RPCS = [
-  { fn: "me", m: "M2", request: noArgs, response: null },
+  { fn: "me", m: "M2", request: noArgs, response: "Me", stable: true },
   {
     fn: "device_register",
     m: "M2",
-    request: args({
-      p_token: { type: "string" },
-      p_platform: { type: "string", enum: ["android", "ios", "web"] },
-      p_app_version: { type: "string" },
-    }),
+    request: args(
+      {
+        p_token: { type: "string" },
+        p_platform: { type: "string", enum: ["android", "ios", "web"] },
+        p_app_version: { type: ["string", "null"] },
+      },
+      ["p_token", "p_platform"],
+    ),
     response: "Ok",
+    note: "A token already registered moves to the caller (the device signed in again).",
   },
   { fn: "follow", m: "M2", request: "FollowRequest", response: "Follow" },
   {
@@ -153,6 +157,7 @@ export const BUYER_RPCS = [
       ["p_slug", "p_follow_type"],
     ),
     response: "Follow",
+    note: "Booked adds payment-stage alerts and the Pay-as-built links. Not found unless the caller follows the phase.",
   },
   {
     fn: "following_feed",
@@ -165,13 +170,41 @@ export const BUYER_RPCS = [
     fn: "link_whatsapp_follows",
     m: "M2",
     request: args({ p_accept: { type: "boolean" } }),
-    response: null,
+    response: "LinkWhatsappFollows",
+    note: "p_accept false peeks at the caller's own number on WhatsApp; true (the buyer's tap) links it and moves its follows into the account.",
   },
-  { fn: "alert_prefs_get", m: "M2", request: noArgs, response: "AlertPrefs" },
-  { fn: "alert_prefs_set", m: "M2", request: "AlertPrefsSetRequest", response: "AlertPrefs" },
-  { fn: "saved_search_save", m: "M2", request: null, response: null },
-  { fn: "saved_search_delete", m: "M2", request: null, response: null },
-  { fn: "family_circle", m: "M2", request: noArgs, response: null },
+  { fn: "alert_prefs_get", m: "M2", request: noArgs, response: "AlertPrefs", stable: true },
+  {
+    fn: "alert_prefs_set",
+    m: "M2",
+    request: "AlertPrefsSetRequest",
+    response: "AlertPrefs",
+    note: "Sets the channels and kinds given; others are unchanged. WhatsApp needs a linked, opted-in contact (consent_required).",
+  },
+  { fn: "saved_searches", m: "M2", request: noArgs, response: "SavedSearches", stable: true },
+  {
+    fn: "saved_search_save",
+    m: "M2",
+    request: args(
+      {
+        p_filters: { type: "object" },
+        p_label: { type: ["string", "null"], maxLength: 80 },
+        p_in_digest: { type: "boolean", default: false },
+        p_id: { type: ["string", "null"], format: "uuid" },
+        p_client_id: clientId,
+      },
+      ["p_filters"],
+    ),
+    response: "SavedSearch",
+    note: "The same filters saved again update the one saved search; p_id edits one. At most 25.",
+  },
+  {
+    fn: "saved_search_delete",
+    m: "M2",
+    request: args({ p_id: { type: "string", format: "uuid" }, p_client_id: clientId }, ["p_id"]),
+    response: "Ok",
+  },
+  { fn: "family_circle", m: "M2", request: noArgs, response: "FamilyCircle", stable: true },
   {
     fn: "family_invite_create",
     m: "M2",
@@ -181,18 +214,52 @@ export const BUYER_RPCS = [
   {
     fn: "family_invite_cancel",
     m: "M2",
-    request: args({ p_code: { $ref: "#/components/schemas/InviteCode" } }),
+    request: args({ p_code: { $ref: "#/components/schemas/InviteCode" }, p_client_id: clientId }, [
+      "p_code",
+    ]),
     response: "Ok",
   },
-  { fn: "family_member_remove", m: "M2", request: null, response: null },
-  { fn: "family_member_undo", m: "M2", request: null, response: null },
+  {
+    fn: "family_member_remove",
+    m: "M2",
+    request: args({ p_member_id: { type: "string", format: "uuid" }, p_client_id: clientId }, [
+      "p_member_id",
+    ]),
+    response: "Ok",
+    note: "Undo within an hour with family_member_undo.",
+  },
+  {
+    fn: "family_member_undo",
+    m: "M2",
+    request: args({ p_member_id: { type: "string", format: "uuid" }, p_client_id: clientId }, [
+      "p_member_id",
+    ]),
+    response: "Ok",
+  },
   {
     fn: "family_join",
     m: "M2",
-    request: args({ p_code: { $ref: "#/components/schemas/InviteCode" } }),
-    response: null,
+    request: args({ p_code: { $ref: "#/components/schemas/InviteCode" }, p_client_id: clientId }, [
+      "p_code",
+    ]),
+    response: "FamilyJoin",
+    note: "An unknown, used, cancelled or expired code is one neutral not_found.",
   },
-  { fn: "shortlist_note_add", m: "M2", request: null, response: null },
+  {
+    fn: "shortlist_note_add",
+    m: "M2",
+    request: args(
+      {
+        p_slug: slug,
+        p_body: { type: "string", minLength: 1, maxLength: 1000 },
+        p_client_id: clientId,
+        p_circle_id: { type: ["string", "null"], format: "uuid" },
+      },
+      ["p_slug", "p_body"],
+    ),
+    response: "Ok",
+    note: "The circle owner, or a joined member with can_add_notes.",
+  },
   { fn: "who_has_my_number", m: "M2", request: noArgs, response: "WhoHasMyNumber" },
   { fn: "consent_history", m: "M2", request: noArgs, response: null },
   {
@@ -212,9 +279,17 @@ export const BUYER_RPCS = [
   {
     fn: "request_project",
     m: "M2",
-    request: args({ p_name: { type: "string" }, p_rera: { type: ["string", "null"] } }),
-    response: null,
-    note: "Returns an R-MMDD-NN reference.",
+    request: args(
+      {
+        p_name: { type: ["string", "null"], maxLength: 200 },
+        p_rera: { type: ["string", "null"], maxLength: 100 },
+        p_whatsapp_consent: { type: "boolean", default: false },
+        p_client_id: clientId,
+      },
+      ["p_name"],
+    ),
+    response: "RequestProject",
+    note: "An R-MMDD-NN reference, added within 14 days or told why not. p_whatsapp_consent (the buyer's tap) needs a linked, opted-in WhatsApp contact.",
   },
   {
     fn: "create_upload",

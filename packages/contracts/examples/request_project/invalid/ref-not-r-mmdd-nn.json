@@ -1,0 +1,12 @@
+{
+  "base": "indigo-terraces.json",
+  "why": "The reference is R-MMDD-NN (catalogues/ref_formats.json).",
+  "expect": "/ref",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/ref",
+      "value": "R-1018-7"
+    }
+  ]
+}
