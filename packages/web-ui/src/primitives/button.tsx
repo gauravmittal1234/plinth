@@ -3,7 +3,9 @@
 // ink link with an underline, never green. Fully round, 52 px for the page's
 // main action, 44 px otherwise. Press, hover and focus feedback on every one.
 // `asChild` renders the styles on a link (Radix Slot), so a navigation stays an <a>.
-import { Slot } from "radix-ui";
+// `radix-ui/slot` re-exports only `@radix-ui/react-slot`, not the unified
+// package's root barrel (every Radix primitive) — see sheet.tsx's comment.
+import * as Slot from "radix-ui/slot";
 import type { ComponentPropsWithoutRef } from "react";
 import { cx } from "../lib/cx";
 
