@@ -133,6 +133,16 @@ test.describe("WebProjectStates: Facts-only (?state=facts_only, Aurelia)", { tag
     await page.goto(AURELIA);
     await expect(page.locator("#booked-buyer")).toHaveCount(0);
   });
+
+  test("the preview is noindex; the canonical page is not", async ({ page }) => {
+    // `?state=` is a next.config.ts rewrite to the internal `~preview` route,
+    // so the canonical page stays static and indexable.
+    await page.goto(`${AURELIA}?state=facts_only`);
+    await expect(page).toHaveURL(`${AURELIA}?state=facts_only`);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex");
+    await page.goto(AURELIA);
+    await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+  });
 });
 
 test.describe("WebProjectStates: the booked-buyer panel and its toggle", { tag: "@smoke" }, () => {
@@ -172,16 +182,14 @@ test.describe("WebProjectStates: Simple view (?view=simple)", { tag: "@smoke" },
 
 test.describe("WebProjectStates: an unknown project slug", { tag: "@smoke" }, () => {
   test("renders the not-found UI, with noindex either way", async ({ page }) => {
-    // `generateMetadata` only reads `params`, so it resolves (and can call
-    // `notFound()`) before the body's own `<Suspense>` boundary commits to a
-    // 200 — this route's unknown slug gets a real 404, not the "noindex,
-    // kept at 200" case node_modules/next/dist/docs/01-app/02-guides/
-    // streaming.md describes for a `notFound()` that fires once a Suspense
-    // fallback has already streamed (e.g. from code that reads
-    // `searchParams`, as `ProjectRoute` here does for `?state=`). Assert the
-    // not-found UI and the noindex meta either way, not a status code, so
-    // this test still passes if a later change moves the slug check behind
-    // that boundary.
+    // The route reads only `params` (no `searchParams`; the `?state=` /
+    // `?view=simple` previews are rewrites to `~preview` routes). A slug
+    // outside `generateStaticParams` renders on request from the route's
+    // prerendered shell, so `loadProject`'s `notFound()` can land after a
+    // 200 has been sent: the "noindex, kept at 200" case
+    // node_modules/next/dist/docs/01-app/02-guides/streaming.md describes
+    // ("Status codes"). Assert the not-found UI and the noindex meta, not a
+    // status code.
     await page.goto("/gurugram/projects/not-a-real-project");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
       "We couldn't find that page.",

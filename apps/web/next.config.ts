@@ -1,5 +1,30 @@
 import type { NextConfig } from "next";
 
+// WebProject's fixture previews (T20c; src/features/project/page/preview.ts)
+// keep their public query URLs, but render from internal `~preview` routes so
+// the canonical /gurugram/projects/[slug] never reads `searchParams` and stays
+// prerendered. The state list is PROJECT_PREVIEW_STATES: keep them in step.
+// `beforeFiles`, so the rewrite wins over the prerendered canonical page.
+const projectPreviewRewrites = [
+  {
+    source: "/gurugram/projects/:slug",
+    has: [
+      {
+        type: "query" as const,
+        key: "state",
+        value:
+          "(?<state>severe|stalled|limited_history|not_scored|stale|rescoring|facts_only)",
+      },
+    ],
+    destination: "/gurugram/projects/:slug/~preview/state/:state",
+  },
+  {
+    source: "/gurugram/projects/:slug",
+    has: [{ type: "query" as const, key: "view", value: "simple" }],
+    destination: "/gurugram/projects/:slug/~preview/simple",
+  },
+];
+
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
@@ -20,6 +45,9 @@ const nextConfig: NextConfig = {
         as: "*.css",
       },
     },
+  },
+  async rewrites() {
+    return { beforeFiles: [...projectPreviewRewrites] };
   },
 };
 

@@ -1,7 +1,8 @@
 // The one place WebProject reads data (INTEGRATION_NOTES: "import data only
-// from @/src/data"). Called both from `generateMetadata` (before any
-// Suspense boundary, so its own `notFound()` still produces a real 404) and
-// from the route's Suspense-wrapped body.
+// from @/src/data"). Called from the route's `generateMetadata` and Page
+// function, before any Suspense boundary, so `notFound()` can interrupt the
+// response rather than surface inside a streamed fallback. The `~preview`
+// routes (preview.ts) call it the same way, with a `state`.
 import "server-only";
 import { notFound } from "next/navigation";
 import { isDataError, methodology, projectPage, type Methodology, type ProjectPage } from "@/src/data";
