@@ -13,6 +13,7 @@ import type { Metadata } from "next";
 import { DeveloperPageView } from "@/src/features/developer/page/developer-page";
 import { loadDeveloper } from "@/src/features/developer/page/load-developer";
 import { developerMetadata } from "@/src/features/developer/page/preview";
+import { breadcrumbListJsonLd } from "@/src/seo/json-ld";
 
 export function generateStaticParams() {
   return GROUP_SLUGS.map((slug) => ({ slug }));
@@ -30,5 +31,16 @@ export async function generateMetadata({
 export default async function Page(props: PageProps<"/gurugram/developers/[slug]">) {
   const { slug } = await props.params;
   const data = await loadDeveloper(slug, null);
-  return <DeveloperPageView data={data} />;
+  const { group } = data.page;
+  const breadcrumb = breadcrumbListJsonLd([
+    { name: "Home", path: "/" },
+    { name: group.name, path: `/gurugram/developers/${group.slug}` },
+  ]);
+  return (
+    <>
+      {/* Server-rendered only: no client JS (T28 brief, M1 polish). */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <DeveloperPageView data={data} />
+    </>
+  );
 }

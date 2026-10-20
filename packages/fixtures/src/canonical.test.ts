@@ -350,18 +350,31 @@ describe("scoring and expected outputs agree", () => {
     expect(JSON.stringify(rs)).not.toContain("Dec 2028");
   });
 
-  it("the 4 evidence fixtures are the 4 Aurelia reason facts", () => {
+  it("the 4 evidence fixtures are the 4 Aurelia reason facts, each with a slug variant", () => {
     const run = published("aurelia-heights-phase-2");
     const ids = arr(sc, "reasons")
       .filter((r) => r.run === run.id)
       .map((r) => (r.fact_ids as string[])[0])
       .sort();
-    expect(expectedKeys("evidence")).toEqual(ids);
+    // api.evidence(p_fact_id, p_slug) (T13): the project page passes its own
+    // slug too, so every fact gets a second, slug-qualified fixture key.
+    const withSlugVariants = ids
+      .flatMap((id) => [id, `${id}--aurelia-heights-phase-2`])
+      .sort();
+    expect(expectedKeys("evidence")).toEqual(withSlugVariants);
     const r1 = loadExpected<Rec>(
       "evidence",
       ids.find((id) => arr(ev, "facts").find((f) => f.id === id)?.attribute === "qpr.progress")!,
     );
     expect(r1.dates_line).toContain("Filed 15 Jul 2026");
+    // Every fact here is one of Aurelia's own reasons, so
+    // core.evidence_in_context(fact_id, aurelia) names the same reasons the
+    // slug-less overload already does: same payload, a second request key.
+    for (const id of ids) {
+      expect(loadExpected("evidence", `${id}--aurelia-heights-phase-2`)).toEqual(
+        loadExpected("evidence", id!),
+      );
+    }
   });
 });
 

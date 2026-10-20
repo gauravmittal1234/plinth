@@ -1,0 +1,24 @@
+{
+  "schema": "plinth.evidence/1",
+  "fact_id": "145c288f-31dd-5955-9677-170f82ffd80c",
+  "chip": "HARERA · DTCP OC records",
+  "lane": "records_show",
+  "document": "HARERA project pages and DTCP occupation certificates · 6 Northfield Estates group projects",
+  "dates_line": "Checked 14 Oct 2026",
+  "page": "OC register",
+  "extract": "OC granted more than 12 months after the original RERA date: 2 of 6. The other 4 got OC within 12 months.",
+  "read_line": "Group built from 9 linked companies in MCA records. Checked by a person.",
+  "used_in": ["Reason 4 of Delivery risk", "Developer track record"],
+  "developer_says": null,
+  "corrections_line": "No corrections.",
+  "snapshot": {
+    "sha256_short": "dfdb0daa…cf7b3804",
+    "fetched_at": "2026-10-14T00:00:00+05:30"
+  },
+  "official_url": "https://haryanarera.gov.in",
+  "view_label": "View on HARERA",
+  "report_error": {
+    "ref_prefix": "E",
+    "sla_line": "We answer within 15 working days."
+  }
+}

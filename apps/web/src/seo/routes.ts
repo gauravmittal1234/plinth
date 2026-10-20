@@ -1,37 +1,34 @@
 // Public route enumeration for sitemap.ts: every slug comes from the data
-// layer (@plinth/fixtures), never a hand-kept list (AGENTS.md "Facts" rule;
-// T28 brief "don't hard-code lists the data already has").
+// layer (@/src/data), never a hand-kept list (AGENTS.md "Facts" rule; T28
+// brief "don't hard-code lists the data already has") and never a direct
+// @plinth/fixtures import (src/data/index.ts's own header: "Pages import
+// only from here; nothing else talks to Supabase or reads fixture files" --
+// a sitemap crawls the live site, so it reads the same door every page does).
 //
-// - Phase and developer slugs are @plinth/fixtures' own canonical lists: the
+// - Phase and developer slugs are the data layer's own public lists: the
 //   8 phases and 6 developer groups that have a public page (DESIGN §5b).
-// - Compare pairs are derived from the catalogue's `corridor` field (the same
-//   field that separates a phase with its own page from a completed one
-//   without), paired within a corridor: real alternatives a buyer would
-//   actually compare, not every combination.
+// - Compare pairs are derived from each phase's `corridor` (the same field
+//   that separates a phase with its own page from a completed one without),
+//   paired within a corridor: real alternatives a buyer would actually
+//   compare, not every combination.
 import "server-only";
-// A static import, not @plinth/fixtures/node's loadCanonical(): that loader
-// reads the file at a dynamic path (readFileSync(join(FIXTURES_DIR, rel))),
-// which makes Turbopack trace (and ship) the whole monorepo for this route
-// (confirmed by `next build`'s own warning on this exact import).
-import catalogueJson from "@plinth/fixtures/canonical/catalogue.json";
-import { GROUP_SLUGS, PHASE_SLUGS, type PhaseSlug } from "@plinth/fixtures";
+import {
+  publicDeveloperSlugs as dataPublicDeveloperSlugs,
+  publicProjectCorridors,
+  publicProjectSlugs as dataPublicProjectSlugs,
+  type PhaseSlug,
+} from "@/src/data";
 
 export type ComparePair = readonly [PhaseSlug, PhaseSlug];
 
-/** One row of packages/fixtures/canonical/catalogue.json `phases` (fields this module reads only). */
-type CataloguePhase = { slug: string; corridor: string | null };
-type Catalogue = { phases: CataloguePhase[] };
-
-const catalogue = catalogueJson as unknown as Catalogue;
-
 /** The phases with their own `/gurugram/projects/[slug]` page. */
 export function publicProjectSlugs(): readonly PhaseSlug[] {
-  return PHASE_SLUGS;
+  return dataPublicProjectSlugs();
 }
 
 /** The developer groups with their own `/gurugram/developers/[slug]` page. */
 export function publicDeveloperSlugs(): readonly string[] {
-  return GROUP_SLUGS;
+  return dataPublicDeveloperSlugs();
 }
 
 /**
@@ -39,9 +36,9 @@ export function publicDeveloperSlugs(): readonly string[] {
  * `/compare/[a]-vs-[b]` SEO route (WORK_BREAKDOWN §2.1 WebCompare).
  */
 export function comparePairs(): readonly ComparePair[] {
-  const corridorOf = new Map(catalogue.phases.map((p) => [p.slug, p.corridor]));
+  const corridorOf = publicProjectCorridors();
   const byCorridor = new Map<string, PhaseSlug[]>();
-  for (const slug of PHASE_SLUGS) {
+  for (const slug of dataPublicProjectSlugs()) {
     const corridor = corridorOf.get(slug);
     if (!corridor) continue;
     const group = byCorridor.get(corridor) ?? [];

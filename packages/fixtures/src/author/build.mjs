@@ -101,7 +101,16 @@ export async function buildAll() {
     ["aurelia-heights-phase-2", "kestrel-park", "sapphire-grove-phase-1", "coral-towers"],
   ];
   for (const slugs of cmp) exp("compare", slugs.join("_"), X.compare(slugs), { p_slugs: slugs });
-  for (const e of X.evidence()) exp("evidence", e.key, e.body, { p_fact_id: e.key });
+  for (const e of X.evidence()) {
+    exp("evidence", e.key, e.body, { p_fact_id: e.key });
+    // api.evidence(p_fact_id, p_slug) (T13): the project page passes its own
+    // slug so used_in can name that page's reasons. Every fixture evidence
+    // fact today is one of AH2's own reasons (X.evidence() reads
+    // reasonsOf(run(AH2))), so core.evidence_in_context(fact_id, AH2) returns
+    // the same body the slug-less overload already does; same payload, a
+    // second _requests.json key for the slug-qualified call.
+    exp("evidence", `${e.key}--${AH2}`, e.body, { p_fact_id: e.key, p_slug: AH2 });
+  }
   exp("methodology", "default", X.methodology(), {});
   exp("about", "default", X.about(), {});
   exp("flags", "anon", X.flags(), { audience: "anon" });
