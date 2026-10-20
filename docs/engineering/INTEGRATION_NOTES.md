@@ -98,3 +98,20 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
   - **T18:** add `plinth/sources/harera/cli.py` with `add_harera_parser`. Fixtures go in `tests/fixtures/harera/manifest.json`. Parse only snapshots that changed. Facts use `key_fields=("quarter",)`.
   - **Commit author:** T10's commits carry the auto-detected identity `macbook`. Squash-merging sets the author, so nothing needs rewriting.
 - **Stacking for wave 3:** T13 builds on T12's branch, and T18 builds on T10's. Screen tasks (T20+) need T14 and T16 together, so they start from a wave-2 integration branch the lead creates once T17, T29 and T03b finish.
+- **T29 (PR #18) handoffs:**
+  - **Integrator:**
+    - `config.toml` `[functions.health] verify_jwt = false`.
+    - `.env.example` gains `PLINTH_ENV` (hosted dev = `fixture`) and `PLINTH_HASH_SALT`.
+    - `.prettierignore` gains `supabase/functions/`.
+    - A DB hook copies `x-request-id` into `plinth.request_id` for the audit log.
+  - **T02:** add the `internal` (500) error code. `validators.d.ts` imports `./types.ts` with the extension, so `deno.json` can drop `sloppy-imports`.
+  - **T41:**
+    - Create `ops.rate_limits` and `api.rate_limit_hit` (service-role only); the SQL is in the header of `_shared/core/ratelimit.ts`.
+    - Verify Auth hooks with `readStandardWebhook`.
+    - OTP rate limits use `onStoreError: "deny"`.
+  - **T42–T46:**
+    - Wrap every function in `createHandler`.
+    - Dispatch uses `verifyDispatchSecret`; T44's Meta signature check uses `hmacSha256`/`timingSafeEqual`.
+    - Gate WhatsApp functions with `flagsReader(...).require(...)`.
+    - `META_MODE` defaults to `mock`.
+  - **M5 AI:** `parseBody(req, "AskRequest")`. `require("ai_ask")` and the other AI flags answer `flag_off` until M5. `AI_MODE` defaults to `recorded`, and tests refuse `live`.
