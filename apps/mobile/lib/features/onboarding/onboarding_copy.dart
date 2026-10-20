@@ -148,6 +148,7 @@ abstract final class OnboardingCopy {
   static const androidWillAskToast = 'Android will ask for permission now. You can change it any time in You.';
   static const notificationPermissionDenied =
       'Alerts are saved, but Android notifications are off. Turn them on in Settings any time.';
+  static const alertsSaveFailed = 'Could not turn on alerts right now. Try again from You.';
 
   // You're set.
   static const doneHeadline = 'You’re set.';

@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:plinth_contracts/plinth_contracts.dart' show AlertPrefsMap, ChannelPrefs, QuietHours;
 import 'package:plinth_tokens/plinth_tokens.dart';
 
@@ -286,6 +288,7 @@ _Actions _actionsFor(
 
 Future<void> _turnOnAlerts(BuildContext context, WidgetRef ref, OnboardingController notifier) async {
   final flow = ref.read(onboardingControllerProvider);
+  var saved = false;
   try {
     await ref.read(alertPrefsProvider.future); // the controller must finish its first build before `.save` runs
     await ref
@@ -297,15 +300,39 @@ Future<void> _turnOnAlerts(BuildContext context, WidgetRef ref, OnboardingContro
             quietHours: flow.quietHoursOn ? QuietHours(from: '22:00', to: '08:00') : null,
           ),
         );
+    saved = true;
   } on Exception {
-    // A signed-out buyer (Welcome's "Explore without an account" skipped
-    // straight here) or a server refusal still gets the toast below and the
-    // honest "Off" the Done summary shows for it: nothing claims a record
-    // that wasn't made (AGENTS.md rule 9).
+    // A signed-out buyer reaching this step (shouldn't happen: Alerts only
+    // follows a verified Code step) or a server refusal: the Done summary
+    // must show the honest "Off" for it, never claim a record that wasn't
+    // made (AGENTS.md rule 9).
   }
-  notifier.setAlertsOn(true);
+
+  // Real Android permission (POST_NOTIFICATIONS, API 33+; older Android
+  // grants it at install time, so `request()` resolves granted at once).
+  // Not called at all when the save itself failed — nothing to notify for.
+  var notificationsOn = false;
+  if (saved) {
+    try {
+      final status = await Permission.notification.request();
+      notificationsOn = status.isGranted || status.isLimited || status.isProvisional;
+    } catch (e) {
+      // No such permission on this platform, or unavailable in a test/FIXTURES
+      // build: the alert preference is still really saved server-side.
+      debugPrint('notification permission unavailable: $e');
+      notificationsOn = true;
+    }
+  }
+
+  notifier.setAlertsOn(saved);
   notifier.goTo(OnboardingStep.done);
-  if (context.mounted) showPlinthToast(context, OnboardingCopy.androidWillAskToast);
+  if (!context.mounted) return;
+  final message = switch ((saved, notificationsOn)) {
+    (false, _) => OnboardingCopy.alertsSaveFailed,
+    (true, false) => OnboardingCopy.notificationPermissionDenied,
+    (true, true) => OnboardingCopy.androidWillAskToast,
+  };
+  showPlinthToast(context, message);
 }
 
 Future<void> _finish(BuildContext context, WidgetRef ref) async {
