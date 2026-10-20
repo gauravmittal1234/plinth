@@ -1,0 +1,140 @@
+# ci-edge (owner: T29). BUILD_PLAN §8; WORK_BREAKDOWN T29.
+#   deno    in supabase/functions: deno fmt --check → deno lint → deno check → deno task test.
+#           Tests run without --allow-net, so none can reach Meta, Gemini or any provider:
+#           they use recorded payloads, fake fetch and fake RPC clients only.
+#   serve   the Supabase stack in Docker (Postgres 17 + migrations + seed, PostgREST, Kong) and
+#           `supabase functions serve`; GET /functions/v1/health must answer { "ok": true }
+#           (it pings api.flags() as anon), a POST must answer the contract's not_found.
+# Lean on minutes (DECISIONS E-9): a path filter, and superseded runs are cancelled.
+# Skipped jobs report success, so this check can be required without blocking other PRs.
+name: ci-edge
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-edge-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    name: edge functions changed?
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      edge: ${{ steps.filter.outputs.edge }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            edge:
+              - 'supabase/functions/**'
+              - 'supabase/config.toml'
+              - 'supabase/migrations/**'
+              - 'supabase/seed/**'
+              - 'packages/contracts/gen/**'
+              - 'packages/contracts/schemas/**'
+              - 'packages/contracts/catalogues/**'
+              - 'packages/contracts/examples/**'
+              - 'packages/fixtures/expected/**'
+              - 'packages/fixtures/recorded/**'
+              - '.github/workflows/ci-edge.yml'
+
+  deno:
+    name: deno (fmt, lint, check, test)
+    needs: changes
+    if: needs.changes.outputs.edge == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: supabase/functions
+    steps:
+      - uses: actions/checkout@v7
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: deno --version
+      - name: Format
+        run: deno fmt --check
+      - name: Lint
+        run: deno lint
+      - name: Type-check every function and shared module
+        run: deno check .
+      - name: Test (no network permission; recorded and fake payloads only)
+        run: deno task test
+
+  serve:
+    name: functions serve (health under the local stack)
+    needs: [changes, deno]
+    if: needs.changes.outputs.edge == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.118.0
+
+      # Postgres (migrations + the §5b seed), PostgREST, Kong and GoTrue only. The edge runtime
+      # is excluded here because `functions serve` starts its own.
+      - name: Start the local stack (Docker)
+        run: |
+          supabase start -x realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,logflare,vector,supavisor,edge-runtime
+
+      # health is deployed without JWT verification (handoff: config.toml [functions.health]).
+      - name: Serve functions in the background
+        run: |
+          nohup supabase functions serve --no-verify-jwt > "$RUNNER_TEMP/serve.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/serve.pid"
+
+      - name: 'GET /functions/v1/health → 200 {"ok": true}'
+        env:
+          URL: http://127.0.0.1:54321/functions/v1/health
+        run: |
+          code=000
+          for i in $(seq 1 60); do
+            code=$(curl -s -o "$RUNNER_TEMP/health.json" -D "$RUNNER_TEMP/health.headers" \
+              -H 'x-request-id: ci-edge-health-0001' -w '%{http_code}' "$URL" || true)
+            if [ "$code" = "200" ]; then break; fi
+            sleep 3
+          done
+          echo "status=$code"; cat "$RUNNER_TEMP/health.headers"; cat "$RUNNER_TEMP/health.json"; echo
+          test "$code" = "200"
+          test "$(jq -c . "$RUNNER_TEMP/health.json")" = '{"ok":true}'
+          grep -qi '^x-request-id: ci-edge-health-0001' "$RUNNER_TEMP/health.headers"
+          grep -qi '^x-plinth-db-ms: [0-9]' "$RUNNER_TEMP/health.headers"
+
+      - name: "POST /functions/v1/health → 404 not_found (the contract error body)"
+        run: |
+          code=$(curl -s -o "$RUNNER_TEMP/post.json" -w '%{http_code}' -X POST \
+            -H 'content-type: application/json' -d '{}' http://127.0.0.1:54321/functions/v1/health)
+          cat "$RUNNER_TEMP/post.json"; echo
+          test "$code" = "404"
+          jq -e '.error.code == "not_found" and (.error.message | type == "string")' "$RUNNER_TEMP/post.json"
+
+      - name: Logs on failure
+        if: failure()
+        run: |
+          cat "$RUNNER_TEMP/serve.log" || true
+          docker ps -a || true
+          for c in $(docker ps -a --format '{{.Names}}' | grep -E 'edge_runtime|kong|rest' || true); do
+            echo "--- $c"; docker logs --tail 80 "$c" 2>&1 || true
+          done
+
+      - name: Stop
+        if: always()
+        run: |
+          kill "$(cat "$RUNNER_TEMP/serve.pid" 2>/dev/null)" 2>/dev/null || true
+          supabase stop --no-backup || true
