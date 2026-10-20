@@ -39,7 +39,7 @@ R1 runs about **26 weeks** (PRD D14). Gurugram only (D2). Web, Android and Whats
 
 ## 3. Milestones M0–M6
 
-Week 1 starts **Mon 19 Oct 2026**. Agent throughput can compress M1–M5. External setup cannot be compressed: Meta business verification, TRAI DLT, the Play Console organisation account, and a GCP project in asia-south1 for live HARERA fetch from an Indian IP. Start those this week (SETUP_FOR_FOUNDER.md). The legal memo and HARERA permission letter are post-launch (FOUNDER_QUESTIONS P8).
+Week 1 starts **Mon 19 Oct 2026**. Agent throughput can compress M1–M5. External setup cannot be compressed: Meta business verification, TRAI DLT, the Play Console organisation account, and, at M6, a GCP project in asia-south1 for live HARERA fetch from an Indian IP (deferred for cost, P9). Start the first three this week (SETUP_FOR_FOUNDER.md). The legal memo and HARERA permission letter are post-launch (FOUNDER_QUESTIONS P8).
 
 | M | Weeks (dates) | Theme | Scope |
 |---|---|---|---|
@@ -51,7 +51,7 @@ Week 1 starts **Mon 19 Oct 2026**. Agent throughput can compress M1–M5. Extern
 | **M5** | W15–W20 (1 Feb–14 Mar) | Visits, agents, Ask Plinth, camera | Visit booking (WhatsApp Flow, web, app), visit pass with 5 questions, recap check, agent of record, the thin broker layer, Ask Plinth (text and voice), AppScan (QR, Where am I?, claims camera), Visualise beta with labels and C2PA |
 | **M6** | W19–W26 (1 Mar–25 Apr 2027) | Real data, hardening, launch | Live HARERA fetch from an Indian IP, backfill, entity resolution, first real calibration. S1 truth panel public, then the S2 bands gate. Performance, security and DPDP review. Templates approved. Play production. Runbooks. **Public launch target: week of 19 Apr 2027** |
 
-**Fast path (taken, 20 Oct 2026).** The legal memo is no longer a gate, so M6's data track (live fetch, backfill, entity resolution, first calibration) moves into M2–M3 as soon as the GCP project exists. It is independent of the UI work, and PRD §15 wants S1 SEO pages live around week 6.
+**Data track timing (founder, 20 Oct 2026: P9).** The legal memo no longer gates live data, but the GCP project is a running cost, so the data track (live fetch, backfill, entity resolution, first calibration) stays in M6, just before launch. M2–M5 run on fixtures. `scripts/gcp/bootstrap.sh` (#54) is ready for when M6 starts.
 
 ### Exit criteria (each must be demonstrable in CI or on the dev environment)
 
