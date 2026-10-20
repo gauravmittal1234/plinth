@@ -1,0 +1,14 @@
+{
+  "schema": "plinth.flags/1",
+  "flags": {
+    "bands_public": true,
+    "ai_ask": false,
+    "ai_doc_check": false,
+    "visit_booking": false,
+    "broker_layer": false,
+    "pro_paywall": false,
+    "map_tiles": true,
+    "facts_only_global": false,
+    "maintenance_mode": false
+  }
+}

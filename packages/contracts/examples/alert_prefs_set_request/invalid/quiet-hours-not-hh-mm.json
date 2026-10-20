@@ -1,0 +1,12 @@
+{
+  "base": "rohan.json",
+  "why": "Quiet hours are HH:MM, IST.",
+  "expect": "/p_prefs/quiet_hours/from",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/p_prefs/quiet_hours/from",
+      "value": "9 pm"
+    }
+  ]
+}

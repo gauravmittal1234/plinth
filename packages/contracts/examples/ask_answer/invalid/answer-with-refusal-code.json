@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-possession.json",
+  "why": "An answer has no refusal code.",
+  "expect": "/refusal_code",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/refusal_code",
+      "value": "off_topic"
+    }
+  ]
+}

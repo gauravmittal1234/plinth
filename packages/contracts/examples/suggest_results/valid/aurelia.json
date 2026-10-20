@@ -1,0 +1,13 @@
+{
+  "schema": "plinth.suggest/1",
+  "q": "aurelia",
+  "items": [
+    {
+      "kind": "phase",
+      "slug": "aurelia-heights-phase-2",
+      "label": "Aurelia Heights, Phase 2",
+      "detail_line": "Sector 37D, Dwarka Expressway · GGM/673/405/2022/117",
+      "matched_on": "name"
+    }
+  ]
+}

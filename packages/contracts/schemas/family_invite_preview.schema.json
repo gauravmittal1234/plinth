@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/family_invite_preview.schema.json",
+  "title": "FamilyInvitePreview",
+  "description": "plinth.family_invite_preview/1, from api.family_invite_preview(p_code); powers /j/[code] (API_CONTRACTS §4.11). Never a phone number.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "inviter_first_name",
+    "scope_line",
+    "rera_number",
+    "what_you_get",
+    "number_line"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.family_invite_preview/1" },
+    "inviter_first_name": { "type": "string" },
+    "scope_line": { "type": "string" },
+    "rera_number": {
+      "description": "The RERA number when the invite covers one phase; null for a multi-phase invite.",
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/ReraNumber" }, { "type": "null" }]
+    },
+    "what_you_get": { "type": "array", "items": { "type": "string" } },
+    "number_line": { "type": "string" }
+  }
+}

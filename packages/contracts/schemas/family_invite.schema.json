@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/family_invite.schema.json",
+  "title": "FamilyInvite",
+  "description": "plinth.family_invite/1, from api.family_invite_create(p_scope) (API_CONTRACTS §4.11). A code works for one person for 7 days and carries no phone number; the relative's own \"JOIN <code>\" message is the opt-in.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "code",
+    "link",
+    "expires_on",
+    "scope_line",
+    "share_text",
+    "rules",
+    "private_line"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.family_invite/1" },
+    "code": { "$ref": "common.schema.json#/$defs/InviteCode" },
+    "link": { "type": "string" },
+    "expires_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+    "scope_line": { "type": "string" },
+    "share_text": { "type": "string" },
+    "rules": { "type": "array", "items": { "type": "string" } },
+    "private_line": { "type": "string" }
+  },
+  "$defs": {
+    "FamilyInviteScope": {
+      "title": "FamilyInviteScope",
+      "description": "Either some followed phases (slugs) or all of them (all = true).",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "slugs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/Slug" }
+        },
+        "all": { "type": "boolean" }
+      }
+    },
+    "FamilyInviteCreateRequest": {
+      "title": "FamilyInviteCreateRequest",
+      "description": "Arguments of api.family_invite_create.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p_scope"],
+      "properties": {
+        "p_scope": { "$ref": "#/$defs/FamilyInviteScope" },
+        "p_client_id": { "$ref": "common.schema.json#/$defs/Uuid" }
+      }
+    }
+  }
+}

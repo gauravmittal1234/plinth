@@ -1,0 +1,12 @@
+{
+  "base": "c-1012-04.json",
+  "why": "NN has at least two digits.",
+  "expect": "/ref",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/ref",
+      "value": "C-1012-4"
+    }
+  ]
+}

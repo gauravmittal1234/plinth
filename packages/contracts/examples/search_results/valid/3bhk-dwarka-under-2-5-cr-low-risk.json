@@ -1,0 +1,35 @@
+{
+  "schema": "plinth.search_results/1",
+  "parsed": {
+    "bhk": [3],
+    "all_in_max_inr": 25000000,
+    "corridors": ["dwarka-expressway"],
+    "bands": ["low", "moderate"]
+  },
+  "notes": ["“Low delivery risk” shows Low and Moderate.", "1 project hidden by your filter."],
+  "sort_line": "Sorted by lowest delivery risk. Order never follows money.",
+  "items": [
+    {
+      "slug": "kestrel-park",
+      "name": "Kestrel Park",
+      "locality_line": "Sector 113, Dwarka Expressway",
+      "developer_name": "Orbis Land",
+      "chip": {
+        "kind": "band",
+        "label": "Low",
+        "step": 1,
+        "meter_filled": 1
+      },
+      "state": "scored",
+      "price_line": "₹2.44 Cr all-in · quoted ₹2.10 Cr",
+      "pin_label": "₹2.44 Cr",
+      "built_line": "63% built",
+      "completion_line": "Original completion Nov 2028",
+      "image_url": null,
+      "centroid": [77, 28.5]
+    }
+  ],
+  "hidden_count": 1,
+  "next_cursor": null,
+  "zero_results": null
+}

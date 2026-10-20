@@ -1,0 +1,12 @@
+{
+  "base": "ah2-7kq.json",
+  "why": "The preview never carries a phone number.",
+  "expect": "",
+  "patch": [
+    {
+      "op": "add",
+      "path": "/inviter_phone",
+      "value": "+91 99••• ••318"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "base": "aurelia-broker-flyer.json",
+  "why": "Nothing is checked before the buyer confirms the project.",
+  "expect": "/rows",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/status",
+      "value": "confirm_project"
+    }
+  ]
+}

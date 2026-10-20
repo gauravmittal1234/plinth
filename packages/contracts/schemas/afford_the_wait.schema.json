@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/afford_the_wait.schema.json",
+  "title": "AffordTheWait",
+  "description": "plinth.afford_the_wait/1, from api.afford_the_wait(...) (API_CONTRACTS §4.13). Arithmetic, not advice. Golden vectors: packages/fixtures/vectors/afford_the_wait.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "answer_line",
+    "now",
+    "by_completion",
+    "delay",
+    "after_keys",
+    "series",
+    "frequency_line",
+    "assumptions",
+    "framing_line"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.afford_the_wait/1" },
+    "answer_line": { "type": "string" },
+    "now": { "$ref": "#/$defs/MonthlyShare" },
+    "by_completion": { "$ref": "#/$defs/CompletionShare" },
+    "delay": { "$ref": "#/$defs/DelayCost" },
+    "after_keys": { "$ref": "#/$defs/AfterKeys" },
+    "series": { "type": "array", "items": { "$ref": "#/$defs/AffordPoint" } },
+    "frequency_line": { "type": ["string", "null"] },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "framing_line": { "type": "string" }
+  },
+  "$defs": {
+    "MonthlyShare": {
+      "title": "MonthlyShare",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["monthly_inr", "share_pct"],
+      "properties": {
+        "monthly_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "share_pct": { "$ref": "common.schema.json#/$defs/Pct" }
+      }
+    },
+    "CompletionShare": {
+      "title": "CompletionShare",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "monthly_inr", "share_pct"],
+      "properties": {
+        "label": { "type": "string" },
+        "monthly_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "share_pct": { "$ref": "common.schema.json#/$defs/Pct" }
+      }
+    },
+    "DelayCost": {
+      "title": "DelayCost",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["months", "cost_inr", "cost_label"],
+      "properties": {
+        "months": { "type": "integer", "minimum": 0 },
+        "cost_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "cost_label": { "type": "string" }
+      }
+    },
+    "AfterKeys": {
+      "title": "AfterKeys",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["emi_inr"],
+      "properties": {
+        "emi_inr": { "$ref": "common.schema.json#/$defs/Inr" }
+      }
+    },
+    "AffordPoint": {
+      "title": "AffordPoint",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["month", "pre_emi_inr", "rent_inr", "delay"],
+      "properties": {
+        "month": { "$ref": "common.schema.json#/$defs/YearMonth" },
+        "pre_emi_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "rent_inr": { "$ref": "common.schema.json#/$defs/Inr" },
+        "delay": { "type": "boolean" }
+      }
+    },
+    "AffordTheWaitRequest": {
+      "title": "AffordTheWaitRequest",
+      "description": "Arguments of api.afford_the_wait. Defaults: ProjectPage.wait_defaults.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "p_slug",
+        "p_take_home_inr",
+        "p_rent_inr",
+        "p_down_pct",
+        "p_rate_pct",
+        "p_tenure_years",
+        "p_delay_months"
+      ],
+      "properties": {
+        "p_slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "p_tower": { "type": ["string", "null"], "examples": ["A"] },
+        "p_take_home_inr": { "type": "integer", "minimum": 0 },
+        "p_rent_inr": { "type": "integer", "minimum": 0 },
+        "p_down_pct": { "type": "number", "minimum": 0, "maximum": 100 },
+        "p_rate_pct": { "type": "number", "minimum": 0, "maximum": 30 },
+        "p_tenure_years": { "type": "integer", "minimum": 1, "maximum": 40 },
+        "p_delay_months": { "type": "integer", "minimum": 0, "maximum": 60 }
+      }
+    }
+  }
+}

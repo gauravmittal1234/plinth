@@ -1,0 +1,71 @@
+{
+  "schema": "plinth.ask_answer/1",
+  "thread_id": "6f0e2c1a-0000-4000-8000-000000000401",
+  "kind": "answer",
+  "disclosure_line": "Ask Plinth is an AI. It answers from public records like HARERA and shows its sources.",
+  "sentences": [
+    {
+      "text": "The original RERA completion date is Dec 2027, with no extensions so far.",
+      "cite": [1]
+    },
+    {
+      "text": "41% is built with 77% of the promised time used.",
+      "cite": [2]
+    },
+    {
+      "text": "Between 30 and 45 of 100 similar Gurugram projects got their OC more than 12 months late, which here means after Apr 2029.",
+      "cite": [3]
+    }
+  ],
+  "sources": [
+    {
+      "n": 1,
+      "label": "HARERA registration",
+      "fact_id": "00000000-0000-4000-8000-000000000010"
+    },
+    {
+      "n": 2,
+      "label": "HARERA QPR · Apr–Jun 2026",
+      "fact_id": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "n": 3,
+      "label": "Plinth method v1.2",
+      "fact_id": "00000000-0000-4000-8000-000000000030"
+    }
+  ],
+  "cards": [
+    {
+      "slug": "aurelia-heights-phase-2",
+      "name": "Aurelia Heights, Phase 2",
+      "locality_line": "Sector 37D, Dwarka Expressway",
+      "developer_name": "Northfield Estates",
+      "chip": {
+        "kind": "band",
+        "label": "Elevated",
+        "step": 3,
+        "meter_filled": 3
+      },
+      "state": "scored",
+      "price_line": "₹2.74 Cr all-in · quoted ₹2.35 Cr",
+      "pin_label": "₹2.74 Cr",
+      "built_line": "41% built",
+      "completion_line": "Original completion Dec 2027",
+      "image_url": null,
+      "centroid": null
+    }
+  ],
+  "actions": [
+    {
+      "label": "Follow this project",
+      "action": "follow",
+      "href": null
+    }
+  ],
+  "refusal_code": null,
+  "handoff": {
+    "label": "Talk to a Plinth adviser · free · developers never pay us",
+    "hours_line": "Mon–Sat 10 am–7 pm, usually within 4 working hours"
+  },
+  "as_of_line": "Records as of 14 Oct 2026"
+}

@@ -1,0 +1,11 @@
+{
+  "base": "aurelia-heights-phase-2.json",
+  "why": "Every payload carries its schema envelope.",
+  "expect": "",
+  "patch": [
+    {
+      "op": "remove",
+      "path": "/schema"
+    }
+  ]
+}

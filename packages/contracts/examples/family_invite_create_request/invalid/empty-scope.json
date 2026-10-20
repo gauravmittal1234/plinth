@@ -1,0 +1,12 @@
+{
+  "base": "aurelia.json",
+  "why": "A scope names some phases or all of them.",
+  "expect": "/p_scope",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/p_scope",
+      "value": {}
+    }
+  ]
+}

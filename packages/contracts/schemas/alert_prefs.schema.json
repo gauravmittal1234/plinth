@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/alert_prefs.schema.json",
+  "title": "AlertPrefs",
+  "description": "plinth.alert_prefs/1, from api.alert_prefs_get and api.alert_prefs_set (API_CONTRACTS §4.9). Utility alerts only. Turning WhatsApp on without a linked WhatsApp contact returns consent_required.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "prefs", "whatsapp_optin", "lines", "number_line"],
+  "properties": {
+    "schema": { "const": "plinth.alert_prefs/1" },
+    "prefs": { "$ref": "#/$defs/AlertPrefsMap" },
+    "whatsapp_optin": { "type": "boolean" },
+    "lines": { "type": "array", "items": { "type": "string" } },
+    "number_line": { "type": ["string", "null"] }
+  },
+  "$defs": {
+    "AlertPrefsMap": {
+      "title": "AlertPrefsMap",
+      "description": "Per channel, per alert kind, a cadence (app.alert_subscriptions).",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "push": { "$ref": "#/$defs/ChannelPrefs" },
+        "whatsapp": { "$ref": "#/$defs/ChannelPrefs" },
+        "email": { "$ref": "#/$defs/ChannelPrefs" },
+        "quiet_hours": { "anyOf": [{ "$ref": "#/$defs/QuietHours" }, { "type": "null" }] }
+      }
+    },
+    "ChannelPrefs": {
+      "title": "ChannelPrefs",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "band_change": { "$ref": "common.schema.json#/$defs/Cadence" },
+        "filings": { "$ref": "common.schema.json#/$defs/Cadence" },
+        "orders": { "$ref": "common.schema.json#/$defs/Cadence" },
+        "extensions": { "$ref": "common.schema.json#/$defs/Cadence" },
+        "price": { "$ref": "common.schema.json#/$defs/Cadence" },
+        "digest": { "$ref": "common.schema.json#/$defs/Cadence" },
+        "payment_stage": { "$ref": "common.schema.json#/$defs/Cadence" }
+      }
+    },
+    "QuietHours": {
+      "title": "QuietHours",
+      "description": "IST, HH:MM. Non-urgent sends wait until \"to\".",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$" },
+        "to": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$" }
+      }
+    },
+    "AlertPrefsSetRequest": {
+      "title": "AlertPrefsSetRequest",
+      "description": "Arguments of api.alert_prefs_set. Idempotent on p_client_id.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p_prefs", "p_client_id"],
+      "properties": {
+        "p_prefs": { "$ref": "#/$defs/AlertPrefsMap" },
+        "p_client_id": { "$ref": "common.schema.json#/$defs/Uuid" }
+      }
+    }
+  }
+}

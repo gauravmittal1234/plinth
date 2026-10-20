@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/following_feed.schema.json",
+  "title": "FollowingFeed",
+  "description": "plinth.following_feed/1, from api.following_feed(p_since): Since you last looked, F-93 (API_CONTRACTS §4.8).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "since",
+    "heading",
+    "last_looked_line",
+    "summary_line",
+    "changes",
+    "quiet",
+    "projects",
+    "replay",
+    "record",
+    "digest"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.following_feed/1" },
+    "since": { "anyOf": [{ "$ref": "common.schema.json#/$defs/Timestamp" }, { "type": "null" }] },
+    "heading": { "type": "string" },
+    "last_looked_line": { "type": ["string", "null"] },
+    "summary_line": { "type": "string" },
+    "changes": { "type": "array", "items": { "$ref": "#/$defs/ChangeItem" } },
+    "quiet": { "type": "array", "items": { "$ref": "#/$defs/QuietProject" } },
+    "projects": { "type": "array", "items": { "$ref": "#/$defs/FollowedProject" } },
+    "replay": { "anyOf": [{ "$ref": "#/$defs/Replay" }, { "type": "null" }] },
+    "record": {
+      "description": "Changes before the replay date.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/ChangeItem" }
+    },
+    "digest": { "anyOf": [{ "$ref": "#/$defs/DigestInfo" }, { "type": "null" }] }
+  },
+  "$defs": {
+    "ChangeItem": {
+      "title": "ChangeItem",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "slug", "kind", "occurred_on", "line", "sources"],
+      "properties": {
+        "event_id": { "type": "string", "minLength": 1 },
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "kind": { "$ref": "common.schema.json#/$defs/EventKind" },
+        "occurred_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "line": { "type": "string" },
+        "before_pill": { "type": ["string", "null"] },
+        "after_pill": { "type": ["string", "null"] },
+        "developer_says": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/DeveloperSaysLine" }, { "type": "null" }]
+        },
+        "sources": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/SourceRef" } }
+      }
+    },
+    "QuietProject": {
+      "title": "QuietProject",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "line"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "line": { "type": "string" }
+      }
+    },
+    "FollowedProject": {
+      "title": "FollowedProject",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "chip", "follow_type", "row_line", "freshness_line", "family_line"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "name": { "type": "string" },
+        "chip": { "$ref": "common.schema.json#/$defs/Chip" },
+        "follow_type": { "$ref": "common.schema.json#/$defs/FollowType" },
+        "row_line": { "type": "string" },
+        "freshness_line": { "type": ["string", "null"] },
+        "family_line": { "type": ["string", "null"] }
+      }
+    },
+    "Replay": {
+      "title": "Replay",
+      "description": "Jump chips in R1; the slider is behind the since_replay_slider flag.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "jump_chips", "marks"],
+      "properties": {
+        "from": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "to": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "jump_chips": { "type": "array", "items": { "$ref": "#/$defs/JumpChip" } },
+        "marks": { "type": "array", "items": { "$ref": "#/$defs/ReplayMark" } }
+      }
+    },
+    "JumpChip": {
+      "title": "JumpChip",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "date"],
+      "properties": {
+        "label": { "type": "string" },
+        "date": { "$ref": "common.schema.json#/$defs/IsoDate" }
+      }
+    },
+    "ReplayMark": {
+      "title": "ReplayMark",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "kind", "band"],
+      "properties": {
+        "date": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "kind": { "$ref": "common.schema.json#/$defs/EventKind" },
+        "band": { "anyOf": [{ "$ref": "common.schema.json#/$defs/BandCode" }, { "type": "null" }] }
+      }
+    },
+    "DigestInfo": {
+      "title": "DigestInfo",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cadence", "next_line"],
+      "properties": {
+        "cadence": { "$ref": "common.schema.json#/$defs/Cadence" },
+        "next_line": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

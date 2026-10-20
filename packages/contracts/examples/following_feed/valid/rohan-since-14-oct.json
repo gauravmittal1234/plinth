@@ -1,0 +1,98 @@
+{
+  "schema": "plinth.following_feed/1",
+  "since": "2026-10-14T08:40:00+05:30",
+  "heading": "What changed since 14 Oct?",
+  "last_looked_line": "Last looked 14 Oct 2026, 8:40 am · 5 unread",
+  "summary_line": "5 changes across your 4 projects: 1 extension, 1 filing on time, 2 missing filings and 1 price change. No band moved.",
+  "changes": [
+    {
+      "event_id": "6f0e2c1a-0000-4000-8000-000000000101",
+      "slug": "coral-towers",
+      "kind": "extension_granted",
+      "occurred_on": "2026-10-14",
+      "line": "Coral Towers got a second extension, to Aug 2029.",
+      "before_pill": "Feb 2029",
+      "after_pill": "Aug 2029",
+      "sources": [
+        {
+          "label": "HARERA extension order",
+          "fact_ids": ["00000000-0000-4000-8000-000000000021"],
+          "evidence_url": "/evidence/00000000-0000-4000-8000-000000000021",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "event_id": "6f0e2c1a-0000-4000-8000-000000000102",
+      "slug": "aurelia-heights-phase-2",
+      "kind": "qpr_missing",
+      "occurred_on": "2026-10-15",
+      "line": "The Jul–Sep 2026 QPR is not on HARERA yet. It was due 15 Oct 2026.",
+      "developer_says": {
+        "line": "Developer says: filed 12 Oct, not yet verified."
+      },
+      "sources": [
+        {
+          "label": "HARERA QPR register",
+          "fact_ids": ["00000000-0000-4000-8000-000000000002"],
+          "evidence_url": "/evidence/00000000-0000-4000-8000-000000000002",
+          "official_url": "https://haryanarera.gov.in",
+          "as_of": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "quiet": [
+    {
+      "slug": "kestrel-park",
+      "line": "Nothing new for Kestrel Park since 14 Oct."
+    }
+  ],
+  "projects": [
+    {
+      "slug": "sapphire-grove-phase-1",
+      "name": "Sapphire Grove, Phase 1",
+      "chip": {
+        "kind": "band",
+        "label": "Moderate",
+        "step": 2,
+        "meter_filled": 2
+      },
+      "follow_type": "watching",
+      "row_line": "New QPR in · re-score due by 19 Oct",
+      "freshness_line": null,
+      "family_line": "Meera follows too"
+    }
+  ],
+  "replay": {
+    "from": "2026-07-01",
+    "to": "2026-10-18",
+    "jump_chips": [
+      {
+        "label": "Your last look · 14 Oct",
+        "date": "2026-10-14"
+      },
+      {
+        "label": "1 Oct",
+        "date": "2026-10-01"
+      },
+      {
+        "label": "When you followed · 1 Jul",
+        "date": "2026-07-01"
+      }
+    ],
+    "marks": [
+      {
+        "date": "2026-10-02",
+        "kind": "band_changed",
+        "band": "elevated"
+      }
+    ]
+  },
+  "record": [],
+  "digest": {
+    "cadence": "weekly_sun_9am",
+    "next_line": "Next digest Sun 25 Oct, 9 am"
+  }
+}

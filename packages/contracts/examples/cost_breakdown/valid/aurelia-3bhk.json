@@ -1,0 +1,63 @@
+{
+  "schema": "plinth.cost_breakdown/1",
+  "rules_version": "2026.10",
+  "basis_line": "3 BHK, 1,450 sq ft carpet / 2,000 super · park-facing · cost sheet of 2 Oct 2026",
+  "lines": [
+    {
+      "code": "base",
+      "label": "Base",
+      "amount_inr": 23500000,
+      "amount_label": "₹2.35 Cr",
+      "tag": null
+    },
+    {
+      "code": "plc",
+      "label": "PLC (park-facing)",
+      "amount_inr": 290000,
+      "amount_label": "₹2.9 L",
+      "tag": "often_negotiable"
+    },
+    {
+      "code": "club",
+      "label": "Club",
+      "amount_inr": 150000,
+      "amount_label": "₹1.5 L",
+      "tag": "often_negotiable"
+    },
+    {
+      "code": "parking",
+      "label": "Parking",
+      "amount_inr": 350000,
+      "amount_label": "₹3.5 L",
+      "tag": null
+    },
+    {
+      "code": "ifms",
+      "label": "IFMS",
+      "amount_inr": 130000,
+      "amount_label": "₹1.3 L",
+      "tag": "refundable_deposit"
+    },
+    {
+      "code": "gst",
+      "label": "GST 5%",
+      "amount_inr": 1221000,
+      "amount_label": "₹12.2 L",
+      "tag": "set_by_law"
+    },
+    {
+      "code": "stamp_registration",
+      "label": "Stamp duty + registration",
+      "amount_inr": 1759400,
+      "amount_label": "₹17.6 L",
+      "tag": "set_by_law"
+    }
+  ],
+  "charges_total_label": "₹9.2 L",
+  "all_in_inr": 27400400,
+  "all_in_label": "₹2.74 Cr",
+  "per_sqft_carpet_label": "₹18,900 per sq ft carpet",
+  "vs_quoted_line": "17% more than quoted",
+  "negotiable_line": "Often negotiable: PLC and club (₹4.4 L).",
+  "move_in_line": "About ₹12–18 L on top, around the offer of possession (Plinth estimate)."
+}

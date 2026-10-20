@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/evidence.schema.json",
+  "title": "Evidence",
+  "description": "plinth.evidence/1, from api.evidence(p_fact_id): the evidence drawer, F-06 (API_CONTRACTS §4.6).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "chip",
+    "lane",
+    "document",
+    "dates_line",
+    "page",
+    "extract",
+    "read_line",
+    "used_in",
+    "developer_says",
+    "corrections_line",
+    "snapshot",
+    "official_url",
+    "view_label",
+    "report_error"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.evidence/1" },
+    "chip": {
+      "type": "string",
+      "description": "The source chip label, e.g. \"HARERA QPR · Apr–Jun 2026\"."
+    },
+    "lane": { "$ref": "common.schema.json#/$defs/Lane" },
+    "document": { "type": "string" },
+    "dates_line": { "type": "string" },
+    "page": { "type": ["string", "null"] },
+    "extract": { "type": ["string", "null"] },
+    "read_line": { "type": ["string", "null"] },
+    "used_in": { "type": "array", "items": { "type": "string" } },
+    "developer_says": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/DeveloperSays" }, { "type": "null" }]
+    },
+    "corrections_line": { "type": "string" },
+    "snapshot": { "anyOf": [{ "$ref": "#/$defs/EvidenceSnapshot" }, { "type": "null" }] },
+    "official_url": { "type": ["string", "null"] },
+    "view_label": { "type": ["string", "null"] },
+    "report_error": { "$ref": "#/$defs/ReportError" }
+  },
+  "$defs": {
+    "EvidenceSnapshot": {
+      "title": "EvidenceSnapshot",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256_short", "fetched_at"],
+      "properties": {
+        "sha256_short": { "type": "string" },
+        "fetched_at": { "$ref": "common.schema.json#/$defs/Timestamp" }
+      }
+    },
+    "ReportError": {
+      "title": "ReportError",
+      "description": "\"Report an error in this row\" opens an E- reference.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref_prefix", "sla_line"],
+      "properties": {
+        "ref_prefix": { "const": "E" },
+        "sla_line": { "type": "string" }
+      }
+    }
+  }
+}

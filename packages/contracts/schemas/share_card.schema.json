@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/share_card.schema.json",
+  "title": "ShareCard",
+  "description": "plinth.share_card/1, from api.share_card(p_code): the card as it was sent, the record now, and the \"Changed since this card was sent\" diff (API_CONTRACTS §3.1; core.share_cards).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "kind",
+    "phase",
+    "sent",
+    "now",
+    "changed",
+    "headline_line",
+    "changes",
+    "live_url"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.share_card/1" },
+    "kind": { "$ref": "#/$defs/ShareCardKind" },
+    "phase": { "$ref": "#/$defs/ShareCardPhase" },
+    "sent": { "$ref": "#/$defs/ShareCardState" },
+    "now": { "$ref": "#/$defs/ShareCardState" },
+    "changed": { "type": "boolean" },
+    "headline_line": { "type": ["string", "null"] },
+    "changes": { "type": "array", "items": { "$ref": "#/$defs/ShareCardChange" } },
+    "live_url": { "type": "string" }
+  },
+  "$defs": {
+    "ShareCardKind": {
+      "title": "ShareCardKind",
+      "type": "string",
+      "enum": ["risk", "cost", "visit", "digest"]
+    },
+    "ShareCardPhase": {
+      "title": "ShareCardPhase",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "name"],
+      "properties": {
+        "slug": { "$ref": "common.schema.json#/$defs/Slug" },
+        "name": { "type": "string" }
+      }
+    },
+    "ShareCardState": {
+      "title": "ShareCardState",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data_as_of", "model_version", "band", "lines", "card_url"],
+      "properties": {
+        "issued_at": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/Timestamp" }, { "type": "null" }]
+        },
+        "data_as_of": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "model_version": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/ModelVersion" }, { "type": "null" }]
+        },
+        "band": { "anyOf": [{ "$ref": "common.schema.json#/$defs/BandCode" }, { "type": "null" }] },
+        "chip": { "anyOf": [{ "$ref": "common.schema.json#/$defs/Chip" }, { "type": "null" }] },
+        "lines": { "type": "array", "maxItems": 3, "items": { "type": "string" } },
+        "card_url": { "type": ["string", "null"] }
+      }
+    },
+    "ShareCardChange": {
+      "title": "ShareCardChange",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "before_line", "after_line"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "label": { "type": "string" },
+        "before_line": { "type": "string" },
+        "after_line": { "type": "string" }
+      }
+    }
+  }
+}

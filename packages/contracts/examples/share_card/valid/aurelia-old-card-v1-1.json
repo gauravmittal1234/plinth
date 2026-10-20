@@ -1,0 +1,57 @@
+{
+  "schema": "plinth.share_card/1",
+  "kind": "risk",
+  "phase": {
+    "slug": "aurelia-heights-phase-2",
+    "name": "Aurelia Heights, Phase 2"
+  },
+  "sent": {
+    "issued_at": null,
+    "data_as_of": "2026-06-26",
+    "model_version": "v1.1",
+    "band": "moderate",
+    "chip": {
+      "kind": "band",
+      "label": "Moderate",
+      "step": 2,
+      "meter_filled": 2
+    },
+    "lines": ["Delivery risk: Moderate"],
+    "card_url": null
+  },
+  "now": {
+    "issued_at": null,
+    "data_as_of": "2026-10-14",
+    "model_version": "v1.2",
+    "band": "elevated",
+    "chip": {
+      "kind": "band",
+      "label": "Elevated",
+      "step": 3,
+      "meter_filled": 3
+    },
+    "lines": [
+      "Delivery risk: Elevated",
+      "Between 30 and 45 of 100 similar Gurugram projects got their OC more than 12 months late.",
+      "41% built with 77% of the promised time used."
+    ],
+    "card_url": "https://plinth.in/cards/risk/aurelia-heights-phase-2.png?run=…"
+  },
+  "changed": true,
+  "headline_line": "Changed since this card was sent",
+  "changes": [
+    {
+      "key": "band",
+      "label": "Delivery risk",
+      "before_line": "Moderate",
+      "after_line": "Elevated since 2 Oct 2026"
+    },
+    {
+      "key": "data_as_of",
+      "label": "Data as of",
+      "before_line": "26 Jun 2026",
+      "after_line": "14 Oct 2026"
+    }
+  ],
+  "live_url": "https://plinth.in/gurugram/projects/aurelia-heights-phase-2"
+}

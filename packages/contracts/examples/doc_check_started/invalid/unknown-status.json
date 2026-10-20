@@ -1,0 +1,12 @@
+{
+  "base": "reading.json",
+  "why": "status is a DocCheckStatus.",
+  "expect": "/status",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/status",
+      "value": "pending"
+    }
+  ]
+}
