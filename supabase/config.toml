@@ -456,3 +456,20 @@ enabled = true
 # formatted with uppercase keywords, indent 2, max width 180, trailing commas,
 # and column/key alignment. Set to "null" to emit raw, unformatted SQL.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
+
+# Edge functions deployed without Supabase JWT verification: each one checks its own caller
+# (see the header comment in each index.ts). Lead, M2 wave 4 integration.
+[functions.health]
+verify_jwt = false # public uptime probe, no data
+
+[functions.auth-sms-hook]
+verify_jwt = false # Supabase Auth calls it with a standard-webhooks signature (T41)
+
+[functions.wa-webhook]
+verify_jwt = false # Meta calls it; X-Hub-Signature-256 is verified in code (T44)
+
+[functions.wa-flows]
+verify_jwt = false # Meta WhatsApp Flows endpoint; encrypted, signed requests (T44)
+
+[functions.outbox-dispatch]
+verify_jwt = false # pg_cron/pg_net call it with x-plinth-dispatch-secret, never a JWT (T42)
