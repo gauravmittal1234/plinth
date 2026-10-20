@@ -52,10 +52,13 @@ void main() {
     await openState(tester, ProjectDesignState.notScored);
     expect(find.textContaining('Not scored'), findsWidgets);
     await reveal(tester, find.text('The records, as they stand'));
-    // The built section needs at least 2 quarters on file (its replay
-    // slider asserts as much); Heron has none yet, so AppProjectStates
-    // skips the section rather than tripping that assertion.
-    expect(find.text('How much is built?'), findsNothing);
+    // ProjectBuiltSection (lib/features/project/sections/built_section.dart)
+    // renders for every quarter count now, including zero: with no QPR on
+    // file, it states that plainly instead of reaching for a quarter that
+    // doesn't exist.
+    await reveal(tester, find.text('How much is built?'));
+    expect(find.text('How much is built?'), findsOneWidget);
+    expect(find.text('No QPR figures on file'), findsOneWidget);
   });
 
   testWidgets('Stale (Coral): the latest record reads 187 days old, past the stale line', (tester) async {
