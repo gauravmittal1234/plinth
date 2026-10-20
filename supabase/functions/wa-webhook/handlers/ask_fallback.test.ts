@@ -14,7 +14,7 @@ import type { WaContact, WaSession } from "../../_shared/wa/session.ts";
 import { parseWebhook } from "../../_shared/wa/verify.ts";
 import type { InboundMessage } from "../../_shared/wa/verify.ts";
 import { askFallback } from "./ask_fallback.ts";
-import type { HandlerInput, HandlerTools, Route } from "../router.ts";
+import type { HandlerTools, Route } from "../router.ts";
 import { routeInbound } from "../router.ts";
 
 const ROOT = new URL("../../../../", import.meta.url);
