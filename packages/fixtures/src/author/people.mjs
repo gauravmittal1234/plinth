@@ -1,11 +1,11 @@
 // Canonical fixtures, part 3 (owner: T03b): people, consents, family, workspace, agents, visits
 // and checks. DESIGN.md §5b is the only source of facts; every record carries `source`.
-// Gaps stay null and are listed in CONFLICTS.md (C-30 onwards). Generated JSON lives in
+// Gaps stay null and are listed in CONFLICTS.md (C-42 onwards). Generated JSON lives in
 // canonical/{people,consents,family,workspace,agents,visits,checks}.json.
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { IST, R2, S5, S5B, S5B_ENG, S5B_SWEEP, derived } from "./canonical.mjs";
+import { IST, R2, R3, S5, S5B, S5B_ENG, S5B_SWEEP, derived } from "./canonical.mjs";
 import { uuid5 } from "./lib.mjs";
 
 const AH2 = "aurelia-heights-phase-2";
@@ -30,11 +30,11 @@ export const SEC = {
   aurelia: `${S5B} · Aurelia Heights, Phase 2`,
   round2: `${S5B} · Project pages, round 2`,
 };
-const C = (id) => `CONFLICTS.md ${id}`;
 const id = (kind, key) => uuid5(kind, key);
 
 // Test phone numbers (not facts; never displayed). API_CONTRACTS §5.4 names Rohan's test OTP
-// number; the rest of the block follows it (CONFLICTS.md C-31).
+// number; the rest of the block follows it. Confirmed safe to use in every environment, refused
+// by outbound SMS/WhatsApp adapters and run in mock mode outside prod (R3 C-31).
 const PHONE_BLOCK = "+9199000003";
 const phone = (nn) => `${PHONE_BLOCK}${nn}`;
 const masked = (nn) => `+91 99••• ••3${nn}`;
@@ -160,8 +160,8 @@ export function buildPeople(sc) {
       kind: "agent_principal",
       account: true,
       roles: ["agent"],
-      note: "Individual agent. Kept apart from Kabir, the buyer in Northfield's inbox (CONFLICTS.md C-36).",
-      source: `${SEC.agents}; ${C("C-36")}`,
+      note: "Individual agent. Kept apart from Kabir, the buyer in Northfield's inbox (confirmed, R3 C-36).",
+      source: `${SEC.agents}; ${R3("C-36")}`,
     }),
   ];
 
@@ -191,8 +191,8 @@ export function buildPeople(sc) {
     source: `${SEC.following} ("followed 4 projects since 1 Jul 2026"); which 4 ${derived("the 5 changes since 14 Oct name Coral's extension, Sapphire's price list and filings for Aurelia and Coral; Kestrel is the quiet one")}; watching: no booking in §5b; time unknown (00:00 IST per README)`,
   }));
 
-  // Alert preferences (app.alert_subscriptions). §5b: WhatsApp alerts and the weekly digest ON,
-  // Sundays 9 am. Push and quiet hours come from the WebFollowing and AppYou artboards (C-32).
+  // Alert preferences (app.alert_subscriptions). §5b (round 3, C-32): WhatsApp alerts on, the
+  // weekly digest on, push on, quiet hours 22:00-08:00 IST.
   const sub = (channel, kind, cadence, source) => ({
     id: id("alert_subscription", `rohan/${channel}/${kind}`),
     user: "rohan",
@@ -205,8 +205,8 @@ export function buildPeople(sc) {
     source,
   });
   const alert_subscriptions = [
-    sub("push", "band_change", "instant", `artboards WebFollowing, AppYou (push on); ${C("C-32")}`),
-    sub("push", "filings", "instant", `artboards WebFollowing, AppYou (push on); ${C("C-32")}`),
+    sub("push", "band_change", "instant", `${R3("C-32")} (push on; quiet hours 22:00-08:00 IST)`),
+    sub("push", "filings", "instant", `${R3("C-32")} (push on; quiet hours 22:00-08:00 IST)`),
     sub("whatsapp", "band_change", "instant", `${SEC.following} (WhatsApp alerts ON)`),
     sub("whatsapp", "digest", "weekly_sun_9am", `${SEC.following} (weekly, Sundays 9 am)`),
   ];
@@ -230,7 +230,7 @@ export function buildPeople(sc) {
 
   // Since you last looked: the 11 dated changes on Rohan's 4 projects (WebFollowing, AppFollowing,
   // WaDigest). `facts` are evidence keys, resolved to fact ids in the expected outputs. Lines are
-  // risk copy and final here.
+  // risk copy and final here. Listed newest first (R3 C-41); expected_b.mjs sorts explicitly too.
   const ev = (key, o) => ({ id: id("event", key), key, ...o });
   const events = [
     ev("sapphire/price-list/2026-10-16", {
@@ -394,18 +394,18 @@ export function buildPeople(sc) {
       band: "moderate",
       phash: null,
       short_code: cardId.split("-").join("").slice(0, 8),
-      source: `${SEC.following} (old card: data as of 30 Sep 2026, v1.1, Moderate); run ${R2("C-24")}; issued 30 Sep per the WaDigest artboard ("Card of 30 Sep 2026"); short code ${derived("first 8 hex digits of the card id")} (${C("C-37")})`,
+      source: `${SEC.following} (old card: data as of 30 Sep 2026, v1.1, Moderate); run ${R2("C-24")}; issued 30 Sep per the WaDigest artboard ("Card of 30 Sep 2026"); short code ${derived("first 8 hex digits of the card id")}; confirmed ${R3("C-37")} (perceptual hash null; the stale "26 Jun" WaDigest/DATA_MODEL labels are the lead's to fix)`,
     },
   ];
 
   return {
     schema: "plinth.fixtures.people/1",
-    note: "Fictional people (DESIGN §5b): buyers, relatives, developer members and agent principals; Rohan's profile, follows, alert preferences, project request and the dated changes behind Since you last looked. Owner: T03b. Generated; edit src/author. Test phone numbers are not facts and never shown (CONFLICTS.md C-31).",
+    note: "Fictional people (DESIGN §5b): buyers, relatives, developer members and agent principals; Rohan's profile, follows, alert preferences, project request and the dated changes behind Since you last looked. Owner: T03b. Generated; edit src/author. Test phone numbers are not facts and never shown (R3 C-31).",
     clock: "2026-10-18T12:00:00+05:30",
     test_phones: {
       block: `${PHONE_BLOCK}NN`,
-      rule: "Fixture-only numbers for test OTP sign-in and recorded WhatsApp payloads. Never real, never displayed except masked.",
-      source: `API_CONTRACTS §5.4 (Rohan +919900000318); ${C("C-31")}`,
+      rule: "Fixture-only numbers for test OTP sign-in and recorded WhatsApp payloads. Never real, never displayed except masked. Refused by outbound SMS/WhatsApp adapters in every environment; mock mode outside prod.",
+      source: `API_CONTRACTS §5.4 (Rohan +919900000318); ${R3("C-31")}`,
     },
     people,
     profiles,
@@ -416,6 +416,9 @@ export function buildPeople(sc) {
     share_cards,
   };
 }
+
+// The one privacy notice version in the fixture world (R3 C-38); every consent cites it.
+const NOTICE_VERSION = "Privacy notice v1.0, 1 Oct 2026";
 
 // ---------------------------------------------------------------- consents
 export function buildConsents() {
@@ -449,7 +452,8 @@ export function buildConsents() {
       party: o.party,
       detail: o.detail,
       phase: o.phase ?? null,
-      notice_version: null,
+      // Notice version R3 C-38; channel keeps the column default (not in §5b).
+      notice_version: NOTICE_VERSION,
       channel: null,
       evidence: { tap_event_id: id("tap_event", `2026/${ref}`) },
       scope: o.scope ?? null,
@@ -531,11 +535,11 @@ export function buildConsents() {
       group: "meridian-habitat",
       party: "Meridian Habitat sales office",
       detail: "Price list",
-      phase: null,
+      phase: SG1,
       expires_at: at("2026-10-02"),
       ended_on: "2026-10-02",
       number_shared: true,
-      source: `${SEC.number} (Ended); ${SEC.consent} (ended 2 Oct 2026); project not named (${C("C-33")})`,
+      source: `${SEC.number} (Ended); ${SEC.consent} (ended 2 Oct 2026); phase ${R3("C-33")} (Sapphire Grove Ph 1)`,
     }),
     // Northfield's inbox (WebDevInbox): the consent behind each buyer record.
     consent("C-1017-03", {
@@ -574,7 +578,7 @@ export function buildConsents() {
       detail: "3 BHK price-list enquiry, 17 Oct",
       phase: AH2,
       scope: { enquiry: "price_list", unit: "3 BHK", agent: "larkspur-realty" },
-      source: `${SEC.workspace} (inbox; agent Larkspur Realty); project ${derived("Larkspur's brief for Ishita is Aurelia (C-1017-09)")}`,
+      source: `${SEC.workspace} (inbox; agent Larkspur Realty); project ${derived("Larkspur's brief for Ishita is Aurelia (C-1017-09)")}; confirmed ${R3("C-33")}`,
     }),
     consent("C-1016-04", {
       principal: "farah",
@@ -585,7 +589,7 @@ export function buildConsents() {
       detail: "Cedar Walk payment-plan enquiry, 16 Oct",
       phase: CW2,
       scope: { enquiry: "payment_plan" },
-      source: `${SEC.workspace} (inbox); phase ${derived("Cedar Walk Ph 2 is Northfield's only Cedar Walk phase on sale")}`,
+      source: `${SEC.workspace} (inbox); phase ${derived("Cedar Walk Ph 2 is Northfield's only Cedar Walk phase on sale")}; confirmed ${R3("C-33")}`,
     }),
     consent("C-1016-08", {
       principal: "kabir",
@@ -594,10 +598,10 @@ export function buildConsents() {
       group: "northfield-estates",
       party: "Northfield Estates site office",
       detail: "Visited 16 Oct; shared his number by his own tap",
-      phase: null,
+      phase: AH2,
       number_shared: true,
       pays_line: DEV_PAYS,
-      source: `${SEC.workspace} (inbox); project not named (${C("C-33")})`,
+      source: `${SEC.workspace} (inbox); phase ${R3("C-33")} (Aurelia Heights Ph 2)`,
     }),
     consent("C-1015-07", {
       principal: "dev",
@@ -608,7 +612,7 @@ export function buildConsents() {
       detail: "4 BHK enquiry, 15 Oct; replied 16 Oct",
       phase: AH2,
       scope: { enquiry: "unit", unit: "4 BHK" },
-      source: `${SEC.workspace} (inbox); phase ${derived("Aurelia is the only Northfield project with a 4 BHK (§5b Discovery)")}`,
+      source: `${SEC.workspace} (inbox); phase ${derived("Aurelia is the only Northfield project with a 4 BHK (§5b Discovery)")}; confirmed ${R3("C-33")}`,
     }),
     // Larkspur's briefs (agent_brief consents).
     consent("C-1017-09", {
@@ -709,8 +713,8 @@ export function buildConsents() {
     note: "The consent ledger (app.consents, C-MMDD-NN), number shares, the relay and the ref counters. Rohan's 5 refs and the workspace and agent refs of DESIGN §5b. Owner: T03b. Generated; edit src/author.",
     count_line: "3 parties can reach you",
     count_rule:
-      "Counts active number-holding parties: Orbis Land site office, Larkspur Realty and Meridian Habitat site office. The ended Meridian sales office and the relay do not count.",
-    count_source: `${SEC.number}; ${S5B_SWEEP} (Who has my number)`,
+      "Counts distinct active number-holding recipients: Orbis Land site office, Larkspur Realty and Meridian Habitat site office. The ended Meridian sales office and the relay do not count.",
+    count_source: `${SEC.number}; ${S5B_SWEEP} (Who has my number); ${R3("C-40")} (distinct active recipients)`,
     purposes,
     consents,
     contact_shares,
@@ -726,17 +730,19 @@ export function buildFamily() {
     {
       id: id("family_member", "rohan/meera"),
       member: "meera",
-      invite_code: null,
+      invite_code: "RC4-8TD",
       scope_all: true,
       scope_phases: [],
       status: "joined",
-      invited_at: null,
-      expires_at: null,
-      joined_at: at("2026-10-06"),
-      joined_via: null,
+      // The code was issued 3 Oct 2026 (time of day not in §5b: 00:00 IST, README convention)
+      // and used within its 7-day window.
+      invited_at: at("2026-10-03"),
+      expires_at: at("2026-10-10"),
+      joined_at: at("2026-10-06", "20:12:00"),
+      joined_via: "whatsapp",
       can_add_notes: true,
       line: "Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes",
-      source: `${SEC.following} (Meera joined 6 Oct 2026, all 4 projects, can add notes); code and channel not in §5b (${C("C-34")})`,
+      source: `${SEC.following} (Meera joined 6 Oct 2026, all 4 projects, can add notes); ${R3("C-34")} (joined 8:12 pm IST, by her own WhatsApp message "JOIN RC4-8TD"; the code was issued 3 Oct 2026 and is now used)`,
     },
     {
       id: id("family_member", "rohan/AH2-7KQ"),
@@ -775,7 +781,7 @@ export function buildFamily() {
     author,
     created_at: at(date),
     body: text,
-    source: `${SEC.following} (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard (${C("C-35")})`,
+    source: `${SEC.following} (shared shortlist, dated notes 12–17 Oct); text: WebFollowing artboard; ${R3("C-35")} (user-written notes may come from the artboard; the ₹2.5 Cr all-in budget matches Rohan's)`,
   });
   return {
     schema: "plinth.fixtures.family/1",

@@ -606,11 +606,11 @@
       "freq_high": 65,
       "freq_point": null,
       "stall": false,
-      "stale": true,
+      "stale": false,
       "what_would_change": null,
       "supersedes": null,
       "notice": null,
-      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17)"
+      "source": "DESIGN §5b · Fixture decisions, round 2 (C-17); not stale at 15 Jul 2026 DESIGN §5b · Fixture decisions, round 3 (C-30) (newest QPR 92 days old, under v1.0's 180-day line)"
     },
     {
       "id": "d4fada3e-5ed0-58b7-b5eb-53de0611d970",

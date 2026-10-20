@@ -268,6 +268,66 @@
     "towers": null,
     "quarters": [
       {
+        "quarter": "2025-Q1",
+        "label": "Jan–Mar 2025",
+        "sold_pct": null,
+        "built_pct": 4,
+        "time_used_pct": null,
+        "band_then": "moderate",
+        "towers": null,
+        "filed_on": "2025-04-14",
+        "status": "on_time",
+        "note_line": null
+      },
+      {
+        "quarter": "2025-Q2",
+        "label": "Apr–Jun 2025",
+        "sold_pct": null,
+        "built_pct": 10,
+        "time_used_pct": null,
+        "band_then": "moderate",
+        "towers": null,
+        "filed_on": "2025-07-15",
+        "status": "on_time",
+        "note_line": null
+      },
+      {
+        "quarter": "2025-Q3",
+        "label": "Jul–Sep 2025",
+        "sold_pct": null,
+        "built_pct": 18,
+        "time_used_pct": null,
+        "band_then": "moderate",
+        "towers": null,
+        "filed_on": "2025-10-14",
+        "status": "on_time",
+        "note_line": null
+      },
+      {
+        "quarter": "2025-Q4",
+        "label": "Oct–Dec 2025",
+        "sold_pct": null,
+        "built_pct": 27,
+        "time_used_pct": null,
+        "band_then": "moderate",
+        "towers": null,
+        "filed_on": "2026-01-14",
+        "status": "on_time",
+        "note_line": null
+      },
+      {
+        "quarter": "2026-Q1",
+        "label": "Jan–Mar 2026",
+        "sold_pct": null,
+        "built_pct": 38,
+        "time_used_pct": null,
+        "band_then": "moderate",
+        "towers": null,
+        "filed_on": "2026-04-15",
+        "status": "on_time",
+        "note_line": null
+      },
+      {
         "quarter": "2026-Q2",
         "label": "Apr–Jun 2026",
         "sold_pct": null,
@@ -516,6 +576,46 @@
       "lane": "records_show",
       "as_of": "2026-10-14",
       "evidence_url": "/evidence/71a2805c-894e-5cd4-b34a-9ae708e8c06a"
+    },
+    {
+      "fact_id": "799e7231-56c6-5431-b07d-cabfa1971058",
+      "chip": "HARERA QPR · Jan–Mar 2025",
+      "line": "4% built.",
+      "lane": "records_show",
+      "as_of": "2025-04-14",
+      "evidence_url": "/evidence/799e7231-56c6-5431-b07d-cabfa1971058"
+    },
+    {
+      "fact_id": "2c8eae35-bfa4-59c0-9047-8f348096f307",
+      "chip": "HARERA QPR · Apr–Jun 2025",
+      "line": "10% built.",
+      "lane": "records_show",
+      "as_of": "2025-07-15",
+      "evidence_url": "/evidence/2c8eae35-bfa4-59c0-9047-8f348096f307"
+    },
+    {
+      "fact_id": "17419f82-ced8-5f8d-a369-1a40a98fe745",
+      "chip": "HARERA QPR · Jul–Sep 2025",
+      "line": "18% built.",
+      "lane": "records_show",
+      "as_of": "2025-10-14",
+      "evidence_url": "/evidence/17419f82-ced8-5f8d-a369-1a40a98fe745"
+    },
+    {
+      "fact_id": "b81ae5d2-6083-5af9-9283-d9a7389b3522",
+      "chip": "HARERA QPR · Oct–Dec 2025",
+      "line": "27% built.",
+      "lane": "records_show",
+      "as_of": "2026-01-14",
+      "evidence_url": "/evidence/b81ae5d2-6083-5af9-9283-d9a7389b3522"
+    },
+    {
+      "fact_id": "a1638a43-15f5-5d3f-a2f0-6ea5e1a90bd8",
+      "chip": "HARERA QPR · Jan–Mar 2026",
+      "line": "38% built.",
+      "lane": "records_show",
+      "as_of": "2026-04-15",
+      "evidence_url": "/evidence/a1638a43-15f5-5d3f-a2f0-6ea5e1a90bd8"
     },
     {
       "fact_id": "bcbeac16-a68a-587d-a18b-c83ab2cd672e",

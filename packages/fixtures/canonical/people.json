@@ -1,11 +1,11 @@
 {
   "schema": "plinth.fixtures.people/1",
-  "note": "Fictional people (DESIGN §5b): buyers, relatives, developer members and agent principals; Rohan's profile, follows, alert preferences, project request and the dated changes behind Since you last looked. Owner: T03b. Generated; edit src/author. Test phone numbers are not facts and never shown (CONFLICTS.md C-31).",
+  "note": "Fictional people (DESIGN §5b): buyers, relatives, developer members and agent principals; Rohan's profile, follows, alert preferences, project request and the dated changes behind Since you last looked. Owner: T03b. Generated; edit src/author. Test phone numbers are not facts and never shown (R3 C-31).",
   "clock": "2026-10-18T12:00:00+05:30",
   "test_phones": {
     "block": "+9199000003NN",
-    "rule": "Fixture-only numbers for test OTP sign-in and recorded WhatsApp payloads. Never real, never displayed except masked.",
-    "source": "API_CONTRACTS §5.4 (Rohan +919900000318); CONFLICTS.md C-31"
+    "rule": "Fixture-only numbers for test OTP sign-in and recorded WhatsApp payloads. Never real, never displayed except masked. Refused by outbound SMS/WhatsApp adapters in every environment; mock mode outside prod.",
+    "source": "API_CONTRACTS §5.4 (Rohan +919900000318); DESIGN §5b · Fixture decisions, round 3 (C-31)"
   },
   "people": [
     {
@@ -311,8 +311,8 @@
       "phone_masked": null,
       "org": null,
       "org_role": null,
-      "note": "Individual agent. Kept apart from Kabir, the buyer in Northfield's inbox (CONFLICTS.md C-36).",
-      "source": "DESIGN §5b · Agents; CONFLICTS.md C-36"
+      "note": "Individual agent. Kept apart from Kabir, the buyer in Northfield's inbox (confirmed, R3 C-36).",
+      "source": "DESIGN §5b · Agents; DESIGN §5b · Fixture decisions, round 3 (C-36)"
     }
   ],
   "profiles": [
@@ -455,7 +455,7 @@
       "quiet_from": "22:00",
       "quiet_to": "08:00",
       "enabled": true,
-      "source": "artboards WebFollowing, AppYou (push on); CONFLICTS.md C-32"
+      "source": "DESIGN §5b · Fixture decisions, round 3 (C-32) (push on; quiet hours 22:00-08:00 IST)"
     },
     {
       "id": "d9c250ab-fba0-5ecc-a717-f878c6402f32",
@@ -466,7 +466,7 @@
       "quiet_from": "22:00",
       "quiet_to": "08:00",
       "enabled": true,
-      "source": "artboards WebFollowing, AppYou (push on); CONFLICTS.md C-32"
+      "source": "DESIGN §5b · Fixture decisions, round 3 (C-32) (push on; quiet hours 22:00-08:00 IST)"
     },
     {
       "id": "22269732-6aaf-56ec-a74c-3285d3cf25f4",
@@ -721,7 +721,7 @@
       "band": "moderate",
       "phash": null,
       "short_code": "ce57248d",
-      "source": "DESIGN §5b · Following, digest and family (old card: data as of 30 Sep 2026, v1.1, Moderate); run DESIGN §5b · Fixture decisions, round 2 (C-24); issued 30 Sep per the WaDigest artboard (\"Card of 30 Sep 2026\"); short code derived: first 8 hex digits of the card id (CONFLICTS.md C-37)"
+      "source": "DESIGN §5b · Following, digest and family (old card: data as of 30 Sep 2026, v1.1, Moderate); run DESIGN §5b · Fixture decisions, round 2 (C-24); issued 30 Sep per the WaDigest artboard (\"Card of 30 Sep 2026\"); short code derived: first 8 hex digits of the card id; confirmed DESIGN §5b · Fixture decisions, round 3 (C-37) (perceptual hash null; the stale \"26 Jun\" WaDigest/DATA_MODEL labels are the lead's to fix)"
     }
   ]
 }
