@@ -8,6 +8,10 @@
 ///   [KitCopy] and can be overridden.
 /// - Every instrument has a screen-reader label, wraps at 200% text and
 ///   shows its end state under reduced motion.
+/// - App UI v2 (product/design/review/benchmark-thapki.md): Figtree text,
+///   Material *rounded* icons only, buttons whose labels never wrap, 56 dp
+///   search field, scrolling chip rows, segmented controls, list rows and
+///   cards with icon tiles and thumbnails, and the sheet pattern.
 library;
 
 export 'android/bottom_action_bar.dart';
@@ -24,8 +28,11 @@ export 'evidence/source_chip.dart';
 export 'foundation/glyphs.dart' show KitGlyph, KitIcon;
 export 'foundation/kit_copy.dart';
 export 'foundation/motion.dart';
+export 'media/project_image.dart';
 export 'primitives/buttons.dart';
 export 'primitives/pills.dart';
+export 'primitives/rows.dart';
+export 'primitives/search_field.dart';
 export 'primitives/section_band.dart';
 export 'primitives/sheet.dart';
 export 'primitives/toast.dart';

@@ -65,7 +65,7 @@ class ArtboardPlaceholder extends ConsumerWidget {
         actions: [
           IconButton(
             tooltip: night ? 'Switch to Day theme' : 'Switch to Night theme',
-            icon: Icon(night ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
+            icon: Icon(night ? Icons.light_mode_rounded : Icons.dark_mode_rounded),
             onPressed: ref.read(themeModeProvider.notifier).toggle,
           ),
         ],
@@ -118,7 +118,7 @@ class ArtboardPlaceholder extends ConsumerWidget {
                   contentPadding: EdgeInsets.zero,
                   title: Text(link.label),
                   subtitle: Text(link.note ?? link.location, style: text.bodySmall),
-                  trailing: const Icon(Icons.chevron_right),
+                  trailing: const Icon(Icons.chevron_right_rounded),
                   onTap: () => context.push(link.location),
                 ),
             ],
