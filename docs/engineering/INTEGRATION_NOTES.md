@@ -115,3 +115,12 @@ Every item above under "From T05" is done, and `supabase/seed` is the real §5b 
     - Gate WhatsApp functions with `flagsReader(...).require(...)`.
     - `META_MODE` defaults to `mock`.
   - **M5 AI:** `parseBody(req, "AskRequest")`. `require("ai_ask")` and the other AI flags answer `flag_off` until M5. `AI_MODE` defaults to `recorded`, and tests refuse `live`.
+
+## Round-3 fixture decisions (20 Oct 2026; DESIGN.md §5b, C-30 to C-41)
+- **T11 and fixtures:** flip Coral's v1.0 run of 15 Jul 2026 to `stale: false`, in `fixture_world/ledger.yaml` and `src/author/scoring.mjs` together. Add the replay inputs from §5b C-30.
+- **T02:** add an optional `records_label` to `DocCheckRow`; the verdict label is "Can't check yet".
+- **T40:** the number-holder cap counts distinct active recipients. Notice version: "Privacy notice v1.0, 1 Oct 2026".
+- **T42/T44:** outbound SMS and WhatsApp adapters refuse the test block `+91 99000 003NN` in every environment.
+- **T45a/T45b:** define the result schemas for `saved_search_save`, `request_project`, `family_join`, `consent_history`, `me`, `link_whatsapp_follows`, `data_export_request` and `account_delete_request`.
+- **T43b:** the following feed lists changes newest first. **T49:** add the `/guides/booked-buyer` route.
+- **`main` is the integration branch** (#10 merged 20 Oct). `task/T07-m0-gate` is retired.

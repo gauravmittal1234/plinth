@@ -390,7 +390,7 @@ Facts-only phases stay in risk-filtered results, listed with Not scored ones, ne
 // request
 { "p_prefs": { "push": { "band_change": "instant", "filings": "instant" },
     "whatsapp": { "band_change": "instant", "digest": "weekly_sun_9am" },
-    "quiet_hours": { "from": "21:00", "to": "08:00" } }, "p_client_id": "…" }
+    "quiet_hours": { "from": "22:00", "to": "08:00" } }, "p_client_id": "…" }
 // response
 { "schema": "plinth.alert_prefs/1", "prefs": { "…": "…" }, "whatsapp_optin": true,
   "lines": ["Utility alerts only. No offers, no ads, and nothing from developers.", "Reply STOP to end alerts."],
@@ -452,7 +452,7 @@ Poll `api.doc_check(p_id)` until `status` ∈ {`confirm_project`, `done`, `unrea
     { "seq": 1, "says_label": "Flyer says", "says_text": "POSSESSION DEC 2026", "verdict": "differs", "verdict_label": "Differs",
       "records_line": "Original completion Dec 2027, no extensions; 41% built.", "how_checked": "Date compared with the HARERA registration.",
       "sources": ["…"], "broker_question": "Which completion date will my agreement carry?", "page": 1, "bbox": [0.08, 0.31, 0.62, 0.38] },
-    { "seq": 2, "says_text": "Structure up to 12th floor", "verdict": "cant_check", "verdict_label": "Can't check",
+    { "seq": 2, "says_text": "Structure up to 12th floor", "verdict": "cant_check", "verdict_label": "Can't check yet",
       "records_line": "Slab 9 at the last filing. The Jul–Sep QPR, due 15 Oct, is not on HARERA.", "checkable_on": null,
       "developer_says": { "line": "Developer says “filed 12 Oct”, not verified." } }
   ],
@@ -466,7 +466,7 @@ Other kinds reuse the same shape:
 - `before_you_pay`: adds `payee` (§4.14).
 - `visit_recap`: "1 of 5 things they told you differs from the records."
 
-Verdict labels are only Matches · Differs · Not in records · Can't check.
+Verdict labels are only Matches · Differs · Not in records · Can't check yet. `DocCheckRow` may carry an optional `records_label` ("Records show", "Price list shows", "Your plan shows").
 
 ### 4.13 Calculators: `api.cost_breakdown` and `api.afford_the_wait`
 
