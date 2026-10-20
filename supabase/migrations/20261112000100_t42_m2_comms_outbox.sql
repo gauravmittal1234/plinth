@@ -5,12 +5,14 @@
 -- pg_cron and the pg_net insert trigger live in the next file (20261112000200), marked
 -- `pglite: skip`, because PGlite has neither extension (supabase/tools/pglite-check.mjs).
 --
--- Forward references (T40/T44 build in parallel; brief's explicit allowance for T40's tables
--- extends the same way to T44's): api.outbox_wa_contact() reads pii.wa_contacts and
--- api.outbox_record_wa_send() writes comms.wa_messages, both owned by T44 (migration prefix
--- 20261114, DATA_MODEL shape). Neither table exists yet on this branch, so each function is
--- created with `check_function_bodies = off` (the same switch pg_dump uses for forward
--- references) and is never called by this file's own tests. See the PR body Handoff note.
+-- Forward references (T40/T44 build in parallel; the brief's explicit allowance to write
+-- against T40's tables extends the same way to T44's): api.outbox_wa_contact() and
+-- api.outbox_record_wa_send() read/write pii.wa_contacts / comms.wa_messages (T44, migration
+-- prefix 20261114); api.outbox_push_tokens() and api.outbox_push_token_gone() read/write
+-- app.devices (T40, migration prefix 20261110). None of these tables exist yet on this branch,
+-- so each function is created with `check_function_bodies = off` (the same switch pg_dump uses
+-- for forward references) and none is called by this file's own tests. See the PR body Handoff
+-- note.
 
 -- ---------------------------------------------------------------------------
 -- comms.templates: mirrors packages/contracts/catalogues/wa_templates.json (API_CONTRACTS §5.2).
@@ -322,6 +324,44 @@ end;
 $$;
 comment on function api.outbox_record_wa_send(uuid, text, text, jsonb, text, text) is 'Service-only. Records an outbound WhatsApp send (comms.wa_messages, T44 — see 20261112000100''s header comment); status=mock_sent under META_MODE=mock.';
 
+-- ---------------------------------------------------------------------------
+-- api.outbox_push_tokens / api.outbox_push_token_gone: FCM device tokens for a push row's
+-- user_id, and cleanup once FCM reports UNREGISTERED. Forward reference to app.devices
+-- (T40, migration 20261110) — same allowance as pii.wa_contacts above.
+-- ---------------------------------------------------------------------------
+create function api.outbox_push_tokens(p_user_id uuid)
+returns text[]
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_tokens text[];
+begin
+  if p_user_id is null then
+    return array[]::text[];
+  end if;
+  select coalesce(array_agg(d.fcm_token), array[]::text[])
+  into v_tokens
+  from app.devices d
+  where d.user_id = p_user_id;
+  return v_tokens;
+end;
+$$;
+comment on function api.outbox_push_tokens(uuid) is 'Service-only. FCM tokens for a push row''s user_id (app.devices, T40 — see 20261112000100''s header comment).';
+
+create function api.outbox_push_token_gone(p_fcm_token text)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  delete from app.devices where fcm_token = p_fcm_token;
+end;
+$$;
+comment on function api.outbox_push_token_gone(text) is 'Service-only. Drops a device token FCM reported UNREGISTERED (app.devices, T40 — see 20261112000100''s header comment).';
+
 set check_function_bodies = on;
 
 -- ---------------------------------------------------------------------------
@@ -357,3 +397,5 @@ grant execute on function api.outbox_claim_due(integer) to service_role;
 grant execute on function api.outbox_resolve(uuid, text, text, text, text, timestamptz, integer) to service_role;
 grant execute on function api.outbox_wa_contact(uuid) to service_role;
 grant execute on function api.outbox_record_wa_send(uuid, text, text, jsonb, text, text) to service_role;
+grant execute on function api.outbox_push_tokens(uuid) to service_role;
+grant execute on function api.outbox_push_token_gone(text) to service_role;
