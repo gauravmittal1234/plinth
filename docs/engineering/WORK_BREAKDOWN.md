@@ -940,7 +940,7 @@ T68, T69, T70, T71 and T72 run in parallel. T73, T74 and T75 start when T68 has 
   - Every function `SECURITY DEFINER`, `search_path = ''`, granted by name (AGENTS rule 12). No full account number is ever accepted by these RPCs.
 - **Accept:**
   - pgTAP: a check owned by another user or by the owner's circle member → `not_found`; `api.doc_check_confirm` is required before any verdict row exists; a disagreement opens exactly one review task; the same SHA returns the earlier check; SVG and 16 MB are refused with `invalid_input`; an upload past the daily cap (a config value, not a literal) → `rate_limited`; a wrong card token → `not_found`; the first upload writes one `ai_processing` consent and a second writes none;
-  - `npm run -w @plinth/fixtures test:api -- --only doc_check,my_checks,doc_check_card,upload` deep-equals the keys whose deciders are merged (`flyer--confirm-project`, `flyer--noida`, `checks-paused`, `upload`), and the rest once T73–T75 land.
+  - `npm run -w @plinth/fixtures test:api -- --only doc_check,my_checks,doc_check_card,upload` deep-equals `upload`, `my_checks` and `flyer--noida` now, and the other `doc_check` keys once T73–T75 land. Design-state keys (`flyer--confirm-project`, `checks-paused`) are fixture-only, like the `--facts-only` keys (INTEGRATION_NOTES T12/T13).
 
 #### T69 · AI: claims reading (OCR, classify, two claim readers) and evals
 - **Owns:** `supabase/functions/_shared/ai/prompts/{ocr.document,classify.document,extract.marketing_claims}/**`, `packages/fixtures/recorded/ai/{ocr.document,classify.document,extract.marketing_claims}/**`, `evals/claims/**`, `evals/extraction/{ocr.document,classify.document}/**`.
