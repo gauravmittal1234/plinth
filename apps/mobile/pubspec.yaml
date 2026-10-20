@@ -83,21 +83,21 @@ flutter:
 
   # OFL fonts bundled for an offline first launch (AGENTS.md §4, PlinthType in
   # packages/tokens/dart, AppTheme). Sources and licence: assets/fonts/README.md.
+  # FOUNDER_QUESTIONS P10: Figtree for all text, buttons and labels; Bricolage
+  # Grotesque at 700 for display, title and section only; Noto Sans for Hindi.
+  # Both variable fonts get their weight from the 'wght' axis (AppTheme).
   fonts:
+    - family: Figtree
+      fonts:
+        - asset: assets/fonts/figtree/Figtree-Variable.ttf
     - family: Bricolage Grotesque
       fonts:
         - asset: assets/fonts/bricolage-grotesque/BricolageGrotesque-Variable.ttf
-          weight: 800
-    - family: Mukta
-      fonts:
-        - asset: assets/fonts/mukta/Mukta-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/mukta/Mukta-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/mukta/Mukta-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/mukta/Mukta-Bold.ttf
-          weight: 700
     - family: Noto Sans
       fonts:
         - asset: assets/fonts/noto-sans/NotoSans-Variable.ttf
+
+  # Illustrative project pictures (the web's home assets), matched to a
+  # payload's image_url by file name (core/widgets/media/project_image.dart).
+  assets:
+    - assets/images/projects/
