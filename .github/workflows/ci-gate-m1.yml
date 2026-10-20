@@ -96,15 +96,23 @@ jobs:
 
       - name: The local API's URL and public key (CLI local-development values)
         run: |
-          supabase status -o env | grep -E '^(API_URL|ANON_KEY|PUBLISHABLE_KEY)=' > "$RUNNER_TEMP/local-api.env"
-          set -a; . "$RUNNER_TEMP/local-api.env"; set +a
-          key="${ANON_KEY:-$PUBLISHABLE_KEY}"
-          echo "NEXT_PUBLIC_SUPABASE_URL=$API_URL" >> "$GITHUB_ENV"
+          set -o pipefail
+          supabase status -o env > "$RUNNER_TEMP/status.env"
+          # Names only, never values, so the log shows what this CLI version prints.
+          echo "status -o env names: $(cut -d= -f1 "$RUNNER_TEMP/status.env" | tr '\n' ' ')"
+          val() { grep -E "^[A-Z_]*$1=" "$RUNNER_TEMP/status.env" | head -1 | cut -d= -f2- | tr -d '"'; }
+          api_url="$(val API_URL)"
+          key="$(val PUBLISHABLE_KEY)"; [ -n "$key" ] || key="$(val ANON_KEY)"
+          test -n "$api_url" || { echo "::error::no API_URL in supabase status"; exit 1; }
+          test -n "$key" || { echo "::error::no publishable/anon key in supabase status"; exit 1; }
+          echo "::add-mask::$key"
+          echo "NEXT_PUBLIC_SUPABASE_URL=$api_url" >> "$GITHUB_ENV"
           echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$key" >> "$GITHUB_ENV"
-          curl -sf -X POST "$API_URL/rest/v1/rpc/risk_summary" \
+          curl -sf -X POST "$api_url/rest/v1/rpc/risk_summary" \
             -H "apikey: $key" -H "Authorization: Bearer $key" \
             -H "Content-Type: application/json" -H "Content-Profile: api" \
-            -d '{"p_slug":"aurelia-heights-phase-2"}' | head -c 160; echo
+            -d '{"p_slug":"aurelia-heights-phase-2"}' -o "$RUNNER_TEMP/probe.json"
+          head -c 160 "$RUNNER_TEMP/probe.json"; echo
 
       # Playwright reuses the server this job starts (CI unset: reuseExistingServer).
       - name: Fixture build → Aurelia's visible text
