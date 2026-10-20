@@ -35,6 +35,7 @@ declare
   v_claims jsonb;
   v_roles jsonb := '[]'::jsonb;
   v_org_roles jsonb := '{}'::jsonb;
+  v_org_members regclass := pg_catalog.to_regclass('ws.org_members');
 begin
   v_claims := case
     when pg_catalog.jsonb_typeof(event -> 'claims') = 'object' then event -> 'claims'
@@ -64,16 +65,16 @@ begin
     v_roles := '["buyer"]'::jsonb;
   end if;
 
-  if v_user_id is not null and pg_catalog.to_regclass('ws.org_members') is not null then
-    -- ws.org_members arrives with M4. The table name is formatted in, so `supabase db lint`
-    -- (plpgsql_check) doesn't statically check a table that may not exist yet; the
-    -- to_regclass guard above keeps it safe at run time.
+  if v_user_id is not null and v_org_members is not null then
+    -- ws.org_members arrives with M4. The relation comes from to_regclass at run time, so
+    -- `supabase db lint` (plpgsql_check) can't fold the query into a constant and check a
+    -- table that may not exist yet; when it doesn't, the guard above skips the query.
     execute pg_catalog.format($q$
       select coalesce(pg_catalog.jsonb_object_agg(m.org_id::text, m.role::text), '{}'::jsonb)
-      from %I.%I m
+      from %s m
       where m.user_id = $1
         and (m.accepted_at is not null or m.invited_at is null)
-    $q$, 'ws', 'org_members')
+    $q$, v_org_members)
     into v_org_roles
     using v_user_id;
   end if;
