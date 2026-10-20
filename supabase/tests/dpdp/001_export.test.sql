@@ -5,7 +5,7 @@
 -- from the last 10 minutes; every outcome is audited.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(35);
+select plan(37);
 
 update ops.runtime_settings set value = 'test' where key = 'env';
 
@@ -53,6 +53,22 @@ reset role;
 select set_config('request.jwt.claims', '', true);
 
 select is(current_setting('t53.p')::jsonb ->> 'schema', 'plinth.data_export/1', 'plinth.data_export/1');
+
+-- Lead (T59 PR #89): "Joined" is the account's own creation (Supabase Auth's auth.users.created_at),
+-- never when the profile row was written (a seeded profile carries the load time). None → null.
+update auth.users set created_at = '2026-07-01T09:00:00+05:30' where id = 'bff1ee72-9910-5980-a875-96a9a00b24cf';
+update app.profiles set created_at = '2026-10-18T12:00:00+05:30' where id = 'bff1ee72-9910-5980-a875-96a9a00b24cf';
+select is(
+  app.dpdp_export_json('bff1ee72-9910-5980-a875-96a9a00b24cf', current_setting('t53.req')::uuid) -> 'account' ->> 'joined_on',
+  '2026-07-01',
+  'account.joined_on is the account''s creation in Auth, not the profile row''s'
+);
+update auth.users set created_at = null where id = 'bff1ee72-9910-5980-a875-96a9a00b24cf';
+select is(
+  app.dpdp_export_json('bff1ee72-9910-5980-a875-96a9a00b24cf', current_setting('t53.req')::uuid) -> 'account' -> 'joined_on',
+  'null'::jsonb,
+  '...and null when Auth has no creation time (the PDF then prints no "Joined" line)'
+);
 select is(current_setting('t53.p')::jsonb ->> 'request_id', current_setting('t53.req'), 'the payload names its request');
 select is(
   jsonb_array_length(current_setting('t53.p')::jsonb -> 'consent_history' -> 'items'),

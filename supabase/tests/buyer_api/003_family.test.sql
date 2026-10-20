@@ -6,7 +6,7 @@
 -- WhatsApp relative: +91 99000 00385 (no account).
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(52);
+select plan(53);
 
 update ops.runtime_settings set value = 'test' where key = 'env';
 
@@ -312,6 +312,22 @@ select is(
   'PT404 not_found · This invite link isn''t valid any more. Ask for a new one.',
   'a used code over WhatsApp: the same neutral not_found'
 );
+-- Lead (T59 PR #89): the relative sends their own, now used, code again. Their membership answers,
+-- said honestly from the record; still one member, and the code's owner is still the only joiner.
+select set_config('t45a.rejoin', api.whatsapp_family_join(
+  (select (v #>> '{}')::uuid from t45a_out where k = 'contact'), (select v ->> 'code' from t45a_out where k = 'wa'), 'wamid.t45a.join-1')::text, true);
+reset role;
+select is(
+  array[current_setting('t45a.rejoin')::jsonb ->> 'member_id',
+        current_setting('t45a.rejoin')::jsonb ->> 'joined_line',
+        (select count(*)::text from app.family_members where wa_contact_id = (select (v #>> '{}')::uuid from t45a_out where k = 'contact'))],
+  array[(select id::text from app.family_members where invite_code = (select v ->> 'code' from t45a_out where k = 'wa')),
+        'You''re already in Tara''s circle for ' || (select app.invite_scope_line(m) from app.family_members m
+                                                       where m.invite_code = (select v ->> 'code' from t45a_out where k = 'wa')) || '.',
+        '1'],
+  'a repeat JOIN of their own code: "You''re already in Tara''s circle", from their member row, still one member'
+);
+set local role service_role;
 
 select * from finish();
 rollback;
