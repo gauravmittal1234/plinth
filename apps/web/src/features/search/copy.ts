@@ -32,8 +32,11 @@ export const SEARCH_COPY = {
   requestFailed: "We couldn’t send that request. Try again in a minute.",
   requestIt: "Request it",
   joinWaitlist: "Join the Noida waitlist",
-  onWaitlist: "On the waitlist",
-  leaveWaitlist: "Leave the list",
+  // Shown by NoidaWaitlist after a click. Handoff: needs an
+  // api.waitlist_join (area, WhatsApp consent) RPC; until then nothing is
+  // recorded, so this never claims the reader is "on the waitlist".
+  waitlistNotSaved:
+    "Waitlists aren’t open yet, so nothing was saved. We’ll publish the opening date on this page.",
   mapPlaceholder: "Map placeholder · not to scale",
   showAll: "Show all",
   sortLabel: "Sort",
