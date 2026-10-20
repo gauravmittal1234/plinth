@@ -2,10 +2,30 @@
 // borderless risk chip, and the built bar in the one accent detail. Every
 // word is the card's own (SearchResults.items[]); hovering or focusing a row
 // syncs the selected pin on the map (the list and the map share one state).
+// UI v2 (benchmark-thapki.md "Project list row/card"): card radius 20, a
+// radius-12 thumbnail, and a trailing chevron so the whole row reads as
+// tappable.
 import { RiskChip } from "@plinth/web-ui";
 import Link from "next/link";
 import { SEARCH_COPY } from "./copy";
 import type { ProjectCard } from "./types";
+
+function ChevronIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.75}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="size-5 shrink-0 text-ink2"
+    >
+      <path d="M7.5 4.5 13 10l-5.5 5.5" />
+    </svg>
+  );
+}
 
 export type ResultCardProps = {
   card: ProjectCard;
@@ -20,7 +40,7 @@ export function ResultCard({ card, selected, onHover }: ResultCardProps) {
       data-testid="result-card"
       data-slug={card.slug}
       className={
-        "ui-rise list-none rounded-panel transition-colors duration-150 ease-out " +
+        "ui-rise list-none rounded-card transition-colors duration-150 ease-out " +
         (selected ? "bg-track" : "bg-transparent")
       }
       onMouseEnter={() => onHover(card.slug)}
@@ -30,20 +50,20 @@ export function ResultCard({ card, selected, onHover }: ResultCardProps) {
         href={`/gurugram/projects/${card.slug}`}
         onFocus={() => onHover(card.slug)}
         onBlur={() => onHover(null)}
-        className="grid grid-cols-[88px_1fr] items-start gap-4 rounded-panel p-3 text-ink no-underline sm:grid-cols-[140px_1fr] sm:gap-5 sm:p-4"
+        className="grid grid-cols-[88px_1fr_auto] items-start gap-4 rounded-card p-3 text-ink no-underline sm:grid-cols-[140px_1fr_auto] sm:gap-5 sm:p-4"
       >
         {card.image_url ? (
           <span
-            className="aspect-square w-full bg-cover bg-center"
+            className="aspect-square w-full rounded-tile bg-cover bg-center"
             style={{ backgroundImage: `url(${card.image_url})` }}
           />
         ) : (
-          <span className="aspect-square w-full bg-chip-fill" aria-hidden />
+          <span className="aspect-square w-full rounded-tile bg-chip-fill" aria-hidden />
         )}
         <div className="flex min-w-0 flex-col gap-2">
           <div>
-            <p className="m-0 font-display text-lead leading-tight font-bold">{card.name}</p>
-            <p className="m-0 text-small text-ink2">
+            <p className="m-0 font-sans text-row-title leading-tight font-semibold">{card.name}</p>
+            <p className="m-0 text-meta text-ink2">
               {`${card.developer_name} · ${card.locality_line}`}
             </p>
           </div>
@@ -74,6 +94,7 @@ export function ResultCard({ card, selected, onHover }: ResultCardProps) {
             {[card.config_line, card.completion_line].filter(Boolean).join(" · ")}
           </p>
         </div>
+        <ChevronIcon />
       </Link>
     </li>
   );

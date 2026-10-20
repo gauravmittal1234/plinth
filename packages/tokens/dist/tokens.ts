@@ -353,6 +353,20 @@ export const typography = {
       "lineHeight": 1.1,
       "letterSpacing": -0.02
     },
+    "rowTitle": {
+      "family": "ui",
+      "weight": 600,
+      "size": 16,
+      "lineHeight": 1.3125,
+      "letterSpacing": 0
+    },
+    "meta": {
+      "family": "ui",
+      "weight": 400,
+      "size": 14,
+      "lineHeight": 1.3571,
+      "letterSpacing": 0
+    },
     "lead": {
       "family": "ui",
       "weight": 400,
@@ -834,6 +848,20 @@ export const cssVar = {
       "size": "var(--pl-type-number-lg-size)",
       "lineHeight": "var(--pl-type-number-lg-line-height)",
       "letterSpacing": "var(--pl-type-number-lg-letter-spacing)"
+    },
+    "rowTitle": {
+      "family": "var(--pl-type-row-title-family)",
+      "weight": "var(--pl-type-row-title-weight)",
+      "size": "var(--pl-type-row-title-size)",
+      "lineHeight": "var(--pl-type-row-title-line-height)",
+      "letterSpacing": "var(--pl-type-row-title-letter-spacing)"
+    },
+    "meta": {
+      "family": "var(--pl-type-meta-family)",
+      "weight": "var(--pl-type-meta-weight)",
+      "size": "var(--pl-type-meta-size)",
+      "lineHeight": "var(--pl-type-meta-line-height)",
+      "letterSpacing": "var(--pl-type-meta-letter-spacing)"
     },
     "lead": {
       "family": "var(--pl-type-lead-family)",

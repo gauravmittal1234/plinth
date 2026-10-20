@@ -120,6 +120,14 @@
   --text-number-lg--line-height: var(--pl-type-number-lg-line-height);
   --text-number-lg--letter-spacing: var(--pl-type-number-lg-letter-spacing);
   --text-number-lg--font-weight: var(--pl-type-number-lg-weight);
+  --text-row-title: var(--pl-type-row-title-size);
+  --text-row-title--line-height: var(--pl-type-row-title-line-height);
+  --text-row-title--letter-spacing: var(--pl-type-row-title-letter-spacing);
+  --text-row-title--font-weight: var(--pl-type-row-title-weight);
+  --text-meta: var(--pl-type-meta-size);
+  --text-meta--line-height: var(--pl-type-meta-line-height);
+  --text-meta--letter-spacing: var(--pl-type-meta-letter-spacing);
+  --text-meta--font-weight: var(--pl-type-meta-weight);
   --text-lead: var(--pl-type-lead-size);
   --text-lead--line-height: var(--pl-type-lead-line-height);
   --text-lead--letter-spacing: var(--pl-type-lead-letter-spacing);

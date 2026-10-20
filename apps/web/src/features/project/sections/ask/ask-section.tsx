@@ -69,7 +69,7 @@ export function AskSection() {
             disabled
             placeholder={ASK_COPY.inputLabel}
             aria-describedby="ask-input-note"
-            className="h-13 rounded-pill bg-bg-solid px-5 text-body placeholder:text-ink2"
+            className="h-14 rounded-field bg-bg-solid px-5 text-body placeholder:text-ink2"
           />
           <span id="ask-input-note" className="text-small text-ink2">
             {ASK_COPY.inputNote}

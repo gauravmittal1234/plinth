@@ -199,6 +199,16 @@
   --pl-type-number-lg-size: 2.5rem;
   --pl-type-number-lg-line-height: 1.1;
   --pl-type-number-lg-letter-spacing: -0.02em;
+  --pl-type-row-title-family: var(--pl-font-family-ui);
+  --pl-type-row-title-weight: 600;
+  --pl-type-row-title-size: 1rem;
+  --pl-type-row-title-line-height: 1.3125;
+  --pl-type-row-title-letter-spacing: 0;
+  --pl-type-meta-family: var(--pl-font-family-ui);
+  --pl-type-meta-weight: 400;
+  --pl-type-meta-size: 0.875rem;
+  --pl-type-meta-line-height: 1.3571;
+  --pl-type-meta-letter-spacing: 0;
   --pl-type-lead-family: var(--pl-font-family-ui);
   --pl-type-lead-weight: 400;
   --pl-type-lead-size: 1.3125rem;

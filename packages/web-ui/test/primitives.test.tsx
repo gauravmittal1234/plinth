@@ -1,8 +1,9 @@
-// Primitives: SectionBand, Pill, Button, Sheet, Toast.
+// Primitives: SectionBand, Pill, Button, SegmentedControl, Sheet, Toast.
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Button, Pill, SectionBand, Sheet, Toast } from "../src";
+import { Button, Pill, SectionBand, SegmentedControl, Sheet, Toast } from "../src";
 import { COPY, fixture } from "./fixtures";
 
 const aurelia = fixture("aurelia-heights-phase-2");
@@ -51,8 +52,38 @@ describe("Pill", () => {
   });
 });
 
+describe("SegmentedControl", () => {
+  it("is one radiogroup, not separate pills far apart (benchmark-thapki.md)", async () => {
+    function Demo() {
+      const [value, setValue] = useState<"day" | "night">("day");
+      return (
+        <SegmentedControl
+          ariaLabel="Theme"
+          value={value}
+          onChange={setValue}
+          options={[
+            { value: "day", label: "Day" },
+            { value: "night", label: "Night" },
+          ]}
+        />
+      );
+    }
+    render(<Demo />);
+    const group = screen.getByRole("radiogroup", { name: "Theme" });
+    const day = screen.getByRole("radio", { name: "Day" });
+    const night = screen.getByRole("radio", { name: "Night" });
+    expect(group).toContainElement(day);
+    expect(group).toContainElement(night);
+    expect(day).toHaveAttribute("aria-checked", "true");
+    expect(night).toHaveAttribute("aria-checked", "false");
+    await userEvent.click(night);
+    expect(night).toHaveAttribute("aria-checked", "true");
+    expect(day).toHaveAttribute("aria-checked", "false");
+  });
+});
+
 describe("Button", () => {
-  it("primary is the accent, a 52 px pill at size lg", () => {
+  it("primary is the accent, a 56 px button at size lg (UI v2 radius-button)", () => {
     render(
       <Button size="lg" aria-pressed={false}>
         Follow this project
@@ -61,8 +92,19 @@ describe("Button", () => {
     const btn = screen.getByRole("button", { name: "Follow this project" });
     expect(btn).toHaveAttribute("type", "button");
     expect(btn.className).toContain("bg-accent");
-    expect(btn.className).toContain("h-13");
-    expect(btn.className).toContain("rounded-pill");
+    expect(btn.className).toContain("h-14");
+    expect(btn.className).toContain("rounded-button");
+  });
+
+  it("an icon sits with the label in one row that never wraps", () => {
+    render(
+      <Button icon={<svg aria-hidden="true" />} aria-pressed={false}>
+        Follow
+      </Button>,
+    );
+    const btn = screen.getByRole("button", { name: "Follow" });
+    expect(btn.className).toContain("whitespace-nowrap");
+    expect(btn.querySelector("svg")).not.toBeNull();
   });
 
   it("secondary is a tone fill (no outline), one step above its ground", () => {
@@ -92,7 +134,7 @@ describe("Button", () => {
     );
     const link = screen.getByRole("link", { name: "Methodology v1.2" });
     expect(link).toHaveAttribute("href", "/methodology");
-    expect(link.className).toContain("rounded-pill");
+    expect(link.className).toContain("rounded-button");
   });
 
   it("disabled cannot be pressed", async () => {

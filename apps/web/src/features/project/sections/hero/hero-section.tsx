@@ -9,6 +9,7 @@ import Link from "next/link";
 import { formatDate } from "../../page/format";
 import { HERO_COPY } from "../../page/copy";
 import { RiskChipGate } from "../../page/risk-chip-gate";
+import { AskIcon, FollowIcon } from "./action-icons";
 import { ShareButton } from "./share-button";
 
 const IMAGE_SIZES = "(min-width: 1280px) 1216px, 100vw";
@@ -76,12 +77,18 @@ export function HeroSection({ page }: { page: ProjectPage }) {
 
         <p className="m-0 max-w-measure text-lead">{hero.summary_line}</p>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-nowrap items-center gap-3 overflow-x-auto">
           <Button size="lg" asChild>
-            <Link href={`/sign-in?next=/gurugram/projects/${phase.slug}`}>{HERO_COPY.follow}</Link>
+            <Link href={`/sign-in?next=/gurugram/projects/${phase.slug}`}>
+              <FollowIcon aria-hidden="true" className="size-5 shrink-0" />
+              {HERO_COPY.follow}
+            </Link>
           </Button>
           <Button variant="secondary" size="lg" asChild>
-            <a href="#ask">{HERO_COPY.ask}</a>
+            <a href="#ask">
+              <AskIcon aria-hidden="true" className="size-5 shrink-0" />
+              {HERO_COPY.ask}
+            </a>
           </Button>
           <ShareButton url={risk.meta.live_url} title={phase.name} />
         </div>
