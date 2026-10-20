@@ -6,7 +6,13 @@
 // dismissal. Focus returns to whatever opened it (a source chip is not a Radix
 // trigger, so the sheet remembers it). Non-modal by default, like the evidence
 // drawer in WebProject.dc.html: the page stays readable beside it.
-import { Dialog } from "radix-ui";
+// The unified `radix-ui` package's root barrel (`import { Dialog } from
+// "radix-ui"`) re-exports every Radix primitive (Accordion, Select, Tabs,
+// Tooltip, 25+ more) from one module, so a bundler that can't prove the
+// unused ones are dead pulls them all into every page that renders a Sheet.
+// The package's own `radix-ui/dialog` subpath re-exports only
+// `@radix-ui/react-dialog`, so import from there instead (same API).
+import * as Dialog from "radix-ui/dialog";
 import { useRef, type ReactNode } from "react";
 import { cx } from "../lib/cx";
 import { CloseIcon } from "../lib/icons";

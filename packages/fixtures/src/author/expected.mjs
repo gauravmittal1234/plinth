@@ -2031,9 +2031,9 @@ export function makeExpected(cat, ev, sc, dc, vectors) {
     money: {
       never_line: "No developer pays us. Ever.",
       lines: [
-        "Pro: ₹999 per project · 12 months of written updates. Alerts are always free.",
+        "Buyers: free. Every band, reason, source, alert and comparison costs nothing while we launch.",
+        "Agents: no fee to us. We earn nothing when you choose an agent.",
         "Loans: Loan checks arrive in 2027. No lender pays us in R1.",
-        "Agents: a published fee split, only when you choose them.",
       ],
     },
     response_times: [

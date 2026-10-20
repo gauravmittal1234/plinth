@@ -1,6 +1,7 @@
 // "How do we make money?" (WORK_BREAKDOWN T21 money ledger): every line is
-// `api.about().money`, never composed here — Pro, loans and agents, never
-// developers (AGENTS.md §5, DESIGN §0).
+// `api.about().money`, never composed here — buyers, agents and loans, never
+// developers (AGENTS.md §5, DESIGN §0). Free at launch (founder, 20 Oct
+// 2026): no Pro plan, no agent fee split.
 import type { About } from "@/src/data";
 import Link from "next/link";
 
@@ -54,7 +55,7 @@ export function MoneySection({ money }: { money: About["money"] }) {
   );
 }
 
-/** `about().money.lines` reads "Who: what" ("Pro: ₹999 per project · …"). */
+/** `about().money.lines` reads "Who: what" ("Buyers: free. Every band, reason, …"). */
 function splitLine(line: string): [string, string] {
   const i = line.indexOf(": ");
   return i < 0 ? [line, ""] : [line.slice(0, i), line.slice(i + 2)];

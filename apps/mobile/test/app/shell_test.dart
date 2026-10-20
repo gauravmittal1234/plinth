@@ -26,7 +26,8 @@ void main() {
       ('Following', Routes.following, 'AppFollowing'),
       ('Ask Plinth', Routes.ask, 'AppVoice'),
       ('You', Routes.you, 'AppYou'),
-      ('Explore', Routes.explore, 'AppExplore'),
+      // AppExplore is filled (T30): its own stable heading, not a placeholder.
+      ('Explore', Routes.explore, 'Which home are you buying?'),
     ]) {
       await tester.tap(find.descendant(of: bar, matching: find.text(label)));
       await tester.pumpAndSettle();

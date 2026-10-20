@@ -2,7 +2,7 @@
 
 Status: 19 Oct 2026 · For: Gaurav · Engineering owner: Head of Engineering
 
-The agent team builds M0–M1 entirely on fixtures, so **nothing here blocks coding today.** Some items have long lead times (Meta business verification, TRAI DLT, the Play organisation account, the legal memo). Start those this week.
+The agent team builds M0–M1 entirely on fixtures, so **nothing here blocks coding today.** Some items have long lead times (Meta business verification, TRAI DLT, the Play organisation account, the GCP project for live HARERA fetch). Start those this week. The legal memo and HARERA letter are post-launch (FOUNDER_QUESTIONS P8).
 
 ## The rules for keys (please read once)
 
@@ -85,11 +85,11 @@ The agent team builds M0–M1 entirely on fixtures, so **nothing here blocks cod
 
 **Cost:** about ₹0.18–0.25 per SMS.
 
-### 1.4 Legal gates (not accounts, but they gate real data)
+### 1.4 Live HARERA data (no legal gate)
 
-- **The legal memo + the HARERA permission letter** gate all live data collection (BUILD_PLAN §1 rule 8). Until both exist, the pipeline runs on saved fixtures only.
-- When the lawyer clears it, you set `HARERA_LIVE_FETCH_APPROVED=yes` yourself, in the M6 Cloud Run job's environment.
-- Optional, low-risk, helpful: while browsing normally, **save up to 10 real HARERA pages by hand** for parser development: one registered-projects list, one Form A-H, one QPR, one corrigendum response and one judgments page. Drop them in `pipelines/tests/fixtures/harera/real/`. That is not scraping, but check with the lawyer if unsure.
+- **Founder decision, 20 Oct 2026:** the legal memo and the HARERA permission letter are post-launch work and do not gate live data (FOUNDER_QUESTIONS P8).
+- Live fetch needs the GCP project (4.3) for an Indian IP. You set `HARERA_LIVE_FETCH_APPROVED=yes` in the Cloud Run job's environment when the job is ready; it stays a kill switch you can turn off at any time.
+- Optional, low-risk, helpful: while browsing normally, **save up to 10 real HARERA pages by hand** for parser development: one registered-projects list, one Form A-H, one QPR, one corrigendum response and one judgments page. Drop them in `pipelines/tests/fixtures/harera/real/`.
 - **Before public beta (PRD §12.2):** media-liability and cyber insurance, a grievance officer, and the company details for the About page. Agents leave these as labelled placeholders.
 
 ---
@@ -193,7 +193,7 @@ The agent team builds M0–M1 entirely on fixtures, so **nothing here blocks cod
 |---|---|---|---|---|
 | 4.1 | Supabase **`plinth-prod`** (Pro plan, Mumbai) and optionally `plinth-staging`. Same auth hooks; real data only after the memo | Production | Same names, per environment | $25/month + compute |
 | 4.2 | Vercel **Pro**, with the production domain on `plinth-web` and `admin.plinth.in` on `plinth-admin` | Commercial hosting | — | $20/month per seat |
-| 4.3 | Google Cloud project, region **asia-south1**: Cloud Run Jobs, Cloud Scheduler, Artifact Registry. Connect GitHub with **Workload Identity Federation** (no JSON keys) | Live HARERA fetch from an Indian IP (after the legal memo) | `GCP_PROJECT_ID`, `GCP_REGION`, `GCP_WIF_PROVIDER`, `GCP_SERVICE_ACCOUNT` | Tens of dollars a month |
+| 4.3 | Google Cloud project, region **asia-south1**: Cloud Run Jobs, Cloud Scheduler, Artifact Registry. Connect GitHub with **Workload Identity Federation** (no JSON keys) | Live HARERA fetch from an Indian IP | `GCP_PROJECT_ID`, `GCP_REGION`, `GCP_WIF_PROVIDER`, `GCP_SERVICE_ACCOUNT` | Tens of dollars a month |
 | 4.4 | Map tiles: download a Protomaps PMTiles extract for the Gurugram bounding box (no account) and upload it to the Supabase Storage bucket `tiles` | The map basemap on web and app | `NEXT_PUBLIC_TILES_URL`, `TILES_URL` (app) | Free |
 | 4.5 | Payment partner (e.g. Razorpay, business KYC), only if Pro (₹999) goes on sale | `pro_paywall` | `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET` | Per transaction |
 | 4.6 | WhatsApp templates approved; production number live; then you switch `META_MODE=live` in prod | Real alerts | — | Per message |
@@ -208,7 +208,7 @@ The agent team builds M0–M1 entirely on fixtures, so **nothing here blocks cod
 - [ ] 1.1 Meta Business verification started · [ ] Developer app + test number · [ ] Production number + display name · [ ] Templates submitted
 - [ ] 1.2 D-U-N-S requested · [ ] Play organisation account · [ ] Upload key made · [ ] CI service account in GitHub secrets
 - [ ] 1.3 DLT Principal Entity · [ ] Header `PLINTH` · [ ] OTP template · [ ] MSG91 linked
-- [ ] 1.4 Legal memo · [ ] HARERA permission letter sent · [ ] (optional) ≤ 10 real HARERA pages saved
+- [ ] 1.4 (optional) ≤ 10 real HARERA pages saved · legal memo and HARERA letter: post-launch
 - [ ] 2.1 `plinth-dev` Supabase + secrets · [ ] 2.2 Vercel ×2 · [ ] 2.3 Firebase · [ ] 2.4 Gemini budget alert · [ ] 2.5 Sentry/PostHog
 - [ ] 3 Resend + DNS
 - [ ] 4.x Production accounts, insurance, company facts

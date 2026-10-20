@@ -26,7 +26,7 @@ export const WORKSPACE_NAV: readonly NavLink[] = [
 export const FOOTER_NAV: readonly NavLink[] = [
   { label: "How we make money", href: "/about#money" },
   { label: "How scores work", href: "/methodology" },
-  { label: "Free and Pro", href: "/pricing" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Developer workspace", href: "/workspace" },
   { label: "Privacy", href: "/privacy" },
 ];
