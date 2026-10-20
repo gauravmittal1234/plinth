@@ -1,0 +1,12 @@
+{
+  "base": "rohan.json",
+  "why": "A member row never carries a phone number (DATA_MODEL §5).",
+  "expect": "/members/0",
+  "patch": [
+    {
+      "op": "add",
+      "path": "/members/0/phone_masked",
+      "value": "+91 99••• ••319"
+    }
+  ]
+}

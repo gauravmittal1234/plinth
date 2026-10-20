@@ -1,0 +1,18 @@
+{
+  "schema": "plinth.follow/1",
+  "slug": "kestrel-park",
+  "follow_type": "booked",
+  "followed_at": "2026-07-01T00:00:00+05:30",
+  "alerts_line": "Band changes, filings, orders and extensions, plus payment-stage alerts. Utility alerts only.",
+  "private_line": "Your family circle doesn't see your follow type.",
+  "links": [
+    {
+      "label": "Pay-as-built",
+      "href": "/check/pay-as-built"
+    },
+    {
+      "label": "What a booked buyer can do",
+      "href": "/guides/booked-buyer"
+    }
+  ]
+}
