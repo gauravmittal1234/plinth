@@ -103,8 +103,13 @@ function HeroCardPanel({
 }) {
   if (result === null || result.kind === "card") {
     const summary = result?.kind === "card" ? result.summary : defaultSummary;
+    // No entrance fade here: the card's own motion is the slab stack and the
+    // meter filling in (TowerStack, Meter), and a whole-card opacity fade
+    // would put running text through a genuinely low-contrast instant
+    // mid-transition, not only a visual nicety (DESIGN §0 "no competing
+    // motion"; axe's contrast check caught this before CI would have).
     return (
-      <div key={summary.phase.slug} className="ui-rise">
+      <div key={summary.phase.slug}>
         <RiskMiniCard summary={summary} />
       </div>
     );
@@ -114,7 +119,7 @@ function HeroCardPanel({
     const { item } = result;
     const href = item.kind === "developer" ? `/gurugram/developers/${item.slug}` : "/search";
     return (
-      <div key={`redirect-${item.slug}`} className="ui-rise flex flex-col gap-3">
+      <div key={`redirect-${item.slug}`} className="flex flex-col gap-3">
         <p className="m-0 text-lead">
           <strong>{item.label}</strong> is a {item.kind}
           {item.detail_line ? <> · {item.detail_line}</> : null}.
@@ -133,7 +138,7 @@ function HeroCardPanel({
   }
 
   return (
-    <div key="unknown" className="ui-rise flex flex-col gap-3">
+    <div key="unknown" className="flex flex-col gap-3">
       <p className="m-0 text-lead">
         We couldn&rsquo;t match &ldquo;{result.query}&rdquo; to a project or developer we cover.
       </p>

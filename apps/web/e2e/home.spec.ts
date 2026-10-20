@@ -23,6 +23,11 @@ const LENDER_NAMES = [
 ];
 
 test.describe("WebHome", () => {
+  // The page's motion (the slab stack, the needle sweep) jumps straight to
+  // its final state under reduced motion, which is what every assertion here
+  // wants to read (DESIGN §0 motion layer; packages/web-ui/src/lib/motion.ts).
+  test.use({ reducedMotion: "reduce" });
+
   test("loads with the Aurelia card already assembled", async ({ page }) => {
     await page.goto("/");
     const card = page.locator("[data-hero-card]");
