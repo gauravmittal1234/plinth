@@ -107,7 +107,14 @@ test.describe("M1 gate: the web screens", { tag: ["@smoke", "@gate"] }, () => {
   test("SEO plumbing: robots, the sitemap and canonical URLs", async ({ page, request }) => {
     const robots = await request.get("/robots.txt");
     expect(robots.status()).toBe(200);
-    expect(await robots.text()).toMatch(/^Sitemap: https:\/\/\S+\/sitemap\.xml$/m);
+    // This fixture build sets neither NEXT_PUBLIC_SITE_URL/VERCEL_ENV=production
+    // nor PLINTH_INDEXABLE=1, so robots.ts (M1 polish) disallows everything --
+    // the safe default for a non-production deploy of the placeholder domain
+    // (DECISIONS E-10). /sitemap.xml itself is still generated and checked
+    // below; only robots.txt's own crawl policy differs on the real site.
+    const robotsText = await robots.text();
+    expect(robotsText).toMatch(/^Disallow: \/\s*$/m);
+    expect(robotsText).not.toMatch(/^Sitemap: /m);
 
     const sitemap = await request.get("/sitemap.xml");
     expect(sitemap.status()).toBe(200);

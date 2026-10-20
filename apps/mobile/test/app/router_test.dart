@@ -30,8 +30,11 @@ const samples = <String, Sample>{
   Routes.following: (location: '/following', artboard: 'AppFollowing', tabs: true),
   Routes.family: (location: '/following/family', artboard: 'AppFamily', tabs: true),
   Routes.ask: (location: '/ask', artboard: 'AppVoice', tabs: true),
-  Routes.you: (location: '/you', artboard: 'AppYou', tabs: true),
-  Routes.privacy: (location: '/you/privacy', artboard: 'AppYou', tabs: true),
+  // AppYou and its Privacy screen are filled (T51): each one's own stable,
+  // near-top text (the ListView never scrolls in this smoke check), not a
+  // placeholder.
+  Routes.you: (location: '/you', artboard: 'Your account, your number and how Plinth reaches you.', tabs: true),
+  Routes.privacy: (location: '/you/privacy', artboard: 'Who has my number?', tabs: true),
   Routes.welcome: (location: '/welcome', artboard: 'AppOnboarding', tabs: false),
   Routes.project: (location: '/gurugram/projects/aurelia-heights-phase-2', artboard: 'AppProject', tabs: false),
   Routes.risk: (location: '/gurugram/projects/aurelia-heights-phase-2/risk', artboard: 'AppRisk', tabs: false),
@@ -81,7 +84,7 @@ void main() {
 
   testWidgets('pumps every registered route onto its placeholder', (tester) async {
     // Signed in, so account pages open too.
-    final container = await pumpPlinth(tester, overrides: [signedInProvider.overrideWithValue(true)]);
+    final container = await pumpPlinth(tester, signedIn: true);
     for (final MapEntry(key: pattern, value: s) in samples.entries) {
       routerOf(container).go(s.location);
       await tester.pumpAndSettle();
@@ -183,7 +186,7 @@ void main() {
     final manifest = File('android/app/src/main/AndroidManifest.xml').readAsStringSync();
     final prefixes = RegExp(r'android:path(?:Prefix)?="([^"]+)"').allMatches(manifest).map((m) => m[1]!).toList();
     expect(prefixes, isNotEmpty);
-    final container = await pumpPlinth(tester, overrides: [signedInProvider.overrideWithValue(true)]);
+    final container = await pumpPlinth(tester, signedIn: true);
     for (final prefix in prefixes) {
       // A prefix is opened with a sample tail where it ends in a slash.
       final location = switch (prefix) {

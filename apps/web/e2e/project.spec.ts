@@ -98,6 +98,24 @@ test.describe("WebProject: Aurelia Heights, Phase 2", { tag: "@smoke" }, () => {
     await expect(records.getByText("Northfield Greens, Sector 52")).toBeVisible();
   });
 
+  test("carries Residence and BreadcrumbList JSON-LD, server-rendered (M1 polish)", async ({
+    page,
+  }) => {
+    await page.goto(URL);
+    const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+    const parsed = blocks.map((b) => JSON.parse(b) as Record<string, unknown>);
+
+    const residence = parsed.find((b) => b["@type"] === "Residence");
+    expect(residence?.name).toBe("Aurelia Heights, Phase 2");
+    expect((residence?.additionalProperty as { value: string }[] | undefined)?.[0]?.value).toBe(
+      "GGM/673/405/2022/117",
+    );
+
+    const breadcrumb = parsed.find((b) => b["@type"] === "BreadcrumbList");
+    const items = breadcrumb?.itemListElement as { name: string }[] | undefined;
+    expect(items?.map((i) => i.name)).toEqual(["Home", "Aurelia Heights, Phase 2"]);
+  });
+
   test("axe finds no serious or critical violations", async ({ page }) => {
     await page.goto(URL);
     const { violations } = await new AxeBuilder({ page })

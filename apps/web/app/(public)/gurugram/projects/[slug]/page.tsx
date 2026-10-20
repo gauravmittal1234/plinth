@@ -15,6 +15,7 @@ import { loadEvidenceMap } from "@/src/features/project/page/evidence";
 import { loadProject } from "@/src/features/project/page/load-project";
 import { projectMetadata } from "@/src/features/project/page/preview";
 import { ProjectPageView } from "@/src/features/project/page/project-page";
+import { breadcrumbListJsonLd, residenceJsonLd } from "@/src/seo/json-ld";
 
 export function generateStaticParams() {
   return PHASE_SLUGS.map((slug) => ({ slug }));
@@ -33,5 +34,19 @@ export default async function Page(props: PageProps<"/gurugram/projects/[slug]">
   const { slug } = await props.params;
   const data = await loadProject(slug);
   const evidence = await loadEvidenceMap(data.page);
-  return <ProjectPageView data={data} evidence={evidence} />;
+  const { phase } = data.page.risk;
+  const path = `/gurugram/projects/${phase.slug}`;
+  const residence = residenceJsonLd(phase, path);
+  const breadcrumb = breadcrumbListJsonLd([
+    { name: "Home", path: "/" },
+    { name: phase.name, path },
+  ]);
+  return (
+    <>
+      {/* Server-rendered only: no client JS (T28 brief, M1 polish). */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(residence) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <ProjectPageView data={data} evidence={evidence} />
+    </>
+  );
 }

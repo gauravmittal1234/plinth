@@ -198,6 +198,10 @@ password_requirements = ""
 # rp_origins = ["http://127.0.0.1:3000"]
 
 [auth.rate_limit]
+# Plinth (T41): these are the per-IP limits on sign-in. They stay loose because Indian mobile
+# carriers put many people behind one IP (CGNAT). The tight limit is per number, in
+# auth-sms-hook (_shared/otp/rules.ts: 5 codes an hour, 10 a day, through ops.rate_limits),
+# on top of [auth.sms] max_frequency (one code per 30 s).
 # Number of emails that can be sent per hour. Requires auth.email.smtp to be enabled.
 email_sent = 2
 # Number of SMS messages that can be sent per hour. Requires auth.sms to be enabled.
@@ -259,21 +263,39 @@ otp_expiry = 3600
 
 [auth.sms]
 # Plinth signs buyers in with phone OTP (one account across web, app and WhatsApp).
-# Delivery is the Send-SMS hook (T41: WhatsApp login_code template, MSG91 fallback).
+# Delivery is the Send-SMS hook ([auth.hook.send_sms] → auth-sms-hook: WhatsApp login_code
+# template, MSG91 SMS fallback with sender PLINTH). OTP rules (fix-trust.md): a 6-digit code that
+# lasts 10 minutes; a new code after 30 seconds. Hosted projects set the same values in the
+# dashboard (Auth → Providers → Phone: OTP expiry 600 s, length 6).
 # Allow/disallow new user signups via SMS to your project.
 enable_signup = true
 # If enabled, users need to confirm their phone number before signing in.
 enable_confirmations = false
-# Template for sending OTP to users
+# Template for sending OTP to users. Unused while the Send-SMS hook delivers the code.
 template = "Your code is {{ .Code }}"
 # Controls the minimum amount of time that must pass before sending another sms otp.
 max_frequency = "30s"
+# Number of digits in the SMS OTP.
+otp_length = 6
+# Seconds before the SMS OTP expires: 10 minutes.
+otp_expiry = 600
 
-# Use pre-defined map of phone number to OTP for testing.
-# Placeholder (not a real number). T41 replaces it with the fictional persona numbers from
-# packages/fixtures/canonical/people.json. Never put a real person's number here.
+# Test OTP: fixed codes for the fictional fixture personas that have an account
+# (packages/fixtures/canonical/people.json test_phones block +91 99000 003NN; API_CONTRACTS §5.4).
+# Auth never calls the Send-SMS hook for these, and outbound adapters refuse the block anyway.
+# Local, CI and dev only: never configure them on a production project, and never add a real
+# person's number. Meera's father (…320) has no account, so he has no test code.
 [auth.sms.test_otp]
-910000000001 = "123456"
+919900000318 = "123456" # Rohan
+919900000319 = "123456" # Meera
+919900000321 = "123456" # Kavya Nair
+919900000322 = "123456" # Aman
+919900000323 = "123456" # Nisha
+919900000324 = "123456" # Ishita
+919900000325 = "123456" # Farah
+919900000326 = "123456" # Kabir
+919900000327 = "123456" # Dev
+919900000328 = "123456" # Tanvi
 
 # Configure logged in session timeouts.
 # [auth.sessions]
@@ -288,9 +310,22 @@ max_frequency = "30s"
 # uri = "pg-functions://postgres/auth/before-user-created-hook"
 
 # This hook runs before a token is issued and allows you to add additional claims based on the authentication method used.
-# [auth.hook.custom_access_token]
-# enabled = true
-# uri = "pg-functions://<database>/<schema>/<hook_name>"
+# Plinth (T41): adds plinth_roles[] and org_roles {org_id: role} (API_CONTRACTS §5.4;
+# supabase/migrations/20261111000100_t41_ops_access_token_hook.sql).
+[auth.hook.custom_access_token]
+enabled = true
+uri = "pg-functions://postgres/ops/custom_access_token_hook"
+
+# Plinth (T41): the Send-SMS hook delivers every OTP through the auth-sms-hook edge function
+# (Standard Webhooks signed). Off in this file because the CLI refuses an http hook whose secret
+# is unset, and CI starts the database without one. To use it locally: put
+# SEND_SMS_HOOK_SECRET="v1,whsec_<base64>" in supabase/.env and in supabase/functions/.env, set
+# enabled = true here, then `supabase start` and `supabase functions serve`. Hosted projects turn
+# it on in the dashboard (Auth → Hooks → Send SMS) with the same function URL and secret.
+[auth.hook.send_sms]
+enabled = false
+uri = "http://host.docker.internal:54321/functions/v1/auth-sms-hook"
+secrets = "env(SEND_SMS_HOOK_SECRET)"
 
 # Configure one of the supported SMS providers: `twilio`, `twilio_verify`, `messagebird`, `textlocal`, `vonage`.
 [auth.sms.twilio]
@@ -421,3 +456,20 @@ enabled = true
 # formatted with uppercase keywords, indent 2, max width 180, trailing commas,
 # and column/key alignment. Set to "null" to emit raw, unformatted SQL.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
+
+# Edge functions deployed without Supabase JWT verification: each one checks its own caller
+# (see the header comment in each index.ts). Lead, M2 wave 4 integration.
+[functions.health]
+verify_jwt = false # public uptime probe, no data
+
+[functions.auth-sms-hook]
+verify_jwt = false # Supabase Auth calls it with a standard-webhooks signature (T41)
+
+[functions.wa-webhook]
+verify_jwt = false # Meta calls it; X-Hub-Signature-256 is verified in code (T44)
+
+[functions.wa-flows]
+verify_jwt = false # Meta WhatsApp Flows endpoint; encrypted, signed requests (T44)
+
+[functions.outbox-dispatch]
+verify_jwt = false # pg_cron/pg_net call it with x-plinth-dispatch-secret, never a JWT (T42)

@@ -25,7 +25,9 @@ void main() {
     final bar = find.byType(NavigationBar);
     for (final (label, path, artboard) in [
       ('Ask Plinth', Routes.ask, 'AppVoice'),
-      ('You', Routes.you, 'AppYou'),
+      // AppYou is filled (T51): its own stable, near-top text, shown signed
+      // out too (this screen never scrolls in the check).
+      ('You', Routes.you, 'Browse freely. Signing in only happens when you open Who has my number.'),
       // AppExplore is filled (T30): its own stable heading, not a placeholder.
       ('Explore', Routes.explore, 'Which home are you buying?'),
     ]) {

@@ -1,0 +1,13 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload. api.link_whatsapp_follows' response is still x-plinth-shape: pending (T45a/T45b own the real schema, INTEGRATION_NOTES.md); this fixture's shape is T47's own interim one, read defensively by apps/web/src/features/auth/actions.ts and dropped once the real schema lands.",
+  "requests": {
+    "preview": {
+      "p_accept": false,
+      "note": "WebSignIn's Bring step: what this number has on WhatsApp, shown before any tap."
+    },
+    "confirmed": {
+      "p_accept": true,
+      "note": "WebSignIn's \"Bring them here\": the record its success line needs."
+    }
+  }
+}

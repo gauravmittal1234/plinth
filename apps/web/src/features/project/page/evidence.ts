@@ -23,10 +23,11 @@ export async function loadEvidenceMap(
   page: ProjectPage,
 ): Promise<Readonly<Record<string, Evidence>>> {
   const ids = factIdsOf(page);
+  const slug = page.risk.phase.slug;
   const settled = await Promise.all(
     ids.map(async (id) => {
       try {
-        return [id, await evidence(id)] as const;
+        return [id, await evidence(id, slug)] as const;
       } catch (e) {
         if (isDataError(e, "not_found") || isDataError(e, "fixture_missing")) return null;
         throw e;
