@@ -3,8 +3,11 @@
 -- ci-gate-m2, which also reads the `m2:` diag lines below for its Deno renders).
 --
 -- What already proves an M2 item, and is not repeated here (item → test):
---   1 Phone OTP sign-in      ci-gate-m2 (live: GoTrue test OTP on web and app; e2e/gates/m2.spec.ts,
---                            test/gates/m2_test.dart); the access-token hook: tests/auth/001;
+--   1 Phone OTP sign-in      ci-gate-m2 (live: GoTrue test OTP through the web's sign-in form and
+--                            the app's controller; e2e/gates/m2.spec.ts, test/gates/m2_test.dart);
+--                            every seeded account readable by GoTrue: below (gate gap 8, closed);
+--                            the fresh-code window on the wall clock: tests/dpdp/005;
+--                            the access-token hook: tests/auth/001;
 --                            WhatsApp follows merge only after the tap: tests/buyer_api/004,
 --                            apps/web/e2e/sign-in.spec.ts ("Bring them here merges 2 follows").
 --   2 Rohan's §5b world      `test:api` deep-equals following_feed, family_circle, alert_prefs,
@@ -79,26 +82,44 @@ $$;
 
 select is(ops.now(), '2026-10-18 12:00:00+05:30'::timestamptz, 'ops.now() is the frozen clock, 18 Oct 2026 12:00 IST');
 
--- Supabase Auth reads these auth.users columns into plain strings: a NULL in any of them makes
--- every sign-in for that row fail ("Database error finding user"). PGlite's shim has none of them.
-create function pg_temp.auth_rows_with_null_tokens() returns integer language plpgsql as $$
-declare v_cols text[]; v integer;
+-- Item 1, gate gap 8 (closed): Supabase Auth loads a user by reading every auth.users column into
+-- a Go struct, so a NULL in a column it reads as a plain string or time ("converting NULL to
+-- string is unsupported", then created_at's "unsupported Scan") fails every sign-in of that row
+-- with "Database error finding user". Each seeded account must be written as GoTrue writes one:
+-- those columns set, its instance id and audience, and for a phone account the confirmed phone
+-- and its `phone` identity. Lists what is missing, per account (empty = every account readable).
+create function pg_temp.auth_account_gaps() returns text[] language plpgsql as $$
+declare v_cols text[]; v text[];
 begin
-  select array_agg(column_name::text) into v_cols from information_schema.columns
+  select array_agg(column_name::text order by column_name) into v_cols from information_schema.columns
    where table_schema = 'auth' and table_name = 'users'
-     and column_name in ('confirmation_token', 'recovery_token', 'email_change_token_new', 'email_change',
-                         'phone_change', 'phone_change_token', 'email_change_token_current', 'reauthentication_token');
-  if v_cols is null then return null; end if;
-  execute 'select count(*)::int from auth.users where '
-    || (select string_agg(format('%I is null', c), ' or ') from unnest(v_cols) c) into v;
+     and column_name in ('aud', 'role', 'encrypted_password', 'confirmation_token', 'recovery_token',
+                         'email_change_token_new', 'email_change', 'email_change_token_current',
+                         'phone_change', 'phone_change_token', 'reauthentication_token',
+                         'created_at', 'updated_at');
+  execute 'select coalesce(array_agg(g order by g), ''{}'') from ('
+    || (select string_agg(format('select u.id || '' %1$s is null'' as g from auth.users u where u.%1$I is null', c), ' union all ')
+          from unnest(v_cols) c)
+    || $q$
+      union all select u.id || ' instance_id is not GoTrue''s' from auth.users u
+        where u.instance_id is distinct from '00000000-0000-0000-0000-000000000000'::uuid
+      union all select u.id || ' aud/role is not authenticated' from auth.users u
+        where u.aud is distinct from 'authenticated' or u.role is distinct from 'authenticated'
+      union all select u.id || ' phone not confirmed' from auth.users u
+        where u.phone is not null and u.phone_confirmed_at is null
+      union all select u.id || ' no phone identity' from auth.users u
+        where u.phone is not null and not exists (
+          select 1 from auth.identities i
+           where i.user_id = u.id and i.provider = 'phone' and i.provider_id = u.id::text
+             and i.identity_data ->> 'sub' = u.id::text and i.identity_data ->> 'phone' = u.phone
+             and i.created_at is not null and i.updated_at is not null)
+    ) gaps$q$ into v;
   return v;
 end $$;
-select todo_start('Gate gap: supabase/seed/50_people.sql leaves auth.users token columns NULL, so Supabase Auth cannot read a seeded account ("converting NULL to string is unsupported") and no seeded person can sign in');
-select case when pg_temp.auth_rows_with_null_tokens() is null
-  then skip('the PGlite shim has no Supabase Auth token columns', 1)
-  else is(pg_temp.auth_rows_with_null_tokens(), 0, 'Supabase Auth can read every seeded account (no NULL token column)')
-end;
-select todo_end();
+select is(
+  pg_temp.auth_account_gaps(), '{}'::text[],
+  'Supabase Auth can read every seeded account: no NULL string or time column, GoTrue''s instance and audience, a confirmed phone with its phone identity'
+);
 
 -- A. Rohan's world, as his own JWT reads it -----------------------------------------------------
 set local role authenticated;
