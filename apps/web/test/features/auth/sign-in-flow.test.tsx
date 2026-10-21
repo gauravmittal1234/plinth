@@ -22,6 +22,11 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ replace }) }));
 // Fixture mode never calls Supabase Auth: these must stay untouched.
 const auth = vi.hoisted(() => ({ sendSignInCode: vi.fn(), verifySignInCode: vi.fn() }));
 vi.mock("@/src/features/auth/session", () => auth);
+// Fixture mode never calls api.follow either (M2 gate gap A; "Fixture mode
+// behaves exactly as today"): the live-only branch that calls it is never
+// taken when `live` is false (the default below).
+const followMock = vi.hoisted(() => ({ followProject: vi.fn() }));
+vi.mock("@/src/features/auth/follow", () => followMock);
 
 function fakePage(slug: string, name: string): ProjectPage {
   return {
@@ -158,6 +163,7 @@ describe("SignInFlow: bring follows", () => {
     await screen.findByRole("heading", { name: "One account, three places" });
     expect(auth.sendSignInCode).not.toHaveBeenCalled();
     expect(auth.verifySignInCode).not.toHaveBeenCalled();
+    expect(followMock.followProject).not.toHaveBeenCalled();
     expect(replace).not.toHaveBeenCalled();
   });
 

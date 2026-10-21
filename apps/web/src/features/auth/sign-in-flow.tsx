@@ -22,6 +22,7 @@ import { Toast } from "@plinth/web-ui";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import type { ProjectPage } from "@/src/data";
+import { markFollowed } from "@/src/lib/followed-flag";
 import { confirmWhatsappFollows, previewWhatsappFollows, type WaPreview } from "./actions";
 import { BringStep } from "./bring-step";
 import { CodeStep } from "./code-step";
@@ -29,6 +30,7 @@ import { COUNTRIES, DEFAULT_COUNTRY_CODE } from "./countries";
 import { COPY } from "./copy";
 import { buildFollowedList } from "./data";
 import { DoneStep } from "./done-step";
+import { followProject } from "./follow";
 import { digitsOnly, isPhoneValid, maskPhone, phoneError as phoneErrorFor } from "./phone";
 import { PhoneStep } from "./phone-step";
 import { sendSignInCode, verifySignInCode } from "./session";
@@ -158,6 +160,19 @@ export function SignInFlow({
         if (!signedIn) {
           setOtpError(COPY.otpErrNoMatch);
           return;
+        }
+        // "Verify and follow X" (M2 gate gap A): the pending project follows
+        // on this new session before anything else here. markFollowed only
+        // runs once api.follow actually returned a record (AGENTS.md rule
+        // 9) — that flag, read back on the project page this redirect lands
+        // on, is the only thing that ever shows "Following" there.
+        if (projectPage) {
+          const result = await followProject(projectPage.risk.phase.slug, crypto.randomUUID());
+          if (result.outcome === "followed") {
+            markFollowed(projectPage.risk.phase.slug);
+          } else if (result.outcome === "error") {
+            say(COPY.followFailed);
+          }
         }
       }
       const preview = await previewWhatsappFollows();
