@@ -57,7 +57,7 @@ export function FactTile({
       <dt className="text-caption leading-snug text-ink2">{label}</dt>
       <dd
         className={cx(
-          "m-0 font-display text-number font-extrabold",
+          "m-0 font-sans text-number font-bold",
           emphasis === "accent" && "text-accent-text",
           banded ? "text-(--ui-band-text)" : emphasis !== "accent" && "text-ink",
         )}

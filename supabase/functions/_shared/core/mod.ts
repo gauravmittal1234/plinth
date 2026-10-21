@@ -1,7 +1,8 @@
 // _shared/core: the edge foundation every function builds on (T29). Owner: T29.
 //
-//   import { createHandler, HttpError, json } from "../_shared/core/mod.ts";
-//   import { parseBody } from "../_shared/core/validate.ts";   // separate: loads the contract validators
+//   Functions take createHandler, HttpError and json from _shared/core/mod.ts, and parseBody from
+//   _shared/core/validate.ts (kept separate: it loads the contract validators). Never write an
+//   import statement in a comment here: the Supabase CLI's import scanner follows it and fails.
 //
 // Pattern (pet_app): <fn>/index.ts is a thin Deno.serve wiring with a header contract comment;
 // the decisions live in <fn>/logic.ts and are tested in <fn>/logic.test.ts with the helpers in

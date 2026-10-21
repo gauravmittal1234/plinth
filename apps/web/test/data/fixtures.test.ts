@@ -40,6 +40,7 @@ const READS: Record<string, (req: Req) => Promise<unknown>> = {
   about: () => data.about(),
   flags: () => data.flags(),
   share_card: (r) => data.shareCard(s(r.p_code)),
+  digest_card: (r) => data.digestCard(s(r.p_code)),
   family_invite_preview: (r) => data.familyInvitePreview(s(r.p_code)),
   me: () => data.me(),
   following_feed: (r) => data.followingFeed((r.p_since as string | null) ?? null),

@@ -156,6 +156,7 @@ One object, served by `api.risk_summary(p_slug)`. It is embedded in `project_pag
 | `api.about()` | Coverage today/next, response-time board, holdings register, grievance officer (placeholders until supplied) | M1 |
 | `api.flags()` | `{ "schema": "plinth.flags/1", "flags": { key: boolean } }` for the caller's audience (19 R1 flags; `bands_public` defaults off) | M0 |
 | `api.share_card(p_code)` | The original card + "Changed since this card was sent" diff | M2 |
+| `api.digest_card(p_code)` | `plinth.digest_card/1` for `/cards/digest/<token>.png` (1080×570): the weekly digest's heading and one floor per followed project, by the unguessable card token `ops.enqueue_digests` put in that digest's row. Personal, so never cached. Schema pending | M2 |
 | `api.family_invite_preview(p_code)` | Inviter first name, scope, the RERA number. **No phone** | M2 |
 | `api.cost_breakdown(p_slug, p_unit, p_buyer, p_waive)` | CostBreakdown | M3 |
 | `api.afford_the_wait(...)` | AffordTheWait | M3 |
@@ -209,7 +210,7 @@ One object, served by `api.risk_summary(p_slug)`. It is embedded in `project_pag
 | `doc-check` | POST · buyer JWT, or internal from wa-webhook | OCR → classify → 2 readers → rules → `app.doc_checks` | M3 |
 | `ask` | POST · anon (rate-limited) or buyer JWT | Ask Plinth | M5 (stub M2 for WhatsApp fallback) |
 | `export-data` | POST · buyer JWT + fresh OTP | DPDP export ZIP (PDF + JSON), 7-day link | M2 |
-| `delete-account` | POST · buyer JWT | Erasure with legal-hold exceptions (pet_app pattern) | M2 |
+| `delete-account` | POST · buyer JWT + a sign-in code from the last 10 minutes (else 401 `insufficient_user_authentication`; lead decision, T53) | Erasure with legal-hold exceptions (pet_app pattern); consent rows kept, pointing at an anonymised subject | M2 |
 | `retention-sweep` | POST · dispatch secret, daily | Deletes expired uploads, voice and exports; anonymises old messages | M2 |
 | `capture` | POST · capture token | Site photo: time check, footprint check (PostGIS), SHA-256 seal | M4 |
 | `stage-room` | POST · buyer JWT | Visualise: Gemini image, structure check, label, C2PA | M5 |

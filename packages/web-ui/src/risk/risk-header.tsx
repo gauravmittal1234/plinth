@@ -1,8 +1,10 @@
-// The risk header (DESIGN §4 item 5): the meter, then the band name large in
-// Bricolage, in the band's text colour. Confidence is a separate line under it,
-// never attached to the name. A band set by a red-flag rule shows the rule's
-// line (API_CONTRACTS §2.2, Laurel). Unscored states show the chip's label in
-// a quieter size, with no colour.
+// The risk header (DESIGN §4 item 5): the meter, then the band name in the
+// band's text colour — Bricolage only at the project page's full size (`l`,
+// the `question` role); everywhere else (cards, compare, sheets) it's Figtree,
+// matching the app's `number`/`h3` roles (UI v2, FOUNDER_QUESTIONS P10).
+// Confidence is a separate line under it, never attached to the name. A band
+// set by a red-flag rule shows the rule's line (API_CONTRACTS §2.2, Laurel).
+// Unscored states show the chip's label in a quieter size, with no colour.
 import type { RiskSummary } from "@plinth/contracts";
 import type { ReactNode } from "react";
 import { bandStyle, chipTone, isBandTone } from "../lib/band";
@@ -48,7 +50,10 @@ export function RiskHeader({
         <Meter chip={chip} size={size === "l" ? "l" : "m"} />
         <span
           className={cx(
-            "min-w-0 font-display font-extrabold text-balance",
+            "min-w-0 font-bold text-balance",
+            // Bricolage only for the project page's full-size band name
+            // (`question`); every other size/state is Figtree (P10).
+            banded && size === "l" ? "font-display" : "font-sans",
             banded && "text-(--ui-band-text)",
             banded && (size === "l" ? "text-question" : "text-number"),
             !banded && "text-ink2",

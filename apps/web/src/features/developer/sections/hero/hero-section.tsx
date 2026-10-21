@@ -8,6 +8,7 @@ import { Button } from "@plinth/web-ui";
 import Link from "next/link";
 import { FACTS_ONLY_COPY, HERO_COPY } from "../../page/copy";
 import { formatDate } from "../../page/format";
+import { AskIcon } from "./action-icons";
 import { ShareButton } from "./share-button";
 
 export function HeroSection({ page }: { page: DeveloperPage }) {
@@ -30,7 +31,7 @@ export function HeroSection({ page }: { page: DeveloperPage }) {
           {meta.model_version ? ` · model ${meta.model_version}` : null}
         </p>
 
-        <h1 className="m-0 max-w-[20ch] text-balance font-display text-[clamp(2.75rem,6.5vw,4.5rem)] leading-[0.96] font-extrabold tracking-[-0.03em]">
+        <h1 className="m-0 max-w-[20ch] text-balance font-display text-[clamp(2.75rem,6.5vw,4.5rem)] leading-[0.96] font-bold tracking-[-0.03em]">
           {group.name}
         </h1>
 
@@ -50,9 +51,12 @@ export function HeroSection({ page }: { page: DeveloperPage }) {
           </p>
         ) : null}
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-nowrap items-center gap-3 overflow-x-auto">
           <Button variant="secondary" size="lg" asChild>
-            <Link href="/#ask">{HERO_COPY.ask(group.name)}</Link>
+            <Link href="/#ask">
+              <AskIcon aria-hidden="true" className="size-5 shrink-0" />
+              {HERO_COPY.ask(group.name)}
+            </Link>
           </Button>
           <ShareButton url={meta.live_url ?? ""} title={group.name} />
         </div>

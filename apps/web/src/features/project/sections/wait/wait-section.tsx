@@ -107,7 +107,7 @@ export function WaitSection({
   if (!affordDefault) {
     return (
       <SectionBand id="wait" tone="track">
-        <h2 className="m-0 max-w-[18ch] text-balance font-display text-h2 font-extrabold">
+        <h2 className="m-0 max-w-[18ch] text-balance font-display text-section font-bold">
           {WAIT_COPY.heading}
         </h2>
         <p className="m-0 max-w-measure text-lead">No all-in yet, so no wait figures either.</p>
@@ -121,7 +121,7 @@ export function WaitSection({
     <SectionBand id="wait" tone="track">
       <div className="grid gap-10 lg:grid-cols-[minmax(0,24rem)_1fr] lg:items-start lg:gap-16">
         <div className="flex flex-col gap-6">
-          <h2 className="m-0 max-w-[18ch] text-balance font-display text-h2 font-extrabold">
+          <h2 className="m-0 max-w-[18ch] text-balance font-display text-section font-bold">
             {WAIT_COPY.heading}
           </h2>
           <p className="m-0 max-w-measure text-lead">{affordDefault.answer_line}</p>
@@ -182,7 +182,7 @@ export function WaitSection({
             <div className="rounded-panel bg-bg-solid p-4">
               <dt className="text-small text-ink2">{WAIT_COPY.nowLabel}</dt>
               <dd className="m-0">
-                <span className="block font-display text-number font-extrabold">
+                <span className="block font-sans text-number font-bold">
                   {formatInrPlain(affordDefault.now.monthly_inr)}
                 </span>
                 <span className="text-small text-ink2">{affordDefault.now.share_pct}% of take-home</span>
@@ -191,7 +191,7 @@ export function WaitSection({
             <div className="rounded-panel bg-bg-solid p-4">
               <dt className="text-small text-ink2">{affordDefault.by_completion.label}</dt>
               <dd className="m-0">
-                <span className="block font-display text-number font-extrabold">
+                <span className="block font-sans text-number font-bold">
                   {formatInrPlain(affordDefault.by_completion.monthly_inr)}
                 </span>
                 <span className="text-small text-ink2">
@@ -202,7 +202,7 @@ export function WaitSection({
             <div className="rounded-panel bg-bg-solid p-4">
               <dt className="text-small text-ink2">{WAIT_COPY.afterKeysLabel}</dt>
               <dd className="m-0">
-                <span className="block font-display text-number font-extrabold">
+                <span className="block font-sans text-number font-bold">
                   {formatInr(affordDefault.after_keys.emi_inr)}
                 </span>
                 <span className="text-small text-ink2">{WAIT_COPY.afterKeysNote}</span>

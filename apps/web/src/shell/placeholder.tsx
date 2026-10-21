@@ -32,7 +32,7 @@ export function Placeholder({
       data-screen={screen.name}
       className="mx-auto w-full max-w-[79rem] px-4 py-16 sm:px-8 sm:py-30"
     >
-      <h1 className="m-0 font-display text-h1 font-extrabold">{screen.name}</h1>
+      <h1 className="m-0 font-display text-h1 font-bold">{screen.name}</h1>
       {children}
       <p className="mt-5 mb-0 max-w-measure text-lead">Placeholder. {plan}</p>
       <dl className="mt-10 mb-0 grid max-w-measure gap-x-8 gap-y-3 text-body sm:grid-cols-[max-content_1fr]">

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/short_link.schema.json",
+  "title": "ShortLink",
+  "description": "plinth.short_link/1, from api.resolve_short_link(p_code): what a plinth.in/r/<code> link names -- a project's own short code (kind phase) or an issued share card's short code (kind card). Read-only; never increments the Live Record placement count that api.live_record (M4) owns.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "kind", "slug", "card_code"],
+  "properties": {
+    "schema": { "const": "plinth.short_link/1" },
+    "kind": { "type": "string", "enum": ["phase", "card"] },
+    "slug": {
+      "description": "The phase's slug when kind is phase; null when kind is card.",
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/Slug" }, { "type": "null" }]
+    },
+    "card_code": {
+      "description": "The share card's short code when kind is card; null when kind is phase.",
+      "anyOf": [{ "type": "string" }, { "type": "null" }]
+    }
+  }
+}

@@ -6,6 +6,7 @@ from __future__ import annotations
 from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 from itertools import pairwise
+from pathlib import Path
 
 import pytest
 from plinth_contracts import BandCode, BandSetBy, ConfidenceLevel, FrequencyKind, ScoreState
@@ -268,6 +269,15 @@ def test_notice_withdrawn_if_qpr_lands_before_25_oct(result: ScoringResult, worl
     assert settle_notice(world, result, AURELIA, on) == "effective"  # still missing
     landed = _with_q3_filed(world, date(2026, 10, 22))
     assert settle_notice(landed, result, AURELIA, on) == "withdrawn"  # Elevated stays
+
+
+def test_the_database_publishes_a_notice_that_holds() -> None:
+    """settle_notice decides and writes nothing: the database's daily job publishes (T59 gap 1)."""
+    root = Path(__file__).resolve().parents[3]
+    sql = (root / "supabase/migrations/20261127000300_lead_publish_due_notices.sql").read_text()
+    assert "create function ops.publish_due_notice_runs()" in sql
+    assert "cron.schedule('publish-due-notice-runs', '35 18 * * *'" in sql  # 00:05 IST
+    assert "ops.publish_due_notice_runs()" in (settle_notice.__doc__ or "")
 
 
 def test_no_proposal_if_the_qpr_was_on_record(world: World) -> None:

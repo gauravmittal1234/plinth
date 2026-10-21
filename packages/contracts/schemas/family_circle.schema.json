@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/family_circle.schema.json",
+  "title": "FamilyCircle",
+  "description": "plinth.family_circle/1, from api.family_circle() (API_CONTRACTS §3.2, §4.11; built by T45a). The caller's own circle (joined members and open invites) and the circles they joined. Never a phone number, follow type, payment alert or \"who has my number\" (DATA_MODEL §12 inv. 5). Every line is final server copy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "members", "invites", "member_of", "rules", "private_line", "number_line"],
+  "properties": {
+    "schema": { "const": "plinth.family_circle/1" },
+    "members": {
+      "description": "Relatives who joined the caller's circle, earliest first.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/FamilyMember" }
+    },
+    "invites": {
+      "description": "Open invites (not used, cancelled or expired), newest first.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/FamilyInviteRow" }
+    },
+    "member_of": {
+      "description": "Other people's circles the caller joined.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/FamilyMembership" }
+    },
+    "rules": { "type": "array", "items": { "type": "string" } },
+    "private_line": { "type": "string" },
+    "number_line": { "type": "string" }
+  },
+  "$defs": {
+    "FamilyMember": {
+      "title": "FamilyMember",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "first_name",
+        "scope_all",
+        "joined_on",
+        "joined_via",
+        "can_add_notes",
+        "line"
+      ],
+      "properties": {
+        "id": {
+          "description": "The member id for api.family_member_remove and api.family_member_undo.",
+          "$ref": "common.schema.json#/$defs/Uuid"
+        },
+        "first_name": {
+          "description": "The relative's first name when they have an account; null for a WhatsApp-only member.",
+          "anyOf": [{ "type": "string" }, { "type": "null" }]
+        },
+        "scope_all": {
+          "description": "Same alerts for all of the owner's projects.",
+          "type": "boolean"
+        },
+        "joined_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "joined_via": { "type": "string", "enum": ["whatsapp", "app"] },
+        "can_add_notes": { "type": "boolean" },
+        "line": {
+          "description": "\"Joined 6 Oct 2026 · same alerts for your 4 projects · can add notes\"",
+          "type": "string"
+        }
+      }
+    },
+    "FamilyInviteRow": {
+      "title": "FamilyInviteRow",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "code", "link", "scope_line", "invited_on", "expires_on", "line"],
+      "properties": {
+        "id": {
+          "description": "The invite id (api.family_member_remove cancels it like api.family_invite_cancel).",
+          "$ref": "common.schema.json#/$defs/Uuid"
+        },
+        "code": { "$ref": "common.schema.json#/$defs/InviteCode" },
+        "link": { "type": "string" },
+        "scope_line": { "type": "string" },
+        "invited_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "expires_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "line": {
+          "description": "\"Invited today · Aurelia Heights Ph 2 · hasn't tapped the link yet\"",
+          "type": "string"
+        }
+      }
+    },
+    "FamilyMembership": {
+      "title": "FamilyMembership",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["member_id", "owner_first_name", "scope_line", "joined_on", "can_add_notes"],
+      "properties": {
+        "member_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+        "owner_first_name": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+        "scope_line": { "type": "string" },
+        "joined_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+        "can_add_notes": { "type": "boolean" }
+      }
+    }
+  }
+}

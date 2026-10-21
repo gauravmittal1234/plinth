@@ -29,9 +29,11 @@ export function QuerySentence({ tokens, sort }: QuerySentenceProps) {
   return (
     <div className="flex flex-col gap-2">
       <p className="m-0 text-small font-semibold text-ink2">Ask Plinth read your search as</p>
-      <ul className="m-0 flex flex-wrap list-none gap-2 p-0">
+      {/* One horizontally scrolling row (benchmark-thapki.md "Chips: Wraps onto
+          two lines… Fix"), not a wrapping list. */}
+      <ul className="m-0 flex list-none flex-nowrap gap-2 overflow-x-auto p-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {tiles.map((tile) => (
-          <li key={tile.key}>
+          <li key={tile.key} className="shrink-0">
             <Pill
               as="button"
               tone="chip"

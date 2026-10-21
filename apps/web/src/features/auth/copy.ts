@@ -41,6 +41,11 @@ export const COPY = {
       : `We sent it by SMS to ${masked}. It works for 10 minutes.`,
   codeLabel: "6-digit code",
   otpErrIncomplete: "Enter all 6 digits.",
+  // Live mode's two failures, word for word the app's (apps/mobile/lib/features/
+  // onboarding: OnboardingCopy.otpErrNoMatch and the controller's send failure),
+  // so web and app say the same thing.
+  otpErrNoMatch: "That code didn’t match. Check it and try again, or resend it.",
+  sendFailed: "Could not send the code. Check your connection and try again.",
   verifyAndFollow: (name: string | null) => (name ? `Verify and follow ${name}` : "Verify and continue"),
   resendIn: (left: number) => `New code in 0:${left < 10 ? "0" : ""}${left}`,
   sendNewCode: "Send a new code",

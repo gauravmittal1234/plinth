@@ -4,10 +4,10 @@
 // QR and no signature footer — only the heading the caller built from
 // FollowingFeed and that payload's own `projects`.
 //
-// This renderer has no public /cards route yet: FollowingFeed is a buyer
-// read (api.following_feed), so only a signed-in request can produce one.
-// It is built and tested here for whoever wires the WhatsApp digest sender
-// to import (T27 brief "Build" line; WORK_BREAKDOWN handoff on T46b).
+// Served at /cards/digest/<card_token>.png (app/cards/[...card]/route.ts,
+// the lead's M2 gate gap 5): api.digest_card answers the heading and the
+// floors for the unguessable token ops.enqueue_digests put in the digest's
+// WhatsApp row, which names this URL as the template's image header.
 import type { Chip } from "@plinth/contracts";
 import { ImageResponse } from "next/og";
 import { chipFloorTone } from "./chip-tone";

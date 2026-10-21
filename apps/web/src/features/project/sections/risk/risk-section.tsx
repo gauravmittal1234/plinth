@@ -31,7 +31,7 @@ export function RiskSection({
     <SectionBand id="risk" tone="track">
       <div className="grid gap-10 lg:grid-cols-[minmax(0,26rem)_1fr] lg:items-start lg:gap-16">
         <div className="flex flex-col gap-6">
-          <h2 className="m-0 max-w-[14ch] text-balance font-display text-h2 font-extrabold">
+          <h2 className="m-0 max-w-[14ch] text-balance font-display text-section font-bold">
             {RISK_COPY.heading}
           </h2>
           <p className="m-0 max-w-measure text-lead">{risk.late12.line}</p>
@@ -81,7 +81,7 @@ export function RiskSection({
 
           {risk.reasons.length > 0 ? (
             <div className="flex flex-col gap-4">
-              <h3 className="m-0 font-display text-h4 font-extrabold">
+              <h3 className="m-0 font-display text-h4 font-bold">
                 {RISK_COPY.whyHeading} {bandLabel}?
               </h3>
               <p className="m-0 text-small text-ink2">{RISK_COPY.whyNote}</p>

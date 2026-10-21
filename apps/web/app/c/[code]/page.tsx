@@ -65,11 +65,11 @@ export async function CardRoute({ params }: Pick<PageProps<"/c/[code]">, "params
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <Link href="/" className="flex items-center gap-2 text-ink no-underline">
         <PlinthMark />
-        <span className="font-display text-h3 font-extrabold">Plinth</span>
+        <span className="font-sans text-h3 font-bold">Plinth</span>
       </Link>
 
       <div className="flex flex-col gap-3">
-        <h1 className="m-0 font-display text-h1 font-extrabold">{card.phase.name}</h1>
+        <h1 className="m-0 font-display text-h1 font-bold">{card.phase.name}</h1>
         {card.changed && card.headline_line ? (
           <p className="m-0 max-w-measure text-lead font-semibold text-ink">{card.headline_line}</p>
         ) : (

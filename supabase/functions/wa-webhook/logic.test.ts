@@ -30,7 +30,9 @@ import type {
   HandlerTools,
   WaHandler,
 } from "./router.ts";
-import { HANDLER_NAMES, suggestProjectFinder } from "./router.ts";
+import { HANDLER_NAMES, routeInbound, suggestProjectFinder } from "./router.ts";
+import { IDLE } from "../_shared/wa/session.ts";
+import { TEMPLATE_REPLY_IDS } from "../_shared/wa/templates/mod.ts";
 
 const FIXTURES = new URL("../../../packages/fixtures/", import.meta.url);
 const readFixture = (path: string) => Deno.readTextFile(new URL(path, FIXTURES));
@@ -251,6 +253,37 @@ Deno.test("every recorded payload routes as the fixture index expects for M2", a
     }
     if (p.file === "text-rera-number.json") assertEquals(route.args.rera, "GGM/673/405/2022/117");
     assertEquals(h.calls[0]!.input.message.waMessageId, p.wa_message_id, p.file);
+  }
+});
+
+Deno.test("every template quick reply, and outbox-dispatch's session button with the same id, routes", async () => {
+  // TEMPLATE_REPLY_IDS are the payloads T46b's renderers send and the ids outbox-dispatch gives a
+  // session alert's buttons (M2 gate gap 4): each must reach its handler, tapped either way.
+  const expected: Record<string, [HandlerName, string]> = {
+    open_full_card: ["risk_card", "open_full_card"],
+    stop_alerts: ["prefs", "stop_alerts"],
+    see_changes: ["digest", "see_changes"],
+    stop_weekly: ["prefs", "stop_weekly"],
+    stop_daily: ["prefs", "stop_daily"],
+  };
+  const ids = Object.values(TEMPLATE_REPLY_IDS).flat();
+  assertEquals([...new Set(ids)].sort(), Object.keys(expected).sort());
+  for (const id of ids) {
+    for (const type of ["button", "interactive"]) {
+      const route = await routeInbound({
+        waMessageId: "wamid.lead.reply",
+        from: rohan.wa_id,
+        type,
+        timestamp: null,
+        contextId: "wamid.lead.alert",
+        text: null,
+        replyId: id,
+        interactiveType: type === "interactive" ? "button_reply" : null,
+        mediaId: null,
+        raw: {},
+      }, { session: IDLE, findProject: () => Promise.resolve(null) });
+      assertEquals([route.handler, route.action], expected[id], `${id} (${type})`);
+    }
   }
 });
 

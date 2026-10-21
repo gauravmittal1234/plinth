@@ -22,6 +22,7 @@ const CONTRACT_M1_M2 = [
   "about",
   "flags",
   "share_card",
+  "digest_card",
   "family_invite_preview",
   "me",
   "device_register",
@@ -67,6 +68,10 @@ const SAMPLES: Record<string, [unknown[], Record<string, unknown>]> = {
   about: [[], {}],
   flags: [[], {}],
   share_card: [["AH2"], { p_code: "AH2" }],
+  digest_card: [
+    ["0123456789abcdef0123456789abcdef"],
+    { p_code: "0123456789abcdef0123456789abcdef" },
+  ],
   family_invite_preview: [["AH2-7KQ"], { p_code: "AH2-7KQ" }],
   me: [[], {}],
   device_register: [

@@ -1,11 +1,32 @@
 // Seedmap: canonical/people.json -> supabase/seed/50_people.sql (DATA_MODEL §5).
-// auth.users for the fixture accounts (app.profiles is created by T40's trigger, then updated
-// here), app.user_roles, Rohan's follows and alert subscriptions, and the R-1018-07 request.
-// Waits for T40's migrations (file names carry `m2_people`). Owner: T03b.
+// auth.users and auth.identities for the fixture accounts (app.profiles is created by T40's
+// trigger, then updated here), app.user_roles, Rohan's follows and alert subscriptions, and the
+// R-1018-07 request. Waits for T40's migrations (file names carry `m2_people`). Owner: T03b.
 //
 // A value §5b does not give is written as `default`, so the column's own default applies.
+import { uuid5 } from "../src/author/lib.mjs";
+
 export const output = "50_people.sql";
 export const requires = ["m2_people"];
+
+// Supabase Auth (GoTrue) loads a user by selecting every auth.users column into a Go struct, so a
+// NULL in a column it reads as a plain string (or time.Time) fails every sign-in of that row with
+// 500 "Database error finding user" (M2 gate gap 8). Its own inserts write '' into these, and
+// this seed does the same. encrypted_password '' means "no password", as GoTrue writes it for a
+// phone-only account: a password grant never matches it.
+const GOTRUE_EMPTY_STRINGS = [
+  "encrypted_password",
+  "confirmation_token",
+  "recovery_token",
+  "email_change_token_new",
+  "email_change",
+  "email_change_token_current",
+  "phone_change",
+  "phone_change_token",
+  "reauthentication_token",
+];
+/** GoTrue's single-tenant instance id (uuid.Nil); it looks users up by it. */
+const GOTRUE_INSTANCE_ID = "00000000-0000-0000-0000-000000000000";
 
 export function build({ load, sql }) {
   const c = load("catalogue");
@@ -15,8 +36,20 @@ export function build({ load, sql }) {
   const uid = Object.fromEntries(p.people.map((x) => [x.key, x.id]));
   const orDefault = (v, f = q) => (v === null || v === undefined ? "default" : f(v));
   const accounts = p.people.filter((x) => x.account);
+  // When each account was made. §5b dates no sign-up, but an account must exist before its
+  // earliest dated row (Rohan "has followed 4 projects since 1 Jul 2026"), so that is its date;
+  // an account with no dated row was made at the frozen clock (people.json `clock`). Never the
+  // load time, so the seed stays deterministic.
+  const firstDated = new Map();
+  for (const f of p.follows) {
+    const at = f.followed_at;
+    if (at && (!firstDated.has(f.user) || Date.parse(at) < Date.parse(firstDated.get(f.user))))
+      firstDated.set(f.user, at);
+  }
+  const madeAt = (x) => firstDated.get(x.key) ?? p.clock;
   const parts = [];
-  // Phone sign-in accounts. GoTrue stores the phone without "+". Test numbers only.
+  // Phone sign-in accounts, written as GoTrue writes them. GoTrue stores the phone without "+".
+  // Test numbers only. A phone account was confirmed by its first code, when it was made.
   parts.push(
     `${insert(
       "auth.users",
@@ -27,20 +60,53 @@ export function build({ load, sql }) {
         "role",
         "phone",
         "phone_confirmed_at",
+        ...GOTRUE_EMPTY_STRINGS,
         "raw_app_meta_data",
         "raw_user_meta_data",
+        "created_at",
+        "updated_at",
       ],
       accounts.map((x) => [
-        q("00000000-0000-0000-0000-000000000000"),
+        q(GOTRUE_INSTANCE_ID),
         q(x.id),
         q("authenticated"),
         q("authenticated"),
         q(x.wa_id),
-        x.wa_id ? "ops.now()" : "null",
+        x.wa_id ? ts(madeAt(x)) : "null",
+        ...GOTRUE_EMPTY_STRINGS.map(() => q("")),
         jsonb(x.wa_id ? { provider: "phone", providers: ["phone"] } : { provider: "fixture" }),
         jsonb({ first_name: x.first_name }),
+        ts(madeAt(x)),
+        ts(madeAt(x)),
       ]),
     ).replace(/;\n$/, "")}\non conflict (id) do nothing;\n`,
+  );
+  // The phone identity GoTrue creates with a phone account (provider_id is the user id).
+  const phoneAccounts = accounts.filter((x) => x.wa_id);
+  parts.push(
+    `${insert(
+      "auth.identities",
+      [
+        "id",
+        "provider_id",
+        "user_id",
+        "provider",
+        "identity_data",
+        "last_sign_in_at",
+        "created_at",
+        "updated_at",
+      ],
+      phoneAccounts.map((x) => [
+        q(uuid5("auth_identity", `phone/${x.key}`)),
+        q(x.id),
+        q(x.id),
+        q("phone"),
+        jsonb({ sub: x.id, phone: x.wa_id, email_verified: false, phone_verified: true }),
+        "null",
+        ts(madeAt(x)),
+        ts(madeAt(x)),
+      ]),
+    ).replace(/;\n$/, "")}\non conflict (provider_id, provider) do nothing;\n`,
   );
   parts.push(
     `${insert(

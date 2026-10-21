@@ -21,6 +21,7 @@ export function PhoneStep({
   channel,
   onChannel,
   onSend,
+  pending = false,
   notNowHref,
 }: {
   heading: string;
@@ -33,11 +34,13 @@ export function PhoneStep({
   channel: PhoneChannel;
   onChannel: (channel: PhoneChannel) => void;
   onSend: () => void;
+  /** Live mode: Supabase Auth is sending the code (src/features/auth/session.ts). */
+  pending?: boolean;
   notNowHref: string;
 }) {
   return (
     <div className="flex flex-col gap-4.5">
-      <h1 id="flow-h" className="m-0 font-display text-question leading-none font-extrabold">
+      <h1 id="flow-h" className="m-0 font-display text-question leading-none font-bold">
         {heading}
       </h1>
       <p className="m-0 text-lead">{COPY.genericIntro}</p>
@@ -115,7 +118,7 @@ export function PhoneStep({
         </div>
       </div>
 
-      <Button size="lg" onClick={onSend} className="mt-1.5">
+      <Button size="lg" onClick={onSend} disabled={pending} className="mt-1.5">
         {channel === "wa" ? COPY.sendCodeOnWhatsapp : COPY.sendCodeBySms}
       </Button>
 

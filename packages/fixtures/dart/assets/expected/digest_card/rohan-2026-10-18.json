@@ -1,0 +1,46 @@
+{
+  "schema": "plinth.digest_card/1",
+  "heading_line": "This week in your projects · 12–18 Oct 2026 · 5 changes on record",
+  "projects": [
+    {
+      "slug": "aurelia-heights-phase-2",
+      "name": "Aurelia Heights, Phase 2",
+      "chip": {
+        "kind": "band",
+        "label": "Elevated",
+        "step": 3,
+        "meter_filled": 3
+      }
+    },
+    {
+      "slug": "coral-towers",
+      "name": "Coral Towers",
+      "chip": {
+        "kind": "band",
+        "label": "High",
+        "step": 4,
+        "meter_filled": 4
+      }
+    },
+    {
+      "slug": "kestrel-park",
+      "name": "Kestrel Park",
+      "chip": {
+        "kind": "band",
+        "label": "Low",
+        "step": 1,
+        "meter_filled": 1
+      }
+    },
+    {
+      "slug": "sapphire-grove-phase-1",
+      "name": "Sapphire Grove, Phase 1",
+      "chip": {
+        "kind": "band",
+        "label": "Moderate",
+        "step": 2,
+        "meter_filled": 2
+      }
+    }
+  ]
+}

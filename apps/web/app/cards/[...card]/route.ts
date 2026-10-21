@@ -5,13 +5,23 @@
 //
 // `card_url` everywhere in the contracts is "/cards/<kind>/<slug>.png"
 // (packages/contracts/examples/share_card): kind risk or cost takes a phase
-// slug, kind changed takes a ShareCard code.
-import { isDataError, projectPage, riskSummary, shareCard } from "@/src/data";
+// slug, kind changed takes a ShareCard code, kind digest takes the weekly
+// digest's card token (the lead's M2 gate gap 5).
+//
+// A digest is personal (which projects someone follows), so its card is
+// never addressed by a person: ops.enqueue_digests mints a random 32-hex
+// token per digest row and puts /cards/digest/<token>.png in it; this route
+// reads it back with api.digest_card(p_code), the way the changed card
+// reads api.share_card(p_code). Anything that is not a token is a 404
+// before any lookup, and the image is never stored by a shared cache.
+import { digestCard, isDataError, projectPage, riskSummary, shareCard } from "@/src/data";
 import { renderChangedCard } from "@/src/features/cards/changed-card";
 import { renderCostCard } from "@/src/features/cards/cost-card";
+import { renderDigestHeaderCard } from "@/src/features/cards/digest-card";
 import { renderRiskCard } from "@/src/features/cards/risk-card";
 
 const NOT_FOUND = new Response("Not found", { status: 404 });
+const DIGEST_TOKEN = /^[0-9a-f]{32}$/;
 
 function fileKey(segment: string): string {
   return segment.endsWith(".png") ? segment.slice(0, -4) : segment;
@@ -43,6 +53,14 @@ export async function GET(
         // footer text (ShareCard itself carries no promise or disclaimer line).
         const risk = await riskSummary(shared.phase.slug);
         return await renderChangedCard(shared, risk, key);
+      }
+      case "digest": {
+        if (!DIGEST_TOKEN.test(key)) return NOT_FOUND;
+        const card = await digestCard(key);
+        const image = await renderDigestHeaderCard(card.heading_line, card.projects);
+        const headers = new Headers(image.headers);
+        headers.set("cache-control", "private, no-store");
+        return new Response(image.body, { status: image.status, headers });
       }
       default:
         return NOT_FOUND;

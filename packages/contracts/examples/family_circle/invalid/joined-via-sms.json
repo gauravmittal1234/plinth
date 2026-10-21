@@ -1,0 +1,12 @@
+{
+  "base": "rohan.json",
+  "why": "A relative joins through WhatsApp or the app.",
+  "expect": "/members/0/joined_via",
+  "patch": [
+    {
+      "op": "replace",
+      "path": "/members/0/joined_via",
+      "value": "sms"
+    }
+  ]
+}

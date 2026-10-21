@@ -35,7 +35,10 @@ const samples = <String, Sample>{
   // placeholder.
   Routes.you: (location: '/you', artboard: 'Your account, your number and how Plinth reaches you.', tabs: true),
   Routes.privacy: (location: '/you/privacy', artboard: 'Who has my number?', tabs: true),
-  Routes.welcome: (location: '/welcome', artboard: 'AppOnboarding', tabs: false),
+  // T48 replaced this placeholder with the real AppOnboarding screen; its
+  // own tests cover the full 8-step flow, so here we only check the
+  // Welcome step's stable headline.
+  Routes.welcome: (location: '/welcome', artboard: 'Know before you book.', tabs: false),
   Routes.project: (location: '/gurugram/projects/aurelia-heights-phase-2', artboard: 'AppProject', tabs: false),
   Routes.risk: (location: '/gurugram/projects/aurelia-heights-phase-2/risk', artboard: 'AppRisk', tabs: false),
   Routes.familyJoin: (location: '/j/AH2-7KQ', artboard: 'AppFamily', tabs: false),
@@ -140,7 +143,24 @@ void main() {
     expect(Uri.parse(locationOf(container)).path, Routes.you);
     expect(Uri.parse(locationOf(container)).queryParameters, {'signin': '1', 'next': Routes.privacy});
     expect(find.text('Sign in with your phone'), findsOneWidget);
-    expect(find.text('Then opens /you/privacy'), findsOneWidget);
+  });
+
+  // T48 replaced the sign-in sheet's placeholder (which just printed "Then
+  // opens $next") with the real phone-and-code flow (SignInFlowController);
+  // this checks the behaviour that placeholder text used to merely assert.
+  testWidgets('signing in from the sheet goes to next, not just You', (tester) async {
+    final container = await pumpPlinth(tester, location: Routes.privacy);
+    expect(Uri.parse(locationOf(container)).path, Routes.you);
+
+    await tester.enterText(find.byKey(const Key('onboarding-phone-field')), '9900000318');
+    await tester.tap(find.byKey(const Key('sign-in-sheet-primary')));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byKey(const Key('onboarding-otp-field')), '482193');
+    await tester.tap(find.byKey(const Key('sign-in-sheet-primary')));
+    await tester.pumpAndSettle();
+
+    expect(locationOf(container), Routes.privacy);
   });
 
   testWidgets('signing out on an account page re-runs the redirect', (tester) async {

@@ -72,6 +72,17 @@ export const API_FUNCTIONS = {
   // BUILD_PLAN §10: flags are cached for about a minute.
   flags: publicRead("Flags", "M0", "fixture_missing", { cache: "minutes" }),
   share_card: publicRead("ShareCard", "M2", "not_found"),
+  // The weekly digest's header (lead, M2 gate gap 5): anon by an unguessable token, but
+  // personal (which projects someone follows), so never cached. No contract schema yet
+  // (openapi x-plinth-shape: pending).
+  digest_card: {
+    audience: "anon",
+    milestone: "M2",
+    kind: "read",
+    returns: null,
+    cache: undefined,
+    fixtureMiss: "not_found",
+  },
   // An invite changes when it is used, cancelled or expires: read it fresh.
   family_invite_preview: publicRead("FamilyInvitePreview", "M2", "not_found", {
     cache: undefined,

@@ -108,6 +108,7 @@ export const REQUIRED = {
   family_invite: ["schema", "code", "link", "expires_on", "rules", "private_line"],
   alert_prefs: ["schema", "prefs", "whatsapp_optin", "lines", "number_line"],
   share_card: ["schema", "kind", "phase", "sent", "now", "changed", "changes", "live_url"],
+  digest_card: ["schema", "heading_line", "projects"],
   doc_check: ["schema", "id", "kind", "status", "rows", "notes", "rules_version"],
   cost_breakdown: ["schema", "rules_version", "lines", "all_in_inr", "all_in_label"],
   afford_the_wait: ["schema", "answer_line", "now", "by_completion", "delay", "series"],
@@ -115,10 +116,19 @@ export const REQUIRED = {
   follow: ["schema", "slug", "follow_type", "followed_at", "alerts_line", "private_line"],
   ok: ["ok"],
   consent_withdrawal: ["ref", "withdrawn_at", "effects"],
-  // T47's interim shape for api.link_whatsapp_follows (x-plinth-shape:
-  // pending in openapi/plinth.yaml; T45a/T45b own the real one,
-  // INTEGRATION_NOTES.md). See PENDING_SHAPE below.
-  link_whatsapp_follows: ["schema", "follows", "cost_sheets"],
+  // T45a (the buyer API's own result schemas).
+  link_whatsapp_follows: ["schema", "accepted", "linked", "follows", "cost_sheets"],
+  family_circle: [
+    "schema",
+    "members",
+    "invites",
+    "member_of",
+    "rules",
+    "private_line",
+    "number_line",
+  ],
+  saved_searches: ["schema", "items", "max_items"],
+  request_project: ["schema", "ref", "requested_on", "due_on", "status", "line"],
 };
 const FN_TYPE = {
   risk_summary: "risk_summary",
@@ -138,6 +148,7 @@ const FN_TYPE = {
   family_invite_preview: "family_invite_preview",
   alert_prefs: "alert_prefs",
   share_card: "share_card",
+  digest_card: "digest_card",
   doc_check: "doc_check",
   cost_breakdown: "cost_breakdown",
   afford_the_wait: "afford_the_wait",
@@ -152,7 +163,12 @@ const FN_TYPE = {
   family_member_remove: "ok",
   family_member_undo: "ok",
   shortlist_note_add: "ok",
+  // T45a
   link_whatsapp_follows: "link_whatsapp_follows",
+  set_follow_type: "follow",
+  family_circle: "family_circle",
+  saved_searches: "saved_searches",
+  request_project: "request_project",
 };
 /** Acknowledgements without a `schema` envelope, validated against a $def (API_CONTRACTS §1). */
 const DEF_REF = {
@@ -165,9 +181,11 @@ const DEF_REF = {
  * yet, by design — the owning milestone task hasn't defined the real one).
  * Their fixture payloads still get every structural check above; only the
  * ajv "no JSON Schema" check is expected here, not a failure, until that
- * task adds the real schema and this entry comes out.
+ * task adds the real schema and this entry comes out. T45a gave
+ * api.link_whatsapp_follows its real schema; api.digest_card (the lead's M2 gate gap 5) waits
+ * for its contract schema (a Handoff to the contracts owner).
  */
-const PENDING_SHAPE = new Set(["link_whatsapp_follows"]);
+const PENDING_SHAPE = new Set(["digest_card"]);
 const LANES = new Set([
   "records_show",
   "developer_says",
