@@ -4,8 +4,9 @@
 #
 #   live   pgTAP supabase/tests/gates/m2.sql on the stack (its `m2:` diag lines carry the outbox
 #          row the 25 Oct publish queues and Rohan's export payload). The web is built with
-#          PLINTH_DATA=supabase; e2e/gates/m2.spec.ts @live signs Rohan in with the test OTP and
-#          checks that Following shows his 5 changes, then runs the edge's own code with Deno
+#          PLINTH_DATA=supabase; e2e/gates/m2.spec.ts @live signs Rohan in through the web's own
+#          sign-in form with the test OTP (session cookies, back to `next`) and checks that
+#          Following shows his 5 changes, then runs the edge's own code with Deno
 #          over the diag rows: the mock WhatsApp body (outbox-dispatch) and the export ZIP
 #          (export-data).
 #   app    test/gates/m2_test.dart signs Rohan in through the app's own sign-in controller and
@@ -24,6 +25,9 @@
 # the runner (as ci-gate-m1), and secrets made for this run (openssl rand) that never leave the
 # runner. No repository or organisation secret is used. The test phone numbers and the fixed test
 # code are read at run time from packages/fixtures/canonical/people.json and supabase/config.toml.
+# Every stack starts from the committed config and seed, unpatched: phone login is on through
+# config.toml's placeholder SMS provider (gate gap 7), and the seeded accounts are rows Supabase
+# Auth can read (gate gap 8, asserted in gates/m2.sql).
 name: ci-gate-m2
 
 on:
@@ -95,25 +99,6 @@ jobs:
         working-directory: supabase/functions
         run: npx --yes deno@2 --version
 
-      # Gate gap 7, worked around on the runner only. supabase/config.toml enables no SMS provider
-      # (and the Send-SMS hook is off), so the CLI disables phone login ("WARN: no SMS provider is
-      # enabled. Disabling phone login") and Auth answers every phone OTP, test numbers included,
-      # with 400 "Unsupported phone provider". Turning the hook on, as that file documents, does not
-      # change this: the CLI counts named providers only. So the gate names a placeholder Twilio
-      # provider (fake ids, a token made for this run). Auth answers the [auth.sms.test_otp]
-      # numbers itself and never calls a provider for them; e2e/gates/m2.spec.ts keeps the gap open.
-      - name: Phone login on the CI stack (gate gap 7 workaround, runner only)
-        run: |
-          sed -i '/^\[auth\.sms\.twilio\]/,/^\[/ {
-            s/^enabled = false/enabled = true/
-            s/^account_sid = ""/account_sid = "ACplinthgateplaceholder"/
-            s/^message_service_sid = ""/message_service_sid = "MGplinthgateplaceholder"/
-          }' supabase/config.toml
-          grep -A3 '^\[auth\.sms\.twilio\]' supabase/config.toml | grep -q '^enabled = true'
-          token="$(openssl rand -hex 16)"
-          echo "::add-mask::$token"
-          echo "SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN=$token" >> "$GITHUB_ENV"
-
       # Auth (gotrue) stays up: phone OTP sign-in is the point, and this CLI only reports the
       # local API keys when it runs.
       - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, auth, gateway)
@@ -153,19 +138,6 @@ jobs:
           echo "planned=$planned ran=$ran failed=$failed todo=$(grep -c '^not ok .*# TODO' "$tap" || true)"
           test "$planned" = "$ran" && test "$failed" = "0"
           grep -q '^# m2:wa_claim ' "$tap" && grep -q '^# m2:export_payload ' "$tap"
-
-      # Gate gap 8, worked around on the runner only. supabase/seed/50_people.sql leaves the
-      # auth.users token columns NULL; Supabase Auth reads them as plain strings, so every sign-in
-      # of a seeded person fails with 500 "Database error finding user" ("converting NULL to string
-      # is unsupported"). gates/m2.sql keeps the gap open as a todo, on the seed as loaded.
-      - name: Seeded accounts readable by Supabase Auth (gate gap 8 workaround, runner only)
-        run: |
-          psql -v ON_ERROR_STOP=1 -c "update auth.users set
-            confirmation_token = coalesce(confirmation_token, ''), recovery_token = coalesce(recovery_token, ''),
-            email_change_token_new = coalesce(email_change_token_new, ''), email_change = coalesce(email_change, ''),
-            phone_change = coalesce(phone_change, ''), phone_change_token = coalesce(phone_change_token, ''),
-            email_change_token_current = coalesce(email_change_token_current, ''),
-            reauthentication_token = coalesce(reauthentication_token, '')"
 
       # Playwright reuses the server this job starts (CI unset: reuseExistingServer).
       - name: Live build (PLINTH_DATA=supabase, the seeded stack)
@@ -210,25 +182,6 @@ jobs:
         working-directory: apps/mobile
         run: flutter pub get --enforce-lockfile
 
-      # Gate gap 7, worked around on the runner only. supabase/config.toml enables no SMS provider
-      # (and the Send-SMS hook is off), so the CLI disables phone login ("WARN: no SMS provider is
-      # enabled. Disabling phone login") and Auth answers every phone OTP, test numbers included,
-      # with 400 "Unsupported phone provider". Turning the hook on, as that file documents, does not
-      # change this: the CLI counts named providers only. So the gate names a placeholder Twilio
-      # provider (fake ids, a token made for this run). Auth answers the [auth.sms.test_otp]
-      # numbers itself and never calls a provider for them; e2e/gates/m2.spec.ts keeps the gap open.
-      - name: Phone login on the CI stack (gate gap 7 workaround, runner only)
-        run: |
-          sed -i '/^\[auth\.sms\.twilio\]/,/^\[/ {
-            s/^enabled = false/enabled = true/
-            s/^account_sid = ""/account_sid = "ACplinthgateplaceholder"/
-            s/^message_service_sid = ""/message_service_sid = "MGplinthgateplaceholder"/
-          }' supabase/config.toml
-          grep -A3 '^\[auth\.sms\.twilio\]' supabase/config.toml | grep -q '^enabled = true'
-          token="$(openssl rand -hex 16)"
-          echo "::add-mask::$token"
-          echo "SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN=$token" >> "$GITHUB_ENV"
-
       - name: Start the local stack (Postgres 17, migrations + §5b seed, PostgREST, auth, gateway)
         run: >-
           supabase start
@@ -250,19 +203,6 @@ jobs:
           echo "::add-mask::$key"
           echo "PLINTH_GATE_SUPABASE_URL=$api_url" >> "$GITHUB_ENV"
           echo "PLINTH_GATE_SUPABASE_KEY=$key" >> "$GITHUB_ENV"
-
-      # Gate gap 8, worked around on the runner only. supabase/seed/50_people.sql leaves the
-      # auth.users token columns NULL; Supabase Auth reads them as plain strings, so every sign-in
-      # of a seeded person fails with 500 "Database error finding user" ("converting NULL to string
-      # is unsupported"). gates/m2.sql keeps the gap open as a todo, on the seed as loaded.
-      - name: Seeded accounts readable by Supabase Auth (gate gap 8 workaround, runner only)
-        run: |
-          psql -v ON_ERROR_STOP=1 -c "update auth.users set
-            confirmation_token = coalesce(confirmation_token, ''), recovery_token = coalesce(recovery_token, ''),
-            email_change_token_new = coalesce(email_change_token_new, ''), email_change = coalesce(email_change, ''),
-            phone_change = coalesce(phone_change, ''), phone_change_token = coalesce(phone_change_token, ''),
-            email_change_token_current = coalesce(email_change_token_current, ''),
-            reauthentication_token = coalesce(reauthentication_token, '')"
 
       - name: flutter test test/gates/m2_test.dart (live group on, from the environment)
         working-directory: apps/mobile

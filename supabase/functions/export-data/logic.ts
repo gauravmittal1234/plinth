@@ -194,7 +194,16 @@ export interface LinkDeps {
   /** api.dpdp_export_link(request_id) under the buyer's own JWT. */
   link(requestId: string): Promise<unknown>;
   storage: Pick<StorageAdapter, "signedUrl">;
+  /**
+   * Wall time (the handler's ctx.clock): the sign-in code's age, a security window, and the
+   * signed URL's own expiry. Never the business clock, which is frozen in test and fixture.
+   */
   now(): Date;
+  /**
+   * Business time (clock.ts businessClock): what the 7-day link_expires_at is measured on, as
+   * the database measures it (ops.now()).
+   */
+  businessNow(): Date;
 }
 
 export interface LinkResponse {
@@ -259,7 +268,8 @@ export async function openLink(
   }
 
   const now = deps.now();
-  // Second look: the database said ready, so the token must carry a fresh code here too.
+  // Second look: the database said ready, so the token must carry a fresh code here too. The
+  // code's age is wall time.
   requireFreshSignIn(token, now, "Enter a fresh sign-in code to open your download.");
   const until = answer.link_expires_at ? new Date(answer.link_expires_at) : null;
   if (
@@ -268,7 +278,10 @@ export async function openLink(
   ) {
     throw new Error("api.dpdp_export_link: ready without a valid key or expiry");
   }
-  const ttl = Math.min(SIGNED_URL_MAX_TTL_S, Math.floor((until.getTime() - now.getTime()) / 1000));
+  // What is left of the 7-day link is business time (link_expires_at = ops.now() + 7 days);
+  // the signed URL then lives that long, at most 5 minutes, on the wall clock.
+  const left = Math.floor((until.getTime() - deps.businessNow().getTime()) / 1000);
+  const ttl = Math.min(SIGNED_URL_MAX_TTL_S, left);
   if (ttl < 1) {
     throw new HttpError("not_found", "This download link has expired. Request a new download.");
   }

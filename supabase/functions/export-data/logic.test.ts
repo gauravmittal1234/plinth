@@ -2,6 +2,7 @@
 // The payload comes from the §5b fixtures (packages/fixtures/expected/{consent_history,
 // who_has_my_number}/rohan.json): the same answers api.consent_history and api.who_has_my_number
 // give for Rohan, which api.dpdp_export_payload embeds as they are.
+import { businessClock } from "../_shared/core/clock.ts";
 import { sha256Hex } from "../_shared/core/crypto.ts";
 import { HttpError } from "../_shared/core/errors.ts";
 import { createLogger } from "../_shared/core/log.ts";
@@ -264,10 +265,12 @@ Deno.test("isFreshSignIn: an OTP sign-in in the last 10 minutes, nothing else", 
 // Opening the download.
 // ---------------------------------------------------------------------------
 
-function linkDeps(answer: Partial<LinkAnswer>, now = NOW) {
+/** `now` is the wall clock; the business clock reads the same unless `businessNow` is given. */
+function linkDeps(answer: Partial<LinkAnswer>, now = NOW, businessNow = now) {
   const signed: Array<{ bucket: string; key: string; ttl: number; name: string }> = [];
   const deps: LinkDeps = {
     now: () => now,
+    businessNow: () => businessNow,
     link: () =>
       Promise.resolve({
         request_id: REQUEST_ID,
@@ -349,6 +352,60 @@ Deno.test("openLink: even when the database says ready, a stale code here signs 
   const err = await assertRejects(() => openLink(deps, stale, REQUEST_ID), HttpError);
   assertEquals(err.code, "auth_required");
   assertEquals(signed.length, 0);
+});
+
+// Lead (M2 gate, auth batch): two clocks, never mixed. The code's age is wall time; the 7-day
+// link is business time (link_expires_at = ops.now() + 7 days), frozen at 18 Oct 2026 in test
+// and fixture (plinth-dev), while the wall clock runs on.
+Deno.test("openLink: business clock frozen days behind the wall clock: a fresh code still opens the ready link", async () => {
+  const wall = new Date("2026-10-30T09:00:00+05:30"); // after the link's business-time expiry
+  const { deps, signed } = linkDeps(READY, wall, NOW);
+  const res = await openLink(deps, freshToken(wall), REQUEST_ID);
+  assertEquals(signed[0]!.ttl, 300, "5 minutes: the business clock still has 7 days left");
+  assertEquals(res.url_expires_at, new Date(wall.getTime() + 300_000).toISOString());
+
+  // A code stamped at the business clock's "now" is 12 days old on the wall clock.
+  const atBusinessNow = freshToken(NOW);
+  const again = linkDeps(READY, wall, NOW);
+  const err = await assertRejects(() => openLink(again.deps, atBusinessNow, REQUEST_ID), HttpError);
+  assertEquals(err.code, "auth_required");
+  assertEquals(again.signed.length, 0);
+});
+
+Deno.test("POST /export-data, deployed clocks: a 2-minute-old code passes, a 2-hour-old one fails, whatever the business clock says", async () => {
+  const at = (ageS: number) =>
+    token({
+      sub: SUB,
+      role: "authenticated",
+      amr: [{ method: "otp", timestamp: Math.floor(Date.now() / 1000) - ageS }],
+    });
+  const linked = linkDeps(READY);
+  // As index.ts wires it: the handler's own clock (systemClock, none passed) for the code's age,
+  // businessClock(PLINTH_ENV) for the 7-day link (frozen at 18 Oct 2026 under PLINTH_ENV=test).
+  const fn = makeExportData({
+    env: testEnv({ PLINTH_ENV: "test", PLINTH_DISPATCH_SECRET: DISPATCH_SECRET }),
+    sink: captureLogs().sink,
+    buildDeps: () => buildDeps().deps,
+    linkDeps: (ctx) => ({
+      ...linked.deps,
+      now: () => ctx.clock.now(),
+      businessNow: () => businessClock(ctx.env.plinthEnv).now(),
+    }),
+  });
+  const open = (bearer: string) =>
+    fn(fakeRequest("export-data", { json: { request_id: REQUEST_ID }, bearer }));
+
+  const ok = await open(at(120));
+  assertEquals(ok.status, 200);
+  assertEquals(linked.signed.at(-1)?.ttl, 300);
+
+  const stale = await open(at(7200));
+  await assertApiError(stale, "auth_required");
+  assertStringIncludes(
+    stale.headers.get("www-authenticate") ?? "",
+    "insufficient_user_authentication",
+  );
+  assertEquals(linked.signed.length, 1, "nothing signed for the stale code");
 });
 
 Deno.test("openLink: a ready answer naming another key is refused", async () => {

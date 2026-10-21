@@ -126,7 +126,7 @@ How to read this table:
 
 | Path | Owner | Notes |
 |---|---|---|
-| `apps/web/e2e/gates/m2.spec.ts`, `apps/mobile/test/gates/m2_test.dart`, `supabase/tests/gates/m2.sql` | T59 | |
+| `apps/web/e2e/gates/m2.spec.ts`, `apps/mobile/test/gates/m2_test.dart`, `supabase/tests/gates/m2.sql`, `.github/workflows/ci-gate-m2.yml` | T59 | `ci-gate-m2` is the live-mode check (lead-authorised), as `ci-gate-m1` |
 
 ## Wave 6 (M3)
 

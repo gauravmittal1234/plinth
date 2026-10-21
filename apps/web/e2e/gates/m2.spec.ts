@@ -12,9 +12,11 @@
 //                 out are served at the size the templates were approved at.
 //   @live         only in ci-gate-m2, skipped elsewhere:
 //                 - PLINTH_GATE_M2_WEB=1, against a PLINTH_DATA=supabase build
-//                   on CI's seeded stack: Rohan signs in with the test OTP
-//                   (Supabase Auth's fixed code, read from supabase/config.toml)
-//                   and Following shows his 5 changes.
+//                   on CI's seeded stack: Rohan signs in through WebSignIn's own
+//                   form with the test OTP (Supabase Auth's fixed code, read
+//                   from supabase/config.toml); the cookies the web set are a
+//                   real session, he lands back on `next`, and Following shows
+//                   his 5 changes.
 //                 - PLINTH_GATE_M2_TAP=<file>: the TAP output of
 //                   supabase/tests/gates/m2.sql on that stack. Its `m2:` diag
 //                   lines carry the outbox row the 25 Oct publish queued and
@@ -132,19 +134,32 @@ test.describe(
 );
 
 test.describe("M2 gate: phone login on a local stack", { tag: ["@smoke", "@gate"] }, () => {
-  test("supabase/config.toml names an SMS provider, so the CLI keeps phone login on", () => {
-    test.fixme(
-      true,
-      "Gate gap: no [auth.sms.<provider>] is enabled (the Send-SMS hook is off too), so `supabase " +
-        'start` warns "no SMS provider is enabled. Disabling phone login" and Auth answers every ' +
-        'phone OTP, the test numbers included, with 400 "Unsupported phone provider". The hook ' +
-        "alone does not count as a provider. ci-gate-m2 names a placeholder provider on its runner.",
-    );
+  // Gate gap 7 (closed). With no named provider the CLI turns phone login off ("no SMS provider
+  // is enabled. Disabling phone login"; the Send-SMS hook does not count) and Auth refuses every
+  // phone OTP, the test numbers included. ci-gate-m2 now starts its stacks from this file as
+  // committed, so its live sign-ins prove the rest.
+  function section(name: string): string {
     const toml = readFileSync(join(ROOT, "supabase/config.toml"), "utf8");
+    const header = new RegExp(`^\\[${name.replace(/\./g, "\\.")}\\]\\s*$`, "m");
+    return toml.split(header)[1]?.split(/^\[/m)[0] ?? "";
+  }
+
+  test("supabase/config.toml names an SMS provider, so the CLI keeps phone login on", () => {
     const providers = ["twilio", "twilio_verify", "messagebird", "textlocal", "vonage"].filter(
-      (p) => new RegExp(`^\\[auth\\.sms\\.${p}\\]\\s*\\nenabled = true`, "m").test(toml),
+      (p) => /^enabled = true\s*$/m.test(section(`auth.sms.${p}`)),
     );
-    expect(providers.length).toBeGreaterThan(0);
+    expect(providers).toEqual(["twilio"]);
+  });
+
+  test("that provider is a placeholder: no account, no committed token, so it sends nothing", () => {
+    const twilio = section("auth.sms.twilio");
+    expect(twilio).toMatch(/^account_sid = "AC[a-z-]*placeholder[a-z-]*"\s*$/m);
+    expect(twilio).toMatch(/^message_service_sid = "MG[a-z-]*placeholder[a-z-]*"\s*$/m);
+    expect(twilio).toMatch(/^auth_token = "env\([A-Z_]+\)"\s*$/m);
+    // The test numbers keep their fixed codes, and the Send-SMS hook block (how deployed
+    // projects deliver codes, SETUP_FOR_FOUNDER 2.1) still points at auth-sms-hook.
+    expect(section("auth.sms.test_otp")).toMatch(/^\d{12} = "\d{6}"/m);
+    expect(section("auth.hook.send_sms")).toMatch(/^uri = ".*\/functions\/v1\/auth-sms-hook"\s*$/m);
   });
 });
 
@@ -159,7 +174,9 @@ test.describe("M2 gate: live mode against CI's seeded stack", { tag: "@live" }, 
       return { url, key };
     }
 
-    test("Rohan signs in with the test OTP, and Following shows his 5 changes", async ({
+    // Gate gap 2 (closed): the web's own sign-in. One test, one code: Auth allows one code per
+    // number every 30 s ([auth.sms] max_frequency), the test numbers included.
+    test("WebSignIn's own form signs Rohan in: a real session, back to `next`, Following shows his 5 changes", async ({
       page,
       context,
       baseURL,
@@ -167,30 +184,32 @@ test.describe("M2 gate: live mode against CI's seeded stack", { tag: "@live" }, 
       const { url, key } = supabaseEnv();
       const phone = testPhone("rohan");
 
-      // Supabase Auth's phone OTP, through @supabase/ssr, which writes the session
-      // cookies exactly as the web's own server client reads them.
-      const jar = new Map<string, string>();
-      const auth = createServerClient(url, key, {
-        cookies: {
-          getAll: () => [...jar].map(([name, value]) => ({ name, value })),
-          setAll: (list) => {
-            for (const { name, value } of list) jar.set(name, value);
-          },
-        },
-      });
-      const sent = await auth.auth.signInWithOtp({ phone });
-      expect(sent.error, "POST /auth/v1/otp for the test number").toBeNull();
-      const verified = await auth.auth.verifyOtp({ phone, token: testOtp(phone), type: "sms" });
-      expect(verified.error, "POST /auth/v1/verify with the test code").toBeNull();
-      const session = verified.data.session!;
-      expect(session.user.phone).toBe(phone.replace(/^\+/, ""));
+      await page.goto("/sign-in?next=/following");
+      await page.getByLabel("Mobile number").fill(phone.replace(/^\+91/, ""));
+      await page.getByRole("button", { name: "Send code on WhatsApp" }).click();
+      // The code step only once Auth said it sent one (src/features/auth/session.ts).
+      await expect(page.getByRole("heading", { name: "Enter the code" })).toBeVisible();
+      await page.getByLabel("6-digit code").fill(testOtp(phone));
+      await page.getByRole("button", { name: /^Verify and (follow|continue)/ }).click();
+      // Signed in (nothing on WhatsApp to bring for him): back to `next`.
+      await page.waitForURL((u) => u.pathname === "/following", { timeout: 30_000 });
 
-      // What the server sends Rohan: his own following_feed, with his own JWT.
+      // The cookies the web set hold a real Supabase session: @supabase/ssr reads them the way
+      // the web's own server client does, and PostgREST takes its token as Rohan's.
+      const jar = (await context.cookies(baseURL!)).map(({ name, value }) => ({ name, value }));
+      expect(jar.some((c) => /^sb-.+-auth-token(\.\d+)?$/.test(c.name))).toBe(true);
+      const auth = createServerClient(url, key, {
+        cookies: { getAll: () => jar, setAll: () => {} },
+      });
+      const session = (await auth.auth.getSession()).data.session;
+      expect(session?.user.phone).toBe(phone.replace(/^\+/, ""));
+
+      // What the server sends Rohan: his own following_feed, with that session's JWT.
       const res = await fetch(`${url}/rest/v1/rpc/following_feed`, {
         method: "POST",
         headers: {
           apikey: key,
-          authorization: `Bearer ${session.access_token}`,
+          authorization: `Bearer ${session!.access_token}`,
           "content-type": "application/json",
           "content-profile": "api",
         },
@@ -200,31 +219,8 @@ test.describe("M2 gate: live mode against CI's seeded stack", { tag: "@live" }, 
       const feed = (await res.json()) as { heading: string; changes: unknown[] };
       expect(feed.changes).toHaveLength(5);
 
-      await context.addCookies(
-        [...jar]
-          .filter(([, value]) => value)
-          .map(([name, value]) => ({ name, value, url: baseURL! })),
-      );
-      const page200 = await page.goto("/following");
-      expect(page200?.status()).toBe(200);
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(feed.heading);
       await expect(page.getByTestId("unread-badge")).toHaveText(`${feed.changes.length} unread`);
-    });
-
-    test("WebSignIn's own form signs Rohan in with the test OTP", async ({ page }) => {
-      test.fixme(
-        true,
-        "Gate gap: src/features/auth never calls Supabase Auth in any mode (sending and verifying " +
-          "a code are UI-only, T47 was fixture-mode only), so the live web has no sign-in path.",
-      );
-      const phone = testPhone("rohan");
-      await page.goto("/sign-in?next=/following");
-      await page.getByLabel("Mobile number").fill(phone.replace(/^\+91/, ""));
-      await page.getByRole("button", { name: "Send code on WhatsApp" }).click();
-      await page.getByLabel("6-digit code").fill(testOtp(phone));
-      await page.getByRole("button", { name: /^Verify and (follow|continue)/ }).click();
-      await page.goto("/following");
-      await expect(page.getByTestId("unread-badge")).toHaveText("5 unread");
     });
   });
 

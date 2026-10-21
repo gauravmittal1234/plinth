@@ -328,11 +328,22 @@ uri = "http://host.docker.internal:54321/functions/v1/auth-sms-hook"
 secrets = "env(SEND_SMS_HOOK_SECRET)"
 
 # Configure one of the supported SMS providers: `twilio`, `twilio_verify`, `messagebird`, `textlocal`, `vonage`.
+# Plinth (lead, M2 gate gap 7): a PLACEHOLDER provider, for local and CI stacks only. The CLI
+# turns phone login off unless a named provider is enabled ("no SMS provider is enabled.
+# Disabling phone login"; the Send-SMS hook does not count), and then Auth refuses every phone
+# OTP, the [auth.sms.test_otp] numbers included. With this block on, `supabase start` answers the
+# test numbers with their fixed codes. No SMS is ever sent: Auth never calls a provider for a
+# test number, and these ids name no Twilio account, so any other number fails at Twilio
+# (no real credentials, ever; the token is an unset env reference, and stays unset).
+# It cannot weaken the deployed set-up: plinth-dev and production are configured in the dashboard
+# (SETUP_FOR_FOUNDER 2.1: the Phone provider plus the Send-SMS hook to auth-sms-hook), nothing
+# runs `supabase config push`, and Auth sends through the Send-SMS hook whenever it is enabled,
+# ahead of any provider.
 [auth.sms.twilio]
-enabled = false
-account_sid = ""
-message_service_sid = ""
-# DO NOT commit your Twilio auth token to git. Use environment variable substitution instead:
+enabled = true
+account_sid = "ACplinth-local-placeholder-no-sms"
+message_service_sid = "MGplinth-local-placeholder-no-sms"
+# DO NOT commit a Twilio auth token to git. Left unset: the CLI passes the reference through.
 auth_token = "env(SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN)"
 
 # Multi-factor-authentication is available to Supabase Pro plan.
