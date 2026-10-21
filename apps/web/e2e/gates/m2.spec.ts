@@ -218,6 +218,39 @@ test.describe("M2 gate: live mode against CI's seeded stack", { tag: "@live" }, 
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(feed.heading);
       await expect(page.getByTestId("unread-badge")).toHaveText(`${feed.changes.length} unread`);
     });
+
+    // M2 web-follow gaps (closed): the web never called api.follow, from either
+    // "Verify and follow X" or the project page's own Follow button once signed
+    // in. This signs in a different reader than the test above (Auth allows one
+    // code per number every 30 s, test numbers included): Meera has no follows
+    // of her own, so a real follow row for her is unambiguous proof.
+    test("A project page's Verify and follow signs Meera in, actually follows it, and Following lists it", async ({
+      page,
+    }) => {
+      const phone = testPhone("meera");
+      const slug = "kestrel-park";
+
+      // Signed out: the hero's Follow button still answers auth_required and
+      // sends her to sign-in, same as the old plain link did.
+      await page.goto(`/gurugram/projects/${slug}`);
+      await page.getByRole("button", { name: "Follow" }).click();
+      await page.waitForURL((u) => u.pathname === "/sign-in", { timeout: 10_000 });
+
+      await page.getByLabel("Mobile number").fill(phone.replace(/^\+91/, ""));
+      await page.getByRole("button", { name: "Send code on WhatsApp" }).click();
+      await expect(page.getByRole("heading", { name: "Enter the code" })).toBeVisible();
+      await page.getByLabel("6-digit code").fill(testOtp(phone));
+      await page.getByRole("button", { name: "Verify and follow Kestrel Park" }).click();
+
+      // api.follow ran on her brand-new session before this redirect back.
+      await page.waitForURL((u) => u.pathname === `/gurugram/projects/${slug}`, {
+        timeout: 30_000,
+      });
+      await expect(page.getByRole("button", { name: "Following" })).toBeVisible();
+
+      await page.goto("/following");
+      await expect(page.getByRole("link", { name: "Kestrel Park" })).toBeVisible();
+    });
   });
 
   test.describe("The edge's own code over the live database's rows", () => {
