@@ -47,7 +47,7 @@ function Topic({
   return (
     <div className="flex flex-col gap-3 rounded-panel bg-bg-solid p-5 sm:p-7">
       <div className="flex flex-col gap-1">
-        <h3 className="m-0 font-display text-h4 font-extrabold">{title}</h3>
+        <h3 className="m-0 font-display text-h4 font-bold">{title}</h3>
         {sub ? <p className="m-0 text-small text-ink2">{sub}</p> : null}
         {line ? <p className="m-0 font-semibold">{line}</p> : null}
       </div>
@@ -74,7 +74,7 @@ export function BookingSection({ beforeBooking }: { beforeBooking: BeforeBooking
     <SectionBand id="book" tone="track">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          <h2 className="m-0 max-w-[18ch] text-balance font-display text-h2 font-extrabold">
+          <h2 className="m-0 max-w-[18ch] text-balance font-display text-section font-bold">
             {BOOKING_COPY.heading}
           </h2>
           <p className="m-0 max-w-measure text-lead">{beforeBooking.payment_plans?.sub ?? BOOKING_COPY.intro}</p>

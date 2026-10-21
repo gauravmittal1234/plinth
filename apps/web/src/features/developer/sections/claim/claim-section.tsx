@@ -18,7 +18,7 @@ export function ClaimSection({
   return (
     <SectionBand id="claim" tone="bg">
       <div className="flex flex-col gap-5">
-        <h2 className="m-0 max-w-[20ch] text-balance font-display text-h2 font-extrabold">
+        <h2 className="m-0 max-w-[20ch] text-balance font-display text-section font-bold">
           {CLAIM_COPY.heading(group.name)}
         </h2>
         <p className="m-0 max-w-measure text-lead">{group.claim.line}</p>

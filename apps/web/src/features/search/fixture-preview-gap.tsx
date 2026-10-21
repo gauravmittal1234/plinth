@@ -9,7 +9,7 @@ import { EXAMPLE_SEARCHES, SEARCH_COPY } from "./copy";
 export function FixturePreviewGap() {
   return (
     <div className="flex flex-col items-start gap-4 rounded-panel bg-track p-6 sm:p-8">
-      <h1 className="m-0 max-w-measure font-display text-h2 font-extrabold">
+      <h1 className="m-0 max-w-measure font-display text-h2 font-bold">
         {SEARCH_COPY.previewGapHeading}
       </h1>
       <p className="m-0 max-w-measure text-body text-ink2">{SEARCH_COPY.previewGapBody}</p>

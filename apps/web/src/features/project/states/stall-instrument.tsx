@@ -64,7 +64,7 @@ export function StallInstrument({
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center gap-3">
-        <h2 className="m-0 font-display text-h2 font-extrabold">{STALL_COPY.heading}</h2>
+        <h2 className="m-0 font-display text-section font-bold">{STALL_COPY.heading}</h2>
         <span className="rounded-pill bg-claim-bg px-3 py-1 text-caption font-semibold text-ink">
           {STALL_COPY.pill}
         </span>

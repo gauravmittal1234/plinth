@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/request_project.schema.json",
+  "title": "RequestProject",
+  "description": "plinth.request_project/1, from api.request_project(p_name, p_rera, p_whatsapp_consent) (API_CONTRACTS §3.2; DESIGN §5b Request a project; built by T45a). The record of the request: reference R-MMDD-NN (IST date), added by due_on (requested + 14 days) or told why not. p_whatsapp_consent is the buyer's own tap asking to hear back on WhatsApp too; it needs a linked, opted-in WhatsApp contact (otherwise consent_required). The same open request again returns the same reference.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "ref",
+    "name",
+    "rera",
+    "requested_on",
+    "due_on",
+    "status",
+    "line",
+    "whatsapp_line"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.request_project/1" },
+    "ref": {
+      "description": "R-MMDD-NN (catalogues/ref_formats.json prefix R).",
+      "type": "string",
+      "pattern": "^R-(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])-\\d{2,}$"
+    },
+    "name": {
+      "description": "The project as the buyer typed it.",
+      "anyOf": [{ "type": "string" }, { "type": "null" }]
+    },
+    "rera": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+    "requested_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+    "due_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+    "status": { "$ref": "#/$defs/ProjectRequestStatus" },
+    "line": {
+      "description": "\"We'll add it by 1 Nov 2026 or tell you why not.\"",
+      "type": "string"
+    },
+    "whatsapp_line": {
+      "description": "Set when the buyer asked to hear back on WhatsApp too.",
+      "anyOf": [{ "type": "string" }, { "type": "null" }]
+    }
+  },
+  "$defs": {
+    "ProjectRequestStatus": {
+      "title": "ProjectRequestStatus",
+      "type": "string",
+      "enum": ["open", "added", "declined"]
+    }
+  }
+}

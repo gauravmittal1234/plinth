@@ -56,6 +56,9 @@ export const EXPECTED_FUNCTIONS = [
   "cost_breakdown",
   "afford_the_wait",
   "payee_check",
+  // T45a: buyer reads.
+  "family_circle",
+  "saved_searches",
 ] as const;
 export type ExpectedFunction = (typeof EXPECTED_FUNCTIONS)[number];
 
@@ -71,6 +74,9 @@ export const WRITE_FUNCTIONS = [
   "family_member_undo",
   "shortlist_note_add",
   "consent_withdraw",
+  // T45a
+  "set_follow_type",
+  "request_project",
 ] as const;
 export type WriteFunction = (typeof WRITE_FUNCTIONS)[number];
 

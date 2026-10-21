@@ -1,0 +1,15 @@
+{
+  "note": "Arguments for each fixture key of this function (fixture key → RPC args). Not a payload.",
+  "requests": {
+    "indigo-terraces": {
+      "p_name": "Indigo Terraces, Sector 79",
+      "p_rera": null,
+      "p_client_id": "a4666d44-0657-5293-949e-d15ec0204d52",
+      "as": {
+        "user": "rohan",
+        "user_id": "bff1ee72-9910-5980-a875-96a9a00b24cf"
+      },
+      "note": "Replays Rohan's request of 18 Oct 2026 (DESIGN §5b Request a project: R-1018-07)."
+    }
+  }
+}

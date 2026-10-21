@@ -132,10 +132,10 @@ export function SimpleView({
       </div>
 
       <section className={blockClass(0)}>
-        <h1 className="m-0 font-display text-h2 font-extrabold">{COPY.heading}</h1>
+        <h1 className="m-0 font-display text-h2 font-bold">{COPY.heading}</h1>
         <div className="mt-4 flex items-center gap-4">
           <Meter chip={risk.chip} size="l" />
-          <span className="font-display text-h2 font-extrabold">{bandLabel}</span>
+          <span className="font-display text-h2 font-bold">{bandLabel}</span>
         </div>
         {step ? (
           <p className="mt-3 mb-0">
@@ -145,7 +145,7 @@ export function SimpleView({
       </section>
 
       <section className={blockClass(1)}>
-        <h2 className="m-0 font-display text-h3 font-extrabold">{COPY.keysHeading}</h2>
+        <h2 className="m-0 font-sans text-h3 font-bold">{COPY.keysHeading}</h2>
         <p className="mt-3 mb-0">{risk.late12.line}</p>
         <p className="mt-3 mb-0">{risk.late12.oc_not_keys_line}</p>
       </section>
@@ -158,7 +158,7 @@ export function SimpleView({
 
       {reasons.length > 0 ? (
         <section className={blockClass(3)}>
-          <h2 className="m-0 font-display text-h3 font-extrabold">
+          <h2 className="m-0 font-sans text-h3 font-bold">
             {COPY.whyHeading} {bandLabel}?
           </h2>
           <ul role="list" className="m-0 mt-3 flex flex-col gap-4 p-0">
@@ -173,7 +173,7 @@ export function SimpleView({
       ) : null}
 
       <section className={blockClass(4)}>
-        <h2 className="m-0 font-display text-h3 font-extrabold">{COPY.builtHeading}</h2>
+        <h2 className="m-0 font-sans text-h3 font-bold">{COPY.builtHeading}</h2>
         <p className="mt-3 mb-0">{builtLine}</p>
         <div className="mt-4 flex gap-3">
           <Button
@@ -196,7 +196,7 @@ export function SimpleView({
       </section>
 
       <section className={blockClass(5)}>
-        <h2 className="m-0 font-display text-h3 font-extrabold">{COPY.nextHeading}</h2>
+        <h2 className="m-0 font-sans text-h3 font-bold">{COPY.nextHeading}</h2>
         <p className="mt-3 mb-0">{nextSteps.intro_line}</p>
         <ol role="list" className="m-0 mt-3 flex flex-col gap-3 p-0">
           {steps.map((s, i) => (

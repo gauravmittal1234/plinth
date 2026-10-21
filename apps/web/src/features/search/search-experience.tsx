@@ -69,7 +69,7 @@ export function SearchExperience({
     <SectionBand>
       <div className="flex flex-col gap-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
-          <h1 className="m-0 font-display text-h1 font-extrabold">
+          <h1 className="m-0 font-display text-h1 font-bold">
             {items.length} {items.length === 1 ? "project matches" : "projects match"}
           </h1>
           <FreeTextEditor query={query} sort={sort} />

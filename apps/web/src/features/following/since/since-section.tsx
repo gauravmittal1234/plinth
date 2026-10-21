@@ -48,7 +48,7 @@ export function SinceYouLastLooked({
       <SectionBand id="since" tone="bg">
         <div className="flex flex-col gap-8">
           <div className="flex flex-wrap items-start justify-between gap-4">
-            <h1 className="m-0 max-w-[22ch] text-balance font-display text-h1 font-extrabold">
+            <h1 className="m-0 max-w-[22ch] text-balance font-display text-h1 font-bold">
               {feed.heading}
             </h1>
             <Button
@@ -88,7 +88,7 @@ export function SinceYouLastLooked({
 
           {replay ? (
             <div className="flex flex-col gap-4 rounded-panel bg-track p-5 sm:p-7">
-              <h2 className="m-0 font-display text-h4 font-extrabold">
+              <h2 className="m-0 font-display text-h4 font-bold">
                 {HERO_COPY.replayHeading}
               </h2>
               <p className="m-0 text-small text-ink2">{HERO_COPY.replayCaption}</p>
@@ -150,7 +150,7 @@ export function SinceYouLastLooked({
 
       <SectionBand id="record" tone="track">
         <div className="flex flex-col gap-6">
-          <h2 className="m-0 font-display text-h2 font-extrabold">
+          <h2 className="m-0 font-display text-section font-bold">
             {RECORD_COPY.heading(formatDate(cursor))}
           </h2>
           {earlier.length > 0 ? (

@@ -20,7 +20,7 @@ export function CalibrationSection({ calibration }: { calibration: About["calibr
     <section id="calibration" aria-labelledby="calibration-h" className="bg-bg py-18 text-ink md:py-30">
       <div className="mx-auto flex w-full max-w-[79rem] flex-col gap-6 px-4 sm:px-8">
         <div className="flex flex-wrap items-center gap-3">
-          <h2 id="calibration-h" className="m-0 font-display text-h2 font-extrabold">
+          <h2 id="calibration-h" className="m-0 font-display text-section font-bold">
             Were we right?
           </h2>
           {pill ? <Pill tone="accent">{pill}</Pill> : null}

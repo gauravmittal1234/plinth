@@ -8,7 +8,7 @@ export function FreeSection() {
   return (
     <section aria-labelledby="free-h" className="bg-track py-18 text-ink md:py-30">
       <div className="mx-auto flex w-full max-w-[79rem] flex-col gap-6 px-4 sm:px-8">
-        <h2 id="free-h" className="m-0 font-display text-h2 font-extrabold">
+        <h2 id="free-h" className="m-0 font-display text-section font-bold">
           What stays free?
         </h2>
         <p className="m-0 max-w-measure text-body text-ink2">

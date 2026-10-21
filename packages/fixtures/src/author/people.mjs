@@ -31,6 +31,10 @@ export const SEC = {
   round2: `${S5B} · Project pages, round 2`,
 };
 const id = (kind, key) => uuid5(kind, key);
+/** core.events.id (T43b, 20261122000500_t43b_event_ids.sql core._emit_event): core.uuid5('event',
+ *  kind || '/' || the triggering row's own id) — same hash, same two-level key, as `id()` above,
+ *  so this and the database compute the identical id without either reading the other's output. */
+const evId = (kind, srcId) => uuid5("event", `${kind}/${srcId}`);
 
 // Test phone numbers (not facts; never displayed). API_CONTRACTS §5.4 names Rohan's test OTP
 // number; the rest of the block follows it. Confirmed safe to use in every environment, refused
@@ -216,7 +220,7 @@ export function buildPeople(sc) {
       id: id("project_request", "R-1018-07"),
       ref: "R-1018-07",
       ref_year: 2026,
-      user: null,
+      user: "rohan",
       name_text: "Indigo Terraces, Sector 79",
       rera_text: null,
       requested_at: at("2026-10-18"),
@@ -224,16 +228,23 @@ export function buildPeople(sc) {
       status: "open",
       reason: null,
       line: "We'll add it by 1 Nov 2026 or tell you why not.",
-      source: `${SEC.discovery} (Request a project; requester not named)`,
+      source: `${SEC.discovery} (Request a project); requester ${derived("§5b names none; Rohan, the fixture buyer, so the R-1018-07 receipt has an owner and api.request_project can replay it (T45a)")}`,
     },
   ];
 
-  // Since you last looked: the 11 dated changes on Rohan's 4 projects (WebFollowing, AppFollowing,
+  // Since you last looked: the 15 dated changes on Rohan's 4 projects (WebFollowing, AppFollowing,
   // WaDigest). `facts` are evidence keys, resolved to fact ids in the expected outputs. Lines are
   // risk copy and final here. Listed newest first (R3 C-41); expected_b.mjs sorts explicitly too.
-  const ev = (key, o) => ({ id: id("event", key), key, ...o });
+  // `id`: core.events.id is deterministic (T43b, 20261122000500_t43b_event_ids.sql core._emit_
+  // event) — core.uuid5('event', kind || '/' || the triggering row's own id); evId() mirrors it.
+  // order_decided is the one exception: it never goes through core._emit_event (T43b's header on
+  // that migration explains why — core.orders has no seed rows yet), so core.following_fact_
+  // changes reads its id straight off the complaints-24m fact; its `id` below is that fact's id,
+  // not evId(...).
+  const ev = (key, o) => ({ key, ...o });
   const events = [
     ev("sapphire/price-list/2026-10-16", {
+      id: evId("price_list_published", id("price_list", `${SG1}/2026-10-16`)),
       phase: SG1,
       kind: "price_list_published",
       occurred_on: "2026-10-16",
@@ -243,9 +254,10 @@ export function buildPeople(sc) {
       facts: [`${SG1}/price/quoted-3bhk`],
       lane: "from_developer",
       summary_kind: "price change",
-      source: `${SEC.following} (3 BHK ₹1.89 Cr → ₹1.95 Cr, all-in ≈ ₹2.27 Cr)`,
+      source: `${SEC.following} (3 BHK ₹1.89 Cr → ₹1.95 Cr, all-in ≈ ₹2.27 Cr); previous list 1 Sep 2026 ${S5B}`,
     }),
     ev("sapphire/qpr/2026-Q3/filed", {
+      id: evId("qpr_filed", id("qpr_filing", `${SG1}/2026-Q3`)),
       phase: SG1,
       kind: "qpr_filed",
       occurred_on: "2026-10-15",
@@ -257,6 +269,7 @@ export function buildPeople(sc) {
       source: `${SEC.round2} (Sapphire re-scoring example)`,
     }),
     ev("coral/qpr/2026-Q3/missing", {
+      id: evId("qpr_missing", id("qpr_filing", `${CT}/2026-Q3`)),
       phase: CT,
       kind: "qpr_missing",
       occurred_on: "2026-10-15",
@@ -268,6 +281,7 @@ export function buildPeople(sc) {
       source: `${SEC.round2} (Coral stale-data example)`,
     }),
     ev("aurelia/qpr/2026-Q3/missing", {
+      id: evId("qpr_missing", id("qpr_filing", `${AH2}/2026-Q3`)),
       phase: AH2,
       kind: "qpr_missing",
       occurred_on: "2026-10-15",
@@ -280,6 +294,7 @@ export function buildPeople(sc) {
       source: `${SEC.aurelia} (pending public fact)`,
     }),
     ev("coral/extension-2", {
+      id: evId("extension_granted", id("extension", `${CT}/2`)),
       phase: CT,
       kind: "extension_granted",
       occurred_on: "2026-10-14",
@@ -291,6 +306,7 @@ export function buildPeople(sc) {
       source: `${S5B} · Other projects (Extension 2 granted 14 Oct 2026)`,
     }),
     ev("kestrel/qpr/2026-Q3/filed", {
+      id: evId("qpr_filed", id("qpr_filing", `${KP}/2026-Q3`)),
       phase: KP,
       kind: "qpr_filed",
       occurred_on: "2026-10-12",
@@ -301,6 +317,7 @@ export function buildPeople(sc) {
       source: `${S5B} · Other projects; ${SEC.following} (built 59% → 63%)`,
     }),
     ev("aurelia/complaint-order/2026-10-09", {
+      id: id("fact", `${AH2}/complaints-24m`),
       phase: AH2,
       kind: "order_decided",
       occurred_on: "2026-10-09",
@@ -310,7 +327,23 @@ export function buildPeople(sc) {
       facts: [`${AH2}/complaints-24m`],
       source: `${SEC.following} (Aurelia complaints 13 → 14); latest order 9 Oct 2026 ${SEC.aurelia}`,
     }),
+    // Aurelia's own price list (2 Oct 2026): a genuine current price, same as Kestrel's and
+    // Coral's below, not a backfill — it has real earlier lists to diff against (2023, Jul 2025,
+    // Apr 2026), so core.events_from_price_list's "newest published list only" rule still logs it.
+    ev("aurelia/price-list/2026-10-02", {
+      id: evId("price_list_published", id("price_list", `${AH2}/2026-10-02`)),
+      phase: AH2,
+      kind: "price_list_published",
+      occurred_on: "2026-10-02",
+      line: "New price list from the developer: 3 BHK quoted ₹2.35 Cr. All-in is now about ₹2.74 Cr.",
+      before_pill: "₹2.24 Cr",
+      after_pill: "₹2.35 Cr",
+      facts: [`${AH2}/price/quoted-3bhk`],
+      lane: "from_developer",
+      source: `${SEC.aurelia} (price list, 2 Oct 2026; before: the Apr 2026 list)`,
+    }),
     ev("aurelia/band/2026-10-02", {
+      id: evId("band_changed", id("score_run", `${AH2}/v1.1/2026-09-30`)),
       phase: AH2,
       kind: "band_changed",
       occurred_on: "2026-10-02",
@@ -321,35 +354,84 @@ export function buildPeople(sc) {
       facts: [`${AH2}/qpr/2026-Q2/progress`, `${AH2}/complaints-24m`],
       source: `${SEC.aurelia} (band history; trigger)`,
     }),
+    // Coral's and Kestrel's only-ever price lists (1 Oct 2026): real, first-of-their-kind
+    // publications with no earlier row to diff, so before_pill is null, same rule as Sapphire's
+    // 16 Oct 2026 list would show without its own backfilled 1 Sep 2026 list.
+    ev("coral/price-list/2026-10-01", {
+      id: evId("price_list_published", id("price_list", `${CT}/2026-10-01`)),
+      phase: CT,
+      kind: "price_list_published",
+      occurred_on: "2026-10-01",
+      line: "New price list from the developer: 3 BHK quoted ₹1.62 Cr. All-in is now about ₹1.90 Cr.",
+      before_pill: null,
+      after_pill: "₹1.62 Cr",
+      facts: [`${CT}/price/quoted-3bhk`],
+      lane: "from_developer",
+      source: `${S5B} · Other projects (Coral's price list, 1 Oct 2026)`,
+    }),
+    ev("kestrel/price-list/2026-10-01", {
+      id: evId("price_list_published", id("price_list", `${KP}/2026-10-01`)),
+      phase: KP,
+      kind: "price_list_published",
+      occurred_on: "2026-10-01",
+      line: "New price list from the developer: 3 BHK quoted ₹2.10 Cr. All-in is now about ₹2.44 Cr.",
+      before_pill: null,
+      after_pill: "₹2.10 Cr",
+      facts: [`${KP}/price/quoted-3bhk`],
+      lane: "from_developer",
+      source: `${S5B} · Other projects (Kestrel's price list, 1 Oct 2026)`,
+    }),
     ev("sapphire/qpr/2026-Q2/late", {
+      id: evId("qpr_late", id("qpr_filing", `${SG1}/2026-Q2`)),
       phase: SG1,
       kind: "qpr_late",
       occurred_on: "2026-07-27",
-      line: "The Apr–Jun 2026 QPR was filed 12 days late: 48% built.",
-      before_pill: "Due 15 Jul",
-      after_pill: "Filed 27 Jul",
+      line: "The Apr–Jun 2026 QPR was filed 12 days late: 48% built, 47% of the promised time used.",
+      before_pill: "38%",
+      after_pill: "48%",
       facts: [`${SG1}/qpr/2026-Q2/status`, `${SG1}/qpr/2026-Q2/progress`],
       source: `${S5B} · Other projects (filed 27 Jul 2026, 12 days late); 48% built ${S5}`,
     }),
+    // Coral before Aurelia (both 15 Jul 2026): core.following_change_item's qpr_missing branch
+    // detects Coral's missing quarter the next day (detected_at noon IST 16 Jul), later than
+    // Aurelia's own-day filing (detected_at fetched_at, 16 Jul 00:00 IST) — newest-detected-first,
+    // same rule as any same-day tie (R3 C-41).
+    ev("coral/qpr/2026-Q2/missing", {
+      id: evId("qpr_missing", id("qpr_filing", `${CT}/2026-Q2`)),
+      phase: CT,
+      kind: "qpr_missing",
+      occurred_on: "2026-07-15",
+      line: "The Apr–Jun 2026 QPR is not on HARERA yet. It was due 15 Jul 2026. The Jul–Sep QPR is missing too, so the newest figures are 187 days old.",
+      before_pill: "Due 15 Jul",
+      after_pill: "Not on HARERA as of 18 Oct",
+      facts: [`${CT}/qpr/2026-Q2/missing`],
+      source: `${SEC.round2} (Coral stale-data example)`,
+    }),
     ev("aurelia/qpr/2026-Q2/filed", {
+      id: evId("qpr_filed", id("qpr_filing", `${AH2}/2026-Q2`)),
       phase: AH2,
       kind: "qpr_filed",
       occurred_on: "2026-07-15",
-      line: "The Apr–Jun 2026 QPR was filed on time: 72% of units sold, 41% built, Tower A at slab 9.",
+      line: "The Apr–Jun 2026 QPR was filed on time: 41% built, 70% of the promised time used.",
       before_pill: "38%",
       after_pill: "41%",
       facts: [`${AH2}/qpr/2026-Q2/status`, `${AH2}/qpr/2026-Q2/progress`],
       source: `${SEC.aurelia} (QPR table: Jan–Mar 2026 38% built, Apr–Jun 2026 41%, filed 15 Jul 2026)`,
     }),
-    ev("coral/qpr/2026-Q2/missing", {
-      phase: CT,
-      kind: "qpr_missing",
-      occurred_on: "2026-07-15",
-      line: "The Apr–Jun 2026 QPR is not on HARERA. It was due 15 Jul 2026. The newest QPR is Jan–Mar 2026, filed 14 Apr: 22% built.",
-      before_pill: "Due 15 Jul",
-      after_pill: "Not on HARERA as of 18 Oct",
-      facts: [`${CT}/qpr/2026-Q2/missing`],
-      source: `${SEC.round2} (Coral stale-data example)`,
+    // Kestrel's Apr–Jun 2026 QPR (14 Jul 2026, on time): the quarter before the Jul–Sep one
+    // above, real and within Rohan's follow window (followed since 1 Jul 2026), so it belongs in
+    // the historical record even though §5b's "Since you last looked" worked example never names
+    // it — AGENTS rule 10 reads every fact from the payload rather than only the named examples.
+    ev("kestrel/qpr/2026-Q2/filed", {
+      id: evId("qpr_filed", id("qpr_filing", `${KP}/2026-Q2`)),
+      phase: KP,
+      kind: "qpr_filed",
+      occurred_on: "2026-07-14",
+      line: "The Apr–Jun 2026 QPR was filed on time: 59% built, 53% of the promised time used.",
+      before_pill: null,
+      after_pill: "59%",
+      facts: [`${KP}/qpr/2026-Q2/progress`],
+      source: `${S5B} · Other projects (Kestrel's Apr–Jun QPR, filed on time, 59% built)`,
     }),
   ].map((e) => ({
     developer_says_line: null,

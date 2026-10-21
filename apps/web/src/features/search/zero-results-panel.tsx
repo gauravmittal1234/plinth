@@ -24,7 +24,7 @@ export function ZeroResultsPanel({ zeroResults, name, hidden }: ZeroResultsPanel
 
   return (
     <div className="flex flex-col items-start gap-4 rounded-panel bg-track p-6 sm:p-8">
-      <h1 className="m-0 max-w-measure font-display text-h2 font-extrabold">{zeroResults.line}</h1>
+      <h1 className="m-0 max-w-measure font-display text-h2 font-bold">{zeroResults.line}</h1>
 
       {zeroResults.kind === "no_match" && action?.kind === "drop_filter" ? (
         <>

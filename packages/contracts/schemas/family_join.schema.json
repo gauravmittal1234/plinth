@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plinth.in/schemas/family_join.schema.json",
+  "title": "FamilyJoin",
+  "description": "plinth.family_join/1, from api.family_join(p_code) (the app path) and the relative's own WhatsApp \"JOIN <code>\" (ops.family_join_by_code via api.whatsapp_family_join; API_CONTRACTS §4.11; built by T45a). The join itself is the relative's opt-in. An unknown, used, cancelled or expired code is a neutral not_found, never this payload. Never a phone number.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "member_id",
+    "inviter_first_name",
+    "scope_line",
+    "joined_on",
+    "can_add_notes",
+    "joined_line",
+    "what_you_get",
+    "number_line"
+  ],
+  "properties": {
+    "schema": { "const": "plinth.family_join/1" },
+    "member_id": { "$ref": "common.schema.json#/$defs/Uuid" },
+    "inviter_first_name": { "type": "string" },
+    "scope_line": { "type": "string" },
+    "joined_on": { "$ref": "common.schema.json#/$defs/IsoDate" },
+    "can_add_notes": { "type": "boolean" },
+    "joined_line": {
+      "description": "\"You'll get the same alerts as Rohan for Aurelia Heights, Phase 2.\"",
+      "type": "string"
+    },
+    "what_you_get": { "type": "array", "items": { "type": "string" } },
+    "number_line": { "type": "string" }
+  }
+}

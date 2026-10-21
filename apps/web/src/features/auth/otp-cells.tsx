@@ -41,7 +41,7 @@ export function OtpCells({
               key={i}
               aria-hidden="true"
               className={cx(
-                "flex items-center justify-center rounded-panel border-[1.5px] bg-bg-solid font-display text-[30px] font-extrabold text-ink",
+                "flex items-center justify-center rounded-panel border-[1.5px] bg-bg-solid font-display text-[30px] font-bold text-ink",
                 active ? "border-ink" : invalid ? "border-error" : "border-line-strong",
               )}
             >

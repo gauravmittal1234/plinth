@@ -37,7 +37,7 @@ export function HeroSection({ defaultSummary }: { defaultSummary: RiskSummary })
         <div className="flex min-w-0 flex-1 basis-[36rem] flex-col gap-6 text-on-slab">
           <h1
             id="hero-h"
-            className="m-0 font-display text-[clamp(3.5rem,7.5vw,7rem)] leading-[0.94] font-extrabold tracking-[-0.045em]"
+            className="m-0 font-display text-[clamp(3.5rem,7.5vw,7rem)] leading-[0.94] font-bold tracking-[-0.045em]"
           >
             Know before
             <br />
