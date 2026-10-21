@@ -27,6 +27,13 @@ export const HERO_COPY = {
   imageCaption: "Images on this page are illustrative",
   srDeliveryRisk: "Delivery risk: ",
   follow: "Follow",
+  // Shown once api.follow actually returned a record (AGENTS.md rule 9;
+  // FollowButton, sections/hero), word for word the app's
+  // (apps/mobile/lib/features/project/project_copy.dart ProjectCopy.following).
+  following: "Following",
+  // The signed-in Follow button's own failure, word for word the app's
+  // (apps/mobile/lib/features/project/project_content.dart's toast).
+  followFailed: (name: string) => `Could not follow ${name}. Try again.`,
   ask: "Ask Plinth",
   share: "Share the live page",
   shareCopied: "Link copied",
